@@ -1,0 +1,4 @@
+{
+  FSDataOutputStream outputStream=this.fs.create(avroFile,true,bufferSize);
+  return new DataFileWriter<GenericRecord>(new GenericDatumWriter<GenericRecord>()).create(schema,outputStream);
+}

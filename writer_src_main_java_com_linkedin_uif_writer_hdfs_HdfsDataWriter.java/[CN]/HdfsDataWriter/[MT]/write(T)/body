@@ -1,0 +1,10 @@
+{
+  try {
+    this.writer.append(this.dataConverter.convert(sourceRecord));
+  }
+ catch (  DataConversionException e) {
+    LOG.error("Failed to convert source data record: " + sourceRecord);
+    throw new IOException(e);
+  }
+  this.count++;
+}

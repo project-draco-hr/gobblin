@@ -1,0 +1,3 @@
+{
+  this.fs.rename(this.stagingFile,this.outputFile);
+}

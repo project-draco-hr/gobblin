@@ -1,0 +1,7 @@
+{
+  this.fs=FileSystem.get(uri,new Configuration());
+  this.stagingFile=new Path(stagingDir,fileName);
+  this.outputFile=new Path(outputDir,fileName);
+  this.dataConverter=dataConverter;
+  this.writer=createDatumWriter(schema,this.stagingFile,bufferSize);
+}

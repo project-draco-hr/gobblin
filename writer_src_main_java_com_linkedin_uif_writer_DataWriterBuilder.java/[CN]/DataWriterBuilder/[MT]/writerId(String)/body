@@ -1,0 +1,4 @@
+{
+  this.writerId=writerId;
+  return this;
+}

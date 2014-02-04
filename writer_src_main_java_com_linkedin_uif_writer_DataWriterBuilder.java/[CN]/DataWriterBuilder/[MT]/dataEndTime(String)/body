@@ -1,0 +1,4 @@
+{
+  this.dataEndTime=endTime;
+  return this;
+}

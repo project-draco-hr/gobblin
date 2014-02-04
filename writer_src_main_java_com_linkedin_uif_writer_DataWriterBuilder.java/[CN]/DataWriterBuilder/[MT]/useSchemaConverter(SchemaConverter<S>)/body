@@ -1,0 +1,4 @@
+{
+  this.schemaConverter=schemaConverter;
+  return this;
+}

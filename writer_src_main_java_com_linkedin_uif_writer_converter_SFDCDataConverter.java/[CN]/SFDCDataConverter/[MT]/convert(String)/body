@@ -1,0 +1,10 @@
+{
+  System.out.println(json);
+  JsonElement fields=GSON.fromJson(json,JsonObject.class).get("fields");
+  Map<String,String> fieldMap=GSON.fromJson(fields,FIELD_ENTRY_TYPE);
+  GenericRecord record=new GenericData.Record(this.schema);
+  for (  Map.Entry<String,String> entry : fieldMap.entrySet()) {
+    record.put(entry.getKey(),entry.getValue());
+  }
+  return record;
+}
