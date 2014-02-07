@@ -1,0 +1,4 @@
+def generate_classpath_file(classpath_files):
+    (source_paths, lib_paths) = combine_class_path(classpath_files)
+    content = ('<?xml version="1.0" encoding="UTF-8"?>\n<classpath>\n  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>\n  <classpathentry kind="output" path="eclipse_build"/>\n  %s\n  %s\n</classpath>\n' % ('\n'.join(sorted(source_paths)), '\n'.join(sorted(lib_paths))))
+    open(os.path.join(cur_dir, '.classpath'), 'w').writelines(content)
