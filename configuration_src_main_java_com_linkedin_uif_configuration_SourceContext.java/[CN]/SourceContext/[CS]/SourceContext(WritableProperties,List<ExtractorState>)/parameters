@@ -1,0 +1,2 @@
+WritableProperties properties
+List<ExtractorState> previousStates

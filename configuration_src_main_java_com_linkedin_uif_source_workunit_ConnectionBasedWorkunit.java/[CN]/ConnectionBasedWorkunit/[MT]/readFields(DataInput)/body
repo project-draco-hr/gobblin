@@ -1,0 +1,10 @@
+{
+  super.readFields(in);
+  Text txt=new Text();
+  txt.readFields(in);
+  url=txt.toString();
+  txt.readFields(in);
+  username=txt.toString();
+  txt.readFields(in);
+  password=txt.toString();
+}

@@ -1,0 +1,13 @@
+{
+  super.write(out);
+  if (url == null || username == null || password == null) {
+    throw new RuntimeException("All connection based workunits must have a url, username, and password");
+  }
+  Text txt=new Text();
+  txt.set(url);
+  txt.write(out);
+  txt.set(username);
+  txt.write(out);
+  txt.set(password);
+  txt.write(out);
+}
