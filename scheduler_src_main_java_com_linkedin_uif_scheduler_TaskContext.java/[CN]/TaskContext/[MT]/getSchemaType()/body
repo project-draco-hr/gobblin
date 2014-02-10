@@ -1,0 +1,3 @@
+{
+  return SchemaType.valueOf(this.workUnitProperties.getProperty(ConfigurationKeys.SOURCE_SCHEMA_TYPE_KEY,SchemaType.AVRO.name()));
+}

@@ -1,0 +1,5 @@
+{
+  TaskManager taskManager=new TaskManager(properties);
+  WorkUnitManager workUnitManager=new WorkUnitManager(properties,taskManager);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(workUnitManager,taskManager));
+}

@@ -1,0 +1,3 @@
+{
+  return Destination.DestinationType.valueOf(this.workUnitProperties.getProperty(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,Destination.DestinationType.HDFS.name()));
+}

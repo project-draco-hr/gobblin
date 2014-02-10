@@ -1,0 +1,23 @@
+{
+  if (!TOP_LEVEL_ATTRIBUTES.equals(attributes.keySet())) {
+    return false;
+  }
+  if (!(attributes.get(DUMPDATE) instanceof String) || Strings.isNullOrEmpty((String)attributes.get(DUMPDATE))) {
+    return false;
+  }
+  if (!(attributes.get(INSTANCE) instanceof String) || Strings.isNullOrEmpty((String)attributes.get(INSTANCE))) {
+    return false;
+  }
+  if (!(attributes.get(ISFULL) instanceof Boolean)) {
+    return false;
+  }
+  if (!(attributes.get(TOTAL_RECORDS) instanceof Long) || !(attributes.get(BEGIN_DATE) instanceof Long) || !(attributes.get(END_DATE) instanceof Long)) {
+    return false;
+  }
+  long beginDate=(Long)attributes.get(BEGIN_DATE);
+  long endDate=(Long)attributes.get(END_DATE);
+  if (beginDate < 0 || endDate < 0) {
+    return false;
+  }
+  return true;
+}

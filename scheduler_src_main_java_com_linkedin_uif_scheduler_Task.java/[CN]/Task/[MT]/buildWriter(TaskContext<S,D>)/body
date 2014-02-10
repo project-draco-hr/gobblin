@@ -1,0 +1,3 @@
+{
+  return DataWriterBuilder.<S,D>newBuilder().writeTo(Destination.of(context.getDestinationType(),context.getDestinationProperties())).useDataConverter(context.getDataConverter()).useSchemaConverter(context.getSchemaConverter()).dataSchema(context.getSourceSchema(),context.getSchemaType()).build();
+}

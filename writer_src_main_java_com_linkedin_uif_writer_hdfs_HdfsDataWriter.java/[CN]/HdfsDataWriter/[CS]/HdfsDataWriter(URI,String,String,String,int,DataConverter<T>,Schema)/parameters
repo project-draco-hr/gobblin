@@ -1,7 +1,0 @@
-URI uri
-String stagingDir
-String outputDir
-String fileName
-int bufferSize
-DataConverter<T> dataConverter
-Schema schema

@@ -1,0 +1,32 @@
+{
+  this.serviceManager.addListener(new ServiceManager.Listener(){
+    @Override public void stopped(){
+      LOG.info("Wroker has been stopped");
+    }
+    @Override public void healthy(){
+      LOG.info("All services are health and running");
+      for (      Map.Entry<Service,Long> entry : serviceManager.startupTimes().entrySet()) {
+        LOG.info(String.format("Service %s is healthy with an uptime of %dms",entry.getKey().toString(),entry.getValue()));
+      }
+    }
+    @Override public void failure(    Service service){
+      LOG.error(String.format("Service %s failed for the following reason:\n\t%s",service.toString(),service.failureCause().toString()));
+      System.exit(1);
+    }
+  }
+,Executors.newSingleThreadExecutor());
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    public void run(){
+      LOG.info("Shutting down the worker");
+      try {
+        serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
+      }
+ catch (      TimeoutException te) {
+        LOG.error(te);
+      }
+    }
+  }
+);
+  LOG.info("Starting the worker with configured services");
+  this.serviceManager.startAsync();
+}

@@ -6,7 +6,5 @@
   properties.setProperty(ConfigurationKeys.OUTPUT_DIR_KEY,TestConstants.TEST_OUTPUT_DIR);
   properties.setProperty(ConfigurationKeys.FILE_NAME_KEY,TestConstants.TEST_FILE_NAME);
   SchemaConverter<String> schemaConverter=new TestSchemaConverter();
-  DataWriter writer=DataWriterBuilder.<String,String>newBuilder().writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writerId("writer-1").useDataConverter(new TestDataConverter(schemaConverter.convert(TestConstants.AVRO_SCHEMA))).useSchemaConverter(new TestSchemaConverter()).dataSchema(TestConstants.AVRO_SCHEMA,SchemaType.AVRO).build();
-  Assert.assertTrue(writer instanceof HdfsDataWriter);
-  writer.close();
+  this.writer=DataWriterBuilder.<String,String>newBuilder().writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writerId("writer-1").useDataConverter(new TestDataConverter(schemaConverter.convert(TestConstants.AVRO_SCHEMA))).useSchemaConverter(new TestSchemaConverter()).dataSchema(TestConstants.AVRO_SCHEMA,SchemaType.AVRO).build();
 }

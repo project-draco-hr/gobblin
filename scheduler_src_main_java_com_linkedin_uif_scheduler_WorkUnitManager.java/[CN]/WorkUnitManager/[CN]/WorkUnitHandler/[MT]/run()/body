@@ -1,0 +1,13 @@
+{
+  while (!this.stopped) {
+    try {
+      WorkUnit workUnit=this.workUnitQueue.take();
+      Task<?,?> task=new Task(new TaskContext(workUnit),this.taskManager);
+      this.taskManager.execute(task);
+    }
+ catch (    InterruptedException ie) {
+    }
+catch (    IOException ioe) {
+    }
+  }
+}

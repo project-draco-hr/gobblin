@@ -1,0 +1,9 @@
+{
+  if (args.length != 1) {
+    System.err.println("Usage: Worker <work configuration properties file>");
+    System.exit(1);
+  }
+  Properties properties=new Properties();
+  properties.load(new FileReader(args[0]));
+  new Worker(properties).start();
+}

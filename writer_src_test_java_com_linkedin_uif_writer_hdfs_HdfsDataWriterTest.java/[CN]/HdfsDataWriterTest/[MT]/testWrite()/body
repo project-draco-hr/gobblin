@@ -1,7 +1,0 @@
-{
-  for (  String record : TestConstants.JSON_RECORDS) {
-  }
-  Assert.assertEquals(this.writer.recordsWritten(),3);
-  this.writer.close();
-  this.writer.commit();
-}

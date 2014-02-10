@@ -1,0 +1,13 @@
+{
+  try {
+    String schemaConverterName=this.workUnitProperties.getProperty(ConfigurationKeys.SCHEMA_CONVERTER_CLASS_KEY);
+    Object schemaConverter=Class.forName(schemaConverterName).newInstance();
+    if (!(schemaConverter instanceof SchemaConverter)) {
+      throw new RuntimeException(String.format("Class %s is not an implementation of SchemaConverter",schemaConverterName));
+    }
+    return (SchemaConverter<S>)schemaConverter;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

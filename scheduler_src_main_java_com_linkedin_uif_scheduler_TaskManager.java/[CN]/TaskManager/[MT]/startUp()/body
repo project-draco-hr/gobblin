@@ -1,0 +1,6 @@
+{
+  LOG.info("Starting the task manager");
+  if (this.executor.isShutdown() || this.executor.isTerminated()) {
+    throw new IllegalStateException();
+  }
+}

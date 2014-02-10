@@ -1,0 +1,22 @@
+{
+  this.status=TaskStatus.RUNNING;
+  try {
+    D record;
+    while ((record=this.extractor.read()) != null) {
+      this.writer.write(record);
+    }
+    this.status=TaskStatus.COMPLETED;
+  }
+ catch (  IOException ioe) {
+    LOG.error(String.format("Task %s failed",this.toString()),ioe);
+    this.taskManager.addFailedTask(this);
+  }
+ finally {
+    try {
+      this.writer.close();
+    }
+ catch (    IOException ioe) {
+    }
+    this.statusReportingTimer.cancel();
+  }
+}

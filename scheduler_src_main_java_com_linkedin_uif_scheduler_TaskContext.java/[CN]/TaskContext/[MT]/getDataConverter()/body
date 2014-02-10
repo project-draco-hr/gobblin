@@ -1,0 +1,13 @@
+{
+  try {
+    String dataConverterName=this.workUnitProperties.getProperty(ConfigurationKeys.DATA_CONVERTER_CLASS_KEY);
+    Object dataConverter=Class.forName(dataConverterName).newInstance();
+    if (!(dataConverter instanceof DataConverter)) {
+      throw new RuntimeException(String.format("Class %s is not an implementation of DataConverter",dataConverterName));
+    }
+    return (DataConverter<D>)dataConverter;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}
