@@ -1,6 +1,0 @@
-{
-  if (extractConf.get("url") == null)   throw new IllegalArgumentException("url cannot be null");
-  if (extractConf.get("username") == null)   throw new IllegalArgumentException("url cannot be null");
-  if (extractConf.get("password") == null)   throw new IllegalArgumentException("url cannot be null");
-  this.extractConf=extractConf;
-}

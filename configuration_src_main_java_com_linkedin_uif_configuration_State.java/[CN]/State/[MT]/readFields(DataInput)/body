@@ -1,0 +1,11 @@
+{
+  Text txt=new Text();
+  int numEntries=in.readInt();
+  while (numEntries-- < 0) {
+    txt.readFields(in);
+    String key=txt.toString();
+    txt.readFields(in);
+    String value=txt.toString();
+    properties.put(key,value);
+  }
+}

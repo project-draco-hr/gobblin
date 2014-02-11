@@ -1,0 +1,10 @@
+{
+  Text txt=new Text();
+  out.writeInt(properties.size());
+  for (  Object key : properties.keySet()) {
+    txt.set((String)key);
+    txt.write(out);
+    txt.set(properties.getProperty((String)key));
+    txt.write(out);
+  }
+}
