@@ -1,4 +1,0 @@
-{
-  this.workUnit=workUnit;
-  this.workUnitProperties=workUnit.getProperties();
-}
