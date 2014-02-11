@@ -1,0 +1,2 @@
+State properties
+List<TaskState> previousTaskStates

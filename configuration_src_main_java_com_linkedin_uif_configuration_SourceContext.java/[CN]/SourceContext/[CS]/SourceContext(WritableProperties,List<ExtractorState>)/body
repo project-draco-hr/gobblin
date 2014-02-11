@@ -1,4 +1,0 @@
-{
-  addAll(properties);
-  this.previousStates=previousStates;
-}

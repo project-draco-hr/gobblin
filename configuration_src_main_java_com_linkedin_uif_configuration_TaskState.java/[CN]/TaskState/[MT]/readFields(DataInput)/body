@@ -1,0 +1,8 @@
+{
+  Text txt=new Text();
+  txt.readFields(in);
+  state=WorkingState.valueOf(txt.toString());
+  highWaterMark=in.readLong();
+  workunit.readFields(in);
+  super.readFields(in);
+}

@@ -1,4 +1,0 @@
-{
-  this.state=state;
-  this.qc=getQualityChecker();
-}

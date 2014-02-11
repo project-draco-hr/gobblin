@@ -1,0 +1,7 @@
+{
+  out.writeInt(previousTaskStates.size());
+  for (  TaskState state : previousTaskStates) {
+    state.write(out);
+  }
+  super.write(out);
+}

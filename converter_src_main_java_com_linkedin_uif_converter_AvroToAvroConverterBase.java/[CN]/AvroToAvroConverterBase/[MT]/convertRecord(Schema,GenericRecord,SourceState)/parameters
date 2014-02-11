@@ -1,0 +1,3 @@
+Schema outputSchema
+GenericRecord inputRecord
+SourceState state
