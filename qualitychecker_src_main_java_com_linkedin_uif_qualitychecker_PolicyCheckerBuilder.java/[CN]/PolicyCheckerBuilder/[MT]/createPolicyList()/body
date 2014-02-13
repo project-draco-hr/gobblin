@@ -1,0 +1,16 @@
+{
+  PolicyList list=new PolicyList();
+  String[] policies=this.metadata.getProperties().getProperty("uif.qualitychecker.policies").split(",");
+  for (  String policyString : policies) {
+    try {
+      Class<? extends Policy> policyClass=(Class<? extends Policy>)Class.forName(policyString);
+      Constructor<? extends Policy> policyConstructor=policyClass.getConstructor(WorkUnitState.class);
+      Policy policy=policyConstructor.newInstance(this.metadata);
+      list.getPolicyList().add((Policy)policy);
+    }
+ catch (    Exception e) {
+      throw new Exception(e);
+    }
+  }
+  return list;
+}

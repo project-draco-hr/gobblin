@@ -1,0 +1,7 @@
+{
+  PolicyCheckResults results=new PolicyCheckResults();
+  for (  Policy p : this.list.getPolicyList()) {
+    results.getPolicyResults().add(p.executePolicy());
+  }
+  this.state.setProp("uif.qualitychecker.policyresults",results.toString());
+}

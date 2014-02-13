@@ -1,0 +1,9 @@
+{
+  Properties props=new Properties();
+  if (metadata.sendDataMetadata(props) && metadata.sendJobMetadata(props)) {
+    return true;
+  }
+ else {
+    return false;
+  }
+}

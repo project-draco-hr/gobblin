@@ -1,0 +1,8 @@
+{
+  for (  PolicyResult result : results.getPolicyResults()) {
+    if (result.getStatus().equals(PolicyResult.Status.FAILED)) {
+      return false;
+    }
+  }
+  return true;
+}
