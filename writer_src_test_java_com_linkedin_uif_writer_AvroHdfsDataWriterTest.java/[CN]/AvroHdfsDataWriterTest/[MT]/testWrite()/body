@@ -1,0 +1,23 @@
+{
+  for (  String record : TestConstants.JSON_RECORDS) {
+    this.writer.write(record);
+  }
+  Assert.assertEquals(this.writer.recordsWritten(),3);
+  this.writer.close();
+  this.writer.commit();
+  File outputFile=new File(TestConstants.TEST_OUTPUT_DIR,TestConstants.TEST_FILE_NAME + "." + TestConstants.TEST_WRITER_ID);
+  DataFileReader<GenericRecord> reader=new DataFileReader<GenericRecord>(outputFile,new GenericDatumReader<GenericRecord>(this.schema));
+  GenericRecord user1=reader.next();
+  Assert.assertEquals(user1.get("name").toString(),"Alyssa");
+  Assert.assertEquals(user1.get("favorite_number"),256);
+  Assert.assertEquals(user1.get("favorite_color").toString(),"yellow");
+  GenericRecord user2=reader.next();
+  Assert.assertEquals(user2.get("name").toString(),"Ben");
+  Assert.assertEquals(user2.get("favorite_number"),7);
+  Assert.assertEquals(user2.get("favorite_color").toString(),"red");
+  GenericRecord user3=reader.next();
+  Assert.assertEquals(user3.get("name").toString(),"Charlie");
+  Assert.assertEquals(user3.get("favorite_number"),68);
+  Assert.assertEquals(user3.get("favorite_color").toString(),"blue");
+  reader.close();
+}

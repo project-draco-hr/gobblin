@@ -1,0 +1,4 @@
+{
+  DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(context.getWriterOutputFormat());
+  return builder.writeTo(Destination.of(context.getDestinationType(),context.getDestinationProperties())).writeInFormat(context.getWriterOutputFormat()).useSchemaConverter(context.getSchemaConverter()).useDataConverter(context.getDataConverter(schema)).withSourceSchema(schema,context.getSchemaType()).build();
+}

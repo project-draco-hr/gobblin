@@ -1,0 +1,12 @@
+{
+  this.taskContext=context;
+  this.taskManager=taskManager;
+  this.taskState=context.getTaskState();
+  this.statusReportingTimer=new Timer();
+  this.statusReportingTimer.schedule(new TimerTask(){
+    @Override public void run(){
+      reportStatusAndProgress();
+    }
+  }
+,0,context.getStatusReportingInterval());
+}

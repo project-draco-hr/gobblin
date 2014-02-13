@@ -1,6 +1,6 @@
 {
   out.writeInt(previousTaskStates.size());
-  for (  TaskState state : previousTaskStates) {
+  for (  WorkUnitState state : previousTaskStates) {
     state.write(out);
   }
   super.write(out);

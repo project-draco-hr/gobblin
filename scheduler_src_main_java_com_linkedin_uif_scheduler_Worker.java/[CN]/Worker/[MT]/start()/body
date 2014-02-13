@@ -5,7 +5,8 @@
     }
     @Override public void healthy(){
       LOG.info("All services are health and running");
-      for (      Map.Entry<Service,Long> entry : serviceManager.startupTimes().entrySet()) {
+      Map<Service,Long> startupTimes=serviceManager.startupTimes();
+      for (      Map.Entry<Service,Long> entry : startupTimes.entrySet()) {
         LOG.info(String.format("Service %s is healthy with an uptime of %dms",entry.getKey().toString(),entry.getValue()));
       }
     }

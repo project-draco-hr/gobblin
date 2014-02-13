@@ -1,6 +1,7 @@
 {
   Text txt=new Text(state.toString());
   txt.write(out);
+  out.writeLong(this.lowWaterMark);
   out.writeLong(highWaterMark);
   workunit.write(out);
   super.write(out);

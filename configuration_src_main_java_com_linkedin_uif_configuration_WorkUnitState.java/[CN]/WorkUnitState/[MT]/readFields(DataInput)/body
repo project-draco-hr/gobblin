@@ -2,6 +2,7 @@
   Text txt=new Text();
   txt.readFields(in);
   state=WorkingState.valueOf(txt.toString());
+  this.lowWaterMark=in.readLong();
   highWaterMark=in.readLong();
   workunit.readFields(in);
   super.readFields(in);

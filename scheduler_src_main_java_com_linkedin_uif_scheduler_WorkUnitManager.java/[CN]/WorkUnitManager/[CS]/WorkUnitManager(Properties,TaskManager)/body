@@ -1,7 +1,0 @@
-{
-  this.properties=properties;
-  this.taskManager=taskManager;
-  this.workUnitQueue=Queues.newPriorityBlockingQueue();
-  this.executorService=Executors.newSingleThreadExecutor();
-  this.workUnitHandler=new WorkUnitHandler(this.workUnitQueue,this.taskManager);
-}

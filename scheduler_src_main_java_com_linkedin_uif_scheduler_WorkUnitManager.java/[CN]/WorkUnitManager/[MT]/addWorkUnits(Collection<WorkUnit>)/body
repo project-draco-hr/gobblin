@@ -1,5 +1,0 @@
-{
-  for (  WorkUnit workUnit : workUnits) {
-    this.workUnitQueue.add(workUnit);
-  }
-}
