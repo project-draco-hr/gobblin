@@ -1,5 +1,6 @@
 {
   TaskManager taskManager=new TaskManager(properties);
-  WorkUnitManager workUnitManager=new WorkUnitManager(properties,taskManager);
-  this.serviceManager=new ServiceManager(Lists.newArrayList(workUnitManager,taskManager));
+  WorkUnitManager workUnitManager=new WorkUnitManager(taskManager);
+  LocalJobScheduler jobManager=new LocalJobScheduler(workUnitManager,properties);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(taskManager,workUnitManager,jobManager));
 }

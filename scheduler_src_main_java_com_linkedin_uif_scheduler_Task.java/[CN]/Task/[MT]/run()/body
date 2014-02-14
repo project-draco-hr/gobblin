@@ -1,19 +1,40 @@
 {
-  this.status=TaskStatus.RUNNING;
+  Extractor extractor=this.taskContext.getSource().getExtractor(this.taskState);
+  Converter converter=new MultiConverter(this.taskContext.getConverters());
+  Object schemaForWriter=converter.convertSchema(extractor.getSchema(),this.taskState.getWorkunit());
+  DataWriter writer;
   try {
-    D record;
-    while ((record=this.extractor.read()) != null) {
-      this.writer.write(record);
+    writer=buildWriter(this.taskContext,schemaForWriter);
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to build the writer",ioe);
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+    return;
+  }
+ finally {
+  }
+  this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
+  try {
+    Object record;
+    while ((record=extractor.readRecord()) != null) {
+      Object convertedRecord=converter.convertRecord(schemaForWriter,record,this.taskState.getWorkunit());
+      writer.write(convertedRecord);
     }
-    this.status=TaskStatus.COMPLETED;
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   }
  catch (  IOException ioe) {
     LOG.error(String.format("Task %s failed",this.toString()),ioe);
     this.taskManager.addFailedTask(this);
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
   }
  finally {
     try {
-      this.writer.close();
+      extractor.close();
+    }
+ catch (    Exception ioe) {
+    }
+    try {
+      writer.close();
     }
  catch (    IOException ioe) {
     }

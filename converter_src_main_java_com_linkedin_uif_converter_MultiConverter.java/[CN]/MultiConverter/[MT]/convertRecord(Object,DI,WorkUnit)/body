@@ -1,0 +1,7 @@
+{
+  Object record=inputRecord;
+  for (  Converter converter : this.converters) {
+    record=converter.convertRecord(outputSchema,record,workUnit);
+  }
+  return record;
+}

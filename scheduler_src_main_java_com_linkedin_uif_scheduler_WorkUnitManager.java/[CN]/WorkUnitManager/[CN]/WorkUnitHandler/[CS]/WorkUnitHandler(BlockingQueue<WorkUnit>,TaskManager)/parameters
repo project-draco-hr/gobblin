@@ -1,2 +1,0 @@
-BlockingQueue<WorkUnit> workUnitQueue
-TaskManager taskManager

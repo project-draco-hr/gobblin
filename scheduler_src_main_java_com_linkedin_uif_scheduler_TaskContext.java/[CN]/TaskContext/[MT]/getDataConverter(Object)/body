@@ -1,0 +1,9 @@
+{
+  final Converter converter=getConverterForWriter();
+  return new DataConverter(){
+    @Override public Object convert(    Object sourceRecord) throws DataConversionException {
+      return converter.convertRecord(soureSchema,sourceRecord,workUnit);
+    }
+  }
+;
+}

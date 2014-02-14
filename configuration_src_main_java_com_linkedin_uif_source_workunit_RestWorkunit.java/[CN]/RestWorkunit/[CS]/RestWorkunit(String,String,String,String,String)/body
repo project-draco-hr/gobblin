@@ -1,3 +1,0 @@
-{
-  super(namespace,table,url,username,password);
-}

@@ -1,0 +1,17 @@
+{
+  JobDataMap dataMap=context.getJobDetail().getJobDataMap();
+  Properties properties=(Properties)dataMap.get(PROPERTIES_KEY);
+  WorkUnitManager workUnitManager=(WorkUnitManager)dataMap.get(WORK_UNIT_MANAGER_KEY);
+  try {
+    Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
+    com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
+    state.addAll(properties);
+    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(properties)));
+    for (    WorkUnit workUnit : workUnits) {
+      workUnitManager.addWorkUnit(new WorkUnitState(workUnit));
+    }
+  }
+ catch (  Exception e) {
+    throw new JobExecutionException(e);
+  }
+}

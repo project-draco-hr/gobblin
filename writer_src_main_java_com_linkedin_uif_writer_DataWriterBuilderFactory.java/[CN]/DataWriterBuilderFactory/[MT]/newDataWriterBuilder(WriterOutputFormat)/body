@@ -1,0 +1,8 @@
+{
+switch (format) {
+case AVRO:
+    return new AvroDataWriterBuilder();
+default :
+  throw new RuntimeException();
+}
+}
