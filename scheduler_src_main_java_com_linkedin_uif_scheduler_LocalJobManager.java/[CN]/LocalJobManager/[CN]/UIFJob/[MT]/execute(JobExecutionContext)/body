@@ -1,0 +1,33 @@
+{
+  JobDataMap dataMap=context.getJobDetail().getJobDataMap();
+  Properties properties=(Properties)dataMap.get(PROPERTIES_KEY);
+  WorkUnitManager workUnitManager=(WorkUnitManager)dataMap.get(WORK_UNIT_MANAGER_KEY);
+  Map<String,Source> jobSource=(Map<String,Source>)dataMap.get(JOB_SOURCE_KEY);
+  Map<String,Integer> jobTaskCount=(Map<String,Integer>)dataMap.get(JOB_TASK_COUNT_KEY);
+  Map<String,List<TaskState>> jobTaskStates=(Map<String,List<TaskState>>)dataMap.get(JOB_TASK_STATES_KEY);
+  String jobIdSuffix=String.format("%s_%d",properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),System.currentTimeMillis());
+  String jobId="job_" + jobIdSuffix;
+  if (jobTaskStates.containsKey(jobId)) {
+    throw new RuntimeException();
+  }
+  jobTaskStates.put(jobId,new ArrayList<TaskState>());
+  try {
+    Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
+    jobSource.put(jobId,source);
+    com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
+    state.addAll(properties);
+    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(properties)));
+    jobTaskCount.put(jobId,workUnits.size());
+    int sequence=0;
+    for (    WorkUnit workUnit : workUnits) {
+      String taskId=String.format("task_%s_%d",jobIdSuffix,sequence++);
+      WorkUnitState workUnitState=new WorkUnitState(workUnit);
+      workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
+      workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+      workUnitManager.addWorkUnit(workUnitState);
+    }
+  }
+ catch (  Exception e) {
+    throw new JobExecutionException(e);
+  }
+}

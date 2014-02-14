@@ -2,6 +2,7 @@
   Object schema=inputSchema;
   for (  Converter converter : this.converters) {
     schema=converter.convertSchema(schema,workUnit);
+    this.schemas.put(converter,schema);
   }
   return schema;
 }

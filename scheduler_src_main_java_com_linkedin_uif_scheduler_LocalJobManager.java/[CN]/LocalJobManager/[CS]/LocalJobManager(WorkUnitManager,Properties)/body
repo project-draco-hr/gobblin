@@ -1,0 +1,8 @@
+{
+  this.workUnitManager=workUnitManager;
+  this.properties=properties;
+  this.scheduler=new StdSchedulerFactory().getScheduler();
+  this.jobSource=Maps.newHashMap();
+  this.jobTaskCount=Maps.newHashMap();
+  this.jobTaskStates=Maps.newHashMap();
+}
