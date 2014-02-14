@@ -1,4 +1,5 @@
 {
+  this.addAll(state);
   this.namespace=namespace;
   this.table=table;
 }
