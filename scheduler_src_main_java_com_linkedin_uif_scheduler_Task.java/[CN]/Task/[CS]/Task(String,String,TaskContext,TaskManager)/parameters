@@ -1,4 +1,0 @@
-String jobId
-String taskId
-TaskContext context
-TaskManager taskManager

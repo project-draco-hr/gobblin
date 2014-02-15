@@ -1,4 +1,0 @@
-{
-  this.executor=Executors.newFixedThreadPool(Integer.parseInt(properties.getProperty(TASK_SCHEDULER_THREADPOOL_SIZE,DEFAULT_TASK_SCHEDULER_THREADPOOL_SIZE)));
-  this.failedTaskQueue=Queues.newLinkedBlockingQueue();
-}

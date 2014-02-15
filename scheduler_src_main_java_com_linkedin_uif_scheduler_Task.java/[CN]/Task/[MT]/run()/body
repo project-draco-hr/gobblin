@@ -1,4 +1,5 @@
 {
+  boolean aborted=false;
   Extractor extractor=this.taskContext.getSource().getExtractor(this.taskState);
   Converter converter=new MultiConverter(this.taskContext.getConverters());
   Object schemaForWriter=converter.convertSchema(extractor.getSchema(),this.taskState.getWorkunit());
@@ -22,10 +23,17 @@
       writer.write(convertedRecord);
     }
     this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    this.taskManager.onTaskSuccess(this);
   }
  catch (  IOException ioe) {
     LOG.error(String.format("Task %s failed",this.toString()),ioe);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+    try {
+      this.taskManager.onTaskFailure(this);
+    }
+ catch (    IOException ioe1) {
+      aborted=true;
+    }
   }
  finally {
     try {
@@ -38,12 +46,14 @@
     }
  catch (    IOException ioe) {
     }
+    if (aborted) {
+      this.taskState.setWorkingState(WorkUnitState.WorkingState.ABORTED);
+      try {
+        this.taskManager.onTaskAbortion(this);
+      }
+ catch (      IOException ioe) {
+      }
+    }
     this.statusReportingTimer.cancel();
-    try {
-      this.taskManager.getTaskTracker().reportTaskState(this.taskState);
-    }
- catch (    IOException ioe) {
-      LOG.error("Failed to report task state for task " + this.taskId);
-    }
   }
 }

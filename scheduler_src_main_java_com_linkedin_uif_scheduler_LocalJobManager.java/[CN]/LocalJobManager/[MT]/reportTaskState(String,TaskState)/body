@@ -1,9 +1,12 @@
 {
-  if (!this.jobTaskStates.containsKey(jobId)) {
+  if (!this.jobTaskStatesMap.containsKey(jobId)) {
     LOG.error(String.format("Job %s could not be found",jobId));
     return;
   }
-  this.jobTaskStates.get(jobId).add(state);
-  if (this.jobTaskStates.get(jobId).size() == this.jobTaskCount.get(jobId)) {
+  this.jobTaskStatesMap.get(jobId).add(taskState);
+  if (this.jobTaskStatesMap.get(jobId).size() == this.jobTaskCountMap.get(jobId)) {
+    LOG.info("Committing job " + jobId);
+    String jobName=taskState.getProp(ConfigurationKeys.JOB_NAME_KEY);
+    commitJob(jobId,jobName,this.jobTaskStatesMap.get(jobId));
   }
 }

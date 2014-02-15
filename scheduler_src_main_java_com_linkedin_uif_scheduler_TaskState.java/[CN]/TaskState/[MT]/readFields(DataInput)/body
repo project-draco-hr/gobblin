@@ -1,3 +1,8 @@
 {
+  Text text=new Text();
+  text.readFields(in);
+  this.jobId=text.toString();
+  text.readFields(in);
+  this.taskId=text.toString();
   super.readFields(in);
 }

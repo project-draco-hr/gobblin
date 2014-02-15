@@ -1,3 +1,8 @@
 {
+  Text text=new Text();
+  text.set(this.jobId);
+  text.write(out);
+  text.set(this.taskId);
+  text.write(out);
   super.write(out);
 }
