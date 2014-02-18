@@ -12,6 +12,7 @@
     return;
   }
  finally {
+    extractor.close();
   }
   this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
   try {
@@ -24,7 +25,6 @@
   }
  catch (  IOException ioe) {
     LOG.error(String.format("Task %s failed",this.toString()),ioe);
-    this.taskManager.addFailedTask(this);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
   }
  finally {
@@ -39,5 +39,11 @@
  catch (    IOException ioe) {
     }
     this.statusReportingTimer.cancel();
+    try {
+      this.taskManager.getTaskTracker().reportTaskState(this.taskState);
+    }
+ catch (    IOException ioe) {
+      LOG.error("Failed to report task state for task " + this.taskId);
+    }
   }
 }

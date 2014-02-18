@@ -1,5 +1,3 @@
 {
-  for (  WorkUnitState workUnitState : workUnitStates) {
-    this.workUnitQueue.add(workUnitState);
-  }
+  this.workUnitQueue.addAll(workUnitStates);
 }

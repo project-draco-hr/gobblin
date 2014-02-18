@@ -1,0 +1,29 @@
+{
+  File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
+  String[] jobConfigFiles=jobConfigFileDir.list(new FilenameFilter(){
+    @Override public boolean accept(    File dir,    String name){
+      return name.toLowerCase().endsWith(JOB_CONFIG_FILE_EXTENSION);
+    }
+  }
+);
+  List<Properties> jobConfigs=Lists.newArrayList();
+  if (jobConfigFiles == null) {
+    LOG.info("No job configuration files found");
+    return jobConfigs;
+  }
+  LOG.info("Loading job configurations from directory " + jobConfigFileDir);
+  for (  String jobConfigFile : jobConfigFiles) {
+    Properties properties=new Properties(this.properties);
+    try {
+      properties.load(new FileReader(new File(jobConfigFileDir,jobConfigFile)));
+      jobConfigs.add(properties);
+    }
+ catch (    FileNotFoundException e) {
+      LOG.error("Job configuration file " + jobConfigFile + " not found");
+    }
+catch (    IOException e) {
+      LOG.error("Failed to load job configuration from file " + jobConfigFile);
+    }
+  }
+  return jobConfigs;
+}

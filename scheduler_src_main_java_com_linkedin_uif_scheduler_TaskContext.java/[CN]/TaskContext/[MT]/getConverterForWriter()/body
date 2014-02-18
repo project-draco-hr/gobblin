@@ -1,7 +1,7 @@
 {
   if (this.converterForWriter == null) {
     String converterClassesList=this.workUnit.getProp(ConfigurationKeys.CONVERTER_CLASSES_KEY);
-    String converterClassForWriter=Lists.newLinkedList(Splitter.on(",").trimResults().split(converterClassesList)).getLast();
+    String converterClassForWriter=Lists.newLinkedList(Splitter.on(",").omitEmptyStrings().trimResults().split(converterClassesList)).getLast();
     try {
       this.converterForWriter=(Converter)Class.forName(converterClassForWriter).newInstance();
     }

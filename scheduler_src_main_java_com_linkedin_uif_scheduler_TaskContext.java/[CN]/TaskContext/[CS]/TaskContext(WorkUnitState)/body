@@ -1,4 +1,4 @@
 {
   this.workUnitState=workUnitState;
-  this.workUnit=this.workUnitState.getWorkunit();
+  this.workUnit=workUnitState.getWorkunit();
 }

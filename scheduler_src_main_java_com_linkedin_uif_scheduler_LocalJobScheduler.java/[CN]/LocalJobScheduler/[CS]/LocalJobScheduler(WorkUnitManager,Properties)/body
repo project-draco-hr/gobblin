@@ -1,5 +1,0 @@
-{
-  this.workUnitManager=workUnitManager;
-  this.properties=properties;
-  this.scheduler=new StdSchedulerFactory().getScheduler();
-}
