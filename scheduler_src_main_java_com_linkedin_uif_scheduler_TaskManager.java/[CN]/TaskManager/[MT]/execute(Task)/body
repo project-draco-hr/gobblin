@@ -1,4 +1,4 @@
 {
   this.executor.execute(task);
-  LOG.info(String.format("Scheduled task %s to run",task.toString()));
+  LOG.info(String.format("Scheduled task %s of job %s to run",task.getTaskId(),task.getJobId()));
 }

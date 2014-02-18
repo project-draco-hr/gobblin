@@ -1,0 +1,15 @@
+{
+  WorkUnitState.WorkingState state=task.getTaskState().getWorkingState();
+  LOG.info(String.format("Task %s of job %s completed with state %s",task.getTaskId(),task.getJobId(),state));
+  if (state == WorkUnitState.WorkingState.FAILED) {
+    if (task.getRetryCount() < this.maxTaskRetries) {
+      this.failedTaskQueue.add(task);
+    }
+ else {
+      this.taskStateTracker.reportTaskState(task.getTaskState());
+    }
+  }
+ else {
+    this.taskStateTracker.reportTaskState(task.getTaskState());
+  }
+}

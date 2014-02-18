@@ -6,7 +6,7 @@
   this.jobTaskStatesMap.get(jobId).add(taskState);
   if (this.jobTaskStatesMap.get(jobId).size() == this.jobTaskCountMap.get(jobId)) {
     LOG.info("Committing job " + jobId);
-    String jobName=taskState.getProp(ConfigurationKeys.JOB_NAME_KEY);
+    String jobName=taskState.getWorkunit().getProp(ConfigurationKeys.JOB_NAME_KEY);
     commitJob(jobId,jobName,this.jobTaskStatesMap.get(jobId));
   }
 }

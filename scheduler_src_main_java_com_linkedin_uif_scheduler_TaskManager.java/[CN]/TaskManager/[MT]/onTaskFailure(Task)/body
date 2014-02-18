@@ -1,8 +1,0 @@
-{
-  if (task.getRetryCount() < this.maxTaskRetries) {
-    this.failedTaskQueue.add(task);
-  }
- else {
-    this.taskStateTracker.reportTaskState(task.getTaskState());
-  }
-}

@@ -13,6 +13,7 @@
   Map<String,List<TaskState>> jobTaskStatesMap=(Map<String,List<TaskState>>)dataMap.get(JOB_TASK_STATES_MAP_KEY);
   String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
   String jobId="job_" + jobIdSuffix;
+  LOG.info("Starting job " + jobId);
   try {
     com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
     state.addAll(properties);

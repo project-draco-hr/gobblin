@@ -1,0 +1,12 @@
+{
+  super(workUnitState);
+  Schema schema=new Schema.Parser().parse(AVRO_SCHEMA);
+  File sourceFile=new File(workUnitState.getWorkunit().getProp(SOURCE_FILE_KEY));
+  LOG.info("Reading from source file " + sourceFile);
+  DatumReader<GenericRecord> datumReader=new GenericDatumReader<GenericRecord>(schema);
+  try {
+    this.dataFileReader=new DataFileReader<GenericRecord>(sourceFile,datumReader);
+  }
+ catch (  IOException ioe) {
+  }
+}

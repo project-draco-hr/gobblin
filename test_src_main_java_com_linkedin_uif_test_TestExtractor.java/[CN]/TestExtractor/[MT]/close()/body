@@ -1,0 +1,7 @@
+{
+  try {
+    this.dataFileReader.close();
+  }
+ catch (  IOException ioe) {
+  }
+}

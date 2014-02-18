@@ -1,3 +1,0 @@
-{
-  this.taskStateTracker.reportTaskState(task.getTaskState());
-}
