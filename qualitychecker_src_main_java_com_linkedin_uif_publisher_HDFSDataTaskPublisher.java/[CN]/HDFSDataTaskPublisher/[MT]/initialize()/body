@@ -1,0 +1,8 @@
+{
+  TaskState state=(TaskState)getState();
+  this.fs=FileSystem.get(new Configuration());
+  this.stagingDataFile=new Path(state.getProp(ConfigurationKeys.HDFS_TASK_DATA_TMP_DIR) + state.getTaskId());
+  this.outputDataFile=new Path(state.getProp(ConfigurationKeys.HDFS_TASK_DATA_FINAL_DIR) + state.getTaskId());
+  this.stagingMetadataFile=new Path(state.getProp(ConfigurationKeys.HDFS_TASK_METADATA_TMP_DIR) + state.getTaskId());
+  this.outputMetadataFile=new Path(state.getProp(ConfigurationKeys.HDFS_TASK_METADATA_FINAL_DIR) + state.getTaskId());
+}

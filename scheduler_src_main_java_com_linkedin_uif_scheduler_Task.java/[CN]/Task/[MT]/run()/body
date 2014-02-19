@@ -21,29 +21,43 @@
       Object convertedRecord=converter.convertRecord(schemaForWriter,record,this.taskState.getWorkunit());
       writer.write(convertedRecord);
     }
-    this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-  }
- catch (  IOException ioe) {
-    LOG.error(String.format("Task %s failed",this.toString()),ioe);
-    this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-  }
+    this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
+    this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
+    PolicyCheckResults results;
+    MetaStoreClient collector=buildMetaStoreClient(this.taskState);
+    PolicyChecker policyChecker=buildPolicyChecker(this.taskState,collector);
+    results=policyChecker.checkAndWritePolicies();
+    TaskPublisher publisher=buildTaskPublisher(this.taskState,results,collector);
+switch (publisher.publish()) {
+case SUCCESS:
+      this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    break;
+default :
+  this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+break;
+}
+}
+ catch (Exception e) {
+LOG.error(String.format("Task %s failed",this.toString()),e);
+this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+}
  finally {
-    try {
-      extractor.close();
-    }
- catch (    Exception ioe) {
-    }
-    try {
-      writer.close();
-    }
- catch (    IOException ioe) {
-    }
-    this.statusReportingTimer.cancel();
-    try {
-      this.taskManager.getTaskTracker().reportTaskState(this.taskState);
-    }
- catch (    IOException ioe) {
-      LOG.error("Failed to report task state for task " + this.taskId);
-    }
-  }
+try {
+extractor.close();
+}
+ catch (Exception ioe) {
+}
+try {
+writer.close();
+}
+ catch (IOException ioe) {
+}
+this.statusReportingTimer.cancel();
+try {
+this.taskManager.getTaskTracker().reportTaskState(this.taskState);
+}
+ catch (IOException ioe) {
+LOG.error("Failed to report task state for task " + this.taskId);
+}
+}
 }

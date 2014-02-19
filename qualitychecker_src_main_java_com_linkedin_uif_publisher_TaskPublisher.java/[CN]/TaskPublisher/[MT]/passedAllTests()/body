@@ -1,0 +1,8 @@
+{
+  for (  Map.Entry<PolicyResult,Policy.Type> entry : results.getPolicyResults().entrySet()) {
+    if (entry.getKey().equals(PolicyResult.FAILED) && entry.getValue().equals(Policy.Type.MANDATORY)) {
+      return false;
+    }
+  }
+  return true;
+}

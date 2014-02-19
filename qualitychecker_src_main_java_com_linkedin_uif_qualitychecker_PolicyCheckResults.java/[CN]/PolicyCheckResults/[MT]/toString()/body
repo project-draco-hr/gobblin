@@ -1,7 +1,0 @@
-{
-  StringBuilder resultsString=new StringBuilder();
-  for (  PolicyResult result : results) {
-    resultsString.append(result.toString() + ",");
-  }
-  return resultsString.toString();
-}

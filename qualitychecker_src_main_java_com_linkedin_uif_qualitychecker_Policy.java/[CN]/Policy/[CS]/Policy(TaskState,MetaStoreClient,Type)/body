@@ -1,0 +1,6 @@
+{
+  this.taskState=taskState;
+  this.metadata=metadata;
+  this.setType(type);
+  this.setResult(PolicyResult.FAILED);
+}

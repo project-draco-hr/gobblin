@@ -1,3 +1,0 @@
-{
-  return new Publisher(this.results,this.metadata);
-}

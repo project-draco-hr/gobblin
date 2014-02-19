@@ -1,0 +1,6 @@
+{
+  super(taskState,metadata,type);
+  this.rowsRead=taskState.getPropAsLong(ConfigurationKeys.EXTRACTOR_ROWS_READ);
+  this.rowsWritten=taskState.getPropAsLong(ConfigurationKeys.WRITER_ROWS_WRITTEN);
+  this.range=taskState.getPropAsDouble(ConfigurationKeys.ROW_COUNT_RANGE);
+}

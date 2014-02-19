@@ -1,14 +1,17 @@
 {
   PolicyList list=new PolicyList();
-  String[] policies=this.metadata.getProperties().getProperty("uif.qualitychecker.policies").split(",");
-  for (  String policyString : policies) {
+  String[] policies=this.taskState.getProp(ConfigurationKeys.POLICY_LIST).split(",");
+  String[] types=this.taskState.getProp(ConfigurationKeys.POLICY_LIST_TYPE).split(",");
+  if (policies.length != types.length)   throw new Exception("Policies list and Policies list type are not the same length");
+  for (int i=0; i < policies.length; i++) {
     try {
-      Class<? extends Policy> policyClass=(Class<? extends Policy>)Class.forName(policyString);
+      Class<? extends Policy> policyClass=(Class<? extends Policy>)Class.forName(policies[i]);
       Constructor<? extends Policy> policyConstructor=policyClass.getConstructor(WorkUnitState.class);
-      Policy policy=policyConstructor.newInstance(this.metadata);
+      Policy policy=policyConstructor.newInstance(this.taskState,this.metadata,types[i]);
       list.getPolicyList().add((Policy)policy);
     }
  catch (    Exception e) {
+      LOG.error(ConfigurationKeys.POLICY_LIST + " contains a class " + policies[i]+ " which doesn't extend Policy.");
       throw new Exception(e);
     }
   }
