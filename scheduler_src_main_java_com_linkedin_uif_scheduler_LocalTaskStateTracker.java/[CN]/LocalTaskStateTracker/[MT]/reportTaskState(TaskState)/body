@@ -1,4 +1,0 @@
-{
-  String jobId=state.getJobId();
-  this.jobManager.reportTaskState(jobId,state);
-}

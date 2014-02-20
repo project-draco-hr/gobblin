@@ -1,0 +1,6 @@
+{
+  LOG.info("Starting the task executor");
+  if (this.executor.isShutdown() || this.executor.isTerminated()) {
+    throw new IllegalStateException();
+  }
+}

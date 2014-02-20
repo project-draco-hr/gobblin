@@ -1,6 +1,0 @@
-{
-  this.taskStateTracker=taskStateTracker;
-  this.executor=Executors.newFixedThreadPool(Integer.parseInt(properties.getProperty(ConfigurationKeys.TASK_SCHEDULER_THREADPOOL_SIZE_KEY,ConfigurationKeys.DEFAULT_TASK_SCHEDULER_THREADPOOL_SIZE)));
-  this.failedTaskQueue=Queues.newLinkedBlockingQueue();
-  this.maxTaskRetries=Integer.parseInt(properties.getProperty(ConfigurationKeys.MAX_TASK_RETRIES_KEY,ConfigurationKeys.DEFAULT_MAX_TASK_RETRIES));
-}

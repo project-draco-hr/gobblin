@@ -1,0 +1,5 @@
+{
+  LOG.info("Starting the local job scheduler");
+  this.scheduler.start();
+  scheduleLocallyConfiguredJobs();
+}

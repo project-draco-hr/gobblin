@@ -13,6 +13,7 @@
     }
     writer=buildWriter(this.taskContext,schemaForWriter);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
+    this.taskStateTracker.registerNewTask(this);
     Object record;
     while ((record=extractor.readRecord()) != null) {
       if (doConversion) {
@@ -23,7 +24,7 @@
     this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   }
  catch (  IOException ioe) {
-    LOG.error(String.format("Task %s of job %s failed",this.taskId,this.jobId),ioe);
+    LOG.error(String.format("Task %s failed",this.taskId),ioe);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
   }
  finally {
@@ -41,11 +42,6 @@
  catch (      IOException ioe) {
       }
     }
-    try {
-      this.taskManager.onTaskCompletion(this);
-    }
- catch (    IOException ioe) {
-    }
-    this.statusReportingTimer.cancel();
+    this.taskStateTracker.onTaskCompletion(this);
   }
 }
