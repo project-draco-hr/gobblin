@@ -1,0 +1,6 @@
+{
+  if (getNamespace().isEmpty() || getTable().isEmpty() || getExtractId().isEmpty()) {
+    return false;
+  }
+  return true;
+}

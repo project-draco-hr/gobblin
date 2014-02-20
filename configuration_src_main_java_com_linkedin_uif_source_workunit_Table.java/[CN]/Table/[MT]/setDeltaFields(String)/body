@@ -1,0 +1,6 @@
+{
+  String keys="";
+  for (  String key : deltaFieldName)   keys+=key + ",";
+  keys.substring(0,keys.length() - 1);
+  setProp("extract.delta.fields",keys);
+}

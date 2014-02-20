@@ -1,8 +1,4 @@
 {
-  Text txt=new Text();
-  txt.readFields(in);
-  namespace=txt.toString();
-  txt.readFields(in);
-  table=txt.toString();
   super.readFields(in);
+  this.table.readFields(in);
 }

@@ -1,0 +1,6 @@
+{
+  if (super.validateTableAttributes() && getDeltaFields().length == 0) {
+    throw new MissingExtractAttributeException("Append tables require at least one delta field in order to partition the data according to data/time.  This should be a timestamp or something equivelent. " + "You can set the delta field(s) using one of the setters on " + Table.class.getName());
+  }
+  return true;
+}

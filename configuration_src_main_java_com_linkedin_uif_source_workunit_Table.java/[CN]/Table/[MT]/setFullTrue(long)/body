@@ -1,0 +1,4 @@
+{
+  setFullTrue();
+  setProp("extract.full.run.time",extractFullRunTime);
+}

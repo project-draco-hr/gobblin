@@ -1,0 +1,4 @@
+{
+  if (!contains(key))   return new String[0];
+  return properties.getProperty(key).split(",");
+}

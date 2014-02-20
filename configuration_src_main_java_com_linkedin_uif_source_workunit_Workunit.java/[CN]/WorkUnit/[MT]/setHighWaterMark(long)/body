@@ -1,0 +1,3 @@
+{
+  setProp("workunit.high.water.mark",highWaterMark);
+}

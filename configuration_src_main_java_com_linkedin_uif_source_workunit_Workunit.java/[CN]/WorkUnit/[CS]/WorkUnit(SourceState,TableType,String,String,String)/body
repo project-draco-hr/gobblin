@@ -1,0 +1,15 @@
+{
+  this.addAll(state);
+  this.type=type;
+switch (type) {
+case SNAPSHOT_ONLY:
+    this.table=new SnapshotOnlyTable(namespace,table,extractId);
+  break;
+case SNAPSHOT_APPEND:
+this.table=new SnapshotAppendTable(namespace,table,extractId);
+break;
+case APPEND_ONLY:
+this.table=new AppendOnlyTable(namespace,table,extractId);
+break;
+}
+}

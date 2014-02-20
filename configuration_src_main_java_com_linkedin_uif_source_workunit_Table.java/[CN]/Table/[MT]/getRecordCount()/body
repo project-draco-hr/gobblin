@@ -1,0 +1,3 @@
+{
+  return getPropAsLong("extract.record.count",-1);
+}

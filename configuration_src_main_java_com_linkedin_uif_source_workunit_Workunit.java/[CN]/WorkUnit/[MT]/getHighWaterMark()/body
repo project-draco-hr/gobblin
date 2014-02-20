@@ -1,0 +1,3 @@
+{
+  return getPropAsLong("workunit.high.water.mark");
+}

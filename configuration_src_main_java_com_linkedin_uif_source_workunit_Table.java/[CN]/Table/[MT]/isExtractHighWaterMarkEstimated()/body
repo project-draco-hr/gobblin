@@ -1,0 +1,3 @@
+{
+  return getPropAsBoolean("extract.high.water.mark.estimated",false);
+}

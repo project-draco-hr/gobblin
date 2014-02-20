@@ -1,0 +1,6 @@
+{
+  String keys=getProp("extract.delta.fields","");
+  if (!keys.isEmpty())   keys+=",";
+  keys+=deltaFieldName;
+  setProp("extract.delta.fields",keys);
+}

@@ -1,0 +1,4 @@
+{
+  setProp("extract.validation.record.count",count);
+  setProp("extract.validation.record.count.high.water.mark",hwm);
+}

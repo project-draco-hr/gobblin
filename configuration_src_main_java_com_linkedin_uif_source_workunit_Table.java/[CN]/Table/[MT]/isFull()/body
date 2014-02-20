@@ -1,0 +1,3 @@
+{
+  return getPropAsBoolean("extract.is.full",false);
+}

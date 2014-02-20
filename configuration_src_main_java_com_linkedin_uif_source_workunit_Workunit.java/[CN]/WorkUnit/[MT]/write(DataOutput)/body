@@ -1,11 +1,4 @@
 {
-  if (namespace == null || table == null) {
-    throw new RuntimeException("All Workunits must have a namespace and table name");
-  }
-  Text txt=new Text();
-  txt.set(namespace);
-  txt.write(out);
-  txt.set(table);
-  txt.write(out);
   super.write(out);
+  this.table.write(out);
 }

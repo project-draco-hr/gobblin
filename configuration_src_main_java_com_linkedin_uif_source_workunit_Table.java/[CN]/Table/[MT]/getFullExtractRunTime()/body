@@ -1,0 +1,3 @@
+{
+  return getPropAsLong("extract.full.run.time",-1);
+}

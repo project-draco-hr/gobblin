@@ -1,0 +1,4 @@
+{
+  setProp("extract.record.count",count);
+  setProp("extract.record.count.estimated",estimated);
+}

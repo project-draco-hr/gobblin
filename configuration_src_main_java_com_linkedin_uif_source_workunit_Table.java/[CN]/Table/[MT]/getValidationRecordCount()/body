@@ -1,0 +1,3 @@
+{
+  return getPropAsLong("extract.validation.record.count",-1);
+}

@@ -1,0 +1,5 @@
+{
+  super.setProp("extract.namespace.name",namespace);
+  super.setProp("extract.table.name",table);
+  super.setProp("extract.extract.id",table);
+}
