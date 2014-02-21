@@ -1,0 +1,11 @@
+{
+  Path storePath=new Path(this.storeRootDir,storeName);
+  if (!this.fs.exists(storePath) && !create(storeName)) {
+    return false;
+  }
+  Path tablePath=new Path(storePath,tableName);
+  if (this.fs.exists(tablePath)) {
+    throw new IOException(String.format("Task state file %s already exists for job %s",tablePath,tableName));
+  }
+  return this.fs.createNewFile(tablePath);
+}

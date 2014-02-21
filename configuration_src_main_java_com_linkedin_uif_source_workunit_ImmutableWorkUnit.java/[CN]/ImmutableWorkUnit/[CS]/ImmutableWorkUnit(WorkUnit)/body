@@ -1,3 +1,5 @@
 {
   this.addAll(workUnit);
+  super.setNamespace(workUnit.getNamespace());
+  super.setTable(workUnit.getTable());
 }

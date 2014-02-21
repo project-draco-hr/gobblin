@@ -1,0 +1,3 @@
+String storeName
+String tableName
+Collection<? extends State> states

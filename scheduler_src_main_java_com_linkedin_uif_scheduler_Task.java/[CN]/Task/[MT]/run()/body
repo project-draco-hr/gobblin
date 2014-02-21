@@ -1,6 +1,8 @@
 {
   Extractor extractor=null;
   DataWriter writer=null;
+  long startTime=System.currentTimeMillis();
+  this.taskState.setStartTime(startTime);
   try {
     extractor=this.taskContext.getSource().getExtractor(this.taskState);
     boolean doConversion=!this.taskContext.getConverters().isEmpty();
@@ -42,6 +44,9 @@
  catch (      IOException ioe) {
       }
     }
+    long endTime=System.currentTimeMillis();
+    this.taskState.setEndTime(endTime);
+    this.taskState.setTaskDuration(endTime - startTime);
     this.taskStateTracker.onTaskCompletion(this);
   }
 }

@@ -1,0 +1,7 @@
+{
+  Path storePath=new Path(this.storeRootDir,storeName);
+  if (this.fs.exists(storePath)) {
+    throw new IOException(String.format("Task state store directory %s already exists for job %s",storePath,storeName));
+  }
+  return this.fs.mkdirs(storePath);
+}
