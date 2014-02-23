@@ -1,4 +1,0 @@
-{
-  LOG.info("Stopping the task manager ");
-  this.executor.shutdown();
-}

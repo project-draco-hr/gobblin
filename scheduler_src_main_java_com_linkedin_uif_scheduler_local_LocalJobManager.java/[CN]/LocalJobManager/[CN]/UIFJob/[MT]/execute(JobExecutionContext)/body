@@ -1,0 +1,37 @@
+{
+  JobDataMap dataMap=context.getJobDetail().getJobDataMap();
+  Properties properties=(Properties)dataMap.get(PROPERTIES_KEY);
+  String jobName=properties.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  ConcurrentMap<String,JobLock> jobLockMap=(ConcurrentMap<String,JobLock>)dataMap.get(JOB_LOCK_MAP_KEY);
+  if (!acquireJobLock(jobLockMap,jobName)) {
+    LOG.info("Failed to acquire the job lock for job " + jobName);
+    return;
+  }
+  WorkUnitManager workUnitManager=(WorkUnitManager)dataMap.get(WORK_UNIT_MANAGER_KEY);
+  Map<String,Source> jobSourceMap=(Map<String,Source>)dataMap.get(JOB_SOURCE_MAP_KEY);
+  Map<String,Integer> jobTaskCountMap=(Map<String,Integer>)dataMap.get(JOB_TASK_COUNT_MAP_KEY);
+  Map<String,List<TaskState>> jobTaskStatesMap=(Map<String,List<TaskState>>)dataMap.get(JOB_TASK_STATES_MAP_KEY);
+  String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
+  String jobId="job_" + jobIdSuffix;
+  LOG.info("Starting job " + jobId);
+  try {
+    com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
+    state.addAll(properties);
+    Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
+    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(properties)));
+    jobSourceMap.put(jobId,source);
+    jobTaskCountMap.put(jobId,workUnits.size());
+    jobTaskStatesMap.put(jobId,new ArrayList<TaskState>(workUnits.size()));
+    int sequence=0;
+    for (    WorkUnit workUnit : workUnits) {
+      String taskId=String.format("task_%s_%d",jobIdSuffix,sequence++);
+      WorkUnitState workUnitState=new WorkUnitState(workUnit);
+      workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
+      workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+      workUnitManager.addWorkUnit(workUnitState);
+    }
+  }
+ catch (  Exception e) {
+    throw new JobExecutionException(e);
+  }
+}

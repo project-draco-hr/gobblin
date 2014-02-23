@@ -1,0 +1,4 @@
+{
+  LOG.info("Stopping the local task state tracker");
+  this.reporterExecutor.shutdown();
+}

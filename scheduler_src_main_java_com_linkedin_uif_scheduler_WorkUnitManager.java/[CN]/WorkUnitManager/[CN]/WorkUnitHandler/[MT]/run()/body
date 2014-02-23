@@ -2,8 +2,8 @@
   while (!this.stopped) {
     try {
       WorkUnitState workUnitState=this.workUnitQueue.take();
-      Task task=new Task(workUnitState.getProp(ConfigurationKeys.JOB_ID_KEY),workUnitState.getProp(ConfigurationKeys.TASK_ID_KEY),new TaskContext(workUnitState),this.taskManager);
-      this.taskManager.execute(task);
+      Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
+      this.taskExecutor.execute(task);
     }
  catch (    InterruptedException ie) {
     }

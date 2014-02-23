@@ -1,0 +1,11 @@
+{
+  ScheduledFuture<?> scheduledReporter=this.scheduledReporters.remove(task.getTaskId());
+  scheduledReporter.cancel(true);
+  WorkUnitState.WorkingState state=task.getTaskState().getWorkingState();
+  if (state == WorkUnitState.WorkingState.FAILED && task.getRetryCount() < this.maxTaskRetries) {
+    this.taskExecutor.retry(task);
+    return;
+  }
+  LOG.info(String.format("Task %s completed with state %s",task.getTaskId(),state));
+  this.jobManager.onTaskCompletion(task.getJobId(),task.getTaskState());
+}

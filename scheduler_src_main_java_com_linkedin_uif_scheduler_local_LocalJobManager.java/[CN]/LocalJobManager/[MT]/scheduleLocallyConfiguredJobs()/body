@@ -1,0 +1,14 @@
+{
+  LOG.info("Scheduling locally configured jobs");
+  for (  Properties properties : loadLocalJobConfigs()) {
+    JobDataMap jobDataMap=new JobDataMap();
+    jobDataMap.put(PROPERTIES_KEY,properties);
+    jobDataMap.put(WORK_UNIT_MANAGER_KEY,this.workUnitManager);
+    jobDataMap.put(JOB_LOCK_MAP_KEY,this.jobLockMap);
+    jobDataMap.put(JOB_SOURCE_MAP_KEY,this.jobSourceMap);
+    jobDataMap.put(JOB_TASK_COUNT_MAP_KEY,this.jobTaskCountMap);
+    jobDataMap.put(JOB_TASK_STATES_MAP_KEY,this.jobTaskStatesMap);
+    JobDetail job=JobBuilder.newJob(UIFJob.class).withIdentity(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
+    this.scheduler.scheduleJob(job,getTrigger(job.getKey(),properties));
+  }
+}

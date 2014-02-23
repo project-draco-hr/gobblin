@@ -1,0 +1,4 @@
+{
+  LOG.info("Stopping the task executor ");
+  this.executor.shutdown();
+}
