@@ -1,6 +1,5 @@
 {
-  String keys=getProp("extract.delta.fields","");
-  if (!keys.isEmpty())   keys+=",";
-  keys+=deltaFieldName;
-  setProp("extract.delta.fields",keys);
+  StringBuilder sb=new StringBuilder(getProp("extract.delta.fields",""));
+  Joiner.on(",").appendTo(sb,deltaFieldName);
+  setProp("extract.delta.fields",sb.toString());
 }

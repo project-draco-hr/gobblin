@@ -1,6 +1,6 @@
 {
   this.addAll(state);
-  this.type=type;
+  setProp("extract.table.type",type.toString());
 switch (type) {
 case SNAPSHOT_ONLY:
     this.table=new SnapshotOnlyTable(namespace,table,extractId);

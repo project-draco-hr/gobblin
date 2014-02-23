@@ -1,6 +1,3 @@
 {
-  String keys="";
-  for (  String key : primaryKeyFieldName)   keys+=key + ",";
-  keys.substring(0,keys.length() - 1);
-  setProp("extract.primary.key.fields",keys);
+  setProp("extract.primary.key.fields",Joiner.on(",").join(primaryKeyFieldName));
 }

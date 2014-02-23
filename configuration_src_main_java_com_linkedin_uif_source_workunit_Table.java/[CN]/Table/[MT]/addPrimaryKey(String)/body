@@ -1,6 +1,5 @@
 {
-  String keys=getProp("extract.primary.key.fields","");
-  if (!keys.isEmpty())   keys+=",";
-  keys+=primaryKeyFieldName;
-  setProp("extract.primary.key.fields",keys);
+  StringBuilder sb=new StringBuilder(getProp("extract.primary.key.fields",""));
+  Joiner.on(",").appendTo(sb,primaryKeyFieldName);
+  setProp("extract.primary.key.fields",sb.toString());
 }

@@ -1,6 +1,5 @@
 {
   if (getNamespace().isEmpty() || getTable().isEmpty() || getExtractId().isEmpty()) {
-    return false;
+    throw new MissingExtractAttributeException("All extracts require a namespace, tableName, and extractId");
   }
-  return true;
 }
