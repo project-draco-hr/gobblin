@@ -1,0 +1,3 @@
+{
+  return getPropAsLong(ConfigurationKeys.EXTRACT_RECORD_COUNT_KEY,-1);
+}

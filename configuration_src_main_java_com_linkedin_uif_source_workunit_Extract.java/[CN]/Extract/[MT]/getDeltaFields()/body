@@ -1,0 +1,3 @@
+{
+  return getPropAsList(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+}

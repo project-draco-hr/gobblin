@@ -1,0 +1,3 @@
+{
+  return TableType.valueOf(getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY));
+}
