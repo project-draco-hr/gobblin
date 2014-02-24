@@ -1,3 +1,0 @@
-{
-  setProp("extract.is.sharded",isSharded);
-}

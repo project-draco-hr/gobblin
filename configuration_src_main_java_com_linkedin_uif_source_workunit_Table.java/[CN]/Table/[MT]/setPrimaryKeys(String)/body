@@ -1,3 +1,0 @@
-{
-  setProp("extract.primary.key.fields",Joiner.on(",").join(primaryKeyFieldName));
-}

@@ -1,4 +1,0 @@
-{
-  setProp("extract.high.water.mark",hwm);
-  setProp("extract.high.water.mark.estimated",estimated);
-}

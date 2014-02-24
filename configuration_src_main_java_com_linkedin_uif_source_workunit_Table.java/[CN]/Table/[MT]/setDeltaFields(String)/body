@@ -1,3 +1,0 @@
-{
-  setProp("extract.delta.fields",Joiner.on(",").join(deltaFieldName));
-}

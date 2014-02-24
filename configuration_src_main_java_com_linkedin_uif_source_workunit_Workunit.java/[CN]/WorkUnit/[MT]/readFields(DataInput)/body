@@ -1,4 +1,4 @@
 {
   super.readFields(in);
-  this.table.readFields(in);
+  this.extract.readFields(in);
 }

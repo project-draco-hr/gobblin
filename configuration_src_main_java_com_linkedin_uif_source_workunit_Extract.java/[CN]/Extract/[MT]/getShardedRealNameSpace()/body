@@ -1,0 +1,3 @@
+{
+  return getProp(ConfigurationKeys.EXTRACT_SHARDED_REAL_NAMESPACE_KEY);
+}

@@ -1,3 +1,3 @@
 {
-  return WorkingState.valueOf(getProp("workunit.working.state",WorkingState.PENDING.toString()));
+  return WorkingState.valueOf(getProp(ConfigurationKeys.WORK_UNIT_WORKING_STATE_KEY,WorkingState.PENDING.toString()));
 }

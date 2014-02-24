@@ -1,3 +1,0 @@
-{
-  return getPropAsList("extract.delta.fields");
-}

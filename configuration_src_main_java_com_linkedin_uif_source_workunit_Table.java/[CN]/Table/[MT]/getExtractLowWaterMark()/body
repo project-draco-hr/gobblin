@@ -1,3 +1,0 @@
-{
-  return getPropAsLong("extract.low.water.mark",-1);
-}

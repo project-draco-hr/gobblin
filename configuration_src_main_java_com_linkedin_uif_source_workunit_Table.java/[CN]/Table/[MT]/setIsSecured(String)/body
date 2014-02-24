@@ -1,4 +1,0 @@
-{
-  setProp("extract.is.secured",true);
-  setProp("extract.security.permission.group",permissionGroup);
-}

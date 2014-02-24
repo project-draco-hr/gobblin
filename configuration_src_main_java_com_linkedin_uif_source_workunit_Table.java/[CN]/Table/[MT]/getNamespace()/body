@@ -1,3 +1,0 @@
-{
-  return getProp("extract.namespace.name","");
-}

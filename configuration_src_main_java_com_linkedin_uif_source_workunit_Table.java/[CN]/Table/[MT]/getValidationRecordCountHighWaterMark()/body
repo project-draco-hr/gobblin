@@ -1,3 +1,0 @@
-{
-  return getPropAsLong("extract.validation.record.count.high.water.mark",-1);
-}

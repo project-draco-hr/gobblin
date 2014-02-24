@@ -1,0 +1,4 @@
+TableType type
+String namespace
+String table
+String extractId

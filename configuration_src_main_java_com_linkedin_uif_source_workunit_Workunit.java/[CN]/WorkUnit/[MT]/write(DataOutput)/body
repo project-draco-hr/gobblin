@@ -1,4 +1,4 @@
 {
   super.write(out);
-  this.table.write(out);
+  this.extract.write(out);
 }

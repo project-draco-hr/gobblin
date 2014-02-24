@@ -1,5 +1,0 @@
-{
-  StringBuilder sb=new StringBuilder(getProp("extract.primary.key.fields",""));
-  Joiner.on(",").appendTo(sb,primaryKeyFieldName);
-  setProp("extract.primary.key.fields",sb.toString());
-}

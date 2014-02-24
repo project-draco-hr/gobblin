@@ -1,0 +1,4 @@
+{
+  addAll(other);
+  extract.addAll(other.getExtract());
+}

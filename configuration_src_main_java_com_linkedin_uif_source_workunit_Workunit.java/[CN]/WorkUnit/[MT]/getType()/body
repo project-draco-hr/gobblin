@@ -1,3 +1,0 @@
-{
-  return TableType.valueOf(getProp("extract.table.type"));
-}

@@ -1,0 +1,5 @@
+{
+  StringBuilder sb=new StringBuilder(getProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY,""));
+  Joiner.on(",").appendTo(sb,primaryKeyFieldName);
+  setProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY,sb.toString());
+}

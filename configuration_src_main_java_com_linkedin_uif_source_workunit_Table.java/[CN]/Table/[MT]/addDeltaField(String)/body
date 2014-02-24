@@ -1,5 +1,0 @@
-{
-  StringBuilder sb=new StringBuilder(getProp("extract.delta.fields",""));
-  Joiner.on(",").appendTo(sb,deltaFieldName);
-  setProp("extract.delta.fields",sb.toString());
-}

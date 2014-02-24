@@ -1,3 +1,0 @@
-{
-  setProp("extract.low.water.mark",lwm);
-}
