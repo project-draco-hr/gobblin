@@ -1,8 +1,8 @@
 {
   if (this.rowsRead == this.rowsWritten) {
-    return PolicyResult.PASSED;
+    return QualityCheckResult.PASSED;
   }
  else {
-    return PolicyResult.FAILED;
+    return QualityCheckResult.FAILED;
   }
 }

@@ -21,12 +21,11 @@
       Object convertedRecord=converter.convertRecord(schemaForWriter,record,this.taskState.getWorkunit());
       writer.write(convertedRecord);
     }
-    this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
-    this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
-    PolicyCheckResults results;
+    this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
+    this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
     MetaStoreClient collector=buildMetaStoreClient(this.taskState);
     PolicyChecker policyChecker=buildPolicyChecker(this.taskState,collector);
-    results=policyChecker.checkAndWritePolicies();
+    PolicyCheckResults results=policyChecker.executePolicies();
     TaskPublisher publisher=buildTaskPublisher(this.taskState,results,collector);
 switch (publisher.publish()) {
 case SUCCESS:
