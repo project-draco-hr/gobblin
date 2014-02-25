@@ -1,0 +1,6 @@
+{
+  this.conf=new Configuration();
+  this.fs=FileSystem.get(URI.create(fsUri),this.conf);
+  this.storeRootDir=storeRootDir;
+  this.stateClass=stateClass;
+}

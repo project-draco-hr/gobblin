@@ -6,6 +6,6 @@
     this.taskExecutor.retry(task);
     return;
   }
-  LOG.info(String.format("Task %s completed with state %s",task.getTaskId(),state));
+  LOG.info(String.format("Task %s completed in %dms with state %s",task.getTaskId(),task.getTaskState().getTaskDuration(),state));
   this.jobManager.onTaskCompletion(task.getJobId(),task.getTaskState());
 }

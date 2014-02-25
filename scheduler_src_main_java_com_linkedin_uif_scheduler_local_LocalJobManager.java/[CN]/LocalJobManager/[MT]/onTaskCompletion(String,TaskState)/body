@@ -11,7 +11,7 @@
       commitJob(jobId,jobName,this.jobTaskStatesMap.get(jobId));
     }
  catch (    IOException ioe) {
-      LOG.error("Failed to commit job " + jobId);
+      LOG.error("Failed to commit job " + jobId,ioe);
     }
   }
 }

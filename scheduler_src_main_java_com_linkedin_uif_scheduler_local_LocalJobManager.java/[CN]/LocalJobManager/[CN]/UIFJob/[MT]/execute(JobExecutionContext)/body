@@ -11,6 +11,8 @@
   Map<String,Source> jobSourceMap=(Map<String,Source>)dataMap.get(JOB_SOURCE_MAP_KEY);
   Map<String,Integer> jobTaskCountMap=(Map<String,Integer>)dataMap.get(JOB_TASK_COUNT_MAP_KEY);
   Map<String,List<TaskState>> jobTaskStatesMap=(Map<String,List<TaskState>>)dataMap.get(JOB_TASK_STATES_MAP_KEY);
+  Map<String,String> lastJobIdMap=(Map<String,String>)dataMap.get(LAST_JOB_ID_MAP_KEY);
+  StateStore taskStateStore=(StateStore)dataMap.get(TASK_STATE_STORE_KEY);
   String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
   String jobId="job_" + jobIdSuffix;
   LOG.info("Starting job " + jobId);
@@ -18,7 +20,7 @@
     com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
     state.addAll(properties);
     Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
-    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(properties)));
+    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore)));
     jobSourceMap.put(jobId,source);
     jobTaskCountMap.put(jobId,workUnits.size());
     jobTaskStatesMap.put(jobId,new ArrayList<TaskState>(workUnits.size()));
@@ -32,6 +34,14 @@
     }
   }
  catch (  Exception e) {
+    jobSourceMap.remove(jobId);
+    jobTaskCountMap.remove(jobId);
+    jobTaskStatesMap.remove(jobId);
+    try {
+      jobLockMap.get(jobName).unlock();
+    }
+ catch (    IOException ioe) {
+    }
     throw new JobExecutionException(e);
   }
 }

@@ -1,0 +1,28 @@
+{
+  Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
+  if (!this.fs.exists(tablePath)) {
+    throw new IOException(String.format("Task state file %s does not exist for job %s",tablePath,tableName));
+  }
+  SequenceFile.Reader reader=null;
+  try {
+    reader=new SequenceFile.Reader(this.fs,tablePath,this.conf);
+    try {
+      Text key=new Text();
+      State state=this.stateClass.newInstance();
+      while (reader.next(key,state)) {
+        if (key.toString().equals(stateId)) {
+          return state;
+        }
+      }
+    }
+ catch (    Exception e) {
+      throw new IOException(e);
+    }
+  }
+  finally {
+    if (reader != null) {
+      reader.close();
+    }
+  }
+  return null;
+}

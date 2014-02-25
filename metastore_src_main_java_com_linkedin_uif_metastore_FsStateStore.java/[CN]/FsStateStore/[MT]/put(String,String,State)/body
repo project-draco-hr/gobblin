@@ -1,0 +1,16 @@
+{
+  Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
+  if (!this.fs.exists(tablePath) && !create(storeName,tableName)) {
+    throw new IOException("Failed to create a task state file for job " + tableName);
+  }
+  SequenceFile.Writer writer=null;
+  try {
+    writer=new SequenceFile.Writer(this.fs,this.conf,tablePath,Text.class,this.stateClass);
+    writer.append(new Text(Strings.nullToEmpty(state.getId())),state);
+  }
+  finally {
+    if (writer != null) {
+      writer.close();
+    }
+  }
+}

@@ -1,4 +1,4 @@
 {
-  LOG.info("Starting the local job scheduler");
+  LOG.info("Stopping the local job manager");
   this.scheduler.shutdown(true);
 }
