@@ -1,0 +1,6 @@
+{
+  if (this.fs.exists(this.outputFile)) {
+    throw new IOException(String.format("File %s already exists",this.outputFile));
+  }
+  this.fs.rename(this.stagingFile,this.outputFile);
+}

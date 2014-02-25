@@ -2,7 +2,7 @@
   final Converter converter=getConverterForWriter();
   return new SchemaConverter(){
     @Override public Object convert(    Object sourceSchema) throws SchemaConversionException {
-      return converter.convertSchema(sourceSchema,workUnit);
+      return converter.convertSchema(sourceSchema,workUnitState);
     }
   }
 ;
