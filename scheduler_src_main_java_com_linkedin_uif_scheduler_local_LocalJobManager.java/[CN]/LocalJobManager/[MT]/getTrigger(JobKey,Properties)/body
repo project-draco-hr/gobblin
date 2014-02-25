@@ -1,0 +1,3 @@
+{
+  return TriggerBuilder.newTrigger().withIdentity(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).forJob(jobKey).withSchedule(CronScheduleBuilder.cronSchedule(properties.getProperty(ConfigurationKeys.JOB_SCHEDULE_KEY))).build();
+}

@@ -1,4 +1,0 @@
-{
-  this.workUnitQueue=workUnitQueue;
-  this.taskManager=taskManager;
-}

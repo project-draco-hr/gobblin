@@ -1,0 +1,5 @@
+{
+  addAll(other);
+  this.extract=new Extract(null,null,null,null,null);
+  this.extract.addAll(other.getExtract());
+}

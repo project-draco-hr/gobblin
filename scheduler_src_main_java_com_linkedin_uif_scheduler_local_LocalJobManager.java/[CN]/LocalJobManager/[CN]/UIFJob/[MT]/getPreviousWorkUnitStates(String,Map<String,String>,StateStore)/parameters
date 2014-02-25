@@ -1,0 +1,3 @@
+String jobName
+Map<String,String> lastJobIdMap
+StateStore taskStateStore

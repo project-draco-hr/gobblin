@@ -1,4 +1,5 @@
 {
+  DTF.setTimeZone(TimeZone.getTimeZone("UTC"));
   addAll(properties);
   this.previousTaskStates.addAll(previousTaskStates);
 }

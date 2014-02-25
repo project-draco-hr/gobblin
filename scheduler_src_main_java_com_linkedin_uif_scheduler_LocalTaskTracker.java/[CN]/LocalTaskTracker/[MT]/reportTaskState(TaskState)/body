@@ -1,4 +1,0 @@
-{
-  String jobId=state.getProp(ConfigurationKeys.JOB_ID_KEY);
-  this.jobManager.reportTaskState(jobId,state);
-}

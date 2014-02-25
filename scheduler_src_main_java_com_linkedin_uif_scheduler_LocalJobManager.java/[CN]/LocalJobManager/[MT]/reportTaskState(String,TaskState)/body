@@ -1,9 +1,0 @@
-{
-  if (!this.jobTaskStates.containsKey(jobId)) {
-    LOG.error(String.format("Job %s could not be found",jobId));
-    return;
-  }
-  this.jobTaskStates.get(jobId).add(state);
-  if (this.jobTaskStates.get(jobId).size() == this.jobTaskCount.get(jobId)) {
-  }
-}
