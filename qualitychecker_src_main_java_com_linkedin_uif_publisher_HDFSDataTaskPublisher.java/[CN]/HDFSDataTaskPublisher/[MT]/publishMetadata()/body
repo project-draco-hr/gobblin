@@ -1,0 +1,6 @@
+{
+  if (this.fs.exists(this.outputMetadataFile)) {
+    throw new IOException("File " + this.outputMetadataFile + " already exists");
+  }
+  return this.fs.rename(this.stagingMetadataFile,this.outputMetadataFile);
+}

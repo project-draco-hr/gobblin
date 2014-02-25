@@ -1,0 +1,6 @@
+{
+  this.results=results;
+  this.metadata=metadata;
+  this.dataPublisher=dataPublisher;
+  this.taskState=taskState;
+}

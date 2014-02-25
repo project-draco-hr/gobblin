@@ -1,0 +1,8 @@
+{
+  for (  Map.Entry<QualityCheckResult,Policy.Type> entry : results.getPolicyResults().entrySet()) {
+    if (entry.getKey().equals(QualityCheckResult.FAILED) && entry.getValue().equals(Policy.Type.MANDATORY)) {
+      return false;
+    }
+  }
+  return true;
+}

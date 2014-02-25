@@ -1,0 +1,5 @@
+{
+  this.metadata=metadata;
+  this.results=results;
+  this.taskState=taskState;
+}

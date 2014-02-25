@@ -23,30 +23,42 @@
       }
       writer.write(record);
     }
-    this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-  }
- catch (  IOException ioe) {
-    LOG.error(String.format("Task %s failed",this.taskId),ioe);
-    this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-  }
+    this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
+    this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
+    MetaStoreClient collector=buildMetaStoreClient(this.taskState);
+    PolicyChecker policyChecker=buildPolicyChecker(this.taskState,collector);
+    PolicyCheckResults results=policyChecker.executePolicies();
+    TaskPublisher publisher=buildTaskPublisher(this.taskState,results,collector);
+switch (publisher.publish()) {
+case SUCCESS:
+      this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    break;
+default :
+  this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+break;
+}
+}
+ catch (Exception e) {
+LOG.error(String.format("Task %s failed",this.taskId),e);
+}
  finally {
-    if (extractor != null) {
-      try {
-        extractor.close();
-      }
- catch (      Exception ioe) {
-      }
-    }
-    if (writer != null) {
-      try {
-        writer.close();
-      }
- catch (      IOException ioe) {
-      }
-    }
-    long endTime=System.currentTimeMillis();
-    this.taskState.setEndTime(endTime);
-    this.taskState.setTaskDuration(endTime - startTime);
-    this.taskStateTracker.onTaskCompletion(this);
-  }
+if (extractor != null) {
+try {
+extractor.close();
+}
+ catch (Exception ioe) {
+}
+}
+if (writer != null) {
+try {
+writer.close();
+}
+ catch (IOException ioe) {
+}
+}
+long endTime=System.currentTimeMillis();
+this.taskState.setEndTime(endTime);
+this.taskState.setTaskDuration(endTime - startTime);
+this.taskStateTracker.onTaskCompletion(this);
+}
 }
