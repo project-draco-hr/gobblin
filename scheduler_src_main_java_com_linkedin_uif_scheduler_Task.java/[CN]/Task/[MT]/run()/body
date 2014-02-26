@@ -28,37 +28,29 @@
     MetaStoreClient collector=buildMetaStoreClient(this.taskState);
     PolicyChecker policyChecker=buildPolicyChecker(this.taskState,collector);
     PolicyCheckResults results=policyChecker.executePolicies();
-    TaskPublisher publisher=buildTaskPublisher(this.taskState,results,collector);
-switch (publisher.publish()) {
-case SUCCESS:
-      this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-    break;
-default :
-  this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-break;
-}
-}
- catch (Exception e) {
-LOG.error(String.format("Task %s failed",this.taskId),e);
-}
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+  }
+ catch (  Exception e) {
+    LOG.error(String.format("Task %s failed",this.taskId),e);
+  }
  finally {
-if (extractor != null) {
-try {
-extractor.close();
-}
- catch (Exception ioe) {
-}
-}
-if (writer != null) {
-try {
-writer.close();
-}
- catch (IOException ioe) {
-}
-}
-long endTime=System.currentTimeMillis();
-this.taskState.setEndTime(endTime);
-this.taskState.setTaskDuration(endTime - startTime);
-this.taskStateTracker.onTaskCompletion(this);
-}
+    if (extractor != null) {
+      try {
+        extractor.close();
+      }
+ catch (      Exception ioe) {
+      }
+    }
+    if (writer != null) {
+      try {
+        writer.close();
+      }
+ catch (      IOException ioe) {
+      }
+    }
+    long endTime=System.currentTimeMillis();
+    this.taskState.setEndTime(endTime);
+    this.taskState.setTaskDuration(endTime - startTime);
+    this.taskStateTracker.onTaskCompletion(this);
+  }
 }

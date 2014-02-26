@@ -1,4 +1,4 @@
 {
-  MetaStoreClientBuilder builder=new MetaStoreClientBuilderFactory().newMetaStoreClientBuilder(taskState);
+  MetaStoreClientBuilder builder=new MetaStoreClientBuilderFactory().newMetaStoreClientBuilder(taskState.getWorkunit());
   return builder.build();
 }
