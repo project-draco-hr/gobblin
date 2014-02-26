@@ -1,4 +1,0 @@
-{
-  super.write(out);
-  this.extract.write(out);
-}

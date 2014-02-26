@@ -1,3 +1,0 @@
-{
-  return getPropAsLong(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY);
-}

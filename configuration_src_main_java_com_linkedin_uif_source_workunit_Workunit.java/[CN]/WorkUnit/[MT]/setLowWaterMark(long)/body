@@ -1,3 +1,0 @@
-{
-  setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,lowWaterMark);
-}
