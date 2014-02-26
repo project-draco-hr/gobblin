@@ -11,7 +11,7 @@
     Object schemaForWriter=sourceSchema;
     if (doConversion) {
       converter=new MultiConverter(this.taskContext.getConverters());
-      schemaForWriter=converter.convertSchema(sourceSchema,this.taskState.getWorkunit());
+      schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
     writer=buildWriter(this.taskContext,schemaForWriter);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
@@ -19,7 +19,7 @@
     Object record;
     while ((record=extractor.readRecord()) != null) {
       if (doConversion) {
-        record=converter.convertRecord(sourceSchema,record,this.taskState.getWorkunit());
+        record=converter.convertRecord(sourceSchema,record,this.taskState);
       }
       writer.write(record);
     }

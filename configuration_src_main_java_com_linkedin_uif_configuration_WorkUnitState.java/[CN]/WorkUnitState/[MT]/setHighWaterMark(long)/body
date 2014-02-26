@@ -1,0 +1,3 @@
+{
+  setProp(ConfigurationKeys.WORK_UNIT_STATE_RUNTIME_HIGH_WATER_MARK,value);
+}

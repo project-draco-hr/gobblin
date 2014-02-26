@@ -1,3 +1,4 @@
 {
+  this.addAll(workUnit);
   this.workunit=workUnit;
 }
