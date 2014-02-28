@@ -1,0 +1,3 @@
+{
+  this.workUnitState.setHighWaterMark(this.highWatermark);
+}

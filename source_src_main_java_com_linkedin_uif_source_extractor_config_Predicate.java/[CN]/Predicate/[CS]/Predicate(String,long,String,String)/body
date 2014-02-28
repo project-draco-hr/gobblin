@@ -1,0 +1,6 @@
+{
+  this.columnName=columnName;
+  this.value=value;
+  this.condition=condition;
+  this.format=format;
+}

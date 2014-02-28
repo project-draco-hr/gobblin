@@ -1,0 +1,34 @@
+{
+  LOG.debug("Get data records using Rest Api");
+  RecordSet<D> rs=null;
+  String url;
+  try {
+    boolean success=true;
+    if (isConnectionClosed()) {
+      success=this.getConnection();
+    }
+    if (!success) {
+      throw new DataRecordException("Failed to connect.");
+    }
+ else {
+      LOG.debug("Connected successfully.");
+      if (this.getPullStatus() == false) {
+        return null;
+      }
+ else {
+        if (this.getNextUrl() == null) {
+          url=this.getDataMetadata(schema,entity,workUnit,predicateList);
+        }
+ else {
+          url=this.getNextUrl();
+        }
+        String response=this.getResponse(url);
+        rs=this.getData(response);
+      }
+    }
+    return rs.iterator();
+  }
+ catch (  Exception e) {
+    throw new DataRecordException("Failed to get records using rest api; error-" + e.getMessage());
+  }
+}

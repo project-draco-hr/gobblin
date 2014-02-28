@@ -1,0 +1,48 @@
+{
+  LOG.info("Extract Metadata using Rest Api");
+  JsonArray columnArray=new JsonArray();
+  String inputQuery=workUnit.getProp("source.query");
+  List<String> columnListInQuery=null;
+  JsonArray array=null;
+  if (!Strings.isNullOrEmpty(inputQuery)) {
+    columnListInQuery=this.getColumnListFromQuery(inputQuery);
+  }
+  try {
+    boolean success=this.getConnection();
+    if (!success) {
+      throw new SchemaException("Failed to connect.");
+    }
+ else {
+      LOG.debug("Connected successfully.");
+      String url=this.getSchemaMetadata(schema,entity);
+      String response=this.getResponse(url);
+      array=this.getSchema(response);
+      for (      JsonElement columnElement : array) {
+        Schema obj=gson.fromJson(columnElement,Schema.class);
+        String columnName=obj.getColumnName();
+        obj.setWaterMark(this.isWatermarkColumn(workUnit.getProp("source.watermark.column"),columnName));
+        obj.setPrimaryKey(this.getPrimarykeyIndex(workUnit.getProp("source.primarykey.column"),columnName));
+        String jsonStr=gson.toJson(obj);
+        JsonObject jsonObject=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+        if (inputQuery == null || columnListInQuery == null || (columnListInQuery.size() == 1 && columnListInQuery.get(0).equals("*")) || (columnListInQuery.size() >= 1 && this.isMetadataColumn(columnName,columnListInQuery))) {
+          this.columnList.add(columnName);
+          columnArray.add(jsonObject);
+        }
+      }
+      if (inputQuery == null && this.columnList.size() != 0) {
+        LOG.debug("New query with the required column list");
+        this.updatedQuery="SELECT " + Joiner.on(",").join(columnList) + " FROM "+ entity;
+      }
+ else {
+        LOG.debug("Query is same as input query");
+        this.updatedQuery=inputQuery;
+      }
+      LOG.debug("Schema:" + columnArray);
+      this.setOutputSchema((S)columnArray);
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new SchemaException("Failed to get schema using rest api; error-" + e.getMessage());
+  }
+}

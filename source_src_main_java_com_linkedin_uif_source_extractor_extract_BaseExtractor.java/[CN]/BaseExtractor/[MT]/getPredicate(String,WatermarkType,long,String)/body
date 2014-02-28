@@ -1,0 +1,37 @@
+{
+  if (Strings.isNullOrEmpty(watermarkColumn) || watermarkType == null) {
+    return null;
+  }
+  LOG.debug("Building predicate");
+  String columnName=watermarkColumn;
+  String condition="";
+  if (value != DEFAULT_WATERMARK_VALUE) {
+switch (watermarkType) {
+case TIMESTAMP:
+      condition=this.getTimestampPredicateCondition(watermarkColumn,value,DEFAULT_WATERMARK_VALUE_FORMAT,operator);
+    break;
+case DATE:
+  condition=this.getDatePredicateCondition(watermarkColumn,value,DEFAULT_WATERMARK_VALUE_FORMAT,operator);
+break;
+case SIMPLE:
+condition=this.getSimplePredicateCondition(watermarkColumn,value,operator);
+break;
+default :
+condition="";
+break;
+}
+if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_IS_HOURLY_EXTRACT))) {
+String hourCondition=this.getSimplePredicateCondition(this.workUnit.getProp(ConfigurationKeys.SOURCE_HOUR_COLUMN),this.extractFromWatermarkValue(Long.toString(value),"HH",""),operator);
+if (condition.isEmpty()) {
+condition=hourCondition;
+}
+ else {
+condition=condition + " AND " + hourCondition;
+}
+}
+}
+if (Strings.isNullOrEmpty(columnName) || condition.equals("")) {
+return null;
+}
+return new Predicate(columnName,value,condition,this.predicateColumnFormat);
+}

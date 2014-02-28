@@ -1,0 +1,3 @@
+{
+  this.highWatermark=highWatermark;
+}

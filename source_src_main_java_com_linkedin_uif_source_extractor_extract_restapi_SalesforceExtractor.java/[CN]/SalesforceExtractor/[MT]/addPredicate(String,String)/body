@@ -1,0 +1,8 @@
+{
+  String predicate="where";
+  if (query.toLowerCase().contains(predicate)) {
+    predicate="and";
+  }
+  query=query + Utils.getClause(predicate,predicateCond);
+  return query;
+}

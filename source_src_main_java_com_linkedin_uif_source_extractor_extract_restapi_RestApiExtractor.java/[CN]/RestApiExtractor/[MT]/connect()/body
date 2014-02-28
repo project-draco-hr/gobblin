@@ -1,0 +1,40 @@
+{
+  if (autoEstablishAuthToken) {
+    if (authTokenTimeout <= 0) {
+      return false;
+    }
+ else     if ((System.currentTimeMillis() - createdAt) > authTokenTimeout) {
+      return false;
+    }
+  }
+  HttpEntity httpEntity=null;
+  try {
+    httpEntity=this.getAuthentication();
+    if (httpEntity != null) {
+      JsonElement json=gson.fromJson(EntityUtils.toString(httpEntity),JsonObject.class);
+      JsonObject jsonRet=json.getAsJsonObject();
+      if (!this.hasId(jsonRet)) {
+        throw new RestApiConnectionException(this.getFirstErrorMessage("Failed to establish auth token.",json));
+      }
+      this.instanceUrl=jsonRet.get("instance_url").getAsString();
+      this.accessToken=jsonRet.get("access_token").getAsString();
+      this.createdAt=System.currentTimeMillis();
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new RestApiConnectionException("Failed to get rest api connection; error-" + e.getMessage());
+  }
+ finally {
+    if (httpEntity != null) {
+      try {
+        EntityUtils.consume(httpEntity);
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+        throw new RestApiConnectionException("Failed to consume httpEntity; error-" + e.getMessage());
+      }
+    }
+  }
+  return true;
+}

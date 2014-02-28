@@ -1,0 +1,11 @@
+{
+  Date date=null;
+  try {
+    date=DEFAULT_WATERMARK_TIMESTAMP_FORMAT.parse(input);
+  }
+ catch (  ParseException e) {
+    e.printStackTrace();
+  }
+  SimpleDateFormat outFormat=new SimpleDateFormat(outfmt);
+  return Long.parseLong(outFormat.format(date) + appendString);
+}

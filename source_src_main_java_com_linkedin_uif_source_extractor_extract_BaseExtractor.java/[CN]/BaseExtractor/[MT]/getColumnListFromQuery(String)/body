@@ -1,0 +1,10 @@
+{
+  if (Strings.isNullOrEmpty(query)) {
+    return null;
+  }
+  String queryLowerCase=query.toLowerCase();
+  int startIndex=queryLowerCase.indexOf("select") + 6;
+  int endIndex=queryLowerCase.indexOf("from ") - 1;
+  String[] inputQueryColumns=query.substring(startIndex,endIndex).toLowerCase().replaceAll(" ","").split(",");
+  return Arrays.asList(inputQueryColumns);
+}

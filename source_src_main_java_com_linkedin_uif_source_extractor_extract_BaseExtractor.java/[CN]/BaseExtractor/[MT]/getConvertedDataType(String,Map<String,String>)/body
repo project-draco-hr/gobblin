@@ -1,0 +1,10 @@
+{
+  if (dataType == null) {
+    return "string";
+  }
+  String newDataType=dataTypeMap.get(dataType.toLowerCase());
+  if (newDataType == null) {
+    return "string";
+  }
+  return newDataType;
+}

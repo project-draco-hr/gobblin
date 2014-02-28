@@ -1,0 +1,21 @@
+{
+  LOG.info("Get source record count using Rest Api");
+  long count=0;
+  try {
+    boolean success=this.getConnection();
+    if (!success) {
+      throw new RecordCountException("Failed to connect.");
+    }
+ else {
+      LOG.debug("Connected successfully.");
+      String url=this.getCountMetadata(schema,entity,workUnit,predicateList);
+      String response=this.getResponse(url);
+      count=this.getCount(response);
+      LOG.info("Source record count:" + count);
+    }
+    return count;
+  }
+ catch (  Exception e) {
+    throw new RecordCountException("Failed to get record count using rest api; error-" + e.getMessage());
+  }
+}

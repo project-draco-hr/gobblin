@@ -1,0 +1,11 @@
+{
+  LOG.info("Getting range predicates");
+  Predicate lwmPredicate=this.getPredicate(watermarkColumn,watermarkType,lwmValue,">=");
+  Predicate hwmPredicate=this.getPredicate(watermarkColumn,watermarkType,hwmValue,"<=");
+  if (lwmPredicate != null) {
+    this.predicateList.add(lwmPredicate);
+  }
+  if (hwmPredicate != null) {
+    this.predicateList.add(hwmPredicate);
+  }
+}

@@ -1,0 +1,5 @@
+String schema
+String entity
+String watermarkColumn
+String predicateColumnFormat
+List<Predicate> predicateList

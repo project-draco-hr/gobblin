@@ -1,0 +1,8 @@
+{
+  if (lwm != DEFAULT_WATERMARK_VALUE || hwm != DEFAULT_WATERMARK_VALUE) {
+    if (Strings.isNullOrEmpty(watermarkColumn) || watermarkType == null) {
+      return false;
+    }
+  }
+  return true;
+}

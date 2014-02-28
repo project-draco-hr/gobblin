@@ -1,0 +1,5 @@
+String watermarkColumn
+WatermarkType watermarkType
+long lwmValue
+long hwmValue
+String predicateColumnFormat

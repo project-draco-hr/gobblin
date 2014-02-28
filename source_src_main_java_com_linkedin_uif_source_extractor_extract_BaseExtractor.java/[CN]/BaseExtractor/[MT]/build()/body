@@ -1,0 +1,35 @@
+{
+  String watermarkColumn=this.workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+  long lwm=this.workUnit.getLowWaterMark();
+  long hwm=this.workUnit.getHighWaterMark();
+  WatermarkType watermarkType;
+  if (Strings.isNullOrEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE))) {
+    watermarkType=null;
+  }
+ else {
+    watermarkType=WatermarkType.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE).toUpperCase());
+  }
+  if (!this.isValidWatermarkConfigs(watermarkColumn,watermarkType,lwm,hwm)) {
+    throw new ExtractPrepareException("Watermark configs are not valid. Please verify watermarkColumn and watermark types");
+  }
+  try {
+    this.predicateColumnFormat=this.getWatermarkSourceFormat(watermarkType);
+    this.setTimeOut(this.workUnit.getProp(ConfigurationKeys.SOURCE_TIMEOUT));
+    this.extractMetadata(this.schema,this.entity,this.workUnit);
+    this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm,this.predicateColumnFormat);
+    this.setRangePredicates(watermarkColumn,watermarkType,lwm,this.highWatermark);
+    this.sourceRecordCount=this.getSourceCount(this.schema,this.entity,this.workUnit,this.predicateList);
+  }
+ catch (  SchemaException e) {
+    throw new ExtractPrepareException("Failed to get schema for this object; error-" + e.getMessage());
+  }
+catch (  HighWatermarkException e) {
+    throw new ExtractPrepareException("Failed to get high watermark; error-" + e.getMessage());
+  }
+catch (  RecordCountException e) {
+    throw new ExtractPrepareException("Failed to get record count; error-" + e.getMessage());
+  }
+catch (  Exception e) {
+    throw new ExtractPrepareException("Failed to prepare the extract build; error-" + e.getMessage());
+  }
+}
