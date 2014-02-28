@@ -1,0 +1,15 @@
+{
+  Type listType=new TypeToken<JsonArray>(){
+  }
+.getType();
+  Gson gson=new Gson();
+  jsonSchema=gson.fromJson(new InputStreamReader(new FileInputStream(new File("converter/src/test/resources/schema.json"))),listType);
+  listType=new TypeToken<JsonObject>(){
+  }
+.getType();
+  jsonRecord=gson.fromJson(new InputStreamReader(new FileInputStream(new File("converter/src/test/resources/record.json"))),listType);
+  SourceState source=new SourceState();
+  state=new WorkUnitState(source.createWorkUnit(source.createExtract(TableType.SNAPSHOT_ONLY,"test_table","test_namespace")));
+  state.setProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"HH:mm:ss");
+  state.setProp(ConfigurationKeys.CONVERTER_AVRO_DATE_TIMEZONE,"PST");
+}

@@ -1,0 +1,43 @@
+{
+  boolean nullable=schemaNode.has("nullable") ? schemaNode.get("nullable").getAsBoolean() : false;
+  Type type;
+  try {
+    type=Type.valueOf(fieldType.toUpperCase());
+  }
+ catch (  IllegalArgumentException e) {
+    throw new UnsupportedDateTypeException(fieldType + " is unsupported");
+  }
+  DateTimeZone timeZone=getTimeZone(state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_TIMEZONE,"UTC"));
+switch (type) {
+case DATE:
+    return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+case TIMESTAMP:
+  return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIMESTAMP_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+case TIME:
+return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+case FIXED:
+throw new UnsupportedDateTypeException(fieldType + " is unsupported");
+case STRING:
+return new StringConverter(fieldName,nullable);
+case BYTES:
+return new BinaryConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_BINARY_CHARSET,"UTF8"));
+case INT:
+return new IntConverter(fieldName,nullable);
+case LONG:
+return new LongConverter(fieldName,nullable);
+case FLOAT:
+return new FloatConverter(fieldName,nullable);
+case DOUBLE:
+return new DoubleConverter(fieldName,nullable);
+case BOOLEAN:
+return new BooleanConverter(fieldName,nullable);
+case ARRAY:
+return new ArrayConverter(fieldName,nullable,schemaNode,state);
+case MAP:
+return new MapConverter(fieldName,nullable,schemaNode,state);
+case ENUM:
+return new EnumConverter(fieldName,nullable,schemaNode);
+default :
+throw new UnsupportedDateTypeException(fieldType + " is unsupported");
+}
+}
