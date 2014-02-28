@@ -1,10 +1,3 @@
 {
-  try {
-    this.dataPublisher.close();
-    return true;
-  }
- catch (  Exception e) {
-    LOG.error(e);
-    throw e;
-  }
+  return true;
 }

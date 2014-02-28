@@ -1,5 +1,0 @@
-{
-  super(workUnitState,metadata,type);
-  this.rowsRead=workUnitState.getPropAsLong(ConfigurationKeys.EXTRACTOR_ROWS_READ);
-  this.rowsWritten=workUnitState.getPropAsLong(ConfigurationKeys.WRITER_ROWS_WRITTEN);
-}

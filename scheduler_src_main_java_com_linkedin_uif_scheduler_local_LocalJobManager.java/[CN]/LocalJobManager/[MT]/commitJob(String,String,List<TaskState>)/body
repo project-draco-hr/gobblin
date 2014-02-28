@@ -1,4 +1,7 @@
 {
+  DataPublisher publisher=new HDFSDataPublisher(taskStates.get(0));
+  publisher.initialize();
+  publisher.publishData(taskStates);
   LOG.info("Persisting task states of job " + jobId);
   this.taskStateStore.putAll(jobName,jobId,taskStates);
   this.jobSourceMap.remove(jobId);

@@ -1,4 +1,4 @@
 {
-  PolicyCheckerBuilder builder=new PolicyCheckerBuilderFactory().newPolicyCheckerBuilder(taskState.getWorkunit(),collector);
+  PolicyCheckerBuilder builder=new PolicyCheckerBuilderFactory().newPolicyCheckerBuilder(taskState,collector);
   return builder.build();
 }

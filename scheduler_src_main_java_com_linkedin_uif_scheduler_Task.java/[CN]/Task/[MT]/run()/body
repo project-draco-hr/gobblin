@@ -1,6 +1,7 @@
 {
   Extractor extractor=null;
   DataWriter writer=null;
+  MetaStoreClient metaStoreClient=null;
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
   try {
@@ -25,32 +26,50 @@
     }
     this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
-    MetaStoreClient collector=buildMetaStoreClient(this.taskState);
-    PolicyChecker policyChecker=buildPolicyChecker(this.taskState,collector);
+    metaStoreClient=buildMetaStoreClient(this.taskState);
+    PolicyChecker policyChecker=buildPolicyChecker(this.taskState,metaStoreClient);
     PolicyCheckResults results=policyChecker.executePolicies();
+    TaskPublisher publisher=buildTaskPublisher(this.taskState,results);
+switch (publisher.publish()) {
+case SUCCESS:
+      writer.commit();
     this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-  }
- catch (  Exception e) {
-    LOG.error(String.format("Task %s failed",this.taskId),e);
-  }
+  break;
+default :
+this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+break;
+}
+}
+ catch (Exception e) {
+LOG.error(String.format("Task %s failed",this.taskId),e);
+this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+}
  finally {
-    if (extractor != null) {
-      try {
-        extractor.close();
-      }
- catch (      Exception ioe) {
-      }
-    }
-    if (writer != null) {
-      try {
-        writer.close();
-      }
- catch (      IOException ioe) {
-      }
-    }
-    long endTime=System.currentTimeMillis();
-    this.taskState.setEndTime(endTime);
-    this.taskState.setTaskDuration(endTime - startTime);
-    this.taskStateTracker.onTaskCompletion(this);
-  }
+if (extractor != null) {
+try {
+extractor.close();
+}
+ catch (Exception ioe) {
+}
+}
+if (writer != null) {
+try {
+writer.cleanup();
+writer.close();
+}
+ catch (IOException ioe) {
+}
+}
+if (metaStoreClient != null) {
+try {
+metaStoreClient.close();
+}
+ catch (Exception e) {
+}
+}
+long endTime=System.currentTimeMillis();
+this.taskState.setEndTime(endTime);
+this.taskState.setTaskDuration(endTime - startTime);
+this.taskStateTracker.onTaskCompletion(this);
+}
 }

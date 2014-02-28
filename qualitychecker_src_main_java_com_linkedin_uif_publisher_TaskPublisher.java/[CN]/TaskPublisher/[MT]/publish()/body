@@ -3,27 +3,13 @@
     LOG.info("All components finished successfully, checking quality tests");
     if (passedAllTests()) {
       LOG.info("All required test passed, committing data");
-      if (publishData()) {
-        LOG.info("Data committed successfully, updating metadata");
-        if (publishMetadata()) {
-          LOG.info("Metadata published successfully, cleaning up task");
-          if (cleanup()) {
-            LOG.info("Cleanup executed successfully, finishing task");
-            return PublisherState.SUCCESS;
-          }
- else {
-            LOG.error("Cleanup failed, exiting task");
-            return PublisherState.CLEANUP_FAIL;
-          }
-        }
- else {
-          LOG.error("Publishing metadata failed, exiting task");
-          return PublisherState.METADATA_PUBLISH_FAIL;
-        }
+      if (cleanup()) {
+        LOG.info("Cleanup executed successfully, finishing task");
+        return PublisherState.SUCCESS;
       }
  else {
-        LOG.error("Publishing data failed, exiting task");
-        return PublisherState.DATA_PUBLISH_FAIL;
+        LOG.error("Cleanup failed, exiting task");
+        return PublisherState.CLEANUP_FAIL;
       }
     }
  else {

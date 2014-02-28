@@ -1,0 +1,14 @@
+{
+  TaskState task=(TaskState)state;
+  Path stagingDataDir=new Path(task.getProp(ConfigurationKeys.OUTPUT_DIR_KEY));
+  Path outputDataDir=new Path(task.getProp(ConfigurationKeys.JOB_FINAL_DIR_HDFS));
+  LOG.info("OUTPUT DIR: " + outputDataDir);
+  LOG.info("Staging DIR: " + stagingDataDir);
+  if (!this.fs.exists(outputDataDir)) {
+    fs.mkdirs(outputDataDir);
+  }
+  for (  FileStatus status : fs.listStatus(stagingDataDir)) {
+    if (!this.fs.rename(status.getPath(),new Path(outputDataDir,status.getPath().getName())))     return false;
+  }
+  return true;
+}
