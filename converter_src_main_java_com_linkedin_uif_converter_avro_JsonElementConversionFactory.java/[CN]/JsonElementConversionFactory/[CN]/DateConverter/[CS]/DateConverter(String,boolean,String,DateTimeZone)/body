@@ -1,0 +1,4 @@
+{
+  super(fieldName,nullable);
+  dtf=DateTimeFormat.forPattern(pattern).withZone(zone);
+}

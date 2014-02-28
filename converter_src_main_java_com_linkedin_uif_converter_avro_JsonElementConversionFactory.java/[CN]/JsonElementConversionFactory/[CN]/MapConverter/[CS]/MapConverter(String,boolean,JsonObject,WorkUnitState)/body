@@ -1,0 +1,4 @@
+{
+  super(fieldName,nullable,schemaNode,state);
+  super.setElementConverter(getConvertor(fieldName,schemaNode.get("dataType").getAsJsonObject().get("values").getAsString(),schemaNode.get("dataType").getAsJsonObject(),state));
+}

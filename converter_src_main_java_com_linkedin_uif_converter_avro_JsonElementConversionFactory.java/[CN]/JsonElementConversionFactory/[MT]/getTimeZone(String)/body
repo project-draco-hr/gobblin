@@ -1,0 +1,12 @@
+{
+  DateTimeZone zone;
+  try {
+    zone=DateTimeZone.forID(id);
+  }
+ catch (  IllegalArgumentException e) {
+    TimeZone timeZone=ZoneInfo.getTimeZone(id);
+    if (timeZone == null)     throw new IllegalArgumentException("TimeZone " + id + " not recognized");
+    zone=DateTimeZone.forTimeZone(timeZone);
+  }
+  return zone;
+}
