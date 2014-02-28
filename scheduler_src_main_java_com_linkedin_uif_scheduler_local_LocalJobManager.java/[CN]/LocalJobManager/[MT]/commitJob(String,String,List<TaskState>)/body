@@ -1,4 +1,5 @@
 {
+  LOG.info("Publishing job data of job " + jobId);
   DataPublisher publisher=new HDFSDataPublisher(taskStates.get(0));
   publisher.initialize();
   publisher.publishData(taskStates);
