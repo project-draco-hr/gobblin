@@ -1,5 +1,3 @@
 {
-  LOG.info("URI: " + ConfigurationKeys.FILE_SYSTEM_URI_KEY);
-  LOG.info("VALUE: " + getState().getProp(ConfigurationKeys.FILE_SYSTEM_URI_KEY));
   this.fs=FileSystem.get(new URI(getState().getProp(ConfigurationKeys.FILE_SYSTEM_URI_KEY)),new Configuration());
 }
