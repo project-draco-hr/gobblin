@@ -1,5 +1,5 @@
 {
-  TaskState task=(TaskState)state;
+  WorkUnitState task=(WorkUnitState)state;
   Path stagingDataDir=new Path(task.getProp(ConfigurationKeys.OUTPUT_DIR_KEY));
   Path outputDataDir=new Path(task.getProp(ConfigurationKeys.JOB_FINAL_DIR_HDFS));
   if (!this.fs.exists(outputDataDir)) {
