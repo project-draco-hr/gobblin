@@ -1,4 +1,0 @@
-{
-  LOG.info("Getting simple predicate from salesforce");
-  return column + " " + operator+ " "+ value;
-}
