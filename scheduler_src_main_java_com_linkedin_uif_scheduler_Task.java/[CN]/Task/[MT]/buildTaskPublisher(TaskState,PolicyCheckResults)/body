@@ -1,0 +1,4 @@
+{
+  TaskPublisherBuilder builder=new TaskPublisherBuilderFactory().newTaskPublisherBuilder(taskState,results);
+  return builder.build();
+}

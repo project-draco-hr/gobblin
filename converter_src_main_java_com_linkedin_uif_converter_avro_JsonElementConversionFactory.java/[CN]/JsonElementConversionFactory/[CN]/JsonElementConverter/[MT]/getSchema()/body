@@ -1,0 +1,11 @@
+{
+  if (nullable) {
+    List<Schema> list=new ArrayList<Schema>();
+    list.add(schema());
+    list.add(Schema.create(Schema.Type.NULL));
+    return Schema.createUnion(list);
+  }
+ else {
+    return schema();
+  }
+}

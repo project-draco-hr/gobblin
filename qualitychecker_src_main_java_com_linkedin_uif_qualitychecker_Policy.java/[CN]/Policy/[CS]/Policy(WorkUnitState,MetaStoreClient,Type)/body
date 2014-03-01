@@ -1,6 +1,0 @@
-{
-  this.workUnitState=workUnitState;
-  this.metadata=metadata;
-  this.setType(type);
-  this.setResult(QualityCheckResult.FAILED);
-}

@@ -25,6 +25,6 @@ catch (    IOException e) {
       LOG.error("Failed to load job configuration from file " + jobConfigFile);
     }
   }
-  LOG.info(String.format("Loaded %d job configurations",jobConfigs.size()));
+  LOG.info(String.format(jobConfigs.size() == 1 ? "Loaded %d job configuration" : "Loaded %d job configurations",jobConfigs.size()));
   return jobConfigs;
 }

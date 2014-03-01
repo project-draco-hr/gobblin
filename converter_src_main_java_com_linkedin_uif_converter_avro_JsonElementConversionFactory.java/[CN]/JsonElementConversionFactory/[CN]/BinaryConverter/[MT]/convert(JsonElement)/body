@@ -1,0 +1,8 @@
+{
+  try {
+    return ByteBuffer.wrap(value.getAsString().getBytes(charSet));
+  }
+ catch (  UnsupportedEncodingException e) {
+    throw new RuntimeException(e);
+  }
+}

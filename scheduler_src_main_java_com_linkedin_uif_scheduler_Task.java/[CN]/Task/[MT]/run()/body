@@ -1,7 +1,7 @@
 {
   Extractor extractor=null;
   DataWriter writer=null;
-  MetaStoreClient collector=null;
+  MetaStoreClient metaStoreClient=null;
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
   try {
@@ -26,16 +26,17 @@
     }
     this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
-    collector=buildMetaStoreClient(this.taskState);
-    PolicyChecker policyChecker=buildPolicyChecker(this.taskState,collector);
+    metaStoreClient=buildMetaStoreClient(this.taskState);
+    PolicyChecker policyChecker=buildPolicyChecker(this.taskState,metaStoreClient);
     PolicyCheckResults results=policyChecker.executePolicies();
-    TaskPublisher publisher=buildTaskPublisher(this.taskState,results,collector);
+    TaskPublisher publisher=buildTaskPublisher(this.taskState,results);
 switch (publisher.publish()) {
 case SUCCESS:
-      this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-    break;
+      writer.commit();
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+  break;
 default :
-  this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
 break;
 }
 }
@@ -59,9 +60,9 @@ writer.close();
  catch (IOException ioe) {
 }
 }
-if (collector != null) {
+if (metaStoreClient != null) {
 try {
-collector.close();
+metaStoreClient.close();
 }
  catch (Exception e) {
 }

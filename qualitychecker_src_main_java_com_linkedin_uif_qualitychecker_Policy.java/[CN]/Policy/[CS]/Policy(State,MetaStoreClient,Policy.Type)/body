@@ -1,0 +1,6 @@
+{
+  this.state=state;
+  this.metadata=metadata;
+  this.setType(type);
+  this.setResult(QualityCheckResult.FAILED);
+}

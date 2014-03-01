@@ -1,0 +1,4 @@
+{
+  super(fieldName,nullable);
+  this.charSet=charSet;
+}

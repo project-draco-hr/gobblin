@@ -1,0 +1,7 @@
+{
+  GenericRecord avroRecord=new GenericData.Record(outputSchema);
+  for (  Map.Entry<String,JsonElement> entry : inputRecord.entrySet()) {
+    avroRecord.put(entry.getKey(),converters.get(entry.getKey()).convert(entry.getValue()));
+  }
+  return avroRecord;
+}

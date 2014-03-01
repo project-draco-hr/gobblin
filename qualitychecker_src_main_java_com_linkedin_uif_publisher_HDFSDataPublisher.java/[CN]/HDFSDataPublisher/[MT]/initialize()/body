@@ -1,0 +1,3 @@
+{
+  this.fs=FileSystem.get(new URI(getState().getProp(ConfigurationKeys.FILE_SYSTEM_URI_KEY)),new Configuration());
+}

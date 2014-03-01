@@ -1,6 +1,0 @@
-{
-  super(workUnitState,metadata,type);
-  this.rowsRead=workUnitState.getPropAsLong(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.EXTRACTOR_ROWS_READ);
-  this.rowsWritten=workUnitState.getPropAsLong(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN);
-  this.range=workUnitState.getPropAsDouble(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.ROW_COUNT_RANGE);
-}
