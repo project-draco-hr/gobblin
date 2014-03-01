@@ -1,0 +1,4 @@
+{
+  this.watermarkColumn=watermarkColumn;
+  this.watermarkFormat=watermarkFormat;
+}

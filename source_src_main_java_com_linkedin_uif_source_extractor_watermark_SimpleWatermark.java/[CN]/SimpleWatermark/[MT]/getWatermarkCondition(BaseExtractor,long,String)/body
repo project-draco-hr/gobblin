@@ -1,0 +1,4 @@
+{
+  extractor.getSimplePredicateCondition(watermarkColumn,watermarkValue,operator);
+  return null;
+}

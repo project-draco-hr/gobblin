@@ -1,5 +1,5 @@
 {
   LOG.info("Getting date predicate from salesforce");
-  String Formattedvalue=this.toDateTimeFormat(Long.toString(value),valueFormat,SALESFORCE_DATE_FORMAT);
+  String Formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,SALESFORCE_DATE_FORMAT);
   return column + " " + operator+ " "+ Formattedvalue;
 }

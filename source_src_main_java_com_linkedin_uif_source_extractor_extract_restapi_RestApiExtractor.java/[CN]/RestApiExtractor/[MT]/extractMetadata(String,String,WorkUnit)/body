@@ -5,7 +5,7 @@
   List<String> columnListInQuery=null;
   JsonArray array=null;
   if (!Strings.isNullOrEmpty(inputQuery)) {
-    columnListInQuery=this.getColumnListFromQuery(inputQuery);
+    columnListInQuery=Utils.getColumnListFromQuery(inputQuery);
   }
   try {
     boolean success=this.getConnection();

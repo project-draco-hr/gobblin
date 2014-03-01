@@ -8,7 +8,7 @@
     LOG.info("Start - preparing the extract");
     this.build();
     long endTs=System.currentTimeMillis();
-    LOG.info("End - extract preperation: Time taken: " + this.printTiming(startTs,endTs));
+    LOG.info("End - extract preperation: Time taken: " + Utils.printTiming(startTs,endTs));
   }
  catch (  ExtractPrepareException e) {
     throw new ExtractPrepareException("Failed to prepare extract; error-" + e.getMessage());

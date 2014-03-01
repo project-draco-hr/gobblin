@@ -9,15 +9,13 @@
  else {
     watermarkType=WatermarkType.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE).toUpperCase());
   }
-  if (!this.isValidWatermarkConfigs(watermarkColumn,watermarkType,lwm,hwm)) {
-    throw new ExtractPrepareException("Watermark configs are not valid. Please verify watermarkColumn and watermark types");
-  }
   try {
-    this.predicateColumnFormat=this.getWatermarkSourceFormat(watermarkType);
     this.setTimeOut(this.workUnit.getProp(ConfigurationKeys.SOURCE_TIMEOUT));
     this.extractMetadata(this.schema,this.entity,this.workUnit);
-    this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm,this.predicateColumnFormat);
-    this.setRangePredicates(watermarkColumn,watermarkType,lwm,this.highWatermark);
+    if (!Strings.isNullOrEmpty(watermarkColumn)) {
+      this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
+      this.setRangePredicates(watermarkColumn,watermarkType,lwm,this.highWatermark);
+    }
     this.sourceRecordCount=this.getSourceCount(this.schema,this.entity,this.workUnit,this.predicateList);
   }
  catch (  SchemaException e) {

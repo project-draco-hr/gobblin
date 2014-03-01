@@ -1,4 +1,0 @@
-String watermarkColumn
-WatermarkType watermarkType
-long value
-String operator

@@ -1,0 +1,7 @@
+{
+  long totalMillis=end - start;
+  long mins=TimeUnit.MILLISECONDS.toMinutes(totalMillis);
+  long secs=TimeUnit.MILLISECONDS.toSeconds(totalMillis) - TimeUnit.MINUTES.toSeconds(mins);
+  long millis=TimeUnit.MILLISECONDS.toMillis(totalMillis) - TimeUnit.MINUTES.toMillis(mins) - TimeUnit.SECONDS.toMillis(secs);
+  return String.format("%d min, %d sec, %d millis",mins,secs,millis);
+}
