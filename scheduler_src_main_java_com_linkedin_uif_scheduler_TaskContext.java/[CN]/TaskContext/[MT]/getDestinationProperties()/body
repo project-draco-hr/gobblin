@@ -1,7 +1,7 @@
 {
   Properties properties=new Properties();
   for (  String name : this.workUnit.getPropertyNames()) {
-    if (name.toLowerCase().startsWith(ConfigurationKeys.WRITER_DESTINATION_CONFIG_KEY_PREFIX)) {
+    if (name.toLowerCase().startsWith(ConfigurationKeys.WRITER_PREFIX)) {
       properties.setProperty(name,this.workUnit.getProp(name));
     }
   }

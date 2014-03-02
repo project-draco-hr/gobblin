@@ -15,12 +15,15 @@
   StateStore taskStateStore=(StateStore)dataMap.get(TASK_STATE_STORE_KEY);
   String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
   String jobId="job_" + jobIdSuffix;
-  LOG.info("Starting job " + jobId);
   try {
     com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
     state.addAll(properties);
     Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
-    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore)));
+    SourceState sourceState=new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore));
+    LOG.info("REALSIZE: " + sourceState.getPreviousStates().size());
+    List<WorkUnit> workUnits=source.getWorkunits(sourceState);
+    LOG.info("Output: " + properties.getProperty(ConfigurationKeys.SCHEMA_RETRIEVER_TYPE));
+    SchemaRetriever schemaRetriever=(SchemaRetriever)Class.forName(properties.getProperty(ConfigurationKeys.SCHEMA_RETRIEVER_TYPE)).newInstance();
     jobSourceMap.put(jobId,source);
     jobTaskCountMap.put(jobId,workUnits.size());
     jobTaskStatesMap.put(jobId,new ArrayList<TaskState>(workUnits.size()));
@@ -30,6 +33,7 @@
       WorkUnitState workUnitState=new WorkUnitState(workUnit);
       workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
       workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+      setOldSchema(workUnit,schemaRetriever.getOldSchema(sourceState));
       workUnitManager.addWorkUnit(workUnitState);
     }
   }
