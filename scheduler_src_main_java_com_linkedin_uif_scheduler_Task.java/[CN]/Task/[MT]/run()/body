@@ -31,7 +31,6 @@
     PolicyChecker policyChecker=buildPolicyChecker(this.taskState,metaStoreClient);
     PolicyCheckResults results=policyChecker.executePolicies();
     TaskPublisher publisher=buildTaskPublisher(this.taskState,results);
-    LOG.info("OLD SCHEMA FROM TASK: " + this.taskState.getProp(ConfigurationKeys.WRITER_OLD_OUTPUT_SCHEMA));
 switch (publisher.publish()) {
 case SUCCESS:
       writer.commit();

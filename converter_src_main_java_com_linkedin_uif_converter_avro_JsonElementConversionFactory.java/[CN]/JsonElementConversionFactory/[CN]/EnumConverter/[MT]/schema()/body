@@ -1,0 +1,4 @@
+{
+  schema=Schema.createEnum(enumName,"","",enumSet);
+  return schema;
+}

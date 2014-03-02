@@ -1,7 +1,6 @@
 {
   SourceState sourceState=(SourceState)state;
   String oldSchema=null;
-  LOG.info("SIZE: " + sourceState.getPreviousStates().size());
   for (  State oldState : sourceState.getPreviousStates()) {
     oldSchema=oldState.getProp(ConfigurationKeys.WRITER_OUTPUT_SCHEMA);
     if (oldSchema != null) {

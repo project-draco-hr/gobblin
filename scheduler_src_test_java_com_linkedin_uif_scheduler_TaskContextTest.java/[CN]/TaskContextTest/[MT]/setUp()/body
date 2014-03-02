@@ -1,0 +1,7 @@
+{
+  WorkUnit workUnit=new WorkUnit(null,null);
+  Properties properties=new Properties();
+  properties.load(new StringReader(TEST_JOB_CONFIG));
+  workUnit.addAll(properties);
+  this.taskContext=new TaskContext(new WorkUnitState(workUnit));
+}

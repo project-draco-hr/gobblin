@@ -15,15 +15,19 @@
   StateStore taskStateStore=(StateStore)dataMap.get(TASK_STATE_STORE_KEY);
   String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
   String jobId="job_" + jobIdSuffix;
+  LOG.info("Starting job " + jobId);
   try {
     com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
     state.addAll(properties);
     Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
     SourceState sourceState=new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore));
-    LOG.info("REALSIZE: " + sourceState.getPreviousStates().size());
     List<WorkUnit> workUnits=source.getWorkunits(sourceState);
-    LOG.info("Output: " + properties.getProperty(ConfigurationKeys.SCHEMA_RETRIEVER_TYPE));
     SchemaRetriever schemaRetriever=(SchemaRetriever)Class.forName(properties.getProperty(ConfigurationKeys.SCHEMA_RETRIEVER_TYPE)).newInstance();
+    if (workUnits == null || workUnits.isEmpty()) {
+      LOG.warn("No work units have been created for job " + jobId);
+      jobLockMap.get(jobName).unlock();
+      return;
+    }
     jobSourceMap.put(jobId,source);
     jobTaskCountMap.put(jobId,workUnits.size());
     jobTaskStatesMap.put(jobId,new ArrayList<TaskState>(workUnits.size()));

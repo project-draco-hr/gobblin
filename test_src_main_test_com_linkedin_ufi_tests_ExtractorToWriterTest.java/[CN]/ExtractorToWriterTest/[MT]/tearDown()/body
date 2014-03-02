@@ -1,0 +1,10 @@
+{
+  File stagingDir=new File(TestConstants.TEST_STAGING_DIR);
+  File outputDir=new File(TestConstants.TEST_OUTPUT_DIR);
+  if (stagingDir.exists()) {
+    FileUtil.fullyDelete(stagingDir);
+  }
+  if (outputDir.exists()) {
+    FileUtil.fullyDelete(outputDir);
+  }
+}

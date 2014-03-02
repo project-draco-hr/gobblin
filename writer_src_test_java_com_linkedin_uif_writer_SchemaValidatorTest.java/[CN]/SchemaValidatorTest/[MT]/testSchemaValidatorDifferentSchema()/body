@@ -1,0 +1,6 @@
+{
+  SchemaValidator schemaValidator=new AvroSchemaValidator();
+  Schema.Parser parser1=new Schema.Parser();
+  Schema.Parser parser2=new Schema.Parser();
+  Assert.assertFalse(schemaValidator.validateAgainstOldSchema(parser1.parse(TestConstants.AVRO_SCHEMA),parser2.parse(TestConstants.DIFF_AVRO_SCHEMA)));
+}

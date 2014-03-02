@@ -1,0 +1,11 @@
+{
+  State state=new State();
+  state.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.POLICY_LIST,"com.linkedin.uif.qualitychecker.RowCountPolicy");
+  state.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.POLICY_LIST_TYPE,"MANDATORY");
+  state.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.EXTRACTOR_ROWS_READ,EXTRACTOR_ROWS_READ);
+  state.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN,WRITER_ROWS_WRITTEN);
+  PolicyCheckResults results=getPolicyResults(state);
+  for (  Map.Entry<QualityCheckResult,Policy.Type> entry : results.getPolicyResults().entrySet()) {
+    Assert.assertEquals(entry.getKey(),QualityCheckResult.PASSED);
+  }
+}
