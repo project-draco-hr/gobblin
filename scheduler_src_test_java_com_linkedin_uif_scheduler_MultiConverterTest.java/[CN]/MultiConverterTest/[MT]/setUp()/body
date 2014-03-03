@@ -1,0 +1,4 @@
+{
+  List<Converter<String,?,String,?>> converters=Lists.newArrayList(new SchemaSimplificationConverter(),new IdentityConverter(),new TestConverter());
+  this.multiConverter=new MultiConverter<String,String>(converters);
+}

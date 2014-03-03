@@ -1,0 +1,3 @@
+{
+  this.converters=Lists.newArrayList(converters);
+}
