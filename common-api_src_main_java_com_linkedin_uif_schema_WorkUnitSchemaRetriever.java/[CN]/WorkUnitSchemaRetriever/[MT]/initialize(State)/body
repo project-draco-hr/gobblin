@@ -1,0 +1,4 @@
+{
+  this.sourceState=(SourceState)state;
+  return true;
+}
