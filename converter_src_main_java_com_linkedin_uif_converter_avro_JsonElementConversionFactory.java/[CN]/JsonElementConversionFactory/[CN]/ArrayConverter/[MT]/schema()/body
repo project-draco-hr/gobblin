@@ -1,3 +1,5 @@
 {
-  return Schema.createArray(getElementConverter().schema());
+  Schema schema=Schema.createArray(getElementConverter().schema());
+  schema.addProp("source.type","array");
+  return schema;
 }

@@ -1,3 +1,5 @@
 {
-  return Schema.createMap(getElementConverter().schema());
+  Schema schema=Schema.createMap(getElementConverter().schema());
+  schema.addProp("source.type","map");
+  return schema;
 }

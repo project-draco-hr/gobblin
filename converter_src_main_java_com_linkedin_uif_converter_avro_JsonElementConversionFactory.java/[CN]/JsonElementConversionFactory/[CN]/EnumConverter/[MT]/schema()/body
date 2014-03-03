@@ -1,4 +1,5 @@
 {
   schema=Schema.createEnum(enumName,"","",enumSet);
+  schema.addProp("source.type","enum");
   return schema;
 }

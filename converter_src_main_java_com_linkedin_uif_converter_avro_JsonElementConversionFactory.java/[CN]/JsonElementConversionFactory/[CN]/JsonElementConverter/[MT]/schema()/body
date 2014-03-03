@@ -1,3 +1,5 @@
 {
-  return Schema.create(getTargetType());
+  Schema schema=Schema.create(getTargetType());
+  schema.addProp("source.type",getTargetType().toString().toLowerCase());
+  return schema;
 }
