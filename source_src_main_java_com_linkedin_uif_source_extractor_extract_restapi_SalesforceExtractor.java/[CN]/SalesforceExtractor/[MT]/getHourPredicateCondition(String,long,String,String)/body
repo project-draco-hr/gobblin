@@ -1,0 +1,5 @@
+{
+  LOG.info("Getting hour predicate from salesforce");
+  String Formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,SALESFORCE_HOUR_FORMAT);
+  return column + " " + operator+ " "+ Formattedvalue;
+}

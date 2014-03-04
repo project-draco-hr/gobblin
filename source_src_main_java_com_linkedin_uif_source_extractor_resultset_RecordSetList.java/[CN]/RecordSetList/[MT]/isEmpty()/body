@@ -1,0 +1,6 @@
+{
+  if (this.list.size() == 0) {
+    return true;
+  }
+  return false;
+}

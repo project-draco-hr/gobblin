@@ -1,0 +1,31 @@
+{
+  LOG.debug("Build url to retrieve source record count");
+  String existingPredicate="";
+  if (this.updatedQuery != null) {
+    String queryLowerCase=this.updatedQuery.toLowerCase();
+    int startIndex=queryLowerCase.indexOf(" where ");
+    if (startIndex > 0) {
+      existingPredicate=this.updatedQuery.substring(startIndex);
+    }
+  }
+  String query="SELECT COUNT() FROM " + entity + existingPredicate;
+  try {
+    if (isNullPredicate(predicateList)) {
+      LOG.info("QUERY:" + query);
+      return this.getFullUri(this.getSoqlUrl(query));
+    }
+ else {
+      Iterator<Predicate> i=predicateList.listIterator();
+      while (i.hasNext()) {
+        Predicate predicate=i.next();
+        query=this.addPredicate(query,predicate.getCondition());
+      }
+      LOG.info("QUERY:" + query);
+      return this.getFullUri(this.getSoqlUrl(query));
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new RecordCountException("Failed to get salesforce url for record count; error-" + e.getMessage());
+  }
+}

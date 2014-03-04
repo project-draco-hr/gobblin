@@ -1,0 +1,37 @@
+{
+  LOG.info("URL: " + url);
+  String jsonStr=null;
+  HttpRequestBase httpRequest=new HttpGet(url);
+  addHeaders(httpRequest);
+  HttpEntity httpEntity=null;
+  HttpResponse httpResponse=null;
+  try {
+    httpResponse=this.httpClient.execute(httpRequest);
+    StatusLine status=httpResponse.getStatusLine();
+    httpEntity=httpResponse.getEntity();
+    if (httpEntity != null) {
+      jsonStr=EntityUtils.toString(httpEntity);
+    }
+    if (status.getStatusCode() >= 400) {
+      LOG.info("Unable to get response using: " + url);
+      JsonElement jsonRet=gson.fromJson(jsonStr,JsonArray.class);
+      throw new RestApiProcessingException(this.getFirstErrorMessage("Failed to retrieve response from",jsonRet));
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new RestApiProcessingException("Failed to process rest api request; error-" + e.getMessage());
+  }
+ finally {
+    try {
+      if (httpEntity != null) {
+        EntityUtils.consume(httpEntity);
+      }
+    }
+ catch (    Exception e) {
+      e.printStackTrace();
+      throw new RestApiProcessingException("Failed to consume httpEntity; error-" + e.getMessage());
+    }
+  }
+  return jsonStr;
+}

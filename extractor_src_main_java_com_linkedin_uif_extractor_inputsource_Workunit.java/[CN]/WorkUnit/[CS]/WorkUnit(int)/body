@@ -1,4 +1,0 @@
-{
-  this.priority=priority;
-  this.properties=new Properties();
-}

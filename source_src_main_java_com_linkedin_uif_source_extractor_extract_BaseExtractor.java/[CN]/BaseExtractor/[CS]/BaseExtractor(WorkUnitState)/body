@@ -1,0 +1,16 @@
+{
+  this.workUnitState=workUnitState;
+  this.workUnit=this.workUnitState.getWorkunit();
+  this.schema=this.workUnit.getProp(ConfigurationKeys.SOURCE_SCHEMA);
+  this.entity=this.workUnit.getProp(ConfigurationKeys.SOURCE_ENTITY);
+  try {
+    long startTs=System.currentTimeMillis();
+    LOG.info("Start - preparing the extract");
+    this.build();
+    long endTs=System.currentTimeMillis();
+    LOG.info("End - extract preperation: Time taken: " + Utils.printTiming(startTs,endTs));
+  }
+ catch (  ExtractPrepareException e) {
+    throw new ExtractPrepareException("Failed to prepare extract; error-" + e.getMessage());
+  }
+}

@@ -1,0 +1,14 @@
+{
+  LOG.info("Get source record count from salesforce");
+  JsonElement element=gson.fromJson(response,JsonObject.class);
+  long count;
+  try {
+    JsonObject jsonObject=element.getAsJsonObject();
+    count=jsonObject.get("totalSize").getAsLong();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new RecordCountException("Failed to get record count from salesforce; error-" + e.getMessage());
+  }
+  return count;
+}

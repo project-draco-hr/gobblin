@@ -1,0 +1,7 @@
+{
+  if (jsonObject != null) {
+    jsonObject.remove(key);
+    return jsonObject;
+  }
+  return null;
+}

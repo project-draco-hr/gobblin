@@ -1,0 +1,6 @@
+{
+  if (this.accessToken != null) {
+    httpRequest.addHeader("Authorization","OAuth " + this.accessToken);
+  }
+  httpRequest.addHeader("Content-Type","application/json");
+}

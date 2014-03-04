@@ -1,0 +1,34 @@
+{
+  LOG.info("Get schema from salesforce:" + response);
+  JsonArray fieldJsonArray=new JsonArray();
+  JsonElement element=gson.fromJson(response,JsonObject.class);
+  JsonObject jsonObject=element.getAsJsonObject();
+  try {
+    JsonArray array=jsonObject.getAsJsonArray("fields");
+    for (    JsonElement columnElement : array) {
+      JsonObject field=columnElement.getAsJsonObject();
+      Schema schema=new Schema();
+      schema.setColumnName(field.get("name").getAsString());
+      String dataType=field.get("type").getAsString();
+      String elementDataType="string";
+      List<String> mapSymbols=null;
+      schema.setDataType(this.convertDataType(field.get("name").getAsString(),dataType,elementDataType,mapSymbols));
+      schema.setLength(field.get("length").getAsLong());
+      schema.setPrecision(field.get("precision").getAsInt());
+      schema.setScale(field.get("scale").getAsInt());
+      schema.setNullable(field.get("nillable").getAsBoolean());
+      schema.setFormat(null);
+      schema.setComment((field.get("label").isJsonNull() ? null : field.get("label").getAsString()));
+      schema.setDefaultValue((field.get("defaultValue").isJsonNull() ? null : field.get("defaultValue").getAsString()));
+      schema.setUnique(field.get("unique").getAsBoolean());
+      String jsonStr=gson.toJson(schema);
+      JsonObject obj=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+      fieldJsonArray.add(obj);
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new SchemaException("Failed to get schema from salesforce; error-" + e.getMessage());
+  }
+  return fieldJsonArray;
+}

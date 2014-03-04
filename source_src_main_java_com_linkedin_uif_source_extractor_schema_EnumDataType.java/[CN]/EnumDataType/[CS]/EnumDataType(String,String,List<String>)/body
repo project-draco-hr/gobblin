@@ -1,0 +1,5 @@
+{
+  super(type);
+  this.name=name;
+  this.symbols=symbols;
+}

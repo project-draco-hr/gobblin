@@ -1,0 +1,26 @@
+{
+  if (json == null) {
+    return defaultMessage;
+  }
+  JsonObject jsonObject=null;
+  if (!json.isJsonArray()) {
+    jsonObject=json.getAsJsonObject();
+  }
+ else {
+    JsonArray jsonArray=json.getAsJsonArray();
+    for (int i=0; i < jsonArray.size(); i++) {
+      JsonElement element=jsonArray.get(i);
+      jsonObject=element.getAsJsonObject();
+      break;
+    }
+  }
+  if (jsonObject != null) {
+    if (jsonObject.has("error_description")) {
+      defaultMessage=defaultMessage + jsonObject.get("error_description").getAsString();
+    }
+ else     if (jsonObject.has("message")) {
+      defaultMessage=defaultMessage + jsonObject.get("message").getAsString();
+    }
+  }
+  return defaultMessage;
+}
