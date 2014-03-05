@@ -1,5 +1,0 @@
-{
-  if (oldSchema != null) {
-    workUnit.setProp(ConfigurationKeys.WRITER_OLD_OUTPUT_SCHEMA,oldSchema);
-  }
-}

@@ -1,5 +1,6 @@
 {
-  this.fs=FileSystem.get(uri,new Configuration());
+  Configuration conf=new Configuration();
+  this.fs=FileSystem.get(uri,conf);
   this.stagingFile=new Path(stagingDir,fileName);
   this.outputFile=new Path(outputDir,fileName);
   this.dataConverter=dataConverter;

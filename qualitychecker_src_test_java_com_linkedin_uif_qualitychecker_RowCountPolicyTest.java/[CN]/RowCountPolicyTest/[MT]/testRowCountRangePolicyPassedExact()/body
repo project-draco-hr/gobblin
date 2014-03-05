@@ -6,7 +6,7 @@
   state.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.WRITER_ROWS_WRITTEN,WRITER_ROWS_WRITTEN);
   state.setProp(ConfigurationKeys.QUALITY_CHECKER_PREFIX + ConfigurationKeys.ROW_COUNT_RANGE,"0.05");
   PolicyCheckResults results=getPolicyResults(state);
-  for (  Map.Entry<QualityCheckResult,Policy.Type> entry : results.getPolicyResults().entrySet()) {
-    Assert.assertEquals(entry.getKey(),QualityCheckResult.PASSED);
+  for (  Map.Entry<Policy.Result,Policy.Type> entry : results.getPolicyResults().entrySet()) {
+    Assert.assertEquals(entry.getKey(),Policy.Result.PASSED);
   }
 }
