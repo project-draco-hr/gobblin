@@ -5,7 +5,9 @@
   publisher.publishData(taskStates);
   LOG.info("Persisting job/task states of job " + jobId);
   this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,taskStates);
-  this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,buildJobState(jobId,jobName,taskStates));
+  JobState jobState=buildJobState(jobId,jobName,taskStates);
+  this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
+  this.jobSourceMap.get(jobId).shutdown(jobState);
   this.jobSourceMap.remove(jobId);
   this.jobTaskCountMap.remove(jobId);
   this.jobTaskStatesMap.remove(jobId);
