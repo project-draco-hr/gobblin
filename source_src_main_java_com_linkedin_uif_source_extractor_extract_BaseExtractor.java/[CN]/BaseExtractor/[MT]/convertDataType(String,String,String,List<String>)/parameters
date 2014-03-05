@@ -1,0 +1,4 @@
+String columnName
+String type
+String elementType
+List<String> enumSymbols

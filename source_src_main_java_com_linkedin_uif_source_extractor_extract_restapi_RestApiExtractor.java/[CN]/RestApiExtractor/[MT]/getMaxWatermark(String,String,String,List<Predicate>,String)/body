@@ -1,0 +1,21 @@
+{
+  LOG.info("Get high watermark using Rest Api");
+  long CalculatedHighWatermark=-1;
+  try {
+    boolean success=this.getConnection();
+    if (!success) {
+      throw new HighWatermarkException("Failed to connect.");
+    }
+ else {
+      LOG.debug("Connected successfully.");
+      String url=this.getHighWatermarkMetadata(schema,entity,watermarkColumn,predicateList);
+      String response=this.getResponse(url);
+      CalculatedHighWatermark=this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
+    }
+    LOG.info("High watermark:" + CalculatedHighWatermark);
+    return CalculatedHighWatermark;
+  }
+ catch (  Exception e) {
+    throw new HighWatermarkException("Failed to get high watermark using rest api; error-" + e.getMessage());
+  }
+}

@@ -1,0 +1,5 @@
+{
+  Set<String> set=super.getPropertyNames();
+  set.addAll(workunit.getPropertyNames());
+  return set;
+}

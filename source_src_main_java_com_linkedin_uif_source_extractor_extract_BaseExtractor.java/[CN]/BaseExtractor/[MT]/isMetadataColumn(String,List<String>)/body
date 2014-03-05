@@ -1,0 +1,7 @@
+{
+  columnName=columnName.trim().toLowerCase();
+  if (columnList.contains(columnName)) {
+    return true;
+  }
+  return false;
+}

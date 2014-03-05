@@ -1,0 +1,6 @@
+{
+  if (json.has("id") || json.has("Id") || json.has("ID")|| json.has("iD")) {
+    return true;
+  }
+  return false;
+}

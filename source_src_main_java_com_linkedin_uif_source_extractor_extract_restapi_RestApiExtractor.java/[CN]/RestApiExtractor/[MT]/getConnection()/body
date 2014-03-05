@@ -1,0 +1,4 @@
+{
+  LOG.debug("Connecting to the source using Rest Api");
+  return this.connect();
+}

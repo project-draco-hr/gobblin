@@ -1,0 +1,8 @@
+{
+  JsonArray outputJsonArray=new JsonArray();
+  for (int i=0; i < inputJsonArray.size(); i+=1) {
+    JsonObject jsonObject=inputJsonArray.get(i).getAsJsonObject();
+    outputJsonArray.add(removeElementFromJsonObject(jsonObject,key));
+  }
+  return outputJsonArray;
+}

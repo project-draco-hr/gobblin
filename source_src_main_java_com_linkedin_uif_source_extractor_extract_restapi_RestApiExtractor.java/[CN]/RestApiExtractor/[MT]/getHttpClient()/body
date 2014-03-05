@@ -1,0 +1,6 @@
+{
+  if (httpClient == null) {
+    httpClient=new DefaultHttpClient();
+  }
+  return httpClient;
+}

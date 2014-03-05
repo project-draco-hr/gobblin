@@ -1,0 +1,29 @@
+{
+  if (!this.isPullRequired()) {
+    LOG.debug("No more records");
+    return null;
+  }
+  D nextElement=null;
+  try {
+    if (isInitialPull()) {
+      LOG.debug("initial pull");
+      iterator=this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
+    }
+    if (iterator.hasNext()) {
+      nextElement=iterator.next();
+      if (iterator.hasNext()) {
+      }
+ else {
+        LOG.debug("next pull");
+        iterator=this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
+        if (iterator == null) {
+          this.setFetchStatus(false);
+        }
+      }
+    }
+  }
+ catch (  Exception e) {
+    throw new DataRecordException("Failed to get records using rest api; error-" + e.getMessage());
+  }
+  return nextElement;
+}

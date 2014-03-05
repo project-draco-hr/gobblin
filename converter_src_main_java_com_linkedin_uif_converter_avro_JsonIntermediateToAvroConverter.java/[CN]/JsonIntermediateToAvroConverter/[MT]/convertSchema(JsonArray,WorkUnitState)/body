@@ -13,7 +13,9 @@
  catch (    UnsupportedDateTypeException e) {
       throw new SchemaConversionException(e);
     }
-    fields.add(new Field(columnName,fldSchema,comment,null));
+    Field fld=new Field(columnName,fldSchema,comment,null);
+    fld.addProp("source.type",map.get("dataType").getAsJsonObject().get("type").getAsString());
+    fields.add(fld);
   }
   Schema avroSchema=Schema.createRecord(workUnit.getWorkunit().getExtract().getTable(),"",workUnit.getWorkunit().getExtract().getNamespace(),false);
   avroSchema.setFields(fields);
