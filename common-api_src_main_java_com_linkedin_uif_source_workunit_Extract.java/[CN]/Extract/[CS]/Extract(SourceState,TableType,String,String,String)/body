@@ -5,5 +5,13 @@
     super.setProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY,namespace);
     super.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,table);
     super.setProp(ConfigurationKeys.EXTRACT_EXTRACT_ID_KEY,extractId);
+    if (state.getPreviousStates() != null) {
+      for (      WorkUnitState pre : state.getPreviousStates()) {
+        Extract previousExtract=pre.getWorkunit().getExtract();
+        if (previousExtract.getNamespace().equals(namespace) && previousExtract.getTable().equals(table)) {
+          previousTableState.addAll(pre);
+        }
+      }
+    }
   }
 }
