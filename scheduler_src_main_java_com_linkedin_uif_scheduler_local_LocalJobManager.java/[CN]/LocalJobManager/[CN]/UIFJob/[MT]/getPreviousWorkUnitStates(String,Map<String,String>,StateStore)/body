@@ -3,5 +3,5 @@
     return Lists.newArrayList();
   }
   LOG.info("Loading task states of the most recent run of job " + jobName);
-  return (List<WorkUnitState>)taskStateStore.getAll(jobName,lastJobIdMap.get(jobName));
+  return (List<WorkUnitState>)taskStateStore.getAll(jobName,lastJobIdMap.get(jobName) + TASK_STATE_STORE_TABLE_SUFFIX);
 }

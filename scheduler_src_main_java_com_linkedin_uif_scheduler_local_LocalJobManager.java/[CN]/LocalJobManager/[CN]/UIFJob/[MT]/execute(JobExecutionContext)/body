@@ -11,6 +11,7 @@
   Map<String,Source> jobSourceMap=(Map<String,Source>)dataMap.get(JOB_SOURCE_MAP_KEY);
   Map<String,Integer> jobTaskCountMap=(Map<String,Integer>)dataMap.get(JOB_TASK_COUNT_MAP_KEY);
   Map<String,List<TaskState>> jobTaskStatesMap=(Map<String,List<TaskState>>)dataMap.get(JOB_TASK_STATES_MAP_KEY);
+  Map<String,Long> jobStartTimeMap=(Map<String,Long>)dataMap.get(JOB_START_TIME_MAP_KEY);
   Map<String,String> lastJobIdMap=(Map<String,String>)dataMap.get(LAST_JOB_ID_MAP_KEY);
   StateStore taskStateStore=(StateStore)dataMap.get(TASK_STATE_STORE_KEY);
   String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
@@ -29,6 +30,7 @@
     jobSourceMap.put(jobId,source);
     jobTaskCountMap.put(jobId,workUnits.size());
     jobTaskStatesMap.put(jobId,new ArrayList<TaskState>(workUnits.size()));
+    jobStartTimeMap.put(jobId,System.currentTimeMillis());
     int sequence=0;
     for (    WorkUnit workUnit : workUnits) {
       String taskId=String.format("task_%s_%d",jobIdSuffix,sequence++);
@@ -42,6 +44,7 @@
     jobSourceMap.remove(jobId);
     jobTaskCountMap.remove(jobId);
     jobTaskStatesMap.remove(jobId);
+    jobStartTimeMap.remove(jobId);
     try {
       jobLockMap.get(jobName).unlock();
     }

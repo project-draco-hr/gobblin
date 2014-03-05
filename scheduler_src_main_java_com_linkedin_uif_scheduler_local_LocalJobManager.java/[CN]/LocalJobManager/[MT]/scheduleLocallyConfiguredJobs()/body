@@ -8,6 +8,7 @@
     jobDataMap.put(JOB_SOURCE_MAP_KEY,this.jobSourceMap);
     jobDataMap.put(JOB_TASK_COUNT_MAP_KEY,this.jobTaskCountMap);
     jobDataMap.put(JOB_TASK_STATES_MAP_KEY,this.jobTaskStatesMap);
+    jobDataMap.put(JOB_START_TIME_MAP_KEY,this.jobStartTimeMap);
     jobDataMap.put(LAST_JOB_ID_MAP_KEY,this.lastJobIdMap);
     jobDataMap.put(TASK_STATE_STORE_KEY,this.taskStateStore);
     JobDetail job=JobBuilder.newJob(UIFJob.class).withIdentity(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();

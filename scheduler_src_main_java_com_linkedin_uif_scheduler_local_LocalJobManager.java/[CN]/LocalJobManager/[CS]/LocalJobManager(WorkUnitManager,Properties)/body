@@ -6,6 +6,8 @@
   this.jobSourceMap=Maps.newHashMap();
   this.jobTaskCountMap=Maps.newHashMap();
   this.jobTaskStatesMap=Maps.newHashMap();
+  this.jobStartTimeMap=Maps.newHashMap();
   this.lastJobIdMap=Maps.newHashMap();
-  this.taskStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.TASK_STATE_STORE_FS_URI_KEY),properties.getProperty(ConfigurationKeys.TASK_STATE_STORE_ROOT_DIR_KEY),TaskState.class);
+  this.jobStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
+  this.taskStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),TaskState.class);
 }
