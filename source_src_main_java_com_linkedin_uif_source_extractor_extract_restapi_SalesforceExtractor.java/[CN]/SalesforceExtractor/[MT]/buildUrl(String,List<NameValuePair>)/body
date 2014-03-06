@@ -1,0 +1,18 @@
+{
+  URIBuilder builder=new URIBuilder();
+  builder.setPath(path);
+  ListIterator<NameValuePair> i=qparams.listIterator();
+  while (i.hasNext()) {
+    NameValuePair keyValue=i.next();
+    builder.setParameter(keyValue.getName(),keyValue.getValue());
+  }
+  URI uri;
+  try {
+    uri=builder.build();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new RestApiClientException("Failed to build url; error-" + e.getMessage());
+  }
+  return new HttpGet(uri).getURI().toString();
+}

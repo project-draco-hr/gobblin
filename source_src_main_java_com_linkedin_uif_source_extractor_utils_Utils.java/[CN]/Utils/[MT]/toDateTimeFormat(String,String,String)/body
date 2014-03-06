@@ -1,0 +1,12 @@
+{
+  Date date=null;
+  SimpleDateFormat infmt=new SimpleDateFormat(inputfmt);
+  try {
+    date=infmt.parse(input);
+  }
+ catch (  ParseException e) {
+    e.printStackTrace();
+  }
+  SimpleDateFormat outFormat=new SimpleDateFormat(outputfmt);
+  return outFormat.format(date);
+}

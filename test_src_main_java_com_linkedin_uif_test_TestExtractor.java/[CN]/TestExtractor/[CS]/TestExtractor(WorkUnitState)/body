@@ -1,5 +1,4 @@
 {
-  super(workUnitState);
   Schema schema=new Schema.Parser().parse(AVRO_SCHEMA);
   File sourceFile=new File(workUnitState.getWorkunit().getProp(SOURCE_FILE_KEY));
   LOG.info("Reading from source file " + sourceFile);

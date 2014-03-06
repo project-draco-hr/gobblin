@@ -1,0 +1,3 @@
+{
+  return extractor.getHourPredicateCondition(this.watermarkColumn,watermarkValue,this.watermarkFormat,operator);
+}

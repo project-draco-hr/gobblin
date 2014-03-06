@@ -1,0 +1,4 @@
+String watermarkColumn
+WatermarkType watermarkType
+long lwmValue
+long hwmValue

@@ -1,7 +1,9 @@
 {
   PolicyCheckResults results=new PolicyCheckResults();
   for (  Policy p : this.list) {
-    results.getPolicyResults().put(p.executePolicy(),p.getType());
+    Policy.Result result=p.executePolicy();
+    results.getPolicyResults().put(result,p.getType());
+    LOG.info("Policy " + p + " of type "+ p.getType()+ " executed with result "+ result);
   }
   return results;
 }

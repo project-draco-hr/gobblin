@@ -1,0 +1,47 @@
+{
+  ByteArrayOutputStream baos=null;
+  DataOutputStream dos=null;
+  ByteArrayInputStream bais=null;
+  DataInputStream dis=null;
+  try {
+    baos=new ByteArrayOutputStream();
+    dos=new DataOutputStream(baos);
+    this.taskState.write(dos);
+    bais=new ByteArrayInputStream(baos.toByteArray());
+    dis=new DataInputStream(bais);
+    TaskState newTaskState=new TaskState();
+    newTaskState.readFields(dis);
+    Assert.assertEquals(newTaskState.getJobId(),"Job-1");
+    Assert.assertEquals(newTaskState.getTaskId(),"Task-1");
+    Assert.assertEquals(this.taskState.getHighWaterMark(),2000);
+    Assert.assertEquals(newTaskState.getStartTime(),this.startTime);
+    Assert.assertEquals(newTaskState.getEndTime(),this.startTime + 1000);
+    Assert.assertEquals(newTaskState.getTaskDuration(),1000);
+    Assert.assertEquals(newTaskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
+    Assert.assertEquals(newTaskState.getProp("foo"),"bar");
+  }
+  finally {
+    if (baos != null) {
+      try {
+        baos.close();
+      }
+ catch (      IOException ioe) {
+      }
+    }
+    if (dos != null) {
+      try {
+        dos.close();
+      }
+ catch (      IOException ioe) {
+      }
+    }
+    if (bais != null) {
+      try {
+        bais.close();
+      }
+ catch (      IOException ioe) {
+      }
+    }
+    dis.close();
+  }
+}

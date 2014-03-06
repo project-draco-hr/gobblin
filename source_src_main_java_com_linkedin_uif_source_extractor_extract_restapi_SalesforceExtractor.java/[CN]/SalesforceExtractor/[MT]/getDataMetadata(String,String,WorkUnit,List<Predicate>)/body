@@ -1,0 +1,28 @@
+{
+  LOG.debug("Build url to retrieve data records");
+  String query=this.updatedQuery;
+  String url=null;
+  try {
+    if (this.getNextUrl() != null && this.pullStatus == true) {
+      url=this.getNextUrl();
+    }
+ else {
+      if (isNullPredicate(predicateList)) {
+        LOG.info("QUERY:" + query);
+        return this.getFullUri(this.getSoqlUrl(query));
+      }
+      Iterator<Predicate> i=predicateList.listIterator();
+      while (i.hasNext()) {
+        Predicate predicate=i.next();
+        query=this.addPredicate(query,predicate.getCondition());
+      }
+      LOG.info("QUERY:" + query);
+      url=this.getFullUri(this.getSoqlUrl(query));
+    }
+    return url;
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new DataRecordException("Failed to get salesforce url for data records; error-" + e.getMessage());
+  }
+}

@@ -1,0 +1,4 @@
+{
+  LOG.debug("Build url to retrieve schema");
+  return this.getFullUri("/sobjects/" + entity.trim() + "/describe");
+}

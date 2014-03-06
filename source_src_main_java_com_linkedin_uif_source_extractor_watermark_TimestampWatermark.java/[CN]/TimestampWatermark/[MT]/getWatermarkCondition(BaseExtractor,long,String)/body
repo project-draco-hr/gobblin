@@ -1,0 +1,3 @@
+{
+  return extractor.getTimestampPredicateCondition(this.watermarkColumn,watermarkValue,this.watermarkFormat,operator);
+}

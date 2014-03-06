@@ -1,0 +1,5 @@
+{
+  super(state,type);
+  this.state=state;
+  this.previousState=this.getPreviousTableState();
+}

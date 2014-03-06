@@ -1,0 +1,6 @@
+{
+  if (predicateList == null || predicateList.size() == 0) {
+    return true;
+  }
+  return false;
+}

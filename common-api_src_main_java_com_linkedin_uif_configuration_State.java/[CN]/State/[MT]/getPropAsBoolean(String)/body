@@ -1,3 +1,3 @@
 {
-  return Boolean.valueOf(properties.getProperty(key));
+  return Boolean.valueOf(getProperty(key));
 }

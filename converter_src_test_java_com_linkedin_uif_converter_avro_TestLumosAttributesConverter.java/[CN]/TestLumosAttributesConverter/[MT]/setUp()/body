@@ -1,0 +1,14 @@
+{
+  Schema.Parser parser=new Schema.Parser();
+  schema=parser.parse(this.getClass().getResourceAsStream("/avro.avsc"));
+  SourceState source=new SourceState();
+  Extract extract=source.createExtract(TableType.SNAPSHOT_ONLY,"test_namespace","test_table",String.valueOf(extractId));
+  extract.setPrimaryKeys("Id");
+  extract.setDeltaFields("LastModifiedDate");
+  extract.setValidationRecordCount(validationRecordCount,validationCountHWM);
+  extract.setIsSecured("sgroup");
+  state=new WorkUnitState(source.createWorkUnit(extract));
+  extract=new Extract(extract);
+  extract.setFullTrue(fullRuntime);
+  state2=new WorkUnitState(source.createWorkUnit(extract));
+}

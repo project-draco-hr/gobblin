@@ -1,9 +1,9 @@
 {
+  Extract extract=new Extract(state,TableType.SNAPSHOT_ONLY,"com.linkedin.uif.test","TestTable","1");
   String sourceFileList=state.getProp(SOURCE_FILE_LIST_KEY);
   List<WorkUnit> workUnits=Lists.newArrayList();
   for (  String sourceFile : SPLITTER.split(sourceFileList)) {
-    WorkUnit workUnit=new WorkUnit(null,null);
-    workUnit.addAll(state);
+    WorkUnit workUnit=new WorkUnit(state,extract);
     workUnit.setProp(SOURCE_FILE_KEY,sourceFile);
     workUnits.add(workUnit);
   }

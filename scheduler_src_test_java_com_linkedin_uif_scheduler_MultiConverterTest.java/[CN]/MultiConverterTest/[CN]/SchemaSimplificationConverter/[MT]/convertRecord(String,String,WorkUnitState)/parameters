@@ -1,0 +1,3 @@
+String outputSchema
+String inputRecord
+WorkUnitState workUnit

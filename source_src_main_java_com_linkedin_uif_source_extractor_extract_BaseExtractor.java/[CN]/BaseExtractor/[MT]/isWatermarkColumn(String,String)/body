@@ -1,0 +1,12 @@
+{
+  if (columnName != null) {
+    columnName=columnName.toLowerCase();
+  }
+  if (!Strings.isNullOrEmpty(watermarkColumn)) {
+    List<String> waterMarkColumnList=Arrays.asList(watermarkColumn.toLowerCase().split(","));
+    if (waterMarkColumnList.contains(columnName)) {
+      return true;
+    }
+  }
+  return false;
+}
