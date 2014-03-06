@@ -1,0 +1,20 @@
+{
+  Text text=new Text();
+  text.readFields(in);
+  this.jobName=text.toString();
+  text.readFields(in);
+  this.jobId=text.toString();
+  this.setId(jobId);
+  this.startTime=in.readLong();
+  this.endTime=in.readLong();
+  this.duration=in.readLong();
+  text.readFields(in);
+  this.state=RunningState.valueOf(text.toString());
+  int numTaskStates=in.readInt();
+  if (numTaskStates > 0) {
+    TaskState taskState=new TaskState();
+    taskState.readFields(in);
+    this.taskStates.add(taskState);
+  }
+  super.readFields(in);
+}

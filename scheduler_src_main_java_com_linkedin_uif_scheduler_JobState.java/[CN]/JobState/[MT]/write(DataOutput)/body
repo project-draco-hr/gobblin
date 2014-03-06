@@ -1,0 +1,17 @@
+{
+  Text text=new Text();
+  text.set(this.jobName);
+  text.write(out);
+  text.set(this.jobId);
+  text.write(out);
+  out.writeLong(this.startTime);
+  out.writeLong(this.endTime);
+  out.writeLong(this.duration);
+  text.set(this.state.name());
+  text.write(out);
+  out.writeInt(this.taskStates.size());
+  for (  TaskState taskState : taskStates) {
+    taskState.write(out);
+  }
+  super.write(out);
+}

@@ -1,0 +1,6 @@
+{
+  this.jobName=jobName;
+  this.jobId=jobId;
+  this.setId(jobId);
+  this.taskStates=Lists.newArrayList();
+}
