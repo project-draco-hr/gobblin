@@ -1,7 +1,7 @@
 {
   Path storePath=new Path(this.storeRootDir,storeName);
   if (!this.fs.exists(storePath)) {
-    throw new IOException(String.format("Task state store directory %s does not exist for job %s",storePath,storeName));
+    throw new IOException(String.format("Store directory %s does not exist for store %s",storePath,storeName));
   }
   List<State> taskStates=Lists.newArrayList();
   for (  FileStatus status : this.fs.listStatus(storePath)) {

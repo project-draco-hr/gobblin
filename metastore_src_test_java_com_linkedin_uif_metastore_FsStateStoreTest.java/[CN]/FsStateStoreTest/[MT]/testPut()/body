@@ -1,0 +1,16 @@
+{
+  List<State> states=Lists.newArrayList();
+  State state1=new State();
+  state1.setId("s1");
+  state1.setProp("k1","v1");
+  states.add(state1);
+  State state2=new State();
+  state2.setId("s2");
+  state2.setProp("k2","v2");
+  states.add(state2);
+  State state3=new State();
+  state3.setId("s3");
+  state3.setProp("k3","v3");
+  states.add(state3);
+  this.stateStore.putAll("testStore","testTable",states);
+}
