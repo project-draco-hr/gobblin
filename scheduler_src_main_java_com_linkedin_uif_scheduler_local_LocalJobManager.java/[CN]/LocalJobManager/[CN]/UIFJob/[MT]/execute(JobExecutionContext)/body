@@ -8,6 +8,7 @@
     return;
   }
   WorkUnitManager workUnitManager=(WorkUnitManager)dataMap.get(WORK_UNIT_MANAGER_KEY);
+  Map<String,Class<SourceWrapperBase>> sourceWrapperMap=(Map<String,Class<SourceWrapperBase>>)dataMap.get(SOURCE_WRAPPER_MAP_KEY);
   Map<String,Source> jobSourceMap=(Map<String,Source>)dataMap.get(JOB_SOURCE_MAP_KEY);
   Map<String,Integer> jobTaskCountMap=(Map<String,Integer>)dataMap.get(JOB_TASK_COUNT_MAP_KEY);
   Map<String,List<TaskState>> jobTaskStatesMap=(Map<String,List<TaskState>>)dataMap.get(JOB_TASK_STATES_MAP_KEY);
@@ -20,8 +21,9 @@
   try {
     com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
     state.addAll(properties);
-    Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
     SourceState sourceState=new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore));
+    SourceWrapperBase source=sourceWrapperMap.get(properties.getProperty(ConfigurationKeys.SOURCE_WRAPPER_CLASS_KEY,ConfigurationKeys.DEFAULT_SOURCE_WRAPPER).toLowerCase()).newInstance();
+    source.init(sourceState);
     List<WorkUnit> workUnits=source.getWorkunits(sourceState);
     if (workUnits == null || workUnits.isEmpty()) {
       LOG.warn("No work units have been created for job " + jobId);

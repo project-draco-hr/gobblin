@@ -5,6 +5,7 @@
     jobDataMap.put(PROPERTIES_KEY,properties);
     jobDataMap.put(WORK_UNIT_MANAGER_KEY,this.workUnitManager);
     jobDataMap.put(JOB_LOCK_MAP_KEY,this.jobLockMap);
+    jobDataMap.put(SOURCE_WRAPPER_MAP_KEY,this.sourceWrapperMap);
     jobDataMap.put(JOB_SOURCE_MAP_KEY,this.jobSourceMap);
     jobDataMap.put(JOB_TASK_COUNT_MAP_KEY,this.jobTaskCountMap);
     jobDataMap.put(JOB_TASK_STATES_MAP_KEY,this.jobTaskStatesMap);
