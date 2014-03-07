@@ -13,5 +13,10 @@
     jobDataMap.put(TASK_STATE_STORE_KEY,this.taskStateStore);
     JobDetail job=JobBuilder.newJob(UIFJob.class).withIdentity(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(properties.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
     this.scheduler.scheduleJob(job,getTrigger(job.getKey(),properties));
+    boolean runOnce=Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+    if (runOnce) {
+      this.runOnceJobs.put(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),job.getKey());
+      this.runOnceJobConfigFiles.put(properties.getProperty(ConfigurationKeys.JOB_NAME_KEY),properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY));
+    }
   }
 }

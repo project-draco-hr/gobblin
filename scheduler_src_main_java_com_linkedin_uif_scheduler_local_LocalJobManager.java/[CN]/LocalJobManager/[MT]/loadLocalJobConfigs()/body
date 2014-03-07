@@ -15,7 +15,9 @@
   for (  String jobConfigFile : jobConfigFiles) {
     Properties properties=new Properties(this.properties);
     try {
-      properties.load(new FileReader(new File(jobConfigFileDir,jobConfigFile)));
+      File file=new File(jobConfigFileDir,jobConfigFile);
+      properties.load(new FileReader(file));
+      properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       jobConfigs.add(properties);
     }
  catch (    FileNotFoundException e) {
