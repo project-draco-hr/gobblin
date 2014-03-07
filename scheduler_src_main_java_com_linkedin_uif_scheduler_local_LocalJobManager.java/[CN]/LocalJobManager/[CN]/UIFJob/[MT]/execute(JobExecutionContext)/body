@@ -21,7 +21,8 @@
     com.linkedin.uif.configuration.State state=new com.linkedin.uif.configuration.State();
     state.addAll(properties);
     Source<?,?> source=(Source<?,?>)Class.forName(properties.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
-    List<WorkUnit> workUnits=source.getWorkunits(new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore)));
+    SourceState sourceState=new SourceState(state,getPreviousWorkUnitStates(jobName,lastJobIdMap,taskStateStore));
+    List<WorkUnit> workUnits=source.getWorkunits(sourceState);
     if (workUnits == null || workUnits.isEmpty()) {
       LOG.warn("No work units have been created for job " + jobId);
       jobLockMap.get(jobName).unlock();

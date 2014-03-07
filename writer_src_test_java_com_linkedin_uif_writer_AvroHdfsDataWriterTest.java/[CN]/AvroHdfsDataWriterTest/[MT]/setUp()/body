@@ -15,5 +15,5 @@
   properties.setProperty(ConfigurationKeys.FILE_NAME_KEY,TestConstants.TEST_FILE_NAME);
   SchemaConverter<String,Schema> schemaConverter=new TestSchemaConverter();
   this.schema=schemaConverter.convert(TestConstants.AVRO_SCHEMA);
-  this.writer=new DataWriterBuilderFactory().newDataWriterBuilder(WriterOutputFormat.AVRO).writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).useDataConverter(new TestDataConverter(schemaConverter.convert(TestConstants.AVRO_SCHEMA))).useSchemaConverter(new TestSchemaConverter()).withSourceSchema(TestConstants.AVRO_SCHEMA,SchemaType.AVRO).build();
+  this.writer=new DataWriterBuilderFactory().newDataWriterBuilder(WriterOutputFormat.AVRO).writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).useDataConverter(new TestDataConverter(schemaConverter.convert(TestConstants.AVRO_SCHEMA))).useSchemaConverter(new TestSchemaConverter()).withSourceSchema(TestConstants.AVRO_SCHEMA).build();
 }

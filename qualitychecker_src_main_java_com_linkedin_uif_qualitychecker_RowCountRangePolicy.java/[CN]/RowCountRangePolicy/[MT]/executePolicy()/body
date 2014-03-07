@@ -1,8 +1,0 @@
-{
-  if (Math.abs((this.rowsWritten - this.rowsRead) / this.rowsRead) <= this.range) {
-    return QualityCheckResult.PASSED;
-  }
- else {
-    return QualityCheckResult.FAILED;
-  }
-}

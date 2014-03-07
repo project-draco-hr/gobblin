@@ -1,8 +1,0 @@
-{
-  if (this.rowsRead == this.rowsWritten) {
-    return QualityCheckResult.PASSED;
-  }
- else {
-    return QualityCheckResult.FAILED;
-  }
-}

@@ -1,0 +1,8 @@
+{
+  if (Math.abs((this.rowsWritten - this.rowsRead) / this.rowsRead) <= this.range) {
+    return Result.PASSED;
+  }
+ else {
+    return Result.FAILED;
+  }
+}

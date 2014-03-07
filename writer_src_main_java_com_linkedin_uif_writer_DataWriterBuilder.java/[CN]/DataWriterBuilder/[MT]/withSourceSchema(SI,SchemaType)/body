@@ -1,5 +1,0 @@
-{
-  this.sourceSchema=sourceSchema;
-  this.schemaType=schemaType;
-  return this;
-}

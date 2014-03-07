@@ -4,7 +4,9 @@
     JobCommitPolicy commitPolicy=JobCommitPolicy.forName(properties.getProperty(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
     if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.COMMITTED)) {
       LOG.info("Publishing job data of job " + jobId);
-      DataPublisher publisher=new HDFSDataPublisher(taskStates.get(0));
+      Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(taskStates.get(0).getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE));
+      Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(com.linkedin.uif.configuration.State.class);
+      DataPublisher publisher=dataPublisherConstructor.newInstance(taskStates.get(0));
       publisher.initialize();
       publisher.publishData(taskStates);
     }

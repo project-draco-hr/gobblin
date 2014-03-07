@@ -4,7 +4,6 @@
   Preconditions.checkNotNull(this.dataConverter);
   Preconditions.checkNotNull(this.schemaConverter);
   Preconditions.checkNotNull(this.sourceSchema);
-  Preconditions.checkNotNull(this.schemaType);
   Preconditions.checkArgument(this.format == WriterOutputFormat.AVRO);
   Schema schema;
   try {
@@ -12,9 +11,6 @@
   }
  catch (  SchemaConversionException e) {
     throw new IOException("Failed to convert the source schema: " + this.sourceSchema);
-  }
-  if (!this.schemaType.getSchemaValidator().validate(schema)) {
-    throw new IOException(String.format("Schema of type %s could not be validated",this.schemaType.name()));
   }
 switch (this.destination.getType()) {
 case HDFS:

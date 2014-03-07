@@ -1,0 +1,4 @@
+{
+  super(state,type);
+  this.schema=new Schema.Parser().parse(state.getProp(ConfigurationKeys.EXTRACT_SCHEMA));
+}
