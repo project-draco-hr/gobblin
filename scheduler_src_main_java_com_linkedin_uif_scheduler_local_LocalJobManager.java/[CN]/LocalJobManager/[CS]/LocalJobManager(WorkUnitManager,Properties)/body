@@ -3,7 +3,9 @@
   this.properties=properties;
   this.scheduler=new StdSchedulerFactory().getScheduler();
   this.jobLockMap=Maps.newConcurrentMap();
+  this.sourceWrapperMap=Maps.newHashMap();
   this.jobSourceMap=Maps.newHashMap();
+  populateSourceWrapperMap(properties,sourceWrapperMap);
   this.jobTaskCountMap=Maps.newHashMap();
   this.jobTaskStatesMap=Maps.newHashMap();
   this.jobStartTimeMap=Maps.newHashMap();
