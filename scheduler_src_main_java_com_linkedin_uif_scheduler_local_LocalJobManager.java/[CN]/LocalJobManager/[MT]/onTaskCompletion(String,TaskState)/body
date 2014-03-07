@@ -1,14 +1,15 @@
 {
-  if (!this.jobTaskStatesMap.containsKey(jobId)) {
+  if (!this.jobStateMap.containsKey(jobId)) {
     LOG.error(String.format("Job %s could not be found",jobId));
     return;
   }
-  this.jobTaskStatesMap.get(jobId).add(taskState);
-  if (this.jobTaskStatesMap.get(jobId).size() == this.jobTaskCountMap.get(jobId)) {
+  JobState jobState=this.jobStateMap.get(jobId);
+  jobState.addTaskState(taskState);
+  if (jobState.getCompletedTasks() == jobState.getTasks()) {
     LOG.info(String.format("All tasks of job %s have completed, committing it",jobId));
     String jobName=taskState.getWorkunit().getProp(ConfigurationKeys.JOB_NAME_KEY);
     try {
-      commitJob(jobId,jobName,this.jobTaskStatesMap.get(jobId));
+      commitJob(jobId,jobName,getFinalJobState(jobState));
     }
  catch (    Exception e) {
       LOG.error("Failed to commit job " + jobId,e);
