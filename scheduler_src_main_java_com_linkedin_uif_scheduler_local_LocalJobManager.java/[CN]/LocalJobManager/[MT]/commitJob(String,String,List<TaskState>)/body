@@ -1,19 +1,32 @@
 {
-  LOG.info("Persisting job/task states of job " + jobId);
-  this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,taskStates);
   JobState jobState=buildJobState(jobId,jobName,taskStates);
-  this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
-  JobCommitPolicy commitPolicy=JobCommitPolicy.forName(properties.getProperty(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
-  if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.COMMITTED)) {
-    LOG.info("Publishing job data of job " + jobId);
-    DataPublisher publisher=new HDFSDataPublisher(taskStates.get(0));
-    publisher.initialize();
-    publisher.publishData(taskStates);
+  try {
+    JobCommitPolicy commitPolicy=JobCommitPolicy.forName(properties.getProperty(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+    if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.COMMITTED)) {
+      LOG.info("Publishing job data of job " + jobId);
+      DataPublisher publisher=new HDFSDataPublisher(taskStates.get(0));
+      publisher.initialize();
+      publisher.publishData(taskStates);
+    }
   }
-  this.jobSourceMap.get(jobId).shutdown(jobState);
-  this.jobSourceMap.remove(jobId);
-  this.jobTaskCountMap.remove(jobId);
-  this.jobTaskStatesMap.remove(jobId);
-  this.lastJobIdMap.put(jobName,jobId);
-  this.jobLockMap.get(jobName).unlock();
+ catch (  Exception e) {
+    jobState.setState(JobState.RunningState.FAILED);
+    LOG.info("Failed to publish job data of job " + jobId);
+  }
+ finally {
+    try {
+      LOG.info("Persisting job/task states of job " + jobId);
+      this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,taskStates);
+      this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
+    }
+ catch (    IOException ioe) {
+      LOG.error("Failed to persist job/task states of job " + jobId);
+    }
+    this.jobSourceMap.remove(jobId).shutdown(jobState);
+    this.jobTaskCountMap.remove(jobId);
+    this.jobTaskStatesMap.remove(jobId);
+    this.jobStartTimeMap.remove(jobId);
+    this.lastJobIdMap.put(jobName,jobId);
+    this.jobLockMap.get(jobName).unlock();
+  }
 }
