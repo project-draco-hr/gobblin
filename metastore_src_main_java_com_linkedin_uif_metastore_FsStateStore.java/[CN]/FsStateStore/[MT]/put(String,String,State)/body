@@ -1,7 +1,7 @@
 {
   Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
   if (!this.fs.exists(tablePath) && !create(storeName,tableName)) {
-    throw new IOException("Failed to create a task state file for job " + tableName);
+    throw new IOException("Failed to create a state file for table " + tableName);
   }
   SequenceFile.Writer writer=null;
   try {

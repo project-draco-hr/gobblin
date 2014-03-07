@@ -1,0 +1,7 @@
+{
+  FileSystem fs=FileSystem.getLocal(new Configuration(false));
+  Path rootDir=new Path("metastore-test");
+  if (fs.exists(rootDir)) {
+    fs.delete(rootDir,true);
+  }
+}

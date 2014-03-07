@@ -5,7 +5,7 @@
   }
   Path tablePath=new Path(storePath,tableName);
   if (this.fs.exists(tablePath)) {
-    throw new IOException(String.format("Task state file %s already exists for job %s",tablePath,tableName));
+    throw new IOException(String.format("State file %s already exists for table %s",tablePath,tableName));
   }
   return this.fs.createNewFile(tablePath);
 }

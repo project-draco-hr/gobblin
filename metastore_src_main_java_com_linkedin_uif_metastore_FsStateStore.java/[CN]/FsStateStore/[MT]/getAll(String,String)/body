@@ -1,7 +1,7 @@
 {
   Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
   if (!this.fs.exists(tablePath)) {
-    throw new IOException(String.format("Task state file %s does not exist for job %s",tablePath,tableName));
+    throw new IOException(String.format("State file %s does not exist for table %s",tablePath,tableName));
   }
   List<State> states=Lists.newArrayList();
   SequenceFile.Reader reader=null;
