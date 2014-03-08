@@ -3,6 +3,7 @@
   DataWriter writer=null;
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
+  boolean shouldCommit=false;
   try {
     extractor=this.taskContext.getSource().getExtractor(this.taskState);
     boolean doConversion=!this.taskContext.getConverters().isEmpty();
@@ -31,20 +32,20 @@
     TaskPublisher publisher=buildTaskPublisher(this.taskState,results);
 switch (publisher.canPublish()) {
 case SUCCESS:
-      LOG.info("Task finished successfully, committing Task data");
-    writer.commit();
+      LOG.info("Committing data of task " + this.taskId);
+    shouldCommit=true;
   this.taskState.setWorkingState(WorkUnitState.WorkingState.SUCCESSFUL);
 break;
 case CLEANUP_FAIL:
-LOG.error("Task cleanup failed, exiting task");
+LOG.error("Cleanup failed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
 break;
 case POLICY_TESTS_FAIL:
-LOG.error("All tests did not passed, exiting task");
+LOG.error("Not all quality checking passed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
 break;
 case COMPONENTS_NOT_FINISHED:
-LOG.error("All components did not finish, exiting task");
+LOG.error("Not all components completed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
 break;
 default :
@@ -66,8 +67,11 @@ extractor.close();
 }
 if (writer != null) {
 try {
-writer.cleanup();
 writer.close();
+if (shouldCommit) {
+writer.commit();
+}
+writer.cleanup();
 }
  catch (IOException ioe) {
 }
