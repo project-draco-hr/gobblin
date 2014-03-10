@@ -1,0 +1,52 @@
+{
+  try {
+    JobCommitPolicy commitPolicy=JobCommitPolicy.forName(jobState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+    if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.SUCCESSFUL)) {
+      LOG.info("Publishing job data of job " + jobId);
+      Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE));
+      Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(com.linkedin.uif.configuration.State.class);
+      DataPublisher publisher=dataPublisherConstructor.newInstance(jobState);
+      publisher.initialize();
+      publisher.publishData(jobState);
+      jobState.setState(JobState.RunningState.COMMITTED);
+    }
+  }
+ catch (  Exception e) {
+    jobState.setState(JobState.RunningState.FAILED);
+    LOG.error("Failed to publish job data of job " + jobId,e);
+  }
+ finally {
+    try {
+      LOG.info("Persisting job/task states of job " + jobId);
+      this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,jobState.getTaskStates());
+      this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
+    }
+ catch (    IOException ioe) {
+      LOG.error("Failed to persist job/task states of job " + jobId,ioe);
+    }
+    this.jobSourceMap.remove(jobId).shutdown(jobState);
+    this.jobStateMap.remove(jobId);
+    boolean runOnce=this.runOnceJobs.containsKey(jobName);
+    if (!runOnce) {
+      this.lastJobIdMap.put(jobName,jobId);
+      this.jobLockMap.get(jobName).unlock();
+      if (this.jobListenerMap.containsKey(jobName)) {
+        this.jobListenerMap.get(jobName).jobCompleted(jobState);
+      }
+    }
+ else {
+      this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
+      this.jobLockMap.remove(jobName).unlock();
+      try {
+        String jobConfigFile=this.runOnceJobConfigFiles.remove(jobName);
+        Files.move(new File(jobConfigFile),new File(jobConfigFile + ".done"));
+      }
+ catch (      IOException ioe) {
+        LOG.error("Failed to rename job configuration file for job " + jobName,ioe);
+      }
+      if (this.jobListenerMap.containsKey(jobName)) {
+        this.jobListenerMap.remove(jobName).jobCompleted(jobState);
+      }
+    }
+  }
+}
