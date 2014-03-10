@@ -1,0 +1,3 @@
+{
+  return super.toString() + "\nWorkUnit: " + getWorkunit().toString()+ "\nExtract: "+ getExtract().toString();
+}
