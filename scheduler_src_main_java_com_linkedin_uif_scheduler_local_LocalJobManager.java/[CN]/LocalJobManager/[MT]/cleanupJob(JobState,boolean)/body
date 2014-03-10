@@ -1,0 +1,20 @@
+{
+  String jobName=jobState.getJobName();
+  String jobId=jobState.getJobId();
+  this.jobSourceMap.remove(jobId).shutdown(jobState);
+  this.jobStateMap.remove(jobId);
+  LOG.info("Performing cleanup for job " + jobId);
+  try {
+    if (!runOnce) {
+      this.lastJobIdMap.put(jobName,jobId);
+      this.jobLockMap.get(jobName).unlock();
+    }
+ else {
+      this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
+      this.jobLockMap.remove(jobName).unlock();
+    }
+  }
+ catch (  Exception e) {
+    LOG.error("Failed to cleanup job " + jobId,e);
+  }
+}

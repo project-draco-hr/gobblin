@@ -9,6 +9,7 @@
   out.writeLong(this.duration);
   text.set(this.state.name());
   text.write(out);
+  out.writeInt(this.tasks);
   out.writeInt(this.taskStates.size());
   for (  TaskState taskState : taskStates) {
     taskState.write(out);

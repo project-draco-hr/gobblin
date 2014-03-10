@@ -1,0 +1,28 @@
+{
+  try {
+    JobCommitPolicy commitPolicy=JobCommitPolicy.forName(jobState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+    if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.SUCCESSFUL)) {
+      LOG.info("Publishing job data of job " + jobId);
+      Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE));
+      Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(JobState.class);
+      DataPublisher publisher=dataPublisherConstructor.newInstance(jobState);
+      publisher.initialize();
+      if (publisher.publish(jobState.getTaskStates())) {
+        jobState.setState(JobState.RunningState.COMMITTED);
+      }
+    }
+  }
+ catch (  Exception e) {
+    jobState.setState(JobState.RunningState.FAILED);
+    LOG.error("Failed to publish job data of job " + jobId,e);
+  }
+ finally {
+    boolean runOnce=this.runOnceJobs.containsKey(jobName);
+    persistJobState(jobState);
+    cleanupJob(jobState,runOnce);
+    JobListener jobListener=runOnce ? this.jobListenerMap.remove(jobName) : this.jobListenerMap.get(jobName);
+    if (jobListener != null) {
+      jobListener.jobCompleted(jobState);
+    }
+  }
+}

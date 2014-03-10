@@ -1,0 +1,16 @@
+{
+  jobState.setEndTime(System.currentTimeMillis());
+  jobState.setDuration(jobState.getEndTime() - jobState.getStartTime());
+  jobState.setState(JobState.RunningState.SUCCESSFUL);
+  for (  TaskState taskState : jobState.getTaskStates()) {
+    if (taskState.getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+      jobState.setState(JobState.RunningState.FAILED);
+      break;
+    }
+    if (taskState.getWorkingState() == WorkUnitState.WorkingState.ABORTED) {
+      jobState.setState(JobState.RunningState.ABORTED);
+      break;
+    }
+  }
+  return jobState;
+}

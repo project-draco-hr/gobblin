@@ -1,6 +1,6 @@
 {
   for (  WorkUnitState state : states) {
-    if (!state.getWorkingState().equals(WorkUnitState.WorkingState.SUCCESSFUL)) {
+    if (!state.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
       continue;
     }
     if (!extractToStateMap.containsKey(state.getExtract())) {

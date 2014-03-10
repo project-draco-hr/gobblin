@@ -1,11 +1,9 @@
 {
-  Path stagingDataDir=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
-  Path outputDataDir=new Path(state.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR),state.getExtract().getExtractId());
+  Path stagingDataDir=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR),state.getProp(ConfigurationKeys.WRITER_FILE_NAME) + "." + state.getId());
+  Path outputDataDir=new Path(state.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR) + "/" + state.getExtract().getExtractId());
   if (!this.fs.exists(outputDataDir)) {
     fs.mkdirs(outputDataDir);
   }
-  for (  FileStatus status : fs.listStatus(stagingDataDir)) {
-    if (!this.fs.rename(status.getPath(),new Path(outputDataDir,status.getPath().getName())))     return false;
-  }
+  if (!this.fs.rename(stagingDataDir,outputDataDir))   return false;
   return true;
 }
