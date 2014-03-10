@@ -1,4 +1,7 @@
 {
+  if (!(other instanceof Extract)) {
+    return false;
+  }
   Extract otherExtract=(Extract)other;
   return this.getExtractId().equals(otherExtract.getExtractId());
 }
