@@ -1,0 +1,3 @@
+{
+  return collectTaskMetadata(tasks) && collectTaskData(tasks) && publishMetadata()&& publishData();
+}

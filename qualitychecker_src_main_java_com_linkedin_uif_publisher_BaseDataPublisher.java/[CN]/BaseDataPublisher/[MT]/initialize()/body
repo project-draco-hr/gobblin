@@ -1,3 +1,3 @@
 {
-  this.fs=FileSystem.get(new URI(getState().getProp(ConfigurationKeys.FILE_SYSTEM_URI_KEY)),new Configuration());
+  this.fs=FileSystem.get(new URI(getState().getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),new Configuration());
 }

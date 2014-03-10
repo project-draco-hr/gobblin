@@ -1,8 +1,0 @@
-{
-  for (  State state : states) {
-    if (!this.publishData(state)) {
-      return false;
-    }
-  }
-  return true;
-}

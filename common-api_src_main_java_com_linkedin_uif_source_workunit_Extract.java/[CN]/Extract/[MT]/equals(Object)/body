@@ -1,0 +1,4 @@
+{
+  Extract otherExtract=(Extract)other;
+  return this.getExtractId().equals(otherExtract.getExtractId());
+}

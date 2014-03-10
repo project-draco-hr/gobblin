@@ -1,0 +1,21 @@
+{
+  for (  Map.Entry<Extract,List<WorkUnitState>> entry : extractToStateMap.entrySet()) {
+    Extract extract=entry.getKey();
+    WorkUnitState workUnitState=entry.getValue().get(0);
+    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR),workUnitState.getExtract().getExtractId());
+    Path finalOutput=new Path(extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "/"+ extract.getType()+ "/"+ System.currentTimeMillis());
+    LOG.info(String.format("Attemping to move %s to %s",tmpOutput,finalOutput));
+    if (this.fs.exists(finalOutput)) {
+      throw new IOException("Failed to publish data, final output path already exists");
+    }
+    if (this.fs.rename(tmpOutput,finalOutput)) {
+      for (      WorkUnitState state : entry.getValue()) {
+        state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+      }
+    }
+ else {
+      return false;
+    }
+  }
+  return true;
+}

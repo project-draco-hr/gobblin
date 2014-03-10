@@ -1,8 +1,0 @@
-{
-  for (  State state : states) {
-    if (!this.publishMetadata(state)) {
-      return false;
-    }
-  }
-  return true;
-}

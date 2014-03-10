@@ -15,11 +15,11 @@
 switch (this.destination.getType()) {
 case HDFS:
     Properties properties=this.destination.getProperties();
-  String uri=properties.getProperty(ConfigurationKeys.FILE_SYSTEM_URI_KEY);
-String stagingDir=properties.getProperty(ConfigurationKeys.STAGING_DIR_KEY,ConfigurationKeys.DEFAULT_STAGING_DIR);
-String outputDir=properties.getProperty(ConfigurationKeys.OUTPUT_DIR_KEY,ConfigurationKeys.DEFAULT_OUTPUT_DIR);
-String fileName=properties.getProperty(ConfigurationKeys.FILE_NAME_KEY) + "." + this.writerId;
-int bufferSize=Integer.parseInt(properties.getProperty(ConfigurationKeys.BUFFER_SIZE_KEY,ConfigurationKeys.DEFAULT_BUFFER_SIZE));
+  String uri=properties.getProperty(ConfigurationKeys.WRITER_FILE_SYSTEM_URI);
+String stagingDir=properties.getProperty(ConfigurationKeys.WRITER_STAGING_DIR,ConfigurationKeys.DEFAULT_STAGING_DIR);
+String outputDir=properties.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR,ConfigurationKeys.DEFAULT_OUTPUT_DIR);
+String fileName=properties.getProperty(ConfigurationKeys.WRITER_FILE_NAME) + "." + this.writerId;
+int bufferSize=Integer.parseInt(properties.getProperty(ConfigurationKeys.WRITER_BUFFER_SIZE,ConfigurationKeys.DEFAULT_BUFFER_SIZE));
 return new AvroHdfsDataWriter<DI>(URI.create(uri),stagingDir,outputDir,fileName,bufferSize,this.dataConverter,schema);
 case KAFKA:
 return new KafkaDataWriter<DI>();

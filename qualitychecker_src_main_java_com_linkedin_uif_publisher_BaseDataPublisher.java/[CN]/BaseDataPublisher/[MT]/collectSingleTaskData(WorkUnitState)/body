@@ -1,0 +1,12 @@
+{
+  WorkUnitState task=(WorkUnitState)state;
+  Path stagingDataDir=new Path(task.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  Path outputDataDir=new Path(task.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR),task.getExtract().getExtractId());
+  if (!this.fs.exists(outputDataDir)) {
+    fs.mkdirs(outputDataDir);
+  }
+  for (  FileStatus status : fs.listStatus(stagingDataDir)) {
+    if (!this.fs.rename(status.getPath(),new Path(outputDataDir,status.getPath().getName())))     return false;
+  }
+  return true;
+}
