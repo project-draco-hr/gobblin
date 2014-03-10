@@ -1,0 +1,14 @@
+{
+  String timezone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE);
+  if (Strings.isNullOrEmpty(timezone)) {
+    timezone="America/Los_Angeles";
+  }
+  Date currentTime=null;
+  try {
+    currentTime=DATETIMEFORMAT.parse(DATETIMEFORMAT.format(new Date()));
+  }
+ catch (  ParseException e) {
+    e.printStackTrace();
+  }
+  return currentTime;
+}

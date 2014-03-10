@@ -1,0 +1,10 @@
+{
+  LOG.info("Getting append high water mark");
+  Boolean isAppendOverride=Boolean.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_IS_APPEND_OVERRIDE));
+  if (isAppendOverride) {
+    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_END_VALUE));
+  }
+ else {
+    return this.getAppendWatermarkCutoff(extractType);
+  }
+}

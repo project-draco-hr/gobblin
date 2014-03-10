@@ -1,0 +1,6 @@
+{
+  if (Strings.isNullOrEmpty(value)) {
+    return 0;
+  }
+  return Long.parseLong(value);
+}

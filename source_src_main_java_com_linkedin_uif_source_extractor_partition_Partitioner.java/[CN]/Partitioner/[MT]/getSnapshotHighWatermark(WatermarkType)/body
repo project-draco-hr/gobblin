@@ -1,0 +1,7 @@
+{
+  LOG.info("Getting snapshot high water mark");
+  if (this.isSimpleWatermark(watermarkType)) {
+    return ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  }
+  return Long.parseLong(Utils.dateToString(this.getCurrentTime(),WATERMARKTIMEFORMAT));
+}

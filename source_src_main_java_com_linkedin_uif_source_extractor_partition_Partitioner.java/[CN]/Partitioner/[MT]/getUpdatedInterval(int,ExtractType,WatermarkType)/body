@@ -1,0 +1,12 @@
+{
+  LOG.debug("Getting updated interval");
+  if ((extractType == ExtractType.SNAPSHOT && watermarkType == WatermarkType.DATE)) {
+    return inputInterval * 24;
+  }
+ else   if (extractType == ExtractType.APPEND_DAILY) {
+    return (inputInterval < 1 ? 1 : inputInterval) * 24;
+  }
+ else {
+    return inputInterval;
+  }
+}

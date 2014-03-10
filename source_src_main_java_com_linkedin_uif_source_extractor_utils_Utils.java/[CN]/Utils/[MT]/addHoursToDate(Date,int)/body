@@ -1,0 +1,6 @@
+{
+  Calendar calendar=Calendar.getInstance();
+  calendar.setTime(datetime);
+  calendar.add(Calendar.HOUR,hours);
+  return calendar.getTime();
+}

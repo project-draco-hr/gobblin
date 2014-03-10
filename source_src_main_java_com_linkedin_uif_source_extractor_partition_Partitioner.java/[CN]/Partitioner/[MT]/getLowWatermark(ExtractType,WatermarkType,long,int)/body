@@ -1,0 +1,11 @@
+{
+  LOG.debug("Getting low watermark");
+  long lowWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  if (this.isSnapshot(extractType)) {
+    lowWatermark=this.getSnapshotLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
+  }
+ else {
+    lowWatermark=this.getAppendLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
+  }
+  return (lowWatermark == 0 ? ConfigurationKeys.DEFAULT_WATERMARK_VALUE : lowWatermark);
+}

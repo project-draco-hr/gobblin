@@ -1,0 +1,6 @@
+{
+  if (extractType == ExtractType.SNAPSHOT) {
+    return true;
+  }
+  return false;
+}

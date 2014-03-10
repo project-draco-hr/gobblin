@@ -1,0 +1,12 @@
+{
+  SimpleDateFormat fmt=new SimpleDateFormat(format);
+  String dateStr=fmt.format(date);
+  Date outDate=null;
+  try {
+    outDate=fmt.parse(dateStr);
+  }
+ catch (  ParseException e) {
+    e.printStackTrace();
+  }
+  return outDate;
+}

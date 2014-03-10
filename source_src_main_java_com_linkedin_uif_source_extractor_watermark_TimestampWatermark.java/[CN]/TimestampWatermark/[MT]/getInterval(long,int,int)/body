@@ -1,0 +1,11 @@
+{
+  if (diffInMilliSecs == 0) {
+    return 0;
+  }
+  int totalHours=(int)Math.ceil(((float)diffInMilliSecs / (60 * 60 * 1000)));
+  long totalIntervals=totalHours / hourInterval;
+  if (totalIntervals > maxIntervals) {
+    hourInterval=(int)Math.ceil((float)totalHours / maxIntervals);
+  }
+  return hourInterval;
+}
