@@ -2,12 +2,7 @@
   this.workUnitManager=workUnitManager;
   this.properties=properties;
   this.scheduler=new StdSchedulerFactory().getScheduler();
-  this.jobLockMap=Maps.newConcurrentMap();
-  this.jobSourceMap=Maps.newHashMap();
-  this.jobTaskCountMap=Maps.newHashMap();
-  this.jobTaskStatesMap=Maps.newHashMap();
-  this.jobStartTimeMap=Maps.newHashMap();
-  this.lastJobIdMap=Maps.newHashMap();
   this.jobStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
   this.taskStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),TaskState.class);
+  populateSourceWrapperMap();
 }

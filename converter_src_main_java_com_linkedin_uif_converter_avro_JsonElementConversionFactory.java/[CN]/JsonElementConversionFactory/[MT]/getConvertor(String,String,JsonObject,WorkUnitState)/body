@@ -14,7 +14,7 @@ case DATE:
 case TIMESTAMP:
   return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIMESTAMP_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
 case TIME:
-return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"HH:mm:ss"),timeZone);
 case FIXED:
 throw new UnsupportedDateTypeException(fieldType + " is unsupported");
 case STRING:

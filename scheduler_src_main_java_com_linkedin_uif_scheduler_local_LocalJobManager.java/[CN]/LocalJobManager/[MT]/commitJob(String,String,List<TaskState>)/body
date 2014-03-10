@@ -30,7 +30,16 @@
     this.jobTaskCountMap.remove(jobId);
     this.jobTaskStatesMap.remove(jobId);
     this.jobStartTimeMap.remove(jobId);
-    this.lastJobIdMap.put(jobName,jobId);
-    this.jobLockMap.get(jobName).unlock();
+    boolean runOnce=this.runOnceJobs.containsKey(jobName);
+    if (!runOnce) {
+      this.lastJobIdMap.put(jobName,jobId);
+      this.jobLockMap.get(jobName).unlock();
+    }
+ else {
+      this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
+      this.jobLockMap.remove(jobName).unlock();
+      String jobConfigFile=this.runOnceJobConfigFiles.remove(jobName);
+      Files.move(new File(jobConfigFile),new File(jobConfigFile + ".done"));
+    }
   }
 }
