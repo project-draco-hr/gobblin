@@ -70,6 +70,7 @@ try {
 writer.close();
 if (shouldCommit) {
 writer.commit();
+this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
 }
 writer.cleanup();
 }

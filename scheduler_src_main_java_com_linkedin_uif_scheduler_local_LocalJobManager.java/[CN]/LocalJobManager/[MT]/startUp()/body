@@ -1,5 +1,7 @@
 {
   LOG.info("Starting the local job manager");
   this.scheduler.start();
-  scheduleLocallyConfiguredJobs();
+  if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
+    scheduleLocallyConfiguredJobs();
+  }
 }

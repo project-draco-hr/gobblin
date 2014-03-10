@@ -1,6 +1,12 @@
 {
   LOG.info("Scheduling locally configured jobs");
   for (  Properties jobProps : loadLocalJobConfigs()) {
-    scheduleJob(jobProps,null);
+    boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+    if (runOnce) {
+      scheduleJob(jobProps,new RunOnceJobListener());
+    }
+ else {
+      scheduleJob(jobProps,null);
+    }
   }
 }

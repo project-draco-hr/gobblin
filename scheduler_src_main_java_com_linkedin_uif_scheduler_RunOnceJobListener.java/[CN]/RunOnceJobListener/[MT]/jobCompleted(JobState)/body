@@ -1,0 +1,9 @@
+{
+  String jobConfigFile=jobState.getProp(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY);
+  try {
+    Files.move(new File(jobConfigFile),new File(jobConfigFile + ".done"));
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to rename job configuration file for job " + jobState.getJobName(),ioe);
+  }
+}
