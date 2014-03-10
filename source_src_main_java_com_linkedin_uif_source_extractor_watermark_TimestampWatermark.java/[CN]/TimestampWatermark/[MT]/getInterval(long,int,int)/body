@@ -4,8 +4,6 @@
   }
   int totalHours=(int)Math.ceil(((float)diffInMilliSecs / (60 * 60 * 1000)));
   long totalIntervals=totalHours / hourInterval;
-  System.out.println("totalHours:" + totalHours);
-  System.out.println("totalIntervals:" + totalIntervals);
   if (totalIntervals > maxIntervals) {
     hourInterval=(int)Math.ceil((float)totalHours / maxIntervals);
   }

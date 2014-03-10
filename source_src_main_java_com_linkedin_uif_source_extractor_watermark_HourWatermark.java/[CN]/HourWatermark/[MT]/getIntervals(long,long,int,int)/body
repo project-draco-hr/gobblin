@@ -10,7 +10,7 @@
   final long lowWatermark=lowWatermarkDate.getTime();
   final long highWatermark=highWatermarkDate.getTime();
   int interval=this.getInterval(highWatermark - lowWatermark,partitionInterval,maxIntervals);
-  System.out.println("interval:" + interval);
+  LOG.info("Recalculated partition interval:" + interval + " hours");
   if (interval == 0) {
     return intervalMap;
   }
