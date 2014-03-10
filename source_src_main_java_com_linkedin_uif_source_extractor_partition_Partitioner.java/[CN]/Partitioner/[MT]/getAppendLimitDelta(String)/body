@@ -1,0 +1,11 @@
+{
+  LOG.debug("Getting append limit delta");
+  int limitDelta=0;
+  if (!Strings.isNullOrEmpty(maxLimit)) {
+    String[] limitParams=maxLimit.split("-");
+    if (limitParams.length >= 2) {
+      limitDelta=Integer.parseInt(limitParams[1]);
+    }
+  }
+  return limitDelta;
+}

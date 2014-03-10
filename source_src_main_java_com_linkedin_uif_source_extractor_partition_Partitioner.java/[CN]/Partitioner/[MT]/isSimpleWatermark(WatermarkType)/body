@@ -1,0 +1,6 @@
+{
+  if (watermarkType == WatermarkType.SIMPLE) {
+    return true;
+  }
+  return false;
+}

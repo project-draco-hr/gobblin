@@ -1,0 +1,10 @@
+{
+  if (diff == 0) {
+    return 0;
+  }
+  long totalIntervals=(int)Math.ceil((float)diff / (partitionInterval));
+  if (totalIntervals > maxIntervals) {
+    partitionInterval=(int)Math.ceil((float)diff / maxIntervals);
+  }
+  return partitionInterval;
+}

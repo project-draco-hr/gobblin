@@ -1,0 +1,10 @@
+{
+  Date date=null;
+  try {
+    date=INPUTFORMAT.parse(dateTime);
+  }
+ catch (  ParseException e) {
+    e.printStackTrace();
+  }
+  return date.getTime();
+}

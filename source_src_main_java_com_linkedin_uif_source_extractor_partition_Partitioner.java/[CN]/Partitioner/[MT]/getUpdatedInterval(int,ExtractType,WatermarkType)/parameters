@@ -1,0 +1,3 @@
+int inputInterval
+ExtractType extractType
+WatermarkType watermarkType

@@ -1,0 +1,3 @@
+WatermarkType watermarkType
+long previousWatermark
+int deltaForNextWatermark

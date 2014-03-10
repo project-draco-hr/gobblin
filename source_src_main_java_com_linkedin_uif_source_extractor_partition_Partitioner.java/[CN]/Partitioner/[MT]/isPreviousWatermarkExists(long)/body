@@ -1,0 +1,6 @@
+{
+  if (!(previousWatermark == ConfigurationKeys.DEFAULT_WATERMARK_VALUE)) {
+    return true;
+  }
+  return false;
+}

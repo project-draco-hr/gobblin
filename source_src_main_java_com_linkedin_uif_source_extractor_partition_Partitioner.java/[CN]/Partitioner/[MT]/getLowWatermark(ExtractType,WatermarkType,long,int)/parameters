@@ -1,0 +1,4 @@
+ExtractType extractType
+WatermarkType watermarkType
+long previousWatermark
+int deltaForNextWatermark

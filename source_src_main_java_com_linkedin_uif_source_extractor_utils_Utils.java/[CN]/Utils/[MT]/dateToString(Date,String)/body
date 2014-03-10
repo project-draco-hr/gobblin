@@ -1,0 +1,4 @@
+{
+  SimpleDateFormat fmt=new SimpleDateFormat(format);
+  return fmt.format(datetime);
+}

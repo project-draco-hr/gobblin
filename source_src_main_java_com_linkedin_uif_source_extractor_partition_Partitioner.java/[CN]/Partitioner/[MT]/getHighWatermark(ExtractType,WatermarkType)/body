@@ -1,0 +1,11 @@
+{
+  LOG.debug("Getting high watermark");
+  long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  if (this.isSnapshot(extractType)) {
+    highWatermark=this.getSnapshotHighWatermark(watermarkType);
+  }
+ else {
+    highWatermark=this.getAppendHighWatermark(extractType);
+  }
+  return (highWatermark == 0 ? ConfigurationKeys.DEFAULT_WATERMARK_VALUE : highWatermark);
+}

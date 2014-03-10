@@ -1,0 +1,23 @@
+{
+  LOG.debug("Getting append limit type");
+  AppendMaxLimitType limitType;
+switch (extractType) {
+case APPEND_DAILY:
+    limitType=AppendMaxLimitType.CURRENTDATE;
+  break;
+case APPEND_HOURLY:
+limitType=AppendMaxLimitType.CURRENTHOUR;
+break;
+default :
+limitType=null;
+break;
+}
+if (!Strings.isNullOrEmpty(maxLimit)) {
+LOG.debug("Getting append limit type from the config");
+String[] limitParams=maxLimit.split("-");
+if (limitParams.length >= 1) {
+limitType=AppendMaxLimitType.valueOf(limitParams[0]);
+}
+}
+return limitType;
+}

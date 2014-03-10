@@ -1,0 +1,16 @@
+{
+  LOG.debug("Getting previous watermark");
+  List<Long> highWatermarks=new ArrayList<Long>();
+  List<WorkUnitState> previousStates=state.getPreviousStates();
+  if (previousStates.size() == 0) {
+    LOG.info("No previous states for this entity");
+    return ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  }
+  for (  WorkUnitState workUnitState : previousStates) {
+    if (workUnitState.getWorkingState() == WorkingState.COMMITTED) {
+      highWatermarks.add(workUnitState.getHighWaterMark());
+    }
+  }
+  Collections.sort(highWatermarks);
+  return highWatermarks.get(highWatermarks.size() - 1);
+}

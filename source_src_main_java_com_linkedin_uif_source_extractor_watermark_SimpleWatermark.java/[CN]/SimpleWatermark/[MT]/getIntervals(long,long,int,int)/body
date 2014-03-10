@@ -1,0 +1,19 @@
+{
+  HashMap<Long,Long> intervalMap=new HashMap<Long,Long>();
+  long nextNum;
+  if (partitionInterval < 1) {
+    partitionInterval=1;
+  }
+  int interval=this.getInterval(highWatermarkValue - lowWatermarkValue,partitionInterval,maxIntervals);
+  if (interval == 0) {
+    return intervalMap;
+  }
+  long startNum=lowWatermarkValue;
+  long endNum=highWatermarkValue;
+  while (startNum <= endNum) {
+    nextNum=startNum + (interval - 1);
+    intervalMap.put(startNum,(nextNum <= endNum ? nextNum : endNum));
+    startNum=nextNum + deltaForNextWatermark;
+  }
+  return intervalMap;
+}
