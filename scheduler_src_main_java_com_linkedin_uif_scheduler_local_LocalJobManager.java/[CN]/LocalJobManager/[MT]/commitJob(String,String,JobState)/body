@@ -16,37 +16,12 @@
     LOG.error("Failed to publish job data of job " + jobId,e);
   }
  finally {
-    try {
-      LOG.info("Persisting job/task states of job " + jobId);
-      this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,jobState.getTaskStates());
-      this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
-    }
- catch (    IOException ioe) {
-      LOG.error("Failed to persist job/task states of job " + jobId,ioe);
-    }
-    this.jobSourceMap.remove(jobId).shutdown(jobState);
-    this.jobStateMap.remove(jobId);
     boolean runOnce=this.runOnceJobs.containsKey(jobName);
-    if (!runOnce) {
-      this.lastJobIdMap.put(jobName,jobId);
-      this.jobLockMap.get(jobName).unlock();
-      if (this.jobListenerMap.containsKey(jobName)) {
-        this.jobListenerMap.get(jobName).jobCompleted(jobState);
-      }
-    }
- else {
-      this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
-      this.jobLockMap.remove(jobName).unlock();
-      try {
-        String jobConfigFile=this.runOnceJobConfigFiles.remove(jobName);
-        Files.move(new File(jobConfigFile),new File(jobConfigFile + ".done"));
-      }
- catch (      IOException ioe) {
-        LOG.error("Failed to rename job configuration file for job " + jobName,ioe);
-      }
-      if (this.jobListenerMap.containsKey(jobName)) {
-        this.jobListenerMap.remove(jobName).jobCompleted(jobState);
-      }
+    persistJobState(jobState);
+    cleanupJob(jobState,runOnce);
+    JobListener jobListener=runOnce ? this.jobListenerMap.remove(jobName) : this.jobListenerMap.get(jobName);
+    if (jobListener != null) {
+      jobListener.jobCompleted(jobState);
     }
   }
 }
