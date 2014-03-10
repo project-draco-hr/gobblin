@@ -10,6 +10,7 @@
   this.duration=in.readLong();
   text.readFields(in);
   this.state=RunningState.valueOf(text.toString());
+  this.tasks=in.readInt();
   int numTaskStates=in.readInt();
   if (numTaskStates > 0) {
     TaskState taskState=new TaskState();

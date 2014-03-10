@@ -1,5 +1,5 @@
 {
-  LOG.info(String.format("Writer is committing the data from %s to %s",this.stagingFile,this.outputFile));
+  LOG.info(String.format("Moving data from %s to %s",this.stagingFile,this.outputFile));
   if (this.fs.exists(this.outputFile)) {
     throw new IOException(String.format("File %s already exists",this.outputFile));
   }

@@ -20,11 +20,11 @@
       properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       jobConfigs.add(properties);
     }
- catch (    FileNotFoundException e) {
-      LOG.error("Job configuration file " + jobConfigFile + " not found");
+ catch (    FileNotFoundException fnfe) {
+      LOG.error("Job configuration file " + jobConfigFile + " not found",fnfe);
     }
-catch (    IOException e) {
-      LOG.error("Failed to load job configuration from file " + jobConfigFile);
+catch (    IOException ioe) {
+      LOG.error("Failed to load job configuration from file " + jobConfigFile,ioe);
     }
   }
   LOG.info(String.format(jobConfigs.size() == 1 ? "Loaded %d job configuration" : "Loaded %d job configurations",jobConfigs.size()));
