@@ -1,7 +1,7 @@
 {
   List<Object> list=new ArrayList<Object>();
   for (  JsonElement elem : (JsonArray)value) {
-    list.add(getElementConverter().convert(elem));
+    list.add(getElementConverter().convertField(elem));
   }
   return new GenericData.Array<Object>(schema(),list);
 }

@@ -20,8 +20,8 @@
       for (      JsonElement columnElement : array) {
         Schema obj=gson.fromJson(columnElement,Schema.class);
         String columnName=obj.getColumnName();
-        obj.setWaterMark(this.isWatermarkColumn(workUnit.getProp("source.watermark.column"),columnName));
-        obj.setPrimaryKey(this.getPrimarykeyIndex(workUnit.getProp("source.primarykey.column"),columnName));
+        obj.setWaterMark(this.isWatermarkColumn(workUnit.getProp("extract.delta.fields"),columnName));
+        obj.setPrimaryKey(this.getPrimarykeyIndex(workUnit.getProp("extract.primary.key.fields"),columnName));
         String jsonStr=gson.toJson(obj);
         JsonObject jsonObject=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
         if (inputQuery == null || columnListInQuery == null || (columnListInQuery.size() == 1 && columnListInQuery.get(0).equals("*")) || (columnListInQuery.size() >= 1 && this.isMetadataColumn(columnName,columnListInQuery))) {
