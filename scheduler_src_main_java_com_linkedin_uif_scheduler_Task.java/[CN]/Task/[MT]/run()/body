@@ -26,7 +26,7 @@
     }
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
-    this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,sourceSchema);
+    this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());
     PolicyChecker policyChecker=buildPolicyChecker(this.taskState);
     PolicyCheckResults results=policyChecker.executePolicies();
     TaskPublisher publisher=buildTaskPublisher(this.taskState,results);
