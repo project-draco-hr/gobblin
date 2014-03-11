@@ -4,7 +4,7 @@
   for (  TaskState taskState : jobState.getTaskStates()) {
     File sourceFile=new File(taskState.getProp(SOURCE_FILE_KEY));
     Extract e=taskState.getExtract();
-    File targetFile=new File(taskState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR) + "/" + e.getNamespace().replaceAll("\\.","/")+ "/"+ e.getTable()+ "/"+ e.getExtractId()+ "/"+ e.getType(),taskState.getProp(ConfigurationKeys.WRITER_FILE_NAME) + "." + taskState.getTaskId());
+    File targetFile=new File(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR) + "/" + e.getNamespace().replaceAll("\\.","/")+ "/"+ e.getTable()+ "/"+ e.getExtractId()+ "_"+ (e.getIsFull() ? "FULL" : "APPEND"),jobState.getProp(ConfigurationKeys.WRITER_FILE_NAME) + "." + taskState.getId());
     Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
     try {
       Assert.assertEquals(sourceFile.length(),targetFile.length());

@@ -1,10 +1,6 @@
 {
-  Properties properties=new Properties();
-  properties.setProperty("state.store.dir","test/state-store");
-  properties.setProperty("state.store.fs.uri","file:///");
-  properties.setProperty("taskexecutor.threadpool.size","2");
-  properties.setProperty("tasktracker.threadpool.coresize","2");
-  properties.setProperty("tasktracker.threadpool.maxsize","2");
+  properties=new Properties();
+  properties.load(new FileReader("test/resource/uif.test.properties"));
   TaskExecutor taskExecutor=new TaskExecutor(properties);
   TaskStateTracker taskStateTracker=new LocalTaskStateTracker(properties,taskExecutor);
   WorkUnitManager workUnitManager=new WorkUnitManager(taskExecutor,taskStateTracker);

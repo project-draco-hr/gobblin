@@ -1,4 +1,4 @@
 {
   DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(context.getWriterOutputFormat());
-  return builder.writeTo(Destination.of(context.getDestinationType(),context.getDestinationProperties())).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).useSchemaConverter(context.getSchemaConverter()).useDataConverter(context.getDataConverter(schema)).withSourceSchema(schema).build();
+  return builder.writeTo(Destination.of(context.getDestinationType(),context.getDestinationProperties())).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).useSchemaConverter(context.getSchemaConverter()).useDataConverter(context.getDataConverter(schema)).withSourceSchema(schema).withJobName(context.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY)).build();
 }

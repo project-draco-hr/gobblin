@@ -2,7 +2,7 @@
   for (  Map.Entry<Extract,List<WorkUnitState>> entry : extractToStateMap.entrySet()) {
     Extract extract=entry.getKey();
     WorkUnitState workUnitState=entry.getValue().get(0);
-    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR),workUnitState.getExtract().getExtractId());
+    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR),getState().getProp(ConfigurationKeys.JOB_NAME_KEY) + "/" + workUnitState.getExtract().getExtractId());
     Path finalOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "_"+ (extract.getIsFull() ? "FULL" : "APPEND"));
     LOG.info(String.format("Attemping to move %s to %s",tmpOutput,finalOutput));
     if (this.fs.exists(finalOutput)) {
