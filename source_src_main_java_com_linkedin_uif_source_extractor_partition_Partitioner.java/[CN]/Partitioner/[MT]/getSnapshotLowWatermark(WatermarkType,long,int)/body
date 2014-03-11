@@ -2,10 +2,10 @@
   LOG.info("Getting snapshot low water mark");
   if (this.isPreviousWatermarkExists(previousWatermark)) {
     if (this.isSimpleWatermark(watermarkType)) {
-      return previousWatermark + deltaForNextWatermark - ConfigurationKeys.DEFAULT_LOW_WATERMARK_BACKUP_SECS;
+      return previousWatermark + deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS));
     }
  else {
-      return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),(deltaForNextWatermark - ConfigurationKeys.DEFAULT_LOW_WATERMARK_BACKUP_SECS)),WATERMARKTIMEFORMAT));
+      return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),(deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS)))),WATERMARKTIMEFORMAT));
     }
   }
  else {
