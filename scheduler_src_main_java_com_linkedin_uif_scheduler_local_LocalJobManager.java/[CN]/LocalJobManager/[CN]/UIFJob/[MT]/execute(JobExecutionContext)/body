@@ -4,7 +4,7 @@
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   ConcurrentMap<String,JobLock> jobLockMap=(ConcurrentMap<String,JobLock>)dataMap.get(JOB_LOCK_MAP_KEY);
   if (!acquireJobLock(jobLockMap,jobName)) {
-    LOG.info("Failed to acquire the job lock for job " + jobName);
+    LOG.info(String.format("Previous instance of job %s is still running, skipping this scheduled run",jobName));
     return;
   }
   WorkUnitManager workUnitManager=(WorkUnitManager)dataMap.get(WORK_UNIT_MANAGER_KEY);
