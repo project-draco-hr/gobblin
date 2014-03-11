@@ -4,7 +4,7 @@
     if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.SUCCESSFUL)) {
       LOG.info("Publishing job data of job " + jobId);
       Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE));
-      Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(JobState.class);
+      Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(com.linkedin.uif.configuration.State.class);
       DataPublisher publisher=dataPublisherConstructor.newInstance(jobState);
       publisher.initialize();
       if (publisher.publish(jobState.getTaskStates())) {
