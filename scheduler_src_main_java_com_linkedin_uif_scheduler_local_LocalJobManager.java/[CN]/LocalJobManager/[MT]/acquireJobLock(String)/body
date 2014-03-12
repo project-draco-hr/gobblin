@@ -1,7 +1,7 @@
 {
   try {
-    jobLock.putIfAbsent(jobName,new LocalJobLock());
-    JobLock lock=jobLock.get(jobName);
+    this.jobLockMap.putIfAbsent(jobName,new LocalJobLock());
+    JobLock lock=this.jobLockMap.get(jobName);
     return lock.tryLock();
   }
  catch (  IOException ioe) {

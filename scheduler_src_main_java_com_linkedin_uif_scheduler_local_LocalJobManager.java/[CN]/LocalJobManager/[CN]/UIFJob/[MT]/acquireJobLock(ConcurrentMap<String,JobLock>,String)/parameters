@@ -1,2 +1,0 @@
-ConcurrentMap<String,JobLock> jobLock
-String jobName

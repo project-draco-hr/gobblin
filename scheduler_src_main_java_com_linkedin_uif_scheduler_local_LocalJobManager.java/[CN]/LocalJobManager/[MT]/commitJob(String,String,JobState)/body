@@ -19,10 +19,7 @@
  finally {
     boolean runOnce=this.runOnceJobs.containsKey(jobName);
     persistJobState(jobState);
-    cleanupJob(jobState,runOnce);
-    JobListener jobListener=runOnce ? this.jobListenerMap.remove(jobName) : this.jobListenerMap.get(jobName);
-    if (jobListener != null) {
-      jobListener.jobCompleted(jobState);
-    }
+    cleanupJobOnCompletion(jobState,runOnce);
+    callJobListener(jobName,jobState,runOnce);
   }
 }
