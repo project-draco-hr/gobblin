@@ -13,6 +13,7 @@
   properties.setProperty(ConfigurationKeys.WRITER_STAGING_DIR,TestConstants.TEST_STAGING_DIR);
   properties.setProperty(ConfigurationKeys.WRITER_OUTPUT_DIR,TestConstants.TEST_OUTPUT_DIR);
   properties.setProperty(ConfigurationKeys.WRITER_FILE_NAME,TestConstants.TEST_FILE_NAME);
+  properties.setProperty(ConfigurationKeys.WRITER_FILE_EXTENSION,TestConstants.TEST_FILE_EXTENSION);
   SchemaConverter<String,Schema> schemaConverter=new TestSchemaConverter();
   this.schema=schemaConverter.convert(TestConstants.AVRO_SCHEMA);
   this.writer=new DataWriterBuilderFactory().newDataWriterBuilder(WriterOutputFormat.AVRO).writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).useDataConverter(new TestDataConverter(schemaConverter.convert(TestConstants.AVRO_SCHEMA))).useSchemaConverter(new TestSchemaConverter()).withSourceSchema(TestConstants.AVRO_SCHEMA).withJobName(TestConstants.TEST_JOB_NAME).build();
