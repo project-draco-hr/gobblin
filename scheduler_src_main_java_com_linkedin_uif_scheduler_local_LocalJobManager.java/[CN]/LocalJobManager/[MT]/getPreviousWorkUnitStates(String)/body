@@ -1,0 +1,7 @@
+{
+  if (!this.lastJobIdMap.containsKey(jobName)) {
+    return Lists.newArrayList();
+  }
+  LOG.info("Loading task states of the most recent run of job " + jobName);
+  return (List<WorkUnitState>)this.taskStateStore.getAll(jobName,this.lastJobIdMap.get(jobName) + TASK_STATE_STORE_TABLE_SUFFIX);
+}
