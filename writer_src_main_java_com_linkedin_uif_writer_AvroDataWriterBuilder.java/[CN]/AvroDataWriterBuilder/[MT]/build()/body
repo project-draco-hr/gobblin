@@ -18,7 +18,7 @@ case HDFS:
   String uri=properties.getProperty(ConfigurationKeys.WRITER_FILE_SYSTEM_URI);
 String stagingDir=properties.getProperty(ConfigurationKeys.WRITER_STAGING_DIR,ConfigurationKeys.DEFAULT_STAGING_DIR) + Path.SEPARATOR + this.jobName;
 String outputDir=properties.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR,ConfigurationKeys.DEFAULT_OUTPUT_DIR) + Path.SEPARATOR + this.jobName;
-String fileName=properties.getProperty(ConfigurationKeys.WRITER_FILE_NAME) + "." + this.writerId;
+String fileName=properties.getProperty(ConfigurationKeys.WRITER_FILE_NAME) + "." + this.writerId+ "."+ this.format.getExtension();
 int bufferSize=Integer.parseInt(properties.getProperty(ConfigurationKeys.WRITER_BUFFER_SIZE,ConfigurationKeys.DEFAULT_BUFFER_SIZE));
 return new AvroHdfsDataWriter<DI>(URI.create(uri),stagingDir,outputDir,fileName,bufferSize,this.dataConverter,schema);
 case KAFKA:
