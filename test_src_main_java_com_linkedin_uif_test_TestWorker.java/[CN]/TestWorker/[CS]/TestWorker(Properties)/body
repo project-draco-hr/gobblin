@@ -1,0 +1,8 @@
+{
+  TaskExecutor taskExecutor=new TaskExecutor(properties);
+  TaskStateTracker taskStateTracker=new LocalTaskStateTracker(properties,taskExecutor);
+  WorkUnitManager workUnitManager=new WorkUnitManager(taskExecutor,taskStateTracker);
+  this.jobManager=new LocalJobManager(workUnitManager,properties);
+  ((LocalTaskStateTracker)taskStateTracker).setJobManager(this.jobManager);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(taskExecutor,taskStateTracker,workUnitManager,jobManager));
+}
