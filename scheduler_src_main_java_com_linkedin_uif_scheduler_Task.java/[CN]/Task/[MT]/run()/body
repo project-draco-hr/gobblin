@@ -1,6 +1,14 @@
 {
   Extractor extractor=null;
   DataWriter writer=null;
+  Counter taskRecordCounter=Metrics.getCounter(Metrics.metricName("task",this.taskId,"records"));
+  Counter jobRecordCounter=Metrics.getCounter(Metrics.metricName("job",this.jobId,"records"));
+  Counter taskByteCounter=Metrics.getCounter(Metrics.metricName("task",this.taskId,"bytes"));
+  Counter jobByteCounter=Metrics.getCounter(Metrics.metricName("job",this.jobId,"bytes"));
+  Meter taskRecordMeter=Metrics.getMeter(Metrics.metricName("task",this.taskId,"recordsPerSec"));
+  Meter jobRecordMeter=Metrics.getMeter(Metrics.metricName("job",this.jobId,"recordsPerSec"));
+  Meter taskByteMeter=Metrics.getMeter(Metrics.metricName("task",this.taskId,"bytesPerSec"));
+  Meter jobByteMeter=Metrics.getMeter(Metrics.metricName("job",this.jobId,"bytesPerSec"));
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
   boolean shouldCommit=false;
@@ -15,10 +23,6 @@
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
     writer=buildWriter(this.taskContext,schemaForWriter);
-    Counter taskRecordCounter=Metrics.getCounter(Metrics.metricName("task",this.taskId,"records"));
-    Counter jobRecordCounter=Metrics.getCounter(Metrics.metricName("job",this.jobId,"records"));
-    Meter taskRecordMeter=Metrics.getMeter(Metrics.metricName("task",this.taskId,"recordsPerSec"));
-    Meter jobRecordMeter=Metrics.getMeter(Metrics.metricName("job",this.jobId,"recordsPerSec"));
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
     this.taskStateTracker.registerNewTask(this);
     Object record;
@@ -79,10 +83,21 @@ writer.close();
 if (shouldCommit) {
 writer.commit();
 this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+long bytes=writer.bytesWritten();
+taskByteCounter.inc(bytes);
+jobByteCounter.inc(bytes);
+taskByteMeter.mark(bytes);
+jobByteMeter.mark(bytes);
 }
+}
+ catch (IOException ioe) {
+}
+ finally {
+try {
 writer.cleanup();
 }
  catch (IOException ioe) {
+}
 }
 }
 long endTime=System.currentTimeMillis();
