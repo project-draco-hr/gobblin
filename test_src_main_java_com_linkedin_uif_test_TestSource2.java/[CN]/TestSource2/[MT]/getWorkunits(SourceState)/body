@@ -1,0 +1,13 @@
+{
+  Extract extract1=new Extract(state,TableType.SNAPSHOT_ONLY,"com.linkedin.uif.test2","TestTable1",String.valueOf(System.currentTimeMillis()));
+  Extract extract2=new Extract(state,TableType.SNAPSHOT_ONLY,"com.linkedin.uif.test2","TestTable2",String.valueOf(System.currentTimeMillis()));
+  String sourceFileList=state.getProp(SOURCE_FILE_LIST_KEY);
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  List<String> list=SPLITTER.splitToList(sourceFileList);
+  for (int i=0; i < list.size(); i++) {
+    WorkUnit workUnit=new WorkUnit(state,i % 2 == 0 ? extract1 : extract2);
+    workUnit.setProp(SOURCE_FILE_KEY,list.get(i));
+    workUnits.add(workUnit);
+  }
+  return workUnits;
+}

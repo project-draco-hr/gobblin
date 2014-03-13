@@ -1,0 +1,15 @@
+{
+  for (  WorkUnitState state : states) {
+    if (!state.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
+      continue;
+    }
+    if (!extractToStateMap.containsKey(state.getExtract())) {
+      List<WorkUnitState> list=new ArrayList<WorkUnitState>();
+      list.add(state);
+      extractToStateMap.put(state.getExtract(),list);
+    }
+ else {
+      extractToStateMap.get(state.getExtract()).add(state);
+    }
+  }
+}

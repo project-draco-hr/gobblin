@@ -1,4 +1,6 @@
 {
   DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(context.getWriterOutputFormat());
-  return builder.writeTo(Destination.of(context.getDestinationType(),context.getDestinationProperties())).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).useSchemaConverter(context.getSchemaConverter()).useDataConverter(context.getDataConverter(schema)).withSourceSchema(schema).withJobName(this.taskState.getProp(ConfigurationKeys.JOB_NAME_KEY)).build();
+  Extract extract=this.taskState.getExtract();
+  String filePath=extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "_"+ (extract.getIsFull() ? "FULL" : "APPEND");
+  return builder.writeTo(Destination.of(context.getDestinationType(),context.getDestinationProperties())).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).useSchemaConverter(context.getSchemaConverter()).useDataConverter(context.getDataConverter(schema)).withSourceSchema(schema).withFilePath(filePath).build();
 }

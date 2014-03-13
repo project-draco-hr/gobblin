@@ -1,0 +1,27 @@
+{
+  collectExtractMapping(states);
+  for (  Map.Entry<Extract,List<WorkUnitState>> entry : extractToStateMap.entrySet()) {
+    Extract extract=entry.getKey();
+    WorkUnitState workUnitState=entry.getValue().get(0);
+    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR),extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "_"+ (extract.getIsFull() ? "FULL" : "APPEND"));
+    Path finalOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "_"+ (extract.getIsFull() ? "FULL" : "APPEND"));
+    LOG.info(String.format("Attemping to move %s to %s",tmpOutput,finalOutput));
+    if (this.fs.exists(finalOutput)) {
+      if (this.getState().getPropAsBoolean((ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR))) {
+        this.fs.delete(finalOutput,true);
+      }
+ else {
+        throw new IOException("Failed to publish data, final output path already exists");
+      }
+    }
+    if (this.fs.rename(tmpOutput,finalOutput)) {
+      for (      WorkUnitState state : entry.getValue()) {
+        state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+      }
+    }
+ else {
+      return false;
+    }
+  }
+  return true;
+}
