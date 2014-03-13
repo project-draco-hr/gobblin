@@ -14,7 +14,11 @@
  catch (      IOException ioe) {
         Assert.fail();
       }
+      long records=Metrics.getCounter(Metrics.metricName("task",taskState.getTaskId(),"records")).getCount();
+      Assert.assertEquals(records,1000);
     }
+    long records=Metrics.getCounter(Metrics.metricName("job",jobState.getJobId(),"records")).getCount();
+    Assert.assertEquals(records,2000);
   }
   finally {
     latch.countDown();

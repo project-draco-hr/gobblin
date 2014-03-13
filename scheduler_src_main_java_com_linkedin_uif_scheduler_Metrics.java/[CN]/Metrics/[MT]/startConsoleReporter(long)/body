@@ -1,0 +1,4 @@
+{
+  ConsoleReporter reporter=ConsoleReporter.forRegistry(METRICS).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
+  reporter.start(period,TimeUnit.MILLISECONDS);
+}

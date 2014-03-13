@@ -8,4 +8,5 @@
   ((LocalTaskStateTracker)taskStateTracker).setJobManager(jobManager);
   this.serviceManager=new ServiceManager(Lists.newArrayList(taskExecutor,taskStateTracker,workUnitManager,jobManager));
   this.serviceManager.startAsync();
+  Metrics.startConsoleReporter(500);
 }

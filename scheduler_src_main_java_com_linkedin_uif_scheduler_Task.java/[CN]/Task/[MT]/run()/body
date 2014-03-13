@@ -15,6 +15,10 @@
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
     writer=buildWriter(this.taskContext,schemaForWriter);
+    Counter taskRecordCounter=Metrics.getCounter(Metrics.metricName("task",this.taskId,"records"));
+    Counter jobRecordCounter=Metrics.getCounter(Metrics.metricName("job",this.jobId,"records"));
+    Meter taskRecordMeter=Metrics.getMeter(Metrics.metricName("task",this.taskId,"recordsPerSec"));
+    Meter jobRecordMeter=Metrics.getMeter(Metrics.metricName("job",this.jobId,"recordsPerSec"));
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
     this.taskStateTracker.registerNewTask(this);
     Object record;
@@ -24,6 +28,10 @@
       }
       writer.write(record);
     }
+    taskRecordCounter.inc(writer.recordsWritten());
+    taskRecordMeter.mark(writer.recordsWritten());
+    jobRecordCounter.inc(writer.recordsWritten());
+    jobRecordMeter.mark(writer.recordsWritten());
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
     this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());

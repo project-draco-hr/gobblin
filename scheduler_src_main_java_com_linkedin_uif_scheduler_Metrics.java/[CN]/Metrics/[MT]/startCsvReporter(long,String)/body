@@ -1,0 +1,4 @@
+{
+  CsvReporter reporter=CsvReporter.forRegistry(METRICS).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build(new File(metricsDir));
+  reporter.start(period,TimeUnit.MILLISECONDS);
+}
