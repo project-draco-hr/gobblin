@@ -1,5 +1,5 @@
 {
   if (state != null)   this.addAll(state);
   if (extract != null)   this.extract=extract;
- else   this.extract=new Extract(null,null,null,null,null);
+ else   this.extract=new Extract(null,null,null,null);
 }
