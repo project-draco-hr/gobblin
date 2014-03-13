@@ -1,5 +1,5 @@
 {
-  LOG.info("Get schema from salesforce:");
+  this.log.info("Get schema from salesforce:");
   JsonArray fieldJsonArray=new JsonArray();
   JsonElement element=gson.fromJson(response,JsonObject.class);
   JsonObject jsonObject=element.getAsJsonObject();

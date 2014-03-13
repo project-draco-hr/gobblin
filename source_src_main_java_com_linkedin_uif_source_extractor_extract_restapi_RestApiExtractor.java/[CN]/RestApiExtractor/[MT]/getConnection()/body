@@ -1,4 +1,4 @@
 {
-  LOG.debug("Connecting to the source using Rest Api");
+  this.log.debug("Connecting to the source using Rest Api");
   return this.connect();
 }

@@ -1,3 +1,10 @@
 {
-  return new SalesforceExtractor<S,D>(state);
+  Extractor<S,D> extractor=null;
+  try {
+    extractor=new SalesforceExtractor<S,D>(state).build();
+  }
+ catch (  ExtractPrepareException e) {
+    e.printStackTrace();
+  }
+  return extractor;
 }

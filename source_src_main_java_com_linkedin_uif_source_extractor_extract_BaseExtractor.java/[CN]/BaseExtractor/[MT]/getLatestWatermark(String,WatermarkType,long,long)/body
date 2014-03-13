@@ -1,6 +1,6 @@
 {
   if (!Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_SKIP_HIGH_WATERMARK_CALC))) {
-    LOG.info("Getting high watermark");
+    this.log.info("Getting high watermark");
     List<Predicate> list=new ArrayList<Predicate>();
     WatermarkPredicate watermark=new WatermarkPredicate(watermarkColumn,watermarkType);
     Predicate lwmPredicate=watermark.getPredicate(this,lwmValue,">=");

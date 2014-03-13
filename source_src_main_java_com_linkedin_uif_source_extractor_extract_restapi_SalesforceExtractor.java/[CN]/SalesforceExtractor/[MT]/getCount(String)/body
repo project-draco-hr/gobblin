@@ -1,5 +1,5 @@
 {
-  LOG.info("Get source record count from salesforce");
+  this.log.info("Get source record count from salesforce");
   JsonElement element=gson.fromJson(response,JsonObject.class);
   long count;
   try {

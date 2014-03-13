@@ -1,5 +1,5 @@
 {
-  LOG.debug("Get data records from response");
+  this.log.debug("Get data records from response");
   RecordSetList<D> rs=new RecordSetList<D>();
   JsonElement element=gson.fromJson(response,JsonObject.class);
   JsonArray partRecords;
