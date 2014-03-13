@@ -20,6 +20,7 @@
         Predicate predicate=i.next();
         query=this.addPredicate(query,predicate.getCondition());
       }
+      query=query + this.getLimitFromInputQuery(this.updatedQuery);
       this.log.info("QUERY:" + query);
       return this.getFullUri(this.getSoqlUrl(query));
     }
