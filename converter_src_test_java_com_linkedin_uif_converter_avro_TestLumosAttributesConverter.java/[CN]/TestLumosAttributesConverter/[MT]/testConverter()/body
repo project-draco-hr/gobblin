@@ -2,7 +2,6 @@
   Converter<Schema,Schema,GenericRecord,GenericRecord> converter=new LumosAttributesConverter();
   Schema newSchema=converter.convertSchema(schema,state);
   SchemaAttributes att=new SchemaAttributes(newSchema);
-  Assert.assertEquals(att.getDropDate(),1393791836000l);
   Assert.assertEquals(att.getPrimaryKeyFields()[0],"Id");
   Assert.assertEquals(att.getDeltaField(),"LastModifiedDate");
   Assert.assertEquals(att.getValidationCount(),validationRecordCount);

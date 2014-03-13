@@ -1,7 +1,7 @@
 {
   this.serviceManager.addListener(new ServiceManager.Listener(){
     @Override public void stopped(){
-      LOG.info("Wroker has been stopped");
+      LOG.info("Worker has been stopped");
     }
     @Override public void healthy(){
       LOG.info("All services are health and running");

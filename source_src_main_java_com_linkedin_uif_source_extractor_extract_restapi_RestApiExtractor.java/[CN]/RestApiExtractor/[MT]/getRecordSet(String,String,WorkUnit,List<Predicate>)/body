@@ -1,5 +1,5 @@
 {
-  LOG.debug("Get data records using Rest Api");
+  this.log.debug("Get data records using Rest Api");
   RecordSet<D> rs=null;
   String url;
   try {
@@ -11,7 +11,7 @@
       throw new DataRecordException("Failed to connect.");
     }
  else {
-      LOG.debug("Connected successfully.");
+      this.log.debug("Connected successfully.");
       if (this.getPullStatus() == false) {
         return null;
       }

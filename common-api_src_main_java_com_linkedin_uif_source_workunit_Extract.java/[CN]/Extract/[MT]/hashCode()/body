@@ -1,3 +1,3 @@
 {
-  return this.getExtractId().hashCode();
+  return (this.getNamespace() + this.getTable() + this.getExtractId()).hashCode();
 }

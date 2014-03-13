@@ -1,5 +1,5 @@
 {
-  LOG.debug("Build url to retrieve high watermark");
+  this.log.debug("Build url to retrieve high watermark");
   String query="SELECT " + watermarkColumn + " FROM "+ entity;
   String defaultPredicate=" " + watermarkColumn + " != null";
   String defaultSortOrder=" ORDER BY " + watermarkColumn + " desc LIMIT 1";
@@ -10,7 +10,7 @@
   }
   query=this.addPredicate(query,defaultPredicate);
   query=query + defaultSortOrder;
-  LOG.info("QUERY:" + query);
+  this.log.info("QUERY:" + query);
   try {
     return this.getFullUri(this.getSoqlUrl(query));
   }

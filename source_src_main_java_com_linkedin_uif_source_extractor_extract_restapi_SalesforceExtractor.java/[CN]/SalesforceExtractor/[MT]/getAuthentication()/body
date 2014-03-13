@@ -1,5 +1,5 @@
 {
-  LOG.debug("Authenticating salesforce");
+  this.log.debug("Authenticating salesforce");
   String clientId=this.workUnit.getProp(ConfigurationKeys.SOURCE_CLIENT_ID);
   String clientSecret=this.workUnit.getProp(ConfigurationKeys.SOURCE_CLIENT_SECRET);
   String userName=this.workUnit.getProp(ConfigurationKeys.SOURCE_USERNAME);
