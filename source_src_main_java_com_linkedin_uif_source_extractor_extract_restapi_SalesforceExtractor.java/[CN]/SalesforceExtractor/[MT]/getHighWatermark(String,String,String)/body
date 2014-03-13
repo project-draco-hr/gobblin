@@ -1,5 +1,5 @@
 {
-  LOG.info("Get high watermark from salesforce");
+  this.log.info("Get high watermark from salesforce");
   JsonElement element=gson.fromJson(response,JsonObject.class);
   long high_ts;
   try {

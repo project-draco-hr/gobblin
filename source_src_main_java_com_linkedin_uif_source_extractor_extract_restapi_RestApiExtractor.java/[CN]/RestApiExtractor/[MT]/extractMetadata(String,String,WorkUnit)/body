@@ -1,5 +1,5 @@
 {
-  LOG.info("Extract Metadata using Rest Api");
+  this.log.info("Extract Metadata using Rest Api");
   JsonArray columnArray=new JsonArray();
   String inputQuery=workUnit.getProp("source.query");
   List<String> columnListInQuery=null;
@@ -13,7 +13,7 @@
       throw new SchemaException("Failed to connect.");
     }
  else {
-      LOG.debug("Connected successfully.");
+      this.log.debug("Connected successfully.");
       String url=this.getSchemaMetadata(schema,entity);
       String response=this.getResponse(url);
       array=this.getSchema(response);
@@ -30,14 +30,14 @@
         }
       }
       if (inputQuery == null && this.columnList.size() != 0) {
-        LOG.debug("New query with the required column list");
+        this.log.debug("New query with the required column list");
         this.updatedQuery="SELECT " + Joiner.on(",").join(columnList) + " FROM "+ entity;
       }
  else {
-        LOG.debug("Query is same as input query");
+        this.log.debug("Query is same as input query");
         this.updatedQuery=inputQuery;
       }
-      LOG.debug("Schema:" + columnArray);
+      this.log.debug("Schema:" + columnArray);
       this.setOutputSchema((S)columnArray);
     }
   }

@@ -1,5 +1,5 @@
 {
-  LOG.info("Getting timestamp predicate from salesforce");
+  this.log.info("Getting timestamp predicate from salesforce");
   String Formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,SALESFORCE_TIMESTAMP_FORMAT);
   return column + " " + operator+ " "+ Formattedvalue;
 }

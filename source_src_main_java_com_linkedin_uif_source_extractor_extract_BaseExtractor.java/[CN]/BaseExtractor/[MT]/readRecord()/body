@@ -1,12 +1,12 @@
 {
   if (!this.isPullRequired()) {
-    LOG.debug("No more records");
+    this.log.debug("No more records");
     return null;
   }
   D nextElement=null;
   try {
     if (isInitialPull()) {
-      LOG.debug("initial pull");
+      this.log.debug("initial pull");
       iterator=this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
     }
     if (iterator.hasNext()) {
@@ -14,7 +14,7 @@
       if (iterator.hasNext()) {
       }
  else {
-        LOG.debug("next pull");
+        this.log.debug("next pull");
         iterator=this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
         if (iterator == null) {
           this.setFetchStatus(false);

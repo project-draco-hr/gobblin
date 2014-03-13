@@ -1,5 +1,5 @@
 {
-  LOG.debug("Build url to retrieve source record count");
+  this.log.debug("Build url to retrieve source record count");
   String existingPredicate="";
   if (this.updatedQuery != null) {
     String queryLowerCase=this.updatedQuery.toLowerCase();
@@ -11,7 +11,7 @@
   String query="SELECT COUNT() FROM " + entity + existingPredicate;
   try {
     if (isNullPredicate(predicateList)) {
-      LOG.info("QUERY:" + query);
+      this.log.info("QUERY:" + query);
       return this.getFullUri(this.getSoqlUrl(query));
     }
  else {
@@ -20,7 +20,7 @@
         Predicate predicate=i.next();
         query=this.addPredicate(query,predicate.getCondition());
       }
-      LOG.info("QUERY:" + query);
+      this.log.info("QUERY:" + query);
       return this.getFullUri(this.getSoqlUrl(query));
     }
   }
