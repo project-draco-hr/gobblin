@@ -1,0 +1,3 @@
+{
+  return Boolean.valueOf(state.getProp(ConfigurationKeys.METRICS_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_ENABLED));
+}

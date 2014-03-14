@@ -32,10 +32,12 @@
       }
       writer.write(record);
     }
-    taskRecordCounter.inc(writer.recordsWritten());
-    taskRecordMeter.mark(writer.recordsWritten());
-    jobRecordCounter.inc(writer.recordsWritten());
-    jobRecordMeter.mark(writer.recordsWritten());
+    if (Metrics.isEnabled(this.taskState)) {
+      taskRecordCounter.inc(writer.recordsWritten());
+      taskRecordMeter.mark(writer.recordsWritten());
+      jobRecordCounter.inc(writer.recordsWritten());
+      jobRecordMeter.mark(writer.recordsWritten());
+    }
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,writer.recordsWritten());
     this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());
@@ -83,11 +85,13 @@ writer.close();
 if (shouldCommit) {
 writer.commit();
 this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+if (Metrics.isEnabled(this.taskState)) {
 long bytes=writer.bytesWritten();
 taskByteCounter.inc(bytes);
 jobByteCounter.inc(bytes);
 taskByteMeter.mark(bytes);
 jobByteMeter.mark(bytes);
+}
 }
 }
  catch (IOException ioe) {
