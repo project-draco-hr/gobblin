@@ -11,9 +11,5 @@
  else {
       extractToStateMap.get(state.getExtract()).add(state);
     }
-    if (!this.collectSingleTaskData(state)) {
-      return false;
-    }
   }
-  return true;
 }

@@ -3,5 +3,5 @@
     return false;
   }
   Extract otherExtract=(Extract)other;
-  return this.getExtractId().equals(otherExtract.getExtractId());
+  return this.getNamespace().equals(otherExtract.getNamespace()) && this.getTable().equals(otherExtract.getTable()) && this.getExtractId().equals(otherExtract.getExtractId());
 }

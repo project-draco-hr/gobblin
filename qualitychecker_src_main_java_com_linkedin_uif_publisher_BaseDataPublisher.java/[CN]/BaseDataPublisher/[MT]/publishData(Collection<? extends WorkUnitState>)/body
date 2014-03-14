@@ -1,16 +1,20 @@
 {
+  collectExtractMapping(states);
   for (  Map.Entry<Extract,List<WorkUnitState>> entry : extractToStateMap.entrySet()) {
     Extract extract=entry.getKey();
     WorkUnitState workUnitState=entry.getValue().get(0);
-    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_TMP_DIR),getState().getProp(ConfigurationKeys.JOB_NAME_KEY) + "/" + workUnitState.getExtract().getExtractId());
-    Path finalOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "_"+ (extract.getIsFull() ? "FULL" : "APPEND"));
+    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR),extract.getNamespace().replaceAll("\\.","/") + "/" + extract.getTable()+ "/"+ extract.getExtractId()+ "_"+ (extract.getIsFull() ? "FULL" : "APPEND"));
+    Path finalOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),extract.getOutputFilePath());
     LOG.info(String.format("Attemping to move %s to %s",tmpOutput,finalOutput));
     if (this.fs.exists(finalOutput)) {
       if (this.getState().getPropAsBoolean((ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR))) {
         this.fs.delete(finalOutput,true);
       }
  else {
-        throw new IOException("Failed to publish data, final output path already exists");
+        for (        FileStatus status : this.fs.listStatus(tmpOutput)) {
+          this.fs.rename(status.getPath(),new Path(finalOutput,status.getPath().getName()));
+        }
+        continue;
       }
     }
     if (this.fs.rename(tmpOutput,finalOutput)) {
