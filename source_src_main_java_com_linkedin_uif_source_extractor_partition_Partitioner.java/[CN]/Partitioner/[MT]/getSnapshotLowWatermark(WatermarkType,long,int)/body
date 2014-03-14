@@ -1,5 +1,5 @@
 {
-  LOG.info("Getting snapshot low water mark");
+  LOG.debug("Getting snapshot low water mark");
   if (this.isPreviousWatermarkExists(previousWatermark)) {
     if (this.isSimpleWatermark(watermarkType)) {
       return previousWatermark + deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS));
@@ -9,6 +9,7 @@
     }
   }
  else {
+    LOG.info("Overriding low water mark with start value:" + ConfigurationKeys.SOURCE_START_VALUE);
     return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
   }
 }

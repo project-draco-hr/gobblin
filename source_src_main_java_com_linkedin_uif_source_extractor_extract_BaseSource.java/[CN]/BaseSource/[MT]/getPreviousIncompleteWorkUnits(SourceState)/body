@@ -3,7 +3,7 @@
   List<WorkUnit> previousWorkUnits=new ArrayList<WorkUnit>();
   List<WorkUnitState> previousWorkUnitStates=state.getPreviousStates();
   if (previousWorkUnitStates.size() == 0) {
-    LOG.info("No previous states for this entity");
+    LOG.info("Previous states are not found");
     return previousWorkUnits;
   }
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {

@@ -5,7 +5,6 @@
   String entityName=state.getProp(ConfigurationKeys.SOURCE_ENTITY);
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
   long previousWatermark=this.getLatestWatermarkFromMetadata(state);
-  LOG.info("Latest watermark from the previous successful runs:" + previousWatermark);
   Partitioner partitioner=new Partitioner(state);
   HashMap<Long,Long> partitions=partitioner.getPartitions(previousWatermark);
   Map<Long,Long> sortedPartitions=new TreeMap<Long,Long>(partitions);
