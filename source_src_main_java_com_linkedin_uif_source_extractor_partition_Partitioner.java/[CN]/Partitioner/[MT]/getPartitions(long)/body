@@ -19,6 +19,6 @@
     defaultPartition.put(lowWatermark,highWatermark);
     return defaultPartition;
   }
-  LOG.info("Get partitions with low watermark:" + lowWatermark + " ;high watermark:"+ highWatermark+ " ;partition interval in hours:"+ interval+ " ;Maximum number of allowed partitions:"+ maxPartitions);
+  LOG.info("Generate partitions with low watermark:" + lowWatermark + " ;high watermark:"+ highWatermark+ " ;partition interval in hours:"+ interval+ " ;Maximum number of allowed partitions:"+ maxPartitions);
   return watermark.getPartitions(lowWatermark,highWatermark,interval,maxPartitions);
 }

@@ -1,7 +1,8 @@
 {
-  LOG.info("Getting append low water mark");
+  LOG.debug("Getting append low water mark");
   Boolean isAppendOverride=Boolean.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_IS_APPEND_OVERRIDE));
   if (isAppendOverride) {
+    LOG.info("Overriding low water mark with start value:" + ConfigurationKeys.SOURCE_START_VALUE);
     return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
   }
  else {
@@ -14,6 +15,7 @@
       }
     }
  else {
+      LOG.info("Overriding low water mark with start value:" + ConfigurationKeys.SOURCE_START_VALUE);
       return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
     }
   }
