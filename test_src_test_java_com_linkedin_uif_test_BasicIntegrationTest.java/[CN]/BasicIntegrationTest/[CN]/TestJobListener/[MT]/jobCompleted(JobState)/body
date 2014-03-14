@@ -11,7 +11,7 @@
         Assert.assertEquals(sourceFile.length(),targetFile.length());
         Assert.assertFalse(Files.equal(sourceFile,targetFile));
       }
- catch (      IOException ioe) {
+ catch (      Exception ex) {
         Assert.fail();
       }
       long records=Metrics.getCounter(Metrics.metricName("task",taskState.getTaskId(),"records")).getCount();
