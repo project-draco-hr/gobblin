@@ -1,0 +1,3 @@
+{
+  return Boolean.valueOf(this.state.getProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY));
+}
