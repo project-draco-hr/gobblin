@@ -1,3 +1,4 @@
 {
+  this.log.info("Updating the current state high water mark with " + this.highWatermark);
   this.workUnitState.setHighWaterMark(this.highWatermark);
 }
