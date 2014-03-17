@@ -1,11 +1,18 @@
 {
-  LOG.debug("Getting low watermark");
   long lowWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-  if (this.isSnapshot(extractType)) {
-    lowWatermark=this.getSnapshotLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
+  if (isFullDump()) {
+    if (!Strings.isNullOrEmpty(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE))) {
+      lowWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
+    }
+    LOG.info("low watermark for **full** extract:" + lowWatermark);
   }
  else {
-    lowWatermark=this.getAppendLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
+    if (this.isSnapshot(extractType)) {
+      lowWatermark=this.getSnapshotLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
+    }
+ else {
+      lowWatermark=this.getAppendLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
+    }
   }
   return (lowWatermark == 0 ? ConfigurationKeys.DEFAULT_WATERMARK_VALUE : lowWatermark);
 }
