@@ -19,7 +19,15 @@
     att.setValidationCount(extract.getValidationRecordCount());
     att.setValidationHighWater(extract.getValidationRecordCountHighWaterMark());
   }
-  att.setPrimaryKeyFields(extract.getPrimaryKeys());
+switch (extract.getType()) {
+case SNAPSHOT_APPEND:
+    att.setPrimaryKeyFields(extract.getPrimaryKeys());
+case APPEND_ONLY:
   att.setDeltaFields(extract.getDeltaFields());
-  return att.getSchema();
+break;
+case SNAPSHOT_ONLY:
+att.isFull(true);
+att.setFullDropDate(extract.getFullExtractRunTime());
+}
+return att.getSchema();
 }
