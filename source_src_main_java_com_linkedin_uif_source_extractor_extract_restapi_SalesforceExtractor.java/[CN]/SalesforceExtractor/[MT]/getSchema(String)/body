@@ -12,7 +12,9 @@
       String dataType=field.get("type").getAsString();
       String elementDataType="string";
       List<String> mapSymbols=null;
-      schema.setDataType(this.convertDataType(field.get("name").getAsString(),dataType,elementDataType,mapSymbols));
+      JsonObject newDataType=this.convertDataType(field.get("name").getAsString(),dataType,elementDataType,mapSymbols);
+      this.log.debug("ColumnName:" + field.get("name").getAsString() + ";   old datatype:"+ dataType+ ";   new datatype:"+ newDataType);
+      schema.setDataType(newDataType);
       schema.setLength(field.get("length").getAsLong());
       schema.setPrecision(field.get("precision").getAsInt());
       schema.setScale(field.get("scale").getAsInt());
