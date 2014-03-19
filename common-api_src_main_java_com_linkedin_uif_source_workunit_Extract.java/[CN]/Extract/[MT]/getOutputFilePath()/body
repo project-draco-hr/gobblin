@@ -1,3 +1,3 @@
 {
-  return this.getNamespace().replaceAll("\\.","/") + "/" + this.getTable()+ "/"+ this.getExtractId()+ "_"+ (this.getIsFull() ? "FULL" : "APPEND");
+  return this.getNamespace().replaceAll("\\.","/") + "/" + this.getTable()+ "/"+ this.getExtractId()+ "_"+ (this.getIsFull() ? "full" : "append");
 }
