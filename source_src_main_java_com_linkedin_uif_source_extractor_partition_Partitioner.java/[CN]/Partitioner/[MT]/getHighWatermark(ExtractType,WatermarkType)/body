@@ -1,11 +1,17 @@
 {
   LOG.debug("Getting high watermark");
   long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-  if (this.isSnapshot(extractType)) {
-    highWatermark=this.getSnapshotHighWatermark(watermarkType);
+  if (this.isWatermarkOverride()) {
+    highWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_END_VALUE));
+    LOG.info("Overriding high water mark with the given end value:" + highWatermark);
   }
  else {
-    highWatermark=this.getAppendHighWatermark(extractType);
+    if (this.isSnapshot(extractType)) {
+      highWatermark=this.getSnapshotHighWatermark(watermarkType);
+    }
+ else {
+      highWatermark=this.getAppendHighWatermark(extractType);
+    }
   }
   return (highWatermark == 0 ? ConfigurationKeys.DEFAULT_WATERMARK_VALUE : highWatermark);
 }

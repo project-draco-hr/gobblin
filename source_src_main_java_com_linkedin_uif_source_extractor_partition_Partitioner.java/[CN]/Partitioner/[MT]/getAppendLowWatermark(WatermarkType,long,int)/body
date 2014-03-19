@@ -1,22 +1,15 @@
 {
   LOG.debug("Getting append low water mark");
-  Boolean isAppendOverride=Boolean.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_IS_APPEND_OVERRIDE));
-  if (isAppendOverride) {
-    LOG.info("Overriding low water mark with start value:" + ConfigurationKeys.SOURCE_START_VALUE);
-    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
+  if (this.isPreviousWatermarkExists(previousWatermark)) {
+    if (this.isSimpleWatermark(watermarkType)) {
+      return previousWatermark + deltaForNextWatermark;
+    }
+ else {
+      return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),deltaForNextWatermark),WATERMARKTIMEFORMAT));
+    }
   }
  else {
-    if (this.isPreviousWatermarkExists(previousWatermark)) {
-      if (this.isSimpleWatermark(watermarkType)) {
-        return previousWatermark + deltaForNextWatermark;
-      }
- else {
-        return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),deltaForNextWatermark),WATERMARKTIMEFORMAT));
-      }
-    }
- else {
-      LOG.info("Overriding low water mark with start value:" + ConfigurationKeys.SOURCE_START_VALUE);
-      return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
-    }
+    LOG.info("Overriding low water mark with start value:" + ConfigurationKeys.SOURCE_START_VALUE);
+    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
   }
 }

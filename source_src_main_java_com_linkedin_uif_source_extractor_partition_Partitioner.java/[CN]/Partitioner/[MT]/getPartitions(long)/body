@@ -12,6 +12,8 @@
   int maxPartitions=(sourceMaxAllowedPartitions != 0 ? sourceMaxAllowedPartitions : ConfigurationKeys.DEFAULT_MAX_NUMBER_OF_PARTITIONS);
   WatermarkPredicate watermark=new WatermarkPredicate(null,watermarkType);
   int deltaForNextWatermark=watermark.getDeltaNumForNextWatermark();
+  LOG.info("is watermark override:" + this.isWatermarkOverride());
+  LOG.info("is full extract:" + this.isFullDump());
   long lowWatermark=this.getLowWatermark(extractType,watermarkType,previousWatermark,deltaForNextWatermark);
   long highWatermark=this.getHighWatermark(extractType,watermarkType);
   if (lowWatermark == ConfigurationKeys.DEFAULT_WATERMARK_VALUE || highWatermark == ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {

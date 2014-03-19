@@ -1,3 +1,0 @@
-{
-  return Boolean.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_IS_APPEND_OVERRIDE));
-}
