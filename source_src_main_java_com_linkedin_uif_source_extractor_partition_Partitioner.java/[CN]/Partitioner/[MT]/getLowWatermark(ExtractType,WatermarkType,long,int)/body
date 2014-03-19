@@ -1,10 +1,8 @@
 {
   long lowWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-  if (isFullDump()) {
-    if (!Strings.isNullOrEmpty(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE))) {
-      lowWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
-    }
-    LOG.info("low watermark for **full** extract:" + lowWatermark);
+  if (this.isFullDump() || this.isWatermarkOverride()) {
+    lowWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
+    LOG.info("Overriding low water mark with the given start value:" + lowWatermark);
   }
  else {
     if (this.isSnapshot(extractType)) {
