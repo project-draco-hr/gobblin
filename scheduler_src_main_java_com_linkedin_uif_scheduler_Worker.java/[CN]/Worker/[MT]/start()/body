@@ -18,7 +18,6 @@
 ,Executors.newSingleThreadExecutor());
   if (Metrics.isEnabled(this.properties)) {
     long metricsReportInterval=Long.parseLong(this.properties.getProperty(ConfigurationKeys.METRICS_REPORT_INTERVAL_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORT_INTERVAL));
-    Metrics.startSlf4jReporter(metricsReportInterval,LoggerFactory.getLogger(Worker.class));
     Metrics.startCsvReporter(metricsReportInterval,this.properties.getProperty(ConfigurationKeys.METRICS_DIR_KEY));
   }
   Runtime.getRuntime().addShutdownHook(new Thread(){
