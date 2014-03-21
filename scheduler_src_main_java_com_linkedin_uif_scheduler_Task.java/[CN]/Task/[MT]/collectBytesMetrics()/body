@@ -1,0 +1,11 @@
+{
+  Counter taskByteCounter=Metrics.getCounter(Metrics.metricName("task",this.taskId,"bytes"));
+  Counter jobByteCounter=Metrics.getCounter(Metrics.metricName("job",this.jobId,"bytes"));
+  Meter taskByteMeter=Metrics.getMeter(Metrics.metricName("task",this.taskId,"bytesPerSec"));
+  Meter jobByteMeter=Metrics.getMeter(Metrics.metricName("job",this.jobId,"bytesPerSec"));
+  long bytes=this.writer.bytesWritten();
+  taskByteCounter.inc(bytes);
+  jobByteCounter.inc(bytes);
+  taskByteMeter.mark(bytes);
+  jobByteMeter.mark(bytes);
+}

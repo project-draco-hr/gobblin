@@ -6,5 +6,5 @@
     LOG.error("Failed to convert source data record: " + sourceRecord);
     throw new IOException(e);
   }
-  this.count++;
+  this.count.incrementAndGet();
 }
