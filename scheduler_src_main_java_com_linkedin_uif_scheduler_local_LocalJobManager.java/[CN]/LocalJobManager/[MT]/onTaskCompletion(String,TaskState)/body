@@ -3,6 +3,9 @@
     LOG.error(String.format("Job %s could not be found",jobId));
     return;
   }
+  if (Metrics.isEnabled(this.properties)) {
+    taskState.removeMetrics();
+  }
   JobState jobState=this.jobStateMap.get(jobId);
   jobState.addTaskState(taskState);
   if (jobState.getCompletedTasks() == jobState.getTasks()) {

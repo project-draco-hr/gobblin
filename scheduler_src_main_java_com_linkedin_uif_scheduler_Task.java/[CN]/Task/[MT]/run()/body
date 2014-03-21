@@ -71,8 +71,8 @@ this.writer.close();
 if (shouldCommit) {
 this.writer.commit();
 this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-if (Metrics.isEnabled(this.taskState)) {
-collectBytesMetrics();
+if (Metrics.isEnabled(this.taskState.getWorkunit())) {
+updateByteMetrics();
 }
 }
 }
