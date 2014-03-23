@@ -1,4 +1,5 @@
 {
+  Preconditions.checkNotNull(sourceRecord);
   try {
     this.writer.append(this.dataConverter.convert(sourceRecord));
   }
