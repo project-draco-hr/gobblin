@@ -5,6 +5,7 @@
   }
  catch (  ExtractPrepareException e) {
     e.printStackTrace();
+    throw new IOException("Failed to prepare extractor; error-" + e.getMessage());
   }
   return extractor;
 }
