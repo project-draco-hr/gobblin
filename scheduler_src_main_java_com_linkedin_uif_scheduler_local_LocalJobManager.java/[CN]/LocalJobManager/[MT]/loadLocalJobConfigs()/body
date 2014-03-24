@@ -13,13 +13,13 @@
   }
   LOG.info("Loading job configurations from directory " + jobConfigFileDir);
   for (  String jobConfigFile : jobConfigFiles) {
-    Properties properties=new Properties();
-    properties.putAll(this.properties);
+    Properties jobProps=new Properties();
+    jobProps.putAll(this.properties);
     try {
       File file=new File(jobConfigFileDir,jobConfigFile);
-      properties.load(new FileReader(file));
-      properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
-      jobConfigs.add(properties);
+      jobProps.load(new FileReader(file));
+      jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
+      jobConfigs.add(jobProps);
     }
  catch (    FileNotFoundException fnfe) {
       LOG.error("Job configuration file " + jobConfigFile + " not found",fnfe);
@@ -28,6 +28,6 @@ catch (    IOException ioe) {
       LOG.error("Failed to load job configuration from file " + jobConfigFile,ioe);
     }
   }
-  LOG.info(String.format(jobConfigs.size() == 1 ? "Loaded %d job configuration" : "Loaded %d job configurations",jobConfigs.size()));
+  LOG.info(String.format(jobConfigs.size() <= 1 ? "Loaded %d job configuration" : "Loaded %d job configurations",jobConfigs.size()));
   return jobConfigs;
 }
