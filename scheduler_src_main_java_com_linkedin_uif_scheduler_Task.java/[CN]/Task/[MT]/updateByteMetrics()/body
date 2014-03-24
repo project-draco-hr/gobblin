@@ -1,3 +1,7 @@
 {
+  if (this.writer == null) {
+    LOG.error(String.format("Could not update byte metrics for task %s: writer was not built",this.taskId));
+    return;
+  }
   this.taskState.updateByteMetrics(this.writer.bytesWritten());
 }

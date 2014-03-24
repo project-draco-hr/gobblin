@@ -27,7 +27,7 @@
         serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
       }
  catch (      TimeoutException te) {
-        LOG.error(te);
+        LOG.error("Timeout in stopping the service manager",te);
       }
     }
   }
