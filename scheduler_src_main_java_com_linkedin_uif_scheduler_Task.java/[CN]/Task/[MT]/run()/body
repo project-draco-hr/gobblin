@@ -40,10 +40,9 @@
     publisher=buildTaskPublisher(this.taskState,results);
 switch (publisher.canPublish()) {
 case SUCCESS:
-      LOG.info("Committing data of task " + this.taskId);
-    shouldCommit=true;
-  this.taskState.setWorkingState(WorkUnitState.WorkingState.SUCCESSFUL);
-break;
+      shouldCommit=true;
+    this.taskState.setWorkingState(WorkUnitState.WorkingState.SUCCESSFUL);
+  break;
 case CLEANUP_FAIL:
 LOG.error("Cleanup failed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
@@ -77,6 +76,7 @@ if (this.writer != null) {
 try {
 this.writer.close();
 if (shouldCommit) {
+LOG.info("Committing data of task " + this.taskId);
 this.writer.commit();
 this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
 if (Metrics.isEnabled(this.taskState.getWorkunit())) {
