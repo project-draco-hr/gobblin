@@ -1,4 +1,10 @@
 {
+  Preconditions.checkNotNull(jobProps);
+  if (!jobProps.contains(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
+    jobProps.setProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"true");
+    runJob(jobProps,jobListener);
+    return;
+  }
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   if (jobListener != null) {
     this.jobListenerMap.put(jobName,jobListener);

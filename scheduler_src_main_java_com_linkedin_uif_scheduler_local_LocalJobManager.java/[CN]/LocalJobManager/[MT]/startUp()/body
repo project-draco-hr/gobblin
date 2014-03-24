@@ -3,5 +3,6 @@
   this.scheduler.start();
   if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
     scheduleLocallyConfiguredJobs();
+    startJobConfigFileMonitor();
   }
 }

@@ -1,4 +1,5 @@
 {
+  Preconditions.checkNotNull(jobProps);
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   if (jobListener != null) {
     this.jobListenerMap.put(jobName,jobListener);
