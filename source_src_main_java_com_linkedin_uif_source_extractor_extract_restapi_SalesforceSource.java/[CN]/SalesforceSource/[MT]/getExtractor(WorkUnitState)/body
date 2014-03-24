@@ -4,8 +4,8 @@
     extractor=new SalesforceExtractor<S,D>(state).build();
   }
  catch (  ExtractPrepareException e) {
-    e.printStackTrace();
-    throw new IOException("Failed to prepare extractor; error-" + e.getMessage());
+    LOG.error("Failed to prepare extractor: error -" + e.getMessage());
+    throw new IOException(e);
   }
   return extractor;
 }
