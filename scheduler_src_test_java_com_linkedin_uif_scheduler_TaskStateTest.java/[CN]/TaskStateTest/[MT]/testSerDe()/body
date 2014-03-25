@@ -1,14 +1,11 @@
 {
-  ByteArrayOutputStream baos=null;
-  DataOutputStream dos=null;
-  ByteArrayInputStream bais=null;
-  DataInputStream dis=null;
+  Closer closer=Closer.create();
   try {
-    baos=new ByteArrayOutputStream();
-    dos=new DataOutputStream(baos);
+    ByteArrayOutputStream baos=closer.register(new ByteArrayOutputStream());
+    DataOutputStream dos=closer.register(new DataOutputStream(baos));
     this.taskState.write(dos);
-    bais=new ByteArrayInputStream(baos.toByteArray());
-    dis=new DataInputStream(bais);
+    ByteArrayInputStream bais=closer.register((new ByteArrayInputStream(baos.toByteArray())));
+    DataInputStream dis=closer.register((new DataInputStream(bais)));
     TaskState newTaskState=new TaskState();
     newTaskState.readFields(dis);
     Assert.assertEquals(newTaskState.getJobId(),"Job-1");
@@ -21,27 +18,6 @@
     Assert.assertEquals(newTaskState.getProp("foo"),"bar");
   }
   finally {
-    if (baos != null) {
-      try {
-        baos.close();
-      }
- catch (      IOException ioe) {
-      }
-    }
-    if (dos != null) {
-      try {
-        dos.close();
-      }
- catch (      IOException ioe) {
-      }
-    }
-    if (bais != null) {
-      try {
-        bais.close();
-      }
- catch (      IOException ioe) {
-      }
-    }
-    dis.close();
+    closer.close();
   }
 }

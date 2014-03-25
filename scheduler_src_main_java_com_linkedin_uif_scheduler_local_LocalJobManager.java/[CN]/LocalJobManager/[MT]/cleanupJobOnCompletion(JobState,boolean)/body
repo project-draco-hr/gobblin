@@ -9,13 +9,12 @@
   try {
     if (!runOnce) {
       this.lastJobIdMap.put(jobName,jobId);
-      this.jobLockMap.get(jobName).unlock();
     }
  else {
+      this.scheduledJobs.remove(jobName);
       if (this.runOnceJobs.containsKey(jobName)) {
         this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
       }
-      this.jobLockMap.remove(jobName).unlock();
     }
   }
  catch (  Exception e) {

@@ -1,0 +1,13 @@
+{
+  try {
+    if (runOnce) {
+      this.jobLockMap.remove(jobName).unlock();
+    }
+ else {
+      this.jobLockMap.get(jobName).unlock();
+    }
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to unlock for job " + jobName,ioe);
+  }
+}

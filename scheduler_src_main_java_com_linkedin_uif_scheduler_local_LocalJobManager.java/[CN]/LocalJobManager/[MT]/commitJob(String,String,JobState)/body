@@ -28,6 +28,7 @@
     boolean runOnce=this.runOnceJobs.containsKey(jobName);
     persistJobState(jobState);
     cleanupJobOnCompletion(jobState,runOnce);
+    unlockJob(jobName,runOnce);
     callJobListener(jobName,jobState,runOnce);
     if (publisher != null) {
       publisher.close();
