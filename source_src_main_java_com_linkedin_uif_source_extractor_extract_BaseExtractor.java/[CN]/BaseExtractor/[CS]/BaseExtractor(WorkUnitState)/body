@@ -4,5 +4,6 @@
   this.schema=this.workUnit.getProp(ConfigurationKeys.SOURCE_SCHEMA);
   this.entity=this.workUnit.getProp(ConfigurationKeys.SOURCE_ENTITY);
   this.setWorkUnitName();
-  this.log=LogFactory.getLog(BaseExtractor.class + this.getWorkUnitName());
+  this.log=LoggerFactory.getLogger(BaseExtractor.class);
+  MDC.put("workUnitName",this.getWorkUnitName());
 }
