@@ -1,0 +1,7 @@
+{
+  super(fieldName,nullable,sourceType);
+  for (  JsonElement elem : schemaNode.get("dataType").getAsJsonObject().get("symbols").getAsJsonArray()) {
+    enumSet.add(elem.getAsString());
+  }
+  enumName=schemaNode.get("dataType").getAsJsonObject().get("name").getAsString();
+}

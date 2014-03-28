@@ -1,0 +1,4 @@
+String fieldName
+boolean nullable
+String sourceType
+String charSet
