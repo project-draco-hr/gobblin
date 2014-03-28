@@ -1,0 +1,16 @@
+{
+  Thread.sleep(2000);
+  Assert.assertEquals(this.jobManager.getScheduledJobs().size(),3);
+  Properties jobProps=new Properties();
+  jobProps.load(new FileReader(new File(JOB_CONFIG_FILE_DIR,"UIFTest1.pull")));
+  jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,"UIF-test-new");
+  this.newJobConfigFile=new File(JOB_CONFIG_FILE_DIR,"UIF-test-new.pull");
+  jobProps.store(new FileWriter(this.newJobConfigFile),null);
+  Thread.sleep(2000);
+  Set<String> jobNames=Sets.newHashSet(this.jobManager.getScheduledJobs());
+  Assert.assertEquals(jobNames.size(),4);
+  Assert.assertTrue(jobNames.contains("UIFTest1"));
+  Assert.assertTrue(jobNames.contains("UIFTest2"));
+  Assert.assertTrue(jobNames.contains("UIFTest3"));
+  Assert.assertTrue(jobNames.contains("UIF-test-new"));
+}

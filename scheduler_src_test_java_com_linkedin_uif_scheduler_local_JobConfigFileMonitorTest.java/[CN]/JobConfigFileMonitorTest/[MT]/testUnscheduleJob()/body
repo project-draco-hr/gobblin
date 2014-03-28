@@ -1,0 +1,13 @@
+{
+  Assert.assertEquals(this.jobManager.getScheduledJobs().size(),4);
+  Properties jobProps=new Properties();
+  jobProps.load(new FileReader(this.newJobConfigFile));
+  jobProps.setProperty(ConfigurationKeys.JOB_DISABLED_KEY,"true");
+  jobProps.store(new FileWriter(this.newJobConfigFile),null);
+  Thread.sleep(2000);
+  Set<String> jobNames=Sets.newHashSet(this.jobManager.getScheduledJobs());
+  Assert.assertEquals(jobNames.size(),3);
+  Assert.assertTrue(jobNames.contains("UIFTest1"));
+  Assert.assertTrue(jobNames.contains("UIFTest2"));
+  Assert.assertTrue(jobNames.contains("UIFTest3"));
+}

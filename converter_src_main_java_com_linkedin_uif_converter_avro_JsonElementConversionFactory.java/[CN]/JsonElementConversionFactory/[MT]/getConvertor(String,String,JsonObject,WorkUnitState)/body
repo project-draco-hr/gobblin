@@ -10,33 +10,33 @@
   DateTimeZone timeZone=getTimeZone(state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_TIMEZONE,"UTC"));
 switch (type) {
 case DATE:
-    return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+    return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
 case TIMESTAMP:
-  return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIMESTAMP_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+  return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIMESTAMP_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
 case TIME:
-return new DateConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"HH:mm:ss"),timeZone);
+return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"HH:mm:ss"),timeZone);
 case FIXED:
 throw new UnsupportedDateTypeException(fieldType + " is unsupported");
 case STRING:
-return new StringConverter(fieldName,nullable);
+return new StringConverter(fieldName,nullable,type.toString());
 case BYTES:
-return new BinaryConverter(fieldName,nullable,state.getProp(ConfigurationKeys.CONVERTER_AVRO_BINARY_CHARSET,"UTF8"));
+return new BinaryConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_BINARY_CHARSET,"UTF8"));
 case INT:
-return new IntConverter(fieldName,nullable);
+return new IntConverter(fieldName,nullable,type.toString());
 case LONG:
-return new LongConverter(fieldName,nullable);
+return new LongConverter(fieldName,nullable,type.toString());
 case FLOAT:
-return new FloatConverter(fieldName,nullable);
+return new FloatConverter(fieldName,nullable,type.toString());
 case DOUBLE:
-return new DoubleConverter(fieldName,nullable);
+return new DoubleConverter(fieldName,nullable,type.toString());
 case BOOLEAN:
-return new BooleanConverter(fieldName,nullable);
+return new BooleanConverter(fieldName,nullable,type.toString());
 case ARRAY:
-return new ArrayConverter(fieldName,nullable,schemaNode,state);
+return new ArrayConverter(fieldName,nullable,type.toString(),schemaNode,state);
 case MAP:
-return new MapConverter(fieldName,nullable,schemaNode,state);
+return new MapConverter(fieldName,nullable,type.toString(),schemaNode,state);
 case ENUM:
-return new EnumConverter(fieldName,nullable,schemaNode);
+return new EnumConverter(fieldName,nullable,type.toString(),schemaNode);
 default :
 throw new UnsupportedDateTypeException(fieldType + " is unsupported");
 }

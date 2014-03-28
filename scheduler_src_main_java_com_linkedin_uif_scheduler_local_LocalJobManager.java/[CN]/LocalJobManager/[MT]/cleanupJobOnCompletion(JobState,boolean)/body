@@ -7,14 +7,14 @@
   }
   this.jobStateMap.remove(jobId);
   try {
-    if (!runOnce) {
-      this.lastJobIdMap.put(jobName,jobId);
-    }
- else {
+    if (runOnce) {
       this.scheduledJobs.remove(jobName);
       if (this.runOnceJobs.containsKey(jobName)) {
         this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
       }
+    }
+ else {
+      this.lastJobIdMap.put(jobName,jobId);
     }
   }
  catch (  Exception e) {

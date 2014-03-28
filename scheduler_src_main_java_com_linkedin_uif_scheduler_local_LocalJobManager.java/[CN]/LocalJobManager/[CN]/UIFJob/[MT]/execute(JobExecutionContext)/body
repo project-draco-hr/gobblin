@@ -6,7 +6,7 @@
   try {
     jobManager.runJob(jobProps,jobListener);
   }
- catch (  JobException je) {
-    throw new JobExecutionException(je);
+ catch (  Throwable t) {
+    throw new JobExecutionException(t);
   }
 }

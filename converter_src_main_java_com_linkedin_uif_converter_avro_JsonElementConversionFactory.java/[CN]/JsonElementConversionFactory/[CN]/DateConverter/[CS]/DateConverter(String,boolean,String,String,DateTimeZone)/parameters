@@ -1,0 +1,5 @@
+String fieldName
+boolean nullable
+String sourceType
+String pattern
+DateTimeZone zone

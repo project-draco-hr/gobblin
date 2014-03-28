@@ -1,11 +1,16 @@
 {
   Preconditions.checkNotNull(jobProps);
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  boolean disabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_DISABLED_KEY,"false"));
+  if (disabled) {
+    LOG.info("Skipping disabled job " + jobName);
+    return;
+  }
   if (!jobProps.containsKey(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
     jobProps.setProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"true");
     runJob(jobProps,jobListener);
     return;
   }
-  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   if (jobListener != null) {
     this.jobListenerMap.put(jobName,jobListener);
   }
