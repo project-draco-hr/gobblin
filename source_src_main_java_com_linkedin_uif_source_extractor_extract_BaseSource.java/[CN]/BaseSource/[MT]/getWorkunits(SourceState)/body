@@ -1,4 +1,5 @@
 {
+  initLogger(state);
   LOG.info("Get work units");
   List<WorkUnit> workUnits=Lists.newArrayList();
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
