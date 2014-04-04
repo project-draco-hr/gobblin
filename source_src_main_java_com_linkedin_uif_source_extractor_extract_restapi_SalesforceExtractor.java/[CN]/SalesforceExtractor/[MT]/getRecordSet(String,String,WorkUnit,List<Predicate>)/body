@@ -1,0 +1,24 @@
+{
+  this.log.debug("Getting salesforce data using bulk api");
+  RecordSet<D> rs=null;
+  try {
+    if (this.bulkApiInitialRun == true) {
+      this.bulkResultIdList=this.getQueryResultIds(schema,entity,predicateList);
+      this.log.info("Number of bulk api resultSet Ids:" + this.bulkResultIdList.size());
+    }
+    if (!this.isBulkJobFinished()) {
+      rs=getBulkData();
+    }
+    this.bulkApiInitialRun=false;
+    if (rs == null) {
+      return null;
+    }
+ else {
+      return rs.iterator();
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new DataRecordException("Failed to get records using bulk api; error-" + e.getMessage());
+  }
+}

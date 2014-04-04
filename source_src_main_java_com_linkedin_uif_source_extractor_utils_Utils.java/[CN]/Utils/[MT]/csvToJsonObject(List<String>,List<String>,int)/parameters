@@ -1,0 +1,3 @@
+List<String> bulkRecordHeader
+List<String> record
+int columnCount
