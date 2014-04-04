@@ -1,5 +1,4 @@
 {
-  boolean nullable=schemaNode.has("isNullable") ? schemaNode.get("isNullable").getAsBoolean() : false;
   Type type;
   try {
     type=Type.valueOf(fieldType.toUpperCase());

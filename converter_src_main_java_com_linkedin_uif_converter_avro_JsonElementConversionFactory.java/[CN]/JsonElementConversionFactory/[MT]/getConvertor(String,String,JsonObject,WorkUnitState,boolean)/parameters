@@ -2,3 +2,4 @@ String fieldName
 String fieldType
 JsonObject schemaNode
 WorkUnitState state
+boolean nullable
