@@ -16,6 +16,9 @@
     partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,entry.getKey());
     partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,entry.getValue());
     Extract extract=partitionState.createExtract(tableType,nameSpaceName,entityName);
+    if (Boolean.valueOf(state.getProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY))) {
+      extract.setFullTrue(System.currentTimeMillis());
+    }
     workUnits.add(partitionState.createWorkUnit(extract));
     workUnitCount++;
   }
