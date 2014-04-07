@@ -3,6 +3,7 @@
   RecordSet<D> rs=null;
   try {
     if (this.bulkApiInitialRun == true) {
+      this.setBulkJobFinished(false);
       this.bulkResultIdList=this.getQueryResultIds(schema,entity,predicateList);
       this.log.info("Number of bulk api resultSet Ids:" + this.bulkResultIdList.size());
     }

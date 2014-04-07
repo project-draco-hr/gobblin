@@ -10,7 +10,7 @@
       }
  else {
         this.log.info("Bulk job is finished");
-        this.setBulkStatus(false);
+        this.setBulkJobFinished(true);
         this.bulkConnection.closeJob(bulkJob.getId());
         return rs;
       }
