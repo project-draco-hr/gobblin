@@ -23,9 +23,11 @@
     this.log.info("QUERY:" + query);
     ByteArrayInputStream bout=new ByteArrayInputStream(query.getBytes());
     this.bulkBatchInfo=bulkConnection.createBatchFromStream(this.bulkJob,bout);
+    int retryInterval=30 + (int)Math.ceil((float)this.getExpectedRecordCount() / 10000) * 2;
+    this.log.info("Salesforce bulk api retry interval in seconds:" + retryInterval);
     this.bulkBatchInfo=bulkConnection.getBatchInfo(this.bulkJob.getId(),this.bulkBatchInfo.getId());
     while ((this.bulkBatchInfo.getState() != BatchStateEnum.Completed) && (this.bulkBatchInfo.getState() != BatchStateEnum.Failed)) {
-      Thread.sleep(30 * 1000);
+      Thread.sleep(retryInterval * 1000);
       this.bulkBatchInfo=bulkConnection.getBatchInfo(this.bulkJob.getId(),this.bulkBatchInfo.getId());
       this.log.debug("Bulk Api Batch Info:" + this.bulkBatchInfo);
       this.log.info("Waiting for bulk resultSetIds");
