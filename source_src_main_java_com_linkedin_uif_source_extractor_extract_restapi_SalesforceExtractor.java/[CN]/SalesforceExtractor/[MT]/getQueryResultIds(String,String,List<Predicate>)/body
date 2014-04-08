@@ -25,9 +25,10 @@
     this.bulkBatchInfo=bulkConnection.createBatchFromStream(this.bulkJob,bout);
     this.bulkBatchInfo=bulkConnection.getBatchInfo(this.bulkJob.getId(),this.bulkBatchInfo.getId());
     while ((this.bulkBatchInfo.getState() != BatchStateEnum.Completed) && (this.bulkBatchInfo.getState() != BatchStateEnum.Failed)) {
-      Thread.sleep(15 * 1000);
+      Thread.sleep(30 * 1000);
       this.bulkBatchInfo=bulkConnection.getBatchInfo(this.bulkJob.getId(),this.bulkBatchInfo.getId());
       this.log.debug("Bulk Api Batch Info:" + this.bulkBatchInfo);
+      this.log.info("Waiting for bulk resultSetIds");
     }
     QueryResultList list=bulkConnection.getQueryResultList(this.bulkJob.getId(),this.bulkBatchInfo.getId());
     return Arrays.asList(list.getResult());
