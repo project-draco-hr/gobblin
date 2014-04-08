@@ -4,7 +4,8 @@
   try {
     if (this.bulkBufferedReader == null || !this.bulkBufferedReader.ready()) {
       if (this.bulkResultIdCount < this.bulkResultIdList.size()) {
-        this.log.info("Get resultset for resultId:" + bulkResultIdList.get(bulkResultIdCount));
+        this.log.info("Stream resultset for resultId:" + bulkResultIdList.get(bulkResultIdCount));
+        this.setNewBulkResultSet(true);
         this.bulkBufferedReader=new BufferedReader(new InputStreamReader(this.bulkConnection.getQueryResultStream(bulkJob.getId(),bulkBatchInfo.getId(),bulkResultIdList.get(bulkResultIdCount))));
         this.bulkResultIdCount++;
       }
@@ -20,9 +21,10 @@
       batchSize=ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE;
     }
     CSVReader reader=new CSVReader(this.bulkBufferedReader);
-    if (this.bulkApiInitialRun) {
+    if (this.isNewBulkResultSet()) {
       this.bulkRecordHeader=reader.nextRecord();
       this.bulkResultColumCount=this.bulkRecordHeader.size();
+      this.setNewBulkResultSet(false);
     }
     List<String> csvRecord;
     int recordCount=0;
@@ -30,8 +32,9 @@
       JsonObject jsonObject=Utils.csvToJsonObject(this.bulkRecordHeader,csvRecord,this.bulkResultColumCount);
       rs.add((D)jsonObject);
       recordCount++;
+      this.bulkRecordCount++;
       if (recordCount >= batchSize) {
-        this.log.info("Processing batch with record count " + recordCount);
+        this.log.info("Total number of records processed so far: " + this.bulkRecordCount);
         break;
       }
     }

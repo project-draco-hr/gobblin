@@ -18,12 +18,9 @@
     config.setTraceFile("traceLogs.txt");
     config.setTraceMessage(false);
     config.setPrettyPrintXml(true);
-    config.setMaxResponseSize(10000);
-    System.out.println("AuthEndpoint: " + config.getServiceEndpoint());
     PartnerConnection connection=new PartnerConnection(config);
-    System.out.println("SessionID: " + config.getSessionId());
     config.setRestEndpoint(bulkAuthEndPoint);
-    bulkConnection=new BulkConnection(config);
+    this.bulkConnection=new BulkConnection(config);
     success=true;
   }
  catch (  Exception e) {
