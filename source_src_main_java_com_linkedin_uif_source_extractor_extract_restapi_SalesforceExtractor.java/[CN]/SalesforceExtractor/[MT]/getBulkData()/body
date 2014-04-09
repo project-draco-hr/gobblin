@@ -1,0 +1,46 @@
+{
+  this.log.debug("Processing bulk api batch...");
+  RecordSetList<D> rs=new RecordSetList<D>();
+  try {
+    if (this.bulkBufferedReader == null || !this.bulkBufferedReader.ready()) {
+      if (this.bulkResultIdCount < this.bulkResultIdList.size()) {
+        this.log.info("Stream resultset for resultId:" + bulkResultIdList.get(bulkResultIdCount));
+        this.setNewBulkResultSet(true);
+        this.bulkBufferedReader=new BufferedReader(new InputStreamReader(this.bulkConnection.getQueryResultStream(bulkJob.getId(),bulkBatchInfo.getId(),bulkResultIdList.get(bulkResultIdCount))));
+        this.bulkResultIdCount++;
+      }
+ else {
+        this.log.info("Bulk job is finished");
+        this.setBulkJobFinished(true);
+        return rs;
+      }
+    }
+    int batchSize=Utils.getAsInt(this.workUnit.getProp(ConfigurationKeys.SOURCE_FETCH_SIZE));
+    if (batchSize == 0) {
+      batchSize=ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE;
+    }
+    CSVReader reader=new CSVReader(this.bulkBufferedReader);
+    if (this.isNewBulkResultSet()) {
+      this.bulkRecordHeader=reader.nextRecord();
+      this.bulkResultColumCount=this.bulkRecordHeader.size();
+      this.setNewBulkResultSet(false);
+    }
+    List<String> csvRecord;
+    int recordCount=0;
+    while ((csvRecord=reader.nextRecord()) != null) {
+      JsonObject jsonObject=Utils.csvToJsonObject(this.bulkRecordHeader,csvRecord,this.bulkResultColumCount);
+      rs.add((D)jsonObject);
+      recordCount++;
+      this.bulkRecordCount++;
+      if (recordCount >= batchSize) {
+        this.log.info("Total number of records processed so far: " + this.bulkRecordCount);
+        break;
+      }
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new DataRecordException("Failed to get records from salesforce; error-" + e.getMessage());
+  }
+  return rs;
+}

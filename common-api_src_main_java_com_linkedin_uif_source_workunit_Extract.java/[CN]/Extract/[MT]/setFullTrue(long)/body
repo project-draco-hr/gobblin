@@ -1,4 +1,4 @@
 {
-  setFullTrue();
+  setProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY,true);
   setProp(ConfigurationKeys.EXTRACT_FULL_RUN_TIME_KEY,extractFullRunTime);
 }

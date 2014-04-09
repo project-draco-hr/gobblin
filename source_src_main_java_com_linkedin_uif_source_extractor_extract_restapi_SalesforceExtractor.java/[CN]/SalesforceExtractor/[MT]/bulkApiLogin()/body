@@ -1,0 +1,31 @@
+{
+  this.log.info("Authenticating salesforce bulk api");
+  boolean success=false;
+  String hostName=this.workUnit.getProp(ConfigurationKeys.SOURCE_HOST_NAME);
+  String restUrl=this.workUnit.getProp(ConfigurationKeys.SOURCE_REST_URL);
+  String apiVersion=this.workUnit.getProp(ConfigurationKeys.SOURCE_VERSION);
+  if (Strings.isNullOrEmpty(apiVersion)) {
+    apiVersion="29.0";
+  }
+  String soapAuthEndPoint=hostName + SALESFORCE_SOAP_AUTH_SERVICE + "/"+ apiVersion;
+  String bulkAuthEndPoint=restUrl + SALESFORCE_BULK_AUTH_SERVICE + "/"+ apiVersion;
+  try {
+    ConnectorConfig config=new ConnectorConfig();
+    config.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_USERNAME));
+    config.setPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_PASSWORD));
+    config.setAuthEndpoint(soapAuthEndPoint);
+    config.setCompression(true);
+    config.setTraceFile("traceLogs.txt");
+    config.setTraceMessage(false);
+    config.setPrettyPrintXml(true);
+    PartnerConnection connection=new PartnerConnection(config);
+    config.setRestEndpoint(bulkAuthEndPoint);
+    this.bulkConnection=new BulkConnection(config);
+    success=true;
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new Exception("Failed to connect to salesforce bulk api; error-" + e.getMessage());
+  }
+  return success;
+}
