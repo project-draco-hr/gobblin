@@ -1,0 +1,3 @@
+{
+  this.results=new HashMap<TaskLevelPolicy.Result,TaskLevelPolicy.Type>();
+}

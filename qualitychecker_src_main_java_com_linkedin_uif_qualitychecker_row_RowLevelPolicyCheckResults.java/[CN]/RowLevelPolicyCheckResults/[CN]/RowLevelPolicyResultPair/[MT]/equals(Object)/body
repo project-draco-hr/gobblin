@@ -1,0 +1,7 @@
+{
+  if (!(o instanceof RowLevelPolicyResultPair)) {
+    return false;
+  }
+  RowLevelPolicyResultPair p=(RowLevelPolicyResultPair)o;
+  return p.getPolicy().toString().equals(this.policy.toString()) && p.getResult().equals(this.result);
+}

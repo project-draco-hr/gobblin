@@ -1,3 +1,0 @@
-{
-  this.results=new HashMap<Policy.Result,Policy.Type>();
-}

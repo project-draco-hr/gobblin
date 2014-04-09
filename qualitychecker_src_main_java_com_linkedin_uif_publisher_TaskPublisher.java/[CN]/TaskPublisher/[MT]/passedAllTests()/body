@@ -1,6 +1,6 @@
 {
-  for (  Map.Entry<Policy.Result,Policy.Type> entry : results.getPolicyResults().entrySet()) {
-    if (entry.getKey().equals(Policy.Result.FAILED) && entry.getValue().equals(Policy.Type.MANDATORY)) {
+  for (  Map.Entry<TaskLevelPolicy.Result,TaskLevelPolicy.Type> entry : results.getPolicyResults().entrySet()) {
+    if (entry.getKey().equals(TaskLevelPolicy.Result.FAILED) && entry.getValue().equals(TaskLevelPolicy.Type.FAIL)) {
       return false;
     }
   }

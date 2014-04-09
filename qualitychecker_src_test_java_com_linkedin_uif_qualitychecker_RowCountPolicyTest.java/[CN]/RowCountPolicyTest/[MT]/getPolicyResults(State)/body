@@ -1,4 +1,0 @@
-{
-  PolicyChecker checker=new PolicyCheckerBuilderFactory().newPolicyCheckerBuilder(state).build();
-  return checker.executePolicies();
-}

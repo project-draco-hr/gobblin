@@ -1,0 +1,5 @@
+{
+  DatumReader<GenericRecord> reader=new GenericDatumReader<GenericRecord>();
+  FileReader<GenericRecord> fileReader=DataFileReader.openReader(new File(TestConstants.TEST_FILE_NAME),reader);
+  return fileReader;
+}

@@ -1,0 +1,11 @@
+{
+  RowLevelPolicyResultPair resultPolicyPair=new RowLevelPolicyResultPair(policy,result);
+  long value;
+  if (results.containsKey(resultPolicyPair)) {
+    value=results.get(resultPolicyPair);
+  }
+ else {
+    value=0;
+  }
+  results.put(new RowLevelPolicyResultPair(policy,result),new Long(1 + value));
+}

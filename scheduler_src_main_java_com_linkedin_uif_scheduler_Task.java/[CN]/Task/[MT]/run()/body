@@ -22,6 +22,8 @@
       converter=new MultiConverter(this.taskContext.getConverters());
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
+    RowLevelPolicyChecker rowChecker=buildRowLevelPolicyChecker(this.taskState);
+    RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
     this.writer=buildWriter(this.taskContext,schemaForWriter);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
     this.taskStateTracker.registerNewTask(this);
@@ -30,14 +32,18 @@
       if (doConversion) {
         record=converter.convertRecord(sourceSchema,record,this.taskState);
       }
-      this.writer.write(record);
+      if (rowChecker.executePolicies(record,rowResults)) {
+        this.writer.write(record);
+      }
     }
+    rowChecker.close();
+    LOG.info("Row quality checker finished with results: " + rowResults.getResults());
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
     this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());
-    PolicyChecker policyChecker=buildPolicyChecker(this.taskState);
-    PolicyCheckResults results=policyChecker.executePolicies();
-    publisher=buildTaskPublisher(this.taskState,results);
+    TaskLevelPolicyChecker policyChecker=buildTaskLevelPolicyChecker(this.taskState);
+    TaskLevelPolicyCheckResults taskResults=policyChecker.executePolicies();
+    publisher=buildTaskPublisher(this.taskState,taskResults);
 switch (publisher.canPublish()) {
 case SUCCESS:
       shouldCommit=true;

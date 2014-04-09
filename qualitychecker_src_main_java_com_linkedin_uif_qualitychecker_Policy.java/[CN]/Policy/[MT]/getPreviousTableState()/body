@@ -1,4 +1,0 @@
-{
-  WorkUnitState workUnitState=(WorkUnitState)state;
-  return workUnitState.getPreviousTableState();
-}

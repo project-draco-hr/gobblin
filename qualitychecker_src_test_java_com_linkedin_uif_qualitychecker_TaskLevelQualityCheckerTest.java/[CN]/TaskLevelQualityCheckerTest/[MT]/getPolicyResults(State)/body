@@ -1,0 +1,4 @@
+{
+  TaskLevelPolicyChecker checker=new TaskLevelPolicyCheckerBuilderFactory().newPolicyCheckerBuilder(state).build();
+  return checker.executePolicies();
+}

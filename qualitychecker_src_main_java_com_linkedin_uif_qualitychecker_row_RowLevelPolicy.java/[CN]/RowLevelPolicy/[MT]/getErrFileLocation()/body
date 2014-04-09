@@ -1,0 +1,3 @@
+{
+  return this.state.getProp(ConfigurationKeys.ROW_LEVEL_ERR_FILE);
+}

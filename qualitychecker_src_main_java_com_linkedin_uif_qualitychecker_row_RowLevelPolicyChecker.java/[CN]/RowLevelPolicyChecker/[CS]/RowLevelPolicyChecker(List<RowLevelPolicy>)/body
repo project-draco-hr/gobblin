@@ -1,0 +1,5 @@
+{
+  this.list=list;
+  this.errFileOpen=false;
+  this.writer=new RowLevelErrFileWriter();
+}
