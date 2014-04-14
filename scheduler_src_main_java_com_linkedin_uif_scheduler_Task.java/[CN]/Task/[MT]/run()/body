@@ -1,6 +1,7 @@
 {
   Extractor extractor=null;
   TaskPublisher publisher=null;
+  RowLevelPolicyChecker rowChecker=null;
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
   boolean shouldCommit=false;
@@ -22,7 +23,7 @@
       converter=new MultiConverter(this.taskContext.getConverters());
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
-    RowLevelPolicyChecker rowChecker=buildRowLevelPolicyChecker(this.taskState);
+    rowChecker=buildRowLevelPolicyChecker(this.taskState);
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
     this.writer=buildWriter(this.taskContext,schemaForWriter);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
@@ -36,7 +37,6 @@
         this.writer.write(record);
       }
     }
-    rowChecker.close();
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
     this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
@@ -105,6 +105,13 @@ try {
 publisher.cleanup();
 }
  catch (Exception e) {
+}
+}
+if (rowChecker != null) {
+try {
+rowChecker.close();
+}
+ catch (IOException ioe) {
 }
 }
 long endTime=System.currentTimeMillis();
