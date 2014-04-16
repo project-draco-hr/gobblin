@@ -13,7 +13,6 @@
   try {
     this.setTimeOut(this.workUnit.getProp(ConfigurationKeys.SOURCE_TIMEOUT));
     this.extractMetadata(this.schema,this.entity,this.workUnit);
-    System.out.println("SCHEMA:" + this.getOutputSchema());
     if (!Strings.isNullOrEmpty(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
       this.log.info("High water mark from source:" + this.highWatermark);
