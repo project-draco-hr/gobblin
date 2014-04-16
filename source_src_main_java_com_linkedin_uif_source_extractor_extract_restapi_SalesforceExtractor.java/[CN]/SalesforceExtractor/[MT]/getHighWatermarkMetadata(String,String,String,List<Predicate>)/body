@@ -12,6 +12,8 @@
     }
   }
   query=query + existingPredicate;
+  String limitString=this.getLimitFromInputQuery(query);
+  query=query.replace(limitString,"");
   Iterator<Predicate> i=predicateList.listIterator();
   while (i.hasNext()) {
     Predicate predicate=i.next();

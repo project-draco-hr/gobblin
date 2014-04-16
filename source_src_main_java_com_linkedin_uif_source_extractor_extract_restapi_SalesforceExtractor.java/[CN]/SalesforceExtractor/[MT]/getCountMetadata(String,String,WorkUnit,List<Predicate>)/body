@@ -9,6 +9,8 @@
     }
   }
   String query="SELECT COUNT() FROM " + entity + existingPredicate;
+  String limitString=this.getLimitFromInputQuery(query);
+  query=query.replace(limitString,"");
   try {
     if (isNullPredicate(predicateList)) {
       this.log.info("QUERY:" + query);

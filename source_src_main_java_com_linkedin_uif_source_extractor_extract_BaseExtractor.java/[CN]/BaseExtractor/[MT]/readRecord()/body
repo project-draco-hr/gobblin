@@ -7,7 +7,7 @@
   try {
     if (isInitialPull()) {
       this.log.debug("initial pull");
-      iterator=this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
+      iterator=this.getIterator();
     }
     if (iterator.hasNext()) {
       nextElement=iterator.next();
@@ -15,7 +15,7 @@
       }
  else {
         this.log.debug("next pull");
-        iterator=this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
+        iterator=this.getIterator();
         if (iterator == null) {
           this.setFetchStatus(false);
         }
