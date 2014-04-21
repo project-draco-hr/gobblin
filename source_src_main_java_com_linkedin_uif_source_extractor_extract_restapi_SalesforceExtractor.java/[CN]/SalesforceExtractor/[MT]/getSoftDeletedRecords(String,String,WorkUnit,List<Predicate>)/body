@@ -1,0 +1,3 @@
+{
+  return this.getRecordSet(schema,entity,workUnit,predicateList);
+}

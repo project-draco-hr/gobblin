@@ -1,0 +1,6 @@
+{
+  if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_IS_SPECIFIC_API_ACTIVE))) {
+    return this.getRecordSetFromSourceApi(this.schema,this.entity,this.workUnit,this.predicateList);
+  }
+  return this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);
+}

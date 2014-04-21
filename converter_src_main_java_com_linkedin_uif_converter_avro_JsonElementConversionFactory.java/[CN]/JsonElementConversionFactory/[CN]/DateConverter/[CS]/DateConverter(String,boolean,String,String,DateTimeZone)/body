@@ -1,4 +1,5 @@
 {
   super(fieldName,nullable,sourceType);
-  dtf=DateTimeFormat.forPattern(pattern).withZone(zone);
+  this.inputPatterns=pattern;
+  this.timeZone=zone;
 }

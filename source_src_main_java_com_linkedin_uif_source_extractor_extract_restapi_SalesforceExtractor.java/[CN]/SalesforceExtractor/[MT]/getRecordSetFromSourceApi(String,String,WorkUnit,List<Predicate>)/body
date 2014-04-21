@@ -11,15 +11,13 @@
       rs=getBulkData();
     }
     this.bulkApiInitialRun=false;
-    if (rs == null) {
-      return null;
+    if (rs == null || rs.isEmpty()) {
+      return this.getSoftDeletedRecords(schema,entity,workUnit,predicateList);
     }
- else {
-      return rs.iterator();
-    }
+    return rs.iterator();
   }
  catch (  Exception e) {
     e.printStackTrace();
-    throw new DataRecordException("Failed to get records using bulk api; error-" + e.getMessage());
+    throw new IOException("Failed to get records using bulk api; error-" + e.getMessage());
   }
 }

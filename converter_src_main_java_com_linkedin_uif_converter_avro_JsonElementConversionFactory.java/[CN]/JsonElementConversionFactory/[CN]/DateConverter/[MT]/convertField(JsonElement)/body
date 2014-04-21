@@ -1,3 +1,19 @@
 {
-  return dtf.parseDateTime(value.getAsString()).getMillis();
+  List<String> patterns=Arrays.asList(this.inputPatterns.split(","));
+  int patternFailCount=0;
+  Object formattedDate=null;
+  for (  String pattern : patterns) {
+    DateTimeFormatter dtf=DateTimeFormat.forPattern(pattern).withZone(this.timeZone);
+    try {
+      formattedDate=dtf.parseDateTime(value.getAsString()).getMillis();
+      break;
+    }
+ catch (    Exception e) {
+      patternFailCount++;
+    }
+  }
+  if (patternFailCount == patterns.size()) {
+    throw new RuntimeException("Failed to parse the date");
+  }
+  return formattedDate;
 }
