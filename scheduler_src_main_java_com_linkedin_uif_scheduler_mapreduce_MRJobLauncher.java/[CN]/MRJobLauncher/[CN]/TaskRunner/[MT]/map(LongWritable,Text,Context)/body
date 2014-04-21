@@ -1,0 +1,29 @@
+{
+  if (this.fs == null || !this.serviceManager.isHealthy()) {
+    return;
+  }
+  WorkUnit workUnit=new WorkUnit(null,null);
+  Closer closer=Closer.create();
+  try {
+    InputStream is=closer.register(this.fs.open(new Path(value.toString())));
+    DataInputStream dis=closer.register((new DataInputStream(is)));
+    workUnit.readFields(dis);
+  }
+  finally {
+    closer.close();
+  }
+  String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
+  WorkUnitState workUnitState=new WorkUnitState(workUnit);
+  workUnitState.setId(taskId);
+  workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,workUnit.getProp(ConfigurationKeys.JOB_ID_KEY));
+  workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+  Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
+  this.taskStateTracker.registerNewTask(task);
+  this.taskExecutor.execute(task);
+  LOG.info(String.format("Waiting for task %s to complete...",taskId));
+  this.countDownLatch.await();
+  context.write(new Text(),task.getTaskState());
+  if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+    throw new IOException(String.format("Task %s of job %s failed",task.getTaskId(),task.getJobId()));
+  }
+}

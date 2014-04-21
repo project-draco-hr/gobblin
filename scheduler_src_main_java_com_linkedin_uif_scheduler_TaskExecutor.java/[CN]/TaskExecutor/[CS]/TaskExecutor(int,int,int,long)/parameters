@@ -1,0 +1,4 @@
+int taskExecutorThreadPoolSize
+int coreRetryThreadPoolSize
+int maxRetryThreadPoolSize
+long retryIntervalInSeconds

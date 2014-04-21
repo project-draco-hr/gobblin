@@ -1,0 +1,8 @@
+{
+  super(properties);
+  TaskExecutor taskExecutor=new TaskExecutor(properties);
+  TaskStateTracker taskStateTracker=new LocalTaskStateTracker(properties,taskExecutor);
+  this.workUnitManager=new WorkUnitManager(taskExecutor,taskStateTracker);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(taskExecutor,taskStateTracker,this.workUnitManager));
+  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
+}

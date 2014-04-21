@@ -1,0 +1,7 @@
+{
+  try {
+    this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
+  }
+ catch (  TimeoutException te) {
+  }
+}

@@ -1,0 +1,69 @@
+{
+  Preconditions.checkNotNull(jobProps);
+  jobProps.putAll(this.properties);
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  JobLock jobLock;
+  try {
+    jobLock=getJobLock(jobName,jobProps);
+  }
+ catch (  IOException ioe) {
+    throw new JobException("Failed to get job lock for job " + jobName,ioe);
+  }
+  if (!tryLockJob(jobName,jobLock)) {
+    LOG.info(String.format("Previous instance of job %s is still running, skipping this scheduled run",jobName));
+    return;
+  }
+  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
+  if (Strings.isNullOrEmpty(jobId)) {
+    jobId=JobLauncherUtil.newJobId(jobName);
+  }
+  JobState jobState=new JobState(jobName,jobId);
+  jobState.addAll(jobProps);
+  LOG.info("Starting job " + jobId);
+  SourceState sourceState;
+  SourceWrapperBase source;
+  try {
+    sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName,jobProps.getProperty(ConfigurationKeys.JOB_PREVIOUS_RUN_ID_KEY)));
+    source=initSource(jobProps,sourceState);
+  }
+ catch (  Throwable t) {
+    String errMsg="Failed to initialize source for job " + jobId;
+    LOG.error(errMsg,t);
+    unlockJob(jobName,jobLock);
+    throw new JobException(errMsg,t);
+  }
+  List<WorkUnit> workUnits=source.getWorkunits(sourceState);
+  if (workUnits == null || workUnits.isEmpty()) {
+    LOG.warn("No work units to do for job " + jobId);
+    source.shutdown(sourceState);
+    unlockJob(jobName,jobLock);
+    return;
+  }
+  jobState.setTasks(workUnits.size());
+  jobState.setStartTime(System.currentTimeMillis());
+  jobState.setState(JobState.RunningState.WORKING);
+  int sequence=0;
+  for (  WorkUnit workUnit : workUnits) {
+    String taskId=JobLauncherUtil.newTaskId(jobId,sequence++);
+    workUnit.setId(taskId);
+    workUnit.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
+    workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+  }
+  try {
+    runJob(jobName,jobProps,jobState,workUnits);
+    jobState=getFinalJobState(jobState);
+    commitJob(jobId,jobState);
+  }
+ catch (  Throwable t) {
+    String errMsg="Failed to launch job " + jobId;
+    LOG.error(errMsg,t);
+    jobState.setState(JobState.RunningState.FAILED);
+    throw new JobException(errMsg,t);
+  }
+ finally {
+    source.shutdown(sourceState);
+    persistJobState(jobState);
+    cleanupStagingData(jobState);
+    unlockJob(jobName,jobLock);
+  }
+}

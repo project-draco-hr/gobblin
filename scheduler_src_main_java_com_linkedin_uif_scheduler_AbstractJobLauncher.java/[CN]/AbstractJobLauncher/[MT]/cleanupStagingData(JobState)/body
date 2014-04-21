@@ -1,0 +1,29 @@
+{
+  FileSystem fs;
+  try {
+    fs=FileSystem.get(URI.create(jobState.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),new Configuration());
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to get a file system instance",ioe);
+    return;
+  }
+  String relPath=jobState.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY).replaceAll("\\.","/");
+  try {
+    Path taskStagingPath=new Path(jobState.getProp(ConfigurationKeys.WRITER_STAGING_DIR),relPath);
+    if (fs.exists(taskStagingPath)) {
+      fs.delete(taskStagingPath,true);
+    }
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to cleanup task staging directory of job " + jobState.getJobId(),ioe);
+  }
+  try {
+    Path taskOutputPath=new Path(jobState.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR),relPath);
+    if (fs.exists(taskOutputPath)) {
+      fs.delete(taskOutputPath,true);
+    }
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to cleanup task output directory of job " + jobState.getJobId(),ioe);
+  }
+}

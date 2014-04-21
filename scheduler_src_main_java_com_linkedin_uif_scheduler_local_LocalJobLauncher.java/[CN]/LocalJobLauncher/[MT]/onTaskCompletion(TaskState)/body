@@ -1,0 +1,8 @@
+{
+  if (Metrics.isEnabled(this.properties)) {
+    taskState.removeMetrics();
+  }
+  LOG.info(String.format("Task %s completed with state %s",taskState.getTaskId(),taskState.getWorkingState().name()));
+  this.jobState.addTaskState(taskState);
+  this.countDownLatch.countDown();
+}

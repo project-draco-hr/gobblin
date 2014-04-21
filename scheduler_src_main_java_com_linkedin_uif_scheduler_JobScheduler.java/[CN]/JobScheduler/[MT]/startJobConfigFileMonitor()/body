@@ -1,0 +1,68 @@
+{
+  File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
+  long pollingInterval=Long.parseLong(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL_KEY,ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL));
+  FileAlterationObserver observer=new FileAlterationObserver(jobConfigFileDir);
+  this.fileAlterationMonitor=new FileAlterationMonitor(pollingInterval);
+  FileAlterationListener listener=new FileAlterationListenerAdaptor(){
+    /** 
+ * Called when a new job configuration file is dropped in.
+ */
+    @Override public void onFileCreate(    File file){
+      if (!file.getName().endsWith(JOB_CONFIG_FILE_EXTENSION)) {
+        return;
+      }
+      LOG.info("Detected new job configuration file " + file.getAbsolutePath());
+      Properties jobProps=loadJobConfig(file);
+      if (jobProps == null) {
+        return;
+      }
+      jobProps.putAll(properties);
+      jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
+      try {
+        boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : null);
+      }
+ catch (      Throwable t) {
+        LOG.error("Failed to schedule new job loaded from job configuration file " + file.getAbsolutePath(),t);
+      }
+    }
+    /** 
+ * Called when a job configuration file is changed.
+ */
+    @Override public void onFileChange(    File file){
+      if (!file.getName().endsWith(JOB_CONFIG_FILE_EXTENSION)) {
+        return;
+      }
+      LOG.info("Detected change to job configuration file " + file.getAbsolutePath());
+      Properties jobProps=loadJobConfig(file);
+      if (jobProps == null) {
+        return;
+      }
+      jobProps.putAll(properties);
+      String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+      try {
+        unscheduleJob(jobName);
+        boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : null);
+      }
+ catch (      Throwable t) {
+        LOG.error("Failed to update existing job " + jobName,t);
+      }
+    }
+    private Properties loadJobConfig(    File file){
+      Properties jobProps=new Properties();
+      try {
+        jobProps.load(new FileReader(file));
+      }
+ catch (      Exception e) {
+        LOG.error("Failed to load job configuration from file " + file.getAbsolutePath());
+        return null;
+      }
+      return jobProps;
+    }
+  }
+;
+  observer.addListener(listener);
+  this.fileAlterationMonitor.addObserver(observer);
+  this.fileAlterationMonitor.start();
+}

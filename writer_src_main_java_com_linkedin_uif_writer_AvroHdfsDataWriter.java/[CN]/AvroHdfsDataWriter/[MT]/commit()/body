@@ -1,4 +1,7 @@
 {
+  if (!this.fs.exists(this.stagingFile)) {
+    throw new IOException(String.format("File %s does not exist",this.stagingFile));
+  }
   LOG.info(String.format("Moving data from %s to %s",this.stagingFile,this.outputFile));
   if (this.fs.exists(this.outputFile)) {
     throw new IOException(String.format("File %s already exists",this.outputFile));

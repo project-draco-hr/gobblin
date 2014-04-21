@@ -1,0 +1,5 @@
+{
+  Properties properties=new Properties();
+  properties.load(new FileReader(args[args.length - 2]));
+  System.exit(ToolRunner.run(new Configuration(),new CliMRJobLauncher(properties),args));
+}

@@ -3,6 +3,9 @@
   this.fs=FileSystem.get(uri,conf);
   this.stagingFile=new Path(stagingDir,fileName);
   this.outputFile=new Path(outputDir,fileName);
+  if (!this.fs.exists(this.outputFile.getParent())) {
+    this.fs.mkdirs(this.outputFile.getParent());
+  }
   this.dataConverter=dataConverter;
   this.writer=createDatumWriter(schema,this.stagingFile,bufferSize);
 }

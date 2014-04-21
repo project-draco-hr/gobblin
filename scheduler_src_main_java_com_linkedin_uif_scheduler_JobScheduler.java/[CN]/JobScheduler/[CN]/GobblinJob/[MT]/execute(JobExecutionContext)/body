@@ -1,0 +1,12 @@
+{
+  JobDataMap dataMap=context.getJobDetail().getJobDataMap();
+  JobScheduler jobScheduler=(JobScheduler)dataMap.get(JOB_SCHEDULER_KEY);
+  Properties jobProps=(Properties)dataMap.get(PROPERTIES_KEY);
+  JobListener jobListener=(JobListener)dataMap.get(JOB_LISTENER_KEY);
+  try {
+    jobScheduler.runJob(jobProps,jobListener);
+  }
+ catch (  Throwable t) {
+    throw new JobExecutionException(t);
+  }
+}

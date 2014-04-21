@@ -1,0 +1,5 @@
+{
+  LOG.info("Stopping the local job manager");
+  this.scheduler.shutdown(true);
+  this.fileAlterationMonitor.stop();
+}

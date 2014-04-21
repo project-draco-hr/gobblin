@@ -1,0 +1,4 @@
+{
+  this.fs=fs;
+  this.lockFile=new Path(lockFileDir,jobName + LOCK_FILE_EXTENSION);
+}

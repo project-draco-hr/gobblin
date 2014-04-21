@@ -1,0 +1,6 @@
+{
+  this.executor=Executors.newFixedThreadPool(taskExecutorThreadPoolSize);
+  this.retryExecutor=new ScheduledThreadPoolExecutor(coreRetryThreadPoolSize);
+  this.retryExecutor.setMaximumPoolSize(maxRetryThreadPoolSize);
+  this.retryIntervalInSeconds=retryIntervalInSeconds;
+}

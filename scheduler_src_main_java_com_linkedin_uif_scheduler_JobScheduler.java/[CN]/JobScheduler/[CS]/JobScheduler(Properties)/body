@@ -1,0 +1,5 @@
+{
+  this.properties=properties;
+  this.scheduler=new StdSchedulerFactory().getScheduler();
+  restoreLastJobIdMap();
+}
