@@ -11,7 +11,7 @@
   text.write(out);
   out.writeInt(this.tasks);
   out.writeInt(this.taskStates.size());
-  for (  TaskState taskState : taskStates) {
+  for (  TaskState taskState : this.taskStates) {
     taskState.write(out);
   }
   super.write(out);

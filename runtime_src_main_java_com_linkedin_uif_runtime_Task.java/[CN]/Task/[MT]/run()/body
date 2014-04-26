@@ -76,6 +76,7 @@ try {
 extractor.close();
 }
  catch (Exception ioe) {
+LOG.error("Failed to close the extractor for task " + taskId,ioe);
 }
 }
 if (this.writer != null) {
@@ -100,6 +101,7 @@ try {
 this.writer.cleanup();
 }
  catch (IOException ioe) {
+LOG.error("The writer failed to cleanup for task " + taskId,ioe);
 }
 }
 }
@@ -108,6 +110,7 @@ try {
 publisher.cleanup();
 }
  catch (Exception e) {
+LOG.error("Failed to close the task publisher for task " + taskId,e);
 }
 }
 if (rowChecker != null) {
@@ -115,6 +118,7 @@ try {
 rowChecker.close();
 }
  catch (IOException ioe) {
+LOG.error("Failed to close the row quality checker for task " + taskId,ioe);
 }
 }
 long endTime=System.currentTimeMillis();

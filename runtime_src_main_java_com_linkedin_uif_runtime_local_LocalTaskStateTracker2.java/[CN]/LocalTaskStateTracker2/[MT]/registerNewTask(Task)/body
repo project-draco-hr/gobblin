@@ -1,0 +1,4 @@
+{
+  TaskStateReporter reporter=new TaskStateReporter(task);
+  this.scheduledReporters.put(task.getTaskId(),this.reporterExecutor.scheduleAtFixedRate(reporter,0,task.getTaskContext().getStatusReportingInterval(),TimeUnit.MILLISECONDS));
+}
