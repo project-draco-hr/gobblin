@@ -4,6 +4,10 @@
   List<WorkUnit> workUnits=Lists.newArrayList();
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
   String entityName=state.getProp(ConfigurationKeys.SOURCE_ENTITY);
+  String extractTableName=state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY);
+  if (Strings.isNullOrEmpty(extractTableName)) {
+    extractTableName=entityName;
+  }
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
   long previousWatermark=this.getLatestWatermarkFromMetadata(state);
   Partitioner partitioner=new Partitioner(state);
@@ -15,7 +19,7 @@
     partitionState.addAll(state);
     partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,entry.getKey());
     partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,entry.getValue());
-    Extract extract=partitionState.createExtract(tableType,nameSpaceName,entityName);
+    Extract extract=partitionState.createExtract(tableType,nameSpaceName,extractTableName);
     if (Boolean.valueOf(state.getProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY))) {
       extract.setFullTrue(System.currentTimeMillis());
     }
