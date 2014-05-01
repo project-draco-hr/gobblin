@@ -1,0 +1,16 @@
+{
+  Closer closer=Closer.create();
+  try {
+    ByteArrayOutputStream baos=closer.register(new ByteArrayOutputStream());
+    DataOutputStream dos=closer.register(new DataOutputStream(baos));
+    this.jobState.write(dos);
+    ByteArrayInputStream bais=closer.register((new ByteArrayInputStream(baos.toByteArray())));
+    DataInputStream dis=closer.register((new DataInputStream(bais)));
+    JobState newJobState=new JobState();
+    newJobState.readFields(dis);
+    doAsserts();
+  }
+  finally {
+    closer.close();
+  }
+}

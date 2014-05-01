@@ -1,0 +1,24 @@
+{
+  this.jobState.setId(this.jobState.getJobId());
+  this.startTime=System.currentTimeMillis();
+  this.jobState.setStartTime(this.startTime);
+  this.jobState.setEndTime(this.startTime + 1000);
+  this.jobState.setDuration(1000);
+  this.jobState.setState(JobState.RunningState.COMMITTED);
+  this.jobState.setTasks(3);
+  this.jobState.setProp("foo","bar");
+  for (int i=0; i < 3; i++) {
+    WorkUnitState workUnitState=new WorkUnitState();
+    workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,"TestJob-1");
+    workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,"TestTask-1");
+    TaskState taskState=new TaskState(workUnitState);
+    taskState.setId(taskState.getTaskId());
+    taskState.setStartTime(this.startTime);
+    taskState.setEndTime(this.startTime + 1000);
+    taskState.setTaskDuration(1000);
+    taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    taskState.setProp("foo","bar");
+    this.jobState.addTaskState(taskState);
+  }
+  doAsserts();
+}
