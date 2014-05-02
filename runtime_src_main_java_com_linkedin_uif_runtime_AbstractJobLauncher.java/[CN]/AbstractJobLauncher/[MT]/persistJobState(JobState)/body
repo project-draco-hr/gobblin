@@ -5,6 +5,7 @@
   try {
     this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,jobState.getTaskStates());
     this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
+    savePreviousJobId(jobName,jobId);
   }
  catch (  IOException ioe) {
     LOG.error("Failed to persist job/task states of job " + jobId,ioe);

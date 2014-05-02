@@ -1,0 +1,16 @@
+{
+  Path previousIdFilePath=new Path(this.properties.getProperty(ConfigurationKeys.PREVIOUS_JOB_ID_FILE_DIR),jobName);
+  if (!this.fs.exists(previousIdFilePath)) {
+    return null;
+  }
+  Closer closer=Closer.create();
+  try {
+    InputStream is=closer.register(this.fs.open(previousIdFilePath));
+    InputStreamReader isr=closer.register(new InputStreamReader(is));
+    BufferedReader bw=closer.register(new BufferedReader(isr));
+    return bw.readLine();
+  }
+  finally {
+    closer.close();
+  }
+}

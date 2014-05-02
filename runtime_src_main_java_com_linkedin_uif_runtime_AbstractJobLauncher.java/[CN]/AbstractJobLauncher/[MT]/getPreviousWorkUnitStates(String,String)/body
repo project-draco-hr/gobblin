@@ -1,7 +1,12 @@
 {
   if (Strings.isNullOrEmpty(previousJobId)) {
+    previousJobId=getPreviousJobId(jobName);
+  }
+  if (Strings.isNullOrEmpty(previousJobId)) {
+    LOG.warn("No previous job ID found for job " + jobName);
     return Lists.newArrayList();
   }
-  LOG.info("Loading task states of the most recent run of job " + jobName);
+  LOG.info(String.format("Previous job ID of job %s is %s",jobName,previousJobId));
+  LOG.info("Loading task states of job " + previousJobId);
   return (List<WorkUnitState>)this.taskStateStore.getAll(jobName,previousJobId + TASK_STATE_STORE_TABLE_SUFFIX);
 }

@@ -11,9 +11,10 @@
       DistributedCache.addFileToClassPath(new Path(jarFile),this.conf,this.fs);
     }
   }
+  boolean useReducer=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.MR_JOB_USE_REDUCER_KEY,"true"));
   job.setMapperClass(TaskRunner.class);
   job.setReducerClass(TaskStateCollector.class);
-  job.setNumReduceTasks(1);
+  job.setNumReduceTasks(useReducer ? 1 : 0);
   job.setInputFormatClass(NLineInputFormat.class);
   job.setOutputFormatClass(SequenceFileOutputFormat.class);
   job.setMapOutputKeyClass(Text.class);
@@ -21,12 +22,12 @@
   job.setOutputKeyClass(Text.class);
   job.setOutputValueClass(TaskState.class);
   job.setSpeculativeExecution(false);
-  Path jobInputPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_INPUT_PATH_KEY));
+  Path jobInputPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName + Path.SEPARATOR + "input");
   if (this.fs.exists(jobInputPath)) {
     LOG.warn("Job input path already exists for job " + job.getJobName());
     this.fs.delete(jobInputPath,true);
   }
-  Path jobOutputPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_OUTPUT_PATH_KEY));
+  Path jobOutputPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName + Path.SEPARATOR + "output");
   if (this.fs.exists(jobOutputPath)) {
     LOG.warn("Job output path already exists for job " + job.getJobName());
     this.fs.delete(jobOutputPath,true);

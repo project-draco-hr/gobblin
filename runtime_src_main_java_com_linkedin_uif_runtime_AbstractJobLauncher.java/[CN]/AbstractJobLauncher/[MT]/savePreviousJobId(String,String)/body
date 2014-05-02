@@ -1,0 +1,16 @@
+{
+  Path previousIdFilePath=new Path(this.properties.getProperty(ConfigurationKeys.PREVIOUS_JOB_ID_FILE_DIR),jobName);
+  if (this.fs.exists(previousIdFilePath)) {
+    this.fs.delete(previousIdFilePath,false);
+  }
+  Closer closer=Closer.create();
+  try {
+    OutputStream os=closer.register(this.fs.create(previousIdFilePath));
+    OutputStreamWriter osw=closer.register(new OutputStreamWriter(os));
+    BufferedWriter bw=closer.register(new BufferedWriter(osw));
+    bw.write(jobId);
+  }
+  finally {
+    closer.close();
+  }
+}
