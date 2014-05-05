@@ -2,7 +2,7 @@
   for (  String name : jobProps.stringPropertyNames()) {
     this.conf.set(name,jobProps.getProperty(name));
   }
-  Job job=new Job(this.conf,JOB_NAME_PREFIX + jobName);
+  Job job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
   job.setJarByClass(MRJobLauncher.class);
   if (jobProps.containsKey(ConfigurationKeys.JOB_JAR_FILES_KEY)) {
     Iterable<String> jarFiles=SPLITTER.split(jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY));
