@@ -1,10 +1,12 @@
 {
   Schema schema=new Schema.Parser().parse(AVRO_SCHEMA);
-  File sourceFile=new File(workUnitState.getWorkunit().getProp(SOURCE_FILE_KEY));
+  Path sourceFile=new Path(workUnitState.getWorkunit().getProp(SOURCE_FILE_KEY));
   LOG.info("Reading from source file " + sourceFile);
   DatumReader<GenericRecord> datumReader=new GenericDatumReader<GenericRecord>(schema);
   try {
-    this.dataFileReader=new DataFileReader<GenericRecord>(sourceFile,datumReader);
+    FileSystem fs=FileSystem.get(URI.create(workUnitState.getProp(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI)),new Configuration());
+    fs.makeQualified(sourceFile);
+    this.dataFileReader=new DataFileReader<GenericRecord>(new FsInput(sourceFile,new Configuration()),datumReader);
   }
  catch (  IOException ioe) {
     LOG.error("Failed to read the source file " + sourceFile,ioe);
