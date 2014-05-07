@@ -12,5 +12,7 @@
   state3.setId("s3");
   state3.setProp("k3","v3");
   states.add(state3);
+  Assert.assertFalse(this.stateStore.exists("testStore","testTable"));
   this.stateStore.putAll("testStore","testTable",states);
+  Assert.assertTrue(this.stateStore.exists("testStore","testTable"));
 }

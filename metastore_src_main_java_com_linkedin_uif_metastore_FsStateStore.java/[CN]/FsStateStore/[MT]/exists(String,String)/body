@@ -1,0 +1,4 @@
+{
+  Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
+  return this.fs.exists(tablePath);
+}
