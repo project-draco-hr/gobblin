@@ -1,9 +1,6 @@
 {
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,JobLauncherUtil.newJobId(jobName));
-  if (this.lastJobIdMap.containsKey(jobName)) {
-    jobProps.setProperty(ConfigurationKeys.JOB_PREVIOUS_RUN_ID_KEY,this.lastJobIdMap.get(jobName));
-  }
   try {
     JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
     jobLauncher.launchJob(jobProps);

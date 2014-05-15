@@ -1,0 +1,8 @@
+{
+  Path originalTablePath=new Path(new Path(this.storeRootDir,storeName),original);
+  if (!this.fs.exists(originalTablePath)) {
+    throw new IOException(String.format("State file %s does not exist for table %s",originalTablePath,original));
+  }
+  Path aliasTablePath=new Path(new Path(this.storeRootDir,storeName),alias);
+  FileUtil.copy(this.fs,originalTablePath,this.fs,aliasTablePath,false,true,this.conf);
+}

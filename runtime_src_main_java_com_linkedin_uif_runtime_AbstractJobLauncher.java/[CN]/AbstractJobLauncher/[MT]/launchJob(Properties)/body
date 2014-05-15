@@ -24,7 +24,7 @@
   SourceState sourceState;
   SourceWrapperBase source;
   try {
-    sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName,jobProps.getProperty(ConfigurationKeys.JOB_PREVIOUS_RUN_ID_KEY)));
+    sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName));
     source=initSource(jobProps,sourceState);
   }
  catch (  Throwable t) {
