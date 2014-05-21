@@ -10,16 +10,16 @@
     schema=this.schemaConverter.convert(this.sourceSchema);
   }
  catch (  SchemaConversionException e) {
-    throw new IOException("Failed to convert the source schema: " + this.sourceSchema);
+    throw new IOException("Failed to convert the source schema: " + this.sourceSchema,e);
   }
 switch (this.destination.getType()) {
 case HDFS:
-    Properties properties=this.destination.getProperties();
-  String uri=properties.getProperty(ConfigurationKeys.WRITER_FILE_SYSTEM_URI);
-String stagingDir=properties.getProperty(ConfigurationKeys.WRITER_STAGING_DIR,ConfigurationKeys.DEFAULT_STAGING_DIR) + Path.SEPARATOR + this.filePath;
-String outputDir=properties.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR,ConfigurationKeys.DEFAULT_OUTPUT_DIR) + Path.SEPARATOR + this.filePath;
-String fileName=properties.getProperty(ConfigurationKeys.WRITER_FILE_NAME) + "." + this.writerId+ "."+ this.format.getExtension();
-int bufferSize=Integer.parseInt(properties.getProperty(ConfigurationKeys.WRITER_BUFFER_SIZE,ConfigurationKeys.DEFAULT_BUFFER_SIZE));
+    Properties destProps=this.destination.getProperties();
+  String uri=destProps.getProperty(ConfigurationKeys.WRITER_FILE_SYSTEM_URI);
+String stagingDir=destProps.getProperty(ConfigurationKeys.WRITER_STAGING_DIR,ConfigurationKeys.DEFAULT_STAGING_DIR) + Path.SEPARATOR + this.filePath;
+String outputDir=destProps.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR,ConfigurationKeys.DEFAULT_OUTPUT_DIR) + Path.SEPARATOR + this.filePath;
+String fileName=String.format("%s.%s.%s",destProps.getProperty(ConfigurationKeys.WRITER_FILE_NAME,"part"),this.writerId,this.format.getExtension());
+int bufferSize=Integer.parseInt(destProps.getProperty(ConfigurationKeys.WRITER_BUFFER_SIZE,ConfigurationKeys.DEFAULT_BUFFER_SIZE));
 return new AvroHdfsDataWriter<DI>(URI.create(uri),stagingDir,outputDir,fileName,bufferSize,this.dataConverter,schema);
 case KAFKA:
 return new KafkaDataWriter<DI>();
