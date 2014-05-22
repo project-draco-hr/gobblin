@@ -1,0 +1,24 @@
+{
+  JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
+  jobLauncher.launchJob(jobProps);
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
+  List<JobState> jobStateList=(List<JobState>)this.jobStateStore.getAll(jobName,jobId + ".jst");
+  JobState jobState=jobStateList.get(0);
+  Assert.assertEquals(jobState.getState(),JobState.RunningState.COMMITTED);
+  Assert.assertEquals(jobState.getCompletedTasks(),2);
+  for (  TaskState taskState : jobState.getTaskStates()) {
+    File sourceFile=new File(taskState.getProp(SOURCE_FILE_KEY));
+    Extract e=taskState.getExtract();
+    String targetDir=String.format("%s/%s/%s/%s_%s",jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),e.getNamespace().replaceAll("\\.","/"),e.getTable(),e.getExtractId(),(e.getIsFull() ? "FULL" : "APPEND"));
+    File targetFile=new File(targetDir,String.format("%s.%s.avro",jobState.getProp(ConfigurationKeys.WRITER_FILE_NAME),taskState.getId()));
+    Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
+    try {
+      Assert.assertEquals(sourceFile.length(),targetFile.length());
+      Assert.assertFalse(Files.equal(sourceFile,targetFile));
+    }
+ catch (    Exception ex) {
+      Assert.fail();
+    }
+  }
+}

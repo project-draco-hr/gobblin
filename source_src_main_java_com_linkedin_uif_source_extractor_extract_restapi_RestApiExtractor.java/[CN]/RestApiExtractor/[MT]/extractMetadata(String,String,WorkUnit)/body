@@ -15,7 +15,7 @@
  else {
       this.log.debug("Connected successfully.");
       List<Command> cmds=this.getSchemaMetadata(schema,entity);
-      CommandOutput response=this.getResponse(cmds);
+      CommandOutput<?,?> response=this.getResponse(cmds);
       array=(JsonArray)this.getSchema(response);
       for (      JsonElement columnElement : array) {
         Schema obj=gson.fromJson(columnElement,Schema.class);

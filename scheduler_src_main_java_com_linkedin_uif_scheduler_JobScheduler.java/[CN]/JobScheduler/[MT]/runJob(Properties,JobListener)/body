@@ -1,0 +1,13 @@
+{
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,JobLauncherUtil.newJobId(jobName));
+  try {
+    JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
+    jobLauncher.launchJob(jobProps);
+  }
+ catch (  Throwable t) {
+    String errMsg="Failed to launch and run job " + jobName;
+    LOG.error(errMsg,t);
+    throw new JobException(errMsg,t);
+  }
+}

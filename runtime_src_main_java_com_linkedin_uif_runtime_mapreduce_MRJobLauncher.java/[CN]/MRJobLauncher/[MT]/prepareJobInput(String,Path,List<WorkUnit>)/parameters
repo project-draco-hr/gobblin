@@ -1,0 +1,3 @@
+String jobId
+Path jobInputPath
+List<WorkUnit> workUnits

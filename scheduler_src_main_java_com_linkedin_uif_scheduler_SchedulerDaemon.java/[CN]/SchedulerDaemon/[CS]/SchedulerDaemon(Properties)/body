@@ -1,0 +1,5 @@
+{
+  this.properties=properties;
+  JobScheduler jobScheduler=new JobScheduler(properties);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(jobScheduler));
+}

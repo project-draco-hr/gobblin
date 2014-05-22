@@ -1,0 +1,6 @@
+{
+  Path path=new Path("MRJobLockTest");
+  if (this.fs.exists(path)) {
+    this.fs.delete(path,true);
+  }
+}

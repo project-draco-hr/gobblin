@@ -9,7 +9,7 @@
  else {
       this.log.debug("Connected successfully.");
       List<Command> cmds=this.getHighWatermarkMetadata(schema,entity,watermarkColumn,predicateList);
-      CommandOutput response=this.getResponse(cmds);
+      CommandOutput<?,?> response=this.getResponse(cmds);
       CalculatedHighWatermark=this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
     }
     this.log.info("High watermark:" + CalculatedHighWatermark);

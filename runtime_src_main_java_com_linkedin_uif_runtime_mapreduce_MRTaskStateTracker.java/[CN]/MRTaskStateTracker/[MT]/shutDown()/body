@@ -1,0 +1,4 @@
+{
+  LOG.info("Stopping the MR task state tracker");
+  this.reporterExecutor.shutdown();
+}

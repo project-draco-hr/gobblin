@@ -1,0 +1,6 @@
+{
+  if (this.taskStateStore.exists(jobName,"current" + TASK_STATE_STORE_TABLE_SUFFIX)) {
+    return (List<WorkUnitState>)this.taskStateStore.getAll(jobName,"current" + TASK_STATE_STORE_TABLE_SUFFIX);
+  }
+  return Lists.newArrayList();
+}

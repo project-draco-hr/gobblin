@@ -1,0 +1,4 @@
+{
+  this.stateStore.createAlias("testStore","testTable","testTable1");
+  Assert.assertTrue(this.stateStore.exists("testStore","testTable1"));
+}

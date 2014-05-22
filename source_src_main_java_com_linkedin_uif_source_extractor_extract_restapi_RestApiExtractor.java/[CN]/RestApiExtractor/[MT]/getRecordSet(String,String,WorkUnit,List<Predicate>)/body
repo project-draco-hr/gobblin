@@ -22,7 +22,7 @@
  else {
           cmds=SalesforceExtractor.constructGetCommand(this.getNextUrl());
         }
-        CommandOutput response=this.getResponse(cmds);
+        CommandOutput<?,?> response=this.getResponse(cmds);
         rs=this.getData(response);
       }
     }

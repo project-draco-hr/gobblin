@@ -9,7 +9,7 @@
  else {
       this.log.debug("Connected successfully.");
       List<Command> cmds=this.getCountMetadata(schema,entity,workUnit,predicateList);
-      CommandOutput response=this.getResponse(cmds);
+      CommandOutput<?,?> response=this.getResponse(cmds);
       count=this.getCount(response);
       this.log.info("Source record count:" + count);
     }

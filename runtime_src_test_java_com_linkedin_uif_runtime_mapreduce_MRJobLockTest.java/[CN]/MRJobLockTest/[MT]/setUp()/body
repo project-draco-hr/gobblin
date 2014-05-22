@@ -1,0 +1,7 @@
+{
+  this.fs=FileSystem.getLocal(new Configuration());
+  Path path=new Path("MRJobLockTest");
+  if (!this.fs.exists(path)) {
+    this.fs.mkdirs(path);
+  }
+}

@@ -1,0 +1,17 @@
+{
+  List<TaskState> taskStates=Lists.newArrayList();
+  FileStatus[] fileStatuses=this.fs.globStatus(new Path(jobOutputPath,"part-*"));
+  if (fileStatuses == null || fileStatuses.length == 0) {
+    return taskStates;
+  }
+  for (  FileStatus status : fileStatuses) {
+    SequenceFile.Reader reader=new SequenceFile.Reader(this.fs,status.getPath(),this.fs.getConf());
+    Text text=new Text();
+    TaskState taskState=new TaskState();
+    while (reader.next(text,taskState)) {
+      taskStates.add(taskState);
+      taskState=new TaskState();
+    }
+  }
+  return taskStates;
+}

@@ -1,0 +1,3 @@
+{
+  LOG.info("Starting the local task state tracker");
+}
