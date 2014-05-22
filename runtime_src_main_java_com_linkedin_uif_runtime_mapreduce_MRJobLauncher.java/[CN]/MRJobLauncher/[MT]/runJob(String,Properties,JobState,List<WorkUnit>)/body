@@ -12,11 +12,11 @@
     hasJars=true;
     addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY));
   }
-  boolean useReducer=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.MR_JOB_USE_REDUCER_KEY,"true"));
   Job job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
   job.setJarByClass(MRJobLauncher.class);
   job.setMapperClass(TaskRunner.class);
   job.setReducerClass(TaskStateCollector.class);
+  boolean useReducer=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.MR_JOB_USE_REDUCER_KEY,"true"));
   job.setNumReduceTasks(useReducer ? 1 : 0);
   job.setInputFormatClass(NLineInputFormat.class);
   job.setOutputFormatClass(SequenceFileOutputFormat.class);
