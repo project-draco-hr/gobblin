@@ -1,5 +1,5 @@
 {
-  if (cmd.getCommandType().equals(SftpCommandType.GET_FILE)) {
+  if (!cmd.getCommandType().equals(SftpCommandType.GET_FILE)) {
     throw new SftpCommandFormatException("Command must be of type GET_FILE");
   }
   List<String> params=cmd.getParams();

@@ -1,5 +1,6 @@
 {
   if (httpClient == null) {
+    httpClient=new DefaultHttpClient();
     if (super.workUnitState.contains(ConfigurationKeys.SOURCE_USE_PROXY_URL) && !super.workUnitState.getProp(ConfigurationKeys.SOURCE_USE_PROXY_URL).isEmpty()) {
       HttpHost proxy=new HttpHost(super.workUnitState.getProp(ConfigurationKeys.SOURCE_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_USE_PROXY_PORT));
       httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,proxy);
