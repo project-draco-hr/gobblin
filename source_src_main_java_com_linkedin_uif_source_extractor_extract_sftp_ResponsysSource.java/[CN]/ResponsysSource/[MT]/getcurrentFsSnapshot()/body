@@ -1,0 +1,22 @@
+{
+  List<Command> cmds=SftpExecutor.parseInputCommands(sourceState.getProp(ConfigurationKeys.SOURCE_DATA_COMMANDS));
+  List<String> list=Arrays.asList("*" + sourceState.getProp(ConfigurationKeys.SOURCE_ENTITY) + "*");
+  cmds.add(new SftpCommand().withCommandType(SftpCommandType.LS).withParams(list));
+  CommandOutput<SftpCommand,List<String>> response=new SftpCommandOutput();
+  try {
+    response=SftpExecutor.executeUnixCommands(cmds,this.sftp);
+  }
+ catch (  SftpException e) {
+    throw new RuntimeException(e.getMessage(),e);
+  }
+catch (  SftpCommandFormatException e) {
+    throw new RuntimeException(e.getMessage(),e);
+  }
+  Map<SftpCommand,List<String>> results=response.getResults();
+  for (  Map.Entry<SftpCommand,List<String>> entry : results.entrySet()) {
+    if (entry.getKey().getCommandType().equals(SftpCommandType.LS)) {
+      return entry.getValue();
+    }
+  }
+  return null;
+}

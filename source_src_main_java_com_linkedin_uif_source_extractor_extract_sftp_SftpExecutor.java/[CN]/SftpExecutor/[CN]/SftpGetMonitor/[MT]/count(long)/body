@@ -1,0 +1,5 @@
+{
+  this.totalCount+=count;
+  log.info("Transfer is in progress for file: " + src + ". Finished transferring "+ this.totalCount+ " bytes");
+  return true;
+}

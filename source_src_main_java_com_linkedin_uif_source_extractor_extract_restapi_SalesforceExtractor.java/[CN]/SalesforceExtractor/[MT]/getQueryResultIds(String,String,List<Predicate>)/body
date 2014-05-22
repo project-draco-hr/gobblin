@@ -39,7 +39,6 @@
     return Arrays.asList(list.getResult());
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new Exception("Failed to get query result ids from salesforce using bulk api; error-" + e.getMessage());
+    throw new Exception("Failed to get query result ids from salesforce using bulk api; error - " + e.getMessage(),e);
   }
 }

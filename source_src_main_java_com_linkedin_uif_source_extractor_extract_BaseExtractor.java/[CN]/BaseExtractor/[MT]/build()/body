@@ -2,7 +2,7 @@
   String watermarkColumn=this.workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
   long lwm=this.workUnit.getLowWaterMark();
   long hwm=this.workUnit.getHighWaterMark();
-  this.log.info("Low water mark:" + lwm + "; and High water mark:"+ hwm);
+  log.info("Low water mark: " + lwm + "; and High water mark: "+ hwm);
   WatermarkType watermarkType;
   if (Strings.isNullOrEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE))) {
     watermarkType=null;
@@ -15,9 +15,9 @@
     this.extractMetadata(this.schema,this.entity,this.workUnit);
     if (!Strings.isNullOrEmpty(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
-      this.log.info("High water mark from source:" + this.highWatermark);
+      this.log.info("High water mark from source: " + this.highWatermark);
       long currentRunHighWatermark=(this.highWatermark != ConfigurationKeys.DEFAULT_WATERMARK_VALUE ? this.highWatermark : hwm);
-      this.log.info("High water mark for the current run:" + currentRunHighWatermark);
+      this.log.info("High water mark for the current run: " + currentRunHighWatermark);
       this.setRangePredicates(watermarkColumn,watermarkType,lwm,currentRunHighWatermark);
     }
     this.sourceRecordCount=this.getSourceCount(this.schema,this.entity,this.workUnit,this.predicateList);
@@ -27,16 +27,16 @@
     }
   }
  catch (  SchemaException e) {
-    throw new ExtractPrepareException("Failed to get schema for this object; error-" + e.getMessage());
+    throw new ExtractPrepareException("Failed to get schema for this object; error - " + e.getMessage(),e);
   }
 catch (  HighWatermarkException e) {
-    throw new ExtractPrepareException("Failed to get high watermark; error-" + e.getMessage());
+    throw new ExtractPrepareException("Failed to get high watermark; error - " + e.getMessage(),e);
   }
 catch (  RecordCountException e) {
-    throw new ExtractPrepareException("Failed to get record count; error-" + e.getMessage());
+    throw new ExtractPrepareException("Failed to get record count; error - " + e.getMessage(),e);
   }
 catch (  Exception e) {
-    throw new ExtractPrepareException("Failed to prepare the extract build; error-" + e.getMessage());
+    throw new ExtractPrepareException("Failed to prepare the extract build; error - " + e.getMessage(),e);
   }
   return this;
 }

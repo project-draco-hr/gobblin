@@ -9,7 +9,7 @@
  else {
       if (isNullPredicate(predicateList)) {
         this.log.info("QUERY:" + query);
-        return this.getFullUri(this.getSoqlUrl(query));
+        return SalesforceExtractor.constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
       }
       String limitString=this.getLimitFromInputQuery(query);
       query=query.replace(limitString,"");
@@ -22,13 +22,12 @@
         query=this.addPredicate(query,"IsDeleted = true");
       }
       query=query + limitString;
-      this.log.info("QUERY:" + query);
+      this.log.info("QUERY: " + query);
       url=this.getFullUri(this.getSoqlUrl(query));
     }
-    return url;
+    return SalesforceExtractor.constructGetCommand(url);
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new DataRecordException("Failed to get salesforce url for data records; error-" + e.getMessage());
+    throw new DataRecordException("Failed to get salesforce url for data records; error - " + e.getMessage(),e);
   }
 }

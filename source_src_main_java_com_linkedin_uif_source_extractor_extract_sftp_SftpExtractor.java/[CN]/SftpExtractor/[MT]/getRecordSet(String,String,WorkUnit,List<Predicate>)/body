@@ -1,0 +1,34 @@
+{
+  try {
+    log.info("Fetching record set");
+    List<Command> cmds=this.getDataMetadata(schema,entity,workUnit,predicateList);
+    if (cmds == null || cmds.isEmpty()) {
+      return null;
+    }
+    for (    Command cmd : cmds) {
+      if (cmd instanceof SftpCommand) {
+        SftpCommand sftpCmd=(SftpCommand)cmd;
+        if (sftpCmd.getCommandType().equals(SftpCommandType.GET_FILE)) {
+          executor.executeGetFileCommand(sftpCmd,this.getSftp());
+        }
+ else         if (sftpCmd.getCommandType().equals(SftpCommandType.GET_STREAM)) {
+          InputStream stream=executor.executeGetStreamCommand(sftpCmd,this.getSftp());
+          return (Iterator<D>)IOUtils.lineIterator(stream,"UTF-8");
+        }
+ else {
+          SftpExecutor.executeUnixCommand(sftpCmd,getSftp());
+        }
+      }
+ else {
+        throw new DataRecordException("Illegal command given to getRecordSet()");
+      }
+    }
+    return this.getData(new SftpCommandOutput());
+  }
+ catch (  SftpException e) {
+    throw new DataRecordException(e.getMessage(),e);
+  }
+catch (  SftpCommandFormatException e) {
+    throw new DataRecordException(e.getMessage(),e);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  Extractor<String,String> extractor=null;
+  try {
+    extractor=new ResponsysExtractor<String,String>(state).build();
+  }
+ catch (  ExtractPrepareException e) {
+    throw new IOException("Failed to prepare extractor: error -" + e.getMessage(),e);
+  }
+  return extractor;
+}

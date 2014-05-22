@@ -1,0 +1,3 @@
+{
+  return Arrays.asList(new RestApiCommand().build(Arrays.asList(restQuery),RestApiCommandType.GET));
+}

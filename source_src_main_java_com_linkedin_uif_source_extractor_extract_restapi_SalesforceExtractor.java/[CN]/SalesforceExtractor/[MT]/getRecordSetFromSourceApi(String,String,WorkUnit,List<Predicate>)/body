@@ -17,7 +17,6 @@
     return rs.iterator();
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new IOException("Failed to get records using bulk api; error-" + e.getMessage());
+    throw new IOException("Failed to get records using bulk api; error - " + e.getMessage(),e);
   }
 }

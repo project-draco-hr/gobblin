@@ -1,7 +1,7 @@
 {
   this.log.debug("Get data records using Rest Api");
-  RecordSet<D> rs=null;
-  String url;
+  Iterator<D> rs=null;
+  List<Command> cmds;
   try {
     boolean success=true;
     if (isConnectionClosed()) {
@@ -17,18 +17,18 @@
       }
  else {
         if (this.getNextUrl() == null) {
-          url=this.getDataMetadata(schema,entity,workUnit,predicateList);
+          cmds=this.getDataMetadata(schema,entity,workUnit,predicateList);
         }
  else {
-          url=this.getNextUrl();
+          cmds=SalesforceExtractor.constructGetCommand(this.getNextUrl());
         }
-        String response=this.getResponse(url);
+        CommandOutput response=this.getResponse(cmds);
         rs=this.getData(response);
       }
     }
-    return rs.iterator();
+    return rs;
   }
  catch (  Exception e) {
-    throw new DataRecordException("Failed to get records using rest api; error-" + e.getMessage());
+    throw new DataRecordException("Failed to get records using rest api; error - " + e.getMessage(),e);
   }
 }

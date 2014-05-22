@@ -1,0 +1,3 @@
+{
+  return (S)this.workUnit.getProp(ConfigurationKeys.SOURCE_RESPONSYS_SCHEMA);
+}

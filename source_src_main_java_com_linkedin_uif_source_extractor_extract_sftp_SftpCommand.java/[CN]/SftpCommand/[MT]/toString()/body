@@ -1,0 +1,4 @@
+{
+  Joiner joiner=Joiner.on(":").skipNulls();
+  return cmd.toString() + ":" + joiner.join(params);
+}

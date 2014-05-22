@@ -11,8 +11,7 @@
     uri=builder.build();
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new RestApiClientException("Failed to build url; error-" + e.getMessage());
+    throw new RestApiClientException("Failed to build url; error - " + e.getMessage(),e);
   }
   return new HttpGet(uri).getURI().toString();
 }

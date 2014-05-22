@@ -20,7 +20,6 @@
     return httpEntity;
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new RestApiConnectionException("Failed to authenticate salesforce using user:" + userName + " and host:"+ host+ "; error-"+ e.getMessage());
+    throw new RestApiConnectionException("Failed to authenticate salesforce using user:" + userName + " and host:"+ host+ "; error-"+ e.getMessage(),e);
   }
 }

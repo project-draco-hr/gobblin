@@ -21,12 +21,11 @@
   }
   query=this.addPredicate(query,defaultPredicate);
   query=query + defaultSortOrder;
-  this.log.info("QUERY:" + query);
+  this.log.info("QUERY: " + query);
   try {
-    return this.getFullUri(this.getSoqlUrl(query));
+    return SalesforceExtractor.constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new HighWatermarkException("Failed to get salesforce url for high watermark; error-" + e.getMessage());
+    throw new HighWatermarkException("Failed to get salesforce url for high watermark; error - " + e.getMessage(),e);
   }
 }

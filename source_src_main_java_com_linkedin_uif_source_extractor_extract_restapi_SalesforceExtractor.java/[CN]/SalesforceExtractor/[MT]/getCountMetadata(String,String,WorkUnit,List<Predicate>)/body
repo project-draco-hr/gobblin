@@ -13,8 +13,8 @@
   query=query.replace(limitString,"");
   try {
     if (isNullPredicate(predicateList)) {
-      this.log.info("QUERY:" + query);
-      return this.getFullUri(this.getSoqlUrl(query));
+      this.log.info("QUERY: " + query);
+      return SalesforceExtractor.constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
     }
  else {
       Iterator<Predicate> i=predicateList.listIterator();
@@ -23,12 +23,11 @@
         query=this.addPredicate(query,predicate.getCondition());
       }
       query=query + this.getLimitFromInputQuery(this.updatedQuery);
-      this.log.info("QUERY:" + query);
-      return this.getFullUri(this.getSoqlUrl(query));
+      this.log.info("QUERY: " + query);
+      return SalesforceExtractor.constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new RecordCountException("Failed to get salesforce url for record count; error-" + e.getMessage());
+    throw new RecordCountException("Failed to get salesforce url for record count; error - " + e.getMessage(),e);
   }
 }

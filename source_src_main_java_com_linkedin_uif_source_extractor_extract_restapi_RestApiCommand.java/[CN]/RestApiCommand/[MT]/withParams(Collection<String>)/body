@@ -1,0 +1,4 @@
+{
+  this.params.addAll(params);
+  return this;
+}

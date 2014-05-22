@@ -1,0 +1,29 @@
+{
+  if (this.filesToPull.hasNext()) {
+    this.currentFile=this.filesToPull.next();
+    this.filesToPull.remove();
+  }
+ else {
+    return new ArrayList<Command>();
+  }
+  log.info("Current file to process: " + this.currentFile);
+  List<Command> cmds=SftpExecutor.parseInputCommands(workUnit.getProp(ConfigurationKeys.SOURCE_DATA_COMMANDS));
+  List<String> getParams=new ArrayList<String>();
+  getParams.add(this.currentFile);
+  getParams.add(this.workUnit.getProp(ConfigurationKeys.SOURCE_TEMP) + this.currentFile);
+  cmds.add(new SftpCommand().withCommandType(SftpCommandType.GET_FILE).withParams(getParams));
+  try {
+    FileSystem fs=FileSystem.get(new URI(this.workUnit.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),new Configuration());
+    if (!fs.exists(new Path(this.workUnit.getProp(ConfigurationKeys.SOURCE_TEMP)))) {
+      log.info("Creating temp folder for extractor");
+      fs.mkdirs(new Path(this.workUnit.getProp(ConfigurationKeys.SOURCE_TEMP)));
+    }
+  }
+ catch (  IOException e) {
+    throw new DataRecordException("Could not create tmp folder: " + e.getMessage(),e);
+  }
+catch (  URISyntaxException e) {
+    throw new DataRecordException("Could not create tmp folder: " + e.getMessage(),e);
+  }
+  return cmds;
+}

@@ -1,0 +1,15 @@
+{
+  log.info("Getting the schema");
+  List<Command> cmds=this.getSchemaMetadata(schema,entity);
+  try {
+    CommandOutput<SftpCommand,List<String>> response=SftpExecutor.executeUnixCommands(cmds,getSftp());
+    S array=this.getSchema(response);
+    this.setOutputSchema((S)array);
+  }
+ catch (  SftpException e) {
+    throw new SchemaException("SftpException while getting schema: " + e.getMessage(),e);
+  }
+catch (  SftpCommandFormatException e) {
+    throw new SchemaException("SftpCommandFormatException while getting schema: " + e.getMessage(),e);
+  }
+}

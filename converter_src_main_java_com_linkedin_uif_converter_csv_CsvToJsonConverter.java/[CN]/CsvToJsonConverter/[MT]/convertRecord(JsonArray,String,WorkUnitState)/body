@@ -1,0 +1,18 @@
+{
+  List<String> recordSplit=Lists.newArrayList(Splitter.on(workUnit.getProp(ConfigurationKeys.SOURCE_SCHEMA_DELIMITER)).split(inputRecord));
+  JsonObject outputRecord=new JsonObject();
+  for (int i=0; i < outputSchema.size(); i++) {
+    if (i < recordSplit.size()) {
+      if (recordSplit.get(i).isEmpty()) {
+        outputRecord.add(outputSchema.get(i).getAsJsonObject().get("columnName").getAsString(),JsonNull.INSTANCE);
+      }
+ else {
+        outputRecord.addProperty(outputSchema.get(i).getAsJsonObject().get("columnName").getAsString(),recordSplit.get(i));
+      }
+    }
+ else {
+      outputRecord.add(outputSchema.get(i).getAsString(),JsonNull.INSTANCE);
+    }
+  }
+  return outputRecord;
+}

@@ -1,0 +1,5 @@
+String schema
+String entity
+String watermarkColumn
+List<Predicate> snapshotPredicateList
+String watermarkSourceFormat

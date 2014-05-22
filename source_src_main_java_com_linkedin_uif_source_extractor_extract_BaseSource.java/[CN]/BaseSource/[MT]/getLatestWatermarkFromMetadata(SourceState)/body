@@ -1,12 +1,12 @@
 {
-  LOG.debug("Getting previous watermark");
+  log.debug("Getting previous watermark");
   boolean hasDataInPreviousRun=false;
   long latestWaterMark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
   List<WorkUnitState> previousWorkUnitStates=state.getPreviousStates();
   List<Long> previousWorkUnitStateHighWatermarks=new ArrayList<Long>();
   List<Long> previousWorkUnitLowWatermarks=new ArrayList<Long>();
   if (previousWorkUnitStates.size() == 0) {
-    LOG.info("Previous states are not found; Latest watermark - Default watermark:" + latestWaterMark);
+    log.info("Previous states are not found; Latest watermark - Default watermark: " + latestWaterMark);
     return latestWaterMark;
   }
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
@@ -20,15 +20,15 @@
   }
   if (previousWorkUnitStateHighWatermarks.isEmpty()) {
     latestWaterMark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-    LOG.info("Previous Committed states are not found; Latest watermark - Default watermark:" + latestWaterMark);
+    log.info("Previous Committed states are not found; Latest watermark - Default watermark: " + latestWaterMark);
   }
  else   if (hasDataInPreviousRun) {
     latestWaterMark=Collections.max(previousWorkUnitStateHighWatermarks);
-    LOG.info("Previous run has data; Latest watermark - Max watermark from WorkUnitStates:" + latestWaterMark);
+    log.info("Previous run has data; Latest watermark - Max watermark from WorkUnitStates: " + latestWaterMark);
   }
  else {
     latestWaterMark=Collections.min(previousWorkUnitLowWatermarks);
-    LOG.info("Previous run has no data; Latest watermark - Min watermark from WorkUnits:" + latestWaterMark);
+    log.info("Previous run has no data; Latest watermark - Min watermark from WorkUnits: " + latestWaterMark);
   }
   return latestWaterMark;
 }

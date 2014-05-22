@@ -24,8 +24,7 @@
     success=true;
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new Exception("Failed to connect to salesforce bulk api; error-" + e.getMessage());
+    throw new Exception("Failed to connect to salesforce bulk api; error - " + e.getMessage(),e);
   }
   return success;
 }

@@ -1,20 +1,18 @@
 {
   if (!this.isPullRequired()) {
-    this.log.debug("No more records");
+    this.log.info("No more records to read");
     return null;
   }
   D nextElement=null;
   try {
     if (isInitialPull()) {
-      this.log.debug("initial pull");
+      this.log.info("Initial pull");
       iterator=this.getIterator();
     }
     if (iterator.hasNext()) {
       nextElement=iterator.next();
-      if (iterator.hasNext()) {
-      }
- else {
-        this.log.debug("next pull");
+      if (!iterator.hasNext()) {
+        this.log.info("Getting next pull");
         iterator=this.getIterator();
         if (iterator == null) {
           this.setFetchStatus(false);
@@ -23,7 +21,7 @@
     }
   }
  catch (  Exception e) {
-    throw new DataRecordException("Failed to get records using rest api; error-" + e.getMessage());
+    throw new DataRecordException("Failed to get records using rest api; error - " + e.getMessage(),e);
   }
   return nextElement;
 }

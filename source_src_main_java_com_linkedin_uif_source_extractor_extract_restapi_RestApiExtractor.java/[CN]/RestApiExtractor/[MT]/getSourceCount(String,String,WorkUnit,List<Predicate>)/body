@@ -8,14 +8,14 @@
     }
  else {
       this.log.debug("Connected successfully.");
-      String url=this.getCountMetadata(schema,entity,workUnit,predicateList);
-      String response=this.getResponse(url);
+      List<Command> cmds=this.getCountMetadata(schema,entity,workUnit,predicateList);
+      CommandOutput response=this.getResponse(cmds);
       count=this.getCount(response);
       this.log.info("Source record count:" + count);
     }
     return count;
   }
  catch (  Exception e) {
-    throw new RecordCountException("Failed to get record count using rest api; error-" + e.getMessage());
+    throw new RecordCountException("Failed to get record count using rest api; error - " + e.getMessage(),e);
   }
 }

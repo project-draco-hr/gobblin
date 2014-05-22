@@ -1,7 +1,7 @@
 {
-  Extractor<S,D> extractor=null;
+  Extractor<JsonArray,JsonElement> extractor=null;
   try {
-    extractor=new SalesforceExtractor<S,D>(state).build();
+    extractor=new SalesforceExtractor<JsonArray,JsonElement>(state).build();
   }
  catch (  ExtractPrepareException e) {
     LOG.error("Failed to prepare extractor: error -" + e.getMessage());

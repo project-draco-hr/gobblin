@@ -1,6 +1,6 @@
 {
   initLogger(state);
-  LOG.info("Get work units");
+  log.info("Get work units");
   List<WorkUnit> workUnits=Lists.newArrayList();
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
   String entityName=state.getProp(ConfigurationKeys.SOURCE_ENTITY);
@@ -26,9 +26,9 @@
     workUnits.add(partitionState.createWorkUnit(extract));
     workUnitCount++;
   }
-  LOG.info("Total number of work units for the current run: " + workUnitCount);
+  log.info("Total number of work units for the current run: " + workUnitCount);
   List<WorkUnit> previousWorkUnits=this.getPreviousIncompleteWorkUnits(state);
-  LOG.info("Total number of work units from the previous failed runs: " + previousWorkUnits.size());
+  log.info("Total number of work units from the previous failed runs: " + previousWorkUnits.size());
   workUnits.addAll(previousWorkUnits);
   return workUnits;
 }

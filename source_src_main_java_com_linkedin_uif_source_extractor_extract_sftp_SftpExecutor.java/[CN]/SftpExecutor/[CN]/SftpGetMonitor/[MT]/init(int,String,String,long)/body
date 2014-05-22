@@ -1,0 +1,6 @@
+{
+  this.op=op;
+  this.src=src;
+  this.dest=dest;
+  log.info("Operation GET (" + op + ") has started with src: "+ src+ " dest: "+ dest+ " and file length: "+ max);
+}

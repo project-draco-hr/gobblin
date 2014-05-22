@@ -1,0 +1,4 @@
+{
+  super(workUnitState);
+  this.executor=new SftpExecutor();
+}

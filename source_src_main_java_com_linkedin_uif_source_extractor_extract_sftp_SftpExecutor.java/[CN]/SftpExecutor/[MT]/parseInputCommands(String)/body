@@ -1,0 +1,14 @@
+{
+  String[] knownCmds={CD,CHMOD};
+  List<Command> cmds=new ArrayList<Command>();
+  Iterable<String> inputList=Splitter.on(";").split(input);
+  for (  String cmd : inputList) {
+    for (    String knownCmd : knownCmds) {
+      if (cmd.toUpperCase().startsWith(knownCmd)) {
+        String[] cmdParams=cmd.substring(knownCmd.length() + 1).split("\\s+");
+        cmds.add(new SftpCommand().withCommandType(SftpCommandType.valueOf(knownCmd)).withParams(Arrays.asList(cmdParams)));
+      }
+    }
+  }
+  return cmds;
+}

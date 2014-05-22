@@ -1,0 +1,3 @@
+CommandOutput<?,?> response
+String watermarkColumn
+String predicateColumnFormat

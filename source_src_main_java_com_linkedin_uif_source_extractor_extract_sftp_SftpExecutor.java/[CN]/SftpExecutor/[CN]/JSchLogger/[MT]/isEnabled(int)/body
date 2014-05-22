@@ -1,0 +1,15 @@
+{
+switch (level) {
+case DEBUG:
+    return log.isDebugEnabled();
+case INFO:
+  return log.isInfoEnabled();
+case WARN:
+return log.isWarnEnabled();
+case ERROR:
+return log.isErrorEnabled();
+case FATAL:
+return log.isErrorEnabled();
+}
+return false;
+}

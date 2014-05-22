@@ -39,8 +39,7 @@
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new DataRecordException("Failed to get records from salesforce; error-" + e.getMessage());
+    throw new DataRecordException("Failed to get records from salesforce; error - " + e.getMessage(),e);
   }
   return rs;
 }

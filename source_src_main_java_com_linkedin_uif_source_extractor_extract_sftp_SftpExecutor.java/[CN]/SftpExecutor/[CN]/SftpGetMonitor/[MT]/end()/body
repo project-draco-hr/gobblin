@@ -1,0 +1,3 @@
+{
+  log.info("Data transfer has finished for operation " + this.op + " src: "+ this.src+ " dest: "+ this.dest);
+}

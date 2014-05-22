@@ -14,9 +14,9 @@
     }
  else {
       this.log.debug("Connected successfully.");
-      String url=this.getSchemaMetadata(schema,entity);
-      String response=this.getResponse(url);
-      array=this.getSchema(response);
+      List<Command> cmds=this.getSchemaMetadata(schema,entity);
+      CommandOutput response=this.getResponse(cmds);
+      array=(JsonArray)this.getSchema(response);
       for (      JsonElement columnElement : array) {
         Schema obj=gson.fromJson(columnElement,Schema.class);
         String columnName=obj.getColumnName();
@@ -48,7 +48,6 @@
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new SchemaException("Failed to get schema using rest api; error-" + e.getMessage());
+    throw new SchemaException("Failed to get schema using rest api; error - " + e.getMessage(),e);
   }
 }

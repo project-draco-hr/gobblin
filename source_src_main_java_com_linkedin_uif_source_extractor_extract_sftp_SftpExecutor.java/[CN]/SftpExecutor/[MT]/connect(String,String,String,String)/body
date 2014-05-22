@@ -1,0 +1,20 @@
+{
+  JSch.setLogger(new JSchLogger());
+  JSch jsch=new JSch();
+  log.info("Attempting to connect to source via SFTP");
+  try {
+    jsch.addIdentity(privateKey);
+    jsch.setKnownHosts(knownHosts);
+    Session session=jsch.getSession(userName,hostName);
+    UserInfo ui=new MyUserInfo();
+    session.setUserInfo(ui);
+    session.connect();
+    Channel channel=session.openChannel("sftp");
+    channel.connect();
+    log.info("Finished connecting to source");
+    return channel;
+  }
+ catch (  JSchException e) {
+    throw new RuntimeException("Cannot connect to SFTP source",e);
+  }
+}

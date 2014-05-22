@@ -22,8 +22,7 @@
     }
   }
  catch (  Exception e) {
-    e.printStackTrace();
-    throw new RestApiConnectionException("Failed to get rest api connection; error-" + e.getMessage());
+    throw new RestApiConnectionException("Failed to get rest api connection; error - " + e.getMessage(),e);
   }
  finally {
     if (httpEntity != null) {
@@ -31,8 +30,7 @@
         EntityUtils.consume(httpEntity);
       }
  catch (      Exception e) {
-        e.printStackTrace();
-        throw new RestApiConnectionException("Failed to consume httpEntity; error-" + e.getMessage());
+        throw new RestApiConnectionException("Failed to consume httpEntity; error - " + e.getMessage(),e);
       }
     }
   }

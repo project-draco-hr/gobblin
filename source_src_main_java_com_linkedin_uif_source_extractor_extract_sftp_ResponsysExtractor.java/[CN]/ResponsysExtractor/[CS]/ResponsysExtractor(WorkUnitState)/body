@@ -1,0 +1,4 @@
+{
+  super(workUnitState);
+  this.filesToPull=new ArrayList<String>(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILES_TO_PULL)).iterator();
+}
