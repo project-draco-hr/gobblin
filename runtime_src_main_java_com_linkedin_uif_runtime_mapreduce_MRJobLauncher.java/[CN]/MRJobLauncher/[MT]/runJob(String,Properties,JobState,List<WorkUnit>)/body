@@ -3,17 +3,14 @@
     this.conf.set(name,jobProps.getProperty(name));
   }
   Path jarFileDir=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName + Path.SEPARATOR + "_jars");
-  boolean hasJobJars=false;
+  boolean hasJars=false;
+  if (jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
+    hasJars=true;
+    addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY));
+  }
   if (jobProps.containsKey(ConfigurationKeys.JOB_JAR_FILES_KEY)) {
-    hasJobJars=true;
-    Iterable<String> jarFiles=SPLITTER.split(jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY));
-    for (    String jarFile : jarFiles) {
-      Path srcJarFile=new Path(jarFile);
-      Path destJarFile=new Path(this.fs.makeQualified(jarFileDir),srcJarFile.getName());
-      this.fs.copyFromLocalFile(srcJarFile,destJarFile);
-      LOG.info(String.format("Adding %s to classpath",destJarFile));
-      DistributedCache.addFileToClassPath(destJarFile,this.conf,this.fs);
-    }
+    hasJars=true;
+    addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY));
   }
   boolean useReducer=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.MR_JOB_USE_REDUCER_KEY,"true"));
   Job job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
@@ -68,7 +65,7 @@
       LOG.error("Failed to cleanup job output path for job " + job.getJobName());
     }
     try {
-      if (hasJobJars) {
+      if (hasJars) {
         this.fs.delete(jarFileDir,true);
       }
     }

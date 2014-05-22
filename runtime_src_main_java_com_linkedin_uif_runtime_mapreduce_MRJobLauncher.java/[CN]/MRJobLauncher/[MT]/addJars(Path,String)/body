@@ -1,0 +1,10 @@
+{
+  Iterable<String> jarFiles=SPLITTER.split(jarFileList);
+  for (  String jarFile : jarFiles) {
+    Path srcJarFile=new Path(jarFile);
+    Path destJarFile=new Path(this.fs.makeQualified(jarFileDir),srcJarFile.getName());
+    this.fs.copyFromLocalFile(srcJarFile,destJarFile);
+    LOG.info(String.format("Adding %s to classpath",destJarFile));
+    DistributedCache.addFileToClassPath(destJarFile,this.conf,this.fs);
+  }
+}
