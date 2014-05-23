@@ -3,12 +3,6 @@
   if (watermarkValue != DEFAULT_WATERMARK_VALUE) {
     condition=this.watermark.getWatermarkCondition(extractor,watermarkValue,operator);
   }
-  if (watermarkColumn == null) {
-    log.info("WMC is null");
-  }
-  if (condition == null) {
-    log.info("Condition is null");
-  }
   Strings.isNullOrEmpty(watermarkColumn);
   if (Strings.isNullOrEmpty(watermarkColumn) || condition.equals("")) {
     return null;
