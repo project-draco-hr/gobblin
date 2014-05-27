@@ -6,6 +6,9 @@
     jsch.addIdentity(privateKey);
     jsch.setKnownHosts(knownHosts);
     Session session=jsch.getSession(userName,hostName);
+    if (proxyHost != null && proxyPort >= 0) {
+      session.setProxy(new ProxyHTTP(proxyHost,proxyPort));
+    }
     UserInfo ui=new MyUserInfo();
     session.setUserInfo(ui);
     session.connect();

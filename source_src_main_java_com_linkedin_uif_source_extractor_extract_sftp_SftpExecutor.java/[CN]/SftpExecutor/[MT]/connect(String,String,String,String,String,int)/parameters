@@ -2,3 +2,5 @@ String privateKey
 String knownHosts
 String userName
 String hostName
+String proxyHost
+int proxyPort
