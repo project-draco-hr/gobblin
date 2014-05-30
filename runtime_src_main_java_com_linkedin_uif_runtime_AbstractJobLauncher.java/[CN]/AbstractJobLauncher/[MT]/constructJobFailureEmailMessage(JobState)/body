@@ -1,0 +1,26 @@
+{
+  StringBuilder messageBuilder=new StringBuilder();
+  messageBuilder.append("Job information:\n");
+  messageBuilder.append("------------------------------------------------------------\n");
+  messageBuilder.append("Job ID: " + jobState.getJobId() + "\n");
+  messageBuilder.append("Completed tasks: " + jobState.getCompletedTasks() + "\n");
+  messageBuilder.append("Job start time: " + jobState.getStartTime() + "\n");
+  messageBuilder.append("Job end time: " + jobState.getEndTime() + "\n");
+  messageBuilder.append("Job duration: " + jobState.getDuration() + "\n");
+  messageBuilder.append("\n\n");
+  messageBuilder.append("Task information:\n");
+  messageBuilder.append("------------------------------------------------------------\n");
+  for (  TaskState taskState : jobState.getTaskStates()) {
+    messageBuilder.append("Task ID: " + taskState.getTaskId() + "\n");
+    messageBuilder.append("Task state: " + taskState.getWorkingState() + "\n");
+    messageBuilder.append("Task start time: " + taskState.getStartTime() + "\n");
+    messageBuilder.append("Task end time: " + taskState.getEndTime() + "\n");
+    messageBuilder.append("Task duration: " + taskState.getTaskDuration() + "\n");
+    messageBuilder.append("Task high watermark: " + taskState.getHighWaterMark() + "\n");
+    if (taskState.getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+      messageBuilder.append("Task exception: " + taskState.getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY) + "\n");
+    }
+    messageBuilder.append("\n");
+  }
+  return messageBuilder.toString();
+}

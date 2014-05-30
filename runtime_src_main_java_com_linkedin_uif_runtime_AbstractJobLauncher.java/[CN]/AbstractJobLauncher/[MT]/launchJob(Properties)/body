@@ -23,6 +23,7 @@
   }
   JobState jobState=new JobState(jobName,jobId);
   jobState.addAll(jobProps);
+  jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,getFailureCount(jobName));
   LOG.info("Starting job " + jobId);
   SourceState sourceState;
   SourceWrapperBase source;
