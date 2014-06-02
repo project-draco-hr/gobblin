@@ -1,6 +1,6 @@
 {
   this.log.debug("Get data records using Rest Api");
-  Iterator<D> rs=null;
+  Iterator<JsonElement> rs=null;
   List<Command> cmds;
   try {
     boolean success=true;

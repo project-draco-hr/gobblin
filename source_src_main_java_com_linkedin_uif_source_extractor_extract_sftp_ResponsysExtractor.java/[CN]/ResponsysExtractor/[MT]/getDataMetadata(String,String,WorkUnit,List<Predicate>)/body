@@ -7,16 +7,16 @@
     return new ArrayList<Command>();
   }
   log.info("Current file to process: " + this.currentFile);
-  List<Command> cmds=SftpExecutor.parseInputCommands(workUnit.getProp(ConfigurationKeys.SOURCE_DATA_COMMANDS));
+  List<Command> cmds=SftpExecutor.parseInputCommands(workUnit.getProp(ConfigurationKeys.SOURCE_SFTP_SETUP_COMMANDS));
   List<String> getParams=new ArrayList<String>();
   getParams.add(this.currentFile);
-  getParams.add(this.workUnit.getProp(ConfigurationKeys.SOURCE_TEMP) + this.currentFile);
-  cmds.add(new SftpCommand().withCommandType(SftpCommandType.GET_FILE).withParams(getParams));
+  getParams.add(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER) + this.currentFile);
+  cmds.add(new SftpCommand().build(getParams,SftpCommandType.GET_FILE));
   try {
     FileSystem fs=FileSystem.get(new URI(this.workUnit.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),new Configuration());
-    if (!fs.exists(new Path(this.workUnit.getProp(ConfigurationKeys.SOURCE_TEMP)))) {
+    if (!fs.exists(new Path(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER)))) {
       log.info("Creating temp folder for extractor");
-      fs.mkdirs(new Path(this.workUnit.getProp(ConfigurationKeys.SOURCE_TEMP)));
+      fs.mkdirs(new Path(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER)));
     }
   }
  catch (  IOException e) {

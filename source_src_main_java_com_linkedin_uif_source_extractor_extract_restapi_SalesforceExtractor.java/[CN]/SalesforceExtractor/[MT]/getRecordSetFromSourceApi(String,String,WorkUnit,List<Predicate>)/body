@@ -1,6 +1,6 @@
 {
   this.log.debug("Getting salesforce data using bulk api");
-  RecordSet<D> rs=null;
+  RecordSet<JsonElement> rs=null;
   try {
     if (this.bulkApiInitialRun == true) {
       this.setBulkJobFinished(false);

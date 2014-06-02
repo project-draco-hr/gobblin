@@ -1,3 +1,5 @@
 {
-  return this.withCommandType(cmd).withParams(params);
+  this.params.addAll(params);
+  this.cmd=(RestApiCommandType)cmd;
+  return this;
 }

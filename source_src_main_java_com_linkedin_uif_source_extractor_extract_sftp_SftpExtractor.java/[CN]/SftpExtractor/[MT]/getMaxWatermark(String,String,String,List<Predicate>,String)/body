@@ -2,7 +2,7 @@
   log.info("Getting max watermark");
   List<Command> cmds=this.getHighWatermarkMetadata(schema,entity,watermarkColumn,snapshotPredicateList);
   try {
-    CommandOutput<SftpCommand,List<String>> response=SftpExecutor.executeUnixCommands(cmds,getSftp());
+    CommandOutput<SftpCommand,List<String>> response=SftpExecutor.executeUnixCommands(cmds,this.sftp);
     return this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
   }
  catch (  SftpException e) {

@@ -1,4 +1,0 @@
-{
-  this.cmd=(SftpCommandType)cmd;
-  return this;
-}

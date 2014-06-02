@@ -24,7 +24,7 @@ throw new SftpCommandFormatException("CHMOD command passed a non-int value",e);
 }
 break;
 case LS:
-Vector<LsEntry> lsOut=new Vector<LsEntry>();
+Vector<LsEntry> lsOut;
 if (params.size() == 0) {
 lsOut=(Vector<LsEntry>)sftp.ls("");
 }

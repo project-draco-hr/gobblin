@@ -1,5 +1,6 @@
 {
   if (previousState.getProp(ConfigurationKeys.EXTRACT_SCHEMA) == null) {
+    log.info("Previous Task State does not contain a schema");
     return Result.PASSED;
   }
   if (state.getProp(ConfigurationKeys.EXTRACT_SCHEMA).equals(previousState.getProp(ConfigurationKeys.EXTRACT_SCHEMA))) {

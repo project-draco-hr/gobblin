@@ -1,7 +1,14 @@
 {
   this.log.debug("Get data records from response");
-  String output=(String)response.getResults().values().iterator().next();
-  List<D> rs=new ArrayList<D>();
+  String output;
+  Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    output=itr.next();
+  }
+ else {
+    throw new DataRecordException("Failed to get data from salesforce; REST response has no output");
+  }
+  List<JsonElement> rs=new ArrayList<JsonElement>();
   JsonElement element=gson.fromJson(output,JsonObject.class);
   JsonArray partRecords;
   try {
@@ -17,7 +24,7 @@
     Iterator<JsonElement> li=array.iterator();
     while (li.hasNext()) {
       JsonElement recordElement=li.next();
-      rs.add((D)recordElement);
+      rs.add(recordElement);
     }
     return rs.iterator();
   }

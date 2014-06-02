@@ -1,7 +1,7 @@
 {
   initLogger(state);
   this.sourceState=state;
-  this.sftp=(ChannelSftp)SftpExecutor.connect(state.getProp(ConfigurationKeys.SOURCE_PRIVATE_KEY),state.getProp(ConfigurationKeys.SOURCE_KNOWN_HOSTS),state.getProp(ConfigurationKeys.SOURCE_USERNAME),state.getProp(ConfigurationKeys.SOURCE_HOST_NAME),state.getProp(ConfigurationKeys.SOURCE_USE_PROXY_URL),state.getPropAsInt(ConfigurationKeys.SOURCE_USE_PROXY_PORT,-1));
+  this.sftp=(ChannelSftp)SftpExecutor.connect(state.getProp(ConfigurationKeys.SOURCE_SFTP_PRIVATE_KEY_LOCATION),state.getProp(ConfigurationKeys.SOURCE_SFTP_KNOWN_HOSTS_LOCATION),state.getProp(ConfigurationKeys.SOURCE_USERNAME),state.getProp(ConfigurationKeys.SOURCE_HOST_NAME),state.getProp(ConfigurationKeys.SOURCE_USE_PROXY_URL),state.getPropAsInt(ConfigurationKeys.SOURCE_USE_PROXY_PORT,-1));
   log.info("Get work units");
   List<WorkUnit> workUnits=Lists.newArrayList();
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
@@ -13,8 +13,8 @@
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
   List<WorkUnitState> previousWorkunits=state.getPreviousStates();
   List<String> prevFsSnapshot=new ArrayList<String>();
-  if (!previousWorkunits.isEmpty() && previousWorkunits.get(0).getWorkunit().contains(ConfigurationKeys.SOURCE_RESPONSYS_FS_SNAPSHOT)) {
-    prevFsSnapshot=previousWorkunits.get(0).getWorkunit().getPropAsList(ConfigurationKeys.SOURCE_RESPONSYS_FS_SNAPSHOT);
+  if (!previousWorkunits.isEmpty() && previousWorkunits.get(0).getWorkunit().contains(RESPONSYS_FS_SNAPSHOT)) {
+    prevFsSnapshot=previousWorkunits.get(0).getWorkunit().getPropAsList(RESPONSYS_FS_SNAPSHOT);
   }
   List<String> currentFsSnapshot=this.getcurrentFsSnapshot();
   List<String> filesToPull=new ArrayList<String>(currentFsSnapshot);
@@ -27,8 +27,8 @@
   for (int i=0; i < numPartitions; i++) {
     SourceState partitionState=new SourceState();
     partitionState.addAll(state);
-    partitionState.setProp(ConfigurationKeys.SOURCE_RESPONSYS_FS_SNAPSHOT,StringUtils.join(currentFsSnapshot,","));
-    partitionState.setProp(ConfigurationKeys.SOURCE_FILES_TO_PULL,StringUtils.join(filesToPull.subList(fileOffset,fileOffset + filesPerPartition > filesToPull.size() ? filesToPull.size() : fileOffset + filesPerPartition),","));
+    partitionState.setProp(RESPONSYS_FS_SNAPSHOT,StringUtils.join(currentFsSnapshot,","));
+    partitionState.setProp(RESPONSYS_FILES_TO_PULL,StringUtils.join(filesToPull.subList(fileOffset,fileOffset + filesPerPartition > filesToPull.size() ? filesToPull.size() : fileOffset + filesPerPartition),","));
     partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,-1);
     partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,-1);
     Extract extract=partitionState.createExtract(tableType,nameSpaceName,extractTableName);

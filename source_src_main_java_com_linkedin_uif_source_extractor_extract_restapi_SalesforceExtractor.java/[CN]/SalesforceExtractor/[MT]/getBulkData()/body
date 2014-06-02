@@ -1,6 +1,6 @@
 {
   this.log.debug("Processing bulk api batch...");
-  RecordSetList<D> rs=new RecordSetList<D>();
+  RecordSetList<JsonElement> rs=new RecordSetList<JsonElement>();
   try {
     if (this.bulkBufferedReader == null || !this.bulkBufferedReader.ready()) {
       if (this.bulkResultIdCount < this.bulkResultIdList.size()) {
@@ -29,7 +29,7 @@
     int recordCount=0;
     while ((csvRecord=reader.nextRecord()) != null) {
       JsonObject jsonObject=Utils.csvToJsonObject(this.bulkRecordHeader,csvRecord,this.bulkResultColumCount);
-      rs.add((D)jsonObject);
+      rs.add(jsonObject);
       recordCount++;
       this.bulkRecordCount++;
       if (recordCount >= batchSize) {

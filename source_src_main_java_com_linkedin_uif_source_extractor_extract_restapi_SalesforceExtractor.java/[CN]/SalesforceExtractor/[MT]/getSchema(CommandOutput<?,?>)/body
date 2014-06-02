@@ -1,6 +1,13 @@
 {
-  this.log.info("Get schema from salesforce:");
-  String output=(String)response.getResults().values().iterator().next();
+  this.log.info("Get schema from salesforce");
+  String output;
+  Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    output=itr.next();
+  }
+ else {
+    throw new SchemaException("Failed to get schema from salesforce; REST response has no output");
+  }
   JsonArray fieldJsonArray=new JsonArray();
   JsonElement element=gson.fromJson(output,JsonObject.class);
   JsonObject jsonObject=element.getAsJsonObject();
@@ -32,5 +39,5 @@
  catch (  Exception e) {
     throw new SchemaException("Failed to get schema from salesforce; error - " + e.getMessage(),e);
   }
-  return (S)fieldJsonArray;
+  return fieldJsonArray;
 }

@@ -9,14 +9,14 @@
       if (cmd instanceof SftpCommand) {
         SftpCommand sftpCmd=(SftpCommand)cmd;
         if (sftpCmd.getCommandType().equals(SftpCommandType.GET_FILE)) {
-          executor.executeGetFileCommand(sftpCmd,this.getSftp());
+          executor.executeGetFileCommand(sftpCmd,this.sftp);
         }
  else         if (sftpCmd.getCommandType().equals(SftpCommandType.GET_STREAM)) {
-          InputStream stream=executor.executeGetStreamCommand(sftpCmd,this.getSftp());
-          return (Iterator<D>)IOUtils.lineIterator(stream,"UTF-8");
+          InputStream stream=executor.executeGetStreamCommand(sftpCmd,this.sftp);
+          return IOUtils.lineIterator(stream,"UTF-8");
         }
  else {
-          SftpExecutor.executeUnixCommand(sftpCmd,getSftp());
+          SftpExecutor.executeUnixCommand(sftpCmd,this.sftp);
         }
       }
  else {

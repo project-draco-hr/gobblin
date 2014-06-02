@@ -1,4 +1,0 @@
-{
-  this.cmd=(RestApiCommandType)cmd;
-  return this;
-}
