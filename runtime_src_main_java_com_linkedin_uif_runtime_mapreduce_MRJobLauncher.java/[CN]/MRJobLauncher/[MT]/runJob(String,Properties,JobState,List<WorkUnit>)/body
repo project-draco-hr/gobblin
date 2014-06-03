@@ -38,6 +38,13 @@
   Path jobInputFile=prepareJobInput(jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY),jobInputPath,workUnits);
   NLineInputFormat.addInputPath(job,jobInputFile);
   SequenceFileOutputFormat.setOutputPath(job,jobOutputPath);
+  if (jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
+    int maxMappers=Integer.parseInt(jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY));
+    if (workUnits.size() > maxMappers) {
+      int numTasksPerMapper=workUnits.size() % maxMappers == 0 ? workUnits.size() / maxMappers : workUnits.size() / maxMappers + 1;
+      NLineInputFormat.setNumLinesPerSplit(job,numTasksPerMapper);
+    }
+  }
   try {
     LOG.info("Launching Hadoop MR job " + job.getJobName());
     job.waitForCompletion(true);

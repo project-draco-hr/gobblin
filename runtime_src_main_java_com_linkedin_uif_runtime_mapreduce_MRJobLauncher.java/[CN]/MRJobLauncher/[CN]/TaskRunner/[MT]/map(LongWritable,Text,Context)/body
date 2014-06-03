@@ -19,9 +19,13 @@
   workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
   Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
   this.taskStateTracker.registerNewTask(task);
-  this.taskExecutor.execute(task);
-  LOG.info(String.format("Waiting for task %s to complete...",taskId));
-  this.countDownLatch.await();
+  LOG.info(String.format("Submitting and waiting for task %s to complete...",taskId));
+  try {
+    this.taskExecutor.submit(task).get();
+  }
+ catch (  ExecutionException ee) {
+    LOG.error("Failed to submit and execute task " + task.getTaskId(),ee);
+  }
   context.write(new Text(),task.getTaskState());
   if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
     throw new IOException(String.format("Task %s of job %s failed",task.getTaskId(),task.getJobId()));
