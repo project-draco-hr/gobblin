@@ -1,0 +1,6 @@
+{
+  log.info("Getting record count");
+  List<Command> cmds=getCountCommands();
+  CommandOutput<K,V> output=executeCommands(cmds);
+  return getCountFromOutput(output);
+}

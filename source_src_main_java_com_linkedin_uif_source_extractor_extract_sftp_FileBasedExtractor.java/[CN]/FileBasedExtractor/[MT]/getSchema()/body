@@ -1,0 +1,6 @@
+{
+  log.info("Getting schema");
+  List<Command> cmds=getSchemaCommands();
+  CommandOutput<K,V> output=executeCommands(cmds);
+  return getSchemaFromOutput(output);
+}

@@ -1,1 +1,1 @@
-BaseExtractor<JsonArray,JsonElement>
+QueryBasedExtractor<JsonArray,JsonElement>

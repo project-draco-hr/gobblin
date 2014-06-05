@@ -1,0 +1,24 @@
+{
+  if (!readRecordStart) {
+    log.info("Starting to read records");
+    filesToPull=getListOfFiles();
+    if (!filesToPull.isEmpty()) {
+      currentFileItr=downloadFile(filesToPull.remove(0));
+    }
+ else {
+      log.info("Finished reading records");
+      return null;
+    }
+    readRecordStart=true;
+  }
+  while (!filesToPull.isEmpty() && !currentFileItr.hasNext()) {
+    currentFileItr=downloadFile(filesToPull.remove(0));
+  }
+  if (currentFileItr.hasNext()) {
+    return currentFileItr.next();
+  }
+ else {
+    log.info("Finished reading records");
+    return null;
+  }
+}

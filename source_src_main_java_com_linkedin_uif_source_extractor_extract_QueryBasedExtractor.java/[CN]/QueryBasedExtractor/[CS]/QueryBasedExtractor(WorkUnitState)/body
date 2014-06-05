@@ -1,0 +1,9 @@
+{
+  this.workUnitState=workUnitState;
+  this.workUnit=this.workUnitState.getWorkunit();
+  this.schema=this.workUnit.getProp(ConfigurationKeys.SOURCE_SCHEMA);
+  this.entity=this.workUnit.getProp(ConfigurationKeys.SOURCE_ENTITY);
+  this.setWorkUnitName();
+  this.log=LoggerFactory.getLogger(QueryBasedExtractor.class);
+  MDC.put("tableName",this.getWorkUnitName());
+}

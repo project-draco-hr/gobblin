@@ -1,0 +1,4 @@
+{
+  this.workUnitState=workUnitState;
+  this.workUnit=workUnitState.getWorkunit();
+}

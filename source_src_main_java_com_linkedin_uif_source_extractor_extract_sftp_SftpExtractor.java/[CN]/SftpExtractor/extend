@@ -1,1 +1,1 @@
-BaseExtractor<String,String>
+QueryBasedExtractor<String,String>
