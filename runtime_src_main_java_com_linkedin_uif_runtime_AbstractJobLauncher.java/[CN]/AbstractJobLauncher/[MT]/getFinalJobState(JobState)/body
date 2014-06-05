@@ -3,11 +3,25 @@
   jobState.setDuration(jobState.getEndTime() - jobState.getStartTime());
   if (jobState.getState() == JobState.RunningState.WORKING) {
     jobState.setState(JobState.RunningState.SUCCESSFUL);
+    jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
   }
   for (  TaskState taskState : jobState.getTaskStates()) {
     if (taskState.getWorkingState() == WorkUnitState.WorkingState.FAILED) {
       jobState.setState(JobState.RunningState.FAILED);
       break;
+    }
+  }
+  if (jobState.getState() == JobState.RunningState.FAILED) {
+    int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY) + 1;
+    jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,failures);
+    int maxFailures=jobState.getPropAsInt(ConfigurationKeys.JOB_MAX_FAILURES_KEY,ConfigurationKeys.DEFAULT_JOB_MAX_FAILURES);
+    if (failures >= maxFailures) {
+      try {
+        EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),constructJobFailureEmailMessage(jobState),jobState);
+      }
+ catch (      EmailException ee) {
+        LOG.warn("Failed to send job failure alert email for job " + jobState.getJobId());
+      }
     }
   }
   return jobState;

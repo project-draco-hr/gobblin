@@ -1,0 +1,14 @@
+{
+  try {
+    List<? extends State> jobStateList=this.jobStateStore.getAll(jobName,"current" + JOB_STATE_STORE_TABLE_SUFFIX);
+    if (jobStateList.isEmpty()) {
+      return 0;
+    }
+    State prevJobState=jobStateList.get(0);
+    return prevJobState.contains(ConfigurationKeys.JOB_FAILURES_KEY) ? prevJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY) : 0;
+  }
+ catch (  IOException ioe) {
+    LOG.warn("Failed to read the previous job state for job " + jobName,ioe);
+    return 0;
+  }
+}
