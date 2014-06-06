@@ -4,11 +4,11 @@
     String taskRecordMetric=Metrics.metricName(TaskState.TASK_METRICS_PREFIX,task.getTaskId(),"records");
     this.context.getCounter("TASK",taskRecordMetric).setValue(Metrics.getCounter(taskRecordMetric).getCount());
     String jobRecordMetric=Metrics.metricName(JobState.JOB_METRICS_PREFIX,task.getJobId(),"records");
-    this.context.getCounter("JOB",jobRecordMetric).setValue(Metrics.getCounter(taskRecordMetric).getCount());
+    this.context.getCounter("JOB",jobRecordMetric).increment(Metrics.getCounter(taskRecordMetric).getCount());
     String taskByteMetric=Metrics.metricName(TaskState.TASK_METRICS_PREFIX,task.getTaskId(),"bytes");
     this.context.getCounter("TASK",taskByteMetric).setValue(Metrics.getCounter(taskByteMetric).getCount());
     String jobByteMetric=Metrics.metricName(JobState.JOB_METRICS_PREFIX,task.getJobId(),"bytes");
-    this.context.getCounter("JOB",jobByteMetric).setValue(Metrics.getCounter(taskByteMetric).getCount());
+    this.context.getCounter("JOB",jobByteMetric).increment(Metrics.getCounter(taskByteMetric).getCount());
+    task.getTaskState().removeMetrics();
   }
-  this.countDownLatch.countDown();
 }

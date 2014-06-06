@@ -1,6 +1,5 @@
 {
   this.context=context;
-  this.countDownLatch=countDownLatch;
   this.reporterExecutor=new ScheduledThreadPoolExecutor(1);
   this.reporterExecutor.setMaximumPoolSize(1);
 }

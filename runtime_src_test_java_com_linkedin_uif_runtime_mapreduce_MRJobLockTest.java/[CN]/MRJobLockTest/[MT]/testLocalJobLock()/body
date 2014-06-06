@@ -1,11 +1,13 @@
 {
-  final JobLock lock=new MRJobLock(this.fs,"MRJobLockTest","MRJobLockTest");
+  final JobLock lock=new MRJobLock(this.fs,this.path.getName(),"MRJobLockTest");
+  final CountDownLatch latch=new CountDownLatch(2);
   Thread thread1=new Thread(new Runnable(){
     @Override public void run(){
       try {
         Assert.assertTrue(lock.tryLock());
         Thread.sleep(2000);
         lock.unlock();
+        latch.countDown();
       }
  catch (      Exception e) {
       }
@@ -22,6 +24,7 @@
         Assert.assertTrue(lock.tryLock());
         Thread.sleep(1000);
         lock.unlock();
+        latch.countDown();
       }
  catch (      Exception e) {
       }
@@ -29,4 +32,5 @@
   }
 );
   thread2.start();
+  latch.await();
 }
