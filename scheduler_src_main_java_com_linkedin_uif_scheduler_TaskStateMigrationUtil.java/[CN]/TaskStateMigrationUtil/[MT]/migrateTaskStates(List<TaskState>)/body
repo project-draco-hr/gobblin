@@ -1,0 +1,14 @@
+{
+  List<com.linkedin.uif.runtime.TaskState> destTaskStates=Lists.newArrayList();
+  for (  TaskState src : srcTaskStates) {
+    com.linkedin.uif.runtime.TaskState dest=new com.linkedin.uif.runtime.TaskState(src);
+    dest.addAll(src);
+    dest.setStartTime(src.getStartTime());
+    dest.setEndTime(src.getEndTime());
+    dest.setTaskDuration(src.getTaskDuration());
+    dest.setHighWaterMark(src.getHighWaterMark());
+    dest.setWorkingState(src.getWorkingState());
+    destTaskStates.add(dest);
+  }
+  return destTaskStates;
+}

@@ -1,0 +1,6 @@
+{
+  Metrics.getCounter(Metrics.metricName(TASK_METRICS_PREFIX,this.taskId,"bytes")).inc(bytesWritten);
+  Metrics.getMeter(Metrics.metricName(TASK_METRICS_PREFIX,this.taskId,"bytesPerSec")).mark(bytesWritten);
+  Metrics.getCounter(Metrics.metricName(JobState.JOB_METRICS_PREFIX,this.jobId,"bytes")).inc(bytesWritten);
+  Metrics.getMeter(Metrics.metricName(JobState.JOB_METRICS_PREFIX,this.jobId,"bytesPerSec")).mark(bytesWritten);
+}
