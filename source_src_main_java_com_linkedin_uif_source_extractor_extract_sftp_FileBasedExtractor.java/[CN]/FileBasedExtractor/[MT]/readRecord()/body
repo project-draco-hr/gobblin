@@ -11,7 +11,7 @@
     }
     readRecordStart=true;
   }
-  while (!filesToPull.isEmpty() && !currentFileItr.hasNext()) {
+  while (!currentFileItr.hasNext() && !filesToPull.isEmpty()) {
     currentFileItr=downloadFile(filesToPull.remove(0));
   }
   if (currentFileItr.hasNext()) {
