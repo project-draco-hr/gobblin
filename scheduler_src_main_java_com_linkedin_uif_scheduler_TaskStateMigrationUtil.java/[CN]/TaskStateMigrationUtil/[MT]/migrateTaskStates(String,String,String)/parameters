@@ -1,0 +1,3 @@
+String fsUri
+String srcDir
+String destDir

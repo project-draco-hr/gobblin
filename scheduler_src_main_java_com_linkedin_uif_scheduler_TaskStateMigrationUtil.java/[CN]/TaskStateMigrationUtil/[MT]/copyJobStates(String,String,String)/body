@@ -1,0 +1,30 @@
+{
+  StateStore srcStore=new FsStateStore(fsUri,srcDir,JobState.class);
+  StateStore destStore=new FsStateStore(fsUri,destDir,JobState.class);
+  FileSystem fs=FileSystem.get(URI.create(fsUri),new Configuration());
+  FileStatus[] stores=fs.listStatus(new Path(srcDir));
+  if (stores == null || stores.length == 0) {
+    System.out.println("No job states to copy");
+    return;
+  }
+  for (  FileStatus store : stores) {
+    String storeName=store.getPath().getName();
+    FileStatus[] tables=fs.listStatus(store.getPath(),new PathFilter(){
+      @Override public boolean accept(      Path path){
+        return path.getName().endsWith(".jst");
+      }
+    }
+);
+    if (tables == null || tables.length == 0) {
+      System.out.println("No job states in store " + storeName);
+      continue;
+    }
+    sortFileStatuses(tables);
+    destStore.createAlias(storeName,tables[0].getPath().getName(),"current" + ".jst");
+    for (    FileStatus table : tables) {
+      String tableName=table.getPath().getName();
+      List<JobState> jobStates=(List<JobState>)srcStore.getAll(storeName,tableName);
+      destStore.putAll(storeName,tableName,jobStates);
+    }
+  }
+}
