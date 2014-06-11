@@ -1,8 +1,0 @@
-{
-  if (args.length != 3) {
-    System.out.println("Usage: TaskStateMigrationUtil <fs uri> <src store dir> <dest store dir>");
-    System.exit(1);
-  }
-  migrateTaskStates(args[0],args[1],args[2]);
-  migrateJobStates(args[0],args[1],args[2]);
-}

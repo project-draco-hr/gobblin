@@ -1,6 +1,0 @@
-{
-  long recordsWritten=Metrics.getCounter(Metrics.metricName(TASK_METRICS_PREFIX,this.taskId,"records")).getCount();
-  long bytesWritten=Metrics.getCounter(Metrics.metricName(TASK_METRICS_PREFIX,this.taskId,"bytes")).getCount();
-  Metrics.getCounter(Metrics.metricName(JobState.JOB_METRICS_PREFIX,this.jobId,"records")).dec(recordsWritten);
-  Metrics.getCounter(Metrics.metricName(JobState.JOB_METRICS_PREFIX,this.jobId,"bytes")).dec(bytesWritten);
-}
