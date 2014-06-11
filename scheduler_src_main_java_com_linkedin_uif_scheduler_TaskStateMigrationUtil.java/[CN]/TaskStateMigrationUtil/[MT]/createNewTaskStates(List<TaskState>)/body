@@ -3,10 +3,13 @@
   for (  TaskState src : srcTaskStates) {
     com.linkedin.uif.runtime.TaskState dest=new com.linkedin.uif.runtime.TaskState(src);
     dest.addAll(src);
+    dest.setJobId(src.getJobId());
+    dest.setTaskId(src.getTaskId());
+    dest.setId(src.getTaskId());
     dest.setStartTime(src.getStartTime());
     dest.setEndTime(src.getEndTime());
     dest.setTaskDuration(src.getTaskDuration());
-    dest.setHighWaterMark(src.getHighWaterMark());
+    dest.setHighWaterMark(src.getPropAsLong("workunit.high.water.mark"));
     dest.setWorkingState(src.getWorkingState());
     destTaskStates.add(dest);
   }

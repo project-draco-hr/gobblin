@@ -4,5 +4,5 @@
     System.exit(1);
   }
   migrateTaskStates(args[0],args[1],args[2]);
-  copyJobStates(args[0],args[1],args[2]);
+  migrateJobStates(args[0],args[1],args[2]);
 }

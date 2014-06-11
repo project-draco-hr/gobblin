@@ -1,0 +1,6 @@
+{
+  Metrics.remove(Metrics.metricName(JOB_METRICS_PREFIX,this.jobId,"records"));
+  Metrics.remove(Metrics.metricName(JOB_METRICS_PREFIX,this.jobId,"recordsPerSec"));
+  Metrics.remove(Metrics.metricName(JOB_METRICS_PREFIX,this.jobId,"bytes"));
+  Metrics.remove(Metrics.metricName(JOB_METRICS_PREFIX,this.jobId,"bytesPerSec"));
+}

@@ -20,11 +20,11 @@
       continue;
     }
     sortFileStatuses(tables);
-    destStore.createAlias(storeName,tables[0].getPath().getName(),"current" + ".tst");
     for (    FileStatus table : tables) {
       String tableName=table.getPath().getName();
       List<TaskState> srcTaskStates=(List<TaskState>)srcStore.getAll(storeName,tableName);
       destStore.putAll(storeName,tableName,createNewTaskStates(srcTaskStates));
     }
+    destStore.createAlias(storeName,tables[0].getPath().getName(),"current" + ".tst");
   }
 }

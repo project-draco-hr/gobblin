@@ -1,0 +1,17 @@
+{
+  List<com.linkedin.uif.runtime.JobState> destJobStates=Lists.newArrayList();
+  for (  JobState src : srcJobStates) {
+    com.linkedin.uif.runtime.JobState dest=new com.linkedin.uif.runtime.JobState();
+    dest.addAll(src);
+    dest.setJobName(src.getJobName());
+    dest.setJobId(src.getId());
+    dest.setId(src.getJobId());
+    dest.setState(com.linkedin.uif.runtime.JobState.RunningState.valueOf(src.getState().name()));
+    dest.setTasks(src.getTasks());
+    dest.setStartTime(src.getStartTime());
+    dest.setEndTime(src.getEndTime());
+    dest.setDuration(src.getDuration());
+    dest.addTaskStates(createNewTaskStates(src.getTaskStates()));
+  }
+  return destJobStates;
+}
