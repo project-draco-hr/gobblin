@@ -14,8 +14,8 @@
     printUsage(options);
     System.exit(0);
   }
-  Properties properties=new Properties();
-  properties.load(new FileReader(cmd.getOptionValue('c')));
+  Configuration config=new PropertiesConfiguration(cmd.getOptionValue('c'));
+  Properties properties=ConfigurationConverter.getProperties(config);
   TestWorker testWorker=new TestWorker(properties);
   testWorker.start();
   Mode mode=Mode.valueOf(cmd.getOptionValue('m').toUpperCase());

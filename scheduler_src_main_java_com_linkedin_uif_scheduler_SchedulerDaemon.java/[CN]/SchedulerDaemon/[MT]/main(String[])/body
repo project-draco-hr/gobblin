@@ -3,7 +3,6 @@
     System.err.println("Usage: SchedulerDaemon <configuration properties file>");
     System.exit(1);
   }
-  Properties properties=new Properties();
-  properties.load(new FileReader(args[0]));
-  new SchedulerDaemon(properties).start();
+  Configuration config=new PropertiesConfiguration(args[0]);
+  new SchedulerDaemon(ConfigurationConverter.getProperties(config)).start();
 }

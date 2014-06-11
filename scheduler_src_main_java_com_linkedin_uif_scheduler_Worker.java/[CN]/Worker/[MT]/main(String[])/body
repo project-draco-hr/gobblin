@@ -3,7 +3,6 @@
     System.err.println("Usage: Worker <work configuration properties file>");
     System.exit(1);
   }
-  Properties properties=new Properties();
-  properties.load(new FileReader(args[0]));
-  new Worker(properties).start();
+  Configuration config=new PropertiesConfiguration(args[0]);
+  new Worker(ConfigurationConverter.getProperties(config)).start();
 }
