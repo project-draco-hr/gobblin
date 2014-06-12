@@ -1,5 +1,5 @@
 {
-  Properties properties=new Properties();
-  properties.load(new FileReader(args[args.length - 2]));
+  String configFile=args[args.length - 2];
+  Properties properties=ConfigurationConverter.getProperties(new PropertiesConfiguration(configFile));
   System.exit(ToolRunner.run(new Configuration(),new CliMRJobLauncher(properties),args));
 }
