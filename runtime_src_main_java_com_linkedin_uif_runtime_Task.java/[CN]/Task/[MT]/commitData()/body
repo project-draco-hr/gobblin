@@ -1,0 +1,17 @@
+{
+  if (this.shouldCommit) {
+    LOG.info("Committing data of task " + this.taskId);
+    try {
+      this.writer.commit();
+      this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+      if (Metrics.isEnabled(this.taskState.getWorkunit())) {
+        updateByteMetrics();
+      }
+    }
+ catch (    IOException ioe) {
+      if (this.taskState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
+        LOG.error("Failed to commit data of task " + this.taskId,ioe);
+      }
+    }
+  }
+}
