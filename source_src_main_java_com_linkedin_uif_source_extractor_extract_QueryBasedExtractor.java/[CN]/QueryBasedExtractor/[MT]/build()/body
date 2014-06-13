@@ -4,14 +4,14 @@
   long hwm=this.workUnit.getHighWaterMark();
   log.info("Low water mark: " + lwm + "; and High water mark: "+ hwm);
   WatermarkType watermarkType;
-  if (Strings.isNullOrEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE))) {
+  if (Strings.isNullOrEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
     watermarkType=null;
   }
  else {
-    watermarkType=WatermarkType.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE).toUpperCase());
+    watermarkType=WatermarkType.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE).toUpperCase());
   }
   try {
-    this.setTimeOut(this.workUnit.getProp(ConfigurationKeys.SOURCE_TIMEOUT));
+    this.setTimeOut(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_TIMEOUT));
     this.extractMetadata(this.schema,this.entity,this.workUnit);
     if (!Strings.isNullOrEmpty(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);

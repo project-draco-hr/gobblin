@@ -1,12 +1,12 @@
 {
   LOG.debug("Getting append water mark cutoff");
   long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-  AppendMaxLimitType limitType=this.getAppendLimitType(extractType,this.state.getProp(ConfigurationKeys.SOURCE_APPEND_MAX_WATERMARK_LIMIT));
+  AppendMaxLimitType limitType=this.getAppendLimitType(extractType,this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
   if (limitType == null) {
     LOG.debug("Limit type is not found");
     return highWatermark;
   }
-  int limitDelta=this.getAppendLimitDelta(this.state.getProp(ConfigurationKeys.SOURCE_APPEND_MAX_WATERMARK_LIMIT));
+  int limitDelta=this.getAppendLimitDelta(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
 switch (limitType) {
 case CURRENTDATE:
     highWatermark=Long.parseLong(Utils.dateToString(Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * 24 * -1),"yyyyMMdd"),WATERMARKTIMEFORMAT));

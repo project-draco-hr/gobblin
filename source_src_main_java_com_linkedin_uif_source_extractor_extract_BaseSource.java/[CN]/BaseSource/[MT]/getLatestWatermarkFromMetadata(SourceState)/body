@@ -15,7 +15,7 @@
         hasDataInPreviousRun=true;
       }
       previousWorkUnitStateHighWatermarks.add(workUnitState.getHighWaterMark());
-      previousWorkUnitLowWatermarks.add(this.getLowWatermarkFromWorkUnit(workUnitState.getWorkunit(),workUnitState.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE)));
+      previousWorkUnitLowWatermarks.add(this.getLowWatermarkFromWorkUnit(workUnitState.getWorkunit(),workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE)));
     }
   }
   if (previousWorkUnitStateHighWatermarks.isEmpty()) {

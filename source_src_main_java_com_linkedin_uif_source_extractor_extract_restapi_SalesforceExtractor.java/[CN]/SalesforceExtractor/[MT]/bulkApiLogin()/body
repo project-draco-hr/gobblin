@@ -1,9 +1,9 @@
 {
   this.log.info("Authenticating salesforce bulk api");
   boolean success=false;
-  String hostName=this.workUnit.getProp(ConfigurationKeys.SOURCE_HOST_NAME);
-  String restUrl=this.workUnit.getProp(ConfigurationKeys.SOURCE_REST_URL);
-  String apiVersion=this.workUnit.getProp(ConfigurationKeys.SOURCE_VERSION);
+  String hostName=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
+  String restUrl=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_REST_URL);
+  String apiVersion=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_VERSION);
   if (Strings.isNullOrEmpty(apiVersion)) {
     apiVersion="29.0";
   }
@@ -11,11 +11,11 @@
   String bulkAuthEndPoint=restUrl + SALESFORCE_BULK_AUTH_SERVICE + "/"+ apiVersion;
   try {
     ConnectorConfig config=new ConnectorConfig();
-    if (super.workUnitState.contains(ConfigurationKeys.SOURCE_USE_PROXY_URL) && !super.workUnitState.getProp(ConfigurationKeys.SOURCE_USE_PROXY_URL).isEmpty()) {
-      config.setProxy(super.workUnitState.getProp(ConfigurationKeys.SOURCE_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_USE_PROXY_PORT));
+    if (super.workUnitState.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && !super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL).isEmpty()) {
+      config.setProxy(super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
     }
-    config.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_USERNAME));
-    config.setPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_PASSWORD));
+    config.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME));
+    config.setPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
     config.setAuthEndpoint(soapAuthEndPoint);
     config.setCompression(true);
     config.setTraceFile("traceLogs.txt");

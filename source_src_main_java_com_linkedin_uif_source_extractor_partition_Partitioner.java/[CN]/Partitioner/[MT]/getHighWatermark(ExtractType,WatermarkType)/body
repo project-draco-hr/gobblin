@@ -2,7 +2,7 @@
   LOG.debug("Getting high watermark");
   long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
   if (this.isWatermarkOverride()) {
-    highWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_END_VALUE));
+    highWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE));
     LOG.info("Overriding high water mark with the given end value:" + highWatermark);
   }
  else {

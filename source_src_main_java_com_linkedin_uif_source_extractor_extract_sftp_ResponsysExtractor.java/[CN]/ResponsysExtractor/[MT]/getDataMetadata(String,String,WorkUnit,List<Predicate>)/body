@@ -7,7 +7,7 @@
     return new ArrayList<Command>();
   }
   log.info("Current file to process: " + this.currentFile);
-  List<Command> cmds=SftpExecutor.parseInputCommands(workUnit.getProp(ConfigurationKeys.SOURCE_SFTP_SETUP_COMMANDS));
+  List<Command> cmds=new ArrayList<Command>();
   List<String> getParams=new ArrayList<String>();
   getParams.add(this.currentFile);
   getParams.add(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER) + this.currentFile);

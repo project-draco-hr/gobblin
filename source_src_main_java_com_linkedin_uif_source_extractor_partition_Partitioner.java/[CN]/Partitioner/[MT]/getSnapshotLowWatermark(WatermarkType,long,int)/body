@@ -2,14 +2,14 @@
   LOG.debug("Getting snapshot low water mark");
   if (this.isPreviousWatermarkExists(previousWatermark)) {
     if (this.isSimpleWatermark(watermarkType)) {
-      return previousWatermark + deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS));
+      return previousWatermark + deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS));
     }
  else {
-      return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),(deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS)))),WATERMARKTIMEFORMAT));
+      return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),(deltaForNextWatermark - Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS)))),WATERMARKTIMEFORMAT));
     }
   }
  else {
-    LOG.info("Overriding low water mark with the given start value:" + Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE)));
-    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_START_VALUE));
+    LOG.info("Overriding low water mark with the given start value:" + Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE)));
+    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE));
   }
 }

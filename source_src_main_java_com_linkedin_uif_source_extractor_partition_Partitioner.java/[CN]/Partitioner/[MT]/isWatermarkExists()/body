@@ -1,5 +1,5 @@
 {
-  if (!Strings.isNullOrEmpty(this.state.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY)) && !Strings.isNullOrEmpty(this.state.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE))) {
+  if (!Strings.isNullOrEmpty(this.state.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY)) && !Strings.isNullOrEmpty(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
     return true;
   }
   return false;

@@ -1,7 +1,7 @@
 {
   this.log.info("Extract Metadata using Rest Api");
   JsonArray columnArray=new JsonArray();
-  String inputQuery=workUnit.getProp(ConfigurationKeys.SOURCE_QUERY);
+  String inputQuery=workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_QUERY);
   List<String> columnListInQuery=null;
   JsonArray array=null;
   if (!Strings.isNullOrEmpty(inputQuery)) {

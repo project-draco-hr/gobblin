@@ -15,7 +15,7 @@
         return rs;
       }
     }
-    int batchSize=Utils.getAsInt(this.workUnit.getProp(ConfigurationKeys.SOURCE_FETCH_SIZE));
+    int batchSize=Utils.getAsInt(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_FETCH_SIZE));
     if (batchSize == 0) {
       batchSize=ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE;
     }

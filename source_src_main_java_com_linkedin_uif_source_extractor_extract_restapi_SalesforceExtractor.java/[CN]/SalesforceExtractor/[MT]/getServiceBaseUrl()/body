@@ -1,5 +1,5 @@
 {
-  String dataEnvPath=DEFAULT_SERVICES_DATA_PATH + "/v" + this.workUnit.getProp(ConfigurationKeys.SOURCE_VERSION);
+  String dataEnvPath=DEFAULT_SERVICES_DATA_PATH + "/v" + this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_VERSION);
   this.setServicesDataEnvPath(dataEnvPath);
   return this.instanceUrl + dataEnvPath;
 }
