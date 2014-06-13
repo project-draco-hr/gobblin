@@ -1,0 +1,15 @@
+{
+  String watermarkType=workUnitState.getProp(ConfigurationKeys.SOURCE_WATERMARK_TYPE);
+  WorkUnit workUnit=workUnitState.getWorkunit();
+  if (workUnit.getLowWaterMark() == ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {
+    return workUnit.getLowWaterMark();
+  }
+  WatermarkType wmType=WatermarkType.valueOf(watermarkType.toUpperCase());
+  int deltaNum=new WatermarkPredicate(null,wmType).getDeltaNumForNextWatermark();
+  if (wmType == WatermarkType.SIMPLE) {
+    return workUnit.getLowWaterMark() + Utils.getAsInt(workUnitState.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS)) - deltaNum;
+  }
+ else {
+    return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(workUnit.getLowWaterMark(),"yyyyMMddHHmmss"),Utils.getAsInt(workUnitState.getProp(ConfigurationKeys.SOURCE_LOW_WATERMARK_BACKUP_SECS)) - deltaNum),"yyyyMMddHHmmss"));
+  }
+}

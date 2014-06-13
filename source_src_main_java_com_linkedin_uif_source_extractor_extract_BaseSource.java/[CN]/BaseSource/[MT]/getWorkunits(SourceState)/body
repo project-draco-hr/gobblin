@@ -28,7 +28,7 @@
   }
   log.info("Total number of work units for the current run: " + workUnitCount);
   List<WorkUnit> previousWorkUnits=this.getPreviousIncompleteWorkUnits(state);
-  log.info("Total number of work units from the previous failed runs: " + previousWorkUnits.size());
+  log.info("Total number of incomplete tasks from the previous run: " + previousWorkUnits.size());
   workUnits.addAll(previousWorkUnits);
   return workUnits;
 }
