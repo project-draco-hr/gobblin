@@ -7,7 +7,8 @@
     return previousWorkUnits;
   }
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
-    if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.ABORTED) {
+    JobCommitPolicy commitPolicy=JobCommitPolicy.forName(workUnitState.getWorkunit().getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+    if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS && (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.ABORTED)) {
       previousWorkUnits.add(workUnitState.getWorkunit());
     }
   }
