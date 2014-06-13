@@ -11,8 +11,9 @@
   boolean hasFailedRun=false;
   boolean isCommitOnFullSuccess=false;
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
-    log.info("Commit policy of the previous task " + workUnitState.getId() + ":"+ JobCommitPolicy.forName(workUnitState.getWorkunit().getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY)));
-    if (JobCommitPolicy.forName(workUnitState.getWorkunit().getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY)) == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
+    JobCommitPolicy commitPolicy=JobCommitPolicy.forName(workUnitState.getWorkunit().getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+    log.info("Commit policy of the previous task " + workUnitState.getId() + ":"+ commitPolicy);
+    if (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
       isCommitOnFullSuccess=true;
     }
     log.info("State of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkingState());
