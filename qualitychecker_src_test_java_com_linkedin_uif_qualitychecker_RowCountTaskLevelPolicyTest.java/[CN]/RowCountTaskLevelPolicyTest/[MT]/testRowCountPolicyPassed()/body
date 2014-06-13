@@ -2,7 +2,7 @@
   State state=new State();
   state.setProp(ConfigurationKeys.TASK_LEVEL_POLICY_LIST,"com.linkedin.uif.policies.count.RowCountPolicy");
   state.setProp(ConfigurationKeys.TASK_LEVEL_POLICY_LIST_TYPE,"FAIL");
-  state.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,EXTRACTOR_ROWS_READ);
+  state.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,EXTRACTOR_ROWS_READ);
   state.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,WRITER_ROWS_WRITTEN);
   TaskLevelPolicyCheckResults results=getPolicyResults(state);
   for (  Map.Entry<TaskLevelPolicy.Result,TaskLevelPolicy.Type> entry : results.getPolicyResults().entrySet()) {
