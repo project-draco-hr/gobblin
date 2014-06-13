@@ -1,6 +1,10 @@
 {
-  LOG.info("Row quality checker finished with results: " + rowResults.getResults());
-  this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_READ,extractor.getExpectedRecordCount());
+  if (pullLimit > 0) {
+    this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,recordsPulled);
+  }
+ else {
+    this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,this.extractor.getExpectedRecordCount());
+  }
   this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
   this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());
   TaskLevelPolicyChecker policyChecker=buildTaskLevelPolicyChecker(this.taskState);
