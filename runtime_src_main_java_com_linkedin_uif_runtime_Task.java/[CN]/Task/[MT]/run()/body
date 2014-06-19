@@ -26,6 +26,8 @@
     this.writer=buildWriter(this.taskContext,schemaForWriter);
     this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
     this.taskStateTracker.registerNewTask(this);
+    long recordsPulled=0;
+    long pullLimit=this.taskState.getPropAsLong(ConfigurationKeys.EXTRACT_PULL_LIMIT,0);
     Object record;
     while ((record=this.extractor.readRecord()) != null) {
       if (doConversion) {
@@ -34,8 +36,13 @@
       if (rowChecker.executePolicies(record,rowResults)) {
         this.writer.write(record);
       }
+      recordsPulled++;
+      if (pullLimit > 0 && recordsPulled >= pullLimit) {
+        break;
+      }
     }
-    publishData(rowResults,schemaForWriter);
+    LOG.info("Row quality checker finished with results: " + rowResults.getResults());
+    publishData(recordsPulled,pullLimit,schemaForWriter);
     this.writer.close();
     writerClosed=true;
     commitData();
