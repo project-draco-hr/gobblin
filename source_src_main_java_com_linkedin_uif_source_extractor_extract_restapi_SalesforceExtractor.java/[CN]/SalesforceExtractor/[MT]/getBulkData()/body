@@ -20,6 +20,8 @@
       batchSize=ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE;
     }
     CSVReader reader=new CSVReader(this.bulkBufferedReader);
+    reader.setMaxCharsInFile(ConfigurationKeys.DEFAULT_SALESFORCE_MAX_CHARS_IN_FILE);
+    reader.setMaxRowsInFile(ConfigurationKeys.DEFAULT_SALESFORCE_MAX_ROWS_IN_FILE);
     if (this.isNewBulkResultSet()) {
       this.bulkRecordHeader=reader.nextRecord();
       this.bulkResultColumCount=this.bulkRecordHeader.size();
