@@ -19,6 +19,7 @@
       long currentRunHighWatermark=(this.highWatermark != ConfigurationKeys.DEFAULT_WATERMARK_VALUE ? this.highWatermark : hwm);
       this.log.info("High water mark for the current run: " + currentRunHighWatermark);
       this.setRangePredicates(watermarkColumn,watermarkType,lwm,currentRunHighWatermark);
+      this.highWatermark=currentRunHighWatermark;
     }
     if (!Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SKIP_COUNT_CALC))) {
       this.sourceRecordCount=this.getSourceCount(this.schema,this.entity,this.workUnit,this.predicateList);
