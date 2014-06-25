@@ -1,0 +1,5 @@
+{
+  List<Properties> jobConfigs=Lists.newArrayList();
+  loadJobConfigsRecursive(jobConfigs,properties,new File(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)));
+  return jobConfigs;
+}
