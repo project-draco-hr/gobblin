@@ -1,0 +1,9 @@
+{
+  try {
+    return this.extractor.getSchema();
+  }
+ catch (  Throwable t) {
+    this.logger.error("Failed to get schema for task " + this.taskId,t);
+    return null;
+  }
+}

@@ -4,22 +4,23 @@
   RowLevelPolicyChecker rowChecker=null;
   boolean writerClosed=false;
   try {
-    this.extractor=this.taskContext.getSource().getExtractor(this.taskState);
-    if (this.extractor == null) {
-      LOG.error("No extractor created for task " + this.taskId);
+    Optional<Extractor> extractorOptional=Optional.fromNullable(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState));
+    if (!extractorOptional.isPresent()) {
+      LOG.error("Failed to get extractor for task " + this.taskId);
       return;
     }
-    Object sourceSchema=this.extractor.getSchema();
-    if (sourceSchema == null) {
+    this.extractor=new ExtractorDecorator(extractorOptional.get(),this.taskId,LOG);
+    Optional<Object> sourceSchema=Optional.fromNullable(this.extractor.getSchema());
+    if (!sourceSchema.isPresent()) {
       LOG.error("Not extracting data because no source schema available for task " + this.taskId);
       return;
     }
     boolean doConversion=!this.taskContext.getConverters().isEmpty();
     Converter converter=null;
-    Object schemaForWriter=sourceSchema;
+    Object schemaForWriter=sourceSchema.get();
     if (doConversion) {
       converter=new MultiConverter(this.taskContext.getConverters());
-      schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
+      schemaForWriter=converter.convertSchema(sourceSchema.get(),this.taskState);
     }
     rowChecker=buildRowLevelPolicyChecker(this.taskState);
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
@@ -31,7 +32,7 @@
     Object record;
     while ((record=this.extractor.readRecord()) != null) {
       if (doConversion) {
-        record=converter.convertRecord(sourceSchema,record,this.taskState);
+        record=converter.convertRecord(sourceSchema.get(),record,this.taskState);
       }
       if (rowChecker.executePolicies(record,rowResults)) {
         this.writer.write(record);
@@ -54,12 +55,7 @@
   }
  finally {
     if (this.extractor != null) {
-      try {
-        this.extractor.close();
-      }
- catch (      Exception ioe) {
-        LOG.error("Failed to close the extractor for task " + taskId,ioe);
-      }
+      this.extractor.close();
     }
     if (rowChecker != null) {
       try {

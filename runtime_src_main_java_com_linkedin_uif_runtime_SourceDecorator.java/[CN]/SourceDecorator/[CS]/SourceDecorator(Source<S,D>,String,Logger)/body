@@ -1,0 +1,5 @@
+{
+  this.source=source;
+  this.jobId=jobId;
+  this.logger=logger;
+}
