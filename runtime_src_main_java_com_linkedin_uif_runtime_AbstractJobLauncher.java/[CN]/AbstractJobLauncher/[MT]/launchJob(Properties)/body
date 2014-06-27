@@ -23,7 +23,7 @@
   }
   String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
   if (Strings.isNullOrEmpty(jobId)) {
-    jobId=JobLauncherUtil.newJobId(jobName);
+    jobId=JobLauncherUtils.newJobId(jobName);
     jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,jobId);
   }
   JobState jobState=new JobState(jobName,jobId);
@@ -59,7 +59,7 @@
   jobState.setState(JobState.RunningState.WORKING);
   int sequence=0;
   for (  WorkUnit workUnit : workUnits.get()) {
-    String taskId=JobLauncherUtil.newTaskId(jobId,sequence++);
+    String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
     workUnit.setId(taskId);
     workUnit.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
     workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
