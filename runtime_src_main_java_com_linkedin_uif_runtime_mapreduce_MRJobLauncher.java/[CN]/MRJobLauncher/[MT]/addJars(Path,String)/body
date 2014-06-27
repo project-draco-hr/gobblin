@@ -1,6 +1,5 @@
 {
-  Iterable<String> jarFiles=SPLITTER.split(jarFileList);
-  for (  String jarFile : jarFiles) {
+  for (  String jarFile : SPLITTER.split(jarFileList)) {
     Path srcJarFile=new Path(jarFile);
     Path destJarFile=new Path(this.fs.makeQualified(jarFileDir),srcJarFile.getName());
     this.fs.copyFromLocalFile(srcJarFile,destJarFile);
