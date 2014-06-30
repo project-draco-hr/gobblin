@@ -6,7 +6,7 @@
   }
   WatermarkType wmType=WatermarkType.valueOf(watermarkType.toUpperCase());
   int deltaNum=new WatermarkPredicate(null,wmType).getDeltaNumForNextWatermark();
-  int backupSecs=Utils.getAsInt(workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS));
+  int backupSecs=workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS);
 switch (wmType) {
 case SIMPLE:
     return lowWaterMark + backupSecs - deltaNum;

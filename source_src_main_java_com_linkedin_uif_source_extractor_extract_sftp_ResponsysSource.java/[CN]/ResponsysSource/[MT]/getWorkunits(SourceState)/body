@@ -12,12 +12,12 @@
   }
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
   List<WorkUnitState> previousWorkunits=state.getPreviousStates();
-  List<String> prevFsSnapshot=new ArrayList<String>();
+  List<String> prevFsSnapshot=Lists.newArrayList();
   if (!previousWorkunits.isEmpty() && previousWorkunits.get(0).getWorkunit().contains(RESPONSYS_FS_SNAPSHOT)) {
     prevFsSnapshot=previousWorkunits.get(0).getWorkunit().getPropAsList(RESPONSYS_FS_SNAPSHOT);
   }
   List<String> currentFsSnapshot=this.getcurrentFsSnapshot();
-  List<String> filesToPull=new ArrayList<String>(currentFsSnapshot);
+  List<String> filesToPull=Lists.newArrayList(currentFsSnapshot);
   filesToPull.removeAll(prevFsSnapshot);
   log.info("Will pull the following files in this run: " + Arrays.toString(filesToPull.toArray()));
   int numPartitions=state.contains((ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS)) && state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS) <= filesToPull.size() ? state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS) : filesToPull.size();
@@ -37,7 +37,7 @@
     fileOffset+=filesPerPartition;
   }
   log.info("Total number of work units for the current run: " + workUnitCount);
-  List<WorkUnit> previousWorkUnits=this.getPreviousIncompleteWorkUnits(state);
+  List<WorkUnit> previousWorkUnits=this.getPreviousWorkUnitsForRetry(state);
   log.info("Total number of work units from the previous failed runs: " + previousWorkUnits.size());
   workUnits.addAll(previousWorkUnits);
   return workUnits;
