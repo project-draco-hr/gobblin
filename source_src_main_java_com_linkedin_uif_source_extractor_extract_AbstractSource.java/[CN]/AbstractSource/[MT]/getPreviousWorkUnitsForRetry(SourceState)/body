@@ -4,12 +4,19 @@
   if (previousWorkUnitStates.isEmpty()) {
     return previousWorkUnits;
   }
-  WorkUnitRetryPolicy workUnitRetryPolicy=WorkUnitRetryPolicy.forName(state.getProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY,ConfigurationKeys.DEFAULT_WORK_UNIT_RETRY_POLICY));
+  WorkUnitRetryPolicy workUnitRetryPolicy;
+  if (state.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)) {
+    workUnitRetryPolicy=WorkUnitRetryPolicy.forName(state.getProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY));
+  }
+ else {
+    boolean retryFailedWorkUnits=state.getPropAsBoolean(ConfigurationKeys.WORK_UNIT_RETRY_ENABLED_KEY,true);
+    workUnitRetryPolicy=retryFailedWorkUnits ? WorkUnitRetryPolicy.ALWAYS : WorkUnitRetryPolicy.NEVER;
+  }
   if (workUnitRetryPolicy == WorkUnitRetryPolicy.NEVER) {
     return previousWorkUnits;
   }
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
-    if (workUnitState.getWorkingState() == WorkUnitState.WorkingState.FAILED || workUnitState.getWorkingState() == WorkUnitState.WorkingState.ABORTED) {
+    if (workUnitState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
       previousWorkUnits.add(workUnitState.getWorkunit());
     }
   }
@@ -17,7 +24,7 @@
     return previousWorkUnits;
   }
   JobCommitPolicy jobCommitPolicy=JobCommitPolicy.forName(state.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
-  if ((workUnitRetryPolicy == WorkUnitRetryPolicy.ON_PARTIAL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS) || (workUnitRetryPolicy == WorkUnitRetryPolicy.ON_FULL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS)) {
+  if ((workUnitRetryPolicy == WorkUnitRetryPolicy.ON_COMMIT_ON_PARTIAL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS) || (workUnitRetryPolicy == WorkUnitRetryPolicy.ON_COMMIT_ON_FULL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS)) {
     return previousWorkUnits;
   }
   return previousWorkUnits;

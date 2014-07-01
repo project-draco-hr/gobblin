@@ -1,15 +1,21 @@
 {
   jobState.setEndTime(System.currentTimeMillis());
   jobState.setDuration(jobState.getEndTime() - jobState.getStartTime());
-  if (jobState.getState() == JobState.RunningState.WORKING) {
-    jobState.setState(JobState.RunningState.SUCCESSFUL);
-    jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
-  }
+  JobCommitPolicy commitPolicy=JobCommitPolicy.forName(jobState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
   for (  TaskState taskState : jobState.getTaskStates()) {
-    if (taskState.getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+    if (taskState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED && commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
       jobState.setState(JobState.RunningState.FAILED);
       break;
     }
+  }
+  if (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.FAILED) {
+    for (    TaskState taskState : jobState.getTaskStates()) {
+      taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+    }
+  }
+  if (jobState.getState() == JobState.RunningState.WORKING || jobState.getState() == JobState.RunningState.SUCCESSFUL) {
+    jobState.setState(JobState.RunningState.SUCCESSFUL);
+    jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {
     int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY) + 1;
