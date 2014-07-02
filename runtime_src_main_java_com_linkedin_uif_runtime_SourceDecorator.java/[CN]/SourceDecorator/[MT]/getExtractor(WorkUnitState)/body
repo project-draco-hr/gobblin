@@ -4,6 +4,7 @@
   }
  catch (  Throwable t) {
     this.logger.error("Failed to get extractor for job " + this.jobId,t);
+    Throwables.propagate(t);
     return null;
   }
 }

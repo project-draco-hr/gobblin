@@ -4,6 +4,7 @@
   }
  catch (  Throwable t) {
     this.logger.error("Failed to get schema for task " + this.taskId,t);
+    Throwables.propagate(t);
     return null;
   }
 }
