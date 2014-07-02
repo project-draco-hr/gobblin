@@ -23,7 +23,7 @@
   }
   String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
   if (Strings.isNullOrEmpty(jobId)) {
-    jobId=JobLauncherUtil.newJobId(jobName);
+    jobId=JobLauncherUtils.newJobId(jobName);
     jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,jobId);
   }
   JobState jobState=new JobState(jobName,jobId);
@@ -37,15 +37,35 @@
     source=initSource(jobProps,sourceState);
   }
  catch (  Throwable t) {
-    String errMsg="Failed to initialize source for job " + jobId;
+    String errMsg="Failed to initialize the source for job " + jobId;
     LOG.error(errMsg,t);
     unlockJob(jobName,jobLock);
     throw new JobException(errMsg,t);
   }
-  List<WorkUnit> workUnits=source.getWorkunits(sourceState);
+  List<WorkUnit> workUnits;
+  try {
+    workUnits=source.getWorkunits(sourceState);
+  }
+ catch (  Throwable t) {
+    String errMsg="Failed to get work units for job " + jobId;
+    LOG.error(errMsg,t);
+    try {
+      source.shutdown(sourceState);
+    }
+ catch (    Throwable t1) {
+      LOG.error("Failed to shutdown the source for job " + jobId,t1);
+    }
+    unlockJob(jobName,jobLock);
+    throw new JobException(errMsg,t);
+  }
   if (workUnits == null || workUnits.isEmpty()) {
     LOG.warn("No work units to do for job " + jobId);
-    source.shutdown(sourceState);
+    try {
+      source.shutdown(sourceState);
+    }
+ catch (    Throwable t) {
+      LOG.error("Failed to shutdown the source for job " + jobId,t);
+    }
     unlockJob(jobName,jobLock);
     return;
   }
@@ -54,7 +74,7 @@
   jobState.setState(JobState.RunningState.WORKING);
   int sequence=0;
   for (  WorkUnit workUnit : workUnits) {
-    String taskId=JobLauncherUtil.newTaskId(jobId,sequence++);
+    String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
     workUnit.setId(taskId);
     workUnit.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
     workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
@@ -71,9 +91,14 @@
     throw new JobException(errMsg,t);
   }
  finally {
-    source.shutdown(sourceState);
-    persistJobState(jobState);
-    cleanupStagingData(jobState);
+    try {
+      source.shutdown(sourceState);
+      persistJobState(jobState);
+      cleanupStagingData(jobState);
+    }
+ catch (    Throwable t) {
+      LOG.error("Failed to cleanup for job " + jobId,t);
+    }
     unlockJob(jobName,jobLock);
   }
 }

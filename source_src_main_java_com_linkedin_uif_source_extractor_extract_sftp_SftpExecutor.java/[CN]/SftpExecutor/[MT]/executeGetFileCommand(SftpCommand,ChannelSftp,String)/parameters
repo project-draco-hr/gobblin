@@ -1,2 +1,3 @@
 SftpCommand cmd
 ChannelSftp sftp
+String destUri

@@ -19,6 +19,9 @@
   List<String> currentFsSnapshot=this.getcurrentFsSnapshot();
   List<String> filesToPull=new ArrayList<String>(currentFsSnapshot);
   filesToPull.removeAll(prevFsSnapshot);
+  for (int i=0; i < filesToPull.size(); i++) {
+    filesToPull.add(i,state.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY) + "/" + filesToPull.remove(i));
+  }
   log.info("Will pull the following files in this run: " + Arrays.toString(filesToPull.toArray()));
   int numPartitions=state.contains((ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS)) && state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS) <= filesToPull.size() ? state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS) : filesToPull.size();
   int filesPerPartition=(numPartitions == 0) ? 0 : (int)Math.ceil(filesToPull.size() / numPartitions);

@@ -1,0 +1,11 @@
+{
+  DistributedCache.createSymlink(this.conf);
+  for (  String jobFile : SPLITTER.split(jobFileList)) {
+    Path srcJobFile=new Path(jobFile);
+    Path destJobFile=new Path(this.fs.makeQualified(jobFileDir),srcJobFile.getName());
+    this.fs.copyFromLocalFile(srcJobFile,destJobFile);
+    URI destFileUri=URI.create(destJobFile.toUri().getPath() + "#" + destJobFile.getName());
+    LOG.info(String.format("Adding %s to DistributedCache",destFileUri));
+    DistributedCache.addCacheFile(destFileUri,this.conf);
+  }
+}

@@ -1,33 +1,5 @@
 {
-  File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
-  String[] jobConfigFiles=jobConfigFileDir.list(new FilenameFilter(){
-    @Override public boolean accept(    File dir,    String name){
-      return name.toLowerCase().endsWith(JOB_CONFIG_FILE_EXTENSION);
-    }
-  }
-);
-  List<Properties> jobConfigs=Lists.newArrayList();
-  if (jobConfigFiles == null) {
-    LOG.info("No job configuration files found");
-    return jobConfigs;
-  }
-  LOG.info("Loading job configurations from directory " + jobConfigFileDir);
-  for (  String jobConfigFile : jobConfigFiles) {
-    Properties jobProps=new Properties();
-    jobProps.putAll(this.properties);
-    try {
-      File file=new File(jobConfigFileDir,jobConfigFile);
-      jobProps.load(new FileReader(file));
-      jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
-      jobConfigs.add(jobProps);
-    }
- catch (    FileNotFoundException fnfe) {
-      LOG.error("Job configuration file " + jobConfigFile + " not found",fnfe);
-    }
-catch (    IOException ioe) {
-      LOG.error("Failed to load job configuration from file " + jobConfigFile,ioe);
-    }
-  }
+  List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(this.properties);
   LOG.info(String.format(jobConfigs.size() <= 1 ? "Loaded %d job configuration" : "Loaded %d job configurations",jobConfigs.size()));
   return jobConfigs;
 }

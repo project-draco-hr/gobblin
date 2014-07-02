@@ -1,3 +1,4 @@
 {
+  log.info("Shutting down the sftp connection");
   this.sftp.disconnect();
 }
