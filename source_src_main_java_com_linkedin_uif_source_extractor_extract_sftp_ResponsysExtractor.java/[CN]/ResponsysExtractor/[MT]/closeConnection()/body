@@ -1,0 +1,5 @@
+{
+  super.closeConnection();
+  IOUtils.closeQuietly(decryptedInputStream);
+  sftpInputStream.close();
+}

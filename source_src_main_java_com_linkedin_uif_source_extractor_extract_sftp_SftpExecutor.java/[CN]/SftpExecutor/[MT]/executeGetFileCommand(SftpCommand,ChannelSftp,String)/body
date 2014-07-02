@@ -6,7 +6,16 @@
   SftpGetMonitor monitor=new SftpGetMonitor();
   if (params.size() == 2) {
     log.info("Attempting to download file: " + params.get(0) + " to dest: "+ params.get(1));
-    sftp.get(params.get(0),new FileOutputStream(new File(params.get(1))),monitor);
+    FileOutputStream out=null;
+    try {
+      out=new FileOutputStream(new File(params.get(1)));
+      sftp.get(params.get(0),out,monitor);
+    }
+  finally {
+      if (out != null) {
+        out.close();
+      }
+    }
   }
  else {
     throw new SftpCommandFormatException("GET command does correct number of arguments");

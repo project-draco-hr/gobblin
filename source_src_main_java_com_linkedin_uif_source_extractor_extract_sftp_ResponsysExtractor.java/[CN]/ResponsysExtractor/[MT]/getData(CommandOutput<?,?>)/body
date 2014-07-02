@@ -2,9 +2,9 @@
   if (response.getResults().size() != 1) {
     throw new DataRecordException("Response has more than one command output entry");
   }
-  InputStream sftpInputStream=(InputStream)response.getResults().values().iterator().next();
-  InputStream input=GPGFileDecrypter.decryptGPGFile(sftpInputStream,this.workUnit.getProp(RESPONSYS_DECRYPT_KEY));
-  Iterator<String> dataItr=IOUtils.lineIterator(input,"UTF-8");
+  this.sftpInputStream=(InputStream)response.getResults().values().iterator().next();
+  this.decryptedInputStream=GPGFileDecrypter.decryptGPGFile(sftpInputStream,this.workUnit.getProp(RESPONSYS_DECRYPT_KEY));
+  Iterator<String> dataItr=IOUtils.lineIterator(decryptedInputStream,"UTF-8");
   if (this.workUnit.getPropAsBoolean(ConfigurationKeys.SOURCE_SKIP_FIRST_RECORD,false) && dataItr.hasNext()) {
     dataItr.next();
   }
