@@ -1,0 +1,13 @@
+{
+  try {
+    List<WorkUnit> workUnits=this.source.getWorkunits(state);
+    if (workUnits == null) {
+      return Collections.emptyList();
+    }
+    return workUnits;
+  }
+ catch (  Throwable t) {
+    this.logger.error("Failed to get work units for job " + this.jobId,t);
+    return null;
+  }
+}

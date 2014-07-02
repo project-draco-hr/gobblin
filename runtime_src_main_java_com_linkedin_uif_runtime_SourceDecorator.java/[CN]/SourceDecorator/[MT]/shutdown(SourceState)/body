@@ -1,0 +1,8 @@
+{
+  try {
+    this.source.shutdown(state);
+  }
+ catch (  Throwable t) {
+    this.logger.error("Failed to shutdown source for job " + this.jobId,t);
+  }
+}

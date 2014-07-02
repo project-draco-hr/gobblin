@@ -1,0 +1,10 @@
+{
+  try {
+    return this.extractor.getHighWatermark();
+  }
+ catch (  Throwable t) {
+    this.logger.error("Failed to get high watermark for task " + this.taskId,t);
+    Throwables.propagate(t);
+    return 0;
+  }
+}

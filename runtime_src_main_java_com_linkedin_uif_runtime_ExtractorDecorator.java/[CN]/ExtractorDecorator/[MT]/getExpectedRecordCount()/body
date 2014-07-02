@@ -1,0 +1,10 @@
+{
+  try {
+    return this.extractor.getExpectedRecordCount();
+  }
+ catch (  Throwable t) {
+    this.logger.error("Failed to get expected record count for task " + this.taskId,t);
+    Throwables.propagate(t);
+    return 0;
+  }
+}

@@ -16,25 +16,31 @@
   LOG.info("Starting job " + jobId);
   Optional<SourceState> sourceStateOptional=Optional.absent();
   try {
-    SourceWrapperBase source=this.sourceWrapperMap.get(jobProps.getProperty(ConfigurationKeys.SOURCE_WRAPPER_CLASS_KEY,ConfigurationKeys.DEFAULT_SOURCE_WRAPPER).toLowerCase()).newInstance();
+    SourceWrapperBase sourceWrapper=this.sourceWrapperMap.get(jobProps.getProperty(ConfigurationKeys.SOURCE_WRAPPER_CLASS_KEY,ConfigurationKeys.DEFAULT_SOURCE_WRAPPER).toLowerCase()).newInstance();
     SourceState sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName));
-    source.init(sourceState);
+    sourceWrapper.init(sourceState);
+    Source<?,?> source=new SourceDecorator(sourceWrapper,jobId,LOG);
     sourceStateOptional=Optional.of(sourceState);
-    List<WorkUnit> workUnits=source.getWorkunits(sourceState);
-    if (workUnits == null || workUnits.isEmpty()) {
+    Optional<List<WorkUnit>> workUnits=Optional.fromNullable(source.getWorkunits(sourceState));
+    if (!workUnits.isPresent()) {
+      source.shutdown(sourceState);
+      unlockJob(jobName,runOnce);
+      throw new JobException("Failed to get work units for job " + jobId);
+    }
+    if (workUnits.get().isEmpty()) {
       LOG.warn("No work units have been created for job " + jobId);
-      source.shutdown(jobState);
+      source.shutdown(sourceState);
       unlockJob(jobName,runOnce);
       callJobListener(jobName,jobState,runOnce);
       return;
     }
-    jobState.setTasks(workUnits.size());
+    jobState.setTasks(workUnits.get().size());
     jobState.setStartTime(System.currentTimeMillis());
     jobState.setState(JobState.RunningState.WORKING);
     this.jobStateMap.put(jobId,jobState);
     this.jobSourceMap.put(jobId,source);
     int sequence=0;
-    for (    WorkUnit workUnit : workUnits) {
+    for (    WorkUnit workUnit : workUnits.get()) {
       String taskId=String.format("task_%s_%d",jobIdSuffix,sequence++);
       workUnit.setId(taskId);
       WorkUnitState workUnitState=new WorkUnitState(workUnit);
@@ -48,12 +54,7 @@
     String errMsg="Failed to run job " + jobId;
     LOG.error(errMsg,t);
     if (this.jobSourceMap.containsKey(jobId) && sourceStateOptional.isPresent()) {
-      try {
-        this.jobSourceMap.remove(jobId).shutdown(sourceStateOptional.get());
-      }
- catch (      Throwable t1) {
-        LOG.error("Failed to shutdown the source for job " + jobId,t1);
-      }
+      this.jobSourceMap.remove(jobId).shutdown(sourceStateOptional.get());
     }
     this.jobStateMap.remove(jobId);
     unlockJob(jobName,runOnce);
