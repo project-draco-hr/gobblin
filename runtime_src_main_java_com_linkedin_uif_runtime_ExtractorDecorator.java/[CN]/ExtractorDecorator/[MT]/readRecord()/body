@@ -1,0 +1,10 @@
+{
+  try {
+    return this.extractor.readRecord();
+  }
+ catch (  Throwable t) {
+    this.logger.error("Failed to get data record for task " + this.taskId,t);
+    Throwables.propagate(t);
+    return null;
+  }
+}
