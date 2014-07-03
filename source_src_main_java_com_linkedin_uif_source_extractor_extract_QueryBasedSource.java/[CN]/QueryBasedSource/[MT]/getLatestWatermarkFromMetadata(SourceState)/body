@@ -1,0 +1,39 @@
+{
+  LOG.debug("Get latest watermark from the previou run");
+  long latestWaterMark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  List<WorkUnitState> previousWorkUnitStates=state.getPreviousStates();
+  List<Long> previousWorkUnitStateHighWatermarks=Lists.newArrayList();
+  List<Long> previousWorkUnitLowWatermarks=Lists.newArrayList();
+  if (previousWorkUnitStates.isEmpty()) {
+    LOG.info("No previous work unit states found; Latest watermark - Default watermark: " + latestWaterMark);
+    return latestWaterMark;
+  }
+  boolean hasFailedRun=false;
+  boolean isCommitOnFullSuccess=false;
+  JobCommitPolicy commitPolicy=JobCommitPolicy.forName(state.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+  if (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
+    isCommitOnFullSuccess=true;
+  }
+  for (  WorkUnitState workUnitState : previousWorkUnitStates) {
+    LOG.info("State of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkingState());
+    if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.ABORTED) {
+      hasFailedRun=true;
+    }
+    LOG.info("High watermark of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getHighWaterMark()+ "\n");
+    previousWorkUnitStateHighWatermarks.add(workUnitState.getHighWaterMark());
+    previousWorkUnitLowWatermarks.add(this.getLowWatermarkFromWorkUnit(workUnitState));
+  }
+  if (previousWorkUnitStateHighWatermarks.isEmpty()) {
+    latestWaterMark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+    LOG.info("No previous high watermark found; Latest watermark - Default watermark: " + latestWaterMark);
+  }
+ else   if (isCommitOnFullSuccess && hasFailedRun) {
+    latestWaterMark=Collections.min(previousWorkUnitLowWatermarks);
+    LOG.info("Previous job was COMMIT_ON_FULL_SUCCESS but it was failed; Latest watermark - " + "Min watermark from WorkUnits: " + latestWaterMark);
+  }
+ else {
+    latestWaterMark=Collections.max(previousWorkUnitStateHighWatermarks);
+    LOG.info("Latest watermark - Max watermark from WorkUnitStates: " + latestWaterMark);
+  }
+  return latestWaterMark;
+}

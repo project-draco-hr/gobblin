@@ -10,20 +10,6 @@
   List<Command> cmds=new ArrayList<Command>();
   List<String> getParams=new ArrayList<String>();
   getParams.add(this.currentFile);
-  getParams.add(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER) + this.currentFile);
-  cmds.add(new SftpCommand().build(getParams,SftpCommandType.GET_FILE));
-  try {
-    FileSystem fs=FileSystem.get(new URI(this.workUnit.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),new Configuration());
-    if (!fs.exists(new Path(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER)))) {
-      log.info("Creating temp folder for extractor");
-      fs.mkdirs(new Path(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER)));
-    }
-  }
- catch (  IOException e) {
-    throw new DataRecordException("Could not create tmp folder: " + e.getMessage(),e);
-  }
-catch (  URISyntaxException e) {
-    throw new DataRecordException("Could not create tmp folder: " + e.getMessage(),e);
-  }
+  cmds.add(new SftpCommand().build(getParams,SftpCommandType.GET_STREAM));
   return cmds;
 }

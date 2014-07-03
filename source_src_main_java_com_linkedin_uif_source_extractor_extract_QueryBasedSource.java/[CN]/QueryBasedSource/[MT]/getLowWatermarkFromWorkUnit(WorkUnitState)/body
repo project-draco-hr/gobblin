@@ -1,0 +1,17 @@
+{
+  String watermarkType=workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE);
+  long lowWaterMark=workUnitState.getWorkunit().getLowWaterMark();
+  if (lowWaterMark == ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {
+    return lowWaterMark;
+  }
+  WatermarkType wmType=WatermarkType.valueOf(watermarkType.toUpperCase());
+  int deltaNum=new WatermarkPredicate(null,wmType).getDeltaNumForNextWatermark();
+  int backupSecs=workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS);
+switch (wmType) {
+case SIMPLE:
+    return lowWaterMark + backupSecs - deltaNum;
+default :
+  Date lowWaterMarkDate=Utils.toDate(lowWaterMark,"yyyyMMddHHmmss");
+return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(lowWaterMarkDate,backupSecs - deltaNum),"yyyyMMddHHmmss"));
+}
+}

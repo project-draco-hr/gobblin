@@ -1,5 +1,5 @@
 {
-  List<Command> cmds=new ArrayList<Command>();
+  List<Command> cmds=Lists.newArrayList();
   List<String> list=Arrays.asList(sourceState.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY) + "/*" + sourceState.getProp(ConfigurationKeys.SOURCE_ENTITY)+ "*");
   cmds.add(new SftpCommand().build(list,SftpCommandType.LS));
   CommandOutput<SftpCommand,List<String>> response=new SftpCommandOutput();

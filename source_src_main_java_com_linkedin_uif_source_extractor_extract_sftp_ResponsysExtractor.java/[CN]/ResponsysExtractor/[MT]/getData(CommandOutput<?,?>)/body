@@ -1,8 +1,10 @@
 {
-  log.info("Decyrpting current file");
-  InputStream input=GPGFileDecrypter.decryptGPGFile(this.workUnit.getProp(RESPONSYS_DATA_TEMP_FOLDER) + "/" + this.currentFile,this.workUnit.getProp(RESPONSYS_DECRYPT_KEY));
-  log.info("Decryption has finished, returning decrypted file as input stream");
-  Iterator<String> dataItr=IOUtils.lineIterator(input,"UTF-8");
+  if (response.getResults().size() != 1) {
+    throw new DataRecordException("Response has more than one command output entry");
+  }
+  this.sftpInputStream=(InputStream)response.getResults().values().iterator().next();
+  this.decryptedInputStream=GPGFileDecrypter.decryptGPGFile(sftpInputStream,this.workUnit.getProp(RESPONSYS_DECRYPT_KEY));
+  Iterator<String> dataItr=IOUtils.lineIterator(decryptedInputStream,"UTF-8");
   if (this.workUnit.getPropAsBoolean(ConfigurationKeys.SOURCE_SKIP_FIRST_RECORD,false) && dataItr.hasNext()) {
     dataItr.next();
   }

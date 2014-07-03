@@ -1,0 +1,8 @@
+{
+  try {
+    this.dataFileReader.close();
+  }
+ catch (  IOException ioe) {
+    log.error("Error while closing avro file reader",ioe);
+  }
+}
