@@ -1,8 +1,7 @@
 {
   Date date=null;
-  final SimpleDateFormat inputFormat=new SimpleDateFormat(INPUTFORMAT);
   try {
-    date=inputFormat.parse(dateTime);
+    date=INPUTFORMAT.parse(dateTime);
   }
  catch (  ParseException e) {
     LOG.error(e.getMessage(),e);
