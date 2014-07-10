@@ -1,9 +1,11 @@
 {
+  final SimpleDateFormat inputFormat=new SimpleDateFormat(INPUTFORMAT);
+  final SimpleDateFormat outputFormat=new SimpleDateFormat(OUTPUTFORMAT);
   Date outDate=null;
   try {
-    Date date=INPUTFORMAT.parse(watermark);
-    String dateStr=OUTPUTFORMAT.format(date);
-    outDate=OUTPUTFORMAT.parse(dateStr);
+    Date date=inputFormat.parse(watermark);
+    String dateStr=outputFormat.format(date);
+    outDate=outputFormat.parse(dateStr);
   }
  catch (  ParseException e) {
     LOG.error(e.getMessage(),e);

@@ -26,7 +26,7 @@
         EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),constructJobFailureEmailMessage(jobState),jobState);
       }
  catch (      EmailException ee) {
-        LOG.warn("Failed to send job failure alert email for job " + jobState.getJobId(),ee);
+        LOG.warn("Failed to send job failure alert email for job " + jobState.getJobId());
       }
     }
   }
