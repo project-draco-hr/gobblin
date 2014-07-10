@@ -1,6 +1,4 @@
 {
-  log.info("Getting high watermark");
-  List<Command> cmds=getWatermarkCommands();
-  CommandOutput<K,V> output=executeCommands(cmds);
-  return getWatermarkFromOutput(output);
+  log.info("High Watermark is -1 for file based extractors");
+  return -1;
 }

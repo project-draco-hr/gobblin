@@ -1,0 +1,4 @@
+{
+  super(workUnitState);
+  this.fs=createFileSystem(workUnitState.getProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI));
+}

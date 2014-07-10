@@ -1,0 +1,1 @@
+FileSystemExtractor<Schema,GenericRecord,FileSystemCommand,List<String>>

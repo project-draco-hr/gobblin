@@ -1,1 +1,1 @@
-QueryBasedExtractor<String,String>
+FileBasedExtractor<K,V,SftpCommand,List<String>>

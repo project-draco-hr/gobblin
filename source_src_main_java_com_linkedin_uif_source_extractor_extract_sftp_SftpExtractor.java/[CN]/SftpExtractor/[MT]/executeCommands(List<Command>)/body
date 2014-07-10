@@ -1,0 +1,9 @@
+{
+  try {
+    return SftpHelper.executeUnixCommands(cmds,sftp);
+  }
+ catch (  Throwable t) {
+    Throwables.propagate(t);
+    return null;
+  }
+}

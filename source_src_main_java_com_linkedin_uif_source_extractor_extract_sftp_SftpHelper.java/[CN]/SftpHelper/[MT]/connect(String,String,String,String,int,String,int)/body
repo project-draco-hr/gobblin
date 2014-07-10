@@ -1,0 +1,32 @@
+{
+  JSch.setLogger(new JSchLogger());
+  JSch jsch=new JSch();
+  Session session=null;
+  Channel channel=null;
+  log.info("Attempting to connect to source via SFTP");
+  try {
+    jsch.addIdentity(privateKey);
+    jsch.setKnownHosts(knownHosts);
+    session=jsch.getSession(userName,hostName,port);
+    if (proxyHost != null && proxyPort >= 0) {
+      session.setProxy(new ProxyHTTP(proxyHost,proxyPort));
+    }
+    UserInfo ui=new MyUserInfo();
+    session.setUserInfo(ui);
+    session.connect();
+    channel=session.openChannel("sftp");
+    channel.connect();
+    log.info("Finished connecting to source");
+    return channel;
+  }
+ catch (  JSchException e) {
+    if (session != null) {
+      session.disconnect();
+    }
+    if (channel != null) {
+      channel.disconnect();
+    }
+    log.error(e.getMessage(),e);
+    throw new RuntimeException("Cannot connect to SFTP source",e);
+  }
+}

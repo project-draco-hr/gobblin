@@ -1,0 +1,5 @@
+{
+  this.params.addAll(params);
+  this.cmd=(FileSystemCommandType)cmd;
+  return this;
+}
