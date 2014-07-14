@@ -1,0 +1,15 @@
+{
+  List<JobState> jobStates=(List<JobState>)this.jobStateStore.getAll(jobName);
+  if (jobStates.isEmpty()) {
+    LOGGER.warn(String.format("No job state found for job with name %s",jobName));
+    return;
+  }
+  JsonWriter jsonWriter=new JsonWriter(writer);
+  jsonWriter.setIndent("\t");
+  try {
+    writeJobStates(jsonWriter,jobStates);
+  }
+  finally {
+    jsonWriter.close();
+  }
+}

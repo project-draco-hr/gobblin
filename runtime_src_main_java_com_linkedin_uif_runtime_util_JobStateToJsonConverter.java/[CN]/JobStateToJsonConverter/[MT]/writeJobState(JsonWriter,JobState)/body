@@ -1,0 +1,7 @@
+{
+  jsonWriter.beginObject();
+  jsonWriter.name("job name").value(jobState.getJobName()).name("job id").value(jobState.getJobId()).name("job state").value(jobState.getState().name()).name("start time").value(jobState.getStartTime()).name("end time").value(jobState.getEndTime()).name("duration").value(jobState.getDuration()).name("tasks").value(jobState.getTasks()).name("completed tasks").value(jobState.getCompletedTasks());
+  jsonWriter.name("task states");
+  writeTaskStates(jsonWriter,jobState.getTaskStates());
+  jsonWriter.endObject();
+}

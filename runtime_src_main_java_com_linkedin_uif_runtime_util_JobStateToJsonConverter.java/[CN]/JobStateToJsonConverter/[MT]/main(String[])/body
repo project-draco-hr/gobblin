@@ -1,0 +1,37 @@
+{
+  Option propertiesOption=OptionBuilder.withArgName("gobblin properties file").withDescription("gobblin framework configuration properties file").withLongOpt("properties").hasArgs().isRequired().create('p');
+  Option jobNameOption=OptionBuilder.withArgName("gobblin job name").withDescription("Gobblin job name").withLongOpt("name").hasArgs().isRequired().create('n');
+  Option jobIdOption=OptionBuilder.withArgName("gobblin job id").withDescription("Gobblin job id").withLongOpt("id").hasArgs().create('i');
+  Option convertAllOption=OptionBuilder.withDescription("Whether to convert all past job states of the given job").withLongOpt("all").create('a');
+  Options options=new Options();
+  options.addOption(propertiesOption);
+  options.addOption(jobNameOption);
+  options.addOption(jobIdOption);
+  options.addOption(convertAllOption);
+  CommandLine cmd=null;
+  try {
+    CommandLineParser parser=new BasicParser();
+    cmd=parser.parse(options,args);
+  }
+ catch (  ParseException pe) {
+    HelpFormatter formatter=new HelpFormatter();
+    formatter.printHelp("JobStateToJsonConverter",options);
+    System.exit(1);
+  }
+  Properties properties=new Properties();
+  properties.load(new FileReader(cmd.getOptionValue('p')));
+  JobStateToJsonConverter converter=new JobStateToJsonConverter(properties);
+  StringWriter stringWriter=new StringWriter();
+  if (cmd.hasOption('i')) {
+    converter.convert(cmd.getOptionValue('n'),cmd.getOptionValue('i'),stringWriter);
+  }
+ else {
+    if (cmd.hasOption('a')) {
+      converter.convertAll(cmd.getOptionValue('n'),stringWriter);
+    }
+ else {
+      converter.convert(cmd.getOptionValue('n'),stringWriter);
+    }
+  }
+  System.out.println(stringWriter.toString());
+}

@@ -1,0 +1,3 @@
+{
+  convert(jobName,"current",writer);
+}

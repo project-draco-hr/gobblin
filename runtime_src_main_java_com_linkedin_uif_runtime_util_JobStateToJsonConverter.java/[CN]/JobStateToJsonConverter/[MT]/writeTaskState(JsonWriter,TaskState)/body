@@ -1,0 +1,5 @@
+{
+  jsonWriter.beginObject();
+  jsonWriter.name("task id").value(taskState.getTaskId()).name("task state").value(taskState.getWorkingState().name()).name("start time").value(taskState.getStartTime()).name("end time").value(taskState.getEndTime()).name("duration").value(taskState.getTaskDuration()).name("high watermark").value(taskState.getHighWaterMark());
+  jsonWriter.endObject();
+}
