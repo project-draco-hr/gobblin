@@ -17,9 +17,14 @@
     if (file.isDirectory()) {
       Properties rootPropsCopy=new Properties();
       rootPropsCopy.putAll(rootProps);
-      loadJobConfigsRecursive(jobConfigs,rootPropsCopy,file);
+      loadJobConfigsRecursive(jobConfigs,rootPropsCopy,jobConfigFileExtensions,file);
     }
- else     if (name.toLowerCase().endsWith(JOB_PULL_FILE_EXTENSION)) {
+ else {
+      int pos=file.getName().lastIndexOf(".");
+      String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
+      if (!jobConfigFileExtensions.contains(fileExtension)) {
+        continue;
+      }
       Properties jobProps=new Properties();
       jobProps.putAll(rootProps);
       jobProps.load(new FileReader(file));

@@ -1,5 +1,6 @@
 {
+  Set<String> jobConfigFileExtensions=Sets.newHashSet(Splitter.on(",").omitEmptyStrings().split(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_EXTENSIONS_KEY,ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_EXTENSIONS)));
   List<Properties> jobConfigs=Lists.newArrayList();
-  loadJobConfigsRecursive(jobConfigs,properties,new File(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)));
+  loadJobConfigsRecursive(jobConfigs,properties,jobConfigFileExtensions,new File(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)));
   return jobConfigs;
 }
