@@ -1,8 +1,4 @@
 {
-  if (Metrics.isEnabled(this.properties)) {
-    long metricsReportInterval=Long.parseLong(this.properties.getProperty(ConfigurationKeys.METRICS_REPORT_INTERVAL_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORT_INTERVAL));
-    Metrics.startCsvReporter(metricsReportInterval,this.properties.getProperty(ConfigurationKeys.METRICS_DIR_KEY));
-  }
   Runtime.getRuntime().addShutdownHook(new Thread(){
     public void run(){
       LOG.info("Shutting down the scheduler daemon");

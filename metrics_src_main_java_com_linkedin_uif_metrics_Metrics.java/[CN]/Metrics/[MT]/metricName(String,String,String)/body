@@ -1,0 +1,3 @@
+{
+  return MetricRegistry.name(metricPrefix,id,name);
+}

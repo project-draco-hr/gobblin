@@ -1,7 +1,0 @@
-{
-  jsonWriter.beginArray();
-  for (  TaskState taskState : taskStates) {
-    writeTaskState(jsonWriter,taskState);
-  }
-  jsonWriter.endArray();
-}
