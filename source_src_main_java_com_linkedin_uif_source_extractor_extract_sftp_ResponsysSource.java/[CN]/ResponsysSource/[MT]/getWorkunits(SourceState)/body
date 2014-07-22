@@ -1,7 +1,16 @@
 {
   initLogger(state);
   this.sourceState=state;
-  this.sftp=(ChannelSftp)SftpExecutor.connect(state.getProp(ConfigurationKeys.SOURCE_CONN_PRIVATE_KEY),state.getProp(ConfigurationKeys.SOURCE_CONN_KNOWN_HOSTS),state.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME),state.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME),state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,-1));
+  this.session=SftpExecutor.connect(state.getProp(ConfigurationKeys.SOURCE_CONN_PRIVATE_KEY),state.getProp(ConfigurationKeys.SOURCE_CONN_KNOWN_HOSTS),state.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME),state.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME),state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,-1));
+  try {
+    log.info("Establishing a SFTP channel");
+    this.channelSftp=(ChannelSftp)this.session.openChannel("sftp");
+    this.channelSftp.connect();
+  }
+ catch (  JSchException je) {
+    log.error("Failed to establish a SFTP channel",je);
+    throw new RuntimeException(je);
+  }
   log.info("Get work units");
   List<WorkUnit> workUnits=Lists.newArrayList();
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);

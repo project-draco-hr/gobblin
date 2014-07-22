@@ -4,7 +4,7 @@
   cmds.add(new SftpCommand().build(list,SftpCommandType.LS));
   CommandOutput<SftpCommand,List<String>> response=new SftpCommandOutput();
   try {
-    response=SftpExecutor.executeUnixCommands(cmds,this.sftp);
+    response=SftpExecutor.executeUnixCommands(cmds,this.channelSftp);
   }
  catch (  SftpException e) {
     throw new RuntimeException(e.getMessage(),e);

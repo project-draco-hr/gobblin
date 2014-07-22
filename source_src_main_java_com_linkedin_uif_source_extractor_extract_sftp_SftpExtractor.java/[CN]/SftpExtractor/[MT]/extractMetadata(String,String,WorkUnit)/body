@@ -2,7 +2,7 @@
   log.info("Getting the schema");
   List<Command> cmds=this.getSchemaMetadata(schema,entity);
   try {
-    CommandOutput<SftpCommand,List<String>> response=SftpExecutor.executeUnixCommands(cmds,this.sftp);
+    CommandOutput<SftpCommand,List<String>> response=SftpExecutor.executeUnixCommands(cmds,this.channelSftp);
     String array=this.getSchema(response);
     this.setOutputSchema(array);
   }

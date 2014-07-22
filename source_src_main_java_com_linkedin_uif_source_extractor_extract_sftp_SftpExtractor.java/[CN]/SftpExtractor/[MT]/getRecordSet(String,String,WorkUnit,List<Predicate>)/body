@@ -9,16 +9,16 @@
       if (cmd instanceof SftpCommand) {
         SftpCommand sftpCmd=(SftpCommand)cmd;
         if (sftpCmd.getCommandType().equals(SftpCommandType.GET_FILE)) {
-          executor.executeGetFileCommand(sftpCmd,this.sftp,this.workUnit.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI));
+          executor.executeGetFileCommand(sftpCmd,this.channelSftp,this.workUnit.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI));
         }
  else         if (sftpCmd.getCommandType().equals(SftpCommandType.GET_STREAM)) {
-          InputStream stream=executor.executeGetStreamCommand(sftpCmd,this.sftp);
+          InputStream stream=executor.executeGetStreamCommand(sftpCmd,this.channelSftp);
           CommandOutput<SftpCommand,InputStream> getStreamOutput=new SftpGetCommandOuput();
           getStreamOutput.put(sftpCmd,stream);
           return this.getData(getStreamOutput);
         }
  else {
-          SftpExecutor.executeUnixCommand(sftpCmd,this.sftp);
+          SftpExecutor.executeUnixCommand(sftpCmd,this.channelSftp);
         }
       }
  else {

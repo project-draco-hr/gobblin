@@ -1,4 +1,10 @@
 {
   log.info("Shutting down the sftp connection");
-  sftp.disconnect();
+  try {
+    this.channelSftp.disconnect();
+  }
+ catch (  Throwable t) {
+    log.error("Failed to disconnect the SFTP channel",t);
+  }
+  this.session.disconnect();
 }

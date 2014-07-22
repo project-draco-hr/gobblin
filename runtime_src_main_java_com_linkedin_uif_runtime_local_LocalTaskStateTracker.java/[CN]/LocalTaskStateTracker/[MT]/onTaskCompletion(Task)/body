@@ -8,6 +8,7 @@
   }
   WorkUnitState.WorkingState state=task.getTaskState().getWorkingState();
   if (state == WorkUnitState.WorkingState.FAILED && task.getRetryCount() < this.maxTaskRetries) {
+    LOG.warn("Retrying failed task " + task.getTaskId());
     this.taskExecutor.retry(task);
     return;
   }
