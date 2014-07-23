@@ -1,7 +1,7 @@
 {
   Metrics metrics=Metrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
-  metrics.getCounter(Metrics.metricName(TASK_METRICS_PREFIX,this.taskId,"bytes")).inc(bytesWritten);
-  metrics.getMeter(Metrics.metricName(TASK_METRICS_PREFIX,this.taskId,"bytesPerSec")).mark(bytesWritten);
-  metrics.getCounter(Metrics.metricName(JobState.JOB_METRICS_PREFIX,this.jobId,"bytes")).inc(bytesWritten);
-  metrics.getMeter(Metrics.metricName(JobState.JOB_METRICS_PREFIX,this.jobId,"bytesPerSec")).mark(bytesWritten);
+  metrics.getCounter(Metrics.metricName(Metrics.MetricGroup.TASK,this.taskId,"bytes")).inc(bytesWritten);
+  metrics.getMeter(Metrics.metricName(Metrics.MetricGroup.TASK,this.taskId,"bytesPerSec")).mark(bytesWritten);
+  metrics.getCounter(Metrics.metricName(Metrics.MetricGroup.JOB,this.jobId,"bytes")).inc(bytesWritten);
+  metrics.getMeter(Metrics.metricName(Metrics.MetricGroup.JOB,this.jobId,"bytesPerSec")).mark(bytesWritten);
 }
