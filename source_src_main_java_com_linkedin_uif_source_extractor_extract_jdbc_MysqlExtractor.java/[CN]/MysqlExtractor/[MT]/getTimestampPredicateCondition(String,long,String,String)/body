@@ -1,0 +1,5 @@
+{
+  this.log.debug("Getting timestamp predicate for Mysql");
+  String Formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,MYSQL_TIMESTAMP_FORMAT);
+  return this.getWatermarkColumnName(column) + " " + operator+ " '"+ Formattedvalue+ "'";
+}

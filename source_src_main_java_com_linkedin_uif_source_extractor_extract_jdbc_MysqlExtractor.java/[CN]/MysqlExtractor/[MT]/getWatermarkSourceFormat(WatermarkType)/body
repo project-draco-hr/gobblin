@@ -1,0 +1,10 @@
+{
+switch (watermarkType) {
+case TIMESTAMP:
+    return "yyyy-MM-dd HH:mm:ss";
+case DATE:
+  return "yyyy-MM-dd";
+default :
+return null;
+}
+}

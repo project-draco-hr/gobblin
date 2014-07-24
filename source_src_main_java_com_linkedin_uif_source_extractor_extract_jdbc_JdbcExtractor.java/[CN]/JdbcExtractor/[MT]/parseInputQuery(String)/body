@@ -1,0 +1,42 @@
+{
+  List<String> projectedColumns=new ArrayList<String>();
+  if (!Strings.isNullOrEmpty(query)) {
+    String queryLowerCase=query.toLowerCase();
+    int startIndex=queryLowerCase.indexOf("select ") + 7;
+    int endIndex=queryLowerCase.indexOf(" from ");
+    if (startIndex >= 0 && endIndex >= 0) {
+      String columnProjection=query.substring(startIndex,endIndex);
+      this.setInputColumnProjection(columnProjection);
+      projectedColumns=Arrays.asList(columnProjection.split(","));
+    }
+  }
+  if (this.isSelectAllColumns()) {
+    List<String> columnList=this.getMetadataColumnList();
+    for (    String columnName : columnList) {
+      ColumnMap col=new ColumnMap();
+      col.setColumnName(columnName);
+      col.setAliasName(columnName);
+      this.addToColumnAliasMap(col);
+    }
+  }
+ else {
+    for (    String column : projectedColumns) {
+      String sourceColumn=column.trim();
+      String alias=null;
+      int spaceOccurences=StringUtils.countMatches(sourceColumn.trim()," ");
+      if (spaceOccurences > 0) {
+        String formattedColumn=sourceColumn.replaceAll(" as "," ").replaceAll(" +"," ");
+        int lastSpaceIndex=formattedColumn.lastIndexOf(" ");
+        sourceColumn=formattedColumn.substring(0,lastSpaceIndex);
+        alias=formattedColumn.substring(lastSpaceIndex + 1);
+      }
+      if (sourceColumn.contains(".")) {
+        sourceColumn=sourceColumn.substring(sourceColumn.indexOf(".") + 1);
+      }
+      ColumnMap col=new ColumnMap();
+      col.setColumnName(sourceColumn);
+      col.setAliasName(alias);
+      this.addToColumnAliasMap(col);
+    }
+  }
+}

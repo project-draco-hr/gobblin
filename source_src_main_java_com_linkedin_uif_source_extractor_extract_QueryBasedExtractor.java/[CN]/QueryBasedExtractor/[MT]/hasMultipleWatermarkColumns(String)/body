@@ -1,0 +1,11 @@
+{
+  if (Strings.isNullOrEmpty(watermarkColumn)) {
+    return false;
+  }
+  if (Arrays.asList(watermarkColumn.toLowerCase().split(",")).size() > 1) {
+    return true;
+  }
+ else {
+    return false;
+  }
+}

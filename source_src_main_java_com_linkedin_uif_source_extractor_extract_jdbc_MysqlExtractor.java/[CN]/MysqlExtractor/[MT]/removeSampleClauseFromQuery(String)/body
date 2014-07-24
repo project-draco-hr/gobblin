@@ -1,0 +1,12 @@
+{
+  if (Strings.isNullOrEmpty(query)) {
+    return null;
+  }
+  String limitString="";
+  String inputQuery=query.toLowerCase();
+  int limitIndex=inputQuery.indexOf(" limit");
+  if (limitIndex > 0) {
+    limitString=query.substring(limitIndex);
+  }
+  return query.replace(limitString,"");
+}

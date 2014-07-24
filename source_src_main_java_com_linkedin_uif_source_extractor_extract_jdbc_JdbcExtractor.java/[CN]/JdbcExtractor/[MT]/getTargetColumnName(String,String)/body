@@ -1,0 +1,12 @@
+{
+  String targetColumnName=alias;
+  Schema obj=this.getMetadataColumnMap().get(sourceColumnName.toLowerCase());
+  if (obj == null) {
+    targetColumnName=(targetColumnName == null ? "unknown" + this.unknownColumnCounter : targetColumnName);
+    this.unknownColumnCounter++;
+  }
+ else {
+    targetColumnName=(!Strings.isNullOrEmpty(targetColumnName) ? targetColumnName : sourceColumnName);
+  }
+  return Utils.escapeChars(targetColumnName,ConfigurationKeys.ESCAPE_CHARS_IN_COLUMN_NAME,"_");
+}

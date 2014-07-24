@@ -1,0 +1,21 @@
+{
+  if (Strings.isNullOrEmpty(query)) {
+    return SAMPLERECORDCOUNT;
+  }
+  long recordcount=SAMPLERECORDCOUNT;
+  String limit=null;
+  String inputQuery=query.toLowerCase();
+  int limitIndex=inputQuery.indexOf(" limit ");
+  if (limitIndex > 0) {
+    limit=query.substring(limitIndex + 7).trim();
+  }
+  if (!Strings.isNullOrEmpty(limit)) {
+    try {
+      recordcount=Long.parseLong(limit);
+    }
+ catch (    Exception e) {
+      log.error("Ignoring incorrct limit value in input query:" + limit);
+    }
+  }
+  return recordcount;
+}

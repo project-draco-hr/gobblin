@@ -1,0 +1,9 @@
+{
+  List<String> conditions=new ArrayList<String>();
+  Iterator<Predicate> i=predicateList.listIterator();
+  while (i.hasNext()) {
+    Predicate predicate=i.next();
+    conditions.add(predicate.getCondition());
+  }
+  return Joiner.on(" and ").skipNulls().join(conditions);
+}

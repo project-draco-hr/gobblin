@@ -1,0 +1,42 @@
+{
+  this.log.debug("Extract data records from resultset");
+  RecordSetList<JsonElement> recordSet=this.getNewRecordSetList();
+  if (response == null || !this.hasNextRecord()) {
+    return recordSet.iterator();
+  }
+  ResultSet resultset=null;
+  Iterator<ResultSet> itr=(Iterator<ResultSet>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    resultset=itr.next();
+  }
+ else {
+    log.error("Failed to get source record count from Mysql - Resultset has no records");
+  }
+  try {
+    final ResultSetMetaData resultsetMetadata=resultset.getMetaData();
+    final int columnCount=resultsetMetadata.getColumnCount();
+    int batchSize=Utils.getAsInt(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_FETCH_SIZE));
+    batchSize=(batchSize == 0 ? ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE : batchSize);
+    int recordCount=0;
+    while (resultset.next()) {
+      List<String> record=new ArrayList<String>();
+      for (int i=1; i <= columnCount; i++) {
+        record.add(resultset.getString(i));
+      }
+      JsonObject jsonObject=Utils.csvToJsonObject(this.getHeaderRecord(),record,columnCount);
+      recordSet.add(jsonObject);
+      recordCount++;
+      this.totalRecordCount++;
+      if (recordCount >= batchSize) {
+        this.log.info("Total number of records processed so far: " + this.totalRecordCount);
+        return recordSet.iterator();
+      }
+    }
+    this.setNextRecord(false);
+    this.log.info("Total number of records processed so far: " + this.totalRecordCount);
+    return recordSet.iterator();
+  }
+ catch (  Exception e) {
+    throw new DataRecordException("Failed to get records from MySql; error - " + e.getMessage(),e);
+  }
+}

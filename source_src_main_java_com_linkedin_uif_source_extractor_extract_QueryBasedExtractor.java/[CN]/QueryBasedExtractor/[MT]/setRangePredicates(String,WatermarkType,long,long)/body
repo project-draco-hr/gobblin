@@ -1,14 +1,14 @@
 {
-  this.log.info("Getting range predicates");
+  this.log.debug("Getting range predicates");
   WatermarkPredicate watermark=new WatermarkPredicate(watermarkColumn,watermarkType);
-  this.addPredicates(watermark.getPredicate(this,lwmValue,">="));
-  this.addPredicates(watermark.getPredicate(this,hwmValue,"<="));
+  this.addPredicates(watermark.getPredicate(this,lwmValue,">=",PredicateType.LWM));
+  this.addPredicates(watermark.getPredicate(this,hwmValue,"<=",PredicateType.HWM));
   if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_HOURLY_EXTRACT))) {
     String hourColumn=this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_HOUR_COLUMN);
     if (!Strings.isNullOrEmpty(hourColumn)) {
       WatermarkPredicate hourlyWatermark=new WatermarkPredicate(hourColumn,WatermarkType.HOUR);
-      this.addPredicates(hourlyWatermark.getPredicate(this,lwmValue,">="));
-      this.addPredicates(hourlyWatermark.getPredicate(this,hwmValue,"<="));
+      this.addPredicates(hourlyWatermark.getPredicate(this,lwmValue,">=",PredicateType.LWM));
+      this.addPredicates(hourlyWatermark.getPredicate(this,hwmValue,"<=",PredicateType.HWM));
     }
   }
 }

@@ -1,0 +1,16 @@
+{
+  this.log.debug("Build query to extract data");
+  List<Command> commands=new ArrayList<Command>();
+  int fetchsize=Integer.MIN_VALUE;
+  String watermarkFilter=this.concatPredicates(predicateList);
+  String query=this.getExtractSql();
+  if (Strings.isNullOrEmpty(watermarkFilter)) {
+    watermarkFilter="1=1";
+  }
+  query=query.replace(ConfigurationKeys.DEFAULT_SOURCE_QUERYBASED_WATERMARK_PREDICATE_SYMBOL,watermarkFilter);
+  String sampleFilter=this.constructSampleClause();
+  query=query + sampleFilter;
+  commands.add(getCommand(query,JdbcCommandType.QUERY));
+  commands.add(getCommand(fetchsize,JdbcCommandType.FETCHSIZE));
+  return commands;
+}

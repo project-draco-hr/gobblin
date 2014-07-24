@@ -1,0 +1,20 @@
+{
+  Schema schema=new Schema();
+  String dataType="string";
+  schema.setColumnName(columnName);
+  String elementDataType="string";
+  List<String> mapSymbols=null;
+  JsonObject newDataType=this.convertDataType(columnName,dataType,elementDataType,mapSymbols);
+  schema.setDataType(newDataType);
+  schema.setWaterMark(false);
+  schema.setPrimaryKey(0);
+  schema.setLength(0);
+  schema.setPrecision(0);
+  schema.setScale(0);
+  schema.setNullable(true);
+  schema.setFormat(null);
+  schema.setComment("Custom column");
+  schema.setDefaultValue(null);
+  schema.setUnique(false);
+  return schema;
+}
