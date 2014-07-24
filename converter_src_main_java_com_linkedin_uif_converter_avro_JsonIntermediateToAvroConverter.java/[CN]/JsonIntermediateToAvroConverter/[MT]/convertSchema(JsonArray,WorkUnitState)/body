@@ -18,7 +18,7 @@
     fld.addProp("source.type",map.get("dataType").getAsJsonObject().get("type").getAsString());
     fields.add(fld);
   }
-  Schema avroSchema=Schema.createRecord(workUnit.getWorkunit().getExtract().getTable(),"",workUnit.getWorkunit().getExtract().getNamespace(),false);
+  Schema avroSchema=Schema.createRecord(workUnit.getExtract().getTable(),"",workUnit.getExtract().getNamespace(),false);
   avroSchema.setFields(fields);
   return avroSchema;
 }
