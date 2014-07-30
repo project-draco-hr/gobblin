@@ -12,5 +12,17 @@
       break;
     }
   }
+  if (jobState.getState() != JobState.RunningState.SUCCESSFUL) {
+    try {
+      StringWriter stringWriter=new StringWriter();
+      JsonWriter jsonWriter=new JsonWriter(stringWriter);
+      jsonWriter.setIndent("\t");
+      jobState.toJson(jsonWriter);
+      EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),stringWriter.toString(),jobState);
+    }
+ catch (    Throwable t) {
+      LOG.error("Failed to construct and send job failure alert email for job " + jobState.getJobId(),t);
+    }
+  }
   return jobState;
 }

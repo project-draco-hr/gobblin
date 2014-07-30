@@ -14,5 +14,5 @@
       this.properties.setProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,fsUri);
     }
   }
-  this.jobLauncher=new MRJobLauncher(this.properties,conf);
+  this.jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
 }
