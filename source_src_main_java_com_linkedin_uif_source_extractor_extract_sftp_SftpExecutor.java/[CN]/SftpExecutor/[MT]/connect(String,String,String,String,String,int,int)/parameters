@@ -4,3 +4,4 @@ String userName
 String hostName
 String proxyHost
 int proxyPort
+int port

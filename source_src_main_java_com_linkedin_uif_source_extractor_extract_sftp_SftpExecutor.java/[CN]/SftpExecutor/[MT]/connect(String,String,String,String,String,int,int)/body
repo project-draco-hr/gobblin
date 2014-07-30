@@ -6,7 +6,7 @@
   try {
     jsch.addIdentity(privateKey);
     jsch.setKnownHosts(knownHosts);
-    session=jsch.getSession(userName,hostName);
+    session=jsch.getSession(userName,hostName,port);
     if (proxyHost != null && proxyPort >= 0) {
       session.setProxy(new ProxyHTTP(proxyHost,proxyPort));
     }
