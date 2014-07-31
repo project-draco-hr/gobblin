@@ -1,5 +1,5 @@
 {
-  if (predicateList == null || predicateList.size() == 0) {
+  if (predicateList == null || predicateList.isEmpty()) {
     return false;
   }
   return true;

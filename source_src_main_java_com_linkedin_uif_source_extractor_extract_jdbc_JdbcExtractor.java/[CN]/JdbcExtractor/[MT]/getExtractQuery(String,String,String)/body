@@ -1,14 +1,12 @@
 {
   String inputColProjection=this.getInputColumnProjection();
   String outputColProjection=this.getOutputColumnProjection();
-  System.out.println("inputQuery:" + inputQuery);
   String query=this.removeSampleClauseFromQuery(inputQuery);
-  System.out.println("query:" + query);
   if (query == null) {
     query="SELECT " + outputColProjection + " FROM "+ schema+ "."+ entity;
   }
  else {
-    if (!Strings.isNullOrEmpty(inputColProjection)) {
+    if (StringUtils.isNotBlank(inputColProjection)) {
       query=query.replace(inputColProjection,outputColProjection);
     }
   }

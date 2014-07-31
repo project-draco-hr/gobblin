@@ -1,5 +1,5 @@
 {
   this.log.debug("Getting hour predicate for Mysql");
-  String Formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,MYSQL_HOUR_FORMAT);
-  return this.getWatermarkColumnName(column) + " " + operator+ " '"+ Formattedvalue+ "'";
+  String formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,MYSQL_HOUR_FORMAT);
+  return this.getWatermarkColumnName(column) + " " + operator+ " '"+ formattedvalue+ "'";
 }

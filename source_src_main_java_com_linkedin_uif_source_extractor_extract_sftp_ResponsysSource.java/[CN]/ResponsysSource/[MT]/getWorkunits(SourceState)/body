@@ -1,7 +1,7 @@
 {
   initLogger(state);
   this.sourceState=state;
-  this.session=SftpExecutor.connect(state.getProp(ConfigurationKeys.SOURCE_CONN_PRIVATE_KEY),state.getProp(ConfigurationKeys.SOURCE_CONN_KNOWN_HOSTS),state.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME),state.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME),state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,-1));
+  this.session=SftpExecutor.connect(state.getProp(ConfigurationKeys.SOURCE_CONN_PRIVATE_KEY),state.getProp(ConfigurationKeys.SOURCE_CONN_KNOWN_HOSTS),state.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME),state.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME),state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,-1),state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_PORT,22));
   try {
     log.info("Establishing a SFTP channel");
     this.channelSftp=(ChannelSftp)this.session.openChannel("sftp");

@@ -1,3 +1,0 @@
-{
-  return metricRegistry.register(metricName(metricPrefix,id,name),gauge);
-}

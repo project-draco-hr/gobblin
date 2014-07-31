@@ -1,5 +1,5 @@
 {
   this.log.debug("Getting date predicate for Mysql");
-  String Formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,MYSQL_DATE_FORMAT);
-  return this.getWatermarkColumnName(column) + " " + operator+ " '"+ Formattedvalue+ "'";
+  String formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,MYSQL_DATE_FORMAT);
+  return this.getWatermarkColumnName(column) + " " + operator+ " '"+ formattedvalue+ "'";
 }

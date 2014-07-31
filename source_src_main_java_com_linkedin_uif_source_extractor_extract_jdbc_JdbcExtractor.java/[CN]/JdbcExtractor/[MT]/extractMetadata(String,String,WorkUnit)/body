@@ -14,7 +14,7 @@
     this.buildMetadataColumnMap(array);
     this.parseInputQuery(inputQuery);
     List<String> sourceColumns=this.getMetadataColumnList();
-    for (    ColumnMap colMap : this.columnAliasMap) {
+    for (    ColumnAttributes colMap : this.columnAliasMap) {
       String alias=colMap.getAliasName();
       String sourceColumnName=colMap.getColumnName();
       if (this.isMetadataColumn(sourceColumnName,sourceColumns)) {

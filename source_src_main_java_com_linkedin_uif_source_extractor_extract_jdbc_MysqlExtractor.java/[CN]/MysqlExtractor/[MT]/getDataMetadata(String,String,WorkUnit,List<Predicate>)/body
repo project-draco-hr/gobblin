@@ -4,7 +4,7 @@
   int fetchsize=Integer.MIN_VALUE;
   String watermarkFilter=this.concatPredicates(predicateList);
   String query=this.getExtractSql();
-  if (Strings.isNullOrEmpty(watermarkFilter)) {
+  if (StringUtils.isBlank(watermarkFilter)) {
     watermarkFilter="1=1";
   }
   query=query.replace(ConfigurationKeys.DEFAULT_SOURCE_QUERYBASED_WATERMARK_PREDICATE_SYMBOL,watermarkFilter);

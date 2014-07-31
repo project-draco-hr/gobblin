@@ -2,14 +2,14 @@
   Metrics metrics=Metrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
   if (Metrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
-    String taskRecordMetric=Metrics.metricName(TaskState.TASK_METRICS_PREFIX,task.getTaskId(),"records");
-    this.context.getCounter(TaskState.TASK_METRICS_PREFIX,taskRecordMetric).setValue(metrics.getCounter(taskRecordMetric).getCount());
-    String jobRecordMetric=Metrics.metricName(JobState.JOB_METRICS_PREFIX,task.getJobId(),"records");
-    this.context.getCounter(JobState.JOB_METRICS_PREFIX,jobRecordMetric).increment(metrics.getCounter(taskRecordMetric).getCount());
-    String taskByteMetric=Metrics.metricName(TaskState.TASK_METRICS_PREFIX,task.getTaskId(),"bytes");
-    this.context.getCounter(TaskState.TASK_METRICS_PREFIX,taskByteMetric).setValue(metrics.getCounter(taskByteMetric).getCount());
-    String jobByteMetric=Metrics.metricName(JobState.JOB_METRICS_PREFIX,task.getJobId(),"bytes");
-    this.context.getCounter(JobState.JOB_METRICS_PREFIX,jobByteMetric).increment(metrics.getCounter(taskByteMetric).getCount());
+    String taskRecordMetric=Metrics.metricName(Metrics.MetricGroup.TASK,task.getTaskId(),"records");
+    this.context.getCounter(Metrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(metrics.getCounter(taskRecordMetric).getCount());
+    String jobRecordMetric=Metrics.metricName(Metrics.MetricGroup.JOB,task.getJobId(),"records");
+    this.context.getCounter(Metrics.MetricGroup.JOB.name(),jobRecordMetric).increment(metrics.getCounter(taskRecordMetric).getCount());
+    String taskByteMetric=Metrics.metricName(Metrics.MetricGroup.TASK,task.getTaskId(),"bytes");
+    this.context.getCounter(Metrics.MetricGroup.TASK.name(),taskByteMetric).setValue(metrics.getCounter(taskByteMetric).getCount());
+    String jobByteMetric=Metrics.metricName(Metrics.MetricGroup.JOB,task.getJobId(),"bytes");
+    this.context.getCounter(Metrics.MetricGroup.JOB.name(),jobByteMetric).increment(metrics.getCounter(taskByteMetric).getCount());
     task.getTaskState().removeMetrics();
   }
 }

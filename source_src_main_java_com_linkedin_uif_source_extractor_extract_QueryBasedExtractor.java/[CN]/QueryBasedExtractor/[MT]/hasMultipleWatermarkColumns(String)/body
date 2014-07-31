@@ -1,5 +1,5 @@
 {
-  if (Strings.isNullOrEmpty(watermarkColumn)) {
+  if (StringUtils.isBlank(watermarkColumn)) {
     return false;
   }
   if (Arrays.asList(watermarkColumn.toLowerCase().split(",")).size() > 1) {

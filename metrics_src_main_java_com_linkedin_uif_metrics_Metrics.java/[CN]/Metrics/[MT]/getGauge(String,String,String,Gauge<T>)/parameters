@@ -1,4 +1,0 @@
-String metricPrefix
-String id
-String name
-Gauge<T> gauge

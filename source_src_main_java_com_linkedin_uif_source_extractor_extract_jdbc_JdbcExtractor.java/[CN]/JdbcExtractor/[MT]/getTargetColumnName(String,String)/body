@@ -6,7 +6,7 @@
     this.unknownColumnCounter++;
   }
  else {
-    targetColumnName=(!Strings.isNullOrEmpty(targetColumnName) ? targetColumnName : sourceColumnName);
+    targetColumnName=(StringUtils.isNotBlank(targetColumnName) ? targetColumnName : sourceColumnName);
   }
-  return Utils.escapeChars(targetColumnName,ConfigurationKeys.ESCAPE_CHARS_IN_COLUMN_NAME,"_");
+  return Utils.escapeSpecialCharacters(targetColumnName,ConfigurationKeys.ESCAPE_CHARS_IN_COLUMN_NAME,"_");
 }

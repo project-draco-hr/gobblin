@@ -3,7 +3,7 @@
   if (watermarkValue != DEFAULT_WATERMARK_VALUE) {
     condition=this.watermark.getWatermarkCondition(extractor,watermarkValue,operator);
   }
-  if (Strings.isNullOrEmpty(watermarkColumn) || condition.equals("")) {
+  if (StringUtils.isBlank(watermarkColumn) || condition.equals("")) {
     return null;
   }
   return new Predicate(this.watermarkColumn,watermarkValue,condition,this.getWatermarkSourceFormat(extractor),type);

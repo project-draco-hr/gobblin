@@ -5,7 +5,7 @@
   this.addPredicates(watermark.getPredicate(this,hwmValue,"<=",PredicateType.HWM));
   if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_HOURLY_EXTRACT))) {
     String hourColumn=this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_HOUR_COLUMN);
-    if (!Strings.isNullOrEmpty(hourColumn)) {
+    if (StringUtils.isNotBlank(hourColumn)) {
       WatermarkPredicate hourlyWatermark=new WatermarkPredicate(hourColumn,WatermarkType.HOUR);
       this.addPredicates(hourlyWatermark.getPredicate(this,lwmValue,">=",PredicateType.LWM));
       this.addPredicates(hourlyWatermark.getPredicate(this,hwmValue,"<=",PredicateType.HWM));

@@ -1,6 +1,6 @@
 {
   List<String> projectedColumns=new ArrayList<String>();
-  if (!Strings.isNullOrEmpty(query)) {
+  if (StringUtils.isNotBlank(query)) {
     String queryLowerCase=query.toLowerCase();
     int startIndex=queryLowerCase.indexOf("select ") + 7;
     int endIndex=queryLowerCase.indexOf(" from ");
@@ -13,7 +13,7 @@
   if (this.isSelectAllColumns()) {
     List<String> columnList=this.getMetadataColumnList();
     for (    String columnName : columnList) {
-      ColumnMap col=new ColumnMap();
+      ColumnAttributes col=new ColumnAttributes();
       col.setColumnName(columnName);
       col.setAliasName(columnName);
       this.addToColumnAliasMap(col);
@@ -33,7 +33,7 @@
       if (sourceColumn.contains(".")) {
         sourceColumn=sourceColumn.substring(sourceColumn.indexOf(".") + 1);
       }
-      ColumnMap col=new ColumnMap();
+      ColumnAttributes col=new ColumnAttributes();
       col.setColumnName(sourceColumn);
       col.setAliasName(alias);
       this.addToColumnAliasMap(col);
