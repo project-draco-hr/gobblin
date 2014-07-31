@@ -1,0 +1,4 @@
+Collection<String> jobNames
+String name
+MetricNameSuffix suffix
+AggregationFunction aggFunction

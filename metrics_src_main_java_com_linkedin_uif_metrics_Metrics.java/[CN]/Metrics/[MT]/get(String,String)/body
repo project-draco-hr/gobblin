@@ -1,3 +1,0 @@
-{
-  return METRICS_MAP.putIfAbsent(jobId,new Metrics(jobName,jobId));
-}

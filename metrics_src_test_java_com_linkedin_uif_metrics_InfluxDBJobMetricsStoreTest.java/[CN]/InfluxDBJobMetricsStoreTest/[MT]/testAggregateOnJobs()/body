@@ -1,0 +1,6 @@
+{
+  Object value=this.jobMetricsStore.aggregateOnJobs(Lists.newArrayList(JOB_NAME_1,JOB_NAME_2),RECORD_COUNTER,MetricNameSuffix.NONE,AggregationFunction.SUM);
+  Assert.assertEquals(((Double)value).longValue(),3000l);
+  value=this.jobMetricsStore.aggregateOnJobs(Lists.newArrayList(JOB_NAME_1,JOB_NAME_2),BYTE_COUNTER,MetricNameSuffix.NONE,AggregationFunction.SUM);
+  Assert.assertEquals(((Double)value).longValue(),3000 * 100l);
+}

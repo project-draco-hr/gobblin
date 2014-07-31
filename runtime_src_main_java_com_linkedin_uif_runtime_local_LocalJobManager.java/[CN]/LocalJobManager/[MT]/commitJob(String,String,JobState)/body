@@ -22,7 +22,7 @@
     throw e;
   }
  finally {
-    if (Metrics.isEnabled(this.properties)) {
+    if (JobMetrics.isEnabled(this.properties)) {
       jobState.removeMetrics();
     }
     boolean runOnce=this.runOnceJobs.containsKey(jobName);

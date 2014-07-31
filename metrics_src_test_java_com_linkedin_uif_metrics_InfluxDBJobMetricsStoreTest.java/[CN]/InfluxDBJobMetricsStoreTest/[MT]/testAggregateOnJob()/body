@@ -1,0 +1,10 @@
+{
+  Object value=this.jobMetricsStore.aggregateOnJob(JOB_NAME_1,RECORD_COUNTER,MetricNameSuffix.NONE,AggregationFunction.SUM);
+  Assert.assertEquals(((Double)value).longValue(),1000l);
+  value=this.jobMetricsStore.aggregateOnJob(JOB_NAME_1,BYTE_COUNTER,MetricNameSuffix.NONE,AggregationFunction.SUM);
+  Assert.assertEquals(((Double)value).longValue(),1000 * 100l);
+  value=this.jobMetricsStore.aggregateOnJob(JOB_NAME_2,RECORD_COUNTER,MetricNameSuffix.NONE,AggregationFunction.SUM);
+  Assert.assertEquals(((Double)value).longValue(),2000l);
+  value=this.jobMetricsStore.aggregateOnJob(JOB_NAME_2,BYTE_COUNTER,MetricNameSuffix.NONE,AggregationFunction.SUM);
+  Assert.assertEquals(((Double)value).longValue(),2000 * 100l);
+}

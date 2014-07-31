@@ -3,7 +3,7 @@
   if (scheduledReporter != null) {
     scheduledReporter.cancel(true);
   }
-  if (Metrics.isEnabled(task.getTaskState().getWorkunit())) {
+  if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
   }
   WorkUnitState.WorkingState state=task.getTaskState().getWorkingState();

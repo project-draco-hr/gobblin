@@ -1,0 +1,31 @@
+{
+  List<Object> values=Lists.newArrayList();
+  if (metric instanceof Counter) {
+    values.add(((Counter)metric).getCount());
+  }
+ else   if (metric instanceof Meter) {
+    values.add(((Meter)metric).getMeanRate());
+  }
+ else   if (metric instanceof Gauge) {
+    values.add(((Gauge)metric).getValue());
+  }
+ else   if (metric instanceof Histogram) {
+    Snapshot snapshot=((Histogram)metric).getSnapshot();
+    values.add(snapshot.getMin());
+    values.add(snapshot.getMax());
+    values.add(snapshot.getMedian());
+    values.add(snapshot.getMean());
+    values.add(snapshot.getStdDev());
+  }
+ else   if (metric instanceof Timer) {
+    Timer timer=(Timer)metric;
+    values.add(timer.getMeanRate());
+    Snapshot snapshot=((Timer)metric).getSnapshot();
+    values.add(snapshot.getMin());
+    values.add(snapshot.getMax());
+    values.add(timer.getSnapshot().getMedian());
+    values.add(timer.getSnapshot().getMean());
+    values.add(timer.getSnapshot().getStdDev());
+  }
+  return values;
+}

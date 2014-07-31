@@ -1,8 +1,8 @@
 {
   this.context.progress();
-  if (Metrics.isEnabled(this.task.getTaskState().getWorkunit())) {
+  if (JobMetrics.isEnabled(this.task.getTaskState().getWorkunit())) {
     this.task.updateRecordMetrics();
-    String taskRecordMetric=Metrics.metricName(Metrics.MetricGroup.TASK,task.getTaskId(),"records");
-    this.context.getCounter(Metrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(Metrics.get(this.task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),this.task.getJobId()).getCounter(taskRecordMetric).getCount());
+    String taskRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"records");
+    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(JobMetrics.get(this.task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),this.task.getJobId()).getCounter(taskRecordMetric).getCount());
   }
 }
