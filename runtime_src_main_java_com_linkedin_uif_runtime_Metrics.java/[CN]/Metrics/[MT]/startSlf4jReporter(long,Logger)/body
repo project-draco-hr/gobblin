@@ -1,4 +1,0 @@
-{
-  Slf4jReporter reporter=Slf4jReporter.forRegistry(METRICS).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).outputTo(logger).build();
-  reporter.start(period,TimeUnit.MILLISECONDS);
-}

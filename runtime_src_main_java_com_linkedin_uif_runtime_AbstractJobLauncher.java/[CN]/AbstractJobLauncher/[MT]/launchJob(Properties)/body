@@ -76,6 +76,9 @@
     throw new JobException(errMsg,t);
   }
  finally {
+    if (Metrics.isEnabled(this.properties)) {
+      jobState.removeMetrics();
+    }
     try {
       source.shutdown(sourceState);
       persistJobState(jobState);

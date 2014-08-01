@@ -19,10 +19,16 @@
     UserInfo ui=new MyUserInfo();
     session.setUserInfo(ui);
     session.connect();
+    channelSftp=(ChannelSftp)session.openChannel("sftp");
+    channelSftp.connect();
+    log.info("Finished connecting to source");
   }
  catch (  JSchException e) {
     if (session != null) {
       session.disconnect();
+    }
+    if (channelSftp != null) {
+      channelSftp.disconnect();
     }
     log.error(e.getMessage(),e);
     throw new FileBasedHelperException("Cannot connect to SFTP source",e);

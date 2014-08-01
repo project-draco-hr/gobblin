@@ -2,9 +2,7 @@
   this.context.progress();
   if (Metrics.isEnabled(this.task.getTaskState().getWorkunit())) {
     this.task.updateRecordMetrics();
-    String taskRecordMetric=Metrics.metricName(TaskState.TASK_METRICS_PREFIX,task.getTaskId(),"records");
-    this.context.getCounter("TASK",taskRecordMetric).setValue(Metrics.getCounter(taskRecordMetric).getCount());
-    String jobRecordMetric=Metrics.metricName(JobState.JOB_METRICS_PREFIX,task.getJobId(),"records");
-    this.context.getCounter("JOB",jobRecordMetric).increment(Metrics.getCounter(taskRecordMetric).getCount());
+    String taskRecordMetric=Metrics.metricName(Metrics.MetricGroup.TASK,task.getTaskId(),"records");
+    this.context.getCounter(Metrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(Metrics.get(this.task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),this.task.getJobId()).getCounter(taskRecordMetric).getCount());
   }
 }

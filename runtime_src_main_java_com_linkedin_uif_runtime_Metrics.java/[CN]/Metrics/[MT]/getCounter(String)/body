@@ -1,3 +1,0 @@
-{
-  return METRICS.counter(name);
-}

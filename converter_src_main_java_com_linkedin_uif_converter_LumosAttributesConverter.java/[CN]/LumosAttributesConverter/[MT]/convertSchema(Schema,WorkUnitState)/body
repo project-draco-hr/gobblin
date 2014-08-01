@@ -1,6 +1,6 @@
 {
   SchemaAttributes att=new SchemaAttributes(inputSchema);
-  Extract extract=workUnit.getWorkunit().getExtract();
+  Extract extract=workUnit.getExtract();
   att.setTableType(TableType.valueOf(extract.getType().toString()));
   att.setDropDate(extract.getExtractId());
   if (extract.getIsFull()) {

@@ -1,3 +1,8 @@
 {
-  this.sftp.disconnect();
+  if (session != null) {
+    session.disconnect();
+  }
+  if (channelSftp != null) {
+    channelSftp.disconnect();
+  }
 }

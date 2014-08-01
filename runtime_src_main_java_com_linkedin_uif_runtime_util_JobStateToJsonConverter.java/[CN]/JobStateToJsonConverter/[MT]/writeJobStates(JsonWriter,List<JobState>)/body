@@ -1,0 +1,7 @@
+{
+  jsonWriter.beginArray();
+  for (  JobState jobState : jobStates) {
+    writeJobState(jsonWriter,jobState);
+  }
+  jsonWriter.endArray();
+}

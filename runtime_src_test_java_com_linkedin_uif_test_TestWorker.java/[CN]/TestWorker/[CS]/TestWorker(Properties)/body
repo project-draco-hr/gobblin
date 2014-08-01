@@ -1,5 +1,4 @@
 {
-  this.properties=properties;
   TaskExecutor taskExecutor=new TaskExecutor(properties);
   TaskStateTracker taskStateTracker=new LocalTaskStateTracker(properties,taskExecutor);
   WorkUnitManager workUnitManager=new WorkUnitManager(taskExecutor,taskStateTracker);

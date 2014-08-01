@@ -3,4 +3,7 @@
   if (this.executor.isShutdown() || this.executor.isTerminated()) {
     throw new IllegalStateException();
   }
+  if (this.retryExecutor.isShutdown() || this.retryExecutor.isTerminated()) {
+    throw new IllegalStateException();
+  }
 }

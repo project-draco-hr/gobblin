@@ -8,7 +8,9 @@
  * Called when a new job configuration file is dropped in.
  */
     @Override public void onFileCreate(    File file){
-      if (!file.getName().endsWith(JOB_CONFIG_FILE_EXTENSION)) {
+      int pos=file.getName().lastIndexOf(".");
+      String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
+      if (!jobConfigFileExtensions.contains(fileExtension)) {
         return;
       }
       LOG.info("Detected new job configuration file " + file.getAbsolutePath());
@@ -30,7 +32,9 @@
  * Called when a job configuration file is changed.
  */
     @Override public void onFileChange(    File file){
-      if (!file.getName().endsWith(JOB_CONFIG_FILE_EXTENSION)) {
+      int pos=file.getName().lastIndexOf(".");
+      String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
+      if (!jobConfigFileExtensions.contains(fileExtension)) {
         return;
       }
       LOG.info("Detected change to job configuration file " + file.getAbsolutePath());

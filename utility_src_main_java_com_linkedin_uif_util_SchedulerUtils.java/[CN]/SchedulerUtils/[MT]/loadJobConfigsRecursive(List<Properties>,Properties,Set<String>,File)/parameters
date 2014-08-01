@@ -1,0 +1,4 @@
+List<Properties> jobConfigs
+Properties rootProps
+Set<String> jobConfigFileExtensions
+File jobConfigDir

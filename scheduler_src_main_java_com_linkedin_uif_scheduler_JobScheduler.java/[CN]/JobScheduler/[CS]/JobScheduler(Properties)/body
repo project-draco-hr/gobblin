@@ -1,4 +1,5 @@
 {
   this.properties=properties;
   this.scheduler=new StdSchedulerFactory().getScheduler();
+  this.jobConfigFileExtensions=Sets.newHashSet(Splitter.on(",").omitEmptyStrings().split(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_EXTENSIONS_KEY,ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_EXTENSIONS)));
 }
