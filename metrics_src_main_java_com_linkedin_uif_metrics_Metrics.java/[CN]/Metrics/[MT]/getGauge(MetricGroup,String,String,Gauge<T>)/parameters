@@ -1,0 +1,4 @@
+MetricGroup group
+String id
+String name
+Gauge<T> gauge

@@ -1,0 +1,5 @@
+{
+  this.params.addAll(params);
+  this.cmd=(JdbcCommandType)cmd;
+  return this;
+}

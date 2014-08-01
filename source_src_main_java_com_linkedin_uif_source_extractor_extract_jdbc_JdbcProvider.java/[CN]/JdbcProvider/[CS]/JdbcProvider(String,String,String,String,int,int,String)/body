@@ -1,0 +1,3 @@
+{
+  this.connect(driver,connectionUrl,user,password,numconn,timeout,type);
+}

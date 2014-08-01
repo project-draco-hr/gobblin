@@ -1,3 +1,0 @@
-{
-  return metricRegistry.meter(metricName(metricPrefix,id,name));
-}

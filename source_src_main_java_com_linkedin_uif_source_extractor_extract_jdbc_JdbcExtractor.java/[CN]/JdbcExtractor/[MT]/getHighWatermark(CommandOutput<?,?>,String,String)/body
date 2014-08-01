@@ -1,0 +1,43 @@
+{
+  this.log.debug("Extract high watermark from resultset");
+  ResultSet resultset=null;
+  Iterator<ResultSet> itr=(Iterator<ResultSet>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    resultset=itr.next();
+  }
+ else {
+    log.error("Failed to get high watermark from Mysql - Resultset has no records");
+  }
+  Long HighWatermark;
+  try {
+    String watermark;
+    if (resultset.next()) {
+      watermark=resultset.getString(1);
+    }
+ else {
+      watermark=null;
+    }
+    if (watermark == null) {
+      return ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+    }
+    if (watermarkColumnFormat != null) {
+      SimpleDateFormat inFormat=new SimpleDateFormat(watermarkColumnFormat);
+      Date date=null;
+      try {
+        date=inFormat.parse(watermark);
+      }
+ catch (      ParseException e) {
+        log.error("ParseException: " + e.getMessage(),e);
+      }
+      SimpleDateFormat outFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+      HighWatermark=Long.parseLong(outFormat.format(date));
+    }
+ else {
+      HighWatermark=Long.parseLong(watermark);
+    }
+  }
+ catch (  Exception e) {
+    throw new HighWatermarkException("Failed to get high watermark from Mysql; error - " + e.getMessage(),e);
+  }
+  return HighWatermark;
+}

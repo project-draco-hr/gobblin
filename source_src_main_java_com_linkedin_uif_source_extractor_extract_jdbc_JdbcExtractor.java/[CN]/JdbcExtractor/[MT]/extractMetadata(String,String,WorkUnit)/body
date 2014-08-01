@@ -1,0 +1,48 @@
+{
+  this.log.info("Extract metadata using JDBC");
+  String inputQuery=workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_QUERY);
+  String watermarkColumn=workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+  JsonObject defaultWatermark=this.getDefaultWatermark();
+  String defaultWatermarkColumnName=defaultWatermark.get("columnName").getAsString();
+  this.setSampleRecordCount(this.exractSampleRecordCountFromQuery(inputQuery));
+  JsonArray targetSchema=new JsonArray();
+  List<String> headerColumns=new ArrayList<String>();
+  try {
+    List<Command> cmds=this.getSchemaMetadata(schema,entity);
+    CommandOutput<?,?> response=this.executePreparedSql(cmds);
+    JsonArray array=this.getSchema(response);
+    this.buildMetadataColumnMap(array);
+    this.parseInputQuery(inputQuery);
+    List<String> sourceColumns=this.getMetadataColumnList();
+    for (    ColumnAttributes colMap : this.columnAliasMap) {
+      String alias=colMap.getAliasName();
+      String sourceColumnName=colMap.getColumnName();
+      if (this.isMetadataColumn(sourceColumnName,sourceColumns)) {
+        String targetColumnName=this.getTargetColumnName(sourceColumnName,alias);
+        Schema obj=this.getUpdatedSchemaObject(sourceColumnName,targetColumnName);
+        String jsonStr=gson.toJson(obj);
+        JsonObject jsonObject=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+        targetSchema.add(jsonObject);
+        headerColumns.add(targetColumnName);
+        this.columnList.add(sourceColumnName);
+      }
+    }
+    if (this.hasMultipleWatermarkColumns(watermarkColumn)) {
+      this.columnList.add(defaultWatermarkColumnName);
+      headerColumns.add(defaultWatermarkColumnName);
+      targetSchema.add(defaultWatermark);
+    }
+    String outputColProjection=Joiner.on(",").useForNull("null").join(this.columnList);
+    outputColProjection=outputColProjection.replace(defaultWatermarkColumnName,getWatermarkColumnName(watermarkColumn) + " AS " + defaultWatermarkColumnName);
+    this.setOutputColumnProjection(outputColProjection);
+    String extractQuery=this.getExtractQuery(schema,entity,inputQuery);
+    this.setHeaderRecord(headerColumns);
+    this.setOutputSchema(targetSchema);
+    this.setExtractSql(extractQuery);
+    this.log.info("Schema:" + targetSchema);
+    this.log.info("Extract query: " + this.getExtractSql());
+  }
+ catch (  Exception e) {
+    throw new SchemaException("Failed to get metadata using JDBC; error - " + e.getMessage(),e);
+  }
+}

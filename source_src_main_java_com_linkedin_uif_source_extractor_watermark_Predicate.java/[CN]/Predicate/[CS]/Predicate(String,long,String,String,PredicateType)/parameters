@@ -1,0 +1,5 @@
+String columnName
+long value
+String condition
+String format
+PredicateType type

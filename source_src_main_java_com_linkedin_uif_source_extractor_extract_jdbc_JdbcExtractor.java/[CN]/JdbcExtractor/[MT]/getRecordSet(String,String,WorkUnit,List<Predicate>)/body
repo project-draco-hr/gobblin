@@ -1,0 +1,17 @@
+{
+  Iterator<JsonElement> rs=null;
+  List<Command> cmds;
+  try {
+    if (isFirstPull()) {
+      this.log.info("Get data recordset using JDBC");
+      cmds=this.getDataMetadata(schema,entity,workUnit,predicateList);
+      this.dataResponse=this.executePreparedSql(cmds);
+      this.setFirstPull(false);
+    }
+    rs=this.getData(this.dataResponse);
+    return rs;
+  }
+ catch (  Exception e) {
+    throw new DataRecordException("Failed to get record set using JDBC; error - " + e.getMessage(),e);
+  }
+}
