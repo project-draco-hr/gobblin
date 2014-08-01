@@ -1,0 +1,25 @@
+{
+  String schema="[{\"columnName\":\"id\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"long\"}},{\"columnName\":\"linkedin_uid\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"string\"}},{\"columnName\":\"snippet\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"string\"}},{\"columnName\":\"published_timestamp\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"long\"}},{\"columnName\":\"image\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"string\"}},{\"columnName\":\"title\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"string\"}},{\"columnName\":\"relevance_score\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"float\"}},{\"columnName\":\"publisher\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"string\"}},{\"columnName\":\"url\",\"comment\":\"\",\"isNullable\":\"true\",\"dataType\":{\"type\":\"string\"}}]";
+  CsvToJsonConverter converter=new CsvToJsonConverter();
+  WorkUnitState workUnit=new WorkUnitState();
+  workUnit.getWorkunit().getExtract().setProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY,"helloworld");
+  workUnit.getWorkunit().getExtract().setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,"helloworld");
+  workUnit.setProp(ConfigurationKeys.CONVERTER_CSV_TO_JSON_DELIMITER,"\t");
+  try {
+    JsonArray arr=converter.convertSchema(schema,null);
+    JsonIntermediateToAvroConverter jsonConvert=new JsonIntermediateToAvroConverter();
+    Schema schemaAvro=jsonConvert.convertSchema(arr,workUnit);
+    BufferedReader br=null;
+    String sCurrentLine;
+    br=new BufferedReader(new FileReader("test.1406095244"));
+    while ((sCurrentLine=br.readLine()) != null) {
+      JsonObject obj=converter.convertRecord(arr,sCurrentLine,workUnit);
+      System.out.println(obj);
+      GenericRecord record=jsonConvert.convertRecord(schemaAvro,obj,workUnit);
+      System.out.println(record);
+    }
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+}

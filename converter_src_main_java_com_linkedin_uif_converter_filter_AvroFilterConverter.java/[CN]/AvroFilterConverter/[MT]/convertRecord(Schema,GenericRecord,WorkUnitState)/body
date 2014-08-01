@@ -1,0 +1,10 @@
+{
+  String[] fieldPath=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD).split("\\.");
+  HashSet<Object> filterIds=getFilterIds();
+  if (filterIds.contains(extractField(inputRecord,fieldPath,0))) {
+    return inputRecord;
+  }
+ else {
+    return null;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  if ((field + 1) == fieldPath.length) {
+    Object result=(Object)((Record)data).get(fieldPath[field]);
+    if (result == null) {
+      return null;
+    }
+ else     return result;
+  }
+ else {
+    return extractField(((Record)data).get(fieldPath[field]),fieldPath,++field);
+  }
+}
