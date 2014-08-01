@@ -1,0 +1,24 @@
+{
+  boolean emailNotificationEnabled=Boolean.valueOf(jobState.getProp(ConfigurationKeys.EMAIL_NOTIFICATION_ENABLED_KEY,"true"));
+  if (!emailNotificationEnabled) {
+    return;
+  }
+  try {
+    StringWriter stringWriter=new StringWriter();
+    JsonWriter jsonWriter=new JsonWriter(stringWriter);
+    jsonWriter.setIndent("\t");
+    jobState.toJson(jsonWriter);
+    if (jobState.getState() == JobState.RunningState.FAILED) {
+      EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),stringWriter.toString(),jobState);
+    }
+ else {
+      EmailUtils.sendJobCompletionEmail(jobState.getJobName(),stringWriter.toString(),jobState);
+    }
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to convert job state to json document",ioe);
+  }
+catch (  EmailException ee) {
+    LOGGER.error("Failed to send job completion notification email",ee);
+  }
+}

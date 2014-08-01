@@ -1,0 +1,3 @@
+{
+  sendEmail(jobState,String.format("Gobblin notification: most recent run of job %s has completed",jobName),message);
+}
