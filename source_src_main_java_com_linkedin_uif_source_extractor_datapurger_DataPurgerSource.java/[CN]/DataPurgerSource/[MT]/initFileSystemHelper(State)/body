@@ -1,10 +1,4 @@
 {
-  FileBasedHelper fsHelper=new HadoopFsHelper(state);
-  try {
-    fsHelper.connect();
-  }
- catch (  FileBasedHelperException e) {
-    Throwables.propagate(e);
-  }
-  return fsHelper;
+  this.fsHelper=new HadoopFsHelper(state);
+  this.fsHelper.connect();
 }

@@ -1,6 +1,11 @@
 {
   initLogger(state);
-  this.fsHelper=initFileSystemHelper(state);
+  try {
+    initFileSystemHelper(state);
+  }
+ catch (  FileBasedHelperException e) {
+    Throwables.propagate(e);
+  }
   log.info("Getting work units");
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
   String entityName=state.getProp(ConfigurationKeys.SOURCE_ENTITY);
