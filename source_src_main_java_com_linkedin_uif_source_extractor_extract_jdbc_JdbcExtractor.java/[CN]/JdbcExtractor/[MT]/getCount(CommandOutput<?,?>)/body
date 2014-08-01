@@ -1,0 +1,21 @@
+{
+  this.log.debug("Extract source record count from resultset");
+  ResultSet resultset=null;
+  Iterator<ResultSet> itr=(Iterator<ResultSet>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    resultset=itr.next();
+  }
+ else {
+    log.error("Failed to get source record count from Mysql - Resultset has no records");
+  }
+  long count=0;
+  try {
+    if (resultset.next()) {
+      count=resultset.getLong(1);
+    }
+  }
+ catch (  Exception e) {
+    throw new RecordCountException("Failed to get source record count from MySql; error - " + e.getMessage(),e);
+  }
+  return count;
+}

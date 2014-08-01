@@ -12,7 +12,7 @@
     if (iterator.hasNext()) {
       nextElement=iterator.next();
       if (!iterator.hasNext()) {
-        this.log.info("Getting next pull");
+        this.log.debug("Getting next pull");
         iterator=this.getIterator();
         if (iterator == null) {
           this.setFetchStatus(false);

@@ -2,7 +2,7 @@
   if (columnName != null) {
     columnName=columnName.toLowerCase();
   }
-  if (!Strings.isNullOrEmpty(primarykeyColumn)) {
+  if (StringUtils.isNotBlank(primarykeyColumn)) {
     List<String> primarykeyColumnList=Arrays.asList(primarykeyColumn.toLowerCase().split(","));
     return primarykeyColumnList.indexOf(columnName) + 1;
   }

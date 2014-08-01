@@ -1,0 +1,31 @@
+{
+  Schema obj=this.getMetadataColumnMap().get(sourceColumnName.toLowerCase());
+  if (obj == null) {
+    obj=getCustomColumnSchema(targetColumnName);
+  }
+ else {
+    String watermarkColumn=workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+    String primarykeyColumn=workUnit.getProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY);
+    boolean isMultiColumnWatermark=this.hasMultipleWatermarkColumns(watermarkColumn);
+    obj.setColumnName(targetColumnName);
+    boolean isWatermarkColumn=this.isWatermarkColumn(watermarkColumn,sourceColumnName);
+    if (isWatermarkColumn) {
+      this.updateDeltaFieldConfig(sourceColumnName,targetColumnName);
+    }
+    if (!isMultiColumnWatermark) {
+      obj.setWaterMark(isWatermarkColumn);
+    }
+    if ((isWatermarkColumn && !isMultiColumnWatermark) || this.getPrimarykeyIndex(primarykeyColumn,sourceColumnName) > 0) {
+      obj.setNullable(false);
+    }
+ else {
+      obj.setNullable(true);
+    }
+    int primarykeyIndex=this.getPrimarykeyIndex(primarykeyColumn,sourceColumnName);
+    if (primarykeyIndex > 0 && (!sourceColumnName.equalsIgnoreCase(targetColumnName))) {
+      this.updatePrimaryKeyConfig(sourceColumnName,targetColumnName);
+    }
+    obj.setPrimaryKey(primarykeyIndex);
+  }
+  return obj;
+}

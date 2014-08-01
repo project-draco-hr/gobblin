@@ -1,0 +1,13 @@
+{
+  if (!this.fs.getFileStatus(p).isDir()) {
+    results.add(p.toString());
+  }
+  for (  FileStatus status : this.fs.listStatus(p)) {
+    if (status.isDir()) {
+      lsr(status.getPath(),results);
+    }
+ else {
+      results.add(status.getPath().toString());
+    }
+  }
+}

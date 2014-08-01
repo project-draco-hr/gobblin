@@ -1,4 +1,8 @@
 {
+  boolean isColumnCheckEnabled=Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_METADATA_COLUMN_CHECK_ENABLED,ConfigurationKeys.DEFAULT_SOURCE_QUERYBASED_IS_METADATA_COLUMN_CHECK_ENABLED));
+  if (!isColumnCheckEnabled) {
+    return true;
+  }
   columnName=columnName.trim().toLowerCase();
   if (columnList.contains(columnName)) {
     return true;

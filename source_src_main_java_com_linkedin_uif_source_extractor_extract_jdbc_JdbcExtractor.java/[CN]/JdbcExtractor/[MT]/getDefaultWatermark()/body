@@ -1,0 +1,35 @@
+{
+  Schema schema=new Schema();
+  String dataType;
+  String columnName="DefaultWatermarkColumn";
+  schema.setColumnName(columnName);
+  WatermarkType wmType=WatermarkType.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE,"TIMESTAMP").toUpperCase());
+switch (wmType) {
+case TIMESTAMP:
+    dataType="timestamp";
+  break;
+case DATE:
+dataType="date";
+break;
+default :
+dataType="int";
+break;
+}
+String elementDataType="string";
+List<String> mapSymbols=null;
+JsonObject newDataType=this.convertDataType(columnName,dataType,elementDataType,mapSymbols);
+schema.setDataType(newDataType);
+schema.setWaterMark(true);
+schema.setPrimaryKey(0);
+schema.setLength(0);
+schema.setPrecision(0);
+schema.setScale(0);
+schema.setNullable(false);
+schema.setFormat(null);
+schema.setComment("Default watermark column");
+schema.setDefaultValue(null);
+schema.setUnique(false);
+String jsonStr=gson.toJson(schema);
+JsonObject obj=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+return obj;
+}

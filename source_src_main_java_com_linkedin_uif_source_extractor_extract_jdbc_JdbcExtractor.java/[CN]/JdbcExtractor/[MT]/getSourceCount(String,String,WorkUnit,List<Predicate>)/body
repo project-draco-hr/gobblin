@@ -1,0 +1,14 @@
+{
+  this.log.info("Get source record count using JDBC");
+  long count=0;
+  try {
+    List<Command> cmds=this.getCountMetadata(schema,entity,workUnit,predicateList);
+    CommandOutput<?,?> response=this.executeSql(cmds);
+    count=this.getCount(response);
+    this.log.info("Source record count:" + count);
+    return count;
+  }
+ catch (  Exception e) {
+    throw new RecordCountException("Failed to get source record count using JDBC; error - " + e.getMessage(),e);
+  }
+}

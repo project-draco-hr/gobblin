@@ -1,0 +1,7 @@
+{
+  String columnProjection=this.getInputColumnProjection();
+  if (columnProjection == null || columnProjection.trim().equals("*")) {
+    return true;
+  }
+  return false;
+}
