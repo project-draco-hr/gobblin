@@ -1,8 +1,0 @@
-{
-  try {
-    this.fs.close();
-  }
- catch (  IOException e) {
-    log.error("Unable to close filesystem: " + e.getMessage(),e);
-  }
-}

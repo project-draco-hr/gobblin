@@ -1,4 +1,0 @@
-{
-  log.info("Shutting down the sftp connection");
-  sftp.disconnect();
-}

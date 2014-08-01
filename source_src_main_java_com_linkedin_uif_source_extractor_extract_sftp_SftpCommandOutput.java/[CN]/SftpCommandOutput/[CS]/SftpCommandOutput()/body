@@ -1,3 +1,0 @@
-{
-  results=new HashMap<SftpCommand,List<String>>();
-}

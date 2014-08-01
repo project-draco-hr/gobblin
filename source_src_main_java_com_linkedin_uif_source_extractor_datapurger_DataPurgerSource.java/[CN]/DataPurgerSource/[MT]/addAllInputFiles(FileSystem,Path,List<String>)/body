@@ -1,0 +1,10 @@
+{
+  for (  FileStatus status : fs.listStatus(path)) {
+    if (status.isDir()) {
+      addAllInputFiles(fs,status.getPath(),filesToPull);
+    }
+ else {
+      filesToPull.add(status.getPath().toString());
+    }
+  }
+}

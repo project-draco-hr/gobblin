@@ -1,7 +1,0 @@
-String privateKey
-String knownHosts
-String userName
-String hostName
-int port
-String proxyHost
-int proxyPort

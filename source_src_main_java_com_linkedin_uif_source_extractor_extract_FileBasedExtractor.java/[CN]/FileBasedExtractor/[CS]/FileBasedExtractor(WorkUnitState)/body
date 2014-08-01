@@ -1,5 +1,0 @@
-{
-  this.workUnitState=workUnitState;
-  this.workUnit=workUnitState.getWorkunit();
-  this.filesToPull=new ArrayList<String>(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,""));
-}

@@ -1,3 +1,0 @@
-{
-  this.params=new ArrayList<String>();
-}

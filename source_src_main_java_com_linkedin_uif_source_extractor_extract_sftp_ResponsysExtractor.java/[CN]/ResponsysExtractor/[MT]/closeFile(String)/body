@@ -1,3 +1,0 @@
-{
-  fileHandles.get(file).close();
-}

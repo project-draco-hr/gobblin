@@ -1,0 +1,8 @@
+{
+  try {
+    return this.sftp.ls(path);
+  }
+ catch (  SftpException e) {
+    throw new FileBasedHelperException("Cannot execute ls command on sftp connection",e);
+  }
+}

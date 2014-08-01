@@ -1,0 +1,9 @@
+{
+  SftpGetMonitor monitor=new SftpGetMonitor();
+  try {
+    return this.sftp.get(file,monitor);
+  }
+ catch (  SftpException e) {
+    throw new FileBasedHelperException("Cannot download file " + file + " due to "+ e.getMessage(),e);
+  }
+}

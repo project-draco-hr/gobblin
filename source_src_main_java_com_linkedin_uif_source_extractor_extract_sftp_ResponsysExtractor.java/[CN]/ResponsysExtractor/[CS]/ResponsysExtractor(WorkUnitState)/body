@@ -1,4 +1,0 @@
-{
-  super(workUnitState);
-  this.fileHandles=new HashMap<String,LineIterator>();
-}

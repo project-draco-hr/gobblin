@@ -1,5 +1,3 @@
 {
-  super(workUnitState);
-  this.sftp=createSftpConnection();
-  this.executor=new SftpHelper();
+  super(workUnitState,new SftpFsHelper(workUnitState));
 }

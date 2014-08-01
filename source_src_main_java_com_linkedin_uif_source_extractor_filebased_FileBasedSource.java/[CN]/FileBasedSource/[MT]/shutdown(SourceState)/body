@@ -1,0 +1,11 @@
+{
+  if (this.fsHelper != null) {
+    log.info("Shutting down the FileSystemHelper connection");
+    try {
+      this.fsHelper.close();
+    }
+ catch (    FileBasedHelperException e) {
+      log.error("Unable to shutdown FileSystemHelper",e);
+    }
+  }
+}

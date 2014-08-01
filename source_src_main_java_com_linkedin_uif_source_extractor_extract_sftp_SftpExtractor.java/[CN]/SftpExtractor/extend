@@ -1,1 +1,1 @@
-FileBasedExtractor<K,V,SftpCommand,List<String>>
+FileBasedExtractor<S,D>

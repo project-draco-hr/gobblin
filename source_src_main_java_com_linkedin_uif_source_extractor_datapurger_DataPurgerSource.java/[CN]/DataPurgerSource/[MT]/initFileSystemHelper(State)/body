@@ -1,0 +1,10 @@
+{
+  FileBasedHelper fsHelper=new HadoopFsHelper(state);
+  try {
+    fsHelper.connect();
+  }
+ catch (  FileBasedHelperException e) {
+    e.printStackTrace();
+  }
+  return fsHelper;
+}

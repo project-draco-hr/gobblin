@@ -1,0 +1,8 @@
+{
+  try {
+    this.fileHandles.get(file).close();
+  }
+ catch (  IOException e) {
+    log.error("Could not successfully close file: " + file + " due to error: "+ e.getMessage(),e);
+  }
+}
