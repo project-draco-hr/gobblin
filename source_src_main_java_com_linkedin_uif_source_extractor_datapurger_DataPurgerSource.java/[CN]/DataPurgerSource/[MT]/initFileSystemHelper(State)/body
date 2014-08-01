@@ -4,7 +4,7 @@
     fsHelper.connect();
   }
  catch (  FileBasedHelperException e) {
-    e.printStackTrace();
+    Throwables.propagate(e);
   }
   return fsHelper;
 }
