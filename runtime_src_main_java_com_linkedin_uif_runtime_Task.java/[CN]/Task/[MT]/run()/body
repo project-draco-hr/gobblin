@@ -6,11 +6,12 @@
   try {
     this.extractor=new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG);
     Object sourceSchema=this.extractor.getSchema();
-    boolean doConversion=!this.taskContext.getConverters().isEmpty();
+    List<Converter> converterList=this.taskContext.getConverters();
+    boolean doConversion=!converterList.isEmpty();
     Converter converter=null;
     Object schemaForWriter=sourceSchema;
     if (doConversion) {
-      converter=new MultiConverter(this.taskContext.getConverters());
+      converter=new MultiConverter(converterList);
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
     rowChecker=buildRowLevelPolicyChecker(this.taskState);

@@ -1,4 +1,7 @@
 {
+  if (!this.workUnit.contains(ConfigurationKeys.CONVERTER_CLASSES_KEY) || Strings.isNullOrEmpty(this.workUnit.getProp(ConfigurationKeys.CONVERTER_CLASSES_KEY))) {
+    return null;
+  }
   final Converter converter=getConverterForWriter();
   return new DataConverter(){
     @Override public Object convert(    Object sourceRecord) throws DataConversionException {
