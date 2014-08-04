@@ -22,7 +22,7 @@
       jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       try {
         boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
-        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : null);
+        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
       }
  catch (      Throwable t) {
         LOG.error("Failed to schedule new job loaded from job configuration file " + file.getAbsolutePath(),t);
@@ -47,7 +47,7 @@
       try {
         unscheduleJob(jobName);
         boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
-        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : null);
+        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
       }
  catch (      Throwable t) {
         LOG.error("Failed to update existing job " + jobName,t);

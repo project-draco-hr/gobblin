@@ -14,7 +14,6 @@
   if (jobListener != null) {
     this.jobListenerMap.put(jobName,jobListener);
   }
-  boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
   JobDataMap jobDataMap=new JobDataMap();
   jobDataMap.put(JOB_MANAGER_KEY,this);
   jobDataMap.put(PROPERTIES_KEY,jobProps);
@@ -28,8 +27,4 @@
     throw new JobException("Failed to schedule job " + jobName,se);
   }
   this.scheduledJobs.put(jobName,job.getKey());
-  if (runOnce) {
-    this.runOnceJobs.put(jobName,job.getKey());
-    this.runOnceJobConfigFiles.put(jobName,jobProps.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY));
-  }
 }

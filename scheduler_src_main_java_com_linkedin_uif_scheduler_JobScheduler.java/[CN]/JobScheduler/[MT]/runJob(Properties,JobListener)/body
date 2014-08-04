@@ -6,7 +6,11 @@
   jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,JobLauncherUtils.newJobId(jobName));
   try {
     JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
-    jobLauncher.launchJob(jobProps);
+    jobLauncher.launchJob(jobProps,jobListener);
+    boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+    if (runOnce && this.scheduledJobs.containsKey(jobName)) {
+      this.scheduler.deleteJob(this.scheduledJobs.remove(jobName));
+    }
   }
  catch (  Throwable t) {
     String errMsg="Failed to launch and run job " + jobName;

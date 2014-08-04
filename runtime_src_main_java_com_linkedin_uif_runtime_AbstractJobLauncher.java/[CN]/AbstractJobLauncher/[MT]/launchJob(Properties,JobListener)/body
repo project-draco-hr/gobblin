@@ -88,5 +88,8 @@
       LOG.error("Failed to cleanup for job " + jobId,t);
     }
     unlockJob(jobName,jobLock);
+    if (jobListener != null) {
+      jobListener.jobCompleted(jobState);
+    }
   }
 }

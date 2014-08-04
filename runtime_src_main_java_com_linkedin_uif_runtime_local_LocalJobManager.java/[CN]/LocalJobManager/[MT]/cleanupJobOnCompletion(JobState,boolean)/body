@@ -7,11 +7,8 @@
   }
   this.jobStateMap.remove(jobId);
   try {
-    if (runOnce) {
-      this.scheduledJobs.remove(jobName);
-      if (this.runOnceJobs.containsKey(jobName)) {
-        this.scheduler.deleteJob(this.runOnceJobs.remove(jobName));
-      }
+    if (runOnce && this.scheduledJobs.containsKey(jobName)) {
+      this.scheduler.deleteJob(this.scheduledJobs.remove(jobName));
     }
  else {
       this.lastJobIdMap.put(jobName,jobId);
