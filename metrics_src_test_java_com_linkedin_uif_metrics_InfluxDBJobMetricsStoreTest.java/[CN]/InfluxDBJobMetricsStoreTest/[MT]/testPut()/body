@@ -1,0 +1,30 @@
+{
+  JobMetrics jobMetrics1=JobMetrics.get(JOB_NAME_1,JOB_ID_1);
+  Counter jobRecordCounter=jobMetrics1.getCounter(JobMetrics.MetricGroup.JOB,JOB_ID_1,RECORD_COUNTER);
+  jobRecordCounter.inc(1000);
+  Counter jobByteCounter=jobMetrics1.getCounter(JobMetrics.MetricGroup.JOB,JOB_ID_1,BYTE_COUNTER);
+  jobByteCounter.inc(1000 * 100);
+  Counter taskRecordCounter0=jobMetrics1.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_1_0,RECORD_COUNTER);
+  taskRecordCounter0.inc(400);
+  Counter taskByteCounter0=jobMetrics1.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_1_0,BYTE_COUNTER);
+  taskByteCounter0.inc(400 * 100);
+  Counter taskRecordCounter1=jobMetrics1.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_1_1,RECORD_COUNTER);
+  taskRecordCounter1.inc(600);
+  Counter taskByteCounter1=jobMetrics1.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_1_1,BYTE_COUNTER);
+  taskByteCounter1.inc(600 * 100);
+  this.jobMetricsStore.put(jobMetrics1);
+  JobMetrics jobMetrics2=JobMetrics.get(JOB_NAME_2,JOB_ID_2);
+  jobRecordCounter=jobMetrics2.getCounter(JobMetrics.MetricGroup.JOB,JOB_ID_2,RECORD_COUNTER);
+  jobRecordCounter.inc(2000);
+  jobByteCounter=jobMetrics2.getCounter(JobMetrics.MetricGroup.JOB,JOB_ID_2,BYTE_COUNTER);
+  jobByteCounter.inc(2000 * 100);
+  taskRecordCounter0=jobMetrics2.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_2_0,RECORD_COUNTER);
+  taskRecordCounter0.inc(1200);
+  taskByteCounter0=jobMetrics2.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_2_0,BYTE_COUNTER);
+  taskByteCounter0.inc(1200 * 100);
+  taskRecordCounter1=jobMetrics2.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_2_1,RECORD_COUNTER);
+  taskRecordCounter1.inc(800);
+  taskByteCounter1=jobMetrics2.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID_2_1,BYTE_COUNTER);
+  taskByteCounter1.inc(800 * 100);
+  this.jobMetricsStore.put(jobMetrics2);
+}

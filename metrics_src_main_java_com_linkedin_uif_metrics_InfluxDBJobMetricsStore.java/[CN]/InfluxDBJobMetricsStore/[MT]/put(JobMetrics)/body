@@ -1,0 +1,34 @@
+{
+  Map<String,Metric> metricMap=metrics.getMetrics();
+  if (metricMap.isEmpty()) {
+    return;
+  }
+  for (  Map.Entry<String,Metric> metric : metricMap.entrySet()) {
+    List<String> metricNames=Lists.newArrayList();
+    List<Object> metricValues=Lists.newArrayList();
+    List<String> nameComponents=Splitter.on(".").splitToList(metric.getKey());
+    if (nameComponents.size() < 3) {
+      LOG.warn("Ignoring metric " + metric.getKey());
+      continue;
+    }
+    JobMetrics.MetricGroup group=JobMetrics.MetricGroup.valueOf(nameComponents.get(0));
+    String dbName=JOB_METRICS_DB;
+    if (group == JobMetrics.MetricGroup.TASK) {
+      dbName=TASK_METRICS_DB;
+    }
+    metricNames.add(TIME_KEY);
+    metricValues.add(System.currentTimeMillis());
+    metricNames.add(JOB_ID_KEY);
+    metricValues.add(metrics.getJobId());
+    if (group == JobMetrics.MetricGroup.TASK) {
+      metricNames.add(TASK_ID_KEY);
+      metricValues.add(nameComponents.get(1));
+    }
+    metricNames.addAll(JobMetrics.getMetricNames(nameComponents.get(2),metric.getValue()));
+    metricValues.addAll(JobMetrics.getMetricValue(metric.getValue()));
+    if (metricNames.size() != metricValues.size()) {
+      throw new IOException("Number of metric names is not equal to number of " + "metric values for metric set of job " + metrics.getJobId());
+    }
+    this.influxDB.write(dbName,TimeUnit.MILLISECONDS,new Serie.Builder(metrics.getJobName()).columns(metricNames.toArray(new String[metricNames.size()])).values(metricValues.toArray(new Object[metricValues.size()])).build());
+  }
+}

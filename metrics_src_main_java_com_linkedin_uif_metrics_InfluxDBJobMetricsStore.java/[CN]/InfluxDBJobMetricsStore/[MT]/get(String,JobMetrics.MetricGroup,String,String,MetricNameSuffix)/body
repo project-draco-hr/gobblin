@@ -1,0 +1,24 @@
+{
+  Map<Long,Object> timestampedValues=Maps.newHashMap();
+  String idKey=JOB_ID_KEY;
+  if (metricGroup == JobMetrics.MetricGroup.TASK) {
+    idKey=TASK_ID_KEY;
+  }
+  String dbName=JOB_METRICS_DB;
+  if (metricGroup == JobMetrics.MetricGroup.TASK) {
+    dbName=TASK_METRICS_DB;
+  }
+  String metricName=name + suffix.getSuffix();
+  String query=String.format("select %s, %s from %s where %s='%s'",TIME_KEY,metricName,jobName,idKey,id);
+  List<Serie> series=this.influxDB.query(dbName,query,TimeUnit.MILLISECONDS);
+  if (series.isEmpty()) {
+    LOG.warn("No series returned for query " + query);
+    return timestampedValues;
+  }
+  for (  Map<String,Object> data : series.get(0).getRows()) {
+    if (data.containsKey(metricName) && data.get(metricName) != null) {
+      timestampedValues.put(((Double)data.get(TIME_KEY)).longValue(),data.get(metricName));
+    }
+  }
+  return timestampedValues;
+}

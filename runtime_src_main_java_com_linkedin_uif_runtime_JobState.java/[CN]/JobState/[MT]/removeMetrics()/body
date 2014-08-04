@@ -1,7 +1,7 @@
 {
-  Metrics metrics=Metrics.get(this.jobName,this.jobId);
-  metrics.removeMetric(Metrics.metricName(Metrics.MetricGroup.JOB,this.jobId,"records"));
-  metrics.removeMetric(Metrics.metricName(Metrics.MetricGroup.JOB,this.jobId,"recordsPerSec"));
-  metrics.removeMetric(Metrics.metricName(Metrics.MetricGroup.JOB,this.jobId,"bytes"));
-  metrics.removeMetric(Metrics.metricName(Metrics.MetricGroup.JOB,this.jobId,"bytesPerSec"));
+  JobMetrics metrics=JobMetrics.get(this.jobName,this.jobId);
+  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"records"));
+  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"recordsPerSec"));
+  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"bytes"));
+  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"bytesPerSec"));
 }

@@ -1,0 +1,14 @@
+{
+  String aggAlias=name + suffix.getSuffix() + aggFunction.name();
+  String query=String.format("select %s(%s) as %s from %s where %s='%s'",aggFunction.name(),name + suffix.getSuffix(),aggAlias,jobName,TASK_ID_KEY,taskId);
+  List<Serie> series=this.influxDB.query(TASK_METRICS_DB,query,TimeUnit.MILLISECONDS);
+  if (series.isEmpty()) {
+    LOG.warn("No series returned for query " + query);
+    return null;
+  }
+  if (series.get(0).getRows().isEmpty()) {
+    LOG.warn("No rows returned for query " + query);
+    return null;
+  }
+  return series.get(0).getRows().get(0).get(aggAlias);
+}

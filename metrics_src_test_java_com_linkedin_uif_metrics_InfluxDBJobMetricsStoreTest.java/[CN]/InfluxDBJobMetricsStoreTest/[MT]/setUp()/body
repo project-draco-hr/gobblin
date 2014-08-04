@@ -1,0 +1,11 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(ConfigurationKeys.FLUXDB_URL_KEY,FLUXDB_URL);
+  properties.setProperty(ConfigurationKeys.FLUXDB_USER_NAME_KEY,FLUXDB_USER_NAME);
+  properties.setProperty(ConfigurationKeys.FLUXDB_USER_PASSWORD_KEY,FLUXDB_USER_PASSWORD);
+  this.influxDB=InfluxDBFactory.connect(FLUXDB_URL,FLUXDB_USER_NAME,FLUXDB_USER_PASSWORD);
+  this.influxDB.createDatabase(JOB_METRICS_DB);
+  this.influxDB.createDatabase(TASK_METRICS_DB);
+  Assert.assertTrue(this.influxDB.ping().getStatus().equalsIgnoreCase("ok"));
+  this.jobMetricsStore=new InfluxDBJobMetricsStore(properties);
+}

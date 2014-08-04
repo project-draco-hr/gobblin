@@ -1,0 +1,14 @@
+{
+  Map<String,Object> values=Maps.newHashMap();
+  String aggAlias=name + suffix.getSuffix() + aggFunction.name();
+  String query=String.format("select %s, %s(%s) as %s from %s group by %s",JOB_ID_KEY,aggFunction.name(),name + suffix.getSuffix(),aggAlias,jobName,JOB_ID_KEY);
+  List<Serie> series=this.influxDB.query(JOB_METRICS_DB,query,TimeUnit.MILLISECONDS);
+  if (series.isEmpty()) {
+    LOG.warn("No series returned for query " + query);
+    return values;
+  }
+  for (  Map<String,Object> row : series.get(0).getRows()) {
+    values.put(row.get(JOB_ID_KEY).toString(),row.get(aggAlias));
+  }
+  return values;
+}

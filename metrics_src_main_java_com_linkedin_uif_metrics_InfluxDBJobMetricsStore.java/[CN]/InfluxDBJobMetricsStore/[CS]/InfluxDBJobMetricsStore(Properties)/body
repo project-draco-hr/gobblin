@@ -1,0 +1,5 @@
+{
+  String influxUrl=properties.getProperty(ConfigurationKeys.FLUXDB_URL_KEY);
+  LOG.info("Connecting to InfluxDB at " + influxUrl);
+  this.influxDB=InfluxDBFactory.connect(influxUrl,properties.getProperty(ConfigurationKeys.FLUXDB_USER_NAME_KEY,ConfigurationKeys.DEFAULT_FLUXDB_USER_NAME),properties.getProperty(ConfigurationKeys.FLUXDB_USER_PASSWORD_KEY,ConfigurationKeys.DEFAULT_FLUXDB_USER_PASSWORD));
+}

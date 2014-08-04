@@ -51,7 +51,7 @@
     job.waitForCompletion(true);
     jobState.setState(job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
     jobState.addTaskStates(collectOutput(jobOutputPath));
-    countersToMetrics(job.getCounters(),Metrics.get(jobName,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+    countersToMetrics(job.getCounters(),JobMetrics.get(jobName,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
   }
  catch (  Exception t) {
     jobState.setState(JobState.RunningState.FAILED);

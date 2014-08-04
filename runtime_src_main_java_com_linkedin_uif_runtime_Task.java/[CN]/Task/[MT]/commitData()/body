@@ -4,7 +4,7 @@
     try {
       this.writer.commit();
       this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-      if (Metrics.isEnabled(this.taskState.getWorkunit())) {
+      if (JobMetrics.isEnabled(this.taskState.getWorkunit())) {
         updateByteMetrics();
       }
     }

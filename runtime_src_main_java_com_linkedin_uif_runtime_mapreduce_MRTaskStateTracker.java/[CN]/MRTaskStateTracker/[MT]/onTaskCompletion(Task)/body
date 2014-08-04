@@ -1,15 +1,15 @@
 {
-  Metrics metrics=Metrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
-  if (Metrics.isEnabled(task.getTaskState().getWorkunit())) {
+  JobMetrics metrics=JobMetrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
+  if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
-    String taskRecordMetric=Metrics.metricName(Metrics.MetricGroup.TASK,task.getTaskId(),"records");
-    this.context.getCounter(Metrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(metrics.getCounter(taskRecordMetric).getCount());
-    String jobRecordMetric=Metrics.metricName(Metrics.MetricGroup.JOB,task.getJobId(),"records");
-    this.context.getCounter(Metrics.MetricGroup.JOB.name(),jobRecordMetric).increment(metrics.getCounter(taskRecordMetric).getCount());
-    String taskByteMetric=Metrics.metricName(Metrics.MetricGroup.TASK,task.getTaskId(),"bytes");
-    this.context.getCounter(Metrics.MetricGroup.TASK.name(),taskByteMetric).setValue(metrics.getCounter(taskByteMetric).getCount());
-    String jobByteMetric=Metrics.metricName(Metrics.MetricGroup.JOB,task.getJobId(),"bytes");
-    this.context.getCounter(Metrics.MetricGroup.JOB.name(),jobByteMetric).increment(metrics.getCounter(taskByteMetric).getCount());
+    String taskRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"records");
+    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(metrics.getCounter(taskRecordMetric).getCount());
+    String jobRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.JOB,task.getJobId(),"records");
+    this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),jobRecordMetric).increment(metrics.getCounter(taskRecordMetric).getCount());
+    String taskByteMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"bytes");
+    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskByteMetric).setValue(metrics.getCounter(taskByteMetric).getCount());
+    String jobByteMetric=JobMetrics.metricName(JobMetrics.MetricGroup.JOB,task.getJobId(),"bytes");
+    this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),jobByteMetric).increment(metrics.getCounter(taskByteMetric).getCount());
     task.getTaskState().removeMetrics();
   }
 }
