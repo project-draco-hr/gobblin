@@ -1,3 +1,0 @@
-{
-  throw new UnsupportedOperationException("Responsys data does not supporting getting counts");
-}

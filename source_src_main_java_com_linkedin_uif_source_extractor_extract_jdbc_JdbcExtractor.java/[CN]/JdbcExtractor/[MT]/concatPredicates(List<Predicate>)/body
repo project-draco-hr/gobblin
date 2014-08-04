@@ -1,0 +1,7 @@
+{
+  List<String> conditions=new ArrayList<String>();
+  for (  Predicate predicate : predicateList) {
+    conditions.add(predicate.getCondition());
+  }
+  return Joiner.on(" and ").skipNulls().join(conditions);
+}

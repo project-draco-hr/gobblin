@@ -1,5 +1,0 @@
-{
-  log.info("Closing extractor");
-  closeSource();
-  closeProtocol();
-}

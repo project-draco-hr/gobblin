@@ -1,8 +1,0 @@
-{
-  try {
-    return new ResponsysExtractor(state).build();
-  }
- catch (  ExtractPrepareException e) {
-    throw new IOException("Failed to prepare extractor: error -" + e.getMessage(),e);
-  }
-}

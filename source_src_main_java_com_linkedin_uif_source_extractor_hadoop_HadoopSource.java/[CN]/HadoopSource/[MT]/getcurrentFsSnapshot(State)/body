@@ -1,0 +1,12 @@
+{
+  List<String> results=new ArrayList<String>();
+  String path=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY);
+  try {
+    log.info("Running ls command with input " + path);
+    results=this.fsHelper.ls(path);
+  }
+ catch (  FileBasedHelperException e) {
+    log.error("Not able to run ls command due to " + e.getMessage() + " will not pull any files",e);
+  }
+  return results;
+}

@@ -1,0 +1,26 @@
+{
+  if (!readRecordStart) {
+    log.info("Starting to read records");
+    if (!filesToPull.isEmpty()) {
+      currentFile=filesToPull.remove(0);
+      currentFileItr=downloadFile(currentFile);
+    }
+ else {
+      log.info("Finished reading records");
+      return null;
+    }
+    readRecordStart=true;
+  }
+  while (!currentFileItr.hasNext() && !filesToPull.isEmpty()) {
+    closeFile(currentFile);
+    currentFile=filesToPull.remove(0);
+    currentFileItr=downloadFile(currentFile);
+  }
+  if (currentFileItr.hasNext()) {
+    return (D)currentFileItr.next();
+  }
+ else {
+    log.info("Finished reading records");
+    return null;
+  }
+}

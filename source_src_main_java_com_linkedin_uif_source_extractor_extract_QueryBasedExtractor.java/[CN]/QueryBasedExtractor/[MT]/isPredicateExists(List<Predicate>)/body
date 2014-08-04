@@ -1,0 +1,6 @@
+{
+  if (predicateList == null || predicateList.isEmpty()) {
+    return false;
+  }
+  return true;
+}

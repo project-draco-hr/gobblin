@@ -1,0 +1,10 @@
+{
+  if (array != null) {
+    for (    JsonElement columnElement : array) {
+      Schema schemaObj=gson.fromJson(columnElement,Schema.class);
+      String columnName=schemaObj.getColumnName();
+      this.metadataColumnMap.put(columnName.toLowerCase(),schemaObj);
+      this.metadataColumnList.add(columnName.toLowerCase());
+    }
+  }
+}

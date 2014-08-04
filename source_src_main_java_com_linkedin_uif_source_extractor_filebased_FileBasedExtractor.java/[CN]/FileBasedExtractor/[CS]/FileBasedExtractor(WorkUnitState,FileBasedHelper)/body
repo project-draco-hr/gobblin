@@ -1,0 +1,13 @@
+{
+  this.workUnitState=workUnitState;
+  this.workUnit=workUnitState.getWorkunit();
+  this.filesToPull=new ArrayList<String>(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,""));
+  this.fileHandles=new HashMap<String,Closeable>();
+  this.fsHelper=fsHelper;
+  try {
+    this.fsHelper.connect();
+  }
+ catch (  FileBasedHelperException e) {
+    Throwables.propagate(e);
+  }
+}

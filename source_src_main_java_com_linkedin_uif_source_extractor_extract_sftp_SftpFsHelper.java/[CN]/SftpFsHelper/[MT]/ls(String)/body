@@ -1,0 +1,13 @@
+{
+  try {
+    List<String> list=new ArrayList<String>();
+    Vector<LsEntry> vector=this.channelSftp.ls(path);
+    for (    LsEntry entry : vector) {
+      list.add(entry.getFilename());
+    }
+    return list;
+  }
+ catch (  SftpException e) {
+    throw new FileBasedHelperException("Cannot execute ls command on sftp connection",e);
+  }
+}

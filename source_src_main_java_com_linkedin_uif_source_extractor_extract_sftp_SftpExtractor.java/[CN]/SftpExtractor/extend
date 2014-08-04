@@ -1,1 +1,1 @@
-QueryBasedExtractor<String,String>
+FileBasedExtractor<S,D>

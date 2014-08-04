@@ -1,0 +1,15 @@
+{
+  log.info("Beginning to download file: " + file);
+  try {
+    InputStream inputStream=this.fsHelper.getFileStream(file);
+    Iterator<D> fileItr=(Iterator<D>)IOUtils.lineIterator(inputStream,"UTF-8");
+    fileHandles.put(file,inputStream);
+    if (workUnitState.getPropAsBoolean(ConfigurationKeys.SOURCE_SKIP_FIRST_RECORD,false) && fileItr.hasNext()) {
+      fileItr.next();
+    }
+    return fileItr;
+  }
+ catch (  FileBasedHelperException e) {
+    throw new IOException("Exception while downloading file " + file + " with message "+ e.getMessage(),e);
+  }
+}

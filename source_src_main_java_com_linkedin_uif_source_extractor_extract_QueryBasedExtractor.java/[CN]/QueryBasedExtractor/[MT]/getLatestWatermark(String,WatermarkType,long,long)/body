@@ -3,8 +3,8 @@
     this.log.info("Getting high watermark");
     List<Predicate> list=new ArrayList<Predicate>();
     WatermarkPredicate watermark=new WatermarkPredicate(watermarkColumn,watermarkType);
-    Predicate lwmPredicate=watermark.getPredicate(this,lwmValue,">=");
-    Predicate hwmPredicate=watermark.getPredicate(this,hwmValue,"<=");
+    Predicate lwmPredicate=watermark.getPredicate(this,lwmValue,">=",PredicateType.LWM);
+    Predicate hwmPredicate=watermark.getPredicate(this,hwmValue,"<=",PredicateType.HWM);
     if (lwmPredicate != null) {
       list.add(lwmPredicate);
     }

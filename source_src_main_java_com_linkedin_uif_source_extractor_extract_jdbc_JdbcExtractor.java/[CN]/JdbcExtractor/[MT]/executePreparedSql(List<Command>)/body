@@ -1,0 +1,52 @@
+{
+  String query=null;
+  List<String> queryParameters=null;
+  int fetchSize=0;
+  for (  Command cmd : cmds) {
+    if (cmd instanceof JdbcCommand) {
+      JdbcCommandType type=(JdbcCommandType)cmd.getCommandType();
+switch (type) {
+case QUERY:
+        query=cmd.getParams().get(0);
+      break;
+case QUERYPARAMS:
+    queryParameters=cmd.getParams();
+  break;
+case FETCHSIZE:
+fetchSize=Integer.parseInt(cmd.getParams().get(0));
+break;
+default :
+log.error("Command " + type.toString() + " not recognized");
+break;
+}
+}
+}
+this.log.info("Executing query:" + query);
+ResultSet resultSet=null;
+try {
+this.jdbcSource=createJdbcSource();
+Connection connection=this.jdbcSource.getConnection();
+PreparedStatement statement=connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+int parameterPosition=1;
+if (queryParameters != null && queryParameters.size() > 0) {
+for (String parameter : queryParameters) {
+statement.setString(parameterPosition,parameter);
+parameterPosition++;
+}
+}
+if (fetchSize != 0) {
+statement.setFetchSize(fetchSize);
+}
+final boolean status=statement.execute();
+if (status == false) {
+log.error("Failed to execute sql:" + query);
+}
+resultSet=statement.getResultSet();
+}
+ catch (Exception e) {
+log.error("Failed to execute sql:" + query + " ;error-"+ e.getMessage(),e);
+}
+CommandOutput<JdbcCommand,ResultSet> output=new JdbcCommandOutput();
+output.put((JdbcCommand)cmds.get(0),resultSet);
+return output;
+}

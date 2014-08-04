@@ -1,6 +1,0 @@
-{
-  log.info("Getting high watermark");
-  List<Command> cmds=getWatermarkCommands();
-  CommandOutput<K,V> output=executeCommands(cmds);
-  return getWatermarkFromOutput(output);
-}

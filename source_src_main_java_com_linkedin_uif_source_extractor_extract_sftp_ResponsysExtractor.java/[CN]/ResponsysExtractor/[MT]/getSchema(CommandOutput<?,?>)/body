@@ -1,3 +1,0 @@
-{
-  return this.workUnit.getProp(RESPONSYS_SCHEMA);
-}

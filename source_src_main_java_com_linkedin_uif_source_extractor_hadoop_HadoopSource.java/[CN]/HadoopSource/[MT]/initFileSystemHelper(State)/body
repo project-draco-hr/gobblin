@@ -1,0 +1,4 @@
+{
+  this.fsHelper=new HadoopFsHelper(state);
+  this.fsHelper.connect();
+}

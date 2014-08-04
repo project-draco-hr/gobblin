@@ -4,16 +4,16 @@
   long hwm=this.workUnit.getHighWaterMark();
   log.info("Low water mark: " + lwm + "; and High water mark: "+ hwm);
   WatermarkType watermarkType;
-  if (Strings.isNullOrEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
+  if (StringUtils.isBlank(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
     watermarkType=null;
   }
  else {
     watermarkType=WatermarkType.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE).toUpperCase());
   }
   try {
-    this.setTimeOut(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_TIMEOUT));
+    this.setTimeOut(this.workUnit.getPropAsInt(ConfigurationKeys.SOURCE_CONN_TIMEOUT,ConfigurationKeys.DEFAULT_CONN_TIMEOUT));
     this.extractMetadata(this.schema,this.entity,this.workUnit);
-    if (!Strings.isNullOrEmpty(watermarkColumn)) {
+    if (StringUtils.isNotBlank(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
       this.log.info("High water mark from source: " + this.highWatermark);
       long currentRunHighWatermark=(this.highWatermark != ConfigurationKeys.DEFAULT_WATERMARK_VALUE ? this.highWatermark : hwm);

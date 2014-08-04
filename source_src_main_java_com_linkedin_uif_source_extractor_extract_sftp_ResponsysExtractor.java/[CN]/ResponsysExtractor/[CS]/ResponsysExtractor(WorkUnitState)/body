@@ -1,4 +1,0 @@
-{
-  super(workUnitState);
-  this.filesToPull=new ArrayList<String>(workUnitState.getPropAsList(ResponsysSource.RESPONSYS_FILES_TO_PULL)).iterator();
-}

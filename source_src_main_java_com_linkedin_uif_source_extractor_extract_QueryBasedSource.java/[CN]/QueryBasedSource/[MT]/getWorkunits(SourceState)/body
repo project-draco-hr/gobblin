@@ -4,8 +4,8 @@
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
   String entityName=state.getProp(ConfigurationKeys.SOURCE_ENTITY);
   String extractTableName=state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY);
-  if (Strings.isNullOrEmpty(extractTableName)) {
-    extractTableName=entityName;
+  if (StringUtils.isBlank(extractTableName)) {
+    extractTableName=Utils.escapeSpecialCharacters(entityName,ConfigurationKeys.ESCAPE_CHARS_IN_TABLE_NAME,"_");
   }
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
   long previousWatermark=this.getLatestWatermarkFromMetadata(state);
