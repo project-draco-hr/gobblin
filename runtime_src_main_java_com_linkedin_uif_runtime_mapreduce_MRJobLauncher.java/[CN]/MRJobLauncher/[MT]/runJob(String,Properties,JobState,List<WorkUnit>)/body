@@ -56,10 +56,7 @@
       throw new Exception(String.format("Gobblin Hadoop MR job %s failed",job.getJobID()));
     }
   }
- catch (  Exception t) {
-    jobState.setState(JobState.RunningState.FAILED);
-  }
- finally {
+  finally {
     try {
       if (this.fs.exists(jobInputPath)) {
         this.fs.delete(jobInputPath,true);
