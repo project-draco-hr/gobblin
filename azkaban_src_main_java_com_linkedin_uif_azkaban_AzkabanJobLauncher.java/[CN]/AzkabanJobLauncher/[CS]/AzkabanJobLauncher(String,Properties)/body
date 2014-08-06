@@ -1,7 +1,7 @@
 {
   super(jobId,LOG);
   this.properties=properties;
-  Configuration conf=new Configuration();
+  final Configuration conf=new Configuration();
   String fsUri=conf.get("fs.default.name");
   if (!Strings.isNullOrEmpty(fsUri)) {
     if (!this.properties.containsKey(ConfigurationKeys.FS_URI_KEY)) {
@@ -15,4 +15,20 @@
     }
   }
   this.jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      String jobLockFile=properties.getProperty(ConfigurationKeys.JOB_NAME_KEY) + MRJobLock.LOCK_FILE_EXTENSION;
+      try {
+        FileSystem fs=FileSystem.get(conf);
+        Path jobLockPath=new Path(properties.getProperty(ConfigurationKeys.MR_JOB_LOCK_DIR_KEY),jobLockFile);
+        if (fs.exists(jobLockPath)) {
+          fs.delete(jobLockPath,false);
+        }
+      }
+ catch (      IOException ioe) {
+        LOG.error("Failed to delete job lock file " + jobLockFile);
+      }
+    }
+  }
+);
 }
