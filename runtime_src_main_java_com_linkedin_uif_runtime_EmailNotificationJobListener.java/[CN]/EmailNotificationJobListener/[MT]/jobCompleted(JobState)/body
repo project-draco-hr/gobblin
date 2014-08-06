@@ -1,5 +1,5 @@
 {
-  boolean emailNotificationEnabled=Boolean.valueOf(jobState.getProp(ConfigurationKeys.EMAIL_NOTIFICATION_ENABLED_KEY,"true"));
+  boolean emailNotificationEnabled=Boolean.valueOf(jobState.getProp(ConfigurationKeys.EMAIL_NOTIFICATION_ENABLED_KEY,"false"));
   if (!emailNotificationEnabled) {
     return;
   }
