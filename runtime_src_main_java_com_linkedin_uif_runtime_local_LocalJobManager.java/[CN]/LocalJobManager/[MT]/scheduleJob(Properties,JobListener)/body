@@ -18,7 +18,7 @@
   jobDataMap.put(JOB_MANAGER_KEY,this);
   jobDataMap.put(PROPERTIES_KEY,jobProps);
   jobDataMap.put(JOB_LISTENER_KEY,jobListener);
-  JobDetail job=JobBuilder.newJob(UIFJob.class).withIdentity(jobName,Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
+  JobDetail job=JobBuilder.newJob(GobblinJob.class).withIdentity(jobName,Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
   try {
     this.scheduler.scheduleJob(job,getTrigger(job.getKey(),jobProps));
   }

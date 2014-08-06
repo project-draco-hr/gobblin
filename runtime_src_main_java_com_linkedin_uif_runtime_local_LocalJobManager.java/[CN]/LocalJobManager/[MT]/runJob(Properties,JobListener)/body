@@ -9,8 +9,7 @@
     return;
   }
   boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
-  String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
-  String jobId="job_" + jobIdSuffix;
+  String jobId=JobLauncherUtils.newJobId(jobName);
   JobState jobState=new JobState(jobName,jobId);
   jobState.addAll(jobProps);
   LOG.info("Starting job " + jobId);
@@ -41,7 +40,7 @@
     this.jobSourceMap.put(jobId,source);
     int sequence=0;
     for (    WorkUnit workUnit : workUnits.get()) {
-      String taskId=String.format("task_%s_%d",jobIdSuffix,sequence++);
+      String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
       workUnit.setId(taskId);
       WorkUnitState workUnitState=new WorkUnitState(workUnit);
       workUnitState.setId(taskId);

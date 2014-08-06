@@ -1,8 +1,6 @@
 {
   File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
-  long pollingInterval=Long.parseLong(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL_KEY,ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL));
   FileAlterationObserver observer=new FileAlterationObserver(jobConfigFileDir);
-  this.fileAlterationMonitor=new FileAlterationMonitor(pollingInterval);
   FileAlterationListener listener=new FileAlterationListenerAdaptor(){
     /** 
  * Called when a new job configuration file is dropped in.
