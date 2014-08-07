@@ -1,4 +1,3 @@
 {
-  int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY);
   sendEmail(jobState,String.format("Gobblin alert: job %s has failed %d %s consecutively in the past",jobName,failures,failures > 1 ? "times" : "time"),message);
 }

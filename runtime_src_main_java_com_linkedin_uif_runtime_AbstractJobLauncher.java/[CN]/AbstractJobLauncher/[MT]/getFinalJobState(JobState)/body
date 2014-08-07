@@ -18,7 +18,7 @@
     jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {
-    int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY) + 1;
+    int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0) + 1;
     jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,failures);
   }
   return jobState;
