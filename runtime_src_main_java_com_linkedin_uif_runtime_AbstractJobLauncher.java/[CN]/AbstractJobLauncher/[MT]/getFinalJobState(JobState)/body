@@ -20,19 +20,6 @@
   if (jobState.getState() == JobState.RunningState.FAILED) {
     int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY) + 1;
     jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,failures);
-    int maxFailures=jobState.getPropAsInt(ConfigurationKeys.JOB_MAX_FAILURES_KEY,ConfigurationKeys.DEFAULT_JOB_MAX_FAILURES);
-    if (failures >= maxFailures) {
-      try {
-        StringWriter stringWriter=new StringWriter();
-        JsonWriter jsonWriter=new JsonWriter(stringWriter);
-        jsonWriter.setIndent("\t");
-        jobState.toJson(jsonWriter);
-        EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),stringWriter.toString(),jobState);
-      }
- catch (      Throwable t) {
-        LOG.error("Failed to construct and send job failure alert email for job " + jobState.getJobId(),t);
-      }
-    }
   }
   return jobState;
 }

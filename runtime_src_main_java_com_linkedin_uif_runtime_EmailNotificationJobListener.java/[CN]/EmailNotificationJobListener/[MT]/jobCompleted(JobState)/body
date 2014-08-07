@@ -3,22 +3,23 @@
   if (!emailNotificationEnabled) {
     return;
   }
+  if (jobState.getState() == JobState.RunningState.FAILED) {
+    int failures=jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY);
+    int maxFailures=jobState.getPropAsInt(ConfigurationKeys.JOB_MAX_FAILURES_KEY,ConfigurationKeys.DEFAULT_JOB_MAX_FAILURES);
+    if (failures >= maxFailures) {
+      try {
+        EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),jobState.toString(),jobState);
+      }
+ catch (      EmailException ee) {
+        LOGGER.error("Failed to send job failure alert email for job " + jobState.getJobId(),ee);
+      }
+      return;
+    }
+  }
   try {
-    StringWriter stringWriter=new StringWriter();
-    JsonWriter jsonWriter=new JsonWriter(stringWriter);
-    jsonWriter.setIndent("\t");
-    jobState.toJson(jsonWriter);
-    if (jobState.getState() == JobState.RunningState.FAILED) {
-      EmailUtils.sendJobFailureAlertEmail(jobState.getJobName(),stringWriter.toString(),jobState);
-    }
- else {
-      EmailUtils.sendJobCompletionEmail(jobState.getJobName(),stringWriter.toString(),jobState);
-    }
+    EmailUtils.sendJobCompletionEmail(jobState.getJobName(),jobState.toString(),jobState.getState().name(),jobState);
   }
- catch (  IOException ioe) {
-    LOGGER.error("Failed to convert job state to json document",ioe);
-  }
-catch (  EmailException ee) {
-    LOGGER.error("Failed to send job completion notification email",ee);
+ catch (  EmailException ee) {
+    LOGGER.error("Failed to send job completion notification email for job " + jobState.getJobId(),ee);
   }
 }
