@@ -1,6 +1,5 @@
 {
   Preconditions.checkNotNull(jobProps);
-  jobProps.putAll(this.properties);
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   if (Strings.isNullOrEmpty(jobName)) {
     throw new JobException("A job must have a job name specified by job.name");

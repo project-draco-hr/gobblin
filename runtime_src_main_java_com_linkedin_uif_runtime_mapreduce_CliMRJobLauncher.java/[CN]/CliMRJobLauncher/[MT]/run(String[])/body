@@ -1,6 +1,23 @@
 {
-  Properties jobProps=new Properties();
+  final Properties jobProps=new Properties();
+  jobProps.putAll(this.properties);
   jobProps.load(new FileReader(args[args.length - 1]));
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      String jobLockFile=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + MRJobLock.LOCK_FILE_EXTENSION;
+      try {
+        FileSystem fs=FileSystem.get(getConf());
+        Path jobLockPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_LOCK_DIR_KEY),jobLockFile);
+        if (fs.exists(jobLockPath)) {
+          fs.delete(jobLockPath,false);
+        }
+      }
+ catch (      IOException ioe) {
+        System.err.println("Failed to delete job lock file " + jobLockFile);
+      }
+    }
+  }
+);
   try {
     JobLauncher launcher=new MRJobLauncher(this.properties,getConf());
     launcher.launchJob(jobProps,null);
