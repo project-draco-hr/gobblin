@@ -1,0 +1,5 @@
+{
+  ScheduledReporter reporter=InfluxDBReporter.forMetricSet(this).withProperties(properties).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
+  long reportInterval=Long.parseLong(properties.getProperty(ConfigurationKeys.METRICS_REPORT_INTERVAL_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORT_INTERVAL));
+  reporter.start(reportInterval,TimeUnit.MILLISECONDS);
+}

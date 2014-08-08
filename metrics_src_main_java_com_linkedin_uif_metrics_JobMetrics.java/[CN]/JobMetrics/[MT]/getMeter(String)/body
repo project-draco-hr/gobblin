@@ -1,3 +1,3 @@
 {
-  return metricRegistry.meter(name);
+  return this.metricRegistry.meter(name);
 }
