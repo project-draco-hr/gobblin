@@ -1,0 +1,6 @@
+{
+  this.jobMetrics=jobMetrics;
+  this.rateUnit=TimeUnit.SECONDS;
+  this.durationUnit=TimeUnit.MILLISECONDS;
+  this.filter=MetricFilter.ALL;
+}

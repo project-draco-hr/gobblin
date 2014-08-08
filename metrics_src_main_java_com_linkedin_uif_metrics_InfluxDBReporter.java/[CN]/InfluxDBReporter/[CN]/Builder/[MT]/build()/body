@@ -1,0 +1,3 @@
+{
+  return new InfluxDBReporter(this.jobMetrics,this.properties,this.rateUnit,this.durationUnit,this.filter);
+}

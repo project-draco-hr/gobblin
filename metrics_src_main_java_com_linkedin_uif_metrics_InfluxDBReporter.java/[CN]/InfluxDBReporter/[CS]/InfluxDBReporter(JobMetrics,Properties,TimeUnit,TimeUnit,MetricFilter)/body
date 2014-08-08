@@ -1,0 +1,5 @@
+{
+  super(jobMetrics.getMetricRegistry(),"influxdb-reporter",filter,rateUnit,durationUnit);
+  this.jobMetrics=jobMetrics;
+  this.metricsStore=new InfluxDBJobMetricsStore(properties);
+}
