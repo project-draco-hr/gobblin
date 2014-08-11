@@ -5,7 +5,7 @@
     FileStatus[] fslist=lf.globStatus(srcJarFile);
     for (    FileStatus fstatus : fslist) {
       Path destJarFile=new Path(this.fs.makeQualified(jarFileDir),fstatus.getPath().getName());
-      this.fs.copyFromLocalFile(srcJarFile,destJarFile);
+      this.fs.copyFromLocalFile(fstatus.getPath(),destJarFile);
       LOG.info(String.format("Adding %s to classpath",destJarFile));
       DistributedCache.addFileToClassPath(destJarFile,this.conf,this.fs);
     }
