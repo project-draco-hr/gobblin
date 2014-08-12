@@ -1,6 +1,6 @@
 {
   if (state != null && type != null && namespace != null && table != null) {
-    String extractId=DTF.format(new Date());
+    String extractId=String.valueOf(System.nanoTime());
     super.addAll(state);
     super.setProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY,type.toString());
     super.setProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY,namespace);

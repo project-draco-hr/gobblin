@@ -1,8 +1,2 @@
 {
-  try {
-    this.fs.close();
-  }
- catch (  IOException e) {
-    throw new FileBasedHelperException("Cannot close Hadoop filesystem due to " + e.getMessage(),e);
-  }
 }
