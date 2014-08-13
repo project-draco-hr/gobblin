@@ -1,3 +1,0 @@
-{
-  setProp(ConfigurationKeys.EXTRACT_EXTRACT_ID_KEY,extractId);
-}

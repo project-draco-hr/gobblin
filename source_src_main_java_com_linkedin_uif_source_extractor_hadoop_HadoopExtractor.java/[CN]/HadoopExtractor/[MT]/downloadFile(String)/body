@@ -1,4 +1,5 @@
 {
+  log.info("About to download file " + file);
   DataFileReader<GenericRecord> dfr=null;
   try {
     dfr=((HadoopFsHelper)this.fsHelper).getAvroFile(file);
