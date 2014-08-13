@@ -1,3 +1,9 @@
 {
-  return new Extract(this,type,namespace,table);
+  Extract extract=new Extract(this,type,namespace,table);
+  while (extractSet.contains(extract)) {
+    DateTime extractDateTime=DTF.parseDateTime(extract.getExtractId());
+    extract.setExtractId(DTF.print(extractDateTime.plusSeconds(1)));
+  }
+  extractSet.add(extract);
+  return extract;
 }
