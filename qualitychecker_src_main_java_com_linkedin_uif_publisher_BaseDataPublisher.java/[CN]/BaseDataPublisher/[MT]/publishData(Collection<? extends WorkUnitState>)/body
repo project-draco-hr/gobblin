@@ -31,8 +31,7 @@
       }
     }
  else {
-      return false;
+      throw new RuntimeException("Rename operation from " + tmpOutput + " to "+ finalOutput+ " failed!");
     }
   }
-  return true;
 }

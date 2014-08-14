@@ -1,3 +1,4 @@
 {
-  return publishMetadata(tasks) && publishData(tasks);
+  publishMetadata(tasks);
+  publishData(tasks);
 }

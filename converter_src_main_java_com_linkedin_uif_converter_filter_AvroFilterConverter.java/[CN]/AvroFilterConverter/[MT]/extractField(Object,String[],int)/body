@@ -1,6 +1,6 @@
 {
   if ((field + 1) == fieldPath.length) {
-    Object result=(Object)((Record)data).get(fieldPath[field]);
+    String result=String.valueOf(((Record)data).get(fieldPath[field]));
     if (result == null) {
       return null;
     }
