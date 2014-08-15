@@ -7,13 +7,24 @@
     return highWatermark;
   }
   int limitDelta=this.getAppendLimitDelta(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
+  if (limitDelta == 0) {
+    highWatermark=Long.parseLong(Utils.dateToString(this.getCurrentTime(),WATERMARKTIMEFORMAT));
+  }
+ else {
+    int seconds=3599;
+    Date previousTime=null;
 switch (limitType) {
 case CURRENTDATE:
-    highWatermark=Long.parseLong(Utils.dateToString(Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * 24 * -1),"yyyyMMdd"),WATERMARKTIMEFORMAT));
+      previousTime=Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * 24 * -1),"yyyyMMdd");
+    seconds=86399;
   break;
 case CURRENTHOUR:
-highWatermark=Long.parseLong(Utils.dateToString(Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * -1),"yyyyMMddHH"),WATERMARKTIMEFORMAT));
+previousTime=Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * -1),"yyyyMMddHH");
+seconds=3599;
 break;
+}
+Date previousEndOfDate=Utils.addSecondsToDate(previousTime,seconds);
+highWatermark=Long.parseLong(Utils.dateToString(previousEndOfDate,WATERMARKTIMEFORMAT));
 }
 return highWatermark;
 }

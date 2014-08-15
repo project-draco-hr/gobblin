@@ -1,0 +1,15 @@
+{
+  if (lwm == ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {
+    return ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  }
+  String watermarkType=this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE,"TIMESTAMP");
+  WatermarkType wmType=WatermarkType.valueOf(watermarkType.toUpperCase());
+  int deltaNum=new WatermarkPredicate(wmType).getDeltaNumForNextWatermark();
+switch (wmType) {
+case SIMPLE:
+    return lwm - deltaNum;
+default :
+  Date lowWaterMarkDate=Utils.toDate(lwm,"yyyyMMddHHmmss");
+return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(lowWaterMarkDate,deltaNum * -1),"yyyyMMddHHmmss"));
+}
+}
