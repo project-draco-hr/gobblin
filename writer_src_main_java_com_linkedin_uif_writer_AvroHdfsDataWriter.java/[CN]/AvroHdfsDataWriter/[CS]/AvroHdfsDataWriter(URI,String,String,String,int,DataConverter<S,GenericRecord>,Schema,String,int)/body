@@ -11,5 +11,5 @@
     this.fs.mkdirs(this.outputFile.getParent());
   }
   this.dataConverter=dataConverter;
-  this.writer=createDatumWriter(schema,this.stagingFile,bufferSize);
+  this.writer=createDatumWriter(schema,this.stagingFile,bufferSize,CodecType.valueOf(codecType),deflateLevel);
 }

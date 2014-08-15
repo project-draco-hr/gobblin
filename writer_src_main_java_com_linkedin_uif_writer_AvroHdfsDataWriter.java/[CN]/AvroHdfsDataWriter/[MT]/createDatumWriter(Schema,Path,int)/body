@@ -1,7 +1,0 @@
-{
-  if (this.fs.exists(avroFile)) {
-    throw new IOException(String.format("File %s already exists",avroFile));
-  }
-  FSDataOutputStream outputStream=this.fs.create(avroFile,true,bufferSize);
-  return new DataFileWriter<GenericRecord>(new GenericDatumWriter<GenericRecord>()).create(schema,outputStream);
-}

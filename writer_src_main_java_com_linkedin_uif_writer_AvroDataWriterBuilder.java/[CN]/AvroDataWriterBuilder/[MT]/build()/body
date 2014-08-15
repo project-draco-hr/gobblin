@@ -21,9 +21,11 @@ case HDFS:
   String uri=destProps.getProperty(ConfigurationKeys.WRITER_FILE_SYSTEM_URI);
 String stagingDir=destProps.getProperty(ConfigurationKeys.WRITER_STAGING_DIR,ConfigurationKeys.DEFAULT_STAGING_DIR) + Path.SEPARATOR + this.filePath;
 String outputDir=destProps.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR,ConfigurationKeys.DEFAULT_OUTPUT_DIR) + Path.SEPARATOR + this.filePath;
+String codecType=destProps.getProperty(ConfigurationKeys.WRITER_CODEC_TYPE,ConfigurationKeys.DEFAULT_CODEC_TYPE);
 String fileName=String.format("%s.%s.%s",destProps.getProperty(ConfigurationKeys.WRITER_FILE_NAME,"part"),this.writerId,this.format.getExtension());
 int bufferSize=Integer.parseInt(destProps.getProperty(ConfigurationKeys.WRITER_BUFFER_SIZE,ConfigurationKeys.DEFAULT_BUFFER_SIZE));
-return new AvroHdfsDataWriter<DI>(URI.create(uri),stagingDir,outputDir,fileName,bufferSize,this.dataConverter,schema);
+int deflateLevel=Integer.parseInt(destProps.getProperty(ConfigurationKeys.WRITER_DEFLATE_LEVEL,ConfigurationKeys.DEFAULT_DEFLATE_LEVEL));
+return new AvroHdfsDataWriter<DI>(URI.create(uri),stagingDir,outputDir,fileName,bufferSize,this.dataConverter,schema,codecType,deflateLevel);
 case KAFKA:
 return new KafkaDataWriter<DI>();
 default :
