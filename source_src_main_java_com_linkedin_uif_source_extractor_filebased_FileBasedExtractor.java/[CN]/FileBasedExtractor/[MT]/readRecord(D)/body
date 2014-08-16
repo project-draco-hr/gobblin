@@ -20,6 +20,15 @@
     log.info("Will start downloading file: " + currentFile);
   }
   if (currentFileItr.hasNext()) {
+    if (supportsReuse) {
+      try {
+        return (D)currentFileItr.getClass().getMethod("next",reuse.getClass()).invoke(currentFileItr,reuse);
+      }
+ catch (      Exception e) {
+        log.info("Object reuse unsupported, continuing without reuse");
+        supportsReuse=false;
+      }
+    }
     return (D)currentFileItr.next();
   }
  else {
