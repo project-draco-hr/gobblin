@@ -1,0 +1,5 @@
+{
+  fieldPath=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD).split("\\.");
+  filterIds=new HashSet<String>(workUnit.getPropAsList(ConfigurationKeys.CONVERTER_FILTER_IDS));
+  return super.init(workUnit);
+}

@@ -21,13 +21,17 @@
     this.taskStateTracker.registerNewTask(this);
     long recordsPulled=0;
     long pullLimit=this.taskState.getPropAsLong(ConfigurationKeys.EXTRACT_PULL_LIMIT,0);
-    Object record;
-    while ((record=this.extractor.readRecord()) != null) {
+    Object record=null;
+    while ((record=this.extractor.readRecord(record)) != null) {
+      Object convertedRecord=null;
       if (doConversion) {
-        record=converter.convertRecord(sourceSchema,record,this.taskState);
+        convertedRecord=converter.convertRecord(sourceSchema,record,this.taskState);
       }
-      if (record != null && rowChecker.executePolicies(record,rowResults)) {
-        this.writer.write(record);
+ else {
+        convertedRecord=record;
+      }
+      if (record != null && rowChecker.executePolicies(convertedRecord,rowResults)) {
+        this.writer.write(convertedRecord);
       }
       recordsPulled++;
       if (pullLimit > 0 && recordsPulled >= pullLimit) {
