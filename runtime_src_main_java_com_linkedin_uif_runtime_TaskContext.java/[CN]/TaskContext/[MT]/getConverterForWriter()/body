@@ -9,5 +9,6 @@
       throw new RuntimeException(e);
     }
   }
+  this.converterForWriter.init(workUnitState);
   return this.converterForWriter;
 }

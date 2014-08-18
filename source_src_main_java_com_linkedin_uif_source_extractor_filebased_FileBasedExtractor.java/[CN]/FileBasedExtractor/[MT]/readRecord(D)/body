@@ -4,6 +4,7 @@
     if (!filesToPull.isEmpty()) {
       currentFile=filesToPull.remove(0);
       currentFileItr=downloadFile(currentFile);
+      seenFirstRecord=false;
       log.info("Will start downloading file: " + currentFile);
     }
  else {
@@ -17,18 +18,21 @@
     closeFile(currentFile);
     currentFile=filesToPull.remove(0);
     currentFileItr=downloadFile(currentFile);
+    seenFirstRecord=false;
     log.info("Will start downloading file: " + currentFile);
   }
   if (currentFileItr.hasNext()) {
-    if (supportsReuse) {
+    if (supportsReuse && seenFirstRecord) {
       try {
         return (D)currentFileItr.getClass().getMethod("next",reuse.getClass()).invoke(currentFileItr,reuse);
       }
  catch (      Exception e) {
+        e.printStackTrace();
         log.info("Object reuse unsupported, continuing without reuse");
         supportsReuse=false;
       }
     }
+    seenFirstRecord=true;
     return (D)currentFileItr.next();
   }
  else {
