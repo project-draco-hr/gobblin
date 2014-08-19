@@ -13,6 +13,9 @@
   if (jobProps.containsKey(ConfigurationKeys.JOB_FILES_KEY)) {
     addFiles(new Path(mrJobDir,"_files"),jobProps.getProperty(ConfigurationKeys.JOB_FILES_KEY));
   }
+  if (jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
+    addHdfsFiles(new Path(mrJobDir,"_hdfsfiles"),jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY));
+  }
   Job job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
   job.setJarByClass(MRJobLauncher.class);
   job.setMapperClass(TaskRunner.class);
