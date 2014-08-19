@@ -10,30 +10,54 @@
   }
   boolean hasFailedRun=false;
   boolean isCommitOnFullSuccess=false;
+  boolean isDataProcessedInPreviousRun=false;
   JobCommitPolicy commitPolicy=JobCommitPolicy.forName(state.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
   if (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
     isCommitOnFullSuccess=true;
   }
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
+    long processedRecordCount=0;
     LOG.info("State of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkingState());
     if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.ABORTED) {
       hasFailedRun=true;
     }
-    LOG.info("High watermark of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getHighWaterMark()+ "\n");
-    previousWorkUnitStateHighWatermarks.add(workUnitState.getHighWaterMark());
+ else {
+      processedRecordCount=workUnitState.getPropAsLong(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED);
+      if (processedRecordCount > 0) {
+        isDataProcessedInPreviousRun=true;
+      }
+    }
+    LOG.info("Low watermark of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkunit().getLowWaterMark());
+    LOG.info("High watermark of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getHighWaterMark());
+    LOG.info("Record count of the previous task: " + processedRecordCount + "\n");
+    if (processedRecordCount > 0) {
+      previousWorkUnitStateHighWatermarks.add(workUnitState.getHighWaterMark());
+    }
     previousWorkUnitLowWatermarks.add(this.getLowWatermarkFromWorkUnit(workUnitState));
   }
-  if (previousWorkUnitStateHighWatermarks.isEmpty()) {
-    latestWaterMark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-    LOG.info("No previous high watermark found; Latest watermark - Default watermark: " + latestWaterMark);
-  }
- else   if (isCommitOnFullSuccess && hasFailedRun) {
-    latestWaterMark=Collections.min(previousWorkUnitLowWatermarks);
+  if (isCommitOnFullSuccess && hasFailedRun) {
+    long previousLowWatermark=Collections.min(previousWorkUnitLowWatermarks);
+    WorkUnitState previousState=previousWorkUnitStates.get(0);
+    ExtractType extractType=ExtractType.valueOf(previousState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_EXTRACT_TYPE).toUpperCase());
+    if (extractType == ExtractType.SNAPSHOT) {
+      int backupSecs=previousState.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS,0);
+      String watermarkType=previousState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE);
+      latestWaterMark=this.addBackedUpSeconds(previousLowWatermark,backupSecs,watermarkType);
+    }
+ else {
+      latestWaterMark=previousLowWatermark;
+    }
     LOG.info("Previous job was COMMIT_ON_FULL_SUCCESS but it was failed; Latest watermark - " + "Min watermark from WorkUnits: " + latestWaterMark);
   }
  else {
-    latestWaterMark=Collections.max(previousWorkUnitStateHighWatermarks);
-    LOG.info("Latest watermark - Max watermark from WorkUnitStates: " + latestWaterMark);
+    if (isDataProcessedInPreviousRun) {
+      latestWaterMark=Collections.max(previousWorkUnitStateHighWatermarks);
+      LOG.info("Previous run was successful. Latest watermark - Max watermark from WorkUnitStates: " + latestWaterMark);
+    }
+ else {
+      latestWaterMark=Collections.min(previousWorkUnitLowWatermarks);
+      LOG.info("Previous run was successful but no data found. Latest watermark - Min watermark from WorkUnitStates: " + latestWaterMark);
+    }
   }
   return latestWaterMark;
 }

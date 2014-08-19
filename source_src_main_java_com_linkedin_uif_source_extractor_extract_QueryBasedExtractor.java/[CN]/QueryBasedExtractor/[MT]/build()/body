@@ -16,7 +16,7 @@
     if (StringUtils.isNotBlank(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
       this.log.info("High water mark from source: " + this.highWatermark);
-      long currentRunHighWatermark=(this.highWatermark != ConfigurationKeys.DEFAULT_WATERMARK_VALUE ? this.highWatermark : hwm);
+      long currentRunHighWatermark=(this.highWatermark != ConfigurationKeys.DEFAULT_WATERMARK_VALUE ? this.highWatermark : this.getLowWatermarkWithNoDelta(lwm));
       this.log.info("High water mark for the current run: " + currentRunHighWatermark);
       this.setRangePredicates(watermarkColumn,watermarkType,lwm,currentRunHighWatermark);
       this.highWatermark=currentRunHighWatermark;
