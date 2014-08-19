@@ -1,15 +1,14 @@
 {
   fieldPath=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD).split("\\.");
+  filterIds=new HashSet<String>();
   Path filterIdsLoc=new Path(workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_IDS_FILE));
   BufferedReader memberIdsReader=null;
   try {
     memberIdsReader=new BufferedReader(new FileReader(filterIdsLoc.getName()));
     String memberId;
-    List<String> memberIds=new ArrayList<String>();
     while ((memberId=memberIdsReader.readLine()) != null) {
-      memberIds.add(memberId);
+      filterIds.add(memberId);
     }
-    filterIds=new HashSet<String>(memberIds);
   }
  catch (  IOException e) {
     Throwables.propagate(e);
