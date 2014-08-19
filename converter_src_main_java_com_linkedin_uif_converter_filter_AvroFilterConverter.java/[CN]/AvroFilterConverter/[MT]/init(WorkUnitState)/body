@@ -1,4 +1,7 @@
 {
+  if (!workUnit.contains(ConfigurationKeys.CONVERTER_FILTER_FIELD) || !workUnit.contains(ConfigurationKeys.CONVERTER_FILTER_IDS_FILE)) {
+    throw new RuntimeException("AvroFilterCoverter is not initialized properly please set: " + ConfigurationKeys.CONVERTER_FILTER_FIELD + " and "+ ConfigurationKeys.CONVERTER_FILTER_IDS_FILE);
+  }
   fieldPath=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD).split("\\.");
   filterIds=new HashSet<String>();
   Path filterIdsLoc=new Path(workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_IDS_FILE));
