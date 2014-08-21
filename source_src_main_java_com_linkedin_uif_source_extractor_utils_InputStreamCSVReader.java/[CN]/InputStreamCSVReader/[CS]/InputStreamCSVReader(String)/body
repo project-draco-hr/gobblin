@@ -1,0 +1,3 @@
+{
+  this(new InputStreamReader(new ByteArrayInputStream(input.getBytes())));
+}

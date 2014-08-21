@@ -1,0 +1,7 @@
+{
+  if (fieldValue == null) {
+    fieldValue=new StringBuilder();
+  }
+  fieldValue.append(token);
+  return fieldValue;
+}

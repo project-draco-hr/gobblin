@@ -1,0 +1,73 @@
+{
+  if (atEOF) {
+    return null;
+  }
+  ArrayList<String> record=new ArrayList<String>(maxFieldCount);
+  StringBuilder fieldValue=null;
+  while (true) {
+    int token=parser.nextToken();
+    if (token == StreamTokenizer.TT_EOF) {
+      addField(record,fieldValue);
+      atEOF=true;
+      break;
+    }
+    if (token == StreamTokenizer.TT_EOL) {
+      addField(record,fieldValue);
+      break;
+    }
+    if (token == separator) {
+      addField(record,fieldValue);
+      fieldValue=null;
+      continue;
+    }
+    if (token == StreamTokenizer.TT_WORD) {
+      if (fieldValue != null) {
+        throw new CSVParseException("Unknown error",parser.lineno());
+      }
+      fieldValue=new StringBuilder(parser.sval);
+      continue;
+    }
+    if (token == '"') {
+      if (fieldValue != null) {
+        throw new CSVParseException("Found unescaped quote. A value with quote should be within a quote",parser.lineno());
+      }
+      while (true) {
+        token=parser.nextToken();
+        if (token == StreamTokenizer.TT_EOF) {
+          atEOF=true;
+          throw new CSVParseException("EOF reached before closing an opened quote",parser.lineno());
+        }
+        if (token == separator) {
+          fieldValue=appendFieldValue(fieldValue,token);
+          continue;
+        }
+        if (token == StreamTokenizer.TT_EOL) {
+          fieldValue=appendFieldValue(fieldValue,"\n");
+          continue;
+        }
+        if (token == StreamTokenizer.TT_WORD) {
+          fieldValue=appendFieldValue(fieldValue,parser.sval);
+          continue;
+        }
+        if (token == '"') {
+          int nextToken=parser.nextToken();
+          if (nextToken == '"') {
+            fieldValue=appendFieldValue(fieldValue,nextToken);
+            continue;
+          }
+          if (nextToken == StreamTokenizer.TT_WORD) {
+            throw new CSVParseException("Not expecting more text after end quote",parser.lineno());
+          }
+ else {
+            parser.pushBack();
+            break;
+          }
+        }
+      }
+    }
+  }
+  if (record.size() > maxFieldCount) {
+    maxFieldCount=record.size();
+  }
+  return record;
+}

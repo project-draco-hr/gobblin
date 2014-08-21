@@ -1,0 +1,22 @@
+{
+  ArrayList<String> record=this.getNextRecordFromStream();
+  while (record != null) {
+    boolean emptyLine=false;
+    if (record.size() == 0) {
+      emptyLine=true;
+    }
+ else     if (record.size() == 1) {
+      String val=record.get(0);
+      if (val == null || val.length() == 0) {
+        emptyLine=true;
+      }
+    }
+    if (emptyLine) {
+      record=getNextRecordFromStream();
+    }
+ else {
+      break;
+    }
+  }
+  return record;
+}

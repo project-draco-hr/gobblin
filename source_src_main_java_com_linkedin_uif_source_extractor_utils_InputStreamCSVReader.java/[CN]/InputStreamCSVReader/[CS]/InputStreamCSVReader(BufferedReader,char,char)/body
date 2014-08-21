@@ -1,0 +1,12 @@
+{
+  this.separator=separator;
+  parser=new StreamTokenizer(input);
+  parser.ordinaryChars(0,255);
+  parser.wordChars(0,255);
+  parser.ordinaryChar(enclosedChar);
+  parser.ordinaryChar(separator);
+  parser.eolIsSignificant(true);
+  parser.whitespaceChars('\n','\n');
+  parser.whitespaceChars('\r','\r');
+  atEOF=false;
+}

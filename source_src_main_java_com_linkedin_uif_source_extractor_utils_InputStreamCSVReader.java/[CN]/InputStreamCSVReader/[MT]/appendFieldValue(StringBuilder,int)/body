@@ -1,0 +1,3 @@
+{
+  return appendFieldValue(fieldValue,"" + (char)token);
+}

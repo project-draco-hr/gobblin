@@ -1,0 +1,3 @@
+{
+  record.add(fieldValue == null ? null : fieldValue.toString());
+}
