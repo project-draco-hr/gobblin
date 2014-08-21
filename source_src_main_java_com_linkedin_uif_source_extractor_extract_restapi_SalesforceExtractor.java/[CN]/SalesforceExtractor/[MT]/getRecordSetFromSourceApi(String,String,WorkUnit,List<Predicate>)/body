@@ -11,8 +11,14 @@
       rs=getBulkData();
     }
     this.bulkApiInitialRun=false;
+    boolean isSoftDeletesPullDisabled=Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SALESFORCE_IS_SOFT_DELETES_PULL_DISABLED));
     if (rs == null || rs.isEmpty()) {
-      return this.getSoftDeletedRecords(schema,entity,workUnit,predicateList);
+      if (this.columnList.contains("IsDeleted") && !isSoftDeletesPullDisabled) {
+        return this.getSoftDeletedRecords(schema,entity,workUnit,predicateList);
+      }
+ else {
+        this.log.info("Ignoring soft delete records");
+      }
     }
     return rs.iterator();
   }
