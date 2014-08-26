@@ -8,5 +8,6 @@
  else {
     targetColumnName=(StringUtils.isNotBlank(targetColumnName) ? targetColumnName : sourceColumnName);
   }
+  targetColumnName=this.toCase(targetColumnName);
   return Utils.escapeSpecialCharacters(targetColumnName,ConfigurationKeys.ESCAPE_CHARS_IN_COLUMN_NAME,"_");
 }
