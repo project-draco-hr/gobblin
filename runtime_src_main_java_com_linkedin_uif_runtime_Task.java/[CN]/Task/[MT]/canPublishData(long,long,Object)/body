@@ -12,23 +12,21 @@
   this.publisher=buildTaskPublisher(this.taskState,taskResults);
 switch (this.publisher.canPublish()) {
 case SUCCESS:
-    this.shouldCommit=true;
-  this.taskState.setWorkingState(WorkUnitState.WorkingState.SUCCESSFUL);
-break;
+    return true;
 case CLEANUP_FAIL:
-LOG.error("Cleanup failed for task " + this.taskId);
+  LOG.error("Cleanup failed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-break;
+return false;
 case POLICY_TESTS_FAIL:
 LOG.error("Not all quality checking passed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-break;
+return false;
 case COMPONENTS_NOT_FINISHED:
 LOG.error("Not all components completed for task " + this.taskId);
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-break;
+return false;
 default :
 this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-break;
+return false;
 }
 }
