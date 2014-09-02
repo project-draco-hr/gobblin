@@ -1,6 +1,6 @@
 {
   String columnProjection=this.getInputColumnProjection();
-  if (columnProjection == null || columnProjection.trim().equals("*")) {
+  if (columnProjection == null || columnProjection.trim().equals("*") || columnProjection.contains(".*")) {
     return true;
   }
   return false;

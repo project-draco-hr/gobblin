@@ -1,0 +1,25 @@
+{
+  int limitEndIndex=-1;
+  if (limitStartIndex > 0) {
+    limitEndIndex=limitStartIndex + 5;
+    String remainingQuery=inputQuery.substring(limitEndIndex);
+    boolean numFound=false;
+    int pos=0;
+    while (pos < remainingQuery.length()) {
+      char ch=remainingQuery.charAt(pos);
+      if (ch == ' ' && !numFound) {
+        pos++;
+        continue;
+      }
+ else       if (numFound && (!Character.isDigit(ch))) {
+        break;
+      }
+ else {
+        numFound=true;
+      }
+      pos++;
+    }
+    limitEndIndex=limitEndIndex + pos;
+  }
+  return limitEndIndex;
+}

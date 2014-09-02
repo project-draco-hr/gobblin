@@ -1,0 +1,13 @@
+{
+  if (StringUtils.isBlank(query)) {
+    return null;
+  }
+  String outputQuery=query;
+  String inputQuery=query.toLowerCase();
+  int limitStartIndex=inputQuery.indexOf(" top ");
+  int limitEndIndex=this.getLimitEndIndex(inputQuery,limitStartIndex);
+  if (limitStartIndex > 0) {
+    outputQuery=query.substring(0,limitStartIndex) + " " + query.substring(limitEndIndex);
+  }
+  return outputQuery;
+}

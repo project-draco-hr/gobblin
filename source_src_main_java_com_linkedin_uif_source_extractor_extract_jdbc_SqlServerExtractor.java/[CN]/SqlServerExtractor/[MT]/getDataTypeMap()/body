@@ -1,0 +1,4 @@
+{
+  Map<String,String> dataTypeMap=ImmutableMap.<String,String>builder().put("smallint","int").put("tinyint","int").put("int","int").put("bigint","long").put("decimal","double").put("numeric","double").put("float","float").put("real","double").put("money","double").put("smallmoney","double").put("binary","string").put("varbinary","string").put("char","string").put("varchar","string").put("nchar","string").put("nvarchar","string").put("text","string").put("ntext","string").put("image","string").put("hierarchyid","string").put("uniqueidentifier","string").put("date","date").put("datetime","timestamp").put("datetime2","timestamp").put("datetimeoffset","timestamp").put("smalldatetime","timestamp").put("time","time").put("bit","boolean").build();
+  return dataTypeMap;
+}
