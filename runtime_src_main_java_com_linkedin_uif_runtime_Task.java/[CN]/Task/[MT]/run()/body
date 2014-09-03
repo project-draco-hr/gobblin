@@ -39,10 +39,11 @@
       }
     }
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
-    publishData(recordsPulled,pullLimit,schemaForWriter);
     this.writer.close();
     writerClosed=true;
-    commitData();
+    if (canPublishData(recordsPulled,pullLimit,schemaForWriter)) {
+      commitData();
+    }
   }
  catch (  Throwable t) {
     LOG.error(String.format("Task %s failed",this.taskId),t);
