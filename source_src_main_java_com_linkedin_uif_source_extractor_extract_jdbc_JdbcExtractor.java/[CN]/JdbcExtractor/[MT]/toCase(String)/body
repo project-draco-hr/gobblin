@@ -1,0 +1,16 @@
+{
+  String columnName=targetColumnName;
+  ColumnNameCase caseType=ColumnNameCase.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_COLUMN_NAME_CASE,ConfigurationKeys.DEFAULT_COLUMN_NAME_CASE).toUpperCase());
+switch (caseType) {
+case TOUPPER:
+    columnName=targetColumnName.toUpperCase();
+  break;
+case TOLOWER:
+columnName=targetColumnName.toLowerCase();
+break;
+default :
+columnName=targetColumnName;
+break;
+}
+return columnName;
+}
