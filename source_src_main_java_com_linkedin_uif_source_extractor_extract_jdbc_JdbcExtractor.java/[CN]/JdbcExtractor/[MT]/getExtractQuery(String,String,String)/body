@@ -1,7 +1,7 @@
 {
   String inputColProjection=this.getInputColumnProjection();
   String outputColProjection=this.getOutputColumnProjection();
-  String query=this.removeSampleClauseFromQuery(inputQuery);
+  String query=inputQuery;
   if (query == null) {
     query="SELECT " + outputColProjection + " FROM "+ schema+ "."+ entity;
   }
