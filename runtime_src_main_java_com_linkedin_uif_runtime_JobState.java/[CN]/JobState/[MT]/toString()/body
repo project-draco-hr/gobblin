@@ -3,7 +3,7 @@
   JsonWriter jsonWriter=new JsonWriter(stringWriter);
   jsonWriter.setIndent("\t");
   try {
-    this.toJson(jsonWriter);
+    this.toJson(jsonWriter,false);
   }
  catch (  IOException ioe) {
   }
