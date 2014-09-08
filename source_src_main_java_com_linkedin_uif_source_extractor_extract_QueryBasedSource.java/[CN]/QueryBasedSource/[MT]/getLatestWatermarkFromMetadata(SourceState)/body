@@ -18,7 +18,7 @@
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
     long processedRecordCount=0;
     LOG.info("State of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkingState());
-    if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.ABORTED) {
+    if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.CANCELLED) {
       hasFailedRun=true;
     }
  else {

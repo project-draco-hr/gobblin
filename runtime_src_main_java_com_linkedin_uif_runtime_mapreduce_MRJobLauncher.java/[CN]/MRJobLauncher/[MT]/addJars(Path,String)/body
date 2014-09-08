@@ -1,11 +1,11 @@
 {
-  LocalFileSystem lf=FileSystem.getLocal(conf);
+  LocalFileSystem lfs=FileSystem.getLocal(conf);
   for (  String jarFile : SPLITTER.split(jarFileList)) {
     Path srcJarFile=new Path(jarFile);
-    FileStatus[] fslist=lf.globStatus(srcJarFile);
-    for (    FileStatus fstatus : fslist) {
-      Path destJarFile=new Path(this.fs.makeQualified(jarFileDir),fstatus.getPath().getName());
-      this.fs.copyFromLocalFile(fstatus.getPath(),destJarFile);
+    FileStatus[] fileStatusList=lfs.globStatus(srcJarFile);
+    for (    FileStatus status : fileStatusList) {
+      Path destJarFile=new Path(this.fs.makeQualified(jarFileDir),status.getPath().getName());
+      this.fs.copyFromLocalFile(status.getPath(),destJarFile);
       LOG.info(String.format("Adding %s to classpath",destJarFile));
       DistributedCache.addFileToClassPath(destJarFile,this.conf,this.fs);
     }

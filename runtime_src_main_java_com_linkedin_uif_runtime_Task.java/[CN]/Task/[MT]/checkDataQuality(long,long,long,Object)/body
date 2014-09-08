@@ -1,0 +1,30 @@
+{
+  if (pullLimit > 0) {
+    this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,recordsPulled);
+  }
+ else {
+    this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,expectedCount);
+  }
+  this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
+  this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());
+  TaskLevelPolicyChecker policyChecker=buildTaskLevelPolicyChecker(this.taskState);
+  TaskLevelPolicyCheckResults taskResults=policyChecker.executePolicies();
+  TaskPublisher publisher=buildTaskPublisher(this.taskState,taskResults);
+switch (publisher.canPublish()) {
+case SUCCESS:
+    return true;
+case CLEANUP_FAIL:
+  LOG.error("Cleanup failed for task " + this.taskId);
+break;
+case POLICY_TESTS_FAIL:
+LOG.error("Not all quality checking passed for task " + this.taskId);
+break;
+case COMPONENTS_NOT_FINISHED:
+LOG.error("Not all components completed for task " + this.taskId);
+break;
+default :
+break;
+}
+this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+return false;
+}

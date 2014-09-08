@@ -1,10 +1,9 @@
 {
-  ScheduledFuture<?> scheduledReporter=this.scheduledReporters.remove(task.getTaskId());
-  if (scheduledReporter != null) {
-    scheduledReporter.cancel(true);
-  }
   if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
+  }
+  if (this.scheduledReporters.containsKey(task.getTaskId())) {
+    this.scheduledReporters.remove(task.getTaskId()).cancel(false);
   }
   WorkUnitState.WorkingState state=task.getTaskState().getWorkingState();
   if (state == WorkUnitState.WorkingState.FAILED && task.getRetryCount() < this.maxTaskRetries) {

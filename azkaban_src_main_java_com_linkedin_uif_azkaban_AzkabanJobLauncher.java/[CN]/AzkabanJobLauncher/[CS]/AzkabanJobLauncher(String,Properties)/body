@@ -14,22 +14,5 @@
       this.properties.setProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,fsUri);
     }
   }
-  this.properties.setProperty(ConfigurationKeys.LOCAL_USE_MR_JOB_LOCK_KEY,Boolean.toString(true));
   this.jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
-  Runtime.getRuntime().addShutdownHook(new Thread(){
-    @Override public void run(){
-      String jobLockFile=properties.getProperty(ConfigurationKeys.JOB_NAME_KEY) + MRJobLock.LOCK_FILE_EXTENSION;
-      try {
-        FileSystem fs=FileSystem.get(conf);
-        Path jobLockPath=new Path(properties.getProperty(ConfigurationKeys.MR_JOB_LOCK_DIR_KEY),jobLockFile);
-        if (fs.exists(jobLockPath)) {
-          fs.delete(jobLockPath,false);
-        }
-      }
- catch (      IOException ioe) {
-        LOG.error("Failed to delete job lock file " + jobLockFile,ioe);
-      }
-    }
-  }
-);
 }

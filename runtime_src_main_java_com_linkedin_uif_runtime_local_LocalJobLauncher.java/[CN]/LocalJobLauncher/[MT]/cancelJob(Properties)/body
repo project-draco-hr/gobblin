@@ -1,0 +1,10 @@
+{
+  if (isCancelled || !Optional.fromNullable(this.countDownLatch).isPresent()) {
+    LOG.info(String.format("Job %s has already been cancelled or has not started yet",jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY)));
+    return;
+  }
+  while (this.countDownLatch.getCount() > 0) {
+    this.countDownLatch.countDown();
+  }
+  isCancelled=true;
+}

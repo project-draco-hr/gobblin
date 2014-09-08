@@ -1,0 +1,36 @@
+{
+  final JobLock lock=new FileBasedJobLock(this.fs,this.path.getName(),"MRJobLockTest");
+  final CountDownLatch latch=new CountDownLatch(2);
+  Thread thread1=new Thread(new Runnable(){
+    @Override public void run(){
+      try {
+        Assert.assertTrue(lock.tryLock());
+        Thread.sleep(2000);
+        lock.unlock();
+        latch.countDown();
+      }
+ catch (      Exception e) {
+      }
+    }
+  }
+);
+  thread1.start();
+  Thread.sleep(1000);
+  Thread thread2=new Thread(new Runnable(){
+    @Override public void run(){
+      try {
+        Assert.assertFalse(lock.tryLock());
+        Thread.sleep(2000);
+        Assert.assertTrue(lock.tryLock());
+        Thread.sleep(1000);
+        lock.unlock();
+        latch.countDown();
+      }
+ catch (      Exception e) {
+      }
+    }
+  }
+);
+  thread2.start();
+  latch.await();
+}

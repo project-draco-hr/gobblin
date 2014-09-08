@@ -1,0 +1,6 @@
+{
+  Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
+  if (this.fs.exists(tablePath)) {
+    this.fs.delete(tablePath,false);
+  }
+}

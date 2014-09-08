@@ -1,11 +1,11 @@
 {
+  List<State> states=Lists.newArrayList();
   Path storePath=new Path(this.storeRootDir,storeName);
   if (!this.fs.exists(storePath)) {
-    throw new IOException(String.format("Store directory %s does not exist for store %s",storePath,storeName));
+    return states;
   }
-  List<State> taskStates=Lists.newArrayList();
   for (  FileStatus status : this.fs.listStatus(storePath)) {
-    taskStates.addAll(getAll(storeName,status.getPath().getName()));
+    states.addAll(getAll(storeName,status.getPath().getName()));
   }
-  return taskStates;
+  return states;
 }

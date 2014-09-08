@@ -1,0 +1,3 @@
+{
+  this.jobLauncher.cancelJob(this.properties);
+}

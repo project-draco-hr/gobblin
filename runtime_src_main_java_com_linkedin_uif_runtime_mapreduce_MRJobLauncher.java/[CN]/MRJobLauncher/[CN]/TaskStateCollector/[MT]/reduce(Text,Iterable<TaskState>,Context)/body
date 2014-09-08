@@ -1,5 +1,0 @@
-{
-  for (  TaskState taskState : values) {
-    context.write(key,taskState);
-  }
-}

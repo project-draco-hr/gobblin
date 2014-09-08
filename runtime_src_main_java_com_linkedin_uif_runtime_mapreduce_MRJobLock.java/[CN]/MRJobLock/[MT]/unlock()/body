@@ -1,6 +1,0 @@
-{
-  if (!isLocked()) {
-    throw new IOException(String.format("Lock file %s does not exist",this.lockFile.getName()));
-  }
-  this.fs.delete(this.lockFile,false);
-}

@@ -7,8 +7,8 @@
       jobState.setState(JobState.RunningState.FAILED);
       break;
     }
-    if (taskState.getWorkingState() == WorkUnitState.WorkingState.ABORTED) {
-      jobState.setState(JobState.RunningState.ABORTED);
+    if (taskState.getWorkingState() == WorkUnitState.WorkingState.CANCELLED) {
+      jobState.setState(JobState.RunningState.CANCELLED);
       break;
     }
   }

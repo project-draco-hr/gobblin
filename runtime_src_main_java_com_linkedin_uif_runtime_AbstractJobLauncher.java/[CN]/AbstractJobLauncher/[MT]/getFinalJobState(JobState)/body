@@ -8,13 +8,7 @@
       break;
     }
   }
-  if (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.FAILED) {
-    for (    TaskState taskState : jobState.getTaskStates()) {
-      taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-    }
-  }
-  if (jobState.getState() == JobState.RunningState.WORKING || jobState.getState() == JobState.RunningState.SUCCESSFUL) {
-    jobState.setState(JobState.RunningState.SUCCESSFUL);
+  if (jobState.getState() == JobState.RunningState.SUCCESSFUL) {
     jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {

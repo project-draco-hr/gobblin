@@ -1,9 +1,9 @@
 {
+  List<State> states=Lists.newArrayList();
   Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
   if (!this.fs.exists(tablePath)) {
-    throw new IOException(String.format("State file %s does not exist for table %s",tablePath,tableName));
+    return states;
   }
-  List<State> states=Lists.newArrayList();
   SequenceFile.Reader reader=null;
   try {
     reader=new SequenceFile.Reader(this.fs,tablePath,this.conf);

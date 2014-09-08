@@ -1,0 +1,6 @@
+{
+  this.fs=fs;
+  this.conf=this.fs.getConf();
+  this.storeRootDir=storeRootDir;
+  this.stateClass=stateClass;
+}

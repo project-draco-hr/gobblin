@@ -1,5 +1,6 @@
 {
-  if (this.fs == null || !this.serviceManager.isHealthy()) {
+  if (!Optional.fromNullable(this.fs).isPresent() || !this.serviceManager.isHealthy()) {
+    LOG.error("Not running the task because the mapper was not setup properly");
     return;
   }
   WorkUnit workUnit=new WorkUnit(null,null);
@@ -12,10 +13,14 @@
   finally {
     closer.close();
   }
+  String jobId=workUnit.getProp(ConfigurationKeys.JOB_ID_KEY);
   String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
+  if (this.taskStateStore.exists(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX)) {
+    this.taskStateStore.delete(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX);
+  }
   WorkUnitState workUnitState=new WorkUnitState(workUnit);
   workUnitState.setId(taskId);
-  workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,workUnit.getProp(ConfigurationKeys.JOB_ID_KEY));
+  workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
   workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
   Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
   this.taskStateTracker.registerNewTask(task);
@@ -26,7 +31,7 @@
  catch (  ExecutionException ee) {
     LOG.error("Failed to submit and execute task " + task.getTaskId(),ee);
   }
-  context.write(new Text(),task.getTaskState());
+  this.taskStateStore.put(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX,task.getTaskState());
   if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
     throw new IOException(String.format("Task %s of job %s failed",task.getTaskId(),task.getJobId()));
   }

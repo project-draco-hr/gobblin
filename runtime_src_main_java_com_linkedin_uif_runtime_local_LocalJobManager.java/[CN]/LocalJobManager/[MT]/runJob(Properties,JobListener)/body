@@ -12,6 +12,7 @@
   String jobId=JobLauncherUtils.newJobId(jobName);
   JobState jobState=new JobState(jobName,jobId);
   jobState.addAll(jobProps);
+  jobState.setState(JobState.RunningState.PENDING);
   LOG.info("Starting job " + jobId);
   Optional<SourceState> sourceStateOptional=Optional.absent();
   try {
@@ -35,7 +36,7 @@
     }
     jobState.setTasks(workUnits.get().size());
     jobState.setStartTime(System.currentTimeMillis());
-    jobState.setState(JobState.RunningState.WORKING);
+    jobState.setState(JobState.RunningState.RUNNING);
     this.jobStateMap.put(jobId,jobState);
     this.jobSourceMap.put(jobId,source);
     int sequence=0;

@@ -1,4 +1,8 @@
 {
+  if (this.closed) {
+    return;
+  }
   this.writer.flush();
   this.writer.close();
+  this.closed=true;
 }

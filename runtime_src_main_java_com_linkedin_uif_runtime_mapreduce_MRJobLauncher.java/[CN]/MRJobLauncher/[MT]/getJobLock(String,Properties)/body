@@ -1,3 +1,3 @@
 {
-  return new MRJobLock(this.fs,jobProps.getProperty(ConfigurationKeys.MR_JOB_LOCK_DIR_KEY),jobName);
+  return new FileBasedJobLock(this.fs,jobProps.getProperty(ConfigurationKeys.JOB_LOCK_DIR_KEY),jobName);
 }

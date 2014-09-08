@@ -1,9 +1,0 @@
-{
-  DistributedCache.createSymlink(this.conf);
-  for (  String jobFile : SPLITTER.split(jobFileList)) {
-    Path srcJobFile=new Path(jobFile);
-    URI destFileUri=URI.create(srcJobFile.toUri().getPath() + "#" + srcJobFile.getName());
-    LOG.info(String.format("Adding %s to DistributedCache",destFileUri));
-    DistributedCache.addCacheFile(destFileUri,this.conf);
-  }
-}

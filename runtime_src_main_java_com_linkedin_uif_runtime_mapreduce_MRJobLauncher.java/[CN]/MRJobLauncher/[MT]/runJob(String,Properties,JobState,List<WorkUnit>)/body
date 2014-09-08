@@ -3,6 +3,10 @@
     this.conf.set(name,jobProps.getProperty(name));
   }
   Path mrJobDir=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName);
+  if (this.fs.exists(mrJobDir)) {
+    LOG.warn("Job working directory already exists for job " + jobName);
+    this.fs.delete(mrJobDir,true);
+  }
   Path jarFileDir=new Path(mrJobDir,"_jars");
   if (jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
     addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY));
@@ -10,79 +14,55 @@
   if (jobProps.containsKey(ConfigurationKeys.JOB_JAR_FILES_KEY)) {
     addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.JOB_JAR_FILES_KEY));
   }
-  if (jobProps.containsKey(ConfigurationKeys.JOB_FILES_KEY)) {
-    addFiles(new Path(mrJobDir,"_files"),jobProps.getProperty(ConfigurationKeys.JOB_FILES_KEY));
+  if (jobProps.containsKey(ConfigurationKeys.JOB_LOCAL_FILES_KEY)) {
+    addLocalFiles(new Path(mrJobDir,"_files"),jobProps.getProperty(ConfigurationKeys.JOB_LOCAL_FILES_KEY));
   }
   if (jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
-    addHdfsFiles(new Path(mrJobDir,"_hdfsfiles"),jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY));
+    addHDFSFiles(jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY));
   }
-  Job job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
-  job.setJarByClass(MRJobLauncher.class);
-  job.setMapperClass(TaskRunner.class);
-  job.setReducerClass(TaskStateCollector.class);
-  boolean useReducer=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.MR_JOB_USE_REDUCER_KEY,"false"));
-  job.setNumReduceTasks(useReducer ? 1 : 0);
-  job.setInputFormatClass(NLineInputFormat.class);
-  job.setOutputFormatClass(SequenceFileOutputFormat.class);
-  job.setMapOutputKeyClass(Text.class);
-  job.setMapOutputValueClass(TaskState.class);
-  job.setOutputKeyClass(Text.class);
-  job.setOutputValueClass(TaskState.class);
-  job.setSpeculativeExecution(false);
-  Path jobInputPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName + Path.SEPARATOR + "input");
-  if (this.fs.exists(jobInputPath)) {
-    LOG.warn("Job input path already exists for job " + job.getJobName());
-    this.fs.delete(jobInputPath,true);
-  }
-  Path jobOutputPath=new Path(jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName + Path.SEPARATOR + "output");
-  if (this.fs.exists(jobOutputPath)) {
-    LOG.warn("Job output path already exists for job " + job.getJobName());
-    this.fs.delete(jobOutputPath,true);
-  }
+  this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
+  this.job.setJarByClass(MRJobLauncher.class);
+  this.job.setMapperClass(TaskRunner.class);
+  this.job.setNumReduceTasks(0);
+  this.job.setInputFormatClass(NLineInputFormat.class);
+  this.job.setOutputFormatClass(NullOutputFormat.class);
+  this.job.setMapOutputKeyClass(NullWritable.class);
+  this.job.setMapOutputValueClass(NullWritable.class);
+  this.job.setSpeculativeExecution(false);
+  Path jobInputPath=new Path(mrJobDir,"input");
   Path jobInputFile=prepareJobInput(jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY),jobInputPath,workUnits);
-  NLineInputFormat.addInputPath(job,jobInputFile);
-  SequenceFileOutputFormat.setOutputPath(job,jobOutputPath);
+  NLineInputFormat.addInputPath(this.job,jobInputFile);
+  Path jobOutputPath=new Path(mrJobDir,"output");
+  SequenceFileOutputFormat.setOutputPath(this.job,jobOutputPath);
   if (jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
     int maxMappers=Integer.parseInt(jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY));
     if (workUnits.size() > maxMappers) {
       int numTasksPerMapper=workUnits.size() % maxMappers == 0 ? workUnits.size() / maxMappers : workUnits.size() / maxMappers + 1;
-      NLineInputFormat.setNumLinesPerSplit(job,numTasksPerMapper);
+      NLineInputFormat.setNumLinesPerSplit(this.job,numTasksPerMapper);
     }
   }
   try {
-    LOG.info("Launching Hadoop MR job " + job.getJobName());
-    job.waitForCompletion(true);
-    jobState.setState(job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
-    jobState.addTaskStates(collectOutput(jobOutputPath));
-    countersToMetrics(job.getCounters(),JobMetrics.get(jobName,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+    LOG.info("Launching Hadoop MR job " + this.job.getJobName());
+    this.job.waitForCompletion(true);
+    if (this.isCancelled) {
+      jobState.setState(JobState.RunningState.CANCELLED);
+      return;
+    }
+    jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
+    jobState.addTaskStates(collectOutput(new Path(jobOutputPath,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY))));
+    countersToMetrics(this.job.getCounters(),JobMetrics.get(jobName,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
     if (jobState.getState() == JobState.RunningState.FAILED) {
-      throw new Exception(String.format("Gobblin Hadoop MR job %s failed",job.getJobID()));
+      throw new Exception(String.format("Gobblin Hadoop MR job %s failed",this.job.getJobID()));
     }
   }
   finally {
-    try {
-      if (this.fs.exists(jobInputPath)) {
-        this.fs.delete(jobInputPath,true);
-      }
-    }
- catch (    IOException ioe) {
-      LOG.error("Failed to cleanup job input path for job " + job.getJobName());
-    }
-    try {
-      if (this.fs.exists(jobOutputPath)) {
-        this.fs.delete(jobOutputPath,true);
-      }
-    }
- catch (    IOException ioe) {
-      LOG.error("Failed to cleanup job output path for job " + job.getJobName());
-    }
     try {
       if (this.fs.exists(mrJobDir)) {
         this.fs.delete(mrJobDir,true);
       }
     }
  catch (    IOException ioe) {
-      LOG.error("Failed to cleanup job jars for job " + job.getJobName());
+      LOG.error("Failed to cleanup job working directory for job " + this.job.getJobID());
     }
   }
 }

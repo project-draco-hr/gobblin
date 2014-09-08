@@ -1,0 +1,26 @@
+{
+  final JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
+  final AtomicBoolean isCancelled=new AtomicBoolean(false);
+  Thread thread=new Thread(new Runnable(){
+    @Override public void run(){
+      try {
+        Thread.sleep(500);
+        jobLauncher.cancelJob(jobProps);
+        isCancelled.set(true);
+      }
+ catch (      Exception je) {
+      }
+    }
+  }
+);
+  thread.start();
+  jobLauncher.launchJob(jobProps,null);
+  Assert.assertTrue(isCancelled.get());
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
+  List<JobState> jobStateList=(List<JobState>)this.jobStateStore.getAll(jobName,jobId + ".jst");
+  Assert.assertTrue(jobStateList.isEmpty());
+  FileSystem lfs=FileSystem.getLocal(new Configuration());
+  Path jobLockFile=new Path(jobProps.getProperty(ConfigurationKeys.JOB_LOCK_DIR_KEY),jobName + FileBasedJobLock.LOCK_FILE_EXTENSION);
+  Assert.assertFalse(lfs.exists(jobLockFile));
+}

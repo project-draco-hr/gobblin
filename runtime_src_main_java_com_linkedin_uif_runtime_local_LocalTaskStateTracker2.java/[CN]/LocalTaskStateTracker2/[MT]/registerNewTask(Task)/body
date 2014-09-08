@@ -1,4 +1,8 @@
 {
-  TaskStateReporter reporter=new TaskStateReporter(task);
-  this.scheduledReporters.put(task.getTaskId(),this.reporterExecutor.scheduleAtFixedRate(reporter,0,task.getTaskContext().getStatusReportingInterval(),TimeUnit.MILLISECONDS));
+  try {
+    this.scheduledReporters.put(task.getTaskId(),this.reporterExecutor.scheduleAtFixedRate(new TaskStateReporter(task),task.getTaskContext().getStatusReportingInterval(),task.getTaskContext().getStatusReportingInterval(),TimeUnit.MILLISECONDS));
+  }
+ catch (  RejectedExecutionException ree) {
+    LOG.error(String.format("Scheduling of task state reporter for task %s was rejected",task.getTaskId()));
+  }
 }

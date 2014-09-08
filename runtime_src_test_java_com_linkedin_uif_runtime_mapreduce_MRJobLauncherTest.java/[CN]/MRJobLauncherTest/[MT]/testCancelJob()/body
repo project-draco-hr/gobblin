@@ -1,0 +1,3 @@
+{
+  runTestWithCancellation(loadJobProps());
+}

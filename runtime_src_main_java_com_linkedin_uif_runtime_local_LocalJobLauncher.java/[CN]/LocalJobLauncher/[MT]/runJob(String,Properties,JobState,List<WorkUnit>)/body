@@ -12,5 +12,11 @@
   }
   LOG.info(String.format("Waiting for job %s to complete...",jobId));
   this.countDownLatch.await();
+  if (isCancelled) {
+    jobState.setState(JobState.RunningState.CANCELLED);
+  }
+ else   if (this.jobState.getState() == JobState.RunningState.RUNNING) {
+    this.jobState.setState(JobState.RunningState.SUCCESSFUL);
+  }
   this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
 }

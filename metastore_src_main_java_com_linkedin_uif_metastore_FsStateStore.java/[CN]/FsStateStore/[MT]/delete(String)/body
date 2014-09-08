@@ -1,0 +1,6 @@
+{
+  Path storePath=new Path(this.storeRootDir,storeName);
+  if (this.fs.exists(storePath)) {
+    this.fs.delete(storePath,true);
+  }
+}

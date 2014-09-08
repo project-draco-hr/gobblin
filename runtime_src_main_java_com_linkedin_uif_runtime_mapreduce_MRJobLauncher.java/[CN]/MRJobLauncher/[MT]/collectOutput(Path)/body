@@ -1,6 +1,11 @@
 {
   List<TaskState> taskStates=Lists.newArrayList();
-  FileStatus[] fileStatuses=this.fs.globStatus(new Path(jobOutputPath,"part-*"));
+  FileStatus[] fileStatuses=this.fs.listStatus(taskStatePath,new PathFilter(){
+    @Override public boolean accept(    Path path){
+      return path.getName().endsWith(TASK_STATE_STORE_TABLE_SUFFIX);
+    }
+  }
+);
   if (fileStatuses == null || fileStatuses.length == 0) {
     return taskStates;
   }

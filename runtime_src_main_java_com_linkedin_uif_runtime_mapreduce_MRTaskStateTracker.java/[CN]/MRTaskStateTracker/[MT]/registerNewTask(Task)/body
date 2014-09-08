@@ -1,3 +1,8 @@
 {
-  this.reporterExecutor.scheduleAtFixedRate(new TaskStateUpdater(this.context,task),0,task.getTaskContext().getStatusReportingInterval(),TimeUnit.MILLISECONDS);
+  try {
+    this.reporterExecutor.scheduleAtFixedRate(new TaskStateUpdater(this.context,task),task.getTaskContext().getStatusReportingInterval(),task.getTaskContext().getStatusReportingInterval(),TimeUnit.MILLISECONDS);
+  }
+ catch (  RejectedExecutionException ree) {
+    LOG.error(String.format("Scheduling of task state reporter for task %s was rejected",task.getTaskId()));
+  }
 }

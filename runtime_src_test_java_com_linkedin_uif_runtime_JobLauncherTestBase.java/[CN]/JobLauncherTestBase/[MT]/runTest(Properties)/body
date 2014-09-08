@@ -9,17 +9,6 @@
   Assert.assertEquals(jobState.getCompletedTasks(),4);
   Assert.assertEquals(jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY),0);
   for (  TaskState taskState : jobState.getTaskStates()) {
-    File sourceFile=new File(taskState.getProp(SOURCE_FILE_KEY));
-    Extract e=taskState.getExtract();
-    String targetDir=String.format("%s/%s/%s/%s_%s",jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),e.getNamespace().replaceAll("\\.","/"),e.getTable(),e.getExtractId(),(e.getIsFull() ? "FULL" : "APPEND"));
-    File targetFile=new File(targetDir,String.format("%s.%s.avro",jobState.getProp(ConfigurationKeys.WRITER_FILE_NAME),taskState.getId()));
     Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
-    try {
-      Assert.assertEquals(sourceFile.length(),targetFile.length());
-      Assert.assertFalse(Files.equal(sourceFile,targetFile));
-    }
- catch (    Exception ex) {
-      Assert.fail();
-    }
   }
 }

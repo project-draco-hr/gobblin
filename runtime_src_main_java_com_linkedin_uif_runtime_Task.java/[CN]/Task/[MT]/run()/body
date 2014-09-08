@@ -1,11 +1,13 @@
 {
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
-  RowLevelPolicyChecker rowChecker=null;
-  boolean writerClosed=false;
+  this.taskStateTracker.registerNewTask(this);
+  this.taskState.setWorkingState(WorkUnitState.WorkingState.RUNNING);
+  Closer closer=Closer.create();
   try {
-    this.extractor=new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG);
-    Object sourceSchema=this.extractor.getSchema();
+    Extractor extractor=new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG);
+    closer.register(extractor);
+    Object sourceSchema=extractor.getSchema();
     List<Converter> converterList=this.taskContext.getConverters();
     boolean doConversion=!converterList.isEmpty();
     Converter converter=null;
@@ -14,23 +16,20 @@
       converter=new MultiConverter(converterList);
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
-    rowChecker=buildRowLevelPolicyChecker(this.taskState);
+    RowLevelPolicyChecker rowChecker=buildRowLevelPolicyChecker(this.taskState);
+    closer.register(rowChecker);
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
-    this.writer=buildWriter(this.taskContext,schemaForWriter);
-    this.taskState.setWorkingState(WorkUnitState.WorkingState.WORKING);
-    this.taskStateTracker.registerNewTask(this);
-    long recordsPulled=0;
+    buildWriter(this.taskContext,schemaForWriter);
+    closer.register(this.writer);
     long pullLimit=this.taskState.getPropAsLong(ConfigurationKeys.EXTRACT_PULL_LIMIT,0);
+    long recordsPulled=0;
     Object record=null;
-    while ((record=this.extractor.readRecord(record)) != null) {
-      Object convertedRecord=null;
+    while ((record=extractor.readRecord(record)) != null) {
+      Object convertedRecord=record;
       if (doConversion) {
         convertedRecord=converter.convertRecord(sourceSchema,record,this.taskState);
       }
- else {
-        convertedRecord=record;
-      }
-      if (record != null && rowChecker.executePolicies(convertedRecord,rowResults)) {
+      if (convertedRecord != null && rowChecker.executePolicies(convertedRecord,rowResults)) {
         this.writer.write(convertedRecord);
       }
       recordsPulled++;
@@ -40,8 +39,8 @@
     }
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
     this.writer.close();
-    writerClosed=true;
-    if (canPublishData(recordsPulled,pullLimit,schemaForWriter)) {
+    boolean shouldCommit=checkDataQuality(recordsPulled,extractor.getExpectedRecordCount(),pullLimit,schemaForWriter);
+    if (shouldCommit) {
       commitData();
     }
   }
@@ -51,40 +50,17 @@
     this.taskState.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,t.toString());
   }
  finally {
-    if (this.extractor != null) {
-      this.extractor.close();
+    try {
+      closer.close();
     }
-    if (rowChecker != null) {
-      try {
-        rowChecker.close();
-      }
- catch (      IOException ioe) {
-        LOG.error("Failed to close the row quality checker for task " + taskId,ioe);
-      }
+ catch (    IOException ioe) {
+      LOG.error("Failed to close all open resources",ioe);
     }
-    if (this.publisher != null) {
-      try {
-        this.publisher.cleanup();
-      }
- catch (      Exception e) {
-        LOG.error("Failed to close the task publisher for task " + taskId,e);
-      }
+    try {
+      this.writer.cleanup();
     }
-    if (this.writer != null) {
-      if (!writerClosed) {
-        try {
-          this.writer.close();
-        }
- catch (        IOException ioe) {
-          LOG.error("Failed to close the writer for task " + taskId,ioe);
-        }
-      }
-      try {
-        this.writer.cleanup();
-      }
- catch (      IOException ioe) {
-        LOG.error("The writer failed to cleanup for task " + taskId,ioe);
-      }
+ catch (    IOException ioe) {
+      LOG.error("The writer failed to cleanup for task " + taskId,ioe);
     }
     long endTime=System.currentTimeMillis();
     this.taskState.setEndTime(endTime);
