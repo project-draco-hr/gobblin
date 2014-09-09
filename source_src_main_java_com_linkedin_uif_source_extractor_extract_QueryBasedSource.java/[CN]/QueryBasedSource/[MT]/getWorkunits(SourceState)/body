@@ -18,8 +18,8 @@
     extract.setFullTrue(System.currentTimeMillis());
   }
   for (  Entry<Long,Long> entry : sortedPartitions.entrySet()) {
-    extract.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,entry.getKey());
-    extract.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,entry.getValue());
+    partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,entry.getKey());
+    partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,entry.getValue());
     workUnits.add(partitionState.createWorkUnit(extract));
   }
   LOG.info("Total number of work units for the current run: " + workUnits.size());
