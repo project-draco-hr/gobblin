@@ -30,7 +30,7 @@
  else {
         convertedRecord=record;
       }
-      if (record != null && rowChecker.executePolicies(convertedRecord,rowResults)) {
+      if (convertedRecord != null && rowChecker.executePolicies(convertedRecord,rowResults)) {
         this.writer.write(convertedRecord);
       }
       recordsPulled++;

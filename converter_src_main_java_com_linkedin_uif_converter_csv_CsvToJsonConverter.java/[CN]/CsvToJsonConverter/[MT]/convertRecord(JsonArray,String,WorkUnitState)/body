@@ -3,7 +3,7 @@
   JsonObject outputRecord=new JsonObject();
   for (int i=0; i < outputSchema.size(); i++) {
     if (i < recordSplit.size()) {
-      if (recordSplit.get(i).isEmpty()) {
+      if (recordSplit.get(i).isEmpty() || recordSplit.get(i).toLowerCase().equals(NULL)) {
         outputRecord.add(outputSchema.get(i).getAsJsonObject().get("columnName").getAsString(),JsonNull.INSTANCE);
       }
  else {
