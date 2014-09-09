@@ -1,3 +1,3 @@
 {
-  jobState.toJson(jsonWriter);
+  jobState.toJson(jsonWriter,this.keepConfig);
 }

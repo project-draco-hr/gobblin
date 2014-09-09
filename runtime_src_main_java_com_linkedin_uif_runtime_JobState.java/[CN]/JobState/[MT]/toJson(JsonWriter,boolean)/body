@@ -7,5 +7,13 @@
     taskState.toJson(jsonWriter);
   }
   jsonWriter.endArray();
+  if (keepConfig) {
+    jsonWriter.name("properties");
+    jsonWriter.beginObject();
+    for (    String key : this.getPropertyNames()) {
+      jsonWriter.name(key).value(this.getProp(key));
+    }
+    jsonWriter.endObject();
+  }
   jsonWriter.endObject();
 }
