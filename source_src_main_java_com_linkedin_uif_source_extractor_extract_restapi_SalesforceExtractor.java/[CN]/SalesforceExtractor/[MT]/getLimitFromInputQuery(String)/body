@@ -1,8 +1,0 @@
-{
-  String inputQuery=query.toLowerCase();
-  int limitIndex=inputQuery.indexOf(" limit");
-  if (limitIndex > 0) {
-    return query.substring(limitIndex);
-  }
-  return "";
-}

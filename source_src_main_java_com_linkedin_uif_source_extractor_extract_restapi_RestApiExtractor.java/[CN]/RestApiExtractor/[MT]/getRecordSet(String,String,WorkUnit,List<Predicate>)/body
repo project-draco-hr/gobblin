@@ -20,7 +20,7 @@
           cmds=this.getDataMetadata(schema,entity,workUnit,predicateList);
         }
  else {
-          cmds=SalesforceExtractor.constructGetCommand(this.getNextUrl());
+          cmds=RestApiExtractor.constructGetCommand(this.getNextUrl());
         }
         CommandOutput<?,?> response=this.getResponse(cmds);
         rs=this.getData(response);

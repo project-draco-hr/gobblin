@@ -1,4 +1,0 @@
-{
-  Map<String,String> dataTypeMap=ImmutableMap.<String,String>builder().put("url","string").put("textarea","string").put("reference","string").put("phone","string").put("masterrecord","string").put("location","string").put("id","string").put("encryptedstring","string").put("email","string").put("DataCategoryGroupReference","string").put("calculated","string").put("anyType","string").put("address","string").put("blob","string").put("date","date").put("datetime","timestamp").put("time","time").put("object","string").put("string","string").put("int","int").put("long","long").put("double","double").put("percent","double").put("currency","double").put("decimal","double").put("boolean","boolean").put("picklist","string").put("multipicklist","string").put("combobox","string").put("list","string").put("set","string").put("map","string").put("enum","string").build();
-  return dataTypeMap;
-}
