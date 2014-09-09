@@ -8,11 +8,11 @@
  catch (    Exception e) {
       numFailedConversion++;
       if (numFailedConversion < maxFailedConversions) {
-        log.error("Dropping record " + inputRecord + " because it cannot be converted to Avro",e);
+        LOG.error("Dropping record " + inputRecord + " because it cannot be converted to Avro",e);
         return null;
       }
  else {
-        throw new RuntimeException("Unable to convert field:" + entry.getKey() + " for value:"+ entry.getValue()+ " for record: "+ inputRecord,e);
+        throw new DataConversionException("Unable to convert field:" + entry.getKey() + " for value:"+ entry.getValue()+ " for record: "+ inputRecord,e);
       }
     }
   }
