@@ -5,6 +5,7 @@
   JsonObject defaultWatermark=this.getDefaultWatermark();
   String defaultWatermarkColumnName=defaultWatermark.get("columnName").getAsString();
   this.setSampleRecordCount(this.exractSampleRecordCountFromQuery(inputQuery));
+  inputQuery=this.removeSampleClauseFromQuery(inputQuery);
   JsonArray targetSchema=new JsonArray();
   List<String> headerColumns=new ArrayList<String>();
   try {

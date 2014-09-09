@@ -1,1 +1,2 @@
 JsonWriter jsonWriter
+boolean keepConfig

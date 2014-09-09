@@ -1,0 +1,14 @@
+{
+  String columnFormat=null;
+switch (watermarkType) {
+case TIMESTAMP:
+    columnFormat="yyyy-MM-dd HH:mm:ss";
+  break;
+case DATE:
+columnFormat="yyyy-MM-dd";
+break;
+default :
+log.error("Watermark type " + watermarkType.toString() + " not recognized");
+}
+return columnFormat;
+}
