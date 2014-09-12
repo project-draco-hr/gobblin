@@ -1,9 +1,0 @@
-URI uri
-String stagingDir
-String outputDir
-String fileName
-int bufferSize
-DataConverter<S,GenericRecord> dataConverter
-Schema schema
-String codecType
-int deflateLevel

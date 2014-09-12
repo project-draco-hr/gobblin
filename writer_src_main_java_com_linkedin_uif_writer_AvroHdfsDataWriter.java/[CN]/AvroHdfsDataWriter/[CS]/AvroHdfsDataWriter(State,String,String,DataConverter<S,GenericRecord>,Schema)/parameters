@@ -1,0 +1,5 @@
+State properties
+String relFilePath
+String fileName
+DataConverter<S,GenericRecord> dataConverter
+Schema schema

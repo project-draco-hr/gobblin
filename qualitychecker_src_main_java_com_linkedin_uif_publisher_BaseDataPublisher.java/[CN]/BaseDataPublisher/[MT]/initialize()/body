@@ -1,3 +1,7 @@
 {
-  this.fs=FileSystem.get(new URI(getState().getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),new Configuration());
+  Configuration conf=new Configuration();
+  for (  String key : this.state.getPropertyNames()) {
+    conf.set(key,this.state.getProp(key));
+  }
+  this.fs=FileSystem.get(URI.create(getState().getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI)),conf);
 }
