@@ -3,11 +3,13 @@
   Option jobNameOption=OptionBuilder.withArgName("gobblin job name").withDescription("Gobblin job name").withLongOpt("name").hasArgs().isRequired().create('n');
   Option jobIdOption=OptionBuilder.withArgName("gobblin job id").withDescription("Gobblin job id").withLongOpt("id").hasArgs().create('i');
   Option convertAllOption=OptionBuilder.withDescription("Whether to convert all past job states of the given job").withLongOpt("all").create('a');
+  Option keepConfigOption=OptionBuilder.withDescription("Whether to keep all configuration properties").withLongOpt("keepConfig").create("kc");
   Options options=new Options();
   options.addOption(propertiesOption);
   options.addOption(jobNameOption);
   options.addOption(jobIdOption);
   options.addOption(convertAllOption);
+  options.addOption(keepConfigOption);
   CommandLine cmd=null;
   try {
     CommandLineParser parser=new BasicParser();
@@ -20,7 +22,7 @@
   }
   Properties properties=new Properties();
   properties.load(new FileReader(cmd.getOptionValue('p')));
-  JobStateToJsonConverter converter=new JobStateToJsonConverter(properties);
+  JobStateToJsonConverter converter=new JobStateToJsonConverter(properties,Boolean.valueOf(cmd.getOptionValue("kc")));
   StringWriter stringWriter=new StringWriter();
   if (cmd.hasOption('i')) {
     converter.convert(cmd.getOptionValue('n'),cmd.getOptionValue('i'),stringWriter);

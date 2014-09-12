@@ -1,4 +1,0 @@
-{
-  this.log.debug("Build url to retrieve schema");
-  return SalesforceExtractor.constructGetCommand(this.getFullUri("/sobjects/" + entity.trim() + "/describe"));
-}

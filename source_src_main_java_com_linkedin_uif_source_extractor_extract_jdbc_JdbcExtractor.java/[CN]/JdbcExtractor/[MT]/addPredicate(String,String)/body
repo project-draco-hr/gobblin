@@ -1,5 +1,5 @@
 {
-  String predicate="where";
+  String predicate=" where ";
   if (query.toLowerCase().contains(predicate)) {
     predicate="and";
   }

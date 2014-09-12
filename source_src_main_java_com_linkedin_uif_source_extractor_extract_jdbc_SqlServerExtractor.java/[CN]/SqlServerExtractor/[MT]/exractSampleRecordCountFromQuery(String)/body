@@ -1,0 +1,19 @@
+{
+  if (StringUtils.isBlank(query)) {
+    return SAMPLERECORDCOUNT;
+  }
+  long recordcount=SAMPLERECORDCOUNT;
+  String inputQuery=query.toLowerCase();
+  int limitStartIndex=inputQuery.indexOf(" top ");
+  int limitEndIndex=this.getLimitEndIndex(inputQuery,limitStartIndex);
+  if (limitStartIndex > 0) {
+    String limitValue=query.substring(limitStartIndex + 5,limitEndIndex);
+    try {
+      recordcount=Long.parseLong(limitValue);
+    }
+ catch (    Exception e) {
+      log.error("Ignoring incorrct limit value in input query:" + limitValue);
+    }
+  }
+  return recordcount;
+}

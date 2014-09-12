@@ -1,0 +1,19 @@
+{
+  jsonWriter.beginObject();
+  jsonWriter.name("job name").value(this.getJobName()).name("job id").value(this.getJobId()).name("job state").value(this.getState().name()).name("start time").value(this.getStartTime()).name("end time").value(this.getEndTime()).name("duration").value(this.getDuration()).name("tasks").value(this.getTasks()).name("completed tasks").value(this.getCompletedTasks());
+  jsonWriter.name("task states");
+  jsonWriter.beginArray();
+  for (  TaskState taskState : taskStates) {
+    taskState.toJson(jsonWriter);
+  }
+  jsonWriter.endArray();
+  if (keepConfig) {
+    jsonWriter.name("properties");
+    jsonWriter.beginObject();
+    for (    String key : this.getPropertyNames()) {
+      jsonWriter.name(key).value(this.getProp(key));
+    }
+    jsonWriter.endObject();
+  }
+  jsonWriter.endObject();
+}
