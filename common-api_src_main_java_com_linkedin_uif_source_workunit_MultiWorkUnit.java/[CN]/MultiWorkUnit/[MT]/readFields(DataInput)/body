@@ -1,0 +1,8 @@
+{
+  int numWorkUnits=in.readInt();
+  for (int i=0; i < numWorkUnits; i++) {
+    WorkUnit workUnit=new WorkUnit(null,null);
+    workUnit.readFields(in);
+    this.workUnits.add(workUnit);
+  }
+}

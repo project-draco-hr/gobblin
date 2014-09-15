@@ -3,7 +3,7 @@
     LOG.error("Not running the task because the mapper was not setup properly");
     return;
   }
-  WorkUnit workUnit=new WorkUnit(null,null);
+  WorkUnit workUnit=(value.toString().endsWith(MULTI_WORK_UNIT_FILE_EXTENSION) ? new MultiWorkUnit() : new WorkUnit());
   Closer closer=Closer.create();
   try {
     InputStream is=closer.register(this.fs.open(new Path(value.toString())));
@@ -13,26 +13,5 @@
   finally {
     closer.close();
   }
-  String jobId=workUnit.getProp(ConfigurationKeys.JOB_ID_KEY);
-  String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
-  if (this.taskStateStore.exists(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX)) {
-    this.taskStateStore.delete(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX);
-  }
-  WorkUnitState workUnitState=new WorkUnitState(workUnit);
-  workUnitState.setId(taskId);
-  workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
-  workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-  Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
-  this.taskStateTracker.registerNewTask(task);
-  LOG.info(String.format("Submitting and waiting for task %s to complete...",taskId));
-  try {
-    this.taskExecutor.submit(task).get();
-  }
- catch (  ExecutionException ee) {
-    LOG.error("Failed to submit and execute task " + task.getTaskId(),ee);
-  }
-  this.taskStateStore.put(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX,task.getTaskState());
-  if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
-    throw new IOException(String.format("Task %s of job %s failed",task.getTaskId(),task.getJobId()));
-  }
+  runWorkUnits(workUnit instanceof MultiWorkUnit ? ((MultiWorkUnit)workUnit).getWorkUnits() : Lists.newArrayList(workUnit));
 }

@@ -1,0 +1,3 @@
+{
+  return ImmutableList.<WorkUnit>builder().addAll(this.workUnits).build();
+}

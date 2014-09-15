@@ -1,8 +1,16 @@
 {
   this.jobState=jobState;
-  this.countDownLatch=new CountDownLatch(workUnits.size());
-  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
+  List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
+    if (workUnit instanceof MultiWorkUnit) {
+      workUnitsToRun.addAll(((MultiWorkUnit)workUnit).getWorkUnits());
+    }
+ else {
+      workUnitsToRun.add(workUnit);
+    }
+  }
+  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
+  for (  WorkUnit workUnit : workUnitsToRun) {
     String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
     WorkUnitState workUnitState=new WorkUnitState(workUnit);
     workUnitState.setId(taskId);
@@ -10,6 +18,7 @@
     workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
     this.workUnitManager.addWorkUnit(workUnitState);
   }
+  this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
   LOG.info(String.format("Waiting for job %s to complete...",jobId));
   this.countDownLatch.await();
   if (isCancelled) {

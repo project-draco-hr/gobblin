@@ -1,0 +1,23 @@
+{
+  Closer closer=Closer.create();
+  try {
+    ByteArrayOutputStream baos=closer.register(new ByteArrayOutputStream());
+    DataOutputStream dos=closer.register(new DataOutputStream(baos));
+    this.multiWorkUnit.write(dos);
+    ByteArrayInputStream bais=closer.register((new ByteArrayInputStream(baos.toByteArray())));
+    DataInputStream dis=closer.register((new DataInputStream(bais)));
+    MultiWorkUnit copy=new MultiWorkUnit();
+    copy.readFields(dis);
+    List<WorkUnit> workUnitList=copy.getWorkUnits();
+    Assert.assertEquals(workUnitList.size(),2);
+    Assert.assertEquals(workUnitList.get(0).getHighWaterMark(),1000);
+    Assert.assertEquals(workUnitList.get(0).getLowWaterMark(),0);
+    Assert.assertEquals(workUnitList.get(0).getProp("k1"),"v1");
+    Assert.assertEquals(workUnitList.get(1).getHighWaterMark(),2000);
+    Assert.assertEquals(workUnitList.get(1).getLowWaterMark(),1001);
+    Assert.assertEquals(workUnitList.get(1).getProp("k2"),"v2");
+  }
+  finally {
+    closer.close();
+  }
+}

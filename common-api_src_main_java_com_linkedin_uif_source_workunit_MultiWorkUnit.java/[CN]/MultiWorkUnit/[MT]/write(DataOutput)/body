@@ -1,0 +1,6 @@
+{
+  out.writeInt(this.workUnits.size());
+  for (  WorkUnit workUnit : this.workUnits) {
+    workUnit.write(out);
+  }
+}
