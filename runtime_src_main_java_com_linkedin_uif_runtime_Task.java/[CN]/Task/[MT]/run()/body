@@ -5,7 +5,8 @@
   this.taskState.setWorkingState(WorkUnitState.WorkingState.RUNNING);
   Closer closer=Closer.create();
   try {
-    Extractor extractor=closer.register(new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG));
+    Extractor extractor=new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG);
+    closer.register(extractor);
     Object sourceSchema=extractor.getSchema();
     List<Converter> converterList=this.taskContext.getConverters();
     boolean doConversion=!converterList.isEmpty();
@@ -15,7 +16,8 @@
       converter=new MultiConverter(converterList);
       schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
     }
-    RowLevelPolicyChecker rowChecker=closer.register(buildRowLevelPolicyChecker(this.taskState));
+    RowLevelPolicyChecker rowChecker=buildRowLevelPolicyChecker(this.taskState);
+    closer.register(rowChecker);
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
     buildWriter(this.taskContext,schemaForWriter);
     closer.register(this.writer);

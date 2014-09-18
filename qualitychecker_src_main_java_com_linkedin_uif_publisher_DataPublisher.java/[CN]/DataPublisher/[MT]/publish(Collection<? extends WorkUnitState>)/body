@@ -1,4 +1,4 @@
 {
-  publishMetadata(states);
-  publishData(states);
+  publishMetadata(tasks);
+  publishData(tasks);
 }

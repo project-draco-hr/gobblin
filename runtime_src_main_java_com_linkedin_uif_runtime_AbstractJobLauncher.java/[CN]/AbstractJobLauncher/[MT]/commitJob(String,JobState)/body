@@ -1,19 +1,13 @@
 {
   JobCommitPolicy commitPolicy=JobCommitPolicy.forName(jobState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
   if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.SUCCESSFUL)) {
+    LOG.info("Publishing job data of job " + jobId + " with commit policy "+ commitPolicy);
     Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE));
-    Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(State.class);
-    LOG.info(String.format("Publishing job data of job %s with commit policy %s",jobId,commitPolicy.name()));
-    Closer closer=Closer.create();
-    try {
-      DataPublisher publisher=closer.register(dataPublisherConstructor.newInstance(jobState));
-      publisher.initialize();
-      publisher.publish(jobState.getTaskStates());
-      jobState.setState(JobState.RunningState.COMMITTED);
-    }
-  finally {
-      closer.close();
-    }
+    Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(com.linkedin.uif.configuration.State.class);
+    DataPublisher publisher=dataPublisherConstructor.newInstance(jobState);
+    publisher.initialize();
+    publisher.publish(jobState.getTaskStates());
+    jobState.setState(JobState.RunningState.COMMITTED);
   }
  else {
     LOG.info("Job data will not be committed due to commit policy: " + commitPolicy);
