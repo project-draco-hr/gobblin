@@ -1,0 +1,3 @@
+{
+  return this.workUnitState.getProp(ConfigurationKeys.SOURCE_SCHEMA);
+}
