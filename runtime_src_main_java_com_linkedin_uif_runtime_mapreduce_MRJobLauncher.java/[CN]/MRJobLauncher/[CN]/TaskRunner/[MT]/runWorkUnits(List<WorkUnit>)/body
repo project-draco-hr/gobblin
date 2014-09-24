@@ -19,6 +19,7 @@
  catch (    Exception e) {
       LOG.error("Failed to submit and execute task " + task.getTaskId(),e);
     }
+    LOG.info("Writing task state for task " + taskId);
     this.taskStateStore.put(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX,task.getTaskState());
     if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
       LOG.error(String.format("Task %s of job %s failed",task.getTaskId(),task.getJobId()));

@@ -10,13 +10,20 @@
     return taskStates;
   }
   for (  FileStatus status : fileStatuses) {
-    SequenceFile.Reader reader=new SequenceFile.Reader(this.fs,status.getPath(),this.fs.getConf());
-    Text text=new Text();
-    TaskState taskState=new TaskState();
-    while (reader.next(text,taskState)) {
-      taskStates.add(taskState);
-      taskState=new TaskState();
+    Closer closer=Closer.create();
+    try {
+      SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,status.getPath(),this.fs.getConf()));
+      Text text=new Text();
+      TaskState taskState=new TaskState();
+      while (reader.next(text,taskState)) {
+        taskStates.add(taskState);
+        taskState=new TaskState();
+      }
+    }
+  finally {
+      closer.close();
     }
   }
+  LOG.info(String.format("Collected task state of %d completed tasks",taskStates.size()));
   return taskStates;
 }

@@ -4,9 +4,9 @@
   if (!this.fs.exists(tablePath)) {
     return states;
   }
-  SequenceFile.Reader reader=null;
+  Closer closer=Closer.create();
   try {
-    reader=new SequenceFile.Reader(this.fs,tablePath,this.conf);
+    SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
     try {
       Text key=new Text();
       State state=this.stateClass.newInstance();
@@ -20,9 +20,7 @@
     }
   }
   finally {
-    if (reader != null) {
-      reader.close();
-    }
+    closer.close();
   }
   return states;
 }
