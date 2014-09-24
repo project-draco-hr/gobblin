@@ -1,0 +1,14 @@
+{
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  if (!state.contains(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL)) {
+    return workUnits;
+  }
+  Extract extract=new Extract(state,Extract.TableType.SNAPSHOT_ONLY,state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY,"DemoNamespace"),"DemoTable");
+  String filesToPull=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL);
+  for (  String file : Splitter.on(',').omitEmptyStrings().split(filesToPull)) {
+    WorkUnit workUnit=new WorkUnit(state,extract);
+    workUnit.setProp(SOURCE_FILE_KEY,file);
+    workUnits.add(workUnit);
+  }
+  return workUnits;
+}
