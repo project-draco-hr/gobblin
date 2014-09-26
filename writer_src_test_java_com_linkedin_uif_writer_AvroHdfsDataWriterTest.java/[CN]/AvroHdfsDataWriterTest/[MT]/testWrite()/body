@@ -1,6 +1,6 @@
 {
   for (  String record : TestConstants.JSON_RECORDS) {
-    this.writer.write(record);
+    this.writer.write(convertRecord(record));
   }
   Assert.assertEquals(this.writer.recordsWritten(),3);
   this.writer.close();

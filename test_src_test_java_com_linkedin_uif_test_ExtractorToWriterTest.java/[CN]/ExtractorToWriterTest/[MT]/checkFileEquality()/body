@@ -1,3 +1,0 @@
-{
-  Assert.assertEquals(fs.getFileChecksum(new Path(SOURCE_FILES)),fs.getFileChecksum(new Path(TestConstants.TEST_OUTPUT_DIR)));
-}

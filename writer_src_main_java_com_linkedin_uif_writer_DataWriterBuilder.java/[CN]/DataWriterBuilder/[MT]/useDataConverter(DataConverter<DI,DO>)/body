@@ -1,4 +1,0 @@
-{
-  this.dataConverter=dataConverter;
-  return this;
-}

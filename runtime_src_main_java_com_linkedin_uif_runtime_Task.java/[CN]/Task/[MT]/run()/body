@@ -36,7 +36,6 @@
       }
     }
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
-    this.writer.close();
     boolean shouldCommit=checkDataQuality(recordsPulled,extractor.getExpectedRecordCount(),pullLimit,schemaForWriter);
     if (shouldCommit) {
       commitData();

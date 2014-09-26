@@ -7,14 +7,13 @@
   if (!outputDir.exists()) {
     outputDir.mkdirs();
   }
+  this.schema=new Schema.Parser().parse(TestConstants.AVRO_SCHEMA);
+  this.filePath=TestConstants.TEST_EXTRACT_NAMESPACE.replaceAll("\\.","/") + "/" + TestConstants.TEST_EXTRACT_TABLE+ "/"+ TestConstants.TEST_EXTRACT_ID+ "_"+ TestConstants.TEST_EXTRACT_PULL_TYPE;
   State properties=new State();
   properties.setProp(ConfigurationKeys.WRITER_BUFFER_SIZE,ConfigurationKeys.DEFAULT_BUFFER_SIZE);
   properties.setProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,TestConstants.TEST_FS_URI);
   properties.setProp(ConfigurationKeys.WRITER_STAGING_DIR,TestConstants.TEST_STAGING_DIR);
   properties.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,TestConstants.TEST_OUTPUT_DIR);
   properties.setProp(ConfigurationKeys.WRITER_FILE_NAME,TestConstants.TEST_FILE_NAME);
-  SchemaConverter<String,Schema> schemaConverter=new TestSchemaConverter();
-  this.schema=schemaConverter.convert(TestConstants.AVRO_SCHEMA);
-  this.filePath=TestConstants.TEST_EXTRACT_NAMESPACE.replaceAll("\\.","/") + "/" + TestConstants.TEST_EXTRACT_TABLE+ "/"+ TestConstants.TEST_EXTRACT_ID+ "_"+ TestConstants.TEST_EXTRACT_PULL_TYPE;
-  this.writer=new DataWriterBuilderFactory().newDataWriterBuilder(WriterOutputFormat.AVRO).writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).useDataConverter(new TestDataConverter(schemaConverter.convert(TestConstants.AVRO_SCHEMA))).useSchemaConverter(new TestSchemaConverter()).withSourceSchema(TestConstants.AVRO_SCHEMA).withFilePath(filePath).build();
+  this.writer=new DataWriterBuilderFactory().newDataWriterBuilder(WriterOutputFormat.AVRO).writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).withSchema(this.schema).withFilePath(filePath).build();
 }

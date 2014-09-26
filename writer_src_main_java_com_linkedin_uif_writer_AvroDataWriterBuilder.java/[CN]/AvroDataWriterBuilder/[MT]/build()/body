@@ -1,27 +1,15 @@
 {
   Preconditions.checkNotNull(this.destination);
   Preconditions.checkArgument(!Strings.isNullOrEmpty(this.writerId));
-  Preconditions.checkNotNull(this.sourceSchema);
+  Preconditions.checkNotNull(this.schema);
   Preconditions.checkArgument(this.format == WriterOutputFormat.AVRO);
-  Schema schema;
-  try {
-    if (Optional.fromNullable(this.schemaConverter).isPresent()) {
-      schema=this.schemaConverter.convert(this.sourceSchema);
-    }
- else {
-      schema=new Schema.Parser().parse(this.sourceSchema.toString());
-    }
-  }
- catch (  SchemaConversionException e) {
-    throw new IOException("Failed to convert the source schema: " + this.sourceSchema,e);
-  }
 switch (this.destination.getType()) {
 case HDFS:
     State properties=this.destination.getProperties();
   String fileName=String.format("%s.%s.%s",properties.getProp(ConfigurationKeys.WRITER_FILE_NAME,"part"),this.writerId,this.format.getExtension());
-return new AvroHdfsDataWriter<DI>(properties,this.filePath,fileName,this.dataConverter,schema);
+return new AvroHdfsDataWriter(properties,this.filePath,fileName,this.schema);
 case KAFKA:
-return new KafkaDataWriter<DI>();
+return new AvroKafkaDataWriter();
 default :
 throw new RuntimeException("Unknown destination type: " + this.destination.getType());
 }
