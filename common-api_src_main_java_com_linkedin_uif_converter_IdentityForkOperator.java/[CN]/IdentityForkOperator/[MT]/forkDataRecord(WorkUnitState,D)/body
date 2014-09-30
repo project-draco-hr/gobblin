@@ -1,0 +1,8 @@
+{
+  Optional<D> copy=Optional.of(input);
+  List<Optional<D>> records=Lists.newArrayList();
+  for (int i=0; i < getBranches(workUnitState); i++) {
+    records.add(copy);
+  }
+  return records;
+}

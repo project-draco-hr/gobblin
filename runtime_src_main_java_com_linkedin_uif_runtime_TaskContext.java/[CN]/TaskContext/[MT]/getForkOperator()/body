@@ -1,0 +1,11 @@
+{
+  if (!this.workUnit.contains(ConfigurationKeys.FORK_OPERATOR_CLASS_KEY)) {
+    return null;
+  }
+  try {
+    return (ForkOperator)Class.forName(this.workUnit.getProp(ConfigurationKeys.FORK_OPERATOR_CLASS_KEY)).newInstance();
+  }
+ catch (  Exception e) {
+    return null;
+  }
+}

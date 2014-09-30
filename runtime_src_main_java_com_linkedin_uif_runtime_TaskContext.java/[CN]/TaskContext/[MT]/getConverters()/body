@@ -3,8 +3,7 @@
     return Collections.emptyList();
   }
   String converterClassesList=this.workUnit.getProp(ConfigurationKeys.CONVERTER_CLASSES_KEY);
-  LinkedList<String> converterClasses=Lists.newLinkedList(Splitter.on(",").omitEmptyStrings().trimResults().split(converterClassesList));
-  converterClasses.removeLast();
+  List<String> converterClasses=Lists.newLinkedList(Splitter.on(",").omitEmptyStrings().trimResults().split(converterClassesList));
   List<Converter> converters=Lists.newArrayList();
   for (  String converterClass : converterClasses) {
     try {

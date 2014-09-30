@@ -1,1 +1,1 @@
-DataWriterBuilder<SI,Schema,DI,GenericRecord>
+DataWriterBuilder<Schema,GenericRecord>

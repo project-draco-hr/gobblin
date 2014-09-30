@@ -1,4 +1,0 @@
-{
-  this.sourceSchema=sourceSchema;
-  return this;
-}
