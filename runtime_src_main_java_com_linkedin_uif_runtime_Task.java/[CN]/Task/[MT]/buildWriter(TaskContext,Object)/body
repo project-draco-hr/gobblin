@@ -1,4 +1,0 @@
-{
-  DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(context.getWriterOutputFormat());
-  this.writer=builder.writeTo(Destination.of(context.getDestinationType(),this.taskState)).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).withSchema(schema).withFilePath(this.taskState.getExtract().getOutputFilePath()).build();
-}

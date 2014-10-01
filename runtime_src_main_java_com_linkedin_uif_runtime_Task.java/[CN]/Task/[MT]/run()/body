@@ -3,6 +3,7 @@
   this.taskState.setStartTime(startTime);
   this.taskStateTracker.registerNewTask(this);
   this.taskState.setWorkingState(WorkUnitState.WorkingState.RUNNING);
+  int branches=1;
   Closer closer=Closer.create();
   try {
     Extractor extractor=closer.register(new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG));
@@ -10,15 +11,22 @@
     List<Converter> converterList=this.taskContext.getConverters();
     boolean doConversion=!converterList.isEmpty();
     Converter converter=null;
-    Object schemaForWriter=sourceSchema;
     if (doConversion) {
       converter=new MultiConverter(converterList);
-      schemaForWriter=converter.convertSchema(sourceSchema,this.taskState);
+      sourceSchema=converter.convertSchema(sourceSchema,this.taskState);
     }
-    RowLevelPolicyChecker rowChecker=closer.register(buildRowLevelPolicyChecker(this.taskState));
+    ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
+    branches=forkOperator.getBranches(this.taskState);
+    List<Optional<Object>> forkedSchemas=forkOperator.forkSchema(this.taskState,sourceSchema);
+    if (forkedSchemas.size() != branches) {
+      throw new ForkBranchMismatchException(String.format("Number of forked schemas [%d] is not equal to number of branches [%d]",forkedSchemas.size(),branches));
+    }
+    RowLevelPolicyChecker rowChecker=closer.register(this.taskContext.getRowLevelPolicyChecker(this.taskState));
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
-    buildWriter(this.taskContext,schemaForWriter);
-    closer.register(this.writer);
+    buildWriters(this.taskContext,branches,forkedSchemas);
+    for (    DataWriter writer : this.writers) {
+      closer.register(writer);
+    }
     long pullLimit=this.taskState.getPropAsLong(ConfigurationKeys.EXTRACT_PULL_LIMIT,0);
     long recordsPulled=0;
     Object record=null;
@@ -28,7 +36,15 @@
         convertedRecord=converter.convertRecord(sourceSchema,record,this.taskState);
       }
       if (convertedRecord != null && rowChecker.executePolicies(convertedRecord,rowResults)) {
-        this.writer.write(convertedRecord);
+        List<Optional<Object>> forkedRecords=forkOperator.forkDataRecord(this.taskState,convertedRecord);
+        if (forkedRecords.size() != branches) {
+          throw new ForkBranchMismatchException(String.format("Number of forked data records [%d] is not equal to number of branches [%d]",forkedSchemas.size(),branches));
+        }
+        for (int i=0; i < branches; i++) {
+          if (forkedRecords.get(i).isPresent()) {
+            this.writers.get(i).write(forkedRecords.get(i).get());
+          }
+        }
       }
       recordsPulled++;
       if (pullLimit > 0 && recordsPulled >= pullLimit) {
@@ -36,9 +52,11 @@
       }
     }
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
-    boolean shouldCommit=checkDataQuality(recordsPulled,extractor.getExpectedRecordCount(),pullLimit,schemaForWriter);
-    if (shouldCommit) {
-      commitData();
+    for (int i=0; i < branches; i++) {
+      boolean shouldCommit=checkDataQuality(recordsPulled,extractor.getExpectedRecordCount(),pullLimit,i,forkedSchemas.get(i).get());
+      if (shouldCommit) {
+        commitData(i);
+      }
     }
   }
  catch (  Throwable t) {
@@ -53,11 +71,13 @@
  catch (    IOException ioe) {
       LOG.error("Failed to close all open resources",ioe);
     }
-    try {
-      this.writer.cleanup();
-    }
- catch (    IOException ioe) {
-      LOG.error("The writer failed to cleanup for task " + taskId,ioe);
+    for (int i=0; i < branches; i++) {
+      try {
+        this.writers.get(i).cleanup();
+      }
+ catch (      IOException ioe) {
+        LOG.error("The writer failed to cleanup for task " + taskId,ioe);
+      }
     }
     long endTime=System.currentTimeMillis();
     this.taskState.setEndTime(endTime);

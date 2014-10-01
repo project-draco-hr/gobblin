@@ -1,0 +1,9 @@
+{
+  Properties jobProps=loadJobProps();
+  jobProps.setProperty(ConfigurationKeys.FORK_BRANCHES_KEY,"2");
+  jobProps.setProperty(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY + ".0",WriterOutputFormat.AVRO.name());
+  jobProps.setProperty(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY + ".1",WriterOutputFormat.AVRO.name());
+  jobProps.setProperty(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY + ".0",Destination.DestinationType.HDFS.name());
+  jobProps.setProperty(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY + ".1",Destination.DestinationType.HDFS.name());
+  runTestWithFork(jobProps);
+}

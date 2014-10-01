@@ -1,4 +1,5 @@
 long recordsPulled
 long expectedCount
 long pullLimit
-Object schemaForWriter
+int index
+Object schema

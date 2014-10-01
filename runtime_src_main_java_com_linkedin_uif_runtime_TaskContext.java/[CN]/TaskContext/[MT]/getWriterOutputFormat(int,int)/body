@@ -1,0 +1,3 @@
+{
+  return WriterOutputFormat.valueOf(this.workUnit.getProp(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY + (branches > 1 ? "." + index : ""),WriterOutputFormat.AVRO.name()));
+}

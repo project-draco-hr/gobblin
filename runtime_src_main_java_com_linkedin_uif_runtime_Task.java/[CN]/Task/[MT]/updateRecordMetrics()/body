@@ -1,7 +1,5 @@
 {
-  if (this.writer == null) {
-    LOG.warn(String.format("Could not update record metrics for task %s: writer was not built",this.taskId));
-    return;
+  for (  DataWriter writer : this.writers) {
+    this.taskState.updateRecordMetrics(writer.recordsWritten());
   }
-  this.taskState.updateRecordMetrics(this.writer.recordsWritten());
 }

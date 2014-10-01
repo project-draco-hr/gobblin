@@ -1,3 +1,0 @@
-{
-  return WriterOutputFormat.valueOf(this.workUnit.getProp(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY,WriterOutputFormat.AVRO.name()));
-}

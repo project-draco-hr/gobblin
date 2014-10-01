@@ -5,11 +5,11 @@
  else {
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,expectedCount);
   }
-  this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
-  this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schemaForWriter.toString());
-  TaskLevelPolicyChecker policyChecker=buildTaskLevelPolicyChecker(this.taskState);
+  this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writers.get(index).recordsWritten());
+  this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.toString());
+  TaskLevelPolicyChecker policyChecker=this.taskContext.getTaskLevelPolicyChecker(this.taskState);
   TaskLevelPolicyCheckResults taskResults=policyChecker.executePolicies();
-  TaskPublisher publisher=buildTaskPublisher(this.taskState,taskResults);
+  TaskPublisher publisher=this.taskContext.geTaskPublisher(this.taskState,taskResults);
 switch (publisher.canPublish()) {
 case SUCCESS:
     return true;

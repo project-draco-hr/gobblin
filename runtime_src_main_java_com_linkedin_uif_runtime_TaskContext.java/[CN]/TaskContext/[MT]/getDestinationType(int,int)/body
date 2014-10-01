@@ -1,0 +1,3 @@
+{
+  return Destination.DestinationType.valueOf(this.workUnit.getProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY + (branches > 1 ? "." + index : ""),Destination.DestinationType.HDFS.name()));
+}

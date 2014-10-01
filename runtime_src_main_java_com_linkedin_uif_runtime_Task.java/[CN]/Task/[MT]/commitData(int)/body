@@ -1,7 +1,7 @@
 {
-  LOG.info("Committing data of task " + this.taskId);
+  LOG.info(String.format("Committing data of branch %d of task %s",index,this.taskId));
   try {
-    this.writer.commit();
+    this.writers.get(index).commit();
     this.taskState.setWorkingState(WorkUnitState.WorkingState.SUCCESSFUL);
     if (JobMetrics.isEnabled(this.taskState.getWorkunit())) {
       updateByteMetrics();
