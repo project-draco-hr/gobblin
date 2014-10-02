@@ -1,0 +1,32 @@
+{
+  if (state.getPreviousStates().isEmpty()) {
+    return Collections.emptyList();
+  }
+  WorkUnitRetryPolicy workUnitRetryPolicy;
+  if (state.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)) {
+    workUnitRetryPolicy=WorkUnitRetryPolicy.forName(state.getProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY));
+  }
+ else {
+    boolean retryFailedWorkUnits=state.getPropAsBoolean(ConfigurationKeys.WORK_UNIT_RETRY_ENABLED_KEY,true);
+    workUnitRetryPolicy=retryFailedWorkUnits ? WorkUnitRetryPolicy.ALWAYS : WorkUnitRetryPolicy.NEVER;
+  }
+  if (workUnitRetryPolicy == WorkUnitRetryPolicy.NEVER) {
+    return Collections.emptyList();
+  }
+  List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList();
+  for (  WorkUnitState workUnitState : state.getPreviousStates()) {
+    if (workUnitState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
+      previousWorkUnitStates.add(workUnitState);
+    }
+  }
+  if (workUnitRetryPolicy == WorkUnitRetryPolicy.ALWAYS) {
+    return previousWorkUnitStates;
+  }
+  JobCommitPolicy jobCommitPolicy=JobCommitPolicy.forName(state.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+  if ((workUnitRetryPolicy == WorkUnitRetryPolicy.ON_COMMIT_ON_PARTIAL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS) || (workUnitRetryPolicy == WorkUnitRetryPolicy.ON_COMMIT_ON_FULL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS)) {
+    return previousWorkUnitStates;
+  }
+ else {
+    return Collections.emptyList();
+  }
+}
