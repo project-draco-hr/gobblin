@@ -1,0 +1,3 @@
+WorkUnit workUnit
+JobState jobState
+int sequence

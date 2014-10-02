@@ -61,19 +61,11 @@
   for (  WorkUnit workUnit : workUnits.get()) {
     if (workUnit instanceof MultiWorkUnit) {
       for (      WorkUnit innerWorkUnit : ((MultiWorkUnit)workUnit).getWorkUnits()) {
-        innerWorkUnit.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
-        String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
-        innerWorkUnit.setId(taskId);
-        innerWorkUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-        jobState.addTask();
+        addWorkUnit(innerWorkUnit,jobState,sequence);
       }
     }
  else {
-      workUnit.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
-      String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
-      workUnit.setId(taskId);
-      workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-      jobState.addTask();
+      addWorkUnit(workUnit,jobState,sequence);
     }
   }
   try {

@@ -27,7 +27,9 @@
     }
     if (this.fs.rename(tmpOutput,finalOutput)) {
       for (      WorkUnitState state : entry.getValue()) {
-        state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+        if (state.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
+          state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+        }
       }
     }
  else {

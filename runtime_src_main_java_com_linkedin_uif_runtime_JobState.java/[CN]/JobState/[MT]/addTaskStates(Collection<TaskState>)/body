@@ -1,3 +1,5 @@
 {
-  this.taskStates.addAll(taskStates);
+  for (  TaskState taskState : taskStates) {
+    this.taskStates.put(taskState.getTaskId(),taskState);
+  }
 }
