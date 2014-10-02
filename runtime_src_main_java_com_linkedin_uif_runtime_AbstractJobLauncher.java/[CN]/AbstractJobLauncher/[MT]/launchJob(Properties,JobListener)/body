@@ -54,7 +54,6 @@
     unlockJob(jobName,jobLock);
     return;
   }
-  jobState.setTasks(workUnits.get().size());
   long startTime=System.currentTimeMillis();
   jobState.setStartTime(startTime);
   jobState.setState(JobState.RunningState.RUNNING);
@@ -66,6 +65,7 @@
         String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
         innerWorkUnit.setId(taskId);
         innerWorkUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+        jobState.addTask();
       }
     }
  else {
@@ -73,6 +73,7 @@
       String taskId=JobLauncherUtils.newTaskId(jobId,sequence++);
       workUnit.setId(taskId);
       workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+      jobState.addTask();
     }
   }
   try {
@@ -81,13 +82,12 @@
       LOG.info(String.format("Job %s has been cancelled",jobId));
       return;
     }
-    jobState=getFinalJobState(jobState);
+    setFinalJobState(jobState);
     commitJob(jobId,jobState);
   }
  catch (  Throwable t) {
     String errMsg="Failed to launch job " + jobId;
     LOG.error(errMsg,t);
-    jobState.setState(JobState.RunningState.FAILED);
     throw new JobException(errMsg,t);
   }
  finally {
