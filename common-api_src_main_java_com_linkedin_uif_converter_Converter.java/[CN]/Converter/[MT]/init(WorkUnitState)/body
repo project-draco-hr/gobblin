@@ -1,3 +1,4 @@
 {
+  gson=new GsonBuilder().create();
   return this;
 }
