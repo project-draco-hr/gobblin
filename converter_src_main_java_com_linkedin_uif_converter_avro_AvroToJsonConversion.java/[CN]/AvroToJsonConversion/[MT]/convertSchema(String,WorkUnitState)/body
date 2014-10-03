@@ -1,0 +1,6 @@
+{
+  JsonParser jsonParser=new JsonParser();
+  JsonElement jsonSchema=jsonParser.parse(inputSchema.toString());
+  JsonArray array=jsonSchema.getAsJsonArray();
+  return array;
+}

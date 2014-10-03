@@ -1,1 +1,1 @@
-FileBasedExtractor<Schema,GenericRecord>
+FileBasedExtractor<S,D>
