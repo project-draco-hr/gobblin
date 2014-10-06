@@ -9,11 +9,11 @@
   DateTimeZone timeZone=getTimeZone(state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_TIMEZONE,"UTC"));
 switch (type) {
 case DATE:
-    return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+    return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_DATE_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone,state);
 case TIMESTAMP:
-  return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIMESTAMP_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone);
+  return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIMESTAMP_FORMAT,"yyyy-MM-dd HH:mm:ss"),timeZone,state);
 case TIME:
-return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"HH:mm:ss"),timeZone);
+return new DateConverter(fieldName,nullable,type.toString(),state.getProp(ConfigurationKeys.CONVERTER_AVRO_TIME_FORMAT,"HH:mm:ss"),timeZone,state);
 case FIXED:
 throw new UnsupportedDateTypeException(fieldType + " is unsupported");
 case STRING:

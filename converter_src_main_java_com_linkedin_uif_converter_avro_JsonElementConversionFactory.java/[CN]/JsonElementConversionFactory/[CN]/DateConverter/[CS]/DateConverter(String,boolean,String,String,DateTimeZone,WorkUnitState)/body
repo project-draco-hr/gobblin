@@ -2,4 +2,5 @@
   super(fieldName,nullable,sourceType);
   this.inputPatterns=pattern;
   this.timeZone=zone;
+  this.state=state;
 }

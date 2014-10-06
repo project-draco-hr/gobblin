@@ -3,3 +3,4 @@ boolean nullable
 String sourceType
 String pattern
 DateTimeZone zone
+WorkUnitState state
