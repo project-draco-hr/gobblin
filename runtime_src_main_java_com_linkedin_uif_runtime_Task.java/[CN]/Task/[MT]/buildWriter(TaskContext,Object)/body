@@ -1,4 +1,5 @@
 {
-  DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(context.getWriterOutputFormat());
-  this.writer=builder.writeTo(Destination.of(context.getDestinationType(),this.taskState)).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).withSchema(schema).withFilePath(this.taskState.getExtract().getOutputFilePath()).build();
+  DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(this.taskState);
+  this.taskState.setProp(ConfigurationKeys.WRITER_FILE_PATH,this.taskState.getExtract().getOutputFilePath());
+  this.writer=builder.writeTo(Destination.of(context.getDestinationType(),this.taskState)).writeInFormat(context.getWriterOutputFormat()).withWriterId(this.taskId).withSchema(schema).build();
 }

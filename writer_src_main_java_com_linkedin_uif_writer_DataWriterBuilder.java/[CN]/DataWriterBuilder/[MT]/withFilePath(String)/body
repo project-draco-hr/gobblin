@@ -1,4 +1,0 @@
-{
-  this.filePath=filePath;
-  return this;
-}
