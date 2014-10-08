@@ -6,6 +6,9 @@
     DateTimeFormatter dtf=DateTimeFormat.forPattern(pattern).withZone(this.timeZone);
     try {
       formattedDate=dtf.parseDateTime(value.getAsString()).getMillis();
+      if (Boolean.valueOf(this.state.getProp(ConfigurationKeys.CONVERTER_IS_EPOCH_TIME_IN_SECONDS))) {
+        formattedDate=(Long)formattedDate / 1000;
+      }
       break;
     }
  catch (    Exception e) {

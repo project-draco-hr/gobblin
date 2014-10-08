@@ -1,0 +1,3 @@
+JsonArray outputSchema
+GenericRecord inputRecord
+WorkUnitState workUnit
