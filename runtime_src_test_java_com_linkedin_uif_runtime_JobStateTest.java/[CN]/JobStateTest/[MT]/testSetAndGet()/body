@@ -10,8 +10,9 @@
   for (int i=0; i < 3; i++) {
     WorkUnitState workUnitState=new WorkUnitState();
     workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,"TestJob-1");
-    workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,"TestTask-1");
+    workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,"TestTask-" + i);
     TaskState taskState=new TaskState(workUnitState);
+    taskState.setTaskId("TestTask-" + i);
     taskState.setId(taskState.getTaskId());
     taskState.setStartTime(this.startTime);
     taskState.setEndTime(this.startTime + 1000);
