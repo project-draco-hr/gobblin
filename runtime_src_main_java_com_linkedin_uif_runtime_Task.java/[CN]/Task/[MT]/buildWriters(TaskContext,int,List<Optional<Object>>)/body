@@ -1,6 +1,6 @@
 {
   for (int i=0; i < branches; i++) {
-    DataWriterBuilder builder=new DataWriterBuilderFactory().newDataWriterBuilder(this.taskState);
+    DataWriterBuilder builder=this.taskContext.getDataWriterBuilder(branches,i);
     String branchName=this.taskState.getProp(ConfigurationKeys.FORK_BRANCH_NAME_KEY + "." + i,"fork_" + String.valueOf(i));
     this.taskState.setProp(ConfigurationKeys.WRITER_FILE_PATH,this.taskState.getExtract().getOutputFilePath() + (branches > 1 ? "/" + branchName : ""));
     DataWriter writer=builder.writeTo(Destination.of(context.getDestinationType(branches,i),this.taskState)).writeInFormat(context.getWriterOutputFormat(branches,i)).withWriterId(this.taskId).withSchema(schemas.get(i).get()).build();

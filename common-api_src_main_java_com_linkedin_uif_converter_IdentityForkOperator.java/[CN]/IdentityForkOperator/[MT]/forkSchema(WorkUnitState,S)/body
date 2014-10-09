@@ -1,6 +1,6 @@
 {
+  schemas.clear();
   Optional<S> copy=Optional.of(input);
-  List<Optional<S>> schemas=Lists.newArrayList();
   for (int i=0; i < getBranches(workUnitState); i++) {
     schemas.add(copy);
   }

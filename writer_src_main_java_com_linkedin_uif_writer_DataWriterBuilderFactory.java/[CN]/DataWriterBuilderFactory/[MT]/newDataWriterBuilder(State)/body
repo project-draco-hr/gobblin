@@ -1,8 +1,0 @@
-{
-  try {
-    return (DataWriterBuilder)Class.forName(state.getProp(ConfigurationKeys.WRITER_BUILDER_CLASS,ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS)).newInstance();
-  }
- catch (  Exception e) {
-    throw new IOException("Failed to instantiate a DataWriterBuilder",e);
-  }
-}
