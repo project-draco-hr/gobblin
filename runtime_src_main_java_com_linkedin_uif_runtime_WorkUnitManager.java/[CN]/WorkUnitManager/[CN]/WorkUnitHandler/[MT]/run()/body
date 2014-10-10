@@ -1,7 +1,10 @@
 {
   while (!this.stopped) {
     try {
-      WorkUnitState workUnitState=this.workUnitQueue.take();
+      WorkUnitState workUnitState=this.workUnitQueue.poll(5,TimeUnit.SECONDS);
+      if (workUnitState == null) {
+        continue;
+      }
       Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
       this.taskExecutor.execute(task);
     }
