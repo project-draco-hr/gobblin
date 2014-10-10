@@ -16,6 +16,7 @@
       sourceSchema=converter.convertSchema(sourceSchema,this.taskState);
     }
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
+    forkOperator.init(this.taskState);
     branches=forkOperator.getBranches(this.taskState);
     List<Optional<Object>> forkedSchemas=forkOperator.forkSchema(this.taskState,sourceSchema);
     if (forkedSchemas.size() != branches) {
