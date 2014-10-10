@@ -1,5 +1,8 @@
 {
   Schema obj=this.getMetadataColumnMap().get(sourceColumnName.toLowerCase());
+  if (obj == null && alias != null) {
+    obj=this.getMetadataColumnMap().get(alias.toLowerCase());
+  }
   if (obj == null) {
     obj=getCustomColumnSchema(targetColumnName);
   }
@@ -11,6 +14,10 @@
     boolean isWatermarkColumn=this.isWatermarkColumn(watermarkColumn,sourceColumnName);
     if (isWatermarkColumn) {
       this.updateDeltaFieldConfig(sourceColumnName,targetColumnName);
+    }
+ else     if (alias != null) {
+      isWatermarkColumn=this.isWatermarkColumn(watermarkColumn,alias);
+      this.updateDeltaFieldConfig(alias,targetColumnName);
     }
     if (!isMultiColumnWatermark) {
       obj.setWaterMark(isWatermarkColumn);
