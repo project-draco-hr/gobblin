@@ -17,10 +17,11 @@
     List<String> sourceColumns=this.getMetadataColumnList();
     for (    ColumnAttributes colMap : this.columnAliasMap) {
       String alias=colMap.getAliasName();
-      String sourceColumnName=colMap.getColumnName();
-      if (this.isMetadataColumn(sourceColumnName,sourceColumns)) {
-        String targetColumnName=this.getTargetColumnName(sourceColumnName,alias);
-        Schema obj=this.getUpdatedSchemaObject(sourceColumnName,targetColumnName);
+      String columnName=colMap.getColumnName();
+      String sourceColumnName=colMap.getSourceColumnName();
+      if (this.isMetadataColumn(columnName,sourceColumns)) {
+        String targetColumnName=this.getTargetColumnName(columnName,alias);
+        Schema obj=this.getUpdatedSchemaObject(columnName,alias,targetColumnName);
         String jsonStr=gson.toJson(obj);
         JsonObject jsonObject=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
         targetSchema.add(jsonObject);

@@ -7,7 +7,30 @@
     if (startIndex >= 0 && endIndex >= 0) {
       String columnProjection=query.substring(startIndex,endIndex);
       this.setInputColumnProjection(columnProjection);
-      projectedColumns=Arrays.asList(columnProjection.split(","));
+      StringBuffer sb=new StringBuffer();
+      int bracketCount=0;
+      for (int i=0; i < columnProjection.length(); i++) {
+        char c=columnProjection.charAt(i);
+        if (c == '(') {
+          bracketCount++;
+        }
+        if (c == ')') {
+          bracketCount--;
+        }
+        if (bracketCount != 0) {
+          sb.append(c);
+        }
+ else {
+          if (c != ',') {
+            sb.append(c);
+          }
+ else {
+            projectedColumns.add(sb.toString());
+            sb=new StringBuffer();
+          }
+        }
+      }
+      projectedColumns.add(sb.toString());
     }
   }
   if (this.isSelectAllColumns()) {
@@ -16,26 +39,29 @@
       ColumnAttributes col=new ColumnAttributes();
       col.setColumnName(columnName);
       col.setAliasName(columnName);
+      col.setSourceColumnName(columnName);
       this.addToColumnAliasMap(col);
     }
   }
  else {
-    for (    String column : projectedColumns) {
-      String sourceColumn=column.trim();
+    for (    String projectedColumn : projectedColumns) {
+      String column=projectedColumn.trim();
       String alias=null;
-      int spaceOccurences=StringUtils.countMatches(sourceColumn.trim()," ");
+      String sourceColumn=column;
+      int spaceOccurences=StringUtils.countMatches(column.trim()," ");
       if (spaceOccurences > 0) {
-        String formattedColumn=sourceColumn.replaceAll(" as "," ").replaceAll(" +"," ");
-        int lastSpaceIndex=formattedColumn.lastIndexOf(" ");
-        sourceColumn=formattedColumn.substring(0,lastSpaceIndex);
-        alias=formattedColumn.substring(lastSpaceIndex + 1);
+        int lastSpaceIndex=column.toLowerCase().lastIndexOf(" as ");
+        sourceColumn=column.substring(0,lastSpaceIndex);
+        alias=column.substring(lastSpaceIndex + 4);
       }
+      String columnName=sourceColumn;
       if (sourceColumn.contains(".")) {
-        sourceColumn=sourceColumn.substring(sourceColumn.indexOf(".") + 1);
+        columnName=sourceColumn.substring(sourceColumn.indexOf(".") + 1);
       }
       ColumnAttributes col=new ColumnAttributes();
-      col.setColumnName(sourceColumn);
+      col.setColumnName(columnName);
       col.setAliasName(alias);
+      col.setSourceColumnName(sourceColumn);
       this.addToColumnAliasMap(col);
     }
   }
