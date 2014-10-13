@@ -1,0 +1,3 @@
+{
+  return branches > 1 ? key + "." + index : key;
+}

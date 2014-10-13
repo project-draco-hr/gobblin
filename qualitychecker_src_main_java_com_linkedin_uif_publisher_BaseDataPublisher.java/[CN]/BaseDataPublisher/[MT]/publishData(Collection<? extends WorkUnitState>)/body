@@ -3,37 +3,41 @@
   for (  Map.Entry<Extract,List<WorkUnitState>> entry : extractToStateMap.entrySet()) {
     Extract extract=entry.getKey();
     WorkUnitState workUnitState=entry.getValue().get(0);
-    Path tmpOutput=new Path(workUnitState.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR),extract.getOutputFilePath());
-    Path finalOutput=new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),extract.getOutputFilePath());
-    if (!this.fs.exists(finalOutput.getParent())) {
-      this.fs.mkdirs(finalOutput.getParent());
-    }
-    LOG.info(String.format("Attempting to move %s to %s",tmpOutput,finalOutput));
-    if (this.fs.exists(finalOutput)) {
-      if (this.getState().getPropAsBoolean((ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR))) {
-        this.fs.delete(finalOutput,true);
+    int branches=workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+    for (int i=0; i < branches; i++) {
+      String branchName=ForkOperatorUtils.getBranchName(workUnitState,i,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + i);
+      Path tmpOutput=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,branches,i)),ForkOperatorUtils.getPathForBranch(extract.getOutputFilePath(),branchName,branches));
+      Path finalOutput=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,branches,i)),ForkOperatorUtils.getPathForBranch(extract.getOutputFilePath(),branchName,branches));
+      if (!this.fss.get(i).exists(finalOutput.getParent())) {
+        this.fss.get(i).mkdirs(finalOutput.getParent());
       }
- else {
-        for (        FileStatus status : this.fs.listStatus(tmpOutput)) {
-          if (workUnitState.getPropAsBoolean(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_PATH,false)) {
-            this.fs.rename(status.getPath(),new Path(finalOutput,workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME)));
-          }
- else {
-            this.fs.rename(status.getPath(),new Path(finalOutput,status.getPath().getName()));
-          }
+      LOG.info(String.format("Attempting to move %s to %s",tmpOutput,finalOutput));
+      if (this.fss.get(i).exists(finalOutput)) {
+        if (this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,branches,i))) {
+          this.fss.get(i).delete(finalOutput,true);
         }
-        continue;
-      }
-    }
-    if (this.fs.rename(tmpOutput,finalOutput)) {
-      for (      WorkUnitState state : entry.getValue()) {
-        if (state.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
-          state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+ else {
+          for (          FileStatus status : this.fss.get(i).listStatus(tmpOutput)) {
+            if (workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_PATH,branches,i),false)) {
+              this.fss.get(i).rename(status.getPath(),new Path(finalOutput,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,branches,i))));
+            }
+ else {
+              this.fss.get(i).rename(status.getPath(),new Path(finalOutput,status.getPath().getName()));
+            }
+          }
+          continue;
         }
       }
-    }
+      if (this.fss.get(i).rename(tmpOutput,finalOutput)) {
+        for (        WorkUnitState state : entry.getValue()) {
+          if (state.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
+            state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+          }
+        }
+      }
  else {
-      throw new RuntimeException("Rename operation from " + tmpOutput + " to "+ finalOutput+ " failed!");
+        throw new RuntimeException("Rename operation from " + tmpOutput + " to "+ finalOutput+ " failed!");
+      }
     }
   }
 }

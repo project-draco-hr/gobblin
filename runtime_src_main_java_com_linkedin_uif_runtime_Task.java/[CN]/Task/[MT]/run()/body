@@ -18,6 +18,7 @@
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);
     branches=forkOperator.getBranches(this.taskState);
+    this.taskState.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,branches);
     List<Optional<Object>> forkedSchemas=forkOperator.forkSchema(this.taskState,sourceSchema);
     if (forkedSchemas.size() != branches) {
       throw new ForkBranchMismatchException(String.format("Number of forked schemas [%d] is not equal to number of branches [%d]",forkedSchemas.size(),branches));
