@@ -1,6 +1,6 @@
 {
   try {
-    return (DataWriterBuilder)Class.forName(this.workUnit.getProp(ConfigurationKeys.WRITER_BUILDER_CLASS + (branches > 1 ? "." + index : ""),ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS)).newInstance();
+    return (DataWriterBuilder)Class.forName(this.workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS,branches,index),ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS)).newInstance();
   }
  catch (  Exception e) {
     throw new IOException("Failed to instantiate a DataWriterBuilder",e);
