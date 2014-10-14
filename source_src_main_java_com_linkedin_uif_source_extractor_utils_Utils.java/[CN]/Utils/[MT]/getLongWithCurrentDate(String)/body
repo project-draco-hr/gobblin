@@ -1,0 +1,13 @@
+{
+  if (Strings.isNullOrEmpty(value)) {
+    return 0;
+  }
+  DateTime time=new DateTime(DateTimeZone.forID("America/Los_Angeles"));
+  if (value.toUpperCase().startsWith(CURRENT_DAY)) {
+    return Long.valueOf(DATE_FORMATTER.print(time.minusDays(Integer.parseInt(value.substring(CURRENT_DAY.length() + 1)))));
+  }
+  if (value.toUpperCase().startsWith(CURRENT_HOUR)) {
+    return Long.valueOf(DATE_FORMATTER.print(time.minusHours(Integer.parseInt(value.substring(CURRENT_HOUR.length() + 1)))));
+  }
+  return Long.parseLong(value);
+}
