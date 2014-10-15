@@ -10,6 +10,6 @@
   }
  else {
     LOG.info("Overriding low water mark with the given start value: " + Utils.getLongWithCurrentDate(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE)));
-    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE));
+    return Utils.getLongWithCurrentDate(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE));
   }
 }
