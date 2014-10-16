@@ -53,9 +53,6 @@
     jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
     jobState.addTaskStates(collectOutput(new Path(jobOutputPath,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY))));
     countersToMetrics(this.job.getCounters(),JobMetrics.get(jobName,jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
-    if (jobState.getState() == JobState.RunningState.FAILED) {
-      throw new Exception(String.format("Gobblin Hadoop MR job %s failed",this.job.getJobID()));
-    }
   }
   finally {
     try {

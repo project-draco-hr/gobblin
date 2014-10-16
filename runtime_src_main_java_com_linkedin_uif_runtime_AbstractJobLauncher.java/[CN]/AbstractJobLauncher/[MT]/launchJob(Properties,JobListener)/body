@@ -78,28 +78,31 @@
     commitJob(jobId,jobState);
   }
  catch (  Throwable t) {
-    String errMsg="Failed to launch job " + jobId;
+    String errMsg="Failed to launch and run job " + jobId;
     LOG.error(errMsg,t);
     throw new JobException(errMsg,t);
   }
  finally {
+    source.shutdown(sourceState);
     long endTime=System.currentTimeMillis();
     jobState.setEndTime(endTime);
     jobState.setDuration(endTime - startTime);
     try {
-      source.shutdown(sourceState);
       persistJobState(jobState);
       cleanupStagingData(jobState);
     }
  catch (    Throwable t) {
-      LOG.error("Failed to cleanup for job " + jobId,t);
+      LOG.error("Failed to persist job state and cleanup for job " + jobId,t);
     }
+    unlockJob(jobName,jobLock);
     if (JobMetrics.isEnabled(this.properties)) {
       jobState.removeMetrics();
     }
-    unlockJob(jobName,jobLock);
     if (Optional.fromNullable(jobListener).isPresent()) {
       jobListener.jobCompleted(jobState);
     }
+  }
+  if (jobState.getState() == JobState.RunningState.FAILED) {
+    throw new JobException(String.format("Job %s failed",jobId));
   }
 }
