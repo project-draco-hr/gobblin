@@ -5,5 +5,4 @@
   ((LocalTaskStateTracker2)taskStateTracker).setJobLauncher(this);
   this.workUnitManager=new WorkUnitManager(taskExecutor,taskStateTracker);
   this.serviceManager=new ServiceManager(Lists.newArrayList(taskExecutor,taskStateTracker,this.workUnitManager));
-  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
 }

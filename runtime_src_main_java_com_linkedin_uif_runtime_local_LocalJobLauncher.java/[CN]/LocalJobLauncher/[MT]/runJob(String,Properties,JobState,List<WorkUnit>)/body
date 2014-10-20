@@ -1,5 +1,6 @@
 {
   this.jobState=jobState;
+  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
   List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     if (workUnit instanceof MultiWorkUnit) {
