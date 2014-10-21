@@ -1,8 +1,0 @@
-{
-  schemas.clear();
-  Optional<S> copy=Optional.of(input);
-  for (int i=0; i < getBranches(workUnitState); i++) {
-    schemas.add(copy);
-  }
-  return schemas;
-}

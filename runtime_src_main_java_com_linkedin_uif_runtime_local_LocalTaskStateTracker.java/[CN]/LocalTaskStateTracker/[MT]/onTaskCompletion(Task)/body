@@ -1,6 +1,7 @@
 {
   if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
+    task.updateByteMetrics();
   }
   if (this.scheduledReporters.containsKey(task.getTaskId())) {
     this.scheduledReporters.remove(task.getTaskId()).cancel(false);

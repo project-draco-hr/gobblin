@@ -1,10 +1,14 @@
 {
   List<TaskLevelPolicy> list=new ArrayList<TaskLevelPolicy>();
-  if (this.state.contains(ConfigurationKeys.TASK_LEVEL_POLICY_LIST) && this.state.contains(ConfigurationKeys.TASK_LEVEL_POLICY_LIST_TYPE)) {
+  String taskLevelPoliciesKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_LEVEL_POLICY_LIST,this.index);
+  String taskLevelPolicyTypesKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_LEVEL_POLICY_LIST_TYPE,this.index);
+  if (this.state.contains(taskLevelPoliciesKey) && this.state.contains(taskLevelPolicyTypesKey)) {
     Splitter splitter=Splitter.on(",").omitEmptyStrings().trimResults();
-    List<String> policies=Lists.newArrayList(splitter.split(this.state.getProp(ConfigurationKeys.TASK_LEVEL_POLICY_LIST)));
-    List<String> types=Lists.newArrayList(splitter.split(this.state.getProp(ConfigurationKeys.TASK_LEVEL_POLICY_LIST_TYPE)));
-    if (policies.size() != types.size())     throw new Exception("TaskLevelPolicy list and TaskLevelPolicies type list are not the same length");
+    List<String> policies=Lists.newArrayList(splitter.split(this.state.getProp(taskLevelPoliciesKey)));
+    List<String> types=Lists.newArrayList(splitter.split(this.state.getProp(taskLevelPolicyTypesKey)));
+    if (policies.size() != types.size()) {
+      throw new Exception("TaskLevelPolicy list and TaskLevelPolicies type list are not the same length");
+    }
     for (int i=0; i < policies.size(); i++) {
       try {
         Class<? extends TaskLevelPolicy> policyClass=(Class<? extends TaskLevelPolicy>)Class.forName(policies.get(i));
@@ -13,7 +17,7 @@
         list.add(policy);
       }
  catch (      Exception e) {
-        LOG.error(ConfigurationKeys.TASK_LEVEL_POLICY_LIST + " contains a class " + policies.get(i)+ " which doesn't extend Policy.",e);
+        LOG.error(taskLevelPoliciesKey + " contains a class " + policies.get(i)+ " which doesn't extend Policy.",e);
         throw e;
       }
     }

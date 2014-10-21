@@ -1,5 +1,7 @@
 {
-  for (  DataWriter writer : this.writers) {
-    this.taskState.updateRecordMetrics(writer.recordsWritten());
+  for (  Optional<Fork> fork : this.forks) {
+    if (fork.isPresent()) {
+      fork.get().updateRecordMetrics();
+    }
   }
 }

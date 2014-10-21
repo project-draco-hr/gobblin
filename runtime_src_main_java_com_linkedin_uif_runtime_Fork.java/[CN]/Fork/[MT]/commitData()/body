@@ -1,0 +1,13 @@
+{
+  this.logger.info(String.format("Committing data of branch %d of task %s",this.index,this.taskId));
+  this.writer.commit();
+  this.taskState.setWorkingState(WorkUnitState.WorkingState.SUCCESSFUL);
+  try {
+    if (JobMetrics.isEnabled(this.taskState.getWorkunit())) {
+      updateByteMetrics();
+    }
+  }
+ catch (  IOException ioe) {
+    this.logger.error("Failed to update byte-level metrics of task " + this.taskId);
+  }
+}

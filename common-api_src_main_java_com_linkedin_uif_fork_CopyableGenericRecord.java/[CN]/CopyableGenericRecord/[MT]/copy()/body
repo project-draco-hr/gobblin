@@ -1,0 +1,6 @@
+{
+  if (!(this.record instanceof GenericData.Record)) {
+    throw new CopyNotSupportedException("The record to make copy is not an instance of " + GenericData.Record.class.getName());
+  }
+  return new GenericData.Record((GenericData.Record)this.record,true);
+}

@@ -1,3 +1,0 @@
-{
-  return workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
-}

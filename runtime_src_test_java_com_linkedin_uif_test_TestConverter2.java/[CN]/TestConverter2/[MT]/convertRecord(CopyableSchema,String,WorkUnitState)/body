@@ -1,0 +1,20 @@
+{
+  JsonElement element=GSON.fromJson(inputRecord,JsonElement.class);
+  Map<String,Object> fields=GSON.fromJson(element,FIELD_ENTRY_TYPE);
+  try {
+    Schema avroSchema=schema.copy();
+    GenericRecord record=new GenericData.Record(avroSchema);
+    for (    Map.Entry<String,Object> entry : fields.entrySet()) {
+      if (entry.getValue() instanceof Double) {
+        record.put(entry.getKey(),((Double)entry.getValue()).intValue());
+      }
+ else {
+        record.put(entry.getKey(),entry.getValue());
+      }
+    }
+    return new CopyableGenericRecord(record);
+  }
+ catch (  CopyNotSupportedException cnse) {
+    throw new DataConversionException(cnse);
+  }
+}

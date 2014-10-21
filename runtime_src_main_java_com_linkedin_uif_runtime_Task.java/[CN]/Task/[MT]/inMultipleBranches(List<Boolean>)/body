@@ -1,0 +1,9 @@
+{
+  int inBranches=0;
+  for (  Boolean bool : branches) {
+    if (bool && ++inBranches > 1) {
+      break;
+    }
+  }
+  return inBranches > 1;
+}

@@ -1,0 +1,8 @@
+{
+  try {
+    this.closer.close();
+  }
+  finally {
+    this.writer.cleanup();
+  }
+}

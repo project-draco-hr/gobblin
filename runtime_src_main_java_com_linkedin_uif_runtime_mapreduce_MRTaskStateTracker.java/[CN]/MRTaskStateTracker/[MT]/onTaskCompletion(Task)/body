@@ -2,6 +2,7 @@
   JobMetrics metrics=JobMetrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
   if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
+    task.updateByteMetrics();
     String taskRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"records");
     this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(metrics.getCounter(taskRecordMetric).getCount());
     String jobRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.JOB,task.getJobId(),"records");

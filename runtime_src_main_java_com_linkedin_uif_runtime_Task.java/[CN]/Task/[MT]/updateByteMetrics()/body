@@ -1,5 +1,12 @@
 {
-  for (  DataWriter writer : this.writers) {
-    this.taskState.updateByteMetrics(writer.bytesWritten());
+  try {
+    for (    Optional<Fork> fork : this.forks) {
+      if (fork.isPresent()) {
+        fork.get().updateByteMetrics();
+      }
+    }
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to update byte-level metrics for task " + this.taskId);
   }
 }

@@ -1,0 +1,15 @@
+{
+  this.logger=LoggerFactory.getLogger(Fork.class.getName() + "-" + index);
+  this.taskContext=taskContext;
+  this.taskState=taskState;
+  this.taskId=taskState.getTaskId();
+  this.branches=branches;
+  this.index=index;
+  this.converter=new MultiConverter(this.taskContext.getConverters(this.index));
+  this.convertedSchema=this.converter.convertSchema(schema,this.taskState);
+  this.rowLevelPolicyChecker=this.taskContext.getRowLevelPolicyChecker(this.taskState,this.index);
+  this.rowLevelPolicyCheckingResult=new RowLevelPolicyCheckResults();
+  this.writer=buildWriter();
+  this.closer.register(this.rowLevelPolicyChecker);
+  this.closer.register(this.writer);
+}
