@@ -1,0 +1,5 @@
+{
+  if (this.countDownLatch.isPresent()) {
+    this.countDownLatch.get().countDown();
+  }
+}

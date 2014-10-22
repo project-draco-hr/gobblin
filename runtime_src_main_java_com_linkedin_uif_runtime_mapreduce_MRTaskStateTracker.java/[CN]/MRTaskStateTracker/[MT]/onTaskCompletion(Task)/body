@@ -12,4 +12,6 @@
     this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),jobByteMetric).increment(metrics.getCounter(taskByteMetric).getCount());
     task.getTaskState().removeMetrics();
   }
+  task.markTaskCompletion();
+  LOG.info(String.format("Task %s completed in %dms with state %s",task.getTaskId(),task.getTaskState().getTaskDuration(),task.getTaskState().getWorkingState()));
 }

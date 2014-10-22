@@ -1,5 +1,4 @@
 {
-  this.jobState=jobState;
   this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
   List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
@@ -11,22 +10,37 @@
     }
   }
   String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
+  this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
+  List<Task> tasks=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnitsToRun) {
     String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
     WorkUnitState workUnitState=new WorkUnitState(workUnit);
     workUnitState.setId(taskId);
     workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
     workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-    this.workUnitManager.addWorkUnit(workUnitState);
+    Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker,Optional.of(this.countDownLatch));
+    this.taskStateTracker.registerNewTask(task);
+    tasks.add(task);
+    LOG.info(String.format("Submitting task %s to run",taskId));
+    this.taskExecutor.submit(task);
   }
-  this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
-  LOG.info(String.format("Waiting for job %s to complete...",jobId));
-  this.countDownLatch.await();
+  LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
+  while (countDownLatch.getCount() > 0) {
+    LOG.info(String.format("%d out of %d tasks of job %s are running",countDownLatch.getCount(),workUnits.size(),jobId));
+    countDownLatch.await(1,TimeUnit.MINUTES);
+  }
+  LOG.info(String.format("All tasks of job %s have completed",jobId));
   if (isCancelled) {
     jobState.setState(JobState.RunningState.CANCELLED);
   }
- else   if (this.jobState.getState() == JobState.RunningState.RUNNING) {
-    this.jobState.setState(JobState.RunningState.SUCCESSFUL);
+ else   if (jobState.getState() == JobState.RunningState.RUNNING) {
+    jobState.setState(JobState.RunningState.SUCCESSFUL);
+  }
+  for (  Task task : tasks) {
+    jobState.addTaskState(task.getTaskState());
+    if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+      jobState.setState(JobState.RunningState.FAILED);
+    }
   }
   this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
 }
