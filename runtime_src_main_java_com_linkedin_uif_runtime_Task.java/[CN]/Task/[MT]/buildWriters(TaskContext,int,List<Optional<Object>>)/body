@@ -1,4 +1,5 @@
 {
+  this.writers.clear();
   for (int i=0; i < branches; i++) {
     DataWriterBuilder builder=this.taskContext.getDataWriterBuilder(branches,i);
     String branchName=ForkOperatorUtils.getBranchName(this.taskState,i,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + i);
