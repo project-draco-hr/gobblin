@@ -20,6 +20,9 @@
   jobDataMap.put(JOB_LISTENER_KEY,jobListener);
   JobDetail job=JobBuilder.newJob(GobblinJob.class).withIdentity(jobName,Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
   try {
+    if (this.scheduler.checkExists(job.getKey())) {
+      throw new JobException(String.format("Job %s has already been scheduled",jobName));
+    }
     this.scheduler.scheduleJob(job,getTrigger(job.getKey(),jobProps));
   }
  catch (  SchedulerException se) {
