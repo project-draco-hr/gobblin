@@ -1,8 +1,6 @@
 {
   super(properties);
-  TaskExecutor taskExecutor=new TaskExecutor(properties);
-  TaskStateTracker taskStateTracker=new LocalTaskStateTracker2(properties,taskExecutor);
-  ((LocalTaskStateTracker2)taskStateTracker).setJobLauncher(this);
-  this.workUnitManager=new WorkUnitManager(taskExecutor,taskStateTracker);
-  this.serviceManager=new ServiceManager(Lists.newArrayList(taskExecutor,taskStateTracker,this.workUnitManager));
+  this.taskExecutor=new TaskExecutor(properties);
+  this.taskStateTracker=new LocalTaskStateTracker2(properties,this.taskExecutor);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(this.taskExecutor,this.taskStateTracker));
 }
