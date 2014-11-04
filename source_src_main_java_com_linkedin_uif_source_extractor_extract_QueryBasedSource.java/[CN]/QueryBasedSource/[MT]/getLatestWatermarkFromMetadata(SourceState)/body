@@ -18,19 +18,19 @@
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
     long processedRecordCount=0;
     LOG.info("State of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkingState());
-    if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.CANCELLED) {
+    if (workUnitState.getWorkingState() == WorkingState.FAILED || workUnitState.getWorkingState() == WorkingState.CANCELLED || workUnitState.getWorkingState() == WorkingState.RUNNING || workUnitState.getWorkingState() == WorkingState.PENDING) {
       hasFailedRun=true;
     }
  else {
       processedRecordCount=workUnitState.getPropAsLong(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED);
-      if (processedRecordCount > 0) {
+      if (processedRecordCount != 0) {
         isDataProcessedInPreviousRun=true;
       }
     }
     LOG.info("Low watermark of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getWorkunit().getLowWaterMark());
     LOG.info("High watermark of the previous task: " + workUnitState.getId() + ":"+ workUnitState.getHighWaterMark());
     LOG.info("Record count of the previous task: " + processedRecordCount + "\n");
-    if (processedRecordCount > 0) {
+    if (processedRecordCount != 0) {
       previousWorkUnitStateHighWatermarks.add(workUnitState.getHighWaterMark());
     }
     previousWorkUnitLowWatermarks.add(this.getLowWatermarkFromWorkUnit(workUnitState));
