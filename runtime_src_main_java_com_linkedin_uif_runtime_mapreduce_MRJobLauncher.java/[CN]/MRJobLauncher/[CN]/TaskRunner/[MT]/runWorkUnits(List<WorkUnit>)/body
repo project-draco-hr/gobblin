@@ -4,29 +4,13 @@
     return;
   }
   String jobId=workUnits.get(0).getProp(ConfigurationKeys.JOB_ID_KEY);
-  CountDownLatch countDownLatch=new CountDownLatch(workUnits.size());
-  List<Task> tasks=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
     if (this.taskStateStore.exists(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX)) {
       this.taskStateStore.delete(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX);
     }
-    WorkUnitState workUnitState=new WorkUnitState(workUnit);
-    workUnitState.setId(taskId);
-    workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
-    workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-    Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker,Optional.of(countDownLatch));
-    this.taskStateTracker.registerNewTask(task);
-    tasks.add(task);
-    LOG.info(String.format("Submitting task %s to run",taskId));
-    this.taskExecutor.submit(task);
   }
-  LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
-  while (countDownLatch.getCount() > 0) {
-    LOG.info(String.format("%d out of %d tasks of job %s are running",countDownLatch.getCount(),workUnits.size(),jobId));
-    countDownLatch.await(1,TimeUnit.MINUTES);
-  }
-  LOG.info(String.format("All tasks of job %s have completed",jobId));
+  List<Task> tasks=AbstractJobLauncher.runWorkUnits(jobId,workUnits,this.taskStateTracker,this.taskExecutor,new CountDownLatch(workUnits.size()));
   boolean hasTaskFailure=false;
   for (  Task task : tasks) {
     LOG.info("Writing task state for task " + task.getTaskId());

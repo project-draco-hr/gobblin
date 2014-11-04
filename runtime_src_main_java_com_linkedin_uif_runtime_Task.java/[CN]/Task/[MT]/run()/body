@@ -3,7 +3,6 @@
   this.taskState.setStartTime(startTime);
   this.taskStateTracker.registerNewTask(this);
   this.taskState.setWorkingState(WorkUnitState.WorkingState.RUNNING);
-  int branches=1;
   Closer closer=Closer.create();
   try {
     Extractor extractor=closer.register(new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG));
@@ -17,7 +16,7 @@
     }
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);
-    branches=forkOperator.getBranches(this.taskState);
+    int branches=forkOperator.getBranches(this.taskState);
     this.taskState.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,branches);
     List<Optional<Object>> forkedSchemas=forkOperator.forkSchema(this.taskState,sourceSchema);
     if (forkedSchemas.size() != branches) {
@@ -70,15 +69,15 @@
     try {
       closer.close();
     }
- catch (    IOException ioe) {
-      LOG.error("Failed to close all open resources",ioe);
+ catch (    Throwable t) {
+      LOG.error("Failed to close all open resources",t);
     }
-    for (int i=0; i < branches; i++) {
+    for (    DataWriter writer : this.writers) {
       try {
-        this.writers.get(i).cleanup();
+        writer.cleanup();
       }
- catch (      IOException ioe) {
-        LOG.error("The writer failed to cleanup for task " + taskId,ioe);
+ catch (      Throwable t) {
+        LOG.error("A writer failed to cleanup for task " + this.taskId,t);
       }
     }
     long endTime=System.currentTimeMillis();
