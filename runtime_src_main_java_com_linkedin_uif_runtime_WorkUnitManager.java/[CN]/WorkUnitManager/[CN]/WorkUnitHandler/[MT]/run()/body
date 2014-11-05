@@ -5,7 +5,7 @@
       if (workUnitState == null) {
         continue;
       }
-      Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker);
+      Task task=new Task(new TaskContext(workUnitState),this.taskStateTracker,Optional.<CountDownLatch>absent());
       this.taskExecutor.execute(task);
     }
  catch (    InterruptedException ie) {

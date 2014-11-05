@@ -2,6 +2,7 @@
   if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
     task.updateByteMetrics();
+    task.getTaskState().removeMetrics();
   }
   if (this.scheduledReporters.containsKey(task.getTaskId())) {
     this.scheduledReporters.remove(task.getTaskId()).cancel(false);
@@ -11,6 +12,6 @@
     this.taskExecutor.retry(task);
     return;
   }
+  task.markTaskCompletion();
   LOG.info(String.format("Task %s completed in %dms with state %s",task.getTaskId(),task.getTaskState().getTaskDuration(),state));
-  this.localJobLauncher.onTaskCompletion(task.getTaskState());
 }

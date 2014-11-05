@@ -1,5 +1,5 @@
 {
-  this.jobState=jobState;
+  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
   List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     if (workUnit instanceof MultiWorkUnit) {
@@ -9,23 +9,24 @@
       workUnitsToRun.add(workUnit);
     }
   }
-  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
-  for (  WorkUnit workUnit : workUnitsToRun) {
-    String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
-    WorkUnitState workUnitState=new WorkUnitState(workUnit);
-    workUnitState.setId(taskId);
-    workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
-    workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-    this.workUnitManager.addWorkUnit(workUnitState);
+  if (workUnitsToRun.isEmpty()) {
+    LOG.warn("No work units to run");
+    return;
   }
+  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
-  LOG.info(String.format("Waiting for job %s to complete...",jobId));
-  this.countDownLatch.await();
+  List<Task> tasks=AbstractJobLauncher.runWorkUnits(jobId,workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
   if (isCancelled) {
     jobState.setState(JobState.RunningState.CANCELLED);
   }
- else   if (this.jobState.getState() == JobState.RunningState.RUNNING) {
-    this.jobState.setState(JobState.RunningState.SUCCESSFUL);
+ else   if (jobState.getState() == JobState.RunningState.RUNNING) {
+    jobState.setState(JobState.RunningState.SUCCESSFUL);
+  }
+  for (  Task task : tasks) {
+    jobState.addTaskState(task.getTaskState());
+    if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+      jobState.setState(JobState.RunningState.FAILED);
+    }
   }
   this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
 }

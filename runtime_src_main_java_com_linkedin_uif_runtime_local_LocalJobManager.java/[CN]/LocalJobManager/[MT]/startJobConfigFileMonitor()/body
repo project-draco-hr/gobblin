@@ -15,7 +15,6 @@
       Properties jobProps=new Properties();
       jobProps.putAll(properties);
       loadJobConfig(jobProps,file);
-      jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       try {
         boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
         scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
@@ -50,6 +49,7 @@
     private void loadJobConfig(    Properties jobProps,    File file){
       try {
         jobProps.load(new FileReader(file));
+        jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       }
  catch (      Exception e) {
         LOG.error("Failed to load job configuration from file " + file.getAbsolutePath(),e);

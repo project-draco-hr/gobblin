@@ -12,9 +12,12 @@
     httpEntity=this.getAuthentication();
     if (httpEntity != null) {
       JsonElement json=gson.fromJson(EntityUtils.toString(httpEntity),JsonObject.class);
+      if (json == null) {
+        throw new RestApiConnectionException("Failed on authentication with the following HTTP response received:\n" + EntityUtils.toString(httpEntity));
+      }
       JsonObject jsonRet=json.getAsJsonObject();
       if (!this.hasId(jsonRet)) {
-        throw new RestApiConnectionException(this.getFirstErrorMessage("Failed to establish auth token.",json));
+        throw new RestApiConnectionException("Failed on authentication with the following HTTP response received:\n" + json);
       }
       this.instanceUrl=jsonRet.get("instance_url").getAsString();
       this.accessToken=jsonRet.get("access_token").getAsString();
