@@ -8,8 +8,8 @@
   this.taskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
   this.taskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.toString());
   try {
-    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(this.taskState,this.index).executePolicies();
-    TaskPublisher publisher=this.taskContext.getTaskPublisher(this.taskState,taskResults,this.index);
+    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(this.taskState,this.branches > 1 ? this.index : -1).executePolicies();
+    TaskPublisher publisher=this.taskContext.getTaskPublisher(this.taskState,taskResults,this.branches > 1 ? this.index : -1);
 switch (publisher.canPublish()) {
 case SUCCESS:
       return true;
