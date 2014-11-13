@@ -1,0 +1,9 @@
+{
+  ImmutableMap.Builder<String,Metric> metricMapBuilder=ImmutableMap.builder();
+  for (  Map.Entry<String,Metric> metric : getMetrics().entrySet()) {
+    if (metric.getKey().startsWith(group.name())) {
+      metricMapBuilder.put(metric.getKey(),metric.getValue());
+    }
+  }
+  return metricMapBuilder.build();
+}
