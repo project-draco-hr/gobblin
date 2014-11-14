@@ -1,12 +1,13 @@
 {
   final Properties jobProps=new Properties();
-  jobProps.putAll(this.properties);
-  jobProps.load(new FileReader(args[args.length - 1]));
+  jobProps.putAll(this.sysConfig);
+  jobProps.putAll(this.jobConfig);
   try {
-    JobLauncher launcher=new MRJobLauncher(this.properties,getConf());
-    launcher.launchJob(jobProps,null);
+    new MRJobLauncher(this.sysConfig,getConf()).launchJob(jobProps,null);
   }
  catch (  JobException je) {
+    System.err.println("Failed to launch the job due to the following exception:");
+    System.err.println(je.toString());
     return 1;
   }
   return 0;
