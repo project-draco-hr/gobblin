@@ -1,0 +1,14 @@
+{
+  Counter counter=this.metrics.getCounter(JobMetrics.MetricGroup.JOB,JOB_ID,"records");
+  counter.inc();
+  Assert.assertEquals(counter.getCount(),1L);
+  counter=this.metrics.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID,"records");
+  counter.inc();
+  Assert.assertEquals(counter.getCount(),1L);
+  counter=this.metrics.getCounter(JobMetrics.MetricGroup.JOB,JOB_ID,"records");
+  counter.inc(2);
+  Assert.assertEquals(counter.getCount(),3L);
+  counter=this.metrics.getCounter(JobMetrics.MetricGroup.TASK,TASK_ID,"records");
+  counter.inc(2);
+  Assert.assertEquals(counter.getCount(),3L);
+}

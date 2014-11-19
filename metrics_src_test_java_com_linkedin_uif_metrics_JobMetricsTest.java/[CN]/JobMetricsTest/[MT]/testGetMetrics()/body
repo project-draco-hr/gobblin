@@ -1,0 +1,20 @@
+{
+  Map<String,Metric> metricMap=this.metrics.getMetrics();
+  Assert.assertEquals(metricMap.size(),2);
+  Metric metric=metricMap.get(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,JOB_ID,"records"));
+  Assert.assertTrue(metric instanceof Counter);
+  Assert.assertEquals(((Counter)metric).getCount(),3L);
+  metric=metricMap.get(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,TASK_ID,"records"));
+  Assert.assertTrue(metric instanceof Counter);
+  Assert.assertEquals(((Counter)metric).getCount(),3L);
+  metricMap=this.metrics.getMetricsOfGroup(JobMetrics.MetricGroup.JOB);
+  Assert.assertEquals(metricMap.size(),1);
+  metric=metricMap.get(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,JOB_ID,"records"));
+  Assert.assertTrue(metric instanceof Counter);
+  Assert.assertEquals(((Counter)metric).getCount(),3L);
+  metricMap=this.metrics.getMetricsOfGroup(JobMetrics.MetricGroup.TASK);
+  Assert.assertEquals(metricMap.size(),1);
+  metric=metricMap.get(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,TASK_ID,"records"));
+  Assert.assertTrue(metric instanceof Counter);
+  Assert.assertEquals(((Counter)metric).getCount(),3L);
+}

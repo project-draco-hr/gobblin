@@ -1,0 +1,9 @@
+{
+  this.metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,JOB_ID,"records"));
+  Map<String,Metric> metricMap=this.metrics.getMetricsOfGroup(JobMetrics.MetricGroup.TASK);
+  Assert.assertEquals(metricMap.size(),1);
+  Metric metric=metricMap.get(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,TASK_ID,"records"));
+  Assert.assertEquals(((Counter)metric).getCount(),3L);
+  this.metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,TASK_ID,"records"));
+  Assert.assertTrue(this.metrics.getMetricsOfGroup(JobMetrics.MetricGroup.TASK).isEmpty());
+}
