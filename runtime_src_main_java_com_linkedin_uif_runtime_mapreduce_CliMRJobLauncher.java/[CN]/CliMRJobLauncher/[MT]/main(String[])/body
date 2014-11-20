@@ -1,5 +1,21 @@
 {
-  String configFile=args[args.length - 2];
-  Properties properties=ConfigurationConverter.getProperties(new PropertiesConfiguration(configFile));
-  System.exit(ToolRunner.run(new Configuration(),new CliMRJobLauncher(properties),args));
+  Option sysConfigOption=OptionBuilder.withArgName("system configuration file").withDescription("Gobblin system configuration file").hasArgs().withLongOpt("sysconfig").create();
+  Option jobConfigOption=OptionBuilder.withArgName("job configuration file").withDescription("Gobblin job configuration file").hasArgs().withLongOpt("jobconfig").create();
+  Option helpOption=OptionBuilder.withArgName("help").withDescription("Display usage information").withLongOpt("help").create('h');
+  Options options=new Options();
+  options.addOption(sysConfigOption);
+  options.addOption(jobConfigOption);
+  options.addOption(helpOption);
+  CommandLine cmd=new BasicParser().parse(options,args);
+  if (cmd.hasOption('h')) {
+    printUsage(options);
+    System.exit(0);
+  }
+  if (!cmd.hasOption("sysconfig") || !cmd.hasOption("jobconfig")) {
+    printUsage(options);
+    System.exit(1);
+  }
+  Properties sysConfig=ConfigurationConverter.getProperties(new PropertiesConfiguration(cmd.getOptionValue("sysconfig")));
+  Properties jobConfig=ConfigurationConverter.getProperties(new PropertiesConfiguration(cmd.getOptionValue("jobconfig")));
+  System.exit(ToolRunner.run(new Configuration(),new CliMRJobLauncher(sysConfig,jobConfig),args));
 }
