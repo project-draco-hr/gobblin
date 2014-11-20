@@ -1,0 +1,8 @@
+{
+  try {
+    JobScheduler.this.runJob(this.jobProps,this.jobListener);
+  }
+ catch (  JobException je) {
+    LOG.error("Failed to run job " + this.jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY),je);
+  }
+}

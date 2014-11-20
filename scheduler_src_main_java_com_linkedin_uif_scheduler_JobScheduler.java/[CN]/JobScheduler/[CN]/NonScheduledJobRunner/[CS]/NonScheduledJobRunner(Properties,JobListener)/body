@@ -1,0 +1,4 @@
+{
+  this.jobProps=jobProps;
+  this.jobListener=jobListener;
+}
