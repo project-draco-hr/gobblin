@@ -1,3 +1,0 @@
-def generate_project_file():
-    project_file_content = ('<?xml version="1.0" encoding="UTF-8"?>\n<projectDescription>\n        <name>%s</name>\n        <comment></comment>\n        <projects>\n        </projects>\n        <buildSpec>\n                <buildCommand>\n                        <name>org.eclipse.jdt.core.javabuilder</name>\n                        <arguments>\n                        </arguments>\n                </buildCommand>\n        </buildSpec>\n        <natures>\n                <nature>org.eclipse.jdt.core.javanature</nature>\n        </natures>\n</projectDescription>\n  ' % os.path.basename(cur_dir))
-    open(os.path.join(cur_dir, '.project'), 'w').writelines(project_file_content)
