@@ -1,0 +1,12 @@
+{
+  Preconditions.checkArgument(info.hasJobId());
+  PreparedStatement updateStatement=connection.prepareStatement(JOB_EXECUTION_UPDATE_STATEMENT_TEMPLATE);
+  updateStatement.setTimestamp(1,info.hasStartTime() ? new Timestamp(info.getStartTime()) : Timestamp.valueOf(DEFAULT_TIMESTAMP));
+  updateStatement.setTimestamp(2,info.hasEndTime() ? new Timestamp(info.getEndTime()) : Timestamp.valueOf(DEFAULT_TIMESTAMP));
+  updateStatement.setLong(3,info.hasDuration() ? info.getDuration() : -1);
+  updateStatement.setString(4,info.hasState() ? info.getState().name() : null);
+  updateStatement.setInt(5,info.hasLaunchedTasks() ? info.getLaunchedTasks() : -1);
+  updateStatement.setInt(6,info.hasCompletedTasks() ? info.getCompletedTasks() : -1);
+  updateStatement.setString(7,info.getJobId());
+  updateStatement.executeUpdate();
+}

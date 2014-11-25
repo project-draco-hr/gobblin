@@ -1,0 +1,19 @@
+{
+  String statements=Files.toString(new File("metastore/src/test/resources/gobblin_job_history_store.sql"),Charset.defaultCharset());
+  Optional<Connection> connectionOptional=Optional.absent();
+  try {
+    Injector injector=Guice.createInjector(new MetaStoreModule(properties));
+    DataSource dataSource=injector.getInstance(DataSource.class);
+    connectionOptional=Optional.of(dataSource.getConnection());
+    Connection connection=connectionOptional.get();
+    for (    String statement : Splitter.on(";").omitEmptyStrings().trimResults().split(statements)) {
+      PreparedStatement preparedStatement=connection.prepareStatement(statement);
+      preparedStatement.execute();
+    }
+  }
+  finally {
+    if (connectionOptional.isPresent()) {
+      connectionOptional.get().close();
+    }
+  }
+}

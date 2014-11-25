@@ -1,0 +1,7 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(ConfigurationKeys.JOB_HISTORY_STORE_URL_KEY,"jdbc:derby:memory:gobblin;create=true");
+  prepareJobHistoryStoreDatabase(properties);
+  Injector injector=Guice.createInjector(new MetaStoreModule(properties));
+  this.jobHistoryStore=injector.getInstance(JobHistoryStore.class);
+}

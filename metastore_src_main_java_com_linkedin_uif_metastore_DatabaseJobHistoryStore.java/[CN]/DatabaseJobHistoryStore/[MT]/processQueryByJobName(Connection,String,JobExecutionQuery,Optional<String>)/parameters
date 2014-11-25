@@ -1,0 +1,4 @@
+Connection connection
+String jobName
+JobExecutionQuery query
+Optional<String> tableFilter

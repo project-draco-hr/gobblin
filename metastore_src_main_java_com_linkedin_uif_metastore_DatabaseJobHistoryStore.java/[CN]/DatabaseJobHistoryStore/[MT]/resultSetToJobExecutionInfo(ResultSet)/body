@@ -1,0 +1,25 @@
+{
+  JobExecutionInfo jobExecutionInfo=new JobExecutionInfo();
+  jobExecutionInfo.setJobName(rs.getString(1));
+  jobExecutionInfo.setJobId(rs.getString(2));
+  try {
+    jobExecutionInfo.setStartTime(rs.getTimestamp(3).getTime());
+  }
+ catch (  SQLException se) {
+    jobExecutionInfo.setStartTime(0);
+  }
+  try {
+    jobExecutionInfo.setEndTime(rs.getTimestamp(4).getTime());
+  }
+ catch (  SQLException se) {
+    jobExecutionInfo.setEndTime(0);
+  }
+  jobExecutionInfo.setDuration(rs.getLong(5));
+  String state=rs.getString(6);
+  if (!Strings.isNullOrEmpty(state)) {
+    jobExecutionInfo.setState(JobStateEnum.valueOf(state));
+  }
+  jobExecutionInfo.setLaunchedTasks(rs.getInt(7));
+  jobExecutionInfo.setCompletedTasks(rs.getInt(8));
+  return jobExecutionInfo;
+}

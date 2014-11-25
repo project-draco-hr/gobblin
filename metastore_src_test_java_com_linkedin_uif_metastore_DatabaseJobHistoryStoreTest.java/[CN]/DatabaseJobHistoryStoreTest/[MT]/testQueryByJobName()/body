@@ -1,0 +1,10 @@
+{
+  JobExecutionQuery queryByJobName=new JobExecutionQuery();
+  queryByJobName.setIdType(QueryIdTypeEnum.JOB_NAME);
+  queryByJobName.setId(JobExecutionQuery.Id.create(this.expectedJobExecutionInfos.get(0).getJobName()));
+  List<JobExecutionInfo> result=this.jobHistoryStore.get(queryByJobName);
+  Assert.assertEquals(result.size(),1);
+  JobExecutionInfo actual=result.get(0);
+  JobExecutionInfo expected=this.expectedJobExecutionInfos.get(0);
+  assertJobExecution(actual,expected);
+}

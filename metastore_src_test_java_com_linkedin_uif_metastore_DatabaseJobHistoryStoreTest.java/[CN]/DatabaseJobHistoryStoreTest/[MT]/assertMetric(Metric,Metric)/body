@@ -1,0 +1,6 @@
+{
+  Assert.assertEquals(actual.getGroup(),expected.getGroup());
+  Assert.assertEquals(actual.getName(),expected.getName());
+  Assert.assertEquals(actual.getType(),expected.getType());
+  Assert.assertEquals(actual.getValue(),expected.getValue());
+}

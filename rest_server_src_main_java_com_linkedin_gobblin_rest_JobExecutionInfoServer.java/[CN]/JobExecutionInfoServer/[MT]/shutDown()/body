@@ -1,0 +1,6 @@
+{
+  if (this.httpServer.isPresent()) {
+    LOGGER.info("Stopping the job execution information server");
+    this.httpServer.get().stop();
+  }
+}

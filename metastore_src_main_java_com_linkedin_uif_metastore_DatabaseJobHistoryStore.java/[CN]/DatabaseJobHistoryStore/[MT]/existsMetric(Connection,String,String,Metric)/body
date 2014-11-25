@@ -1,0 +1,12 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+  Preconditions.checkArgument(metric.hasGroup());
+  Preconditions.checkArgument(metric.hasName());
+  Preconditions.checkArgument(metric.hasType());
+  PreparedStatement queryStatement=connection.prepareStatement(template);
+  queryStatement.setString(1,id);
+  queryStatement.setString(2,metric.getGroup());
+  queryStatement.setString(3,metric.getName());
+  queryStatement.setString(4,metric.getType().name());
+  return queryStatement.executeQuery().next();
+}

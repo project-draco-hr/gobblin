@@ -1,0 +1,5 @@
+Connection connection
+String template
+String id
+Metric metric
+boolean insert
