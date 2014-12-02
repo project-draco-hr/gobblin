@@ -1,43 +1,48 @@
 {
-  collectExtractMapping(states);
-  for (  Map.Entry<Extract,List<WorkUnitState>> entry : extractToStateMap.entrySet()) {
-    Extract extract=entry.getKey();
-    WorkUnitState workUnitState=entry.getValue().get(0);
+  Set<Path> writerOutputPathMoved=Sets.newHashSet();
+  for (  WorkUnitState workUnitState : states) {
     int branches=workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
     for (int i=0; i < branches; i++) {
-      String branchName=ForkOperatorUtils.getBranchName(workUnitState,i,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + i);
-      Path tmpOutput=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,branches,i)),ForkOperatorUtils.getPathForBranch(extract.getOutputFilePath(),branchName,branches));
-      Path finalOutput=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,branches,i)),ForkOperatorUtils.getPathForBranch(extract.getOutputFilePath(),branchName,branches));
-      if (!this.fss.get(i).exists(finalOutput.getParent())) {
-        this.fss.get(i).mkdirs(finalOutput.getParent());
+      String writerFilePathKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,branches,i);
+      if (!workUnitState.contains(writerFilePathKey)) {
+        continue;
       }
-      LOG.info(String.format("Attempting to move %s to %s",tmpOutput,finalOutput));
-      if (this.fss.get(i).exists(finalOutput)) {
-        if (this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,branches,i))) {
-          this.fss.get(i).delete(finalOutput,true);
-        }
- else {
-          for (          FileStatus status : this.fss.get(i).listStatus(tmpOutput)) {
-            if (workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_PATH,branches,i),false)) {
-              this.fss.get(i).rename(status.getPath(),new Path(finalOutput,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,branches,i))));
+      Path writerOutput=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,branches,i)),workUnitState.getProp(writerFilePathKey));
+      Path publisherOutput=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,branches,i)),workUnitState.getProp(writerFilePathKey));
+      if (writerOutputPathMoved.contains(writerOutput)) {
+        continue;
+      }
+      if (!this.fss.get(i).exists(publisherOutput.getParent())) {
+        this.fss.get(i).mkdirs(publisherOutput.getParent());
+      }
+      if (this.fss.get(i).exists(publisherOutput)) {
+        boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,branches,i));
+        if (!replaceFinalOutputDir) {
+          boolean preserveFileName=workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_NAME,branches,i),false);
+          for (          FileStatus status : this.fss.get(i).listStatus(writerOutput)) {
+            Path outputPath=preserveFileName ? new Path(publisherOutput,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,branches,i))) : new Path(publisherOutput,status.getPath().getName());
+            if (this.fss.get(i).rename(status.getPath(),outputPath)) {
+              LOG.info(String.format("Moved %s to %s",status.getPath(),outputPath));
             }
  else {
-              this.fss.get(i).rename(status.getPath(),new Path(finalOutput,status.getPath().getName()));
+              throw new IOException("Failed to move from " + status.getPath() + " to "+ outputPath);
             }
           }
+          writerOutputPathMoved.add(writerOutput);
           continue;
         }
+        this.fss.get(i).delete(publisherOutput,true);
       }
-      if (this.fss.get(i).rename(tmpOutput,finalOutput)) {
-        for (        WorkUnitState state : entry.getValue()) {
-          if (state.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
-            state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-          }
+      if (this.fss.get(i).exists(writerOutput)) {
+        if (this.fss.get(i).rename(writerOutput,publisherOutput)) {
+          LOG.info(String.format("Moved %s to %s",writerOutput,publisherOutput));
+          writerOutputPathMoved.add(writerOutput);
+        }
+ else {
+          throw new IOException("Failed to move from " + writerOutput + " to "+ publisherOutput);
         }
       }
- else {
-        throw new RuntimeException("Rename operation from " + tmpOutput + " to "+ finalOutput+ " failed!");
-      }
     }
+    workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   }
 }
