@@ -1,8 +1,0 @@
-{
-  this.sourceWrapperMap.put(ConfigurationKeys.DEFAULT_SOURCE_WRAPPER,SourceWrapperBase.class);
-  String propStr=this.properties.getProperty(ConfigurationKeys.SOURCE_WRAPPERS,"default:" + SourceWrapperBase.class.getName());
-  for (  String entry : Splitter.on(";").trimResults().split(propStr)) {
-    List<String> tokens=Splitter.on(":").trimResults().splitToList(entry);
-    this.sourceWrapperMap.put(tokens.get(0).toLowerCase(),(Class<SourceWrapperBase>)Class.forName(tokens.get(1)));
-  }
-}
