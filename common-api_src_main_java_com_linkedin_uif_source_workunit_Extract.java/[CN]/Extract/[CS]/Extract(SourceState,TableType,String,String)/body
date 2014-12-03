@@ -1,17 +1,15 @@
 {
-  if (state != null && type != null && namespace != null && table != null) {
+  if (state != null && type != null && !Strings.isNullOrEmpty(namespace) && !Strings.isNullOrEmpty(table)) {
     String extractId=DTF.print(new DateTime());
     super.addAll(state);
     super.setProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY,type.toString());
     super.setProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY,namespace);
     super.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,table);
     super.setProp(ConfigurationKeys.EXTRACT_EXTRACT_ID_KEY,extractId);
-    if (state.getPreviousStates() != null) {
-      for (      WorkUnitState pre : state.getPreviousStates()) {
-        Extract previousExtract=pre.getWorkunit().getExtract();
-        if (previousExtract.getNamespace().equals(namespace) && previousExtract.getTable().equals(table)) {
-          previousTableState.addAll(pre);
-        }
+    for (    WorkUnitState pre : state.getPreviousWorkUnitStates()) {
+      Extract previousExtract=pre.getWorkunit().getExtract();
+      if (previousExtract.getNamespace().equals(namespace) && previousExtract.getTable().equals(table)) {
+        this.previousTableState.addAll(pre);
       }
     }
     if (state.getPropAsBoolean(ConfigurationKeys.EXTRACT_IS_FULL_KEY) && !state.contains(ConfigurationKeys.EXTRACT_FULL_RUN_TIME_KEY)) {

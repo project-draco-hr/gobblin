@@ -1,3 +1,0 @@
-{
-  return getPropAsBoolean(ConfigurationKeys.EXTRACT_RECORD_COUNT_ESTIMATED_KEY,false);
-}

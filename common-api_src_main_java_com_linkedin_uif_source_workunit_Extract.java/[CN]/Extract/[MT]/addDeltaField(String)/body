@@ -1,5 +1,0 @@
-{
-  StringBuilder sb=new StringBuilder(getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY,""));
-  Joiner.on(",").appendTo(sb,deltaFieldName);
-  setProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY,sb.toString());
-}

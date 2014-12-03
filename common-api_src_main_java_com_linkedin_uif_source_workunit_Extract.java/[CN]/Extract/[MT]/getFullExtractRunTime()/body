@@ -1,3 +1,0 @@
-{
-  return getPropAsLong(ConfigurationKeys.EXTRACT_FULL_RUN_TIME_KEY,-1);
-}

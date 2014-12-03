@@ -1,3 +1,0 @@
-{
-  return getPropAsBoolean(ConfigurationKeys.EXTRACT_IS_SECURED_KEY,false);
-}

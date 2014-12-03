@@ -3,7 +3,7 @@
   for (int i=0; i < size; i++) {
     WorkUnitState state=new WorkUnitState();
     state.readFields(in);
-    previousTaskStates.add(state);
+    this.previousTaskStates.add(state);
   }
   super.readFields(in);
 }

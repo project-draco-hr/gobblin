@@ -1,4 +1,0 @@
-{
-  setProp(ConfigurationKeys.EXTRACT_VALIDATION_RECORD_COUNT_KEY,count);
-  setProp(ConfigurationKeys.EXTRACT_VALIDATION_RECORD_COUNT_HWM_KEY,hwm);
-}
