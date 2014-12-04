@@ -1,0 +1,3 @@
+{
+  setProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY,Joiner.on(",").join(deltaFieldName));
+}
