@@ -16,10 +16,9 @@
   LOG.info("Starting job " + jobId);
   Optional<SourceState> sourceStateOptional=Optional.absent();
   try {
-    SourceWrapperBase sourceWrapper=this.sourceWrapperMap.get(jobProps.getProperty(ConfigurationKeys.SOURCE_WRAPPER_CLASS_KEY,ConfigurationKeys.DEFAULT_SOURCE_WRAPPER).toLowerCase()).newInstance();
     SourceState sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName));
-    sourceWrapper.init(sourceState);
-    Source<?,?> source=new SourceDecorator(sourceWrapper,jobId,LOG);
+    Source<?,?> sourceInstance=(Source<?,?>)Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
+    Source<?,?> source=new SourceDecorator(sourceInstance,jobId,LOG);
     sourceStateOptional=Optional.of(sourceState);
     Optional<List<WorkUnit>> workUnits=Optional.fromNullable(source.getWorkunits(sourceState));
     if (!workUnits.isPresent()) {

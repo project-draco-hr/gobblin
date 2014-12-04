@@ -2,5 +2,4 @@
   this.properties=properties;
   this.jobStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
   this.taskStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),TaskState.class);
-  populateSourceWrapperMap();
 }

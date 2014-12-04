@@ -1,5 +1,0 @@
-{
-  SourceWrapperBase source=this.sourceWrapperMap.get(jobProps.getProperty(ConfigurationKeys.SOURCE_WRAPPER_CLASS_KEY,ConfigurationKeys.DEFAULT_SOURCE_WRAPPER).toLowerCase()).newInstance();
-  source.init(sourceState);
-  return source;
-}
