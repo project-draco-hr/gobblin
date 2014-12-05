@@ -1,6 +1,9 @@
 {
   FileSystem fs=FileSystem.get(URI.create(this.properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY)),new Configuration());
   Path taskStateStoreRootDir=new Path(this.properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY));
+  if (!fs.exists(taskStateStoreRootDir)) {
+    return;
+  }
   FileStatus[] rootStatuses=fs.listStatus(taskStateStoreRootDir);
   if (rootStatuses == null || rootStatuses.length == 0) {
     return;

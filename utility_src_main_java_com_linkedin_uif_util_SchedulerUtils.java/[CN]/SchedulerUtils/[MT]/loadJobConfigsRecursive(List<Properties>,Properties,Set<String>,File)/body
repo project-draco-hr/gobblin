@@ -5,34 +5,41 @@
     }
   }
 );
-  if (propertiesFiles != null && propertiesFiles.length > 0) {
-    if (propertiesFiles.length != 1) {
-      throw new RuntimeException("Found more than one .properties files in directory: " + jobConfigDir);
-    }
-    rootProps.load(new FileReader(new File(jobConfigDir,propertiesFiles[0])));
-  }
-  String[] names=jobConfigDir.list();
-  if (names == null || names.length == 0) {
-    return;
-  }
-  for (  String name : names) {
-    File file=new File(jobConfigDir,name);
-    if (file.isDirectory()) {
-      Properties rootPropsCopy=new Properties();
-      rootPropsCopy.putAll(rootProps);
-      loadJobConfigsRecursive(jobConfigs,rootPropsCopy,jobConfigFileExtensions,file);
-    }
- else {
-      int pos=file.getName().lastIndexOf(".");
-      String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
-      if (!jobConfigFileExtensions.contains(fileExtension)) {
-        continue;
+  Closer closer=Closer.create();
+  try {
+    if (propertiesFiles != null && propertiesFiles.length > 0) {
+      if (propertiesFiles.length != 1) {
+        throw new RuntimeException("Found more than one .properties file in directory: " + jobConfigDir);
       }
-      Properties jobProps=new Properties();
-      jobProps.putAll(rootProps);
-      jobProps.load(new FileReader(file));
-      jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
-      jobConfigs.add(jobProps);
+      rootProps.load(closer.register(new FileReader(new File(jobConfigDir,propertiesFiles[0]))));
     }
+    String[] names=jobConfigDir.list();
+    for (    String name : names) {
+      File file=new File(jobConfigDir,name);
+      if (file.isDirectory()) {
+        Properties rootPropsCopy=new Properties();
+        rootPropsCopy.putAll(rootProps);
+        loadJobConfigsRecursive(jobConfigs,rootPropsCopy,jobConfigFileExtensions,file);
+      }
+ else {
+        int pos=file.getName().lastIndexOf(".");
+        String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
+        if (!jobConfigFileExtensions.contains(fileExtension)) {
+          continue;
+        }
+        File doneFile=new File(file + ".done");
+        if (doneFile.exists()) {
+          continue;
+        }
+        Properties jobProps=new Properties();
+        jobProps.putAll(rootProps);
+        jobProps.load(closer.register(new FileReader(file)));
+        jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
+        jobConfigs.add(jobProps);
+      }
+    }
+  }
+  finally {
+    closer.close();
   }
 }

@@ -1,4 +1,0 @@
-{
-  setProp(ConfigurationKeys.EXTRACT_IS_SECURED_KEY,true);
-  setProp(ConfigurationKeys.EXTRACT_SECURITY_PERMISSION_GROUP_KEY,permissionGroup);
-}

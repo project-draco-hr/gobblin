@@ -1,3 +1,0 @@
-{
-  source=(Source<?,?>)Class.forName(sourceState.getProp(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
-}

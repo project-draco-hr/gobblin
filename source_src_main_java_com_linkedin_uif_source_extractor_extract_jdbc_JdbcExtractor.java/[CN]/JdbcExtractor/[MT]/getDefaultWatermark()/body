@@ -1,7 +1,7 @@
 {
   Schema schema=new Schema();
   String dataType;
-  String columnName="DefaultWatermarkColumn";
+  String columnName="derivedwatermarkcolumn";
   schema.setColumnName(columnName);
   WatermarkType wmType=WatermarkType.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE,"TIMESTAMP").toUpperCase());
 switch (wmType) {

@@ -1,4 +1,0 @@
-{
-  setProp(ConfigurationKeys.EXTRACT_IS_SHARDED_KEY,true);
-  setProp(ConfigurationKeys.EXTRACT_SHARDED_REAL_NAMESPACE_KEY,realNameSpace);
-}

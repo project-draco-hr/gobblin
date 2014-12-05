@@ -34,7 +34,7 @@
   Source<?,?> source;
   try {
     sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName));
-    source=new SourceDecorator(initSource(jobProps,sourceState),jobId,LOG);
+    source=new SourceDecorator(initSource(jobProps),jobId,LOG);
   }
  catch (  Throwable t) {
     String errMsg="Failed to initialize the source for job " + jobId;

@@ -1,3 +1,0 @@
-{
-  return getProp(ConfigurationKeys.EXTRACT_SECURITY_PERMISSION_GROUP_KEY);
-}
