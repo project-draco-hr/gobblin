@@ -1,9 +1,3 @@
 {
-  HikariConfig config=new HikariConfig();
-  config.setJdbcUrl(this.properties.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_URL_KEY));
-  if (this.properties.containsKey(ConfigurationKeys.JOB_HISTORY_STORE_USER_KEY) && this.properties.containsKey(ConfigurationKeys.JOB_HISTORY_STORE_PASSWORD_KEY)) {
-    config.setUsername(this.properties.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_USER_KEY));
-    config.setPassword(this.properties.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_PASSWORD_KEY));
-  }
-  return new HikariDataSource(config);
+  return this.basicDataSource;
 }

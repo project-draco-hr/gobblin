@@ -1,5 +1,5 @@
 {
-  LOG.info("Stopping the local job manager");
+  LOG.info("Stopping the job scheduler");
   this.scheduler.shutdown(true);
   if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
     this.fileAlterationMonitor.stop(1000);
