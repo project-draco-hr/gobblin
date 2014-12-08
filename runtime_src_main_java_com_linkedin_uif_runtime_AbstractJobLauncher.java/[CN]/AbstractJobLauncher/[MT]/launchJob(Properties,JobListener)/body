@@ -9,16 +9,18 @@
     LOG.info(String.format("Not launching job %s as it is disabled",jobName));
     return;
   }
-  JobLock jobLock;
-  try {
-    jobLock=getJobLock(jobName,jobProps);
+  Optional<JobLock> jobLockOptional=Optional.absent();
+  boolean jobLockEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
+  if (jobLockEnabled) {
+    try {
+      jobLockOptional=Optional.of(getJobLock(jobName,jobProps));
+    }
+ catch (    IOException ioe) {
+      throw new JobException("Failed to get job lock for job " + jobName,ioe);
+    }
   }
- catch (  IOException ioe) {
-    throw new JobException("Failed to get job lock for job " + jobName,ioe);
-  }
-  if (!tryLockJob(jobName,jobLock)) {
-    LOG.info(String.format("Previous instance of job %s is still running, skipping this scheduled run",jobName));
-    return;
+  if (!tryLockJob(jobName,jobLockOptional)) {
+    throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",jobName));
   }
   String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
   if (Strings.isNullOrEmpty(jobId)) {
@@ -39,19 +41,19 @@
  catch (  Throwable t) {
     String errMsg="Failed to initialize the source for job " + jobId;
     LOG.error(errMsg,t);
-    unlockJob(jobName,jobLock);
+    unlockJob(jobName,jobLockOptional);
     throw new JobException(errMsg,t);
   }
   Optional<List<WorkUnit>> workUnits=Optional.fromNullable(source.getWorkunits(sourceState));
   if (!workUnits.isPresent()) {
     source.shutdown(sourceState);
-    unlockJob(jobName,jobLock);
+    unlockJob(jobName,jobLockOptional);
     throw new JobException("Failed to get work units for job " + jobId);
   }
   if (workUnits.get().isEmpty()) {
     LOG.warn("No work units have been created for job " + jobId);
     source.shutdown(sourceState);
-    unlockJob(jobName,jobLock);
+    unlockJob(jobName,jobLockOptional);
     return;
   }
   long startTime=System.currentTimeMillis();
@@ -94,7 +96,7 @@
  catch (    Throwable t) {
       LOG.error("Failed to persist job state and cleanup for job " + jobId,t);
     }
-    unlockJob(jobName,jobLock);
+    unlockJob(jobName,jobLockOptional);
     if (JobMetrics.isEnabled(this.properties)) {
       jobState.removeMetrics();
     }
