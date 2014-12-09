@@ -1,6 +1,9 @@
 {
+  if (!jobLockOptional.isPresent()) {
+    return;
+  }
   try {
-    jobLock.unlock();
+    jobLockOptional.get().unlock();
   }
  catch (  IOException ioe) {
     LOG.error("Failed to unlock for job " + jobName,ioe);
