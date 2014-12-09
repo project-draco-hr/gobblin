@@ -1,7 +1,11 @@
 {
   if (value.isJsonNull()) {
-    if (nullable)     return null;
- else     throw new RuntimeException("Field: " + getName() + " is not nullable and contains a null value");
+    if (nullable) {
+      return null;
+    }
+ else {
+      throw new RuntimeException("Field: " + getName() + " is not nullable and contains a null value");
+    }
   }
   return convertField(value);
 }
