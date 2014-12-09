@@ -1,0 +1,10 @@
+{
+  this.client.close();
+  this.server.shutDown();
+  this.jobHistoryStore.close();
+  try {
+    DriverManager.getConnection("jdbc:derby:memory:gobblin;shutdown=true");
+  }
+ catch (  SQLException se) {
+  }
+}
