@@ -1,0 +1,11 @@
+{
+  GenericRecord record=new GenericData.Record(new Schema.Parser().parse(AVRO_SCHEMA));
+  record.put("name","foo");
+  record.put("favorite_number",68);
+  record.put("favorite_colors",Arrays.asList("blue","black","red"));
+  CopyableGenericRecord copyableGenericRecord=new CopyableGenericRecord(record);
+  GenericRecord copy=copyableGenericRecord.copy();
+  Assert.assertEquals(record,copy);
+  copy.put("name","bar");
+  Assert.assertNotEquals(record,copy);
+}
