@@ -11,6 +11,8 @@ case DEFLATE:
 case SNAPPY:
 writer.setCodec(CodecFactory.snappyCodec());
 break;
+case NOCOMPRESSION:
+break;
 default :
 writer.setCodec(CodecFactory.deflateCodec(deflateLevel));
 break;
