@@ -1,0 +1,23 @@
+{
+  JobExecutionQuery queryByJobId1=new JobExecutionQuery();
+  queryByJobId1.setIdType(QueryIdTypeEnum.JOB_ID);
+  queryByJobId1.setId(JobExecutionQuery.Id.create(this.expected1.getJobId()));
+  JobExecutionQuery queryByJobId2=new JobExecutionQuery();
+  queryByJobId2.setIdType(QueryIdTypeEnum.JOB_ID);
+  queryByJobId2.setId(JobExecutionQuery.Id.create(this.expected2.getJobId()));
+  List<JobExecutionQuery> queries=Lists.newArrayList(queryByJobId1,queryByJobId2);
+  List<JobExecutionQueryResult> result=Lists.newArrayList(this.client.batchGet(queries));
+  Assert.assertEquals(result.size(),2);
+  Assert.assertEquals(result.get(0).getJobExecutions().size(),1);
+  Assert.assertEquals(result.get(1).getJobExecutions().size(),1);
+  JobExecutionInfo actual1=result.get(0).getJobExecutions().get(0);
+  JobExecutionInfo actual2=result.get(1).getJobExecutions().get(0);
+  if (actual1.getJobName().equals(this.expected1.getJobName())) {
+    assertJobExecution(actual1,this.expected1);
+    assertJobExecution(actual2,this.expected2);
+  }
+ else {
+    assertJobExecution(actual1,this.expected2);
+    assertJobExecution(actual2,this.expected1);
+  }
+}

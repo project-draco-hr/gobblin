@@ -1,0 +1,5 @@
+{
+  this.httpClientFactory=new HttpClientFactory();
+  Client r2Client=new TransportClientAdapter(this.httpClientFactory.getClient(Collections.<String,String>emptyMap()));
+  this.restClient=new RestClient(r2Client,serverUri);
+}

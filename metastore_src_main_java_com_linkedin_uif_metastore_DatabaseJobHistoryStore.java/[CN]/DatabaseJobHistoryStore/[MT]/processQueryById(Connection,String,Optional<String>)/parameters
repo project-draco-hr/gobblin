@@ -1,0 +1,3 @@
+Connection connection
+String jobId
+Optional<String> tableFilter

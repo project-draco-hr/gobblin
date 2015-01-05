@@ -1,0 +1,14 @@
+{
+  for (  JobExecutionInfo jobExecutionInfo : this.expectedJobExecutionInfos) {
+    jobExecutionInfo.setEndTime(System.currentTimeMillis());
+    jobExecutionInfo.setDuration(jobExecutionInfo.getEndTime() - jobExecutionInfo.getStartTime());
+    jobExecutionInfo.setState(JobStateEnum.COMMITTED);
+    jobExecutionInfo.setCompletedTasks(jobExecutionInfo.getLaunchedTasks());
+    for (    TaskExecutionInfo taskExecutionInfo : jobExecutionInfo.getTaskExecutions()) {
+      taskExecutionInfo.setEndTime(jobExecutionInfo.getEndTime());
+      taskExecutionInfo.setDuration(taskExecutionInfo.getEndTime() - taskExecutionInfo.getStartTime());
+      taskExecutionInfo.setState(TaskStateEnum.COMMITTED);
+    }
+    this.jobHistoryStore.put(jobExecutionInfo);
+  }
+}

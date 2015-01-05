@@ -1,0 +1,26 @@
+{
+  JobExecutionQuery queryByTable=new JobExecutionQuery();
+  queryByTable.setIdType(QueryIdTypeEnum.TABLE);
+  queryByTable.setId(JobExecutionQuery.Id.create(this.expectedJobExecutionInfos.get(0).getTaskExecutions().get(0).getTable()));
+  List<JobExecutionInfo> result=this.jobHistoryStore.get(queryByTable);
+  Assert.assertEquals(result.size(),2);
+  JobExecutionInfo actual=result.get(0);
+  Assert.assertEquals(actual.getJobName(),this.expectedJobExecutionInfos.get(0).getJobName());
+  Assert.assertEquals(actual.getJobId(),this.expectedJobExecutionInfos.get(0).getJobId());
+  Assert.assertEquals(actual.getTaskExecutions().size(),1);
+  Assert.assertEquals(actual.getTaskExecutions().get(0).getTable(),this.expectedJobExecutionInfos.get(0).getTaskExecutions().get(0).getTable());
+  actual=result.get(1);
+  Assert.assertEquals(actual.getJobName(),this.expectedJobExecutionInfos.get(1).getJobName());
+  Assert.assertEquals(actual.getJobId(),this.expectedJobExecutionInfos.get(1).getJobId());
+  Assert.assertEquals(actual.getTaskExecutions().size(),1);
+  Assert.assertEquals(actual.getTaskExecutions().get(0).getTable(),this.expectedJobExecutionInfos.get(1).getTaskExecutions().get(0).getTable());
+  queryByTable.setId(JobExecutionQuery.Id.create(this.expectedJobExecutionInfos.get(1).getTaskExecutions().get(1).getTable()));
+  result=this.jobHistoryStore.get(queryByTable);
+  Assert.assertEquals(result.size(),1);
+  actual=result.get(0);
+  Assert.assertEquals(actual.getJobName(),this.expectedJobExecutionInfos.get(1).getJobName());
+  Assert.assertEquals(actual.getJobId(),this.expectedJobExecutionInfos.get(1).getJobId());
+  Assert.assertEquals(result.size(),1);
+  Assert.assertEquals(actual.getTaskExecutions().size(),1);
+  Assert.assertEquals(actual.getTaskExecutions().get(0).getTable(),this.expectedJobExecutionInfos.get(1).getTaskExecutions().get(1).getTable());
+}

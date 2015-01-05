@@ -1,0 +1,15 @@
+{
+  Preconditions.checkArgument(info.hasTaskId());
+  PreparedStatement updateStatement=connection.prepareStatement(TASK_EXECUTION_UPDATE_STATEMENT_TEMPLATE);
+  updateStatement.setTimestamp(1,info.hasStartTime() ? new Timestamp(info.getStartTime()) : Timestamp.valueOf(DEFAULT_TIMESTAMP));
+  updateStatement.setTimestamp(2,info.hasEndTime() ? new Timestamp(info.getEndTime()) : Timestamp.valueOf(DEFAULT_TIMESTAMP));
+  updateStatement.setLong(3,info.hasDuration() ? info.getDuration() : -1);
+  updateStatement.setString(4,info.hasState() ? info.getState().name() : null);
+  updateStatement.setLong(5,info.hasLowWatermark() ? info.getLowWatermark() : -1);
+  updateStatement.setLong(6,info.hasHighWatermark() ? info.getHighWatermark() : -1);
+  updateStatement.setString(7,info.hasTable() && info.getTable().hasNamespace() ? info.getTable().getNamespace() : null);
+  updateStatement.setString(8,info.hasTable() && info.getTable().hasName() ? info.getTable().getName() : null);
+  updateStatement.setString(9,info.hasTable() && info.getTable().hasType() ? info.getTable().getType().name() : null);
+  updateStatement.setString(10,info.getTaskId());
+  updateStatement.executeUpdate();
+}

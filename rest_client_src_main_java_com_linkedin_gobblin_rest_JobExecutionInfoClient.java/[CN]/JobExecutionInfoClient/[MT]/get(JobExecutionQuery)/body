@@ -1,0 +1,5 @@
+{
+  GetRequest<JobExecutionQueryResult> getRequest=new JobExecutionsBuilders().get().id(new ComplexResourceKey<JobExecutionQuery,EmptyRecord>(query,new EmptyRecord())).build();
+  Response<JobExecutionQueryResult> response=this.restClient.sendRequest(getRequest,ErrorHandlingBehavior.TREAT_SERVER_ERROR_AS_SUCCESS).getResponse();
+  return response.getEntity();
+}

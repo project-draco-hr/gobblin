@@ -1,0 +1,8 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(key));
+  PreparedStatement queryStatement=connection.prepareStatement(template);
+  queryStatement.setString(1,id);
+  queryStatement.setString(2,key);
+  return queryStatement.executeQuery().next();
+}

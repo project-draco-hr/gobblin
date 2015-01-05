@@ -1,0 +1,23 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+  Preconditions.checkArgument(metric.hasGroup());
+  Preconditions.checkArgument(metric.hasName());
+  Preconditions.checkArgument(metric.hasType());
+  Preconditions.checkArgument(metric.hasValue());
+  PreparedStatement updateStatement=connection.prepareStatement(template);
+  if (insert) {
+    updateStatement.setString(1,id);
+    updateStatement.setString(2,metric.getGroup());
+    updateStatement.setString(3,metric.getName());
+    updateStatement.setString(4,metric.getType().name());
+    updateStatement.setString(5,metric.getValue());
+  }
+ else {
+    updateStatement.setString(1,metric.getValue());
+    updateStatement.setString(2,id);
+    updateStatement.setString(3,metric.getGroup());
+    updateStatement.setString(4,metric.getName());
+    updateStatement.setString(5,metric.getType().name());
+  }
+  updateStatement.executeUpdate();
+}

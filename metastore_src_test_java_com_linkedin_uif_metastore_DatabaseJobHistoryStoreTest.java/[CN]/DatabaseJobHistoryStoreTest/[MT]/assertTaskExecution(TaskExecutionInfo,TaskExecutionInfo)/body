@@ -1,0 +1,19 @@
+{
+  Assert.assertEquals(actual.getJobId(),expected.getJobId());
+  Assert.assertEquals(actual.getTaskId(),expected.getTaskId());
+  if (expected.hasDuration()) {
+    Assert.assertEquals(actual.getDuration(),expected.getDuration());
+  }
+ else {
+    Assert.assertEquals(actual.getDuration().longValue(),0L);
+  }
+  Assert.assertEquals(actual.getState(),expected.getState());
+  Assert.assertEquals(actual.getLowWatermark(),expected.getLowWatermark());
+  Assert.assertEquals(actual.getHighWatermark(),expected.getHighWatermark());
+  Assert.assertEquals(actual.getTable(),expected.getTable());
+  Assert.assertEquals(actual.getMetrics(),expected.getMetrics());
+  for (int i=0; i < actual.getMetrics().size(); i++) {
+    assertMetric(actual.getMetrics().get(i),expected.getMetrics().get(i));
+  }
+  Assert.assertEquals(actual.getTaskProperties(),expected.getTaskProperties());
+}

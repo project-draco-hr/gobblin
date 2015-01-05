@@ -1,0 +1,4 @@
+{
+  this.jobHistoryStore.put(create(0,false));
+  this.jobHistoryStore.put(create(1,true));
+}

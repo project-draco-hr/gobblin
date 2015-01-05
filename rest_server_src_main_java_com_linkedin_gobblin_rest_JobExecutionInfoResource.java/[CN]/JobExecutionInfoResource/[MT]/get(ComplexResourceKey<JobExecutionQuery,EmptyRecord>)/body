@@ -1,0 +1,16 @@
+{
+  JobExecutionQuery query=key.getKey();
+  JobExecutionInfoArray jobExecutionInfos=new JobExecutionInfoArray();
+  try {
+    for (    JobExecutionInfo jobExecutionInfo : this.jobHistoryStore.get(query)) {
+      jobExecutionInfos.add(jobExecutionInfo);
+    }
+  }
+ catch (  Throwable t) {
+    LOGGER.error(String.format("Failed to execute query [id = %s, type = %s]",query.getId(),query.getIdType().name()),t);
+    return null;
+  }
+  JobExecutionQueryResult result=new JobExecutionQueryResult();
+  result.setJobExecutions(jobExecutionInfos);
+  return result;
+}

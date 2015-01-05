@@ -1,0 +1,10 @@
+{
+  Map<ComplexResourceKey<JobExecutionQuery,EmptyRecord>,JobExecutionQueryResult> results=Maps.newHashMap();
+  for (  ComplexResourceKey<JobExecutionQuery,EmptyRecord> key : keys) {
+    JobExecutionQueryResult result=get(key);
+    if (result != null) {
+      results.put(key,get(key));
+    }
+  }
+  return results;
+}

@@ -1,9 +1,0 @@
-{
-  try {
-    return jobLock.tryLock();
-  }
- catch (  IOException ioe) {
-    LOG.error("Failed to acquire the job lock for job " + jobName,ioe);
-    return false;
-  }
-}

@@ -1,0 +1,9 @@
+{
+  Set<ComplexResourceKey<JobExecutionQuery,EmptyRecord>> ids=Sets.newHashSet();
+  for (  JobExecutionQuery query : queries) {
+    ids.add(new ComplexResourceKey<JobExecutionQuery,EmptyRecord>(query,new EmptyRecord()));
+  }
+  BatchGetRequest<JobExecutionQueryResult> batchGetRequest=new JobExecutionsBuilders().batchGet().ids(ids).build();
+  BatchResponse<JobExecutionQueryResult> response=this.restClient.sendRequest(batchGetRequest,ErrorHandlingBehavior.TREAT_SERVER_ERROR_AS_SUCCESS).getResponseEntity();
+  return response.getResults().values();
+}

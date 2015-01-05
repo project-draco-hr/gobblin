@@ -1,0 +1,8 @@
+{
+  Schema schema=new Schema.Parser().parse(AVRO_SCHEMA);
+  CopyableSchema copyableSchema=new CopyableSchema(schema);
+  Schema copy=copyableSchema.copy();
+  Assert.assertEquals(schema,copy);
+  copy.addProp("foo","bar");
+  Assert.assertNotEquals(schema,copy);
+}

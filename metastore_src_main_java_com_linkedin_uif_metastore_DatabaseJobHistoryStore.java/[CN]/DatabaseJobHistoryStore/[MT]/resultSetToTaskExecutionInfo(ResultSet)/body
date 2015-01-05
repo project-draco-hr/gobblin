@@ -1,0 +1,39 @@
+{
+  TaskExecutionInfo taskExecutionInfo=new TaskExecutionInfo();
+  taskExecutionInfo.setTaskId(rs.getString(1));
+  taskExecutionInfo.setJobId(rs.getString(2));
+  try {
+    taskExecutionInfo.setStartTime(rs.getTimestamp(3).getTime());
+  }
+ catch (  SQLException se) {
+    taskExecutionInfo.setStartTime(0);
+  }
+  try {
+    taskExecutionInfo.setEndTime(rs.getTimestamp(4).getTime());
+  }
+ catch (  SQLException se) {
+    taskExecutionInfo.setEndTime(0);
+  }
+  taskExecutionInfo.setDuration(rs.getLong(5));
+  String state=rs.getString(6);
+  if (!Strings.isNullOrEmpty(state)) {
+    taskExecutionInfo.setState(TaskStateEnum.valueOf(state));
+  }
+  taskExecutionInfo.setLowWatermark(rs.getLong(7));
+  taskExecutionInfo.setHighWatermark(rs.getLong(8));
+  Table table=new Table();
+  String namespace=rs.getString(9);
+  if (!Strings.isNullOrEmpty(namespace)) {
+    table.setNamespace(namespace);
+  }
+  String name=rs.getString(10);
+  if (!Strings.isNullOrEmpty(name)) {
+    table.setName(name);
+  }
+  String type=rs.getString(11);
+  if (!Strings.isNullOrEmpty(type)) {
+    table.setType(TableTypeEnum.valueOf(type));
+  }
+  taskExecutionInfo.setTable(table);
+  return taskExecutionInfo;
+}

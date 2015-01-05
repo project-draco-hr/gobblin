@@ -1,0 +1,7 @@
+{
+  JobExecutionQuery queryByJobId=new JobExecutionQuery();
+  queryByJobId.setIdType(QueryIdTypeEnum.JOB_ID);
+  queryByJobId.setId(JobExecutionQuery.Id.create(this.expected1.getJobId() + "1"));
+  JobExecutionQueryResult result=this.client.get(queryByJobId);
+  Assert.assertTrue(result.getJobExecutions().isEmpty());
+}

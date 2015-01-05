@@ -1,0 +1,6 @@
+Connection connection
+String template
+String id
+String key
+String value
+boolean insert

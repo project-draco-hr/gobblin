@@ -1,0 +1,4 @@
+{
+  this.restClient.shutdown(new FutureCallback<None>());
+  this.httpClientFactory.shutdown(new FutureCallback<None>());
+}
