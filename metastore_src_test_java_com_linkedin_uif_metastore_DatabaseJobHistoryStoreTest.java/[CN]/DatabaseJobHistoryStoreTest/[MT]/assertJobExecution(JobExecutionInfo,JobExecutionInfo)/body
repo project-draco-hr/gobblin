@@ -10,6 +10,8 @@
   Assert.assertEquals(actual.getState(),expected.getState());
   Assert.assertEquals(actual.getLaunchedTasks(),expected.getLaunchedTasks());
   Assert.assertEquals(actual.getCompletedTasks(),expected.getCompletedTasks());
+  Assert.assertEquals(actual.getLauncherType(),expected.getLauncherType());
+  Assert.assertEquals(actual.getTrackingUrl(),expected.getTrackingUrl());
   Assert.assertEquals(actual.getMetrics(),expected.getMetrics());
   for (int i=0; i < actual.getMetrics().size(); i++) {
     assertMetric(actual.getMetrics().get(i),expected.getMetrics().get(i));

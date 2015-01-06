@@ -6,6 +6,6 @@
     jobLockOptional.get().unlock();
   }
  catch (  IOException ioe) {
-    LOG.error("Failed to unlock for job " + jobName,ioe);
+    LOG.error(String.format("Failed to unlock for job %s: %s",jobName,ioe),ioe);
   }
 }

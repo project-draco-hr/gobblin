@@ -1,8 +1,8 @@
 {
   Metric metric=new Metric();
-  metric.setGroup(rs.getString(1));
-  metric.setName(rs.getString(2));
-  metric.setType(MetricTypeEnum.valueOf(rs.getString(3)));
-  metric.setValue(rs.getString(4));
+  metric.setGroup(rs.getString("metric_group"));
+  metric.setName(rs.getString("metric_name"));
+  metric.setType(MetricTypeEnum.valueOf(rs.getString("metric_type")));
+  metric.setValue(rs.getString("metric_value"));
   return metric;
 }

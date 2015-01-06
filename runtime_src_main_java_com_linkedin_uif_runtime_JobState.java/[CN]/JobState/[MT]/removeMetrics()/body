@@ -1,7 +1,8 @@
 {
   JobMetrics metrics=JobMetrics.get(this.jobName,this.jobId);
-  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"records"));
-  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"recordsPerSec"));
-  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"bytes"));
-  metrics.removeMetric(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"bytesPerSec"));
+  for (  String name : metrics.getMetricsOfGroup(JobMetrics.MetricGroup.JOB).keySet()) {
+    if (name.contains(this.jobId)) {
+      metrics.removeMetric(name);
+    }
+  }
 }
