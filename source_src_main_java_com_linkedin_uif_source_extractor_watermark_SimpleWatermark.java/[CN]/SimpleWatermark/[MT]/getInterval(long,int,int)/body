@@ -3,9 +3,9 @@
     return 0;
   }
   long outputInterval=partitionInterval;
-  long totalIntervals=(long)Math.ceil((double)diff / (partitionInterval));
+  long totalIntervals=DoubleMath.roundToLong((double)diff / partitionInterval,RoundingMode.CEILING);
   if (totalIntervals > maxIntervals) {
-    outputInterval=(long)Math.ceil((double)diff / maxIntervals);
+    outputInterval=DoubleMath.roundToLong((double)diff / maxIntervals,RoundingMode.CEILING);
   }
   return outputInterval;
 }

@@ -12,7 +12,7 @@
   long startNum=lowWatermarkValue;
   long endNum=highWatermarkValue;
   while (startNum <= endNum) {
-    nextNum=startNum + (interval - 1);
+    nextNum=startNum + interval;
     intervalMap.put(startNum,(nextNum <= endNum ? nextNum : endNum));
     startNum=nextNum + deltaForNextWatermark;
   }

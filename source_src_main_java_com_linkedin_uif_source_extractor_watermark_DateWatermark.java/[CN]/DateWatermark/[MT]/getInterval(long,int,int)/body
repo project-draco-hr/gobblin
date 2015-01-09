@@ -3,10 +3,10 @@
     return 0;
   }
   int dayInterval=hourInterval / 24;
-  int totalHours=(int)Math.ceil(((double)diffInMilliSecs / (60 * 60 * 1000)));
-  long totalIntervals=(long)Math.ceil((float)totalHours / (dayInterval * 24));
+  int totalHours=DoubleMath.roundToInt((double)diffInMilliSecs / (60 * 60 * 1000),RoundingMode.CEILING);
+  int totalIntervals=DoubleMath.roundToInt((double)totalHours / (dayInterval * 24),RoundingMode.CEILING);
   if (totalIntervals > maxIntervals) {
-    hourInterval=(int)Math.ceil((float)totalHours / maxIntervals);
+    hourInterval=DoubleMath.roundToInt((double)totalHours / maxIntervals,RoundingMode.CEILING);
     dayInterval=hourInterval / 24;
   }
   return dayInterval;
