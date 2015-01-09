@@ -70,7 +70,14 @@
       addWorkUnit(workUnit,jobState,sequence++);
     }
   }
+  Optional<JobMetrics> jobMetrics=Optional.absent();
   try {
+    if (JobMetrics.isEnabled(jobProps)) {
+      jobMetrics=Optional.fromNullable(JobMetrics.get(jobName,jobId));
+      if (jobMetrics.isPresent()) {
+        jobMetrics.get().startMetricReporting(jobProps);
+      }
+    }
     runJob(jobName,jobProps,jobState,workUnits.get());
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled",jobId));
@@ -97,8 +104,11 @@
       LOG.error("Failed to persist job state and cleanup for job " + jobId,t);
     }
     unlockJob(jobName,jobLockOptional);
-    if (JobMetrics.isEnabled(this.properties)) {
-      jobState.removeMetrics();
+    if (JobMetrics.isEnabled(jobProps)) {
+      if (jobMetrics.isPresent()) {
+        jobMetrics.get().stopMetricReporting();
+      }
+      JobMetrics.remove(jobId);
     }
     if (Optional.fromNullable(jobListener).isPresent()) {
       jobListener.jobCompleted(jobState);
