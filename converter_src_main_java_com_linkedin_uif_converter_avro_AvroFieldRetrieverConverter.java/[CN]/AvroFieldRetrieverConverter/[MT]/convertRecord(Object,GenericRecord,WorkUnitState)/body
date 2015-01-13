@@ -1,0 +1,3 @@
+{
+  return AvroUtils.getField(inputRecord,this.fieldLocation);
+}

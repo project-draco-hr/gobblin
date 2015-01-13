@@ -1,0 +1,4 @@
+{
+  this.fieldLocation=Preconditions.checkNotNull(workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_EXTRACTOR_FIELD_PATH));
+  return this;
+}
