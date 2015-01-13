@@ -1,14 +1,11 @@
 {
-  if (data == null) {
-    return null;
-  }
   if ((field + 1) == fieldPath.length) {
     Object result=((Record)data).get(fieldPath[field]);
     if (result == null) {
-      return null;
+      return Optional.absent();
     }
  else {
-      return result;
+      return Optional.of(result);
     }
   }
  else {

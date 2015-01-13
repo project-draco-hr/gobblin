@@ -1,3 +1,9 @@
 {
-  return AvroUtils.getField(inputRecord,this.fieldLocation);
+  Optional<Object> logField=AvroUtils.getField(inputRecord,this.fieldLocation);
+  if (logField.isPresent()) {
+    return logField.get();
+  }
+ else {
+    return null;
+  }
 }

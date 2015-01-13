@@ -3,5 +3,8 @@
   Preconditions.checkNotNull(fieldLocation);
   Splitter splitter=Splitter.on(".").omitEmptyStrings().trimResults();
   String[] pathArray=Iterables.toArray(splitter.split(fieldLocation),String.class);
+  if (pathArray.length == 0) {
+    return Optional.absent();
+  }
   return extractFieldHelper(record,pathArray,0);
 }
