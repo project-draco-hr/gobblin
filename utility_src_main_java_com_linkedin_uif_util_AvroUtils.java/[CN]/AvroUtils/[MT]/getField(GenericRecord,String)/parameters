@@ -1,2 +1,2 @@
 GenericRecord record
-String[] path
+String fieldLocation

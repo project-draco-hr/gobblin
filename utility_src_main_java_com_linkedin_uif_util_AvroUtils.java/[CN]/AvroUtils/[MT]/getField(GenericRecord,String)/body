@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(record);
+  Preconditions.checkNotNull(fieldLocation);
+  Splitter splitter=Splitter.on(".").omitEmptyStrings().trimResults();
+  String[] pathArray=Iterables.toArray(splitter.split(fieldLocation),String.class);
+  return extractFieldHelper(record,pathArray,0);
+}
