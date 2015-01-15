@@ -1,0 +1,7 @@
+{
+  String tz=StringUtils.defaultString(timezone,ConfigurationKeys.DEFAULT_SOURCE_TIMEZONE);
+  DateTimeZone dateTimeZone=getTimeZone(tz);
+  DateTimeFormatter inputDtFormat=DateTimeFormat.forPattern(format).withZone(dateTimeZone);
+  DateTime outputDateTime=inputDtFormat.parseDateTime(input).withZone(dateTimeZone);
+  return outputDateTime;
+}

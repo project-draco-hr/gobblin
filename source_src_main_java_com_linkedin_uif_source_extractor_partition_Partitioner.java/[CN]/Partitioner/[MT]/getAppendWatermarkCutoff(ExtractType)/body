@@ -1,6 +1,7 @@
 {
   LOG.debug("Getting append water mark cutoff");
   long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  String timeZone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE);
   AppendMaxLimitType limitType=this.getAppendLimitType(extractType,this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
   if (limitType == null) {
     LOG.debug("Limit type is not found");
@@ -8,23 +9,25 @@
   }
   int limitDelta=this.getAppendLimitDelta(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
   if (limitDelta == 0) {
-    highWatermark=Long.parseLong(Utils.dateToString(this.getCurrentTime(),WATERMARKTIMEFORMAT));
+    highWatermark=Long.parseLong(Utils.dateTimeToString(Utils.getCurrentTime(timeZone),WATERMARKTIMEFORMAT,timeZone));
   }
  else {
     int seconds=3599;
-    Date previousTime=null;
+    String format=null;
 switch (limitType) {
 case CURRENTDATE:
-      previousTime=Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * 24 * -1),"yyyyMMdd");
-    seconds=86399;
-  break;
+      format="yyyyMMdd";
+    limitDelta=limitDelta * 24;
+  seconds=86399;
+break;
 case CURRENTHOUR:
-previousTime=Utils.toDate(Utils.addHoursToDate(this.getCurrentTime(),limitDelta * -1),"yyyyMMddHH");
+format="yyyyMMddHH";
 seconds=3599;
 break;
 }
-Date previousEndOfDate=Utils.addSecondsToDate(previousTime,seconds);
-highWatermark=Long.parseLong(Utils.dateToString(previousEndOfDate,WATERMARKTIMEFORMAT));
+DateTime deltaTime=Utils.getCurrentTime(timeZone).minusHours(limitDelta);
+DateTime previousTime=Utils.toDateTime(Utils.dateTimeToString(deltaTime,format,timeZone),format,timeZone).plusSeconds(seconds);
+highWatermark=Long.parseLong(Utils.dateTimeToString(previousTime,WATERMARKTIMEFORMAT,timeZone));
 }
 return highWatermark;
 }
