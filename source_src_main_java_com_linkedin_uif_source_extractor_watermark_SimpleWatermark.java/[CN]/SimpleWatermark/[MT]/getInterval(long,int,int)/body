@@ -2,9 +2,10 @@
   if (diff == 0) {
     return 0;
   }
-  long totalIntervals=(int)Math.ceil((float)diff / (partitionInterval));
+  long outputInterval=partitionInterval;
+  long totalIntervals=DoubleMath.roundToLong((double)diff / partitionInterval,RoundingMode.CEILING);
   if (totalIntervals > maxIntervals) {
-    partitionInterval=(int)Math.ceil((float)diff / maxIntervals);
+    outputInterval=DoubleMath.roundToLong((double)diff / maxIntervals,RoundingMode.CEILING);
   }
-  return partitionInterval;
+  return outputInterval;
 }

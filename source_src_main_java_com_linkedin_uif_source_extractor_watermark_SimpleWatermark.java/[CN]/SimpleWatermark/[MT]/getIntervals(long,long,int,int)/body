@@ -4,7 +4,7 @@
   if (partitionInterval < 1) {
     partitionInterval=1;
   }
-  int interval=this.getInterval(highWatermarkValue - lowWatermarkValue,partitionInterval,maxIntervals);
+  long interval=this.getInterval(highWatermarkValue - lowWatermarkValue,partitionInterval,maxIntervals);
   LOG.info("Recalculated partition interval:" + interval);
   if (interval == 0) {
     return intervalMap;
@@ -12,7 +12,7 @@
   long startNum=lowWatermarkValue;
   long endNum=highWatermarkValue;
   while (startNum <= endNum) {
-    nextNum=startNum + (interval - 1);
+    nextNum=startNum + interval;
     intervalMap.put(startNum,(nextNum <= endNum ? nextNum : endNum));
     startNum=nextNum + deltaForNextWatermark;
   }
