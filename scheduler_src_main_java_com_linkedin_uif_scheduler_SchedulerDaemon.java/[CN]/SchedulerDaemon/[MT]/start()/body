@@ -8,9 +8,12 @@
  catch (      TimeoutException te) {
         LOG.error("Timeout in stopping the service manager",te);
       }
+      jmxReporter.stop();
     }
   }
 );
+  registerJvmMetrics();
+  this.jmxReporter.start();
   LOG.info("Starting the scheduler daemon");
   this.serviceManager.startAsync();
 }
