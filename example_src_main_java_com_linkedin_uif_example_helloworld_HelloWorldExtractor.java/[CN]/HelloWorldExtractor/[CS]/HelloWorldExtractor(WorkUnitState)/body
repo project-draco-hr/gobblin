@@ -1,0 +1,57 @@
+{
+  this.elements=new ArrayList<JsonElement>();
+  List<String> pageTitles=SPLITTER.splitToList(workUnitState.getWorkunit().getProp(SOURCE_PAGE_TITLES));
+  for (  String pageTitle : pageTitles) {
+    String urlStr="http://en.wikipedia.org/w/api.php?" + "format=json&action=query&titles=" + pageTitle + "&prop=revisions&rvprop=content|timestamp|user|userid|size"+ "&rvlimit="+ workUnitState.getWorkunit().getProp(SOURCE_REVISIONS_CNT);
+    URL url=null;
+    HttpURLConnection conn=null;
+    url=new URL(urlStr);
+    conn=(HttpURLConnection)url.openConnection();
+    BufferedReader br=null;
+    try {
+      br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    }
+ catch (    IOException e) {
+      LOG.error("Error while getting response from Wikipedia API");
+    }
+    StringBuilder sb=new StringBuilder();
+    String line;
+    try {
+      while ((line=br.readLine()) != null) {
+        sb.append(line);
+      }
+    }
+ catch (    IOException e) {
+      LOG.error("Error while reading response from Wikipedia API");
+    }
+    try {
+      br.close();
+    }
+ catch (    IOException e) {
+      LOG.error("Error while closing BufferReader");
+    }
+    conn.disconnect();
+    JsonElement jsonElement=GSON.fromJson(sb.toString(),JsonElement.class);
+    JsonObject jsonObj=jsonElement.getAsJsonObject();
+    JsonObject queryObj=null, pagesObj=null, pageIdObj=null;
+    JsonArray jsonArr=null;
+    queryObj=jsonObj.getAsJsonObject("query");
+    if (queryObj != null) {
+      pagesObj=queryObj.getAsJsonObject("pages");
+    }
+    if (pagesObj != null && pagesObj.entrySet().size() == 1) {
+      pageIdObj=pagesObj.getAsJsonObject(pagesObj.entrySet().iterator().next().getKey());
+    }
+    if (pageIdObj != null) {
+      jsonArr=pageIdObj.getAsJsonArray("revisions");
+      for (Iterator<JsonElement> it=jsonArr.iterator(); it.hasNext(); ) {
+        JsonElement revElement=it.next();
+        JsonObject revObj=revElement.getAsJsonObject();
+        if (pageIdObj.has("pageid"))         revObj.add("pageid",pageIdObj.get("pageid"));
+        if (pageIdObj.has("title"))         revObj.add("title",pageIdObj.get("title"));
+        this.elements.add((JsonElement)revObj);
+      }
+    }
+  }
+  this.reader=new WikiResponseReader();
+}

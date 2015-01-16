@@ -1,0 +1,5 @@
+{
+  Extract extract=state.createExtract(TableType.SNAPSHOT_ONLY,state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY),"HelloWorldOutput");
+  WorkUnit workUnit=new WorkUnit(state,extract);
+  return Arrays.asList(workUnit);
+}

@@ -1,0 +1,3 @@
+{
+  return HelloWorldExtractor.this.elements != null && this.recordsRead < HelloWorldExtractor.this.elements.size();
+}

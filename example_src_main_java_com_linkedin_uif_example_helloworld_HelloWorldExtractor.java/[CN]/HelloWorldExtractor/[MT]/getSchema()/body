@@ -1,0 +1,3 @@
+{
+  return AVRO_WIKIPEDIA_SCHEMA;
+}

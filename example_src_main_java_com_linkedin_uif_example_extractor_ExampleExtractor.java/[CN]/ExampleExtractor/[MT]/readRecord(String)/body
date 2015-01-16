@@ -1,9 +1,0 @@
-{
-  if (this.dataFileReader == null) {
-    return null;
-  }
-  if (this.dataFileReader.hasNext()) {
-    return this.dataFileReader.next().toString();
-  }
-  return null;
-}
