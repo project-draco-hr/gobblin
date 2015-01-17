@@ -1,3 +1,3 @@
 {
-  this.recordsRead=0;
+  this._recordsRead=0;
 }

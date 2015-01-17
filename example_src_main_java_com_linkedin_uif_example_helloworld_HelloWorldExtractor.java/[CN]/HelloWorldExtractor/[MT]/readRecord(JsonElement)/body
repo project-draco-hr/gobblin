@@ -1,9 +1,9 @@
 {
-  if (this.reader == null) {
+  if (this._reader == null) {
     return null;
   }
-  if (this.reader.hasNext()) {
-    return this.reader.next();
+  if (this._reader.hasNext()) {
+    return this._reader.next();
   }
   return null;
 }
