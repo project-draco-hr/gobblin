@@ -1,0 +1,7 @@
+{
+  List<Object> records=Lists.newArrayList();
+  for (int i=0; i < this.multiplicity; i++) {
+    records.add(inputRecord);
+  }
+  return records;
+}

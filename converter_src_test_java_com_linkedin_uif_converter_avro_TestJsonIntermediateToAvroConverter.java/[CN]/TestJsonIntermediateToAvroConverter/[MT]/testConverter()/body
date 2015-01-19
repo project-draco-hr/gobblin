@@ -1,7 +1,7 @@
 {
   JsonIntermediateToAvroConverter converter=new JsonIntermediateToAvroConverter();
   Schema avroSchema=converter.convertSchema(jsonSchema,state);
-  GenericRecord record=converter.convertRecord(avroSchema,jsonRecord,state);
+  GenericRecord record=converter.convertRecord(avroSchema,jsonRecord,state).iterator().next();
   Assert.assertEquals(jsonRecord.get("Id").getAsString(),record.get("Id").toString());
   Assert.assertEquals(jsonRecord.get("IsDeleted").getAsBoolean(),record.get("IsDeleted"));
   if (!(record.get("Salutation") instanceof GenericArray)) {
@@ -23,6 +23,6 @@
   Assert.assertEquals(jsonRecord.get("double_type").getAsDouble(),record.get("double_type"));
   state.setProp(ConfigurationKeys.CONVERTER_AVRO_DATE_TIMEZONE,"EST");
   avroSchema=converter.convertSchema(jsonSchema,state);
-  GenericRecord record2=converter.convertRecord(avroSchema,jsonRecord,state);
+  GenericRecord record2=converter.convertRecord(avroSchema,jsonRecord,state).iterator().next();
   Assert.assertNotEquals(record.get("LastModifiedDate"),record2.get("LastModifiedDate"));
 }

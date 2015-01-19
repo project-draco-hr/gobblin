@@ -1,0 +1,20 @@
+{
+  this.workUnitState=workUnitState;
+  if (converters.isEmpty()) {
+    this.converterIteratorStack.push(new SingleRecordIterable<Object>(inputRecord).iterator());
+  }
+ else {
+    Object record=inputRecord;
+    for (    Converter converter : converters) {
+      if (!this.converterIteratorStack.isEmpty()) {
+        record=this.converterIteratorStack.peek().next();
+      }
+      Iterator<Object> iterator=converter.convertRecord(convertedSchemaMap.get(converter),record,workUnitState).iterator();
+      this.converterIteratorStack.push(iterator);
+      if (!iterator.hasNext()) {
+        break;
+      }
+    }
+  }
+  this.outputIterator=this.converterIteratorStack.peek();
+}

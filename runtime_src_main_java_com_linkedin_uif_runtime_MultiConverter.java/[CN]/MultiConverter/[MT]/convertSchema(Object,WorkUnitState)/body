@@ -1,0 +1,8 @@
+{
+  Object schema=inputSchema;
+  for (  Converter converter : this.converters) {
+    schema=converter.convertSchema(schema,workUnit);
+    this.convertedSchemaMap.put(converter,schema);
+  }
+  return schema;
+}

@@ -1,0 +1,18 @@
+{
+  Assert.assertEquals(schema.getNamespace(),"example.avro");
+  Assert.assertEquals(schema.getType(),Schema.Type.RECORD);
+  Assert.assertEquals(schema.getName(),"User");
+  Assert.assertEquals(schema.getFields().size(),3);
+  Schema.Field nameField=schema.getField("name");
+  Assert.assertEquals(nameField.name(),"name");
+  Assert.assertEquals(nameField.schema().getType(),Schema.Type.STRING);
+  Schema.Field favNumberField=schema.getField("favorite_number");
+  Assert.assertEquals(favNumberField.name(),"favorite_number");
+  Assert.assertEquals(favNumberField.schema().getType(),Schema.Type.INT);
+  Schema.Field favColorField=schema.getField("favorite_color");
+  Assert.assertEquals(favColorField.name(),"favorite_color");
+  Assert.assertEquals(favColorField.schema().getType(),Schema.Type.STRING);
+  Assert.assertEquals(record.get("name"),"Alyssa");
+  Assert.assertEquals(record.get("favorite_number"),256d);
+  Assert.assertEquals(record.get("favorite_color"),"yellow");
+}

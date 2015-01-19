@@ -1,0 +1,6 @@
+{
+  MultiConverter multiConverter=new MultiConverter(Lists.<Converter<? extends Object,? extends Object,? extends Object,? extends Object>>newArrayList());
+  WorkUnitState workUnitState=new WorkUnitState();
+  Assert.assertEquals(TEST_SCHEMA,multiConverter.convertSchema(TEST_SCHEMA,workUnitState));
+  Assert.assertEquals(TEST_RECORD,multiConverter.convertRecord(TEST_SCHEMA,TEST_RECORD,workUnitState).iterator().next());
+}

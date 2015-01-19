@@ -1,0 +1,27 @@
+{
+  if (this.outputIterator.hasNext()) {
+    return true;
+  }
+  while (!this.converterIteratorStack.isEmpty() && !this.converterIteratorStack.peek().hasNext()) {
+    this.converterIteratorStack.pop();
+  }
+  if (this.converterIteratorStack.isEmpty()) {
+    return false;
+  }
+  for (int i=this.converterIteratorStack.size(); i < converters.size(); i++) {
+    Object record=this.converterIteratorStack.peek().next();
+    Converter converter=converters.get(i);
+    try {
+      Iterator<Object> iterator=converter.convertRecord(convertedSchemaMap.get(converter),record,this.workUnitState).iterator();
+      this.converterIteratorStack.push(iterator);
+      if (!iterator.hasNext()) {
+        break;
+      }
+    }
+ catch (    DataConversionException dce) {
+      throw new RuntimeException(dce);
+    }
+  }
+  this.outputIterator=this.converterIteratorStack.peek();
+  return this.outputIterator.hasNext();
+}

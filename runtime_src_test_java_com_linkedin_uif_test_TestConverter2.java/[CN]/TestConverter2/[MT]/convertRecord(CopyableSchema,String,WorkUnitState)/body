@@ -12,7 +12,7 @@
         record.put(entry.getKey(),entry.getValue());
       }
     }
-    return new CopyableGenericRecord(record);
+    return new SingleRecordIterable<CopyableGenericRecord>(new CopyableGenericRecord(record));
   }
  catch (  CopyNotSupportedException cnse) {
     throw new DataConversionException(cnse);

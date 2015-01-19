@@ -1,0 +1,12 @@
+{
+  WorkUnitState workUnitState=new WorkUnitState();
+  MultiConverter multiConverter=new MultiConverter(Lists.newArrayList(new EmptyConverter(),new SchemaSimplificationConverter(),new TestConverter()));
+  Schema schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
+  Assert.assertFalse(multiConverter.convertRecord(schema,TEST_RECORD,workUnitState).iterator().hasNext());
+  multiConverter=new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(),new EmptyConverter(),new TestConverter()));
+  schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
+  Assert.assertFalse(multiConverter.convertRecord(schema,TEST_RECORD,workUnitState).iterator().hasNext());
+  multiConverter=new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(),new TestConverter(),new EmptyConverter()));
+  schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
+  Assert.assertFalse(multiConverter.convertRecord(schema,TEST_RECORD,workUnitState).iterator().hasNext());
+}

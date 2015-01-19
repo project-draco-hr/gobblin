@@ -1,9 +1,9 @@
 {
   if (filterIds.contains(extractField(inputRecord,fieldPath,0))) {
     log.info("Dropping record: " + inputRecord);
-    return null;
+    return new EmptyIterable<GenericRecord>();
   }
  else {
-    return inputRecord;
+    return new SingleRecordIterable<GenericRecord>(inputRecord);
   }
 }

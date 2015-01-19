@@ -9,12 +9,12 @@
       numFailedConversion++;
       if (numFailedConversion < maxFailedConversions) {
         LOG.error("Dropping record " + inputRecord + " because it cannot be converted to Avro",e);
-        return null;
+        return new EmptyIterable<GenericRecord>();
       }
  else {
         throw new DataConversionException("Unable to convert field:" + entry.getKey() + " for value:"+ entry.getValue()+ " for record: "+ inputRecord,e);
       }
     }
   }
-  return avroRecord;
+  return new SingleRecordIterable<GenericRecord>(avroRecord);
 }

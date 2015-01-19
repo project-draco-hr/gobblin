@@ -1,0 +1,5 @@
+{
+  EmptyIterable<Object> emptyIterable=new EmptyIterable<Object>();
+  Iterator<Object> iterator=emptyIterable.iterator();
+  Assert.assertFalse(iterator.hasNext());
+}

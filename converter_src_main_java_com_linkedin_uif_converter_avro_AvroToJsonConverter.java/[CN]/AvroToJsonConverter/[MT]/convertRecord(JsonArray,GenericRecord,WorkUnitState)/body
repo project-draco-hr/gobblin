@@ -7,8 +7,5 @@
     }
     record.put(field.name(),col);
   }
-  String json=this.gson.toJson(record);
-  JsonElement element=this.gson.fromJson(json.toString(),JsonObject.class);
-  JsonObject jsonObject=element.getAsJsonObject();
-  return jsonObject;
+  return new SingleRecordIterable<JsonObject>(this.gson.fromJson(this.gson.toJson(record),JsonObject.class).getAsJsonObject());
 }

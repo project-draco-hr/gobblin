@@ -1,0 +1,10 @@
+{
+  MultiConverter multiConverter=new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(),new MultiIdentityConverter(2),new MultiIdentityConverter(2),new TestConverter()));
+  WorkUnitState workUnitState=new WorkUnitState();
+  Schema schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
+  Iterable<Object> convertedRecordIterable=multiConverter.convertRecord(schema,TEST_RECORD,workUnitState);
+  Assert.assertEquals(Iterables.size(convertedRecordIterable),4);
+  for (  Object record : convertedRecordIterable) {
+    checkConvertedAvroData(schema,(GenericRecord)record);
+  }
+}

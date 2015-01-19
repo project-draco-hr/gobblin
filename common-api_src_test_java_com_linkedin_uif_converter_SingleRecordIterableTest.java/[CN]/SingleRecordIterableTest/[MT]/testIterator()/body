@@ -1,0 +1,8 @@
+{
+  String str="foo";
+  SingleRecordIterable<String> singleRecordIterable=new SingleRecordIterable<String>(str);
+  Iterator<String> iterator=singleRecordIterable.iterator();
+  Assert.assertTrue(iterator.hasNext());
+  Assert.assertEquals(iterator.next(),str);
+  Assert.assertFalse(iterator.hasNext());
+}

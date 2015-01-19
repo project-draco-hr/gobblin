@@ -1,0 +1,18 @@
+{
+  if (!rowChecker.executePolicies(convertedRecord,rowResults)) {
+    return;
+  }
+  List<Boolean> forkedRecords=forkOperator.forkDataRecord(this.taskState,convertedRecord);
+  if (forkedRecords.size() != branches) {
+    throw new ForkBranchMismatchException(String.format("Number of forked data records [%d] is not equal to number of branches [%d]",forkedRecords.size(),branches));
+  }
+  boolean makesCopy=inMultipleBranches(forkedRecords);
+  if (makesCopy && !(convertedRecord instanceof Copyable)) {
+    throw new CopyNotSupportedException(convertedRecord + " is not copyable");
+  }
+  for (int i=0; i < branches; i++) {
+    if (this.forks.get(i).isPresent() && forkedRecords.get(i)) {
+      this.forks.get(i).get().processRecord(makesCopy ? ((Copyable)convertedRecord).copy() : convertedRecord);
+    }
+  }
+}

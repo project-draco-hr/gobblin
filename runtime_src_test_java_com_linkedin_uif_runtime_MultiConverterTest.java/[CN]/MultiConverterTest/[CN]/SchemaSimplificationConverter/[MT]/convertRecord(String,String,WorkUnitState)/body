@@ -1,4 +1,4 @@
 {
   JsonElement element=GSON.fromJson(inputRecord,JsonObject.class).get("fields");
-  return element.getAsJsonObject().toString();
+  return new SingleRecordIterable<String>(element.getAsJsonObject().toString());
 }
