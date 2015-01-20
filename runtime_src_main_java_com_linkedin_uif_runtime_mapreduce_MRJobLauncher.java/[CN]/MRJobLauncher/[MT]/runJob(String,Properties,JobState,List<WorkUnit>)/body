@@ -46,6 +46,10 @@
   }
   try {
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
+    this.job.submit();
+    if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
+      jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,job.getTrackingURL());
+    }
     this.job.waitForCompletion(true);
     if (this.isCancelled) {
       jobState.setState(JobState.RunningState.CANCELLED);

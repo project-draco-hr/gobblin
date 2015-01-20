@@ -1,0 +1,11 @@
+{
+  TaskExecutionInfo taskExecutionInfo=this.taskState.toTaskExecutionInfo();
+  Assert.assertEquals(taskExecutionInfo.getJobId(),"Job-1");
+  Assert.assertEquals(taskExecutionInfo.getTaskId(),"Task-1");
+  Assert.assertEquals(taskExecutionInfo.getHighWatermark().longValue(),2000L);
+  Assert.assertEquals(taskExecutionInfo.getStartTime().longValue(),this.startTime);
+  Assert.assertEquals(taskExecutionInfo.getEndTime().longValue(),this.startTime + 1000);
+  Assert.assertEquals(taskExecutionInfo.getDuration().longValue(),1000L);
+  Assert.assertEquals(taskExecutionInfo.getState().name(),WorkUnitState.WorkingState.COMMITTED.name());
+  Assert.assertEquals(taskExecutionInfo.getTaskProperties().get("foo"),"bar");
+}

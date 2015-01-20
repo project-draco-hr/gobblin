@@ -6,6 +6,8 @@
   jobExecutionInfo.setState(JobStateEnum.PENDING);
   jobExecutionInfo.setLaunchedTasks(2);
   jobExecutionInfo.setCompletedTasks(0);
+  jobExecutionInfo.setLauncherType(LauncherTypeEnum.LOCAL);
+  jobExecutionInfo.setTrackingUrl("localhost");
   MetricArray jobMetrics=new MetricArray();
   Metric jobMetric1=new Metric();
   jobMetric1.setGroup("JOB");

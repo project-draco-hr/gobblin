@@ -1,8 +1,9 @@
 {
   super(jobId,LOG);
-  this.properties=props;
-  final Configuration conf=new Configuration();
-  String fsUri=conf.get("fs.default.name");
+  this.properties=new Properties();
+  this.properties.putAll(props);
+  Configuration conf=new Configuration();
+  String fsUri=conf.get(HADOOP_FS_DEFAULT_NAME);
   if (!Strings.isNullOrEmpty(fsUri)) {
     if (!this.properties.containsKey(ConfigurationKeys.FS_URI_KEY)) {
       this.properties.setProperty(ConfigurationKeys.FS_URI_KEY,fsUri);
@@ -11,5 +12,6 @@
       this.properties.setProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,fsUri);
     }
   }
+  this.properties.setProperty(ConfigurationKeys.JOB_TRACKING_URL_KEY,Strings.nullToEmpty(conf.get(AZKABAN_LINK_JOBEXEC_URL)));
   this.jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
 }

@@ -5,19 +5,20 @@
   Preconditions.checkArgument(metric.hasType());
   Preconditions.checkArgument(metric.hasValue());
   PreparedStatement updateStatement=connection.prepareStatement(template);
+  int index=0;
   if (insert) {
-    updateStatement.setString(1,id);
-    updateStatement.setString(2,metric.getGroup());
-    updateStatement.setString(3,metric.getName());
-    updateStatement.setString(4,metric.getType().name());
-    updateStatement.setString(5,metric.getValue());
+    updateStatement.setString(++index,id);
+    updateStatement.setString(++index,metric.getGroup());
+    updateStatement.setString(++index,metric.getName());
+    updateStatement.setString(++index,metric.getType().name());
+    updateStatement.setString(++index,metric.getValue());
   }
  else {
-    updateStatement.setString(1,metric.getValue());
-    updateStatement.setString(2,id);
-    updateStatement.setString(3,metric.getGroup());
-    updateStatement.setString(4,metric.getName());
-    updateStatement.setString(5,metric.getType().name());
+    updateStatement.setString(++index,metric.getValue());
+    updateStatement.setString(++index,id);
+    updateStatement.setString(++index,metric.getGroup());
+    updateStatement.setString(++index,metric.getName());
+    updateStatement.setString(++index,metric.getType().name());
   }
   updateStatement.executeUpdate();
 }

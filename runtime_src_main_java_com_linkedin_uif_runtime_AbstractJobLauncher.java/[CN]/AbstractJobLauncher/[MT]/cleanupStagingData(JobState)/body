@@ -27,7 +27,7 @@
         }
       }
  catch (      IOException ioe) {
-        LOG.error(String.format("Failed to clean staging data for branch %d of task %s",i,taskState.getTaskId()),ioe);
+        LOG.error(String.format("Failed to clean staging data for branch %d of task %s: %s",i,taskState.getTaskId(),ioe),ioe);
       }
     }
   }
