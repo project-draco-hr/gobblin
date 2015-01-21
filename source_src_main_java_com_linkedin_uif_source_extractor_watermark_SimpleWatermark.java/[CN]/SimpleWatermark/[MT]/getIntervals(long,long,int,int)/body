@@ -4,20 +4,15 @@
   if (partitionInterval < 1) {
     partitionInterval=1;
   }
-  if (maxIntervals <= 0) {
-    return intervalMap;
-  }
-  long interval=this.getInterval(lowWatermarkValue,highWatermarkValue,partitionInterval,maxIntervals);
+  long interval=this.getInterval(highWatermarkValue - lowWatermarkValue,partitionInterval,maxIntervals);
   LOG.info("Recalculated partition interval:" + interval);
   if (interval == 0) {
     return intervalMap;
   }
   long startNum=lowWatermarkValue;
   long endNum=highWatermarkValue;
-  boolean longOverflow=false;
-  while (startNum <= endNum && !longOverflow) {
-    longOverflow=(Long.MAX_VALUE - interval < startNum);
-    nextNum=longOverflow ? Long.MAX_VALUE : startNum + interval;
+  while (startNum <= endNum) {
+    nextNum=startNum + interval;
     intervalMap.put(startNum,(nextNum <= endNum ? nextNum : endNum));
     startNum=nextNum + deltaForNextWatermark;
   }
