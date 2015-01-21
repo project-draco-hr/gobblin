@@ -1,3 +1,0 @@
-{
-  simpleWatermark=new SimpleWatermark("test_column","no_format_needed");
-}

@@ -1,8 +1,0 @@
-{
-  QueryBasedExtractor<?,?> ext=null;
-  long watermarkValue=Long.MAX_VALUE;
-  String operator=">=";
-  Assert.assertEquals("test_column >= " + Long.MAX_VALUE,simpleWatermark.getWatermarkCondition(ext,watermarkValue,operator));
-  watermarkValue=Long.MIN_VALUE;
-  Assert.assertEquals("test_column null " + Long.MIN_VALUE,simpleWatermark.getWatermarkCondition(ext,watermarkValue,null));
-}

@@ -1,3 +1,0 @@
-long lowWatermarkValue
-long highWatermarkValue
-int partitionInterval
