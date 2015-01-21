@@ -1,3 +1,4 @@
 {
-  this._recordsRead=0;
+  numRecordsRead=0;
+  currentTitleId=0;
 }

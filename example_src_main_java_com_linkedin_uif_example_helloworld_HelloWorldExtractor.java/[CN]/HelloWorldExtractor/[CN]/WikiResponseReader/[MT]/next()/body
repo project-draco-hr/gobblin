@@ -1,4 +1,6 @@
 {
-  if (!hasNext())   return null;
-  return HelloWorldExtractor.this._elements.get(this._recordsRead++);
+  if (!hasNext()) {
+    return null;
+  }
+  return HelloWorldExtractor.this.recordsOfCurrentTitle.get(numRecordsRead++);
 }

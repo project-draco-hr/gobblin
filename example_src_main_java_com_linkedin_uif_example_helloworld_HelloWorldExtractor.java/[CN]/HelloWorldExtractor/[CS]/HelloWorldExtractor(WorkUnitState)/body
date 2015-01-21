@@ -1,44 +1,14 @@
 {
-  this._elements=new ArrayList<JsonElement>();
-  List<String> pageTitles=SPLITTER.splitToList(workUnitState.getWorkunit().getProp(SOURCE_PAGE_TITLES));
-  for (  String pageTitle : pageTitles) {
-    String urlStr=ROOT_URL + "&titles=" + pageTitle+ "&rvlimit="+ workUnitState.getWorkunit().getProp(SOURCE_REVISIONS_CNT);
-    URL url=null;
-    HttpURLConnection conn=null;
-    url=new URL(urlStr);
-    conn=(HttpURLConnection)url.openConnection();
-    BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-    StringBuilder sb=new StringBuilder();
-    String line;
-    while ((line=br.readLine()) != null) {
-      sb.append(line);
-    }
-    br.close();
-    conn.disconnect();
-    JsonElement jsonElement=GSON.fromJson(sb.toString(),JsonElement.class);
-    JsonObject jsonObj=jsonElement.getAsJsonObject();
-    JsonObject queryObj=null, pagesObj=null, pageIdObj=null;
-    JsonArray jsonArr=null;
-    queryObj=jsonObj.getAsJsonObject("query");
-    if (queryObj != null) {
-      pagesObj=queryObj.getAsJsonObject("pages");
-    }
-    if (pagesObj != null && pagesObj.entrySet().size() == 1) {
-      pageIdObj=pagesObj.getAsJsonObject(pagesObj.entrySet().iterator().next().getKey());
-    }
-    if (pageIdObj != null) {
-      jsonArr=pageIdObj.getAsJsonArray("revisions");
-      for (Iterator<JsonElement> it=jsonArr.iterator(); it.hasNext(); ) {
-        JsonElement revElement=it.next();
-        JsonObject revObj=revElement.getAsJsonObject();
-        if (pageIdObj.has("pageid"))         revObj.add("pageid",pageIdObj.get("pageid"));
-        if (pageIdObj.has("title"))         revObj.add("title",pageIdObj.get("title"));
-        this._elements.add((JsonElement)revObj);
-      }
-    }
-    if (pageIdObj == null) {
-      LOG.error("Page title '" + pageTitle + "' did not return any revision");
-    }
+  rootUrl=workUnitState.getWorkunit().getProp(WIKIPEDIA_API_ROOTURL);
+  schema=workUnitState.getWorkunit().getProp(WIKIPEDIA_AVRO_SCHEMA);
+  requestedTitles=SPLITTER.splitToList(workUnitState.getWorkunit().getProp(SOURCE_PAGE_TITLES));
+  revisionsCnt=Integer.parseInt(workUnitState.getWorkunit().getProp(SOURCE_REVISIONS_CNT));
+  if (requestedTitles.isEmpty()) {
+    recordsOfCurrentTitle=new ArrayList<JsonElement>();
   }
-  this._reader=new WikiResponseReader();
+ else {
+    String firstTitle=requestedTitles.get(0);
+    recordsOfCurrentTitle=retrievePageRevisions(firstTitle);
+  }
+  this.reader=new WikiResponseReader();
 }
