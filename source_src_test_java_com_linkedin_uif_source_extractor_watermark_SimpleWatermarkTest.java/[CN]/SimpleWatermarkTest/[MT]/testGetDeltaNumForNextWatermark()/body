@@ -1,0 +1,3 @@
+{
+  Assert.assertEquals(simpleWatermark.getDeltaNumForNextWatermark(),1);
+}
