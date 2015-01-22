@@ -1,0 +1,3 @@
+Schema schema
+List<String> pathList
+int field

@@ -1,12 +1,6 @@
 {
   if ((field + 1) == pathList.size()) {
-    Object result=((Record)data).get(pathList.get(field));
-    if (result == null) {
-      return Optional.absent();
-    }
- else {
-      return Optional.of(result);
-    }
+    return Optional.fromNullable(((Record)data).get(pathList.get(field)));
   }
  else {
     return AvroUtils.getFieldHelper(((Record)data).get(pathList.get(field)),pathList,++field);
