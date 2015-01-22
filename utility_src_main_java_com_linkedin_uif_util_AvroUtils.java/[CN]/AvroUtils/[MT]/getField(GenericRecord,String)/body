@@ -1,10 +1,10 @@
 {
   Preconditions.checkNotNull(record);
-  Preconditions.checkNotNull(fieldLocation);
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(fieldLocation));
   Splitter splitter=Splitter.on(FIELD_LOCATION_DELIMITER).omitEmptyStrings().trimResults();
-  String[] pathArray=Iterables.toArray(splitter.split(fieldLocation),String.class);
-  if (pathArray.length == 0) {
+  List<String> pathList=Lists.newArrayList(splitter.split(fieldLocation));
+  if (pathList.size() == 0) {
     return Optional.absent();
   }
-  return extractFieldHelper(record,pathArray,0);
+  return AvroUtils.getFieldHelper(record,pathList,0);
 }

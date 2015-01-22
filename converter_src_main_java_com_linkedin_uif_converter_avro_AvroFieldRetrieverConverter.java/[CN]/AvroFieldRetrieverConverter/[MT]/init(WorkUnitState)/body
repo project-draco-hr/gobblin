@@ -1,4 +1,5 @@
 {
-  this.fieldLocation=Preconditions.checkNotNull(workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_EXTRACTOR_FIELD_PATH));
+  Preconditions.checkArgument(workUnit.contains(ConfigurationKeys.CONVERTER_AVRO_EXTRACTOR_FIELD_PATH),"Missing required property converter.avro.extractor.field.path for the AvroFieldRetrieverConverter class.");
+  this.fieldLocation=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_EXTRACTOR_FIELD_PATH);
   return this;
 }

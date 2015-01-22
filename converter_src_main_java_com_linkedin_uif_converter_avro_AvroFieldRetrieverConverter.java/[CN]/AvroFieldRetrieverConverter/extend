@@ -1,1 +1,1 @@
-Converter<Schema,Object,GenericRecord,Object>
+Converter<Schema,Class<Object>,GenericRecord,Object>
