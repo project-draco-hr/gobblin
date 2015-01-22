@@ -1,9 +1,7 @@
 {
-  if (filterIds.contains(extractField(inputRecord,fieldPath,0))) {
-    log.info("Dropping record: " + inputRecord);
-    return null;
-  }
- else {
+  Optional<Object> fieldValue=AvroUtils.getField(inputRecord,this.fieldName);
+  if (fieldValue.isPresent() && fieldValue.get().toString().equals(this.fieldValue)) {
     return inputRecord;
   }
+  return null;
 }
