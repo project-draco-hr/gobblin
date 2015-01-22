@@ -1,0 +1,6 @@
+{
+  String tz=StringUtils.defaultString(timezone,ConfigurationKeys.DEFAULT_SOURCE_TIMEZONE);
+  DateTimeZone dateTimeZone=getTimeZone(tz);
+  DateTime currentTime=new DateTime(dateTimeZone);
+  return currentTime;
+}

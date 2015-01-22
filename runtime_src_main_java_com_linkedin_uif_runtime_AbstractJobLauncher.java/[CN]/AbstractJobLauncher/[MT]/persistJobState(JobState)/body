@@ -13,6 +13,6 @@
     this.jobStateStore.createAlias(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,"current" + JOB_STATE_STORE_TABLE_SUFFIX);
   }
  catch (  IOException ioe) {
-    LOG.error("Failed to persist job/task states of job " + jobId,ioe);
+    LOG.error(String.format("Failed to persist job/task states of job %s: %s",jobId,ioe),ioe);
   }
 }

@@ -40,7 +40,7 @@
   }
  catch (  Throwable t) {
     String errMsg="Failed to initialize the source for job " + jobId;
-    LOG.error(errMsg,t);
+    LOG.error(errMsg + ": " + t,t);
     unlockJob(jobName,jobLockOptional);
     throw new JobException(errMsg,t);
   }
@@ -70,7 +70,22 @@
       addWorkUnit(workUnit,jobState,sequence++);
     }
   }
+  Optional<JobMetrics> jobMetrics=Optional.absent();
   try {
+    if (JobMetrics.isEnabled(jobProps)) {
+      jobMetrics=Optional.fromNullable(JobMetrics.get(jobName,jobId));
+      if (jobMetrics.isPresent()) {
+        jobMetrics.get().startMetricReporting(jobProps);
+      }
+    }
+    if (this.jobHistoryStore.isPresent()) {
+      try {
+        this.jobHistoryStore.get().put(jobState.toJobExecutionInfo());
+      }
+ catch (      Throwable t) {
+        LOG.error("Failed to write job execution information to the job history store: " + t,t);
+      }
+    }
     runJob(jobName,jobProps,jobState,workUnits.get());
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled",jobId));
@@ -81,28 +96,39 @@
   }
  catch (  Throwable t) {
     String errMsg="Failed to launch and run job " + jobId;
-    LOG.error(errMsg,t);
+    LOG.error(errMsg + ": " + t,t);
     throw new JobException(errMsg,t);
   }
  finally {
     source.shutdown(sourceState);
-    long endTime=System.currentTimeMillis();
-    jobState.setEndTime(endTime);
-    jobState.setDuration(endTime - startTime);
     try {
       persistJobState(jobState);
       cleanupStagingData(jobState);
     }
  catch (    Throwable t) {
-      LOG.error("Failed to persist job state and cleanup for job " + jobId,t);
+      LOG.error(String.format("Failed to persist job state and cleanup for job %s: %s",jobId,t),t);
     }
+    long endTime=System.currentTimeMillis();
+    jobState.setEndTime(endTime);
+    jobState.setDuration(endTime - startTime);
     unlockJob(jobName,jobLockOptional);
-    if (JobMetrics.isEnabled(this.properties)) {
-      jobState.removeMetrics();
+    if (this.jobHistoryStore.isPresent()) {
+      try {
+        this.jobHistoryStore.get().put(jobState.toJobExecutionInfo());
+      }
+ catch (      Throwable t) {
+        LOG.error("Failed to write job execution information to the job history store: " + t,t);
+      }
     }
-    if (Optional.fromNullable(jobListener).isPresent()) {
-      jobListener.jobCompleted(jobState);
+    if (JobMetrics.isEnabled(jobProps)) {
+      if (jobMetrics.isPresent()) {
+        jobMetrics.get().stopMetricReporting();
+      }
+      JobMetrics.remove(jobId);
     }
+  }
+  if (Optional.fromNullable(jobListener).isPresent()) {
+    jobListener.jobCompleted(jobState);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {
     throw new JobException(String.format("Job %s failed",jobId));

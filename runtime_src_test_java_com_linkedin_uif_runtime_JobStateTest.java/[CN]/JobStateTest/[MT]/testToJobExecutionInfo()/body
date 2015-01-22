@@ -1,0 +1,24 @@
+{
+  JobExecutionInfo jobExecutionInfo=this.jobState.toJobExecutionInfo();
+  Assert.assertEquals(jobExecutionInfo.getJobName(),"TestJob");
+  Assert.assertEquals(jobExecutionInfo.getJobId(),"TestJob-1");
+  Assert.assertEquals(jobExecutionInfo.getStartTime().longValue(),this.startTime);
+  Assert.assertEquals(jobExecutionInfo.getEndTime().longValue(),this.startTime + 1000);
+  Assert.assertEquals(jobExecutionInfo.getDuration().longValue(),1000L);
+  Assert.assertEquals(jobExecutionInfo.getState().name(),JobState.RunningState.COMMITTED.name());
+  Assert.assertEquals(jobExecutionInfo.getLaunchedTasks().intValue(),3);
+  Assert.assertEquals(jobExecutionInfo.getCompletedTasks().intValue(),3);
+  Assert.assertEquals(jobExecutionInfo.getJobProperties().get("foo"),"bar");
+  List<String> taskStateIds=Lists.newArrayList();
+  for (  TaskExecutionInfo taskExecutionInfo : jobExecutionInfo.getTaskExecutions()) {
+    Assert.assertEquals(taskExecutionInfo.getJobId(),"TestJob-1");
+    Assert.assertEquals(taskExecutionInfo.getStartTime().longValue(),this.startTime);
+    Assert.assertEquals(taskExecutionInfo.getEndTime().longValue(),this.startTime + 1000);
+    Assert.assertEquals(taskExecutionInfo.getDuration().longValue(),1000);
+    Assert.assertEquals(taskExecutionInfo.getState().name(),WorkUnitState.WorkingState.COMMITTED.name());
+    Assert.assertEquals(taskExecutionInfo.getTaskProperties().get("foo"),"bar");
+    taskStateIds.add(taskExecutionInfo.getTaskId());
+  }
+  Collections.sort(taskStateIds);
+  Assert.assertEquals(taskStateIds,Lists.newArrayList("TestTask-0","TestTask-1","TestTask-2"));
+}

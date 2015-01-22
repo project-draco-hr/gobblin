@@ -1,0 +1,7 @@
+{
+  try {
+    DriverManager.getConnection("jdbc:derby:memory:gobblin2;shutdown=true");
+  }
+ catch (  SQLException se) {
+  }
+}

@@ -6,7 +6,7 @@
     return jobLockOptional.get().tryLock();
   }
  catch (  IOException ioe) {
-    LOG.error("Failed to acquire the job lock for job " + jobName,ioe);
+    LOG.error(String.format("Failed to acquire job lock for job %s: %s",jobName,ioe),ioe);
     return false;
   }
 }

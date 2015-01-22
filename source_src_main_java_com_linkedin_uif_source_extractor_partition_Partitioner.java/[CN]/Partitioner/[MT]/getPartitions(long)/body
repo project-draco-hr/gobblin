@@ -7,8 +7,8 @@
   }
   ExtractType extractType=ExtractType.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_EXTRACT_TYPE).toUpperCase());
   WatermarkType watermarkType=WatermarkType.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE,ConfigurationKeys.DEFAULT_WATERMARK_TYPE).toUpperCase());
-  int interval=this.getUpdatedInterval(Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_PARTITION_INTERVAL)),extractType,watermarkType);
-  int sourceMaxAllowedPartitions=Utils.getAsInt(this.state.getProp(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS));
+  int interval=this.getUpdatedInterval(this.state.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_PARTITION_INTERVAL,0),extractType,watermarkType);
+  int sourceMaxAllowedPartitions=this.state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS,0);
   int maxPartitions=(sourceMaxAllowedPartitions != 0 ? sourceMaxAllowedPartitions : ConfigurationKeys.DEFAULT_MAX_NUMBER_OF_PARTITIONS);
   WatermarkPredicate watermark=new WatermarkPredicate(null,watermarkType);
   int deltaForNextWatermark=watermark.getDeltaNumForNextWatermark();
