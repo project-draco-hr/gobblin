@@ -1,4 +1,4 @@
 long lowWatermarkValue
 long highWatermarkValue
-long partitionInterval
+long partitionIntervalInHours
 int maxIntervals

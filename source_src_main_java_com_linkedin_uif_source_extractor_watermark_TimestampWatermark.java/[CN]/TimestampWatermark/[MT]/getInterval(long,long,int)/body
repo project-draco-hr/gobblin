@@ -7,5 +7,5 @@
   if (totalIntervals > maxIntervals) {
     hourInterval=DoubleMath.roundToInt((double)totalHours / maxIntervals,RoundingMode.CEILING);
   }
-  return hourInterval;
+  return Ints.checkedCast(hourInterval);
 }

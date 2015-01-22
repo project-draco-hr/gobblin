@@ -1,0 +1,9 @@
+{
+  HourWatermark hourwm=new HourWatermark("Hourwatermark","test");
+  long lwm=20150201060000l;
+  long hwm=20150201020000l;
+  int partition=30;
+  int maxInterval=4;
+  Map<Long,Long> results=hourwm.getIntervals(lwm,hwm,partition,maxInterval);
+  Assert.assertEquals(results.size(),0);
+}
