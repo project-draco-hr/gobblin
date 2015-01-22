@@ -1,0 +1,14 @@
+{
+  try {
+    this.bufferedReader.close();
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to close the input stream",ioe);
+  }
+  try {
+    this.fileObject.close();
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to close the file object",ioe);
+  }
+}
