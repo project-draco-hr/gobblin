@@ -1,0 +1,23 @@
+{
+  if (!recordsOfCurrentTitle.isEmpty()) {
+    return true;
+  }
+ else   if (requestedTitles.isEmpty()) {
+    return false;
+  }
+ else {
+    while (!requestedTitles.isEmpty()) {
+      String currentTitle=requestedTitles.poll();
+      try {
+        recordsOfCurrentTitle=retrievePageRevisions(currentTitle);
+      }
+ catch (      IOException e) {
+        LOG.error("IOException while retrieving revisions for title '" + currentTitle + "'");
+      }
+      if (!recordsOfCurrentTitle.isEmpty()) {
+        return true;
+      }
+    }
+    return false;
+  }
+}

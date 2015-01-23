@@ -1,0 +1,16 @@
+{
+  WorkUnit workUnit=workUnitState.getWorkunit();
+  rootUrl=workUnit.getProp(WIKIPEDIA_API_ROOTURL);
+  schema=workUnit.getProp(WIKIPEDIA_AVRO_SCHEMA);
+  requestedTitles=new LinkedList<String>(SPLITTER.splitToList(workUnit.getProp(SOURCE_PAGE_TITLES)));
+  revisionsCnt=Integer.parseInt(workUnit.getProp(SOURCE_REVISIONS_CNT));
+  numRequestedTitles=requestedTitles.size();
+  if (requestedTitles.isEmpty()) {
+    recordsOfCurrentTitle=new LinkedList<JsonElement>();
+  }
+ else {
+    String firstTitle=requestedTitles.poll();
+    recordsOfCurrentTitle=retrievePageRevisions(firstTitle);
+  }
+  this.reader=new WikiResponseReader();
+}
