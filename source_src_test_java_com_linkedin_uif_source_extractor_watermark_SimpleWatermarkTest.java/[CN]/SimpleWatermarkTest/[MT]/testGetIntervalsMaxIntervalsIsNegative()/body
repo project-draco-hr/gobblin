@@ -1,0 +1,8 @@
+{
+  try {
+    simpleWatermark.getIntervals(0,100,1,-1);
+    Assert.fail("Expected java.lang.IllegalArgumentException, but didn't get one");
+  }
+ catch (  java.lang.IllegalArgumentException e) {
+  }
+}
