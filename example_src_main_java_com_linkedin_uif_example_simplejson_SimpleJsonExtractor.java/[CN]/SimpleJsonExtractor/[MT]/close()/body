@@ -1,6 +1,6 @@
 {
   try {
-    this.bufferedReader.close();
+    this.closer.close();
   }
  catch (  IOException ioe) {
     LOGGER.error("Failed to close the input stream",ioe);
