@@ -19,7 +19,10 @@
       throw new IOException(e);
     }
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
   return states;

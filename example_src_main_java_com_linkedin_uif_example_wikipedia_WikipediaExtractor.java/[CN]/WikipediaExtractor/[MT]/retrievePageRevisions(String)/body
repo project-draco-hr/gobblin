@@ -13,7 +13,10 @@
       sb.append(line + "\n");
     }
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     try {
       closer.close();
     }

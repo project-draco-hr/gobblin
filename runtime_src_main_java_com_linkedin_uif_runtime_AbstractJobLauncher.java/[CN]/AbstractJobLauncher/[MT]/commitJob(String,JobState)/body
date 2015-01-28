@@ -11,7 +11,10 @@
       publisher.publish(jobState.getTaskStates());
       jobState.setState(JobState.RunningState.COMMITTED);
     }
-  finally {
+ catch (    Throwable t) {
+      throw closer.rethrow(t);
+    }
+ finally {
       closer.close();
     }
   }

@@ -10,7 +10,10 @@
       writer.append(new Text(Strings.nullToEmpty(state.getId())),state);
     }
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
 }
