@@ -103,11 +103,12 @@
     source.shutdown(sourceState);
     try {
       persistJobState(jobState);
-      cleanupStagingData(jobState);
     }
  catch (    Throwable t) {
-      LOG.error(String.format("Failed to persist job state and cleanup for job %s: %s",jobId,t),t);
+      LOG.error(String.format("Failed to persist job/task states of job %s: %s",jobId,t),t);
+      jobState.setState(JobState.RunningState.FAILED);
     }
+    cleanupStagingData(jobState);
     long endTime=System.currentTimeMillis();
     jobState.setEndTime(endTime);
     jobState.setDuration(endTime - startTime);
