@@ -8,7 +8,10 @@
     SequenceFile.Writer writer=closer.register(new SequenceFile.Writer(this.fs,this.conf,tablePath,Text.class,this.stateClass));
     writer.append(new Text(Strings.nullToEmpty(state.getId())),state);
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
 }

@@ -1,0 +1,55 @@
+{
+  TaskExecutionInfo taskExecutionInfo=new TaskExecutionInfo();
+  taskExecutionInfo.setJobId(this.jobId);
+  taskExecutionInfo.setTaskId(this.taskId);
+  taskExecutionInfo.setStartTime(this.startTime);
+  taskExecutionInfo.setEndTime(this.endTime);
+  taskExecutionInfo.setDuration(this.duration);
+  taskExecutionInfo.setState(TaskStateEnum.valueOf(getWorkingState().name()));
+  if (this.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+    taskExecutionInfo.setFailureException(this.getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY));
+  }
+  taskExecutionInfo.setHighWatermark(this.getHighWaterMark());
+  Table table=new Table();
+  Extract extract=this.getExtract();
+  table.setNamespace(extract.getNamespace());
+  table.setName(extract.getTable());
+  if (extract.hasType()) {
+    table.setType(TableTypeEnum.valueOf(extract.getType().name()));
+  }
+  taskExecutionInfo.setTable(table);
+  JobMetrics jobMetrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
+  MetricArray metricArray=new MetricArray();
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.TASK,this.taskId).entrySet()) {
+    Metric counter=new Metric();
+    counter.setGroup(JobMetrics.MetricGroup.TASK.name());
+    counter.setName(entry.getKey());
+    counter.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.COUNTER.name()));
+    counter.setValue(Long.toString(((Counter)entry.getValue()).getCount()));
+    metricArray.add(counter);
+  }
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.METER,JobMetrics.MetricGroup.TASK,this.taskId).entrySet()) {
+    Metric meter=new Metric();
+    meter.setGroup(JobMetrics.MetricGroup.TASK.name());
+    meter.setName(entry.getKey());
+    meter.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.METER.name()));
+    meter.setValue(Double.toString(((Meter)entry.getValue()).getMeanRate()));
+    metricArray.add(meter);
+  }
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.GAUGE,JobMetrics.MetricGroup.TASK,this.taskId).entrySet()) {
+    Metric gauge=new Metric();
+    gauge.setGroup(JobMetrics.MetricGroup.TASK.name());
+    gauge.setName(entry.getKey());
+    gauge.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.GAUGE.name()));
+    gauge.setValue(((Gauge)entry.getValue()).getValue().toString());
+    metricArray.add(gauge);
+  }
+  taskExecutionInfo.setMetrics(metricArray);
+  Map<String,String> taskProperties=Maps.newHashMap();
+  for (  String name : this.getPropertyNames()) {
+    String value=this.getProp(name);
+    if (!Strings.isNullOrEmpty(value))     taskProperties.put(name,value);
+  }
+  taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
+  return taskExecutionInfo;
+}

@@ -1,0 +1,8 @@
+{
+  if ((field + 1) == pathList.size()) {
+    return Optional.fromNullable(schema.getField(pathList.get(field)).schema());
+  }
+ else {
+    return AvroUtils.getFieldSchemaHelper(schema.getField(pathList.get(field)).schema(),pathList,++field);
+  }
+}

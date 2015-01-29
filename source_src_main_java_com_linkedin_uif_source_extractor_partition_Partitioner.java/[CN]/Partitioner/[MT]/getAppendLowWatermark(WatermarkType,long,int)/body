@@ -1,11 +1,13 @@
 {
   LOG.debug("Getting append low water mark");
+  String timeZone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE);
   if (this.isPreviousWatermarkExists(previousWatermark)) {
     if (this.isSimpleWatermark(watermarkType)) {
       return previousWatermark + deltaForNextWatermark;
     }
  else {
-      return Long.parseLong(Utils.dateToString(Utils.addSecondsToDate(Utils.toDate(previousWatermark,WATERMARKTIMEFORMAT),deltaForNextWatermark),WATERMARKTIMEFORMAT));
+      DateTime wm=Utils.toDateTime(previousWatermark,WATERMARKTIMEFORMAT,timeZone).plusSeconds(deltaForNextWatermark);
+      return Long.parseLong(Utils.dateTimeToString(wm,WATERMARKTIMEFORMAT,timeZone));
     }
   }
  else {

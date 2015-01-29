@@ -40,7 +40,7 @@
   }
  catch (  Throwable t) {
     String errMsg="Failed to initialize the source for job " + jobId;
-    LOG.error(errMsg,t);
+    LOG.error(errMsg + ": " + t,t);
     unlockJob(jobName,jobLockOptional);
     throw new JobException(errMsg,t);
   }
@@ -78,6 +78,14 @@
         jobMetrics.get().startMetricReporting(jobProps);
       }
     }
+    if (this.jobHistoryStore.isPresent()) {
+      try {
+        this.jobHistoryStore.get().put(jobState.toJobExecutionInfo());
+      }
+ catch (      Throwable t) {
+        LOG.error("Failed to write job execution information to the job history store: " + t,t);
+      }
+    }
     runJob(jobName,jobProps,jobState,workUnits.get());
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled",jobId));
@@ -88,31 +96,40 @@
   }
  catch (  Throwable t) {
     String errMsg="Failed to launch and run job " + jobId;
-    LOG.error(errMsg,t);
+    LOG.error(errMsg + ": " + t,t);
     throw new JobException(errMsg,t);
   }
  finally {
     source.shutdown(sourceState);
+    try {
+      persistJobState(jobState);
+    }
+ catch (    Throwable t) {
+      LOG.error(String.format("Failed to persist job/task states of job %s: %s",jobId,t),t);
+      jobState.setState(JobState.RunningState.FAILED);
+    }
+    cleanupStagingData(jobState);
     long endTime=System.currentTimeMillis();
     jobState.setEndTime(endTime);
     jobState.setDuration(endTime - startTime);
-    try {
-      persistJobState(jobState);
-      cleanupStagingData(jobState);
-    }
- catch (    Throwable t) {
-      LOG.error("Failed to persist job state and cleanup for job " + jobId,t);
-    }
     unlockJob(jobName,jobLockOptional);
+    if (this.jobHistoryStore.isPresent()) {
+      try {
+        this.jobHistoryStore.get().put(jobState.toJobExecutionInfo());
+      }
+ catch (      Throwable t) {
+        LOG.error("Failed to write job execution information to the job history store: " + t,t);
+      }
+    }
     if (JobMetrics.isEnabled(jobProps)) {
       if (jobMetrics.isPresent()) {
         jobMetrics.get().stopMetricReporting();
       }
       JobMetrics.remove(jobId);
     }
-    if (Optional.fromNullable(jobListener).isPresent()) {
-      jobListener.jobCompleted(jobState);
-    }
+  }
+  if (Optional.fromNullable(jobListener).isPresent()) {
+    jobListener.jobCompleted(jobState);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {
     throw new JobException(String.format("Job %s failed",jobId));

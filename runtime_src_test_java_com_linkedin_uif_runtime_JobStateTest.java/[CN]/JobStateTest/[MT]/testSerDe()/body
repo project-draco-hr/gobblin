@@ -10,7 +10,10 @@
     newJobState.readFields(dis);
     doAsserts();
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
 }

@@ -2,7 +2,7 @@
   LOG.debug("Getting append high water mark");
   if (this.isFullDump()) {
     LOG.info("Overriding high water mark with end value:" + ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE);
-    return Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE));
+    return this.state.getPropAsLong(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE,0);
   }
  else {
     return this.getAppendWatermarkCutoff(extractType);

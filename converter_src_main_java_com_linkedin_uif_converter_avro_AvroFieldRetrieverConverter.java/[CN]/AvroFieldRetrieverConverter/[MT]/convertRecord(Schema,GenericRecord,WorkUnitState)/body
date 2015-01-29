@@ -1,0 +1,4 @@
+{
+  Optional<Object> record=AvroUtils.getFieldValue(inputRecord,this.fieldLocation);
+  return record.isPresent() ? new SingleRecordIterable<Object>(record.get()) : new EmptyIterable<Object>();
+}

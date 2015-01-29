@@ -1,8 +1,12 @@
 {
   LOG.debug("Getting high watermark");
+  String timeZone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE);
   long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
   if (this.isWatermarkOverride()) {
-    highWatermark=Utils.getAsLong(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE));
+    highWatermark=this.state.getPropAsLong(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE,0);
+    if (highWatermark == 0) {
+      highWatermark=Long.parseLong(Utils.dateTimeToString(Utils.getCurrentTime(timeZone),WATERMARKTIMEFORMAT,timeZone));
+    }
     LOG.info("Overriding high water mark with the given end value:" + highWatermark);
   }
  else {

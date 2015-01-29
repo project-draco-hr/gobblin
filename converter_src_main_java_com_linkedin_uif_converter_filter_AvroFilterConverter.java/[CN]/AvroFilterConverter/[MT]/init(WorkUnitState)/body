@@ -1,29 +1,7 @@
 {
-  if (!workUnit.contains(ConfigurationKeys.CONVERTER_FILTER_FIELD) || !workUnit.contains(ConfigurationKeys.CONVERTER_FILTER_IDS_FILE)) {
-    throw new RuntimeException("AvroFilterCoverter is not initialized properly please set: " + ConfigurationKeys.CONVERTER_FILTER_FIELD + " and "+ ConfigurationKeys.CONVERTER_FILTER_IDS_FILE);
-  }
-  fieldPath=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD).split("\\.");
-  filterIds=new HashSet<String>();
-  Path filterIdsLoc=new Path(workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_IDS_FILE));
-  BufferedReader memberIdsReader=null;
-  try {
-    memberIdsReader=new BufferedReader(new FileReader(filterIdsLoc.getName()));
-    String memberId;
-    while ((memberId=memberIdsReader.readLine()) != null) {
-      filterIds.add(memberId);
-    }
-  }
- catch (  IOException e) {
-    Throwables.propagate(e);
-  }
- finally {
-    if (memberIdsReader != null) {
-      try {
-        memberIdsReader.close();
-      }
- catch (      IOException e) {
-      }
-    }
-  }
+  Preconditions.checkArgument(workUnit.contains(ConfigurationKeys.CONVERTER_FILTER_FIELD_NAME),"Missing required property converter.filter.field for the AvroFilterConverter class.");
+  Preconditions.checkArgument(workUnit.contains(ConfigurationKeys.CONVERTER_FILTER_FIELD_VALUE),"Missing required property converter.filter.value for the AvroFilterConverter class.");
+  this.fieldName=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD_NAME);
+  this.fieldValue=workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_FIELD_VALUE);
   return super.init(workUnit);
 }

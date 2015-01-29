@@ -1,0 +1,3 @@
+{
+  return AvroUtils.getFieldSchema(inputSchema,this.fieldLocation).orNull();
+}

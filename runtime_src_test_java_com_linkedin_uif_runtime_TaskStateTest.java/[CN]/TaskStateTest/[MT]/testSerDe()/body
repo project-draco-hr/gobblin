@@ -17,7 +17,10 @@
     Assert.assertEquals(newTaskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
     Assert.assertEquals(newTaskState.getProp("foo"),"bar");
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
 }

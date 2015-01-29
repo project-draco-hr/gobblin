@@ -1,0 +1,18 @@
+{
+  MetricFilter filter=new MetricFilter(){
+    @Override public boolean matches(    String name,    Metric metric){
+      return name.startsWith(group.name()) && name.contains(id);
+    }
+  }
+;
+switch (type) {
+case COUNTER:
+    return this.metricRegistry.getCounters(filter);
+case METER:
+  return this.metricRegistry.getMeters(filter);
+case GAUGE:
+return this.metricRegistry.getGauges(filter);
+default :
+throw new IllegalArgumentException("Unknown metric type: " + type.name());
+}
+}

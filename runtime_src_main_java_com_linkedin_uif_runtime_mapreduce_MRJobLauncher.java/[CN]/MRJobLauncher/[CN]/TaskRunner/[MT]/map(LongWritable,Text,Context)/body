@@ -10,7 +10,10 @@
     DataInputStream dis=closer.register((new DataInputStream(is)));
     workUnit.readFields(dis);
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
   runWorkUnits(workUnit instanceof MultiWorkUnit ? ((MultiWorkUnit)workUnit).getWorkUnits() : Lists.newArrayList(workUnit));

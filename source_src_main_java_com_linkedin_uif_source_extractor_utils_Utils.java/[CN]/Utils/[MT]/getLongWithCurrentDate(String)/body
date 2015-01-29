@@ -2,7 +2,7 @@
   if (Strings.isNullOrEmpty(value)) {
     return 0;
   }
-  DateTime time=new DateTime(DateTimeZone.forID("America/Los_Angeles"));
+  DateTime time=new DateTime(DateTimeZone.forID(ConfigurationKeys.DEFAULT_SOURCE_TIMEZONE));
   if (value.toUpperCase().startsWith(CURRENT_DAY)) {
     return Long.valueOf(DATE_FORMATTER.print(time.minusDays(Integer.parseInt(value.substring(CURRENT_DAY.length() + 1)))));
   }

@@ -42,7 +42,10 @@
       }
     }
   }
-  finally {
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
     closer.close();
   }
 }
