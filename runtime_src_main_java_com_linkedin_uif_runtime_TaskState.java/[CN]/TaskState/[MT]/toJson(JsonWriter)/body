@@ -1,6 +1,6 @@
 {
   jsonWriter.beginObject();
-  jsonWriter.name("task id").value(this.getTaskId()).name("task state").value(this.getWorkingState().name()).name("start time").value(this.getStartTime()).name("end time").value(this.getEndTime()).name("duration").value(this.getTaskDuration()).name("high watermark").value(this.getHighWaterMark());
+  jsonWriter.name("task id").value(this.getTaskId()).name("task state").value(this.getWorkingState().name()).name("start time").value(this.getStartTime()).name("end time").value(this.getEndTime()).name("duration").value(this.getTaskDuration()).name("high watermark").value(this.getHighWaterMark()).name("retry count").value(this.getPropAsInt(ConfigurationKeys.TASK_RETRIES_KEY,0));
   if (this.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
     jsonWriter.name("exception").value(this.getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY));
   }
