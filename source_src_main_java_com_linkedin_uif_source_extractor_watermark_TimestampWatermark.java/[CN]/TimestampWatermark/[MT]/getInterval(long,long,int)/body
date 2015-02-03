@@ -1,7 +1,4 @@
 {
-  if (diffInMilliSecs == 0) {
-    return 0;
-  }
   long totalHours=DoubleMath.roundToInt((double)diffInMilliSecs / (60 * 60 * 1000),RoundingMode.CEILING);
   long totalIntervals=DoubleMath.roundToInt((double)totalHours / hourInterval,RoundingMode.CEILING);
   if (totalIntervals > maxIntervals) {

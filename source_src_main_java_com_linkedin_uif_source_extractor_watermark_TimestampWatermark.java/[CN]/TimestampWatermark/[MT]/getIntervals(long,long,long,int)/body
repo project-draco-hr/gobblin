@@ -1,8 +1,10 @@
 {
+  Preconditions.checkArgument(partitionInterval >= 1,"Invalid value for partitionInterval, value should be at least 1.");
+  Preconditions.checkArgument(maxIntervals > 0,"Invalid value for maxIntervals, positive value expected.");
   HashMap<Long,Long> intervalMap=new HashMap<Long,Long>();
-  final SimpleDateFormat inputFormat=new SimpleDateFormat(INPUTFORMAT);
-  if (partitionInterval < 1) {
-    partitionInterval=1;
+  if (lowWatermarkValue > highWatermarkValue) {
+    LOG.warn("lowWatermarkValue: " + lowWatermarkValue + " is greater than highWatermarkValue: "+ highWatermarkValue);
+    return intervalMap;
   }
   final Calendar calendar=Calendar.getInstance();
   Date nextTime;
@@ -19,11 +21,11 @@
   long lwm;
   long hwm;
   while (startTime.getTime() <= endTime.getTime()) {
-    lwm=Long.parseLong(inputFormat.format(startTime));
+    lwm=Long.parseLong(INPUTFORMATPARSER.format(startTime));
     calendar.setTime(startTime);
     calendar.add(Calendar.HOUR,(int)interval);
     nextTime=calendar.getTime();
-    hwm=Long.parseLong(inputFormat.format(nextTime.getTime() <= endTime.getTime() ? nextTime : endTime));
+    hwm=Long.parseLong(INPUTFORMATPARSER.format(nextTime.getTime() <= endTime.getTime() ? nextTime : endTime));
     intervalMap.put(lwm,hwm);
     LOG.debug("Partition - low:" + lwm + "; high:"+ hwm);
     calendar.add(Calendar.SECOND,deltaForNextWatermark);
