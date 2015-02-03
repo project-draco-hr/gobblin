@@ -1,5 +1,0 @@
-{
-  if (JobMetrics.isEnabled(this.task.getTaskState().getWorkunit())) {
-    this.task.updateRecordMetrics();
-  }
-}

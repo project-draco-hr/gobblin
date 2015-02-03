@@ -1,0 +1,3 @@
+{
+  return this.taskMetricsUpdaterExecutor.scheduleAtFixedRate(taskMetricsUpdater,task.getTaskContext().getStatusReportingInterval(),task.getTaskContext().getStatusReportingInterval(),TimeUnit.MILLISECONDS);
+}

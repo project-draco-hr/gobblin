@@ -1,0 +1,3 @@
+{
+  this.logger.info("Starting the task state tracker");
+}

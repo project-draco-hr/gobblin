@@ -1,0 +1,2 @@
+Task task
+Mapper<LongWritable,Text,NullWritable,NullWritable>.Context context

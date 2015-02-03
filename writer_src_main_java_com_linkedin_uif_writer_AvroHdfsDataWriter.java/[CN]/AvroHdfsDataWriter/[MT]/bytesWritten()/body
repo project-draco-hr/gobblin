@@ -1,5 +1,5 @@
 {
-  if (!this.fs.exists(this.outputFile)) {
+  if (!this.fs.exists(this.outputFile) || !this.closed) {
     return 0;
   }
   return this.fs.getFileStatus(this.outputFile).getLen();

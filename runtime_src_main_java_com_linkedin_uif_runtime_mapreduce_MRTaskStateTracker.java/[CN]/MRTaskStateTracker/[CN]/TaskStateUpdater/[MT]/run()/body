@@ -1,8 +1,0 @@
-{
-  this.context.progress();
-  if (JobMetrics.isEnabled(this.task.getTaskState().getWorkunit())) {
-    this.task.updateRecordMetrics();
-    String taskRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"records");
-    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(JobMetrics.get(this.task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),this.task.getJobId()).getCounter(taskRecordMetric).getCount());
-  }
-}

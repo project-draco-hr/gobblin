@@ -1,5 +1,4 @@
 {
+  super(context.getConfiguration(),LOG);
   this.context=context;
-  this.reporterExecutor=new ScheduledThreadPoolExecutor(1);
-  this.reporterExecutor.setMaximumPoolSize(1);
 }
