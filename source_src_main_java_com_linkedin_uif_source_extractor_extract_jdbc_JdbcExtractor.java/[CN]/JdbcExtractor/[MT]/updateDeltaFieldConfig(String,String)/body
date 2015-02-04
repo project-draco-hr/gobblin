@@ -1,4 +1,6 @@
 {
-  String watermarkCol=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
-  this.workUnitState.setProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY,watermarkCol.replaceAll(srcColumnName,tgtColumnName));
+  if (this.workUnitState.contains(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY)) {
+    String watermarkCol=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+    this.workUnitState.setProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY,watermarkCol.replaceAll(srcColumnName,tgtColumnName));
+  }
 }

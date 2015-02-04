@@ -1,4 +1,6 @@
 {
-  String primarykey=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY);
-  this.workUnitState.setProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY,primarykey.replaceAll(srcColumnName,tgtColumnName));
+  if (this.workUnitState.contains(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY)) {
+    String primarykey=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY);
+    this.workUnitState.setProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY,primarykey.replaceAll(srcColumnName,tgtColumnName));
+  }
 }
