@@ -1,0 +1,8 @@
+{
+  int totalHours=DoubleMath.roundToInt((double)diffInMilliSecs / (60 * 60 * 1000),RoundingMode.CEILING);
+  int totalIntervals=DoubleMath.roundToInt((double)totalHours / hourInterval,RoundingMode.CEILING);
+  if (totalIntervals > maxIntervals) {
+    hourInterval=DoubleMath.roundToInt((double)totalHours / maxIntervals,RoundingMode.CEILING);
+  }
+  return Ints.checkedCast(hourInterval) + 1;
+}

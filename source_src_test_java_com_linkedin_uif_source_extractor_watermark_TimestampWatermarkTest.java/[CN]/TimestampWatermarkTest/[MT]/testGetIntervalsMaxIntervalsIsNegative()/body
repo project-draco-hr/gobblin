@@ -1,0 +1,3 @@
+{
+  tsWatermark.getIntervals(LOW_WATERMARK_VALUE,HIGH_WATERMARK_VALUE,1,-1);
+}

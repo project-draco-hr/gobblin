@@ -1,0 +1,20 @@
+{
+  Map<Long,Long> intervals=new HashMap<Long,Long>();
+  if (lowWatermarkValue > highWatermarkValue || partitionInterval <= 0)   return intervals;
+  final SimpleDateFormat inputFormat=new SimpleDateFormat(watermarkFormat);
+  Date startTime=inputFormat.parse(String.valueOf(lowWatermarkValue));
+  Date endTime=inputFormat.parse(String.valueOf(highWatermarkValue));
+  Calendar cal=Calendar.getInstance();
+  while (startTime.compareTo(endTime) <= 0) {
+    cal.setTime(startTime);
+    cal.add(Calendar.HOUR,partitionInterval);
+    Date nextTime=cal.getTime();
+    if (nextTime.compareTo(endTime) > 0) {
+      nextTime=endTime;
+    }
+    intervals.put(Long.parseLong(inputFormat.format(startTime)),Long.parseLong(inputFormat.format(nextTime)));
+    cal.add(Calendar.SECOND,1);
+    startTime=cal.getTime();
+  }
+  return intervals;
+}

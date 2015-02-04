@@ -1,0 +1,4 @@
+long lowWatermarkValue
+long highWatermarkValue
+long partitionIntervalInHours
+int maxIntervals

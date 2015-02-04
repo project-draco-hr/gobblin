@@ -1,0 +1,4 @@
+{
+  MysqlExtractor extractor=new MysqlExtractor(workunitState);
+  Assert.assertEquals(tsWatermark.getWatermarkCondition(extractor,WATERMARK_VALUE,OPERATOR),COLUMN + " " + OPERATOR+ " '2014-10-29 13:30:15'");
+}

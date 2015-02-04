@@ -1,0 +1,8 @@
+{
+  HourWatermark hourwm=new HourWatermark("Hourwatermark","test");
+  long lwm=20150201011111l;
+  long hwm=20150202111111l;
+  int partition=2;
+  int maxInterval=-1;
+  hourwm.getIntervals(lwm,hwm,partition,maxInterval);
+}

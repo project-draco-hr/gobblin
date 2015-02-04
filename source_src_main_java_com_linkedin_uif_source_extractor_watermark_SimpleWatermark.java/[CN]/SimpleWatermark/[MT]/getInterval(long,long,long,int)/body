@@ -1,0 +1,19 @@
+{
+  if (lowWatermarkValue > highWatermarkValue) {
+    LOG.info("lowWatermarkValue: " + lowWatermarkValue + " is greater than highWatermarkValue: "+ highWatermarkValue);
+    return 0;
+  }
+  long outputInterval=partitionInterval;
+  boolean longOverflow=false;
+  long totalIntervals=Long.MAX_VALUE;
+  try {
+    totalIntervals=DoubleMath.roundToLong((double)highWatermarkValue / partitionInterval - (double)lowWatermarkValue / partitionInterval,RoundingMode.CEILING);
+  }
+ catch (  java.lang.ArithmeticException e) {
+    longOverflow=true;
+  }
+  if (longOverflow || totalIntervals > maxIntervals) {
+    outputInterval=DoubleMath.roundToLong((double)highWatermarkValue / maxIntervals - (double)lowWatermarkValue / maxIntervals,RoundingMode.CEILING);
+  }
+  return outputInterval;
+}

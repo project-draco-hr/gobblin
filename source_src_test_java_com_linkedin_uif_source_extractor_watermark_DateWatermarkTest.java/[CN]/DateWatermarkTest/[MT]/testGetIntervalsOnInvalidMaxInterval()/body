@@ -1,0 +1,8 @@
+{
+  DateWatermark datewm=new DateWatermark("Datewatermark","test");
+  long lwm=20150201011111l;
+  long hwm=20150206111111l;
+  int partition=30;
+  int maxInterval=-1;
+  datewm.getIntervals(lwm,hwm,partition,maxInterval);
+}

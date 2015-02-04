@@ -1,4 +1,0 @@
-long lowWatermarkValue
-long highWatermarkValue
-int partitionInterval
-int maxIntervals

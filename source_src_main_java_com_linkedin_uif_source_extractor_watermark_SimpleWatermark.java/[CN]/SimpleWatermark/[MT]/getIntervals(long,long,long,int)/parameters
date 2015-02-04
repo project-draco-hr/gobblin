@@ -1,0 +1,4 @@
+long lowWatermarkValue
+long highWatermarkValue
+long partitionInterval
+int maxIntervals
