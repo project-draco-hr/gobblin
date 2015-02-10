@@ -1,0 +1,16 @@
+{
+  Thread.sleep(2000);
+  Assert.assertEquals(this.jobManager.getScheduledJobs().size(),3);
+  Properties jobProps=new Properties();
+  jobProps.load(new FileReader(new File(JOB_CONFIG_FILE_DIR,"GobblinTest1.pull")));
+  jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,"Gobblin-test-new");
+  this.newJobConfigFile=new File(JOB_CONFIG_FILE_DIR,"Gobblin-test-new.pull");
+  jobProps.store(new FileWriter(this.newJobConfigFile),null);
+  Thread.sleep(2000);
+  Set<String> jobNames=Sets.newHashSet(this.jobManager.getScheduledJobs());
+  Assert.assertEquals(jobNames.size(),4);
+  Assert.assertTrue(jobNames.contains("GobblinTest1"));
+  Assert.assertTrue(jobNames.contains("GobblinTest2"));
+  Assert.assertTrue(jobNames.contains("GobblinTest3"));
+  Assert.assertTrue(jobNames.contains("Gobblin-test-new"));
+}
