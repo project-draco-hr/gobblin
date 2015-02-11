@@ -1,0 +1,9 @@
+{
+  State state=new State();
+  state.setProp(ConfigurationKeys.TASK_LEVEL_POLICY_LIST,"gobblin.qualitychecker.TestTaskLevelPolicy,gobblin.qualitychecker.TestTaskLevelPolicy");
+  state.setProp(ConfigurationKeys.TASK_LEVEL_POLICY_LIST_TYPE,"FAIL,FAIL");
+  TaskLevelPolicyCheckResults results=getPolicyResults(state);
+  for (  Map.Entry<TaskLevelPolicy.Result,TaskLevelPolicy.Type> entry : results.getPolicyResults().entrySet()) {
+    Assert.assertEquals(entry.getKey(),TaskLevelPolicy.Result.PASSED);
+  }
+}

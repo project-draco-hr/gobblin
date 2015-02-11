@@ -1,0 +1,36 @@
+{
+  JobCommitPolicy commitPolicy=JobCommitPolicy.forName(jobState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY));
+  DataPublisher publisher=null;
+  try {
+    if (commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.SUCCESSFUL)) {
+      LOG.info("Publishing job data of job " + jobId + " with commit policy "+ commitPolicy);
+      Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+      Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(gobblin.configuration.State.class);
+      publisher=dataPublisherConstructor.newInstance(jobState);
+      publisher.initialize();
+      publisher.publish(jobState.getTaskStates());
+      jobState.setState(JobState.RunningState.COMMITTED);
+    }
+ else {
+      LOG.info("Job data will not be committed due to commit policy: " + commitPolicy);
+    }
+  }
+ catch (  Exception e) {
+    jobState.setState(JobState.RunningState.FAILED);
+    LOG.error("Failed to publish job data of job " + jobId,e);
+    throw e;
+  }
+ finally {
+    if (JobMetrics.isEnabled(this.properties)) {
+      jobState.removeMetrics();
+    }
+    boolean runOnce=Boolean.valueOf(jobState.getProp(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+    persistJobState(jobState);
+    cleanupJobOnCompletion(jobState,runOnce);
+    unlockJob(jobName,runOnce);
+    callJobListener(jobName,jobState,runOnce);
+    if (publisher != null) {
+      publisher.close();
+    }
+  }
+}
