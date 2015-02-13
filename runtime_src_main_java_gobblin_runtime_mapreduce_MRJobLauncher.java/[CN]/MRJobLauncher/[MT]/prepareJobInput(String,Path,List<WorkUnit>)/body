@@ -6,11 +6,20 @@
     Writer osw=closer.register(new OutputStreamWriter(os));
     Writer bw=closer.register(new BufferedWriter(osw));
     for (    WorkUnit workUnit : workUnits) {
-      Path workUnitFile=new Path(jobInputPath,workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + ((workUnit instanceof MultiWorkUnit) ? MULTI_WORK_UNIT_FILE_EXTENSION : WORK_UNIT_FILE_EXTENSION));
-      os=closer.register(this.fs.create(workUnitFile));
-      DataOutputStream dos=closer.register(new DataOutputStream(os));
-      workUnit.write(dos);
-      bw.write(workUnitFile.toUri().getPath() + "\n");
+      Closer workUnitFileCloser=Closer.create();
+      try {
+        Path workUnitFile=new Path(jobInputPath,workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + ((workUnit instanceof MultiWorkUnit) ? MULTI_WORK_UNIT_FILE_EXTENSION : WORK_UNIT_FILE_EXTENSION));
+        os=workUnitFileCloser.register(this.fs.create(workUnitFile));
+        DataOutputStream dos=workUnitFileCloser.register(new DataOutputStream(os));
+        workUnit.write(dos);
+        bw.write(workUnitFile.toUri().getPath() + "\n");
+      }
+ catch (      Throwable t) {
+        throw workUnitFileCloser.rethrow(t);
+      }
+ finally {
+        workUnitFileCloser.close();
+      }
     }
     return jobInputFile;
   }
