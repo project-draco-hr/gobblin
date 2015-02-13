@@ -2,7 +2,13 @@
   try {
     return (ForkOperator)Class.forName(this.workUnit.getProp(ConfigurationKeys.FORK_OPERATOR_CLASS_KEY,ConfigurationKeys.DEFAULT_FORK_OPERATOR_CLASS)).newInstance();
   }
- catch (  Exception e) {
-    return null;
+ catch (  ClassNotFoundException cnfe) {
+    throw new RuntimeException(cnfe);
+  }
+catch (  InstantiationException ie) {
+    throw new RuntimeException(ie);
+  }
+catch (  IllegalAccessException iae) {
+    throw new RuntimeException(iae);
   }
 }
