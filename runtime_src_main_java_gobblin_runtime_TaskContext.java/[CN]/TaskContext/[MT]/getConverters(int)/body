@@ -10,8 +10,14 @@
       converter.init(this.workUnitState);
       converters.add(converter);
     }
- catch (    Exception e) {
-      throw new RuntimeException(e);
+ catch (    ClassNotFoundException cnfe) {
+      throw new RuntimeException(cnfe);
+    }
+catch (    InstantiationException ie) {
+      throw new RuntimeException(ie);
+    }
+catch (    IllegalAccessException iae) {
+      throw new RuntimeException(iae);
     }
   }
   return converters;

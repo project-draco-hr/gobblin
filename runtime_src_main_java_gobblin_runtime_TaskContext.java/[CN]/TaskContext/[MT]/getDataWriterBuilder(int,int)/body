@@ -2,7 +2,13 @@
   try {
     return (DataWriterBuilder)Class.forName(this.workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS,branches,index),ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS)).newInstance();
   }
- catch (  Exception e) {
-    throw new IOException("Failed to instantiate a DataWriterBuilder",e);
+ catch (  ClassNotFoundException cnfe) {
+    throw new RuntimeException(cnfe);
+  }
+catch (  InstantiationException ie) {
+    throw new RuntimeException(ie);
+  }
+catch (  IllegalAccessException iae) {
+    throw new RuntimeException(iae);
   }
 }
