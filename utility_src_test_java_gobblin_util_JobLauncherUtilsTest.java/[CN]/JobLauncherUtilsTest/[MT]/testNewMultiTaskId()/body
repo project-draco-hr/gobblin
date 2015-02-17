@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(JobLauncherUtils.newMultiTaskId(this.jobId,0),this.jobId.replace("job","multitask") + "_0");
+  Assert.assertEquals(JobLauncherUtils.newMultiTaskId(this.jobId,1),this.jobId.replace("job","multitask") + "_1");
+}

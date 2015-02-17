@@ -15,7 +15,7 @@
       System.exit(1);
     }
   }
-,Executors.newSingleThreadExecutor());
+,Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOG))));
   Runtime.getRuntime().addShutdownHook(new Thread(){
     public void run(){
       LOG.info("Shutting down the worker");

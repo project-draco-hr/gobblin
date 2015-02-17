@@ -1,0 +1,8 @@
+{
+  if (logger.isPresent()) {
+    this.logger=logger.get();
+  }
+ else {
+    this.logger=LoggerFactory.getLogger(LoggingUncaughtExceptionHandler.class);
+  }
+}

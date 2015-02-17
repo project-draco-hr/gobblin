@@ -1,3 +1,5 @@
 {
+  Preconditions.checkArgument(index >= 0,"index is expected to be non-negative");
+  Preconditions.checkArgument(branches >= 0,"branches is expected to be non-negative");
   return branches > 1 ? key + "." + index : key;
 }

@@ -1,5 +1,5 @@
 {
   this.workUnitQueue=Queues.newLinkedBlockingQueue();
-  this.executorService=Executors.newSingleThreadExecutor();
+  this.executorService=Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOG)));
   this.workUnitHandler=new WorkUnitHandler(this.workUnitQueue,taskExecutor,taskStateTracker);
 }
