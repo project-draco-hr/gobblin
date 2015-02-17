@@ -1,0 +1,3 @@
+{
+  return String.format("multitask_%s_%d",jobId.substring(jobId.indexOf('_') + 1),sequence);
+}
