@@ -1,0 +1,4 @@
+{
+  this.jobId=JobLauncherUtils.newJobId(JOB_NAME);
+  Assert.assertTrue(PATTERN.matcher(this.jobId).matches());
+}

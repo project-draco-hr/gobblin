@@ -1,0 +1,10 @@
+{
+  Logger logger=Mockito.mock(Logger.class);
+  Thread thread=new Thread();
+  thread.setName("foo");
+  RuntimeException runtimeException=new RuntimeException();
+  String errorMessage=String.format("Thread %s threw an uncaught exception: %s",thread,runtimeException);
+  Mockito.doThrow(runtimeException).when(logger).error(errorMessage,runtimeException);
+  Thread.UncaughtExceptionHandler uncaughtExceptionHandler=new LoggingUncaughtExceptionHandler(Optional.of(logger));
+  uncaughtExceptionHandler.uncaughtException(thread,runtimeException);
+}

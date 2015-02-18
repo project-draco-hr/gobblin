@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(JobLauncherUtils.newTaskId(this.jobId,0),this.jobId.replace("job","task") + "_0");
+  Assert.assertEquals(JobLauncherUtils.newTaskId(this.jobId,1),this.jobId.replace("job","task") + "_1");
+}
