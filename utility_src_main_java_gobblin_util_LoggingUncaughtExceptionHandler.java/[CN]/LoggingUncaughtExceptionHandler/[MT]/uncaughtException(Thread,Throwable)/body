@@ -1,0 +1,3 @@
+{
+  this.logger.error(String.format("Thread %s threw an uncaught exception: %s",t,e),e);
+}

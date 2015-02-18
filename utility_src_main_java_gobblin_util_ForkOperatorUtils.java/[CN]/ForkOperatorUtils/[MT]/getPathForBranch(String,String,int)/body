@@ -1,3 +1,4 @@
 {
+  Preconditions.checkArgument(branches >= 0,"branches is expected to be non-negative");
   return branches > 1 ? path + "/" + branchName : path;
 }
