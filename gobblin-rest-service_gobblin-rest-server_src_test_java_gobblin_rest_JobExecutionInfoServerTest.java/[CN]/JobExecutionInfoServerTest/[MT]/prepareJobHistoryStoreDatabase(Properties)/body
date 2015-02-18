@@ -1,0 +1,27 @@
+{
+  List<String> statementLines=Lists.newArrayList();
+  List<String> lines=Files.readLines(new File("gobblin-metastore/src/test/resources/gobblin_job_history_store.sql"),Charset.defaultCharset());
+  for (  String line : lines) {
+    if (line.startsWith("--")) {
+      continue;
+    }
+    statementLines.add(line);
+  }
+  String statements=Joiner.on("\n").skipNulls().join(statementLines);
+  Optional<Connection> connectionOptional=Optional.absent();
+  try {
+    Injector injector=Guice.createInjector(new MetaStoreModule(properties));
+    DataSource dataSource=injector.getInstance(DataSource.class);
+    connectionOptional=Optional.of(dataSource.getConnection());
+    Connection connection=connectionOptional.get();
+    for (    String statement : Splitter.on(";").omitEmptyStrings().trimResults().split(statements)) {
+      PreparedStatement preparedStatement=connection.prepareStatement(statement);
+      preparedStatement.execute();
+    }
+  }
+  finally {
+    if (connectionOptional.isPresent()) {
+      connectionOptional.get().close();
+    }
+  }
+}
