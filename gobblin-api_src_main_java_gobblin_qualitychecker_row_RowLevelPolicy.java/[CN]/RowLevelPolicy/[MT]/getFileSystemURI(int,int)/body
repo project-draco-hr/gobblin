@@ -1,3 +1,0 @@
-{
-  return this.state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,branches,index));
-}
