@@ -1,8 +1,11 @@
 {
   super.updateTaskMetrics();
   if (JobMetrics.isEnabled(this.task.getTaskState().getWorkunit())) {
-    String taskRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"records");
-    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(JobMetrics.get(this.task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),this.task.getJobId()).getCounter(taskRecordMetric).getCount());
+    JobMetrics metrics=JobMetrics.get(this.task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),this.task.getJobId());
+    Map<String,? extends Metric> taskLevelCounters=metrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.TASK,this.task.getTaskId());
+    for (    Map.Entry<String,? extends Metric> entry : taskLevelCounters.entrySet()) {
+      this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),entry.getKey()).setValue(((Counter)entry.getValue()).getCount());
+    }
   }
   this.context.progress();
 }
