@@ -1,16 +1,16 @@
 {
-  JobMetrics metrics=JobMetrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
   if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.updateRecordMetrics();
     task.updateByteMetrics();
-    String taskRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"records");
-    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskRecordMetric).setValue(metrics.getCounter(taskRecordMetric).getCount());
-    String jobRecordMetric=JobMetrics.metricName(JobMetrics.MetricGroup.JOB,task.getJobId(),"records");
-    this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),jobRecordMetric).increment(metrics.getCounter(taskRecordMetric).getCount());
-    String taskByteMetric=JobMetrics.metricName(JobMetrics.MetricGroup.TASK,task.getTaskId(),"bytes");
-    this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),taskByteMetric).setValue(metrics.getCounter(taskByteMetric).getCount());
-    String jobByteMetric=JobMetrics.metricName(JobMetrics.MetricGroup.JOB,task.getJobId(),"bytes");
-    this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),jobByteMetric).increment(metrics.getCounter(taskByteMetric).getCount());
+    JobMetrics metrics=JobMetrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
+    Map<String,? extends Metric> taskLevelCounters=metrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.TASK,task.getTaskId());
+    for (    Map.Entry<String,? extends Metric> entry : taskLevelCounters.entrySet()) {
+      this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),entry.getKey()).setValue(((Counter)entry.getValue()).getCount());
+    }
+    Map<String,? extends Metric> jobLevelCounters=metrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.JOB,task.getJobId());
+    for (    Map.Entry<String,? extends Metric> entry : jobLevelCounters.entrySet()) {
+      this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),entry.getKey()).increment(((Counter)entry.getValue()).getCount());
+    }
   }
   task.markTaskCompletion();
   LOG.info(String.format("Task %s completed in %dms with state %s",task.getTaskId(),task.getTaskState().getTaskDuration(),task.getTaskState().getWorkingState()));
