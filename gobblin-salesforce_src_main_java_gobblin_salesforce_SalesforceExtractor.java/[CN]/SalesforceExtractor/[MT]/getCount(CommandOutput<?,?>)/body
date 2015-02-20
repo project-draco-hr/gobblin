@@ -1,0 +1,21 @@
+{
+  this.log.info("Get source record count from salesforce");
+  String output;
+  Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    output=itr.next();
+  }
+ else {
+    throw new RecordCountException("Failed to get count from salesforce; REST response has no output");
+  }
+  JsonElement element=gson.fromJson(output,JsonObject.class);
+  long count;
+  try {
+    JsonObject jsonObject=element.getAsJsonObject();
+    count=jsonObject.get("totalSize").getAsLong();
+  }
+ catch (  Exception e) {
+    throw new RecordCountException("Failed to get record count from salesforce; error - " + e.getMessage(),e);
+  }
+  return count;
+}

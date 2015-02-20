@@ -1,0 +1,31 @@
+{
+  this.log.debug("Build url to retrieve high watermark");
+  String query="SELECT " + watermarkColumn + " FROM "+ entity;
+  String defaultPredicate=" " + watermarkColumn + " != null";
+  String defaultSortOrder=" ORDER BY " + watermarkColumn + " desc LIMIT 1";
+  String existingPredicate="";
+  if (this.updatedQuery != null) {
+    String queryLowerCase=this.updatedQuery.toLowerCase();
+    int startIndex=queryLowerCase.indexOf(" where ");
+    if (startIndex > 0) {
+      existingPredicate=this.updatedQuery.substring(startIndex);
+    }
+  }
+  query=query + existingPredicate;
+  String limitString=this.getLimitFromInputQuery(query);
+  query=query.replace(limitString,"");
+  Iterator<Predicate> i=predicateList.listIterator();
+  while (i.hasNext()) {
+    Predicate predicate=i.next();
+    query=this.addPredicate(query,predicate.getCondition());
+  }
+  query=this.addPredicate(query,defaultPredicate);
+  query=query + defaultSortOrder;
+  this.log.info("QUERY: " + query);
+  try {
+    return constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
+  }
+ catch (  Exception e) {
+    throw new HighWatermarkException("Failed to get salesforce url for high watermark; error - " + e.getMessage(),e);
+  }
+}

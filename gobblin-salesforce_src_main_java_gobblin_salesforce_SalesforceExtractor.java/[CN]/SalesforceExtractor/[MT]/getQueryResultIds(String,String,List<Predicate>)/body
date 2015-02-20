@@ -1,0 +1,44 @@
+{
+  if (!bulkApiLogin()) {
+    throw new IllegalArgumentException("Invalid Login");
+  }
+  try {
+    this.bulkJob.setObject(entity);
+    this.bulkJob.setOperation(OperationEnum.query);
+    this.bulkJob.setConcurrencyMode(ConcurrencyMode.Parallel);
+    this.bulkJob.setContentType(ContentType.CSV);
+    this.bulkJob=bulkConnection.createJob(this.bulkJob);
+    this.bulkJob=bulkConnection.getJobStatus(this.bulkJob.getId());
+    String query=this.updatedQuery;
+    if (!isNullPredicate(predicateList)) {
+      String limitString=this.getLimitFromInputQuery(query);
+      query=query.replace(limitString,"");
+      Iterator<Predicate> i=predicateList.listIterator();
+      while (i.hasNext()) {
+        Predicate predicate=i.next();
+        query=this.addPredicate(query,predicate.getCondition());
+      }
+      query=query + limitString;
+    }
+    this.log.info("QUERY:" + query);
+    ByteArrayInputStream bout=new ByteArrayInputStream(query.getBytes());
+    this.bulkBatchInfo=bulkConnection.createBatchFromStream(this.bulkJob,bout);
+    int retryInterval=30 + (int)Math.ceil((float)this.getExpectedRecordCount() / 10000) * 2;
+    this.log.info("Salesforce bulk api retry interval in seconds:" + retryInterval);
+    this.bulkBatchInfo=bulkConnection.getBatchInfo(this.bulkJob.getId(),this.bulkBatchInfo.getId());
+    if (this.bulkBatchInfo.getState() == BatchStateEnum.Failed) {
+      throw new RuntimeException("Failed to get bulk batch info for jobId " + this.bulkBatchInfo.getJobId() + " error - "+ this.bulkBatchInfo.getStateMessage());
+    }
+    while ((this.bulkBatchInfo.getState() != BatchStateEnum.Completed) && (this.bulkBatchInfo.getState() != BatchStateEnum.Failed)) {
+      Thread.sleep(retryInterval * 1000);
+      this.bulkBatchInfo=bulkConnection.getBatchInfo(this.bulkJob.getId(),this.bulkBatchInfo.getId());
+      this.log.debug("Bulk Api Batch Info:" + this.bulkBatchInfo);
+      this.log.info("Waiting for bulk resultSetIds");
+    }
+    QueryResultList list=bulkConnection.getQueryResultList(this.bulkJob.getId(),this.bulkBatchInfo.getId());
+    return Arrays.asList(list.getResult());
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to get query result ids from salesforce using bulk api; error - " + e.getMessage(),e);
+  }
+}
