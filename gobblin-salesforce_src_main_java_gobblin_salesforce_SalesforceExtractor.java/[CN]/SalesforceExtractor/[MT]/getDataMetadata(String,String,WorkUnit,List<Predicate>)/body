@@ -1,0 +1,33 @@
+{
+  this.log.debug("Build url to retrieve data records");
+  String query=this.updatedQuery;
+  String url=null;
+  try {
+    if (this.getNextUrl() != null && this.pullStatus == true) {
+      url=this.getNextUrl();
+    }
+ else {
+      if (isNullPredicate(predicateList)) {
+        this.log.info("QUERY:" + query);
+        return constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
+      }
+      String limitString=this.getLimitFromInputQuery(query);
+      query=query.replace(limitString,"");
+      Iterator<Predicate> i=predicateList.listIterator();
+      while (i.hasNext()) {
+        Predicate predicate=i.next();
+        query=this.addPredicate(query,predicate.getCondition());
+      }
+      if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_SPECIFIC_API_ACTIVE))) {
+        query=this.addPredicate(query,"IsDeleted = true");
+      }
+      query=query + limitString;
+      this.log.info("QUERY: " + query);
+      url=this.getFullUri(this.getSoqlUrl(query));
+    }
+    return constructGetCommand(url);
+  }
+ catch (  Exception e) {
+    throw new DataRecordException("Failed to get salesforce url for data records; error - " + e.getMessage(),e);
+  }
+}

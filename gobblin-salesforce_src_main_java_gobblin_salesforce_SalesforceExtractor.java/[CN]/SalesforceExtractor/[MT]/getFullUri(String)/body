@@ -1,0 +1,3 @@
+{
+  return StringUtils.removeEnd(getServiceBaseUrl(),"/") + StringUtils.removeEnd(resourcePath,"/");
+}

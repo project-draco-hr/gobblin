@@ -1,0 +1,40 @@
+{
+  this.log.info("Get high watermark from salesforce");
+  String output;
+  Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    output=itr.next();
+  }
+ else {
+    throw new HighWatermarkException("Failed to get high watermark from salesforce; REST response has no output");
+  }
+  JsonElement element=gson.fromJson(output,JsonObject.class);
+  long high_ts;
+  try {
+    JsonObject jsonObject=element.getAsJsonObject();
+    JsonArray jsonArray=jsonObject.getAsJsonArray("records");
+    if (jsonArray.size() == 0) {
+      return -1;
+    }
+    String value=jsonObject.getAsJsonArray("records").get(0).getAsJsonObject().get(watermarkColumn).getAsString();
+    if (format != null) {
+      SimpleDateFormat inFormat=new SimpleDateFormat(format);
+      Date date=null;
+      try {
+        date=inFormat.parse(value);
+      }
+ catch (      ParseException e) {
+        log.error("ParseException: " + e.getMessage(),e);
+      }
+      SimpleDateFormat outFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+      high_ts=Long.parseLong(outFormat.format(date));
+    }
+ else {
+      high_ts=Long.parseLong(value);
+    }
+  }
+ catch (  Exception e) {
+    throw new HighWatermarkException("Failed to get high watermark from salesforce; error - " + e.getMessage(),e);
+  }
+  return high_ts;
+}

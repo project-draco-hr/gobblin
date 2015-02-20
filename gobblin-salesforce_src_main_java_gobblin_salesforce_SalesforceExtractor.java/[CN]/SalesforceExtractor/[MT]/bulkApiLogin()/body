@@ -1,0 +1,38 @@
+{
+  this.log.info("Authenticating salesforce bulk api");
+  boolean success=false;
+  String hostName=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
+  String apiVersion=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_VERSION);
+  if (Strings.isNullOrEmpty(apiVersion)) {
+    apiVersion="29.0";
+  }
+  String soapAuthEndPoint=hostName + SALESFORCE_SOAP_AUTH_SERVICE + "/"+ apiVersion;
+  try {
+    ConnectorConfig partnerConfig=new ConnectorConfig();
+    if (super.workUnitState.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && !super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL).isEmpty()) {
+      partnerConfig.setProxy(super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
+    }
+    partnerConfig.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME));
+    partnerConfig.setPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
+    partnerConfig.setAuthEndpoint(soapAuthEndPoint);
+    PartnerConnection connection=new PartnerConnection(partnerConfig);
+    String soapEndpoint=partnerConfig.getServiceEndpoint();
+    String restEndpoint=soapEndpoint.substring(0,soapEndpoint.indexOf("Soap/")) + "async/" + apiVersion;
+    ConnectorConfig config=new ConnectorConfig();
+    config.setSessionId(partnerConfig.getSessionId());
+    config.setRestEndpoint(restEndpoint);
+    config.setCompression(true);
+    config.setTraceFile("traceLogs.txt");
+    config.setTraceMessage(false);
+    config.setPrettyPrintXml(true);
+    if (super.workUnitState.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && !super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL).isEmpty()) {
+      config.setProxy(super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
+    }
+    this.bulkConnection=new BulkConnection(config);
+    success=true;
+  }
+ catch (  Exception e) {
+    throw new Exception("Failed to connect to salesforce bulk api; error - " + e.getMessage(),e);
+  }
+  return success;
+}

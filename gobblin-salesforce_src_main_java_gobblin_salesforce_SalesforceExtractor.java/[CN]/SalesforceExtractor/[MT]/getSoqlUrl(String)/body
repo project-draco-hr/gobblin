@@ -1,0 +1,7 @@
+{
+  String path=SOQL_RESOURCE + "/";
+  NameValuePair pair=new BasicNameValuePair("q",soqlQuery);
+  List<NameValuePair> qparams=new ArrayList<NameValuePair>();
+  qparams.add(pair);
+  return this.buildUrl(path,qparams);
+}
