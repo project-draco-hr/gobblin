@@ -1,0 +1,12 @@
+{
+  LOG.info("Taking union of table " + notUpdated.getNameWithJobId(this.jobId) + "(records in snapshot but not in delta) and table "+ mergedDelta.getNameWithJobId(this.jobId)+ "(merged delta)");
+  HiveTable notUpdatedWithNewSchema=notUpdated.addNewColumnsInSchema(this.conn,this.latestTable,this.jobId);
+  HiveTable mergedDeltaWithNewSchema=mergedDelta.addNewColumnsInSchema(this.conn,this.latestTable,this.jobId);
+  AvroExternalTable outputTable=new AvroExternalTable.Builder().withName(this.outputTableName).withPrimaryKeys(this.latestTable.getPrimaryKeys()).withSchemaLocation(this.latestTable.getSchemaLocationInHdfs()).withDataLocation(this.outputDataLocationInHdfs).build();
+  outputTable.createTable(this.conn,this.jobId);
+  String unionStmt="INSERT OVERWRITE TABLE " + outputTable.getNameWithJobId(this.jobId) + " SELECT "+ getAttributesInNewSchema()+ " FROM "+ notUpdatedWithNewSchema.getNameWithJobId(this.jobId)+ " UNION ALL "+ "SELECT "+ getAttributesInNewSchema()+ " FROM "+ mergedDeltaWithNewSchema.getNameWithJobId(this.jobId);
+  this.conn.executeStatements(unionStmt);
+  notUpdatedWithNewSchema.dropTable(this.conn,this.jobId);
+  mergedDeltaWithNewSchema.dropTable(this.conn,this.jobId);
+  return outputTable;
+}

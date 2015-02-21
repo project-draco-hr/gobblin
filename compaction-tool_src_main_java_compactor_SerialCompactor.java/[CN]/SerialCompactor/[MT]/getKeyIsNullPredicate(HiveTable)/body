@@ -1,0 +1,11 @@
+{
+  boolean addAnd=false;
+  StringBuilder sb=new StringBuilder();
+  for (  String keyAttribute : table.getPrimaryKeys()) {
+    if (addAnd) {
+      sb.append(" AND ");
+    }
+    sb.append(table.getNameWithJobId(this.jobId) + "." + keyAttribute+ " IS NULL");
+  }
+  return sb.toString();
+}

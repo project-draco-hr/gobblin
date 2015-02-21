@@ -1,0 +1,9 @@
+{
+  int hadoopVersion=Integer.parseInt(CompactionRunner.properties.getProperty(HADOOP_VERSION,HADOOP_VERSION_DEFAULT));
+  if (!VALID_HADOOP_VERSIONS.contains(hadoopVersion)) {
+    String message=hadoopVersion + " is not a valid Hadoop version.";
+    LOG.error(message);
+    throw new RuntimeException(message);
+  }
+  return hadoopVersion;
+}

@@ -1,0 +1,10 @@
+{
+  String defaultTmpSchemaDir=getParentDir(dataLocationInHdfs);
+  String tmpSchemaDir=CompactionRunner.jobProperties.getProperty(HIVE_TMPSCHEMA_DIR,defaultTmpSchemaDir);
+  tmpSchemaDir=addSlash(tmpSchemaDir);
+  String tmpSchemaPath=tmpSchemaDir + UUID.randomUUID().toString() + ".avsc";
+  HdfsWriter writer=new HdfsWriter(tmpSchemaPath);
+  LOG.info("writing schema to HDFS location " + tmpSchemaPath);
+  writer.write(schema.toString(true));
+  return tmpSchemaPath;
+}

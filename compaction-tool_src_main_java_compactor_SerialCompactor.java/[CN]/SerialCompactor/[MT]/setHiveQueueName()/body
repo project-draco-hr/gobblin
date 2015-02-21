@@ -1,0 +1,3 @@
+{
+  this.conn.executeStatements("set " + MAPREDUCE_JOB_QUEUENAME + "="+ CompactionRunner.jobProperties.getProperty(HIVE_QUEUE_NAME,"default"));
+}

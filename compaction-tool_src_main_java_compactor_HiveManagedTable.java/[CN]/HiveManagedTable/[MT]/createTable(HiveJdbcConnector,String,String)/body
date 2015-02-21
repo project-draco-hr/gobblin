@@ -1,0 +1,17 @@
+{
+  String tableName=getNameWithJobId(jobId);
+  String dropTableStmt=String.format(DROP_TABLE_STMT,tableName);
+  StringBuilder sb=new StringBuilder().append("CREATE ");
+  sb.append(tableType + " ");
+  sb.append(tableName);
+  sb.append('(');
+  for (int i=0; i < this.attributes.size(); i++) {
+    sb.append(this.attributes.get(i).name() + " " + this.attributes.get(i).type());
+    if (i != this.attributes.size() - 1) {
+      sb.append(", ");
+    }
+  }
+  sb.append(")");
+  String createTableStmt=sb.toString();
+  conn.executeStatements(dropTableStmt,createTableStmt);
+}

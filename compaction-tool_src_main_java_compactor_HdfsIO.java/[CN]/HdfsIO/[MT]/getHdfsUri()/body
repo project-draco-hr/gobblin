@@ -1,0 +1,3 @@
+{
+  return CompactionRunner.properties.getProperty(HDFS_URI,HDFS_URI_DEFAULT);
+}

@@ -1,0 +1,3 @@
+HiveJdbcConnector conn
+String jobId
+String tableType

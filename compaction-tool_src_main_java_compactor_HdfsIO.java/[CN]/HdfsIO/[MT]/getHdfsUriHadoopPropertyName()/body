@@ -1,0 +1,14 @@
+{
+  int hadoopVersion=getHadoopVersion();
+  if (hadoopVersion == 1) {
+    return HDFS_URI_HADOOP1;
+  }
+ else   if (hadoopVersion == 2) {
+    return HDFS_URI_HADOOP2;
+  }
+ else {
+    String message=hadoopVersion + " is not a valid Hadoop version.";
+    LOG.error(message);
+    throw new RuntimeException(message);
+  }
+}

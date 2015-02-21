@@ -1,0 +1,8 @@
+{
+  if (this.deleteSchemaAfterDone) {
+    new HdfsWriter(this.schemaLocationInHdfs).delete();
+  }
+  if (this.deleteDataAfterDone) {
+    new HdfsWriter(this.dataLocationInHdfs).delete();
+  }
+}

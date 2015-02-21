@@ -1,0 +1,4 @@
+{
+  SerialCompactor sc=new SerialCompactor.Builder().withSnapshot(buildSnapshotTable()).withDeltas(buildDeltaTables()).withOutputTableName(jobProperties.getProperty(OUTPUT + NAME)).withOutputDataLocationInHdfs(jobProperties.getProperty(OUTPUT + DATALOCATION)).build();
+  sc.compact();
+}

@@ -1,0 +1,7 @@
+{
+  conf.setStrings(getHdfsUriHadoopPropertyName(),HDFS_URI_DEFAULT);
+  addHadoopConfigPropertiesToConf(conf);
+  if (CompactionRunner.properties.containsKey(HDFS_URI)) {
+    conf.setStrings(getHdfsUriHadoopPropertyName(),CompactionRunner.properties.getProperty(HDFS_URI));
+  }
+}

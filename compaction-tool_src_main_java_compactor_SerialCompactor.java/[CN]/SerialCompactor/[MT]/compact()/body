@@ -1,0 +1,32 @@
+{
+  checkSchemaCompatibility();
+  Closer closer=Closer.create();
+  try {
+    this.conn=closer.register(new HiveJdbcConnector());
+    setHiveParameters();
+    createTables();
+    HiveTable mergedDelta=mergeDeltas();
+    HiveManagedTable notUpdated=getNotUpdatedRecords(this.snapshot,mergedDelta);
+    unionNotUpdatedRecordsAndDeltas(notUpdated,mergedDelta);
+  }
+ catch (  SQLException e) {
+    LOG.error("SQLException during compaction: " + e.getMessage());
+    throw new RuntimeException(e);
+  }
+catch (  IOException e) {
+    LOG.error("IOException during compaction: " + e.getMessage());
+    throw new RuntimeException(e);
+  }
+catch (  RuntimeException e) {
+    LOG.error("Runtime Exception during compaction: " + e.getMessage());
+    throw e;
+  }
+ finally {
+    try {
+      deleteTmpFiles();
+    }
+  finally {
+      closer.close();
+    }
+  }
+}

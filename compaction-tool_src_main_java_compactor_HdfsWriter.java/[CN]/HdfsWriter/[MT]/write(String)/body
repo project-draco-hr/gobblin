@@ -1,0 +1,12 @@
+{
+  String dirInHdfs=getDirInHdfs();
+  this.fileSystem.mkdirs(new Path(dirInHdfs));
+  Closer closer=Closer.create();
+  try {
+    FSDataOutputStream fout=closer.register(this.fileSystem.create(new Path(filePathInHdfs)));
+    fout.writeChars(text);
+  }
+  finally {
+    closer.close();
+  }
+}

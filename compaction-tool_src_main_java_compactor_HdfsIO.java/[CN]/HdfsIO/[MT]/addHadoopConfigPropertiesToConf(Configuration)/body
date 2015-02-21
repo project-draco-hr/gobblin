@@ -1,0 +1,10 @@
+{
+  Set<String> propertyNames=CompactionRunner.properties.stringPropertyNames();
+  for (  String propertyName : propertyNames) {
+    if (propertyName.startsWith(HADOOP_CONFIGFILE_)) {
+      String hadoopConfigFile=CompactionRunner.properties.getProperty(propertyName);
+      conf.addResource(hadoopConfigFile);
+      LOG.info("Added Hadoop Config File: " + hadoopConfigFile);
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  if (!dir.endsWith("/") && !dir.endsWith("\\")) {
+    return dir + "/";
+  }
+  return dir;
+}

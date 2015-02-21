@@ -1,0 +1,21 @@
+{
+  if (hasNoNewColumn(table)) {
+    return this;
+  }
+  StringBuilder sb=new StringBuilder().append("ALTER TABLE " + this.getNameWithJobId(randomSuffix) + " ADD COLUMNS (");
+  boolean addComma=false;
+  for (  HiveAttribute attribute : table.attributes) {
+    if (!this.attributes.contains(attribute)) {
+      if (addComma) {
+        sb.append(", ");
+      }
+      sb.append(attribute.name() + " " + attribute.type());
+      addComma=true;
+      this.attributes.add(attribute);
+    }
+  }
+  sb.append(')');
+  String alterTableStmt=sb.toString();
+  conn.executeStatements(alterTableStmt);
+  return this;
+}

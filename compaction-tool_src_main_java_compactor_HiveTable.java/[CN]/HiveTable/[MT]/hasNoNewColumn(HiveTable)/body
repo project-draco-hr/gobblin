@@ -1,0 +1,8 @@
+{
+  for (  HiveAttribute attribute : table.attributes) {
+    if (!this.attributes.contains(attribute)) {
+      return false;
+    }
+  }
+  return true;
+}

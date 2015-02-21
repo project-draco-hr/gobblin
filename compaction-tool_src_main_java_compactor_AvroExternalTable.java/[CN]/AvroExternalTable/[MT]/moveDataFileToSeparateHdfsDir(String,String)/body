@@ -1,0 +1,9 @@
+{
+  String parentDir=CompactionRunner.jobProperties.getProperty(HIVE_TMPDATA_DIR,HIVE_TMPDATA_DIR_DEFAULT);
+  parentDir=addSlash(parentDir);
+  String destination=parentDir + UUID.randomUUID().toString();
+  LOG.info("Moving data file of table " + this.getName() + " to "+ destination);
+  HdfsWriter.moveSelectFiles(extension,sourceDir,destination);
+  LOG.info("Moved data file of table " + this.getName() + " to "+ destination);
+  return destination;
+}

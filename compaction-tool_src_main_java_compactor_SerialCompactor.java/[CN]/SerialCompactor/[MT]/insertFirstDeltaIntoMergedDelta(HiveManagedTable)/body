@@ -1,0 +1,4 @@
+{
+  String insertStmt="INSERT OVERWRITE TABLE " + mergedDelta.getNameWithJobId(this.jobId) + " SELECT * FROM "+ this.deltas.get(0).getNameWithJobId(this.jobId);
+  this.conn.executeStatements(insertStmt);
+}

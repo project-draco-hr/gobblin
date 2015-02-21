@@ -1,0 +1,6 @@
+{
+  boolean numOfReducersSpecified=CompactionRunner.jobProperties.containsKey(MAPREDUCE_JOB_NUM_REDUCERS);
+  if (numOfReducersSpecified) {
+    this.conn.executeStatements("set " + MAPREDUCE_JOB_REDUCES + "="+ CompactionRunner.jobProperties.getProperty(MAPREDUCE_JOB_NUM_REDUCERS));
+  }
+}

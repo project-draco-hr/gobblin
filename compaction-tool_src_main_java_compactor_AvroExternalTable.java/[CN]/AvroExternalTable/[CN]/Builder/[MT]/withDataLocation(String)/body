@@ -1,0 +1,4 @@
+{
+  this.dataLocationInHdfs=dataLocationInHdfs;
+  return this;
+}

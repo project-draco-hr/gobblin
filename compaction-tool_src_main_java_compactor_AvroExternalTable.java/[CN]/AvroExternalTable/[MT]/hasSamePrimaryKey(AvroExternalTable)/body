@@ -1,0 +1,3 @@
+{
+  return this.primaryKeys.containsAll(other.primaryKeys) && other.primaryKeys.containsAll(this.primaryKeys);
+}

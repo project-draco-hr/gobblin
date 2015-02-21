@@ -1,0 +1,4 @@
+{
+  this.name=attr.name;
+  this.type=attr.type;
+}
