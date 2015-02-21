@@ -1,0 +1,13 @@
+{
+  if (field.schema().getTypes().size() >= 3) {
+    LOG.warn("Avro schema field " + field.name() + " has 3 or more types: using the first non-null type");
+  }
+  for (  Schema schema : field.schema().getTypes()) {
+    if (!schema.getType().toString().equalsIgnoreCase("NULL")) {
+      return schema.getType().toString();
+    }
+  }
+  String message="Avro schema field " + field.name() + " is a union, but it does not contain a non-null field type.";
+  LOG.error(message);
+  throw new RuntimeException(message);
+}

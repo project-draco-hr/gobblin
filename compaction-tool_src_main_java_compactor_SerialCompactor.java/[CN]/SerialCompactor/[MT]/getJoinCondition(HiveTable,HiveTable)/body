@@ -1,0 +1,15 @@
+{
+  if (!firstTable.getPrimaryKeys().equals(secondTable.getPrimaryKeys())) {
+    throw new RuntimeException("The primary keys of table " + firstTable.getName() + " and table "+ secondTable.getName()+ " are different");
+  }
+  boolean addAnd=false;
+  StringBuilder sb=new StringBuilder();
+  for (  String keyAttribute : firstTable.getPrimaryKeys()) {
+    if (addAnd) {
+      sb.append(" AND ");
+    }
+    sb.append(firstTable.getNameWithJobId(this.jobId) + "." + keyAttribute+ " = "+ secondTable.getNameWithJobId(this.jobId)+ "."+ keyAttribute);
+    addAnd=true;
+  }
+  return sb.toString();
+}

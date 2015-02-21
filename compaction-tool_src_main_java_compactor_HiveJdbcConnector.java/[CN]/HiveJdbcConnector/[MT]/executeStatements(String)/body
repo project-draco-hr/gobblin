@@ -1,0 +1,6 @@
+{
+  for (  String statement : statements) {
+    System.out.println("RUNNING STATEMENT: " + choppedStatement(statement));
+    stmt.execute(statement);
+  }
+}

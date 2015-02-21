@@ -1,0 +1,8 @@
+{
+  this.snapshot=builder.snapshot;
+  this.deltas=builder.deltas;
+  this.outputTableName=builder.outputTableName;
+  this.outputDataLocationInHdfs=builder.outputDataLocationInHdfs;
+  this.latestTable=this.deltas.get(this.deltas.size() - 1);
+  this.jobId=UUID.randomUUID().toString().replaceAll("-","_");
+}

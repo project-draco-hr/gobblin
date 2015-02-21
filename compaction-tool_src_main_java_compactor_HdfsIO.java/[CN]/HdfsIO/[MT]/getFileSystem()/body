@@ -1,0 +1,4 @@
+{
+  Configuration conf=getConfiguration();
+  return FileSystem.get(conf);
+}

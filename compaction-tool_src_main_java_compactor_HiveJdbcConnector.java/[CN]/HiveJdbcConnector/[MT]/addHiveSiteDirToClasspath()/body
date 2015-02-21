@@ -1,0 +1,19 @@
+{
+  if (CompactionRunner.properties.containsKey(HIVESITE_DIR)) {
+    String hiveSiteDir=CompactionRunner.properties.getProperty(HIVESITE_DIR);
+    LOG.info("Adding " + hiveSiteDir + " to CLASSPATH");
+    File f=new File(hiveSiteDir);
+    try {
+      URL u=f.toURI().toURL();
+      URLClassLoader urlClassLoader=(URLClassLoader)ClassLoader.getSystemClassLoader();
+      Class<URLClassLoader> urlClass=URLClassLoader.class;
+      Method method=urlClass.getDeclaredMethod("addURL",new Class[]{URL.class});
+      method.setAccessible(true);
+      method.invoke(urlClassLoader,new Object[]{u});
+    }
+ catch (    Exception e) {
+      LOG.error("Unable to add hive.site.dir to CLASSPATH");
+      throw new RuntimeException(e);
+    }
+  }
+}

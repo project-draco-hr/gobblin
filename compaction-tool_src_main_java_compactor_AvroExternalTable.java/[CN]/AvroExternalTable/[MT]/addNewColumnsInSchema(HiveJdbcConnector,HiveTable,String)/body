@@ -1,0 +1,7 @@
+{
+  if (hasNoNewColumn(table)) {
+    return this;
+  }
+  HiveManagedTable managedTable=new HiveManagedTable.Builder().withName(this.name).withPrimaryKeys(this.primaryKeys).withAttributes(this.attributes).build();
+  return managedTable.addNewColumnsInSchema(null,table,jobId);
+}

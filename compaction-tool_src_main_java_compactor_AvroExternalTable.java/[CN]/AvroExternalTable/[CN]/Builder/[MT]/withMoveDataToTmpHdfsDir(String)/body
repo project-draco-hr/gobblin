@@ -1,0 +1,5 @@
+{
+  this.moveDataToTmpHdfsDir=true;
+  this.extensionToBeMoved=extensionToBeMoved;
+  return this;
+}

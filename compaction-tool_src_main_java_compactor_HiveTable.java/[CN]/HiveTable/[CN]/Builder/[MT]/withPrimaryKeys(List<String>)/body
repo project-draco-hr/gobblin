@@ -1,0 +1,4 @@
+{
+  this.primaryKeys=primaryKeys;
+  return (T)this;
+}

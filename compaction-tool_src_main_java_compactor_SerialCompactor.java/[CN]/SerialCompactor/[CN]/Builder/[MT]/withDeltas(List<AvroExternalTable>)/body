@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(deltas.size() >= 1,"Number of delta tables should be at least 1");
+  this.deltas=deltas;
+  return this;
+}

@@ -1,0 +1,9 @@
+{
+  for (int i=0; i < deltas.size(); i++) {
+    if (!this.snapshot.hasSamePrimaryKey(this.deltas.get(i))) {
+      String message="Schema incompatible: the snapshot table and delta table #" + (i + 1) + " do not have the same primary key.";
+      LOG.error(message);
+      throw new RuntimeException(message);
+    }
+  }
+}
