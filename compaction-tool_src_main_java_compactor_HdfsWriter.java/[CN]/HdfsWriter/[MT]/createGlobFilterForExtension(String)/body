@@ -1,9 +1,0 @@
-{
-  if (StringUtils.isBlank(extension)) {
-    return new GlobFilter("*");
-  }
-  if (!extension.startsWith(".")) {
-    extension="." + extension;
-  }
-  return new GlobFilter("*" + extension);
-}

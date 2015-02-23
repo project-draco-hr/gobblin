@@ -1,0 +1,12 @@
+{
+  FileStatus[] fileStatuses=getFileSystem().listStatus(new Path(dirInHdfs));
+  for (  FileStatus fileStatus : fileStatuses) {
+    Path dataFilePath=fileStatus.getPath();
+    if (!fileStatus.isDir() && !dataFilePath.getName().startsWith("_")) {
+      return dataFilePath.toString();
+    }
+  }
+  String message=dirInHdfs + " does not contain a valid data file.";
+  LOG.error(message);
+  throw new RuntimeException(message);
+}
