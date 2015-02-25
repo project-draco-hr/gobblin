@@ -1,9 +1,0 @@
-{
-  JobMetrics metrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
-  Counter taskRecordCounter=metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,this.taskId,"records"));
-  long inc=recordsWritten - taskRecordCounter.getCount();
-  taskRecordCounter.inc(inc);
-  metrics.getMeter(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,this.taskId,"recordsPerSec")).mark(inc);
-  metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"records")).inc(inc);
-  metrics.getMeter(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"recordsPerSec")).mark(inc);
-}
