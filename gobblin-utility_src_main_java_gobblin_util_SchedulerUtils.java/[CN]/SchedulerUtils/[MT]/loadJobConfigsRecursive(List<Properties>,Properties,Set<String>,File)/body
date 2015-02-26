@@ -36,7 +36,7 @@
         }
         Properties jobProps=new Properties();
         jobProps.putAll(rootProps);
-        jobProps.load(closer.register(new FileReader(file)));
+        jobProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(file)));
         jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
         jobConfigs.add(jobProps);
       }
