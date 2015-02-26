@@ -4,13 +4,14 @@
   List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
   Assert.assertEquals(jobConfigs.size(),4);
   Properties jobProps1=jobConfigs.get(0);
-  Assert.assertEquals(jobProps1.stringPropertyNames().size(),6);
+  Assert.assertEquals(jobProps1.stringPropertyNames().size(),7);
   Assert.assertTrue(jobProps1.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
   Assert.assertTrue(jobProps1.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY));
   Assert.assertEquals(jobProps1.getProperty("k1"),"d1");
   Assert.assertEquals(jobProps1.getProperty("k2"),"a2");
   Assert.assertEquals(jobProps1.getProperty("k3"),"a3");
   Assert.assertEquals(jobProps1.getProperty("k8"),"a8");
+  Assert.assertEquals(jobProps1.getProperty("k9"),"a8");
   Properties jobProps2=jobConfigs.get(1);
   Assert.assertEquals(jobProps2.stringPropertyNames().size(),6);
   Assert.assertTrue(jobProps2.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
