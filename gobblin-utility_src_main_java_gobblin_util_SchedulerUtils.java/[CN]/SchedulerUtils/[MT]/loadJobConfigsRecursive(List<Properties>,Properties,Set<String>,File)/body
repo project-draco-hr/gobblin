@@ -25,9 +25,7 @@
         loadJobConfigsRecursive(jobConfigs,rootPropsCopy,jobConfigFileExtensions,file);
       }
  else {
-        int pos=file.getName().lastIndexOf(".");
-        String fileExtension=pos >= 0 ? file.getName().substring(pos + 1).toLowerCase() : "";
-        if (!jobConfigFileExtensions.contains(fileExtension)) {
+        if (!jobConfigFileExtensions.contains(Files.getFileExtension(file.getName()).toLowerCase())) {
           continue;
         }
         File doneFile=new File(file + ".done");
