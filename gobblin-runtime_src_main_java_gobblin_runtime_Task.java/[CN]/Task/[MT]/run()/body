@@ -1,7 +1,6 @@
 {
   long startTime=System.currentTimeMillis();
   this.taskState.setStartTime(startTime);
-  this.taskStateTracker.registerNewTask(this);
   this.taskState.setWorkingState(WorkUnitState.WorkingState.RUNNING);
   this.forks.clear();
   Closer closer=Closer.create();
