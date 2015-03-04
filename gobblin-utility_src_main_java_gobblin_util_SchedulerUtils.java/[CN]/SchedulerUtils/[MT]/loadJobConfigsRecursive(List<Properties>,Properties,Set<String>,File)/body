@@ -26,10 +26,12 @@
       }
  else {
         if (!jobConfigFileExtensions.contains(Files.getFileExtension(file.getName()).toLowerCase())) {
+          LOGGER.warn("Skipped file " + file + " that has an unsupported extension");
           continue;
         }
         File doneFile=new File(file + ".done");
         if (doneFile.exists()) {
+          LOGGER.info("Skipped job configuration file " + file + " for which a .done file exists");
           continue;
         }
         Properties jobProps=new Properties();
