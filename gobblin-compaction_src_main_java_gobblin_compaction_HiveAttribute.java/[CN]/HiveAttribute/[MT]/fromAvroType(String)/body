@@ -1,0 +1,9 @@
+{
+  try {
+    AvroType.valueOf(avroTypeString.toUpperCase());
+    return AvroType.valueOf(avroTypeString).hiveType;
+  }
+ catch (  java.lang.RuntimeException e) {
+    return null;
+  }
+}

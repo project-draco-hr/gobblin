@@ -1,0 +1,6 @@
+{
+  boolean splitSizeSpecified=CompactionRunner.jobProperties.containsKey(HIVE_INPUT_SPLIT_SIZE);
+  if (splitSizeSpecified) {
+    this.conn.executeStatements("set " + MAPRED_MIN_SPLIT_SIZE + "="+ CompactionRunner.jobProperties.getProperty(HIVE_INPUT_SPLIT_SIZE));
+  }
+}

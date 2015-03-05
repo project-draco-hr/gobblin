@@ -1,0 +1,7 @@
+{
+  AvroExternalTable.Builder builder=new AvroExternalTable.Builder().withName(jobProperties.getProperty(tableType + NAME,"")).withPrimaryKeys(jobProperties.getProperty(tableType + PKEY)).withSchemaLocation(jobProperties.getProperty(tableType + SCHEMALOCATION,"")).withDataLocation(jobProperties.getProperty(tableType + DATALOCATION));
+  if (Boolean.parseBoolean(jobProperties.getProperty(tableType + COPYDATA,COPYDATA_DEFAULT))) {
+    builder=builder.withMoveDataToTmpHdfsDir(jobProperties.getProperty(tableType + DATAFORMAT_EXTENSION_NAME,""));
+  }
+  return builder.build();
+}

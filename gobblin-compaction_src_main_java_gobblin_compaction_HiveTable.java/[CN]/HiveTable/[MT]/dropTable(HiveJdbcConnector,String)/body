@@ -1,0 +1,4 @@
+{
+  String dropTableStmt=String.format(DROP_TABLE_STMT,getNameWithJobId(jobId));
+  conn.executeStatements(dropTableStmt);
+}

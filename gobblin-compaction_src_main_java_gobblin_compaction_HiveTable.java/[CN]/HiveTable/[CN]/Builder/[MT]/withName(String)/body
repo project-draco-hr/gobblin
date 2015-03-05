@@ -1,0 +1,6 @@
+{
+  if (StringUtils.isNotBlank(name)) {
+    this.name=name;
+  }
+  return (T)this;
+}

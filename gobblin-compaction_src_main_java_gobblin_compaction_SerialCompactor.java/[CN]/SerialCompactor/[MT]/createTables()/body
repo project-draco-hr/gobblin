@@ -1,0 +1,6 @@
+{
+  this.snapshot.createTable(this.conn,this.jobId);
+  for (  AvroExternalTable delta : this.deltas) {
+    delta.createTable(this.conn,this.jobId);
+  }
+}

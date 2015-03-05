@@ -1,0 +1,6 @@
+{
+  for (  String statement : statements) {
+    LOG.info("RUNNING STATEMENT: " + choppedStatement(statement));
+    stmt.execute(statement);
+  }
+}

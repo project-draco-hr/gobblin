@@ -1,0 +1,16 @@
+{
+  if (deltas.size() == 1) {
+    LOG.info("Only one delta table: no need to merge delta");
+    return this.deltas.get(0);
+  }
+  HiveManagedTable mergedDelta=new HiveManagedTable.Builder().withName("merged_delta").withAttributes(this.deltas.get(0).getAttributes()).withPrimaryKeys(this.deltas.get(0).getPrimaryKeys()).build();
+  mergedDelta.createTable(this.conn,this.jobId);
+  insertFirstDeltaIntoMergedDelta(mergedDelta);
+  this.deltas.get(0).dropTable(this.conn,this.jobId);
+  for (int i=1; i < this.deltas.size(); i++) {
+    mergedDelta=mergeTwoDeltas(mergedDelta,this.deltas.get(i));
+    LOG.info("Merged the first " + (i + 1) + " delta tables");
+    this.deltas.get(i).dropTable(this.conn,this.jobId);
+  }
+  return mergedDelta;
+}

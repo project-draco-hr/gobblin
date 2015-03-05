@@ -1,0 +1,4 @@
+{
+  this.outputTableName=outputTableName;
+  return this;
+}

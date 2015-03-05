@@ -1,0 +1,4 @@
+{
+  this.filePathInHdfs=filePathInHdfs;
+  this.fileSystem=getFileSystem();
+}

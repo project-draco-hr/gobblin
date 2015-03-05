@@ -1,0 +1,8 @@
+{
+  boolean useMapjoin=Boolean.parseBoolean(CompactionRunner.jobProperties.getProperty(HIVE_USE_MAPJOIN,"false"));
+  boolean smallTableSizeSpecified=CompactionRunner.jobProperties.containsKey(HIVE_MAPJOIN_SMALLTABLE_FILESIZE);
+  if (useMapjoin && smallTableSizeSpecified) {
+    this.conn.executeStatements("set " + HIVE_AUTO_CONVERT_JOIN + "=true");
+    this.conn.executeStatements("set " + HIVE_MAPJOIN_SMALLTABLE_FILESIZE + "="+ CompactionRunner.jobProperties.getProperty(HIVE_MAPJOIN_SMALLTABLE_FILESIZE));
+  }
+}

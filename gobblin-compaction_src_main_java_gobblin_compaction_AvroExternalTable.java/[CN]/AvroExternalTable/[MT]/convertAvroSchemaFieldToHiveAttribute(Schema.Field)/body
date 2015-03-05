@@ -1,0 +1,10 @@
+{
+  String avroFieldType=field.schema().getType().toString();
+  if (avroFieldType.equalsIgnoreCase("UNION")) {
+    avroFieldType=extractAvroTypeFromUnion(field);
+  }
+  if (HiveAttribute.fromAvroType(avroFieldType) == null) {
+    throw new RuntimeException("Hive does not support attribute type '" + avroFieldType + "'");
+  }
+  return new HiveAttribute(field.name(),HiveAttribute.fromAvroType(avroFieldType));
+}

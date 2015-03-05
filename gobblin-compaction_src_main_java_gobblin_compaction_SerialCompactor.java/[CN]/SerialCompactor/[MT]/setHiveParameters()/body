@@ -1,0 +1,7 @@
+{
+  setHiveQueueName();
+  setHiveDbName();
+  setHiveMapjoin();
+  setHiveInputSplitSize();
+  setNumberOfReducers();
+}

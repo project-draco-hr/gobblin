@@ -1,0 +1,3 @@
+{
+  createTable(conn,randomSuffix,"TABLE");
+}

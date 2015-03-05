@@ -1,0 +1,14 @@
+{
+  String firstDataFilePath=HdfsReader.getFirstDataFilePathInDir(dataLocationInHdfs);
+  LOG.info("Extracting schema for table " + name + " from avro data file "+ firstDataFilePath);
+  SeekableInput sin=new HdfsReader(firstDataFilePath).getFsInput();
+  Closer closer=Closer.create();
+  try {
+    DataFileReader<Void> dfr=closer.register(new DataFileReader<Void>(sin,new GenericDatumReader<Void>()));
+    Schema schema=dfr.getSchema();
+    return schema;
+  }
+  finally {
+    closer.close();
+  }
+}

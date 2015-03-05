@@ -1,0 +1,3 @@
+{
+  this.conn.executeStatements("use " + CompactionRunner.jobProperties.getProperty(HIVE_DB_NAME,"default"));
+}

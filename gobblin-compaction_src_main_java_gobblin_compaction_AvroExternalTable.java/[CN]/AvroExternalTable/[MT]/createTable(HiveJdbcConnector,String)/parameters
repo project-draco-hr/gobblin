@@ -1,0 +1,2 @@
+HiveJdbcConnector conn
+String jobID

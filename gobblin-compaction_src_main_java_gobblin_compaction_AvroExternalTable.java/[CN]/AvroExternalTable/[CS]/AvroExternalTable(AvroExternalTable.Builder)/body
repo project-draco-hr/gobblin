@@ -1,0 +1,22 @@
+{
+  super(builder);
+  if (builder.moveDataToTmpHdfsDir) {
+    this.dataLocationInHdfs=moveDataFileToSeparateHdfsDir(builder.dataLocationInHdfs,builder.extensionToBeMoved);
+    this.deleteDataAfterDone=true;
+  }
+ else {
+    this.dataLocationInHdfs=builder.dataLocationInHdfs;
+    this.deleteDataAfterDone=false;
+  }
+  if (StringUtils.isNotBlank(builder.schemaLocationInHdfs)) {
+    this.schemaLocationInHdfs=builder.schemaLocationInHdfs;
+    this.attributes=getAttributesFromAvroSchemaFile();
+    this.deleteSchemaAfterDone=false;
+  }
+ else {
+    Schema schema=getSchemaFromAvroDataFile();
+    this.attributes=parseSchema(schema);
+    this.schemaLocationInHdfs=writeSchemaToHdfs(schema);
+    this.deleteSchemaAfterDone=true;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  addHiveSiteDirToClasspath();
+  int hiveServerVersion=getHiveServerVersion();
+  try {
+    Class.forName(getJdbcDriverName(hiveServerVersion));
+  }
+ catch (  ClassNotFoundException e) {
+    LOG.error("No suitable driver found for HiveServer " + hiveServerVersion);
+    throw new RuntimeException(e);
+  }
+  this.conn=getHiveConnection(getHiveServerVersion());
+  this.stmt=this.conn.createStatement();
+  setupHive();
+}

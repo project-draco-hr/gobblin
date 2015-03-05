@@ -1,0 +1,9 @@
+{
+  LOG.info("Getting records in table " + oldTable.getNameWithJobId(this.jobId) + " but not in table "+ newTable.getNameWithJobId(this.jobId));
+  HiveManagedTable notUpdated=new HiveManagedTable.Builder().withName("not_updated").withPrimaryKeys(oldTable.getPrimaryKeys()).withAttributes(oldTable.getAttributes()).build();
+  notUpdated.createTable(this.conn,this.jobId);
+  String leftOuterJoinStmt="INSERT OVERWRITE TABLE " + notUpdated.getNameWithJobId(this.jobId) + " SELECT "+ oldTable.getNameWithJobId(this.jobId)+ ".* FROM "+ oldTable.getNameWithJobId(this.jobId)+ " LEFT OUTER JOIN "+ newTable.getNameWithJobId(this.jobId)+ " ON "+ getJoinCondition(oldTable,newTable)+ " WHERE "+ getKeyIsNullPredicate(newTable);
+  this.conn.executeStatements(leftOuterJoinStmt);
+  oldTable.dropTable(this.conn,this.jobId);
+  return notUpdated;
+}

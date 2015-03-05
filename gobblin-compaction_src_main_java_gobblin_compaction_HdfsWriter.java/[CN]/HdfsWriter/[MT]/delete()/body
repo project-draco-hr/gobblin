@@ -1,0 +1,3 @@
+{
+  return this.fileSystem.delete(new Path(filePathInHdfs),true);
+}

@@ -1,0 +1,6 @@
+{
+  this.snapshot.deleteTmpFilesIfNeeded();
+  for (  AvroExternalTable delta : this.deltas) {
+    delta.deleteTmpFilesIfNeeded();
+  }
+}

@@ -1,0 +1,21 @@
+{
+  if (this == obj) {
+    return true;
+  }
+  if (!(obj instanceof HiveAttribute)) {
+    return false;
+  }
+  HiveAttribute other=(HiveAttribute)obj;
+  if (name == null) {
+    if (other.name != null) {
+      return false;
+    }
+  }
+ else   if (!name.equals(other.name)) {
+    return false;
+  }
+  if (type != other.type) {
+    return false;
+  }
+  return true;
+}

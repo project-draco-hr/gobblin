@@ -1,0 +1,4 @@
+{
+  this.schemaLocationInHdfs=schemaLocationInHdfs;
+  return this;
+}

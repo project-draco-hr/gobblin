@@ -1,0 +1,20 @@
+{
+  Connection connection=null;
+  if (CompactionRunner.properties.containsKey(HIVESERVER_CONNECTION_STRING)) {
+    String connectionString=CompactionRunner.properties.getProperty(HIVESERVER_CONNECTION_STRING);
+    connection=DriverManager.getConnection(connectionString);
+  }
+ else   if (CompactionRunner.properties.containsKey(HIVESERVER_URL)) {
+    String url=CompactionRunner.properties.getProperty(HIVESERVER_URL);
+    String user=CompactionRunner.properties.getProperty(HIVESERVER_USER,"");
+    String password=CompactionRunner.properties.getProperty(HIVESERVER_PASSWORD,"");
+    connection=DriverManager.getConnection(url,user,password);
+  }
+ else   if (hiveServerVersion == 1) {
+    connection=DriverManager.getConnection(HIVE_EMBEDDED_CONNECTION_STRING);
+  }
+ else {
+    connection=DriverManager.getConnection(HIVE2_EMBEDDED_CONNECTION_STRING);
+  }
+  return connection;
+}
