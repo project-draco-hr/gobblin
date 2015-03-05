@@ -20,7 +20,7 @@
   jobProps1.store(new FileWriter(new File(subDir1,"test11.pull")),"");
   Properties jobProps2=new Properties();
   jobProps2.setProperty("k7","a7");
-  jobProps2.store(new FileWriter(new File(subDir1,"test12.pull")),"");
+  jobProps2.store(new FileWriter(new File(subDir1,"test12.PULL")),"");
   Properties jobProps3=new Properties();
   jobProps3.setProperty("k1","d1");
   jobProps3.setProperty("k8","a8");
@@ -32,5 +32,5 @@
   props2.store(new FileWriter(new File(subDir2,"test.properties")),"");
   Properties jobProps4=new Properties();
   jobProps4.setProperty("k5","b5");
-  jobProps4.store(new FileWriter(new File(subDir2,"test21.pull")),"");
+  jobProps4.store(new FileWriter(new File(subDir2,"test21.PULL")),"");
 }

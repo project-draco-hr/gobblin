@@ -25,13 +25,13 @@
         loadJobConfigsRecursive(jobConfigs,rootPropsCopy,jobConfigFileExtensions,file);
       }
  else {
-        int pos=file.getName().lastIndexOf(".");
-        String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
-        if (!jobConfigFileExtensions.contains(fileExtension)) {
+        if (!jobConfigFileExtensions.contains(Files.getFileExtension(file.getName()).toLowerCase())) {
+          LOGGER.warn("Skipped file " + file + " that has an unsupported extension");
           continue;
         }
         File doneFile=new File(file + ".done");
         if (doneFile.exists()) {
+          LOGGER.info("Skipped job configuration file " + file + " for which a .done file exists");
           continue;
         }
         Properties jobProps=new Properties();
