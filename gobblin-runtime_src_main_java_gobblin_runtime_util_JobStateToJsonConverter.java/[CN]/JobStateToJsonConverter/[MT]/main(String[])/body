@@ -21,7 +21,7 @@
     System.exit(1);
   }
   Properties properties=new Properties();
-  properties.load(new FileReader(cmd.getOptionValue('p')));
+  properties.load(new InputStreamReader(new FileInputStream(cmd.getOptionValue('p')),Charset.defaultCharset()));
   JobStateToJsonConverter converter=new JobStateToJsonConverter(properties,Boolean.valueOf(cmd.getOptionValue("kc")));
   StringWriter stringWriter=new StringWriter();
   if (cmd.hasOption('i')) {
