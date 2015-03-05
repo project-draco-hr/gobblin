@@ -1,0 +1,8 @@
+{
+  for (  Properties jobConfig : jobConfigs) {
+    if (jobConfig.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY).endsWith(fileName)) {
+      return jobConfig;
+    }
+  }
+  return null;
+}
