@@ -1,4 +1,7 @@
 {
+  if (data == null) {
+    return Optional.absent();
+  }
   if ((field + 1) == pathList.size()) {
     return Optional.fromNullable(((Record)data).get(pathList.get(field)));
   }

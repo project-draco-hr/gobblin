@@ -1,7 +1,0 @@
-{
-  JobMetrics metrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
-  long recordsWritten=metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,this.taskId,"records")).getCount();
-  long bytesWritten=metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,this.taskId,"bytes")).getCount();
-  metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"records")).dec(recordsWritten);
-  metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,"bytes")).dec(bytesWritten);
-}

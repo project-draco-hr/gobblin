@@ -24,6 +24,7 @@
   Properties jobProps3=new Properties();
   jobProps3.setProperty("k1","d1");
   jobProps3.setProperty("k8","a8");
+  jobProps3.setProperty("k9","${k8}");
   jobProps3.store(new FileWriter(new File(subDir11,"test111.pull")),"");
   Properties props2=new Properties();
   props2.setProperty("k2","b2");
