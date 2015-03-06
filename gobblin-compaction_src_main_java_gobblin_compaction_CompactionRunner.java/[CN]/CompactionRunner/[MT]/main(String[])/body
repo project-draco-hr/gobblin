@@ -28,7 +28,7 @@
       long endTime=System.nanoTime();
       long elapsedTime=endTime - startTime;
       double seconds=TimeUnit.NANOSECONDS.toSeconds(elapsedTime);
-      pw.printf("%s: %f\n",file.getAbsolutePath(),seconds);
+      pw.printf("%s: %f%n",file.getAbsolutePath(),seconds);
     }
   }
   pw.close();
