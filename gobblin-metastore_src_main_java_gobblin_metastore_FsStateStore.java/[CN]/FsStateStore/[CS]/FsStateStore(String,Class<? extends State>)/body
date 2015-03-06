@@ -1,0 +1,7 @@
+{
+  this.conf=new Configuration();
+  Path storePath=new Path(storeUrl);
+  this.fs=storePath.getFileSystem(this.conf);
+  this.storeRootDir=storePath.toUri().getPath();
+  this.stateClass=stateClass;
+}
