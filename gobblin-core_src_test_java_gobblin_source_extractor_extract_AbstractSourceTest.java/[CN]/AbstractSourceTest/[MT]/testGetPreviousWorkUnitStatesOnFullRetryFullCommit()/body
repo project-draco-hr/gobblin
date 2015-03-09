@@ -1,10 +1,9 @@
 {
   TestSource testSource=new TestSource();
-  SourceState mockedState=mock(SourceState.class);
-  List<WorkUnitState> previousWorkUnitStates=Collections.singletonList(new WorkUnitState());
-  when(mockedState.getPreviousWorkUnitStates()).thenReturn(previousWorkUnitStates);
-  when(mockedState.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn(Boolean.TRUE);
-  when(mockedState.getProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn("onfull");
-  when(mockedState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY)).thenReturn("full");
-  Assert.assertEquals(testSource.getPreviousWorkUnitStatesForRetry(mockedState),previousWorkUnitStates);
+  SourceState sourceState=new SourceState(new State(),previousWorkUnitStates);
+  sourceState.setProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY,"onfull");
+  sourceState.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"full");
+  List<WorkUnitState> returnedWorkUnitStates=testSource.getPreviousWorkUnitStatesForRetry(sourceState);
+  Assert.assertEquals(returnedWorkUnitStates.size(),2);
+  Assert.assertEquals((returnedWorkUnitStates.get(0).getWorkingState().equals(WorkingState.SUCCESSFUL) && returnedWorkUnitStates.get(1).getWorkingState().equals(WorkingState.FAILED)) || (returnedWorkUnitStates.get(0).getWorkingState().equals(WorkingState.FAILED) && returnedWorkUnitStates.get(1).getWorkingState().equals(WorkingState.SUCCESSFUL)),true);
 }
