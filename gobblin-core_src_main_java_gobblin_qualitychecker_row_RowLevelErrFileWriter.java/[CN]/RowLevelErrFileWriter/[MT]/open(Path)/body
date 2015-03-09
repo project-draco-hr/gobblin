@@ -1,3 +1,3 @@
 {
-  this.writer=new BufferedWriter(new OutputStreamWriter(new FileOutputStream(errFilePath.toString()),Charset.defaultCharset()));
+  this.writer=new BufferedWriter(new OutputStreamWriter(new FileOutputStream(errFilePath.toString()),Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
 }
