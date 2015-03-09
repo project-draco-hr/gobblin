@@ -1,0 +1,24 @@
+{
+  TestSource testSource=new TestSource();
+  Properties oldProperties=new Properties();
+  oldProperties.put("a","1");
+  oldProperties.put("b","2");
+  WorkUnitState previousWorkUnitState=new WorkUnitState();
+  previousWorkUnitState.addAll(oldProperties);
+  SourceState spiedState=spy(SourceState.class);
+  List<WorkUnitState> previousWorkUnitStates=Collections.singletonList(previousWorkUnitState);
+  when(spiedState.getPreviousWorkUnitStates()).thenReturn(previousWorkUnitStates);
+  when(spiedState.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn(Boolean.TRUE);
+  when(spiedState.getProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn("always");
+  when(spiedState.getPropAsBoolean(ConfigurationKeys.OVERWRITE_CONFIGS_IN_STATESTORE,ConfigurationKeys.DEFAULT_OVERWRITE_CONFIGS_IN_STATESTORE)).thenReturn(Boolean.TRUE);
+  Properties overwrittenProperties=new Properties();
+  overwrittenProperties.put("a","3");
+  overwrittenProperties.put("b","4");
+  spiedState.addAll(overwrittenProperties);
+  List<WorkUnitState> returnedPreviousWorkUnitStates=testSource.getPreviousWorkUnitStatesForRetry(spiedState);
+  Assert.assertEquals(returnedPreviousWorkUnitStates,previousWorkUnitStates);
+  Assert.assertEquals(previousWorkUnitState.getProp("a"),"3");
+  Assert.assertEquals(previousWorkUnitState.getProp("b"),"4");
+  Assert.assertEquals(returnedPreviousWorkUnitStates.get(0).getProp("a"),"3");
+  Assert.assertEquals(returnedPreviousWorkUnitStates.get(0).getProp("b"),"4");
+}

@@ -1,0 +1,7 @@
+{
+  TestSource testSource=new TestSource();
+  SourceState mockedState=mock(SourceState.class);
+  when(mockedState.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn(Boolean.FALSE);
+  when(mockedState.getPropAsBoolean(ConfigurationKeys.WORK_UNIT_RETRY_ENABLED_KEY,Boolean.TRUE)).thenReturn(Boolean.FALSE);
+  Assert.assertEquals(testSource.getPreviousWorkUnitStatesForRetry(mockedState),Collections.EMPTY_LIST);
+}

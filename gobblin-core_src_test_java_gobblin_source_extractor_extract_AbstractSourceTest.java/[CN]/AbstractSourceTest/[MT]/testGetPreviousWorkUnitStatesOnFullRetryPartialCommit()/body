@@ -1,0 +1,9 @@
+{
+  TestSource testSource=new TestSource();
+  SourceState mockedState=mock(SourceState.class);
+  when(mockedState.getPreviousWorkUnitStates()).thenReturn(Collections.singletonList(new WorkUnitState()));
+  when(mockedState.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn(Boolean.TRUE);
+  when(mockedState.getProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)).thenReturn("onfull");
+  when(mockedState.getProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,ConfigurationKeys.DEFAULT_JOB_COMMIT_POLICY)).thenReturn("partial");
+  Assert.assertEquals(testSource.getPreviousWorkUnitStatesForRetry(mockedState),Collections.EMPTY_LIST);
+}
