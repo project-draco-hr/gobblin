@@ -1,9 +1,9 @@
 {
-  SourceState sourceState=new SourceState(new State(),previousWorkUnitStates);
+  SourceState sourceState=new SourceState(new State(),this.previousWorkUnitStates);
   sourceState.setProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY,"always");
   sourceState.setProp("a","1");
   sourceState.setProp("b","2");
-  List<WorkUnitState> returnedWorkUnitStates=testSource.getPreviousWorkUnitStatesForRetry(sourceState);
+  List<WorkUnitState> returnedWorkUnitStates=this.testSource.getPreviousWorkUnitStatesForRetry(sourceState);
   Assert.assertEquals(returnedWorkUnitStates,this.expectedPreviousWorkUnitStates);
   for (  WorkUnitState workUnitState : returnedWorkUnitStates) {
     Assert.assertEquals(workUnitState.contains("a"),false);

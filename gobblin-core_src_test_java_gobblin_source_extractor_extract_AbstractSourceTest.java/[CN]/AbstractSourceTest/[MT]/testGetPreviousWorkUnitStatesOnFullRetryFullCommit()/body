@@ -1,7 +1,7 @@
 {
-  SourceState sourceState=new SourceState(new State(),previousWorkUnitStates);
+  SourceState sourceState=new SourceState(new State(),this.previousWorkUnitStates);
   sourceState.setProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY,"onfull");
   sourceState.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"full");
-  List<WorkUnitState> returnedWorkUnitStates=testSource.getPreviousWorkUnitStatesForRetry(sourceState);
+  List<WorkUnitState> returnedWorkUnitStates=this.testSource.getPreviousWorkUnitStatesForRetry(sourceState);
   Assert.assertEquals(returnedWorkUnitStates,this.expectedPreviousWorkUnitStates);
 }

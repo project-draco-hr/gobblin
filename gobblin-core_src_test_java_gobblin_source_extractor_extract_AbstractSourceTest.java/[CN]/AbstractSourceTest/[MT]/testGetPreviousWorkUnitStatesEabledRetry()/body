@@ -1,6 +1,6 @@
 {
-  SourceState sourceState=new SourceState(new State(),previousWorkUnitStates);
+  SourceState sourceState=new SourceState(new State(),this.previousWorkUnitStates);
   sourceState.setProp(ConfigurationKeys.WORK_UNIT_RETRY_ENABLED_KEY,Boolean.TRUE);
-  List<WorkUnitState> returnedWorkUnitStates=testSource.getPreviousWorkUnitStatesForRetry(sourceState);
+  List<WorkUnitState> returnedWorkUnitStates=this.testSource.getPreviousWorkUnitStatesForRetry(sourceState);
   Assert.assertEquals(returnedWorkUnitStates,this.expectedPreviousWorkUnitStates);
 }
