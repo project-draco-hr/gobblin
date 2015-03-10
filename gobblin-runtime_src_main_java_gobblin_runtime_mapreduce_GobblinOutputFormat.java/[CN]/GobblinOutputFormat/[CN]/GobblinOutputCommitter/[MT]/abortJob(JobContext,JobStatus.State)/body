@@ -5,23 +5,39 @@
   FileSystem fs=FileSystem.get(fsUri,conf);
   Path mrJobDir=new Path(conf.get(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),conf.get(ConfigurationKeys.JOB_NAME_KEY));
   Path jobInputDir=new Path(mrJobDir,"input");
-  System.out.println("Checking: " + jobInputDir);
-  for (  FileStatus status : fs.listStatus(jobInputDir,new WorkUnitFilter())) {
-    Closer workUnitFileCloser=Closer.create();
-    if (status.getPath().getName().endsWith(".wu")) {
-      WorkUnit wu=new WorkUnit();
-      wu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
-      workUnitFileCloser.close();
-      JobLauncherUtils.cleanStagingData(wu,LOG);
-    }
-    if (status.getPath().getName().endsWith(".mwu")) {
-      MultiWorkUnit mwu=new MultiWorkUnit();
-      mwu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
-      workUnitFileCloser.close();
-      for (      WorkUnit wu : mwu.getWorkUnits()) {
+  if (!fs.exists(jobInputDir) || !fs.getFileStatus(jobInputDir).isDir()) {
+    return;
+  }
+  try {
+    for (    FileStatus status : fs.listStatus(jobInputDir,new WorkUnitFilter())) {
+      Closer workUnitFileCloser=Closer.create();
+      if (status.getPath().getName().endsWith(".wu")) {
+        WorkUnit wu=new WorkUnit();
+        try {
+          wu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
+        }
+  finally {
+          workUnitFileCloser.close();
+        }
         JobLauncherUtils.cleanStagingData(wu,LOG);
+      }
+      if (status.getPath().getName().endsWith(".mwu")) {
+        MultiWorkUnit mwu=new MultiWorkUnit();
+        try {
+          mwu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
+        }
+  finally {
+          workUnitFileCloser.close();
+        }
+        for (        WorkUnit wu : mwu.getWorkUnits()) {
+          JobLauncherUtils.cleanStagingData(wu,LOG);
+        }
       }
     }
   }
-  fs.delete(mrJobDir,true);
+  finally {
+    if (fs.exists(mrJobDir)) {
+      fs.delete(mrJobDir,true);
+    }
+  }
 }

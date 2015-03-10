@@ -1,3 +1,3 @@
 {
-  return path.toString().endsWith(".wu") || path.toString().endsWith(".mwu");
+  return path.getName().endsWith(".wu") || path.toString().endsWith(".mwu");
 }
