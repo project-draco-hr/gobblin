@@ -16,6 +16,9 @@
   List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList();
   for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
     if (workUnitState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
+      if (state.getPropAsBoolean(ConfigurationKeys.OVERWRITE_CONFIGS_IN_STATESTORE,ConfigurationKeys.DEFAULT_OVERWRITE_CONFIGS_IN_STATESTORE)) {
+        workUnitState.addAll(state);
+      }
       previousWorkUnitStates.add(workUnitState);
     }
   }
