@@ -9,7 +9,7 @@
   MultiWorkUnit mwu1=new MultiWorkUnit();
   mwu1.setProp(ConfigurationKeys.TASK_ID_KEY,System.nanoTime());
   mwu1.addWorkUnits(Arrays.asList(wu3,wu4));
-  Path inputDir=new Path(OUTPUT_PATH,"input");
+  Path inputDir=new Path(new Path(OUTPUT_PATH,JOB_NAME),"input");
   Closer closer=Closer.create();
   try {
     wu1.write(closer.register(this.fs.create(new Path(inputDir,wu1.getProp(ConfigurationKeys.TASK_ID_KEY) + Path.SEPARATOR + "_").suffix("wu"))));
