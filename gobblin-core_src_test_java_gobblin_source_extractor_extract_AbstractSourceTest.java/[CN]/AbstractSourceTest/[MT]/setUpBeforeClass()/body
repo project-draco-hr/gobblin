@@ -1,12 +1,11 @@
 {
+  this.testSource=new TestSource();
   WorkUnitState committedWorkUnitState=new WorkUnitState();
   committedWorkUnitState.setWorkingState(WorkingState.COMMITTED);
   WorkUnitState successfulWorkUnitState=new WorkUnitState();
   successfulWorkUnitState.setWorkingState(WorkingState.SUCCESSFUL);
   WorkUnitState failedWorkUnitState=new WorkUnitState();
   failedWorkUnitState.setWorkingState(WorkingState.FAILED);
-  previousWorkUnitStates=Lists.newArrayList();
-  previousWorkUnitStates.add(committedWorkUnitState);
-  previousWorkUnitStates.add(successfulWorkUnitState);
-  previousWorkUnitStates.add(failedWorkUnitState);
+  this.previousWorkUnitStates=Lists.newArrayList(committedWorkUnitState,successfulWorkUnitState,failedWorkUnitState);
+  this.expectedPreviousWorkUnitStates=Lists.newArrayList(successfulWorkUnitState,failedWorkUnitState);
 }
