@@ -1,0 +1,18 @@
+{
+  if (compactRunProps.containsKey(HIVESERVER_VERSION)) {
+    this.withHiveServerVersion(Integer.valueOf(compactRunProps.getProperty(HIVESERVER_VERSION)));
+  }
+  if (compactRunProps.containsKey(HIVESITE_DIR)) {
+    this.addHiveSiteDirToClasspath(compactRunProps.getProperty(HIVESITE_DIR));
+  }
+  if (compactRunProps.containsKey(HIVESERVER_CONNECTION_STRING)) {
+    this.setHiveConnectionFromUrl(compactRunProps.getProperty(HIVESERVER_CONNECTION_STRING));
+  }
+ else   if (compactRunProps.containsKey(HIVESERVER_URL)) {
+    this.setHiveConnectionFromUrlUserPassword(compactRunProps.getProperty(HIVESERVER_URL),compactRunProps.getProperty(HIVESERVER_USER),compactRunProps.getProperty(HIVESERVER_PASSWORD));
+  }
+ else {
+    this.setHiveEmbeddedConnection();
+  }
+  this.setHiveProperties(compactRunProps);
+}
