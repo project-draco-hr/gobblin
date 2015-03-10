@@ -1,37 +1,25 @@
 {
-  LOG.info("Aborting Job: " + jobContext.getJobID());
+  LOG.info("Aborting Job: " + jobContext.getJobID() + " with state: "+ state);
   Configuration conf=jobContext.getConfiguration();
   URI fsUri=URI.create(conf.get(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
   FileSystem fs=FileSystem.get(fsUri,conf);
   Path mrJobDir=new Path(conf.get(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),conf.get(ConfigurationKeys.JOB_NAME_KEY));
   Path jobInputDir=new Path(mrJobDir,"input");
-  for (  FileStatus status : fs.listStatus(jobInputDir)) {
+  System.out.println("Checking: " + jobInputDir);
+  for (  FileStatus status : fs.listStatus(jobInputDir,new WorkUnitFilter())) {
     Closer workUnitFileCloser=Closer.create();
     if (status.getPath().getName().endsWith(".wu")) {
       WorkUnit wu=new WorkUnit();
       wu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
       workUnitFileCloser.close();
-      LOG.info("Cleaning up staging data for WorkUnit: " + wu.getId());
-      int numBranches=wu.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
-      for (int i=0; i < numBranches; i++) {
-        String branchName=ForkOperatorUtils.getBranchName(wu,i,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + i);
-        Path writerFilePath=new Path(ForkOperatorUtils.getPathForBranch(wu.getExtract().getOutputFilePath(),branchName,numBranches));
-        String uri=wu.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,i),ConfigurationKeys.LOCAL_FS_URI);
-        FileSystem wufs=FileSystem.get(URI.create(uri),new Configuration());
-        if (wu.contains(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,numBranches,i))) {
-          Path stagingDir=new Path(wu.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,i)),writerFilePath);
-          LOG.info("Deleting staging dir:   " + stagingDir);
-          if (wufs.exists(stagingDir)) {
-            wufs.delete(stagingDir,true);
-          }
-        }
-        if (wu.contains(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,numBranches,i))) {
-          Path outputDir=new Path(wu.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,i)),writerFilePath);
-          LOG.info("Deleting output dir:    " + outputDir);
-          if (wufs.exists(outputDir)) {
-            wufs.delete(outputDir,true);
-          }
-        }
+      JobLauncherUtils.cleanStagingData(wu,LOG);
+    }
+    if (status.getPath().getName().endsWith(".mwu")) {
+      MultiWorkUnit mwu=new MultiWorkUnit();
+      mwu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
+      workUnitFileCloser.close();
+      for (      WorkUnit wu : mwu.getWorkUnits()) {
+        JobLauncherUtils.cleanStagingData(wu,LOG);
       }
     }
   }
