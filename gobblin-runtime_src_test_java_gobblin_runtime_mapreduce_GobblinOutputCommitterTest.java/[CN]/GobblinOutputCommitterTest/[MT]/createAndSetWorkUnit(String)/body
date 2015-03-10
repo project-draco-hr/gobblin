@@ -1,0 +1,13 @@
+{
+  WorkUnit wu=new WorkUnit();
+  wu.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_ID_KEY,1,0),System.nanoTime());
+  Path wuStagingDir=new Path(OUTPUT_PATH,JOB_NAME + Path.SEPARATOR + workUnitName+ Path.SEPARATOR+ STAGING_DIR_NAME);
+  wu.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,1,0),wuStagingDir.toString());
+  this.fs.mkdirs(wuStagingDir);
+  this.stagingDirs.add(wuStagingDir);
+  Path wuOutputDir=new Path(OUTPUT_PATH,JOB_NAME + Path.SEPARATOR + workUnitName+ Path.SEPARATOR+ OUTPUT_DIR_NAME);
+  wu.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,1,0),wuOutputDir.toString());
+  this.fs.mkdirs(wuOutputDir);
+  this.stagingDirs.add(wuOutputDir);
+  return wu;
+}
