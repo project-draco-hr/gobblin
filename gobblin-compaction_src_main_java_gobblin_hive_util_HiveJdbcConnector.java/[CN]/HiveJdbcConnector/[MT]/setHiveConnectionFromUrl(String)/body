@@ -1,0 +1,4 @@
+{
+  this.conn=DriverManager.getConnection(hiveServerUrl);
+  this.stmt=this.conn.createStatement();
+}

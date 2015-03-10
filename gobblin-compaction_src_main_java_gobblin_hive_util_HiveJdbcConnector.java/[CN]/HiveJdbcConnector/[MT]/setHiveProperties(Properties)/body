@@ -1,0 +1,11 @@
+{
+  Enumeration<?> enumeration=props.propertyNames();
+  while (enumeration.hasMoreElements()) {
+    String propertyName=(String)enumeration.nextElement();
+    if (propertyName.startsWith(HIVE_CONFIG_KEY_PREFIX)) {
+      String str="set " + propertyName + "="+ props.getProperty(propertyName);
+      LOG.info(str);
+      stmt.execute(str);
+    }
+  }
+}

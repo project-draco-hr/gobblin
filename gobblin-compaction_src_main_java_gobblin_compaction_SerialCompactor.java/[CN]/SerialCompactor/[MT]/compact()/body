@@ -3,6 +3,7 @@
   Closer closer=Closer.create();
   try {
     this.conn=closer.register(new HiveJdbcConnector());
+    configureHiveJdbcConnector();
     setHiveParameters();
     createTables();
     HiveTable mergedDelta=mergeDeltas();

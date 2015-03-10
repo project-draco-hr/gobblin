@@ -1,0 +1,17 @@
+{
+  Properties compactRunProps=CompactionRunner.properties;
+  this.conn.withHiveServerVersion(Integer.valueOf(compactRunProps.getProperty(HiveJdbcConnector.HIVESERVER_VERSION)));
+  if (compactRunProps.containsKey(HiveJdbcConnector.HIVESITE_DIR)) {
+    this.conn.addHiveSiteDirToClasspath(compactRunProps.getProperty(HiveJdbcConnector.HIVESITE_DIR));
+  }
+  if (compactRunProps.containsKey(HiveJdbcConnector.HIVESERVER_CONNECTION_STRING)) {
+    this.conn.setHiveConnectionFromUrl(compactRunProps.getProperty(HiveJdbcConnector.HIVESERVER_CONNECTION_STRING));
+  }
+ else   if (compactRunProps.containsKey(HiveJdbcConnector.HIVESERVER_URL)) {
+    this.conn.setHiveConnectionFromUrlUserPassword(compactRunProps.getProperty(HiveJdbcConnector.HIVESERVER_URL),compactRunProps.getProperty(HiveJdbcConnector.HIVESERVER_USER),compactRunProps.getProperty(HiveJdbcConnector.HIVESERVER_PASSWORD));
+  }
+ else {
+    this.conn.setHiveEmbeddedConnection();
+  }
+  this.conn.setHiveProperties(compactRunProps);
+}
