@@ -1,4 +1,5 @@
 {
   this.conn=DriverManager.getConnection(hiveServerUrl,hiveServerUser,hiveServerPassword);
   this.stmt=this.conn.createStatement();
+  return this;
 }

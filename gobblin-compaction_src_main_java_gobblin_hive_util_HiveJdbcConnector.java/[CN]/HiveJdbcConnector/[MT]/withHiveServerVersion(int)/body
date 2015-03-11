@@ -1,16 +1,17 @@
 {
-  if (hiveServerVersion == 1) {
-    if (!checkIfClassOnClasspath(HIVE_JDBC_DRIVER_NAME)) {
-      throw new RuntimeException("Cannot find a suitable driver for HiveServer " + hiveServerVersion);
+  try {
+    if (hiveServerVersion == 1) {
+      Class.forName(HIVE_JDBC_DRIVER_NAME);
     }
-  }
- else   if (hiveServerVersion == 2) {
-    if (!checkIfClassOnClasspath(HIVE2_JDBC_DRIVER_NAME)) {
-      throw new RuntimeException("Cannot find a suitable driver for HiveServer " + hiveServerVersion);
+ else     if (hiveServerVersion == 2) {
+      Class.forName(HIVE2_JDBC_DRIVER_NAME);
     }
-  }
  else {
-    throw new RuntimeException(hiveServerVersion + " is not a valid HiveServer version.");
+      throw new RuntimeException(hiveServerVersion + " is not a valid HiveServer version.");
+    }
+  }
+ catch (  ClassNotFoundException e) {
+    throw new RuntimeException("Cannot find a suitable driver of HiveServer version " + hiveServerVersion + ".",e);
   }
   this.hiveServerVersion=hiveServerVersion;
   return this;

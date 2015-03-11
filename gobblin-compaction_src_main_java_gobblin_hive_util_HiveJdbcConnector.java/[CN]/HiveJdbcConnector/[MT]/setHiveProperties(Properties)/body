@@ -1,11 +1,21 @@
 {
-  Enumeration<?> enumeration=props.propertyNames();
-  while (enumeration.hasMoreElements()) {
-    String propertyName=(String)enumeration.nextElement();
-    if (propertyName.startsWith(HIVE_CONFIG_KEY_PREFIX)) {
-      String str="set " + propertyName + "="+ props.getProperty(propertyName);
-      LOG.info(str);
-      stmt.execute(str);
+  Preconditions.checkNotNull(this.conn,"The Hive connection must be set before any queries can be run");
+  PreparedStatement preparedStatement=null;
+  try {
+    preparedStatement=this.conn.prepareStatement("set ?=?");
+    Enumeration<?> enumeration=props.propertyNames();
+    while (enumeration.hasMoreElements()) {
+      String propertyName=(String)enumeration.nextElement();
+      if (propertyName.startsWith(HIVE_CONFIG_KEY_PREFIX)) {
+        preparedStatement.setString(1,propertyName);
+        preparedStatement.setString(2,props.getProperty(propertyName));
+        preparedStatement.execute();
+      }
+    }
+  }
+  finally {
+    if (preparedStatement != null) {
+      preparedStatement.close();
     }
   }
 }

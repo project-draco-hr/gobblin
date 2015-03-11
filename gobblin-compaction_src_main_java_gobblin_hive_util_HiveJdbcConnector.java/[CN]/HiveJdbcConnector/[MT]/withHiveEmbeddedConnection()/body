@@ -6,4 +6,5 @@
     this.conn=DriverManager.getConnection(HIVE2_EMBEDDED_CONNECTION_STRING);
   }
   this.stmt=this.conn.createStatement();
+  return this;
 }

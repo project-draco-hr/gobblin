@@ -1,18 +1,18 @@
 {
-  if (stmt != null) {
+  if (this.stmt != null) {
     try {
-      stmt.close();
+      this.stmt.close();
     }
  catch (    SQLException e) {
-      throw new IOException(e);
+      LOG.error("Failed to close JDBC statement object",e);
     }
   }
-  if (conn != null) {
+  if (this.conn != null) {
     try {
       conn.close();
     }
  catch (    SQLException e) {
-      throw new IOException(e);
+      LOG.error("Failed to close JDBC connection",e);
     }
   }
 }
