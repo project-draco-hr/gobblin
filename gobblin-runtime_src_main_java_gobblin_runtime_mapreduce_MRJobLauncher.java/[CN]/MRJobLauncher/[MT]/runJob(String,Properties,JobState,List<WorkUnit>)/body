@@ -28,7 +28,7 @@
   this.job.setMapperClass(TaskRunner.class);
   this.job.setNumReduceTasks(0);
   this.job.setInputFormatClass(NLineInputFormat.class);
-  this.job.setOutputFormatClass(NullOutputFormat.class);
+  this.job.setOutputFormatClass(GobblinOutputFormat.class);
   this.job.setMapOutputKeyClass(NullWritable.class);
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);

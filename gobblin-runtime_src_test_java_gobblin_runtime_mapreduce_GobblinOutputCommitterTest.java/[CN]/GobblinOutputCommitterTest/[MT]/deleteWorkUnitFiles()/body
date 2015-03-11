@@ -1,0 +1,3 @@
+{
+  this.fs.delete(OUTPUT_PATH,true);
+}

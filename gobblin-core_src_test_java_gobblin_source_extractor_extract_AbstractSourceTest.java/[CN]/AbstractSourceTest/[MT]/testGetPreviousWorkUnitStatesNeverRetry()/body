@@ -1,0 +1,5 @@
+{
+  SourceState sourceState=new SourceState(new State(),this.previousWorkUnitStates);
+  sourceState.setProp(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY,"never");
+  Assert.assertEquals(this.testSource.getPreviousWorkUnitStatesForRetry(sourceState),Collections.EMPTY_LIST);
+}
