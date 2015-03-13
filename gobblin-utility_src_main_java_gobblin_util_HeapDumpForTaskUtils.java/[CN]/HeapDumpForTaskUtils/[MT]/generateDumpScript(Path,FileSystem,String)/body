@@ -1,0 +1,28 @@
+{
+  BufferedWriter scriptWriter=null;
+  Closer closer=Closer.create();
+  try {
+    if (fs.exists(dumpScript)) {
+      LOG.info("Heap dump script already exists: " + dumpScript);
+    }
+ else {
+      Path dumpDir=new Path(dumpScript.getParent() + DUMP_FOLDER);
+      if (fs.exists(new Path(dumpScript.getParent() + DUMP_FOLDER))) {
+        fs.create(dumpDir);
+      }
+      scriptWriter=closer.register(new BufferedWriter(new OutputStreamWriter(fs.create(dumpScript))));
+      scriptWriter.write("#!/bin/sh\n" + "hadoop dfs -put " + heapFileName + " "+ dumpDir+ "${PWD//\\//_}.hprof");
+      scriptWriter.flush();
+      Runtime.getRuntime().exec("hadoop fs -chmod 755 " + dumpScript);
+    }
+  }
+ catch (  IOException e) {
+    LOG.error("Heap dump script is not generated successfully.");
+    if (fs.exists(dumpScript)) {
+      fs.delete(dumpScript,true);
+    }
+  }
+ finally {
+    closer.close();
+  }
+}
