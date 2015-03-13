@@ -1,63 +1,71 @@
 {
-  File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
-  FileAlterationObserver observer=new FileAlterationObserver(jobConfigFileDir);
+  final File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
   FileAlterationListener listener=new FileAlterationListenerAdaptor(){
     /** 
  * Called when a new job configuration file is dropped in.
  */
     @Override public void onFileCreate(    File file){
-      int pos=file.getName().lastIndexOf(".");
-      String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
+      String fileExtension=Files.getFileExtension(file.getName());
       if (!jobConfigFileExtensions.contains(fileExtension)) {
         return;
       }
-      LOG.info("Detected new job configuration file " + file.getAbsolutePath());
-      Properties jobProps=new Properties();
-      jobProps.putAll(properties);
-      loadJobConfig(jobProps,file);
       try {
+        LOG.info("Detected new job configuration file " + file.getAbsolutePath());
+        Properties jobProps=SchedulerUtils.loadJobConfig(properties,file,jobConfigFileDir);
         boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
         scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
       }
- catch (      Throwable t) {
-        LOG.error("Failed to schedule new job loaded from job configuration file " + file.getAbsolutePath(),t);
+ catch (      ConfigurationException ce) {
+        LOG.error("Failed to load from job configuration file " + file.getAbsolutePath(),ce);
+      }
+catch (      JobException je) {
+        LOG.error("Failed to schedule new job loaded from job configuration file " + file.getAbsolutePath(),je);
       }
     }
     /** 
  * Called when a job configuration file is changed.
  */
     @Override public void onFileChange(    File file){
-      int pos=file.getName().lastIndexOf(".");
-      String fileExtension=pos >= 0 ? file.getName().substring(pos + 1) : "";
+      String fileExtension=Files.getFileExtension(file.getName());
+      if (fileExtension.equalsIgnoreCase(SchedulerUtils.JOB_PROPS_FILE_EXTENSION)) {
+        try {
+          for (          Properties jobProps : SchedulerUtils.loadJobConfigs(properties,file,jobConfigFileDir)) {
+            try {
+              rescheduleJob(jobProps);
+            }
+ catch (            JobException je) {
+              LOG.error("Failed to reschedule job reloaded from job configuration file " + jobProps.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY),je);
+            }
+          }
+        }
+ catch (        ConfigurationException ce) {
+          LOG.error("Failed to reload job configuration files affected by changes to " + file.getAbsolutePath(),ce);
+        }
+        return;
+      }
       if (!jobConfigFileExtensions.contains(fileExtension)) {
         return;
       }
-      LOG.info("Detected change to job configuration file " + file.getAbsolutePath());
-      Properties jobProps=new Properties();
-      jobProps.putAll(properties);
-      loadJobConfig(jobProps,file);
-      String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
       try {
-        unscheduleJob(jobName);
-        boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
-        scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
+        LOG.info("Detected change to job configuration file " + file.getAbsolutePath());
+        Properties jobProps=SchedulerUtils.loadJobConfig(properties,file,jobConfigFileDir);
+        rescheduleJob(jobProps);
       }
- catch (      Throwable t) {
-        LOG.error("Failed to update existing job " + jobName,t);
+ catch (      ConfigurationException ce) {
+        LOG.error("Failed to reload from job configuration file " + file.getAbsolutePath(),ce);
+      }
+catch (      JobException je) {
+        LOG.error("Failed to reschedule job reloaded from job configuration file " + file.getAbsolutePath(),je);
       }
     }
-    private void loadJobConfig(    Properties jobProps,    File file){
-      try {
-        jobProps.load(new InputStreamReader(new FileInputStream(file),Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
-        jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
-      }
- catch (      Exception e) {
-        LOG.error("Failed to load job configuration from file " + file.getAbsolutePath(),e);
-      }
+    private void rescheduleJob(    Properties jobProps) throws JobException {
+      String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+      unscheduleJob(jobName);
+      boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+      scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
     }
   }
 ;
-  observer.addListener(listener);
-  this.fileAlterationMonitor.addObserver(observer);
+  SchedulerUtils.addFileAlterationObserver(this.fileAlterationMonitor,listener,jobConfigFileDir);
   this.fileAlterationMonitor.start();
 }
