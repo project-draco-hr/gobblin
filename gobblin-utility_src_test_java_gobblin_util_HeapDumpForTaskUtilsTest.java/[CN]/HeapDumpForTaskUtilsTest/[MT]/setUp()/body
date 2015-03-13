@@ -1,7 +1,4 @@
 {
-  this.conf=new Configuration();
-  this.conf.set("fs.default.name","file:///");
-  this.conf.set("mapred.job.tracker","local");
-  this.fs=FileSystem.getLocal(this.conf);
+  this.fs=FileSystem.getLocal(new Configuration());
   this.fs.mkdirs(new Path(TEST_DIR));
 }

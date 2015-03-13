@@ -1,26 +1,27 @@
 {
-  BufferedWriter scriptWriter=null;
+  if (fs.exists(dumpScript)) {
+    LOG.info("Heap dump script already exists: " + dumpScript);
+    return;
+  }
   Closer closer=Closer.create();
   try {
-    if (fs.exists(dumpScript)) {
-      LOG.info("Heap dump script already exists: " + dumpScript);
+    Path dumpDir=new Path(dumpScript.getParent(),DUMP_FOLDER);
+    if (!fs.exists(dumpDir)) {
+      fs.mkdirs(dumpDir);
     }
- else {
-      String dumpDir=dumpScript.getParent() + DUMP_FOLDER;
-      scriptWriter=closer.register(new BufferedWriter(new OutputStreamWriter(fs.create(dumpScript))));
-      scriptWriter.write("#!/bin/sh\n" + "hadoop dfs -put " + heapFileName + " "+ dumpDir+ "${PWD//\\//_}.hprof");
-      scriptWriter.flush();
-      Runtime.getRuntime().exec(chmod + " " + dumpScript);
-      if (!fs.exists(new Path(dumpScript.getParent() + DUMP_FOLDER))) {
-        fs.mkdirs(new Path(dumpDir));
-      }
-    }
+    BufferedWriter scriptWriter=closer.register(new BufferedWriter(new OutputStreamWriter(fs.create(dumpScript),Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING))));
+    scriptWriter.write("#!/bin/sh\n" + "hadoop dfs -put " + heapFileName + " "+ dumpDir+ "/${PWD//\\//_}.hprof");
+    scriptWriter.flush();
+    Runtime.getRuntime().exec(chmod + " " + dumpScript);
   }
  catch (  IOException e) {
     LOG.error("Heap dump script is not generated successfully.");
     if (fs.exists(dumpScript)) {
       fs.delete(dumpScript,true);
     }
+  }
+catch (  Throwable t) {
+    closer.rethrow(t);
   }
  finally {
     closer.close();
