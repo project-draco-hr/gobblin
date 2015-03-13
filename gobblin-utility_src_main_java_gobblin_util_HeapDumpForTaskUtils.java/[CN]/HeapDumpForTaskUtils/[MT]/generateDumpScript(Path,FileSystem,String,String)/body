@@ -6,14 +6,14 @@
       LOG.info("Heap dump script already exists: " + dumpScript);
     }
  else {
-      Path dumpDir=new Path(dumpScript.getParent() + DUMP_FOLDER);
-      if (fs.exists(new Path(dumpScript.getParent() + DUMP_FOLDER))) {
-        fs.create(dumpDir);
-      }
+      String dumpDir=dumpScript.getParent() + DUMP_FOLDER;
       scriptWriter=closer.register(new BufferedWriter(new OutputStreamWriter(fs.create(dumpScript))));
       scriptWriter.write("#!/bin/sh\n" + "hadoop dfs -put " + heapFileName + " "+ dumpDir+ "${PWD//\\//_}.hprof");
       scriptWriter.flush();
-      Runtime.getRuntime().exec("hadoop fs -chmod 755 " + dumpScript);
+      Runtime.getRuntime().exec(chmod + " " + dumpScript);
+      if (!fs.exists(new Path(dumpScript.getParent() + DUMP_FOLDER))) {
+        fs.mkdirs(new Path(dumpDir));
+      }
     }
   }
  catch (  IOException e) {
