@@ -1,0 +1,22 @@
+{
+  Path dumpScript=new Path(TEST_DIR,SCRIPT_NAME);
+  HeapDumpForTaskUtils.generateDumpScript(dumpScript,this.fs,"test.hprof","chmod 777 ");
+  Assert.assertEquals(true,this.fs.exists(dumpScript));
+  Assert.assertEquals(true,this.fs.exists(new Path(dumpScript.getParent(),"dumps")));
+  Closer closer=Closer.create();
+  try {
+    BufferedReader scriptReader=closer.register(new BufferedReader(new InputStreamReader(this.fs.open(dumpScript))));
+    Assert.assertEquals("#!/bin/sh",scriptReader.readLine());
+    Assert.assertEquals("if [ -n \"$HADOOP_PREFIX\" ]; then",scriptReader.readLine());
+    Assert.assertEquals("  ${HADOOP_PREFIX}/bin/hadoop dfs -put test.hprof dumpScript/dumps/${PWD//\\//_}.hprof",scriptReader.readLine());
+    Assert.assertEquals("else",scriptReader.readLine());
+    Assert.assertEquals("  ${HADOOP_HOME}/bin/hadoop dfs -put test.hprof dumpScript/dumps/${PWD//\\//_}.hprof",scriptReader.readLine());
+    Assert.assertEquals("fi",scriptReader.readLine());
+  }
+ catch (  Throwable t) {
+    closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}
