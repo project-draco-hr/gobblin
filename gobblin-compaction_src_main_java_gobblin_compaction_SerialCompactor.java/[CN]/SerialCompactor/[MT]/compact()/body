@@ -2,7 +2,7 @@
   checkSchemaCompatibility();
   Closer closer=Closer.create();
   try {
-    this.conn=closer.register(new HiveJdbcConnector());
+    this.conn=closer.register(HiveJdbcConnector.newConnectorWithProps(CompactionRunner.properties));
     setHiveParameters();
     createTables();
     HiveTable mergedDelta=mergeDeltas();
