@@ -28,6 +28,7 @@ catch (      JobException je) {
     @Override public void onFileChange(    File file){
       String fileExtension=Files.getFileExtension(file.getName());
       if (fileExtension.equalsIgnoreCase(SchedulerUtils.JOB_PROPS_FILE_EXTENSION)) {
+        LOG.info("Detected change to common properties file " + file.getAbsolutePath());
         try {
           for (          Properties jobProps : SchedulerUtils.loadJobConfigs(properties,file,jobConfigFileDir)) {
             try {
