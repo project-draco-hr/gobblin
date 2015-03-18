@@ -19,9 +19,11 @@
     if (inMultipleBranches(forkedSchemas) && !(schema instanceof Copyable)) {
       throw new CopyNotSupportedException(schema + " is not copyable");
     }
+    CountDownLatch forkCountDownLatch=new CountDownLatch(branches);
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
-        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,branches > 1 ? ((Copyable)schema).copy() : schema,branches,i));
+        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,branches > 1 ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
+        this.taskExecutor.submit(fork);
         this.forks.add(Optional.of(fork));
       }
  else {
@@ -43,8 +45,26 @@
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
     for (    Optional<Fork> fork : this.forks) {
       if (fork.isPresent()) {
-        fork.get().commit(recordsPulled,extractor.getExpectedRecordCount(),pullLimit);
+        fork.get().markParentTaskDone();
       }
+ else {
+        forkCountDownLatch.countDown();
+      }
+    }
+    forkCountDownLatch.await();
+    boolean allForksSucceeded=true;
+    for (    Optional<Fork> fork : this.forks) {
+      if (fork.isPresent()) {
+        if (fork.get().isSucceeded()) {
+          fork.get().commit(recordsPulled,extractor.getExpectedRecordCount(),pullLimit);
+        }
+ else {
+          allForksSucceeded=false;
+        }
+      }
+    }
+    if (!allForksSucceeded) {
+      throw new RuntimeException(String.format("Not all forks of task %s succeeded",this.taskId));
     }
   }
  catch (  Throwable t) {

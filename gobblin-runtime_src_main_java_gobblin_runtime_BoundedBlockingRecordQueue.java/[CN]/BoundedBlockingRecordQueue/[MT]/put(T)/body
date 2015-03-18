@@ -1,0 +1,7 @@
+{
+  boolean offered=this.blockingDeque.offer(record,this.timeout,this.timeoutTimeUnit);
+  if (this.ifCollectStats) {
+    this.queueStats.putsRateMeter.get().mark();
+  }
+  return offered;
+}

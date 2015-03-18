@@ -1,0 +1,27 @@
+{
+  this.ifCollectStats=ifCollectStats;
+  if (ifCollectStats) {
+    Gauge<Integer> integerGauge=new Gauge<Integer>(){
+      @Override public Integer getValue(){
+        return blockingDeque.size();
+      }
+    }
+;
+    this.queueSizeGauge=Optional.of(integerGauge);
+    Gauge<Double> doubleGauge=new Gauge<Double>(){
+      @Override public Double getValue(){
+        return (double)blockingDeque.size() / capacity;
+      }
+    }
+;
+    this.fillRatioGauge=Optional.of(doubleGauge);
+    this.putsRateMeter=Optional.of(new Meter());
+    this.getsRateMeter=Optional.of(new Meter());
+  }
+ else {
+    this.queueSizeGauge=Optional.absent();
+    this.fillRatioGauge=Optional.absent();
+    this.putsRateMeter=Optional.absent();
+    this.getsRateMeter=Optional.absent();
+  }
+}

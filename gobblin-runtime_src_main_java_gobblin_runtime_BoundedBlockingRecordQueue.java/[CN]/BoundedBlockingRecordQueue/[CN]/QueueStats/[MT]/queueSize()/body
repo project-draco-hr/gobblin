@@ -1,0 +1,3 @@
+{
+  return this.queueSizeGauge.isPresent() ? this.queueSizeGauge.get().getValue() : 0;
+}

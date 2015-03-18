@@ -1,0 +1,8 @@
+{
+  if (this.ifCollectStats) {
+    metricRegistry.register(MetricRegistry.name(prefix,QUEUE_SIZE),this.queueSizeGauge.get());
+    metricRegistry.register(MetricRegistry.name(prefix,FILL_RATIO),this.fillRatioGauge.get());
+    metricRegistry.register(MetricRegistry.name(prefix,PUT_ATTEMPT_RATE),this.putsRateMeter.get());
+    metricRegistry.register(MetricRegistry.name(prefix,GET_ATTEMPT_RATE),this.getsRateMeter.get());
+  }
+}

@@ -1,3 +1,0 @@
-TaskContext context
-TaskStateTracker taskStateTracker
-Optional<CountDownLatch> countDownLatch

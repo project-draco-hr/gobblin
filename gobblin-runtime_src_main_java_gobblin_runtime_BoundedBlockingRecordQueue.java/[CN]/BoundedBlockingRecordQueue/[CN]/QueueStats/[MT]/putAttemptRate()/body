@@ -1,0 +1,3 @@
+{
+  return this.putsRateMeter.isPresent() ? this.putsRateMeter.get().getMeanRate() : 0d;
+}

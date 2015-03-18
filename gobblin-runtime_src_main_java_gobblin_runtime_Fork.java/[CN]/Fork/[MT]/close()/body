@@ -1,4 +1,5 @@
 {
+  this.parentTaskDone=true;
   try {
     this.closer.close();
   }

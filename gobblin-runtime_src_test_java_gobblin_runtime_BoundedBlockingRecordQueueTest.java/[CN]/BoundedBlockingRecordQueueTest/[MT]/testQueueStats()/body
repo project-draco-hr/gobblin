@@ -1,0 +1,13 @@
+{
+  BoundedBlockingRecordQueue.QueueStats stats=this.boundedBlockingRecordQueue.stats();
+  Assert.assertEquals(stats.queueSize(),0);
+  Assert.assertEquals(stats.fillRatio(),0d);
+  Assert.assertEquals(stats.getAttemptCount(),7);
+  Assert.assertEquals(stats.putAttemptCount(),6);
+  this.boundedBlockingRecordQueue.put(0);
+  this.boundedBlockingRecordQueue.put(1);
+  Assert.assertEquals(stats.queueSize(),2);
+  Assert.assertEquals(stats.fillRatio(),1d);
+  Assert.assertEquals(stats.getAttemptCount(),7);
+  Assert.assertEquals(stats.putAttemptCount(),8);
+}

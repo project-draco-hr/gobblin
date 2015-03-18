@@ -1,0 +1,4 @@
+{
+  LOG.info(String.format("Executing fork %d of task %s",fork.getIndex(),fork.getTaskId()));
+  this.forkExecutor.execute(fork);
+}
