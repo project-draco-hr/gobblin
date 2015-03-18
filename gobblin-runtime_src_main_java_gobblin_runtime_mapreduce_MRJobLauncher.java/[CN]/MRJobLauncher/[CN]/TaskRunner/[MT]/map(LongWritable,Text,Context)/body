@@ -16,5 +16,10 @@
  finally {
     closer.close();
   }
-  runWorkUnits(workUnit instanceof MultiWorkUnit ? ((MultiWorkUnit)workUnit).getWorkUnits() : Lists.newArrayList(workUnit));
+  if (workUnit instanceof MultiWorkUnit) {
+    this.workUnits.addAll(((MultiWorkUnit)workUnit).getWorkUnits());
+  }
+ else {
+    this.workUnits.add(workUnit);
+  }
 }
