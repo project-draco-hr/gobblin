@@ -11,7 +11,7 @@
     }
   }
  else {
-    long startValue=Utils.getLongWithCurrentDate(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE));
+    long startValue=Utils.getLongWithCurrentDate(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE),timeZone);
     LOG.info("Overriding low water mark with the given start value: " + startValue);
     return startValue;
   }
