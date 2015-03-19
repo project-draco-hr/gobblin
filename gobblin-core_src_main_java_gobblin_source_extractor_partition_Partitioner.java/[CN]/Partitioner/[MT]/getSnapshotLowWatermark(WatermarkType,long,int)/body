@@ -1,6 +1,6 @@
 {
   LOG.debug("Getting snapshot low water mark");
-  String timeZone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE);
+  String timeZone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE,ConfigurationKeys.DEFAULT_SOURCE_TIMEZONE);
   if (this.isPreviousWatermarkExists(previousWatermark)) {
     if (this.isSimpleWatermark(watermarkType)) {
       return previousWatermark + deltaForNextWatermark - this.state.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_LOW_WATERMARK_BACKUP_SECS,0);
@@ -11,7 +11,7 @@
     }
   }
  else {
-    long startValue=Utils.getLongWithCurrentDate(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE));
+    long startValue=Utils.getLongWithCurrentDate(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_START_VALUE),timeZone);
     LOG.info("Overriding low water mark with the given start value: " + startValue);
     return startValue;
   }
