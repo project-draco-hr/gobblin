@@ -18,6 +18,9 @@
  catch (      ConfigurationException ce) {
         LOG.error("Failed to load from job configuration file " + file.getAbsolutePath(),ce);
       }
+catch (      IOException ioe) {
+        LOG.error("Failed to load from job configuration file " + file.getAbsolutePath(),ioe);
+      }
 catch (      JobException je) {
         LOG.error("Failed to schedule new job loaded from job configuration file " + file.getAbsolutePath(),je);
       }
@@ -42,6 +45,9 @@ catch (      JobException je) {
  catch (        ConfigurationException ce) {
           LOG.error("Failed to reload job configuration files affected by changes to " + file.getAbsolutePath(),ce);
         }
+catch (        IOException ioe) {
+          LOG.error("Failed to reload job configuration files affected by changes to " + file.getAbsolutePath(),ioe);
+        }
         return;
       }
       if (!jobConfigFileExtensions.contains(fileExtension)) {
@@ -54,6 +60,9 @@ catch (      JobException je) {
       }
  catch (      ConfigurationException ce) {
         LOG.error("Failed to reload from job configuration file " + file.getAbsolutePath(),ce);
+      }
+catch (      IOException ioe) {
+        LOG.error("Failed to reload from job configuration file " + file.getAbsolutePath(),ioe);
       }
 catch (      JobException je) {
         LOG.error("Failed to reschedule job reloaded from job configuration file " + file.getAbsolutePath(),je);
