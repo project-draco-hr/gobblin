@@ -1,0 +1,3 @@
+FileAlterationMonitor monitor
+FileAlterationListener listener
+File rootDir

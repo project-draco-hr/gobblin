@@ -1,0 +1,27 @@
+{
+  LOG.info("Adding " + hiveSiteDir + " to CLASSPATH");
+  File f=new File(hiveSiteDir);
+  try {
+    URL u=f.toURI().toURL();
+    URLClassLoader urlClassLoader=(URLClassLoader)ClassLoader.getSystemClassLoader();
+    Class<URLClassLoader> urlClass=URLClassLoader.class;
+    Method method=urlClass.getDeclaredMethod("addURL",new Class[]{URL.class});
+    method.setAccessible(true);
+    method.invoke(urlClassLoader,new Object[]{u});
+  }
+ catch (  NoSuchMethodException e) {
+    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
+  }
+catch (  IllegalArgumentException e) {
+    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
+  }
+catch (  IllegalAccessException e) {
+    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
+  }
+catch (  InvocationTargetException e) {
+    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
+  }
+catch (  MalformedURLException e) {
+    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
+  }
+}

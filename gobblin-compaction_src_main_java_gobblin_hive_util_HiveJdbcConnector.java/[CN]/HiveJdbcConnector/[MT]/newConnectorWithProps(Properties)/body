@@ -1,0 +1,20 @@
+{
+  HiveJdbcConnector hiveJdbcConnector=new HiveJdbcConnector();
+  if (compactRunProps.containsKey(HIVESERVER_VERSION)) {
+    hiveJdbcConnector.withHiveServerVersion(Integer.parseInt(compactRunProps.getProperty(HIVESERVER_VERSION,DEFAULT_HIVESERVER_VERSION)));
+  }
+  if (compactRunProps.containsKey(HIVESITE_DIR)) {
+    hiveJdbcConnector.addHiveSiteDirToClasspath(compactRunProps.getProperty(HIVESITE_DIR));
+  }
+  if (compactRunProps.containsKey(HIVESERVER_CONNECTION_STRING)) {
+    hiveJdbcConnector.withHiveConnectionFromUrl(compactRunProps.getProperty(HIVESERVER_CONNECTION_STRING));
+  }
+ else   if (compactRunProps.containsKey(HIVESERVER_URL)) {
+    hiveJdbcConnector.withHiveConnectionFromUrlUserPassword(compactRunProps.getProperty(HIVESERVER_URL),compactRunProps.getProperty(HIVESERVER_USER),compactRunProps.getProperty(HIVESERVER_PASSWORD));
+  }
+ else {
+    hiveJdbcConnector.withHiveEmbeddedConnection();
+  }
+  hiveJdbcConnector.setHiveProperties(compactRunProps);
+  return hiveJdbcConnector;
+}
