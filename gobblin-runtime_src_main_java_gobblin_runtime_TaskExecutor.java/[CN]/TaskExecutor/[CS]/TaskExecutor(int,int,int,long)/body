@@ -3,5 +3,5 @@
   this.taskRetryExecutor=new ScheduledThreadPoolExecutor(coreRetryThreadPoolSize);
   this.taskRetryExecutor.setMaximumPoolSize(maxRetryThreadPoolSize);
   this.retryIntervalInSeconds=retryIntervalInSeconds;
-  this.forkExecutor=new ThreadPoolExecutor(taskExecutorThreadPoolSize,Integer.MAX_VALUE,0L,TimeUnit.MILLISECONDS,new LinkedBlockingQueue<Runnable>(taskExecutorThreadPoolSize),ExecutorsUtils.newThreadFactory(Optional.of(LOG)));
+  this.forkExecutor=new ThreadPoolExecutor(taskExecutorThreadPoolSize,Integer.MAX_VALUE,0L,TimeUnit.MILLISECONDS,new SynchronousQueue<Runnable>(),ExecutorsUtils.newThreadFactory(Optional.of(LOG)));
 }
