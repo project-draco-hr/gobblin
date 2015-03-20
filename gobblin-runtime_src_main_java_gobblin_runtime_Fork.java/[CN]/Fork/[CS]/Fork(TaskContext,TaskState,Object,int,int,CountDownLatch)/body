@@ -14,4 +14,5 @@
   this.countDownLatch=countDownLatch;
   this.closer.register(this.rowLevelPolicyChecker);
   this.closer.register(this.writer);
+  this.forkState=new AtomicReference<ForkState>(ForkState.PENDING);
 }

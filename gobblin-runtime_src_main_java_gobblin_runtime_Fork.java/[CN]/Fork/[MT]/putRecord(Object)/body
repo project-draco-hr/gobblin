@@ -1,6 +1,6 @@
 {
-  if (this.done) {
-    throw new IllegalStateException(String.format("Fork %d of task %s is no longer running",this.index,this.taskId));
+  if (this.forkState.compareAndSet(ForkState.FAILED,ForkState.FAILED)) {
+    throw new IllegalStateException(String.format("Fork %d of task %s has failed and is no longer running",this.index,this.taskId));
   }
   return this.recordQueue.put(record);
 }

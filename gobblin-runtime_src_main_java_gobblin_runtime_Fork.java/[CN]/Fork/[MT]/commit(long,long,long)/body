@@ -1,5 +1,0 @@
-{
-  if (checkDataQuality(recordsPulled,expectedCount,pullLimit,this.convertedSchema)) {
-    commitData();
-  }
-}

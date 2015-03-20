@@ -1,4 +1,0 @@
-long recordsPulled
-long expectedCount
-long pullLimit
-Object schema
