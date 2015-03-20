@@ -1,0 +1,35 @@
+{
+  FileAlterationMonitor monitor=new FileAlterationMonitor(3000);
+  final Set<File> fileAltered=Sets.newHashSet();
+  final Semaphore semaphore=new Semaphore(0);
+  FileAlterationListener listener=new FileAlterationListenerAdaptor(){
+    @Override public void onFileCreate(    File file){
+      fileAltered.add(file);
+      semaphore.release();
+    }
+    @Override public void onFileChange(    File file){
+      fileAltered.add(file);
+      semaphore.release();
+    }
+  }
+;
+  SchedulerUtils.addFileAlterationObserver(monitor,listener,JOB_CONF_ROOT_DIR);
+  try {
+    monitor.start();
+    Thread.sleep(1000);
+    File jobConfigFile=new File(SUB_DIR11,"test111.pull");
+    Files.touch(jobConfigFile);
+    File commonPropsFile=new File(SUB_DIR1,"test.properties");
+    Files.touch(commonPropsFile);
+    File newJobConfigFile=new File(SUB_DIR11,"test112.pull");
+    Files.append("k1=v1",newJobConfigFile,Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
+    semaphore.acquire(3);
+    Assert.assertEquals(fileAltered.size(),3);
+    Assert.assertTrue(fileAltered.contains(jobConfigFile));
+    Assert.assertTrue(fileAltered.contains(commonPropsFile));
+    Assert.assertTrue(fileAltered.contains(newJobConfigFile));
+  }
+  finally {
+    monitor.stop();
+  }
+}

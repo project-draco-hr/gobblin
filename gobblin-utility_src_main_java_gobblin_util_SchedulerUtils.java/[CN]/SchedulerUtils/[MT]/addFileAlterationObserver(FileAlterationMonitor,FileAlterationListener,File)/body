@@ -1,0 +1,17 @@
+{
+  FileAlterationObserver observer=new FileAlterationObserver(rootDir);
+  observer.addListener(listener);
+  monitor.addObserver(observer);
+  File[] subDirs=rootDir.listFiles(new FileFilter(){
+    @Override public boolean accept(    File file){
+      return file.isDirectory();
+    }
+  }
+);
+  if (subDirs == null || subDirs.length == 0) {
+    return;
+  }
+  for (  File subDir : subDirs) {
+    addFileAlterationObserver(monitor,listener,subDir);
+  }
+}

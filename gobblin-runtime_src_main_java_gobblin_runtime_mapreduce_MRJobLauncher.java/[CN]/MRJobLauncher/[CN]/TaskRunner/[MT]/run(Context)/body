@@ -1,0 +1,12 @@
+{
+  this.setup(context);
+  try {
+    while (context.nextKeyValue()) {
+      this.map(context.getCurrentKey(),context.getCurrentValue(),context);
+    }
+    runWorkUnits(this.workUnits);
+  }
+  finally {
+    this.cleanup(context);
+  }
+}
