@@ -1,0 +1,12 @@
+{
+  Configuration conf=new Configuration();
+  String awsAccessKeyId=System.getenv("AWS_ACCESS_KEY_ID");
+  String awsSecretAccessKey=System.getenv("AWS_SECRET_ACCESS_KEY");
+  if (awsAccessKeyId != null && awsSecretAccessKey != null) {
+    conf.set("fs.s3.awsAccessKeyId",awsAccessKeyId);
+    conf.set("fs.s3.awsSecretAccessKey",awsSecretAccessKey);
+    conf.set("fs.s3n.awsAccessKeyId",awsAccessKeyId);
+    conf.set("fs.s3n.awsSecretAccessKey",awsSecretAccessKey);
+  }
+  return conf;
+}
