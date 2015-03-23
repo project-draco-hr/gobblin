@@ -1,0 +1,14 @@
+{
+  int columnCount=0;
+  if (column != null) {
+    columnCount=Arrays.asList(column.split(",")).size();
+  }
+switch (columnCount) {
+case 0:
+    return null;
+case 1:
+  return column;
+default :
+return "COALESCE(" + column + ")";
+}
+}
