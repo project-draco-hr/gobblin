@@ -10,6 +10,9 @@
  catch (      DataConversionException dce) {
         throw new RuntimeException(dce);
       }
+catch (      IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
     }
   }
 ;

@@ -1,9 +1,13 @@
 {
-  List<String> recordSplit=Lists.newArrayList(Splitter.onPattern(workUnit.getProp(ConfigurationKeys.CONVERTER_CSV_TO_JSON_DELIMITER)).trimResults().split(inputRecord));
+  InputStreamCSVReader reader=new InputStreamCSVReader(inputRecord,workUnit.getProp(ConfigurationKeys.CONVERTER_CSV_TO_JSON_DELIMITER).trim().charAt(0));
+  List<String> recordSplit=Lists.newArrayList(reader.splitRecord());
   JsonObject outputRecord=new JsonObject();
   for (int i=0; i < outputSchema.size(); i++) {
     if (i < recordSplit.size()) {
-      if (recordSplit.get(i).isEmpty() || recordSplit.get(i).toLowerCase().equals(NULL)) {
+      if (recordSplit.get(i) == null) {
+        outputRecord.add(outputSchema.get(i).getAsJsonObject().get("columnName").getAsString(),JsonNull.INSTANCE);
+      }
+ else       if (recordSplit.get(i).isEmpty() || recordSplit.get(i).toLowerCase().equals(NULL)) {
         outputRecord.add(outputSchema.get(i).getAsJsonObject().get("columnName").getAsString(),JsonNull.INSTANCE);
       }
  else {
