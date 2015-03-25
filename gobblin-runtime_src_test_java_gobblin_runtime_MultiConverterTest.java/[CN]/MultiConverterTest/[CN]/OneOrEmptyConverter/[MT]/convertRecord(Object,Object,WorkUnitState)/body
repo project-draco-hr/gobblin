@@ -1,0 +1,10 @@
+{
+  if (this.executionCount % this.recordNum == 0) {
+    this.executionCount++;
+    return new SingleRecordIterable<Object>(inputRecord);
+  }
+ else {
+    this.executionCount++;
+    return new EmptyIterable<Object>();
+  }
+}

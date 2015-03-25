@@ -1,2 +1,3 @@
 Object inputRecord
 WorkUnitState workUnitState
+List<Converter<?,?,?,?>> converters

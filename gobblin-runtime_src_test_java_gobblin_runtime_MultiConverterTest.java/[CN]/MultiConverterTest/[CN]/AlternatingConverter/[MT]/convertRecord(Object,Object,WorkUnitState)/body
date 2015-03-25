@@ -1,0 +1,18 @@
+{
+  if (this.executionCount % 3 == 0) {
+    this.executionCount++;
+    return new EmptyIterable<Object>();
+  }
+ else   if (this.executionCount % 2 == 0) {
+    this.executionCount++;
+    return new SingleRecordIterable<Object>(inputRecord);
+  }
+ else {
+    this.executionCount++;
+    List<Object> records=Lists.newArrayList();
+    for (int i=0; i < this.multiplicity; i++) {
+      records.add(inputRecord);
+    }
+    return records;
+  }
+}

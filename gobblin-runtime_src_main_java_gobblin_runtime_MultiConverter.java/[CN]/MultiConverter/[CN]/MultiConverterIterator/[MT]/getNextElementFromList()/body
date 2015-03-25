@@ -1,0 +1,14 @@
+{
+  Iterator<Object> itr;
+  while (this.currentRecordIndex > 0) {
+    itr=this.converterIteratorList.get(this.currentRecordIndex).getIterator();
+    if (itr.hasNext()) {
+      this.currentRecordIndex++;
+      return itr.next();
+    }
+ else {
+      this.currentRecordIndex--;
+    }
+  }
+  return null;
+}

@@ -1,6 +1,25 @@
 {
-  if (!this.hasNext()) {
-    throw new NoSuchElementException();
+  Object returnRecord=this.currentRecord;
+  if (this.converterIteratorList.isEmpty()) {
+    this.currentRecord=null;
+    return returnRecord;
   }
-  return this.outputIterator.next();
+  Iterator<Object> lastItr=Iterables.getLast(this.converterIteratorList).getIterator();
+  if (lastItr.hasNext()) {
+    this.currentRecord=lastItr.next();
+  }
+ else {
+    this.currentRecordIndex=this.converterIteratorList.size() - 1;
+    this.currentRecord=getNextElementFromList();
+    if (this.currentRecord == null) {
+      return returnRecord;
+    }
+    try {
+      setNextRecord();
+    }
+ catch (    DataConversionException e) {
+      Throwables.propagate(e);
+    }
+  }
+  return returnRecord;
 }
