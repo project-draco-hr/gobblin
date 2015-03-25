@@ -23,6 +23,9 @@
   this.conf.set("mapred.max.map.failures.percent","100");
   this.conf.set("mapreduce.map.failures.maxpercent","100");
   this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
+  if (System.getenv("HADOOP_TOKEN_FILE_LOCATION") != null) {
+    conf.set("mapreduce.job.credentials.binary",System.getenv("HADOOP_TOKEN_FILE_LOCATION"));
+  }
   this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + jobName);
   this.job.setJarByClass(MRJobLauncher.class);
   this.job.setMapperClass(TaskRunner.class);
