@@ -1,0 +1,4 @@
+{
+  ArrayList<String> record=this.getNextRecordFromStream();
+  return record;
+}
