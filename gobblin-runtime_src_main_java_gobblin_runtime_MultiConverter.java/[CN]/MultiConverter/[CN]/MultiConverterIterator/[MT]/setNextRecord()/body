@@ -7,7 +7,7 @@
       this.currentRecord=iterator.next();
     }
  else {
-      this.currentRecord=getNextElementFromList();
+      this.currentRecord=getNextElementFromStack();
     }
   }
 }

@@ -9,7 +9,7 @@
     this.currentRecord=lastItr.next();
   }
  else {
-    this.currentRecord=getNextElementFromList();
+    this.currentRecord=getNextElementFromStack();
     if (this.currentRecord == null) {
       return returnRecord;
     }
