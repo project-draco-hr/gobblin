@@ -1,13 +1,12 @@
 {
   Iterator<Object> itr;
-  while (this.currentRecordIndex > 0) {
-    itr=this.converterIteratorList.get(this.currentRecordIndex).getIterator();
+  while (!this.converterIteratorStack.isEmpty()) {
+    itr=this.converterIteratorStack.peek();
     if (itr.hasNext()) {
-      this.currentRecordIndex++;
       return itr.next();
     }
  else {
-      this.currentRecordIndex--;
+      this.converterIteratorStack.pop();
     }
   }
   return null;

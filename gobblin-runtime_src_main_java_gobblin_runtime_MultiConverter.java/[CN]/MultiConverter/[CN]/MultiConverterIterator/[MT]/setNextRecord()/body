@@ -1,11 +1,10 @@
 {
-  while (this.currentRecord != null && this.currentRecordIndex < this.converterIteratorList.size()) {
-    Converter converter=this.converterIteratorList.get(this.currentRecordIndex).getConverter();
+  while (this.currentRecord != null && this.converterIteratorStack.size() != this.converters.size()) {
+    Converter converter=this.converters.get(converterIteratorStack.size());
     Iterator<Object> iterator=converter.convertRecord(convertedSchemaMap.get(converter),this.currentRecord,this.workUnitState).iterator();
     if (iterator.hasNext()) {
-      this.converterIteratorList.get(this.currentRecordIndex).setIterator(iterator);
+      this.converterIteratorStack.push(iterator);
       this.currentRecord=iterator.next();
-      this.currentRecordIndex++;
     }
  else {
       this.currentRecord=getNextElementFromList();

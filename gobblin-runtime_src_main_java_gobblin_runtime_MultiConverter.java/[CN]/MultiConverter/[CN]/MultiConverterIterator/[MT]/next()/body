@@ -1,15 +1,14 @@
 {
   Object returnRecord=this.currentRecord;
-  if (this.converterIteratorList.isEmpty()) {
+  if (this.converterIteratorStack.isEmpty()) {
     this.currentRecord=null;
     return returnRecord;
   }
-  Iterator<Object> lastItr=Iterables.getLast(this.converterIteratorList).getIterator();
+  Iterator<Object> lastItr=this.converterIteratorStack.peek();
   if (lastItr.hasNext()) {
     this.currentRecord=lastItr.next();
   }
  else {
-    this.currentRecordIndex=this.converterIteratorList.size() - 1;
     this.currentRecord=getNextElementFromList();
     if (this.currentRecord == null) {
       return returnRecord;

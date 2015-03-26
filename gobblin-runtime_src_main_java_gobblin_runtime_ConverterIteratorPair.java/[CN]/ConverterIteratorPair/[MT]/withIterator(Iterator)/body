@@ -1,4 +1,0 @@
-{
-  this.itr=itr;
-  return this;
-}

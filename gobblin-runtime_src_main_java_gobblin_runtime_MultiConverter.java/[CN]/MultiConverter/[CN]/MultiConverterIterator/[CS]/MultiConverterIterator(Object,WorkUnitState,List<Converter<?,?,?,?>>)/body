@@ -1,9 +1,6 @@
 {
   this.workUnitState=workUnitState;
   this.currentRecord=inputRecord;
-  this.currentRecordIndex=0;
-  for (  Converter converter : converters) {
-    this.converterIteratorList.add(ConverterIteratorPair.newConverterIterator().withConverter(converter));
-  }
+  this.converters=converters;
   setNextRecord();
 }
