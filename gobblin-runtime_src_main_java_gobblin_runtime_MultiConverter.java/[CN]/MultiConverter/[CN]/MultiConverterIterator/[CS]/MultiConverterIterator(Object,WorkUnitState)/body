@@ -1,6 +1,5 @@
 {
   this.workUnitState=workUnitState;
   this.currentRecord=inputRecord;
-  this.converters=converters;
   setNextRecord();
 }

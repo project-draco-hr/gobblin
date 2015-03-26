@@ -6,7 +6,7 @@
   return new Iterable<Object>(){
     @Override public Iterator<Object> iterator(){
       try {
-        return new MultiConverterIterator(inputRecord,workUnit,converters);
+        return new MultiConverterIterator(inputRecord,workUnit);
       }
  catch (      DataConversionException dce) {
         throw new RuntimeException(dce);

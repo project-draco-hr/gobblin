@@ -1,6 +1,6 @@
 {
-  while (this.currentRecord != null && this.converterIteratorStack.size() != this.converters.size()) {
-    Converter converter=this.converters.get(converterIteratorStack.size());
+  while (this.currentRecord != null && this.converterIteratorStack.size() != converters.size()) {
+    Converter converter=converters.get(converterIteratorStack.size());
     Iterator<Object> iterator=converter.convertRecord(convertedSchemaMap.get(converter),this.currentRecord,this.workUnitState).iterator();
     if (iterator.hasNext()) {
       this.converterIteratorStack.push(iterator);
