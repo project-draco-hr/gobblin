@@ -1,0 +1,33 @@
+{
+  Path sourceDir=new Path(state.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY));
+  DateTime currentDay=new DateTime();
+  for (DateTime date=lowWaterMark; !date.isAfter(currentDay) && fileCount < maxFilesPerJob; date=date.plusDays(1)) {
+    String topicName=sourceDir.getName();
+    Path dayPath=new Path(sourceDir,DEFAULT_DATE_PARTITIONED_SOURCE_DAILY_FOLDER_NAME + Path.SEPARATOR + DAILY_FOLDER_FORMATTER.print(date));
+    try {
+      if (this.fs.exists(dayPath)) {
+        SourceState partitionState=new SourceState();
+        partitionState.addAll(state);
+        partitionState.setProp(ConfigurationKeys.SOURCE_ENTITY,topicName);
+        Extract extract=partitionState.createExtract(tableType,partitionState.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY),topicName);
+        LOG.info("Created extract: " + extract.getExtractId() + " for path "+ dayPath);
+        for (        FileStatus fileStatus : this.fs.listStatus(dayPath,getFileFilter())) {
+          LOG.info("Will process file " + fileStatus.getPath());
+          partitionState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,fileStatus.getPath());
+          partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,WATER_MARK_FORMATTER.print(date));
+          partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,WATER_MARK_FORMATTER.print(date));
+          WorkUnit singleWorkUnit=partitionState.createWorkUnit(extract);
+          multiWorkUnitWeightedQueue.addWorkUnit(singleWorkUnit,fileStatus.getLen());
+          fileCount++;
+        }
+      }
+ else {
+        LOG.info("Path " + dayPath + " does not exist, skipping");
+      }
+    }
+ catch (    IOException e) {
+      Throwables.propagate(e);
+    }
+  }
+  LOG.info("Total number of files extracted for the current run: " + fileCount);
+}

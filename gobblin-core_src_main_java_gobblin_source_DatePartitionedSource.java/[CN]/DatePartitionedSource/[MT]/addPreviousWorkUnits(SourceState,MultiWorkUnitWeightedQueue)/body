@@ -1,0 +1,14 @@
+{
+  int fileCount=0;
+  for (  WorkUnit wu : this.getPreviousWorkUnitsForRetry(state)) {
+    try {
+      multiWorkUnitWeightedQueue.addWorkUnit(wu,this.fs.getFileStatus(new Path(wu.getProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL))).getLen());
+    }
+ catch (    IOException e) {
+      Throwables.propagate(e);
+    }
+    LOG.info("Will process file from previous workunit: " + wu.getProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL));
+    fileCount++;
+  }
+  return fileCount;
+}

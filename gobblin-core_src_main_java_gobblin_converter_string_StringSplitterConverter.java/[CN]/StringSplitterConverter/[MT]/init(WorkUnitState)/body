@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(workUnit.contains(ConfigurationKeys.CONVERTER_STRING_SPLITTER_DELIMITER),"Cannot use " + this.getClass().getName() + " with out specifying "+ ConfigurationKeys.CONVERTER_STRING_SPLITTER_DELIMITER);
+  this.splitter=Splitter.on(workUnit.getProp(ConfigurationKeys.CONVERTER_STRING_SPLITTER_DELIMITER)).omitEmptyStrings();
+  return this;
+}

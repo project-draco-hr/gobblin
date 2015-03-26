@@ -1,0 +1,9 @@
+{
+  if (!this.matcher.isPresent()) {
+    this.matcher=Optional.of(this.pattern.matcher(inputRecord));
+  }
+ else {
+    this.matcher.get().reset(inputRecord);
+  }
+  return this.matcher.get().matches() ? new SingleRecordIterable<String>(inputRecord) : new EmptyIterable<String>();
+}

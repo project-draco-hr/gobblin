@@ -1,3 +1,4 @@
 {
-  return AvroUtils.getFieldSchema(inputSchema,this.fieldLocation).orNull();
+  Optional<Schema> schema=AvroUtils.getFieldSchema(inputSchema,this.fieldLocation);
+  return schema.orNull();
 }

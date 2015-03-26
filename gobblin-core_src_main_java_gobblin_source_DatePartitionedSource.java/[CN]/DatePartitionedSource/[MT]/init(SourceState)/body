@@ -1,0 +1,9 @@
+{
+  DateTimeZone.setDefault(DateTimeZone.forID("America/Los_Angeles"));
+  try {
+    initFileSystemHelper(state);
+  }
+ catch (  FileBasedHelperException e) {
+    Throwables.propagate(e);
+  }
+}

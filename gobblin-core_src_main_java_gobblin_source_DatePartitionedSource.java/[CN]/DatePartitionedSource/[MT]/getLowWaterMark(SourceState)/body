@@ -1,0 +1,13 @@
+{
+  long lwm=state.getPropAsLong(DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE);
+  List<WorkUnitState> previousStates=state.getPreviousWorkUnitStates();
+  for (  WorkUnitState previousState : previousStates) {
+    if (previousState.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
+      long previousHighWaterMark=previousState.getWorkunit().getHighWaterMark();
+      if (previousHighWaterMark > lwm) {
+        lwm=previousHighWaterMark;
+      }
+    }
+  }
+  return WATER_MARK_FORMATTER.parseDateTime(String.valueOf(lwm)).plusDays(1);
+}

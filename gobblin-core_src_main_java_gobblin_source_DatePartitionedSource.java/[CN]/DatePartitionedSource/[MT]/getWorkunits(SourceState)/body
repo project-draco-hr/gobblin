@@ -1,0 +1,21 @@
+{
+  init(state);
+  HadoopFsHelper fsHelper=(HadoopFsHelper)this.fsHelper;
+  this.fs=fsHelper.getFileSystem();
+  LOG.info("Retrieving the low water mark based on the previous execution");
+  DateTime lowWaterMark=getLowWaterMark(state);
+  LOG.info("The low water mark for this run is " + lowWaterMark);
+  int maxFilesPerJob=state.getPropAsInt(DATE_PARTITIONED_SOURCE_MAX_FILES_PER_JOB,DEFAULT_DATE_PARTITIONED_SOURCE_MAX_FILES_PER_JOB);
+  int maxWorkUnitsPerJob=state.getPropAsInt(DATE_PARTITIONED_SOURCE_MAX_WORKUNITS_PER_JOB,DEFAULT_DATE_PARTITIONED_SOURCE_MAX_WORKUNITS_PER_JOB);
+  LOG.info("Will pull data from " + lowWaterMark + " until "+ maxFilesPerJob+ " files have been processed");
+  LOG.info("Creating workunits");
+  TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
+  MultiWorkUnitWeightedQueue multiWorkUnitWeightedQueue=new MultiWorkUnitWeightedQueue(maxWorkUnitsPerJob);
+  int fileCount=addPreviousWorkUnits(state,multiWorkUnitWeightedQueue);
+  if (fileCount >= maxFilesPerJob) {
+    LOG.info("The number of work units from previous job has already reached the upper limit, no more workunits will be made");
+    return multiWorkUnitWeightedQueue.getList();
+  }
+  addNewWorkUnits(state,lowWaterMark,fileCount,maxFilesPerJob,tableType,multiWorkUnitWeightedQueue);
+  return multiWorkUnitWeightedQueue.getList();
+}
