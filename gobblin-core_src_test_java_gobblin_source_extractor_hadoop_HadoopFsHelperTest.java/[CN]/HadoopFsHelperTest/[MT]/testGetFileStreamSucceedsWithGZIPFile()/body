@@ -1,0 +1,13 @@
+{
+  SourceState sourceState=new SourceState();
+  URL rootUrl=getClass().getResource("/source/");
+  String rootPath=rootUrl.toString();
+  sourceState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,rootPath);
+  HadoopFsHelper fsHelper=new HadoopFsHelper(sourceState);
+  fsHelper.connect();
+  URL url=getClass().getResource("/source/simple.tsv.gz");
+  String path=url.toString();
+  InputStream in=fsHelper.getFileStream(path);
+  String contents=IOUtils.toString(in,"UTF-8");
+  Assert.assertEquals(contents,"A\t1\nB\t2\n");
+}
