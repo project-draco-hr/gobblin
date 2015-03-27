@@ -1,0 +1,10 @@
+{
+  this.converter=converter;
+  this.prevIterator=prevIterator;
+  if (this.prevIterator.hasNext()) {
+    this.currentIterator=converter.convertRecord(convertedSchemaMap.get(converter),this.prevIterator.next(),workUnitState).iterator();
+  }
+ else {
+    this.currentIterator=new EmptyIterable<Object>().iterator();
+  }
+}

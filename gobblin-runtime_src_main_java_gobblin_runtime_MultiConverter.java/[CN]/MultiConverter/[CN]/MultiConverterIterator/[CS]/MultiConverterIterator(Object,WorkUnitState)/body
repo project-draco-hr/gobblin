@@ -1,5 +1,12 @@
 {
   this.workUnitState=workUnitState;
-  this.currentRecord=inputRecord;
-  setNextRecord();
+  this.chainedConverterIterator=new SingleRecordIterable<Object>(inputRecord).iterator();
+  for (int i=0; i < converters.size(); i++) {
+    if (i == 0) {
+      this.chainedConverterIterator=new ChainedConverterIterator(new SingleRecordIterable<Object>(inputRecord).iterator(),converters.get(i));
+    }
+ else {
+      this.chainedConverterIterator=new ChainedConverterIterator(this.chainedConverterIterator,converters.get(i));
+    }
+  }
 }
