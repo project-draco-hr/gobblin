@@ -1,6 +1,0 @@
-SourceState state
-DateTime lowWaterMark
-int fileCount
-int maxFilesPerJob
-TableType tableType
-MultiWorkUnitWeightedQueue multiWorkUnitWeightedQueue

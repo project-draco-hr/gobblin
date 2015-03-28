@@ -1,0 +1,13 @@
+{
+  init(state);
+  LOG.info("Will pull data from " + this.lowWaterMark + " until "+ this.maxFilesPerJob+ " files have been processed, or until there is no more data to consume");
+  LOG.info("Creating workunits");
+  MultiWorkUnitWeightedQueue multiWorkUnitWeightedQueue=new MultiWorkUnitWeightedQueue(this.maxWorkUnitsPerJob);
+  addFailedWorkUnits(getPreviousWorkUnitsForRetry(this.sourceState),multiWorkUnitWeightedQueue);
+  if (this.fileCount >= this.maxFilesPerJob) {
+    LOG.info("The number of work units from previous job has already reached the upper limit, no more workunits will be made");
+    return multiWorkUnitWeightedQueue.getList();
+  }
+  addNewWorkUnits(multiWorkUnitWeightedQueue);
+  return multiWorkUnitWeightedQueue.getList();
+}

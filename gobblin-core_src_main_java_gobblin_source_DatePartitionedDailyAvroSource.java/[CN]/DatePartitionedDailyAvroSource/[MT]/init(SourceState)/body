@@ -1,0 +1,18 @@
+{
+  DateTimeZone.setDefault(DateTimeZone.forID(state.getProp(ConfigurationKeys.SOURCE_TIMEZONE,ConfigurationKeys.DEFAULT_SOURCE_TIMEZONE)));
+  try {
+    initFileSystemHelper(state);
+  }
+ catch (  FileBasedHelperException e) {
+    Throwables.propagate(e);
+  }
+  HadoopFsHelper fsHelper=(HadoopFsHelper)this.fsHelper;
+  this.fs=fsHelper.getFileSystem();
+  this.sourceState=state;
+  this.lowWaterMark=getLowWaterMark(state.getPreviousWorkUnitStates(),state.getPropAsLong(DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE,DEFAULT_DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE));
+  this.maxFilesPerJob=state.getPropAsInt(DATE_PARTITIONED_SOURCE_MAX_FILES_PER_JOB,DEFAULT_DATE_PARTITIONED_SOURCE_MAX_FILES_PER_JOB);
+  this.maxWorkUnitsPerJob=state.getPropAsInt(DATE_PARTITIONED_SOURCE_MAX_WORKUNITS_PER_JOB,DEFAULT_DATE_PARTITIONED_SOURCE_MAX_WORKUNITS_PER_JOB);
+  this.tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
+  this.fileCount=0;
+  this.sourceDir=new Path(state.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY));
+}

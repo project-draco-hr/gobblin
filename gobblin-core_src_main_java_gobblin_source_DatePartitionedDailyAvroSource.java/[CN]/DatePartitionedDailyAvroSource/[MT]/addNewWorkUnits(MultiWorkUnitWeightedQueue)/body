@@ -1,0 +1,33 @@
+{
+  DateTime currentDay=new DateTime();
+  DateTime lowWaterMarkDate=new DateTime(this.lowWaterMark);
+  String topicName=this.sourceDir.getName();
+  for (DateTime date=lowWaterMarkDate; !date.isAfter(currentDay) && this.fileCount < this.maxFilesPerJob; date=date.plusDays(1)) {
+    Path dayPath=new Path(this.sourceDir,DAILY_FOLDER_NAME + Path.SEPARATOR + DAILY_FOLDER_FORMATTER.print(date));
+    try {
+      if (this.fs.exists(dayPath)) {
+        SourceState partitionState=new SourceState();
+        partitionState.addAll(this.sourceState);
+        partitionState.setProp(ConfigurationKeys.SOURCE_ENTITY,topicName);
+        Extract extract=partitionState.createExtract(this.tableType,partitionState.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY),topicName);
+        LOG.info("Created extract: " + extract.getExtractId() + " for path "+ dayPath);
+        for (        FileStatus fileStatus : this.fs.listStatus(dayPath,getFileFilter())) {
+          LOG.info("Will process file " + fileStatus.getPath());
+          partitionState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,fileStatus.getPath());
+          partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,date.getMillis());
+          partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,date.getMillis());
+          WorkUnit singleWorkUnit=partitionState.createWorkUnit(extract);
+          multiWorkUnitWeightedQueue.addWorkUnit(singleWorkUnit,fileStatus.getLen());
+          this.fileCount++;
+        }
+      }
+ else {
+        LOG.info("Path " + dayPath + " does not exist, skipping");
+      }
+    }
+ catch (    IOException e) {
+      Throwables.propagate(e);
+    }
+  }
+  LOG.info("Total number of files extracted for the current run: " + this.fileCount);
+}

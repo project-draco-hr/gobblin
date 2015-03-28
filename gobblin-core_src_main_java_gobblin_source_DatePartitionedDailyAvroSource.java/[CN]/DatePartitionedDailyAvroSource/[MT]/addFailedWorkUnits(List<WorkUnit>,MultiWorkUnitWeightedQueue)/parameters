@@ -1,2 +1,2 @@
-SourceState state
+List<WorkUnit> previousWorkUnitsForRetry
 MultiWorkUnitWeightedQueue multiWorkUnitWeightedQueue

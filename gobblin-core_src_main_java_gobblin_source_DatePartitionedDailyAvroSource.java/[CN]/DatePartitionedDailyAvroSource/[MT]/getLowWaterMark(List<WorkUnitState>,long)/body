@@ -1,0 +1,11 @@
+{
+  for (  WorkUnitState previousState : previousStates) {
+    if (previousState.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
+      long previousHighWaterMark=previousState.getWorkunit().getHighWaterMark();
+      if (previousHighWaterMark > lowWaterMark) {
+        lowWaterMark=previousHighWaterMark;
+      }
+    }
+  }
+  return new DateTime(lowWaterMark).plusDays(1).getMillis();
+}

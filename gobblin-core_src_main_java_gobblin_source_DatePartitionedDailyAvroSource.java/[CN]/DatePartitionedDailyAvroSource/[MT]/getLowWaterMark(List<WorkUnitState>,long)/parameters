@@ -1,0 +1,2 @@
+List<WorkUnitState> previousStates
+long lowWaterMark
