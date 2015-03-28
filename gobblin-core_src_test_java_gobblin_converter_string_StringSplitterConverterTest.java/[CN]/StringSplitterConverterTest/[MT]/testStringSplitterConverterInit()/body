@@ -1,0 +1,5 @@
+{
+  WorkUnitState workUnitState=new WorkUnitState();
+  StringSplitterConverter converter=new StringSplitterConverter();
+  converter.init(workUnitState);
+}

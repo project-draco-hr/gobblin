@@ -1,0 +1,30 @@
+{
+  String delimiter="\t";
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.setProp(ConfigurationKeys.CONVERTER_STRING_SPLITTER_DELIMITER,delimiter);
+  StringSplitterConverter converter=new StringSplitterConverter();
+  converter.init(workUnitState);
+  String test="HelloWorld";
+  Iterator<String> itr=converter.convertRecord(String.class,test,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test);
+  Assert.assertTrue(!itr.hasNext());
+  String test1="Hello";
+  String test2="World";
+  test=test1 + delimiter + test2;
+  itr=converter.convertRecord(String.class,test,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test1);
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test2);
+  Assert.assertTrue(!itr.hasNext());
+  test1="Hello";
+  test2="World";
+  test=delimiter + test1 + delimiter+ delimiter+ test2+ delimiter;
+  itr=converter.convertRecord(String.class,test,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test1);
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test2);
+  Assert.assertTrue(!itr.hasNext());
+}

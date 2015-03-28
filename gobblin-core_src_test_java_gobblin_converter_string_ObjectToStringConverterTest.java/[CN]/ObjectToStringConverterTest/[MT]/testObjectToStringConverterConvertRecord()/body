@@ -1,0 +1,15 @@
+{
+  WorkUnitState workUnitState=new WorkUnitState();
+  ObjectToStringConverter converter=new ObjectToStringConverter();
+  converter.init(workUnitState);
+  Integer integerValue=new Integer(1);
+  Iterator<String> itr=converter.convertRecord(String.class,integerValue,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),"1");
+  Assert.assertTrue(!itr.hasNext());
+  Long longValue=new Long(2);
+  itr=converter.convertRecord(String.class,longValue,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),"2");
+  Assert.assertTrue(!itr.hasNext());
+}

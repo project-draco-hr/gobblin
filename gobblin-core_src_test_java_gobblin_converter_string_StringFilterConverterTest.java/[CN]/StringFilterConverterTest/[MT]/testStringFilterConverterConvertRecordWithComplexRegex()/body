@@ -1,0 +1,16 @@
+{
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.setProp(ConfigurationKeys.CONVERTER_FILTER_STRINGS_BY,".*");
+  StringFilterConverter converter=new StringFilterConverter();
+  converter.init(workUnitState);
+  String test="HelloWorld";
+  Iterator<String> itr=converter.convertRecord(String.class,test,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test);
+  Assert.assertTrue(!itr.hasNext());
+  test="Java";
+  itr=converter.convertRecord(String.class,test,workUnitState).iterator();
+  Assert.assertTrue(itr.hasNext());
+  Assert.assertEquals(itr.next(),test);
+  Assert.assertTrue(!itr.hasNext());
+}

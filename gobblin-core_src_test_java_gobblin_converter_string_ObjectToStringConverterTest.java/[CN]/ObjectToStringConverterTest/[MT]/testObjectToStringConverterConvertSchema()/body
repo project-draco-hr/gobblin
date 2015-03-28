@@ -1,0 +1,6 @@
+{
+  WorkUnitState workUnitState=new WorkUnitState();
+  ObjectToStringConverter converter=new ObjectToStringConverter();
+  converter.init(workUnitState);
+  Assert.assertEquals(converter.convertSchema(Object.class,workUnitState),String.class);
+}

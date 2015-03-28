@@ -1,0 +1,8 @@
+{
+  WorkUnitState workUnitState=new WorkUnitState();
+  StringFilterConverter converter=new StringFilterConverter();
+  converter.init(workUnitState);
+  String test="HelloWorld";
+  Iterator<String> itr=converter.convertRecord(String.class,test,workUnitState).iterator();
+  Assert.assertTrue(!itr.hasNext());
+}
