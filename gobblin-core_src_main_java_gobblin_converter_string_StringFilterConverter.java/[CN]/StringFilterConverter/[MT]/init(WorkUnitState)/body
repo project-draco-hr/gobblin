@@ -1,5 +1,5 @@
 {
-  this.pattern=Pattern.compile(Strings.nullToEmpty(workUnit.getProp(ConfigurationKeys.CONVERTER_FILTER_STRINGS_BY)));
+  this.pattern=Pattern.compile(Strings.nullToEmpty(workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(workUnit,ConfigurationKeys.CONVERTER_FILTER_STRINGS_BY))));
   this.matcher=Optional.absent();
   return this;
 }
