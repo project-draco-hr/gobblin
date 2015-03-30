@@ -1,0 +1,3 @@
+{
+  return branch >= 0 ? path + Path.SEPARATOR + ForkOperatorUtils.getBranchName(state,branch,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + branch) : path;
+}

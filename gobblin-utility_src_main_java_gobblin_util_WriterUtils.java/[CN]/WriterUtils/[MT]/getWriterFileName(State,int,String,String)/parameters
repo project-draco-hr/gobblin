@@ -1,0 +1,4 @@
+State state
+int branch
+String writerId
+String formatExtension

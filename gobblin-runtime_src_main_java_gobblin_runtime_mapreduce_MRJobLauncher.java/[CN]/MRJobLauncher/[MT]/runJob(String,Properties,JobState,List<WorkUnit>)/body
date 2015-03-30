@@ -32,6 +32,16 @@
   this.job.setMapOutputKeyClass(NullWritable.class);
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);
+  for (  WorkUnit workUnit : workUnits) {
+    if (workUnit instanceof MultiWorkUnit) {
+      for (      WorkUnit mulitWorkUnitChild : ((MultiWorkUnit)workUnit).getWorkUnits()) {
+        JobLauncherUtils.cleanStagingData(mulitWorkUnitChild,LOG);
+      }
+    }
+ else {
+      JobLauncherUtils.cleanStagingData(workUnit,LOG);
+    }
+  }
   Path jobInputPath=new Path(mrJobDir,"input");
   Path jobInputFile=prepareJobInput(jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY),jobInputPath,workUnits);
   NLineInputFormat.addInputPath(this.job,jobInputFile);

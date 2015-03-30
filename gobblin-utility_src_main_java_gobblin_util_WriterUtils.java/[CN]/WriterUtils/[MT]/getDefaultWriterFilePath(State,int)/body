@@ -1,0 +1,11 @@
+{
+  if (state instanceof WorkUnitState) {
+    WorkUnitState workUnitState=(WorkUnitState)state;
+    return ForkOperatorUtils.getPathForBranch(workUnitState,workUnitState.getExtract().getOutputFilePath(),branch);
+  }
+ else   if (state instanceof WorkUnit) {
+    WorkUnit workUnit=(WorkUnit)state;
+    return ForkOperatorUtils.getPathForBranch(workUnit,workUnit.getExtract().getOutputFilePath(),branch);
+  }
+  throw new RuntimeException("In order to get the default value for " + ConfigurationKeys.WRITER_FILE_PATH + " the given state must be of type "+ WorkUnitState.class.getName()+ " or "+ WorkUnit.class.getName());
+}
