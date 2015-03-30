@@ -1,11 +1,12 @@
 {
+  long lowWaterMarkValue=DAILY_FOLDER_FORMATTER.parseMillis(lowWaterMark);
   for (  WorkUnitState previousState : previousStates) {
     if (previousState.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
       long previousHighWaterMark=previousState.getWorkunit().getHighWaterMark();
-      if (previousHighWaterMark > lowWaterMark) {
-        lowWaterMark=previousHighWaterMark;
+      if (previousHighWaterMark > lowWaterMarkValue) {
+        lowWaterMarkValue=previousHighWaterMark;
       }
     }
   }
-  return new DateTime(lowWaterMark).plusDays(1).getMillis();
+  return new DateTime(lowWaterMarkValue).plusDays(1).getMillis();
 }

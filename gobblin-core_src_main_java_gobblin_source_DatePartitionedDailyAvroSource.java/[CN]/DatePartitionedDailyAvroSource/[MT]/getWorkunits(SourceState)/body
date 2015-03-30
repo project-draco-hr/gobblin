@@ -1,6 +1,6 @@
 {
   init(state);
-  LOG.info("Will pull data from " + this.lowWaterMark + " until "+ this.maxFilesPerJob+ " files have been processed, or until there is no more data to consume");
+  LOG.info("Will pull data from " + DAILY_FOLDER_FORMATTER.print(this.lowWaterMark) + " until "+ this.maxFilesPerJob+ " files have been processed, or until there is no more data to consume");
   LOG.info("Creating workunits");
   MultiWorkUnitWeightedQueue multiWorkUnitWeightedQueue=new MultiWorkUnitWeightedQueue(this.maxWorkUnitsPerJob);
   addFailedWorkUnits(getPreviousWorkUnitsForRetry(this.sourceState),multiWorkUnitWeightedQueue);

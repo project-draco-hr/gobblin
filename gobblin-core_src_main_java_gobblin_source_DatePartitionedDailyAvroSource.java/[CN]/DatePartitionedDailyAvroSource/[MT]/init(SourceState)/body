@@ -9,7 +9,7 @@
   HadoopFsHelper fsHelper=(HadoopFsHelper)this.fsHelper;
   this.fs=fsHelper.getFileSystem();
   this.sourceState=state;
-  this.lowWaterMark=getLowWaterMark(state.getPreviousWorkUnitStates(),state.getPropAsLong(DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE,DEFAULT_DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE));
+  this.lowWaterMark=getLowWaterMark(state.getPreviousWorkUnitStates(),state.getProp(DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE,DAILY_FOLDER_FORMATTER.print(DEFAULT_DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE)));
   this.maxFilesPerJob=state.getPropAsInt(DATE_PARTITIONED_SOURCE_MAX_FILES_PER_JOB,DEFAULT_DATE_PARTITIONED_SOURCE_MAX_FILES_PER_JOB);
   this.maxWorkUnitsPerJob=state.getPropAsInt(DATE_PARTITIONED_SOURCE_MAX_WORKUNITS_PER_JOB,DEFAULT_DATE_PARTITIONED_SOURCE_MAX_WORKUNITS_PER_JOB);
   this.tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());

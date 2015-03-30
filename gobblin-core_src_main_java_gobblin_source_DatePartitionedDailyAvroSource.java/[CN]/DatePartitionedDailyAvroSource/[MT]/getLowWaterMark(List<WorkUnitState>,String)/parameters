@@ -1,2 +1,2 @@
 List<WorkUnitState> previousStates
-long lowWaterMark
+String lowWaterMark
