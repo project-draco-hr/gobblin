@@ -1,5 +1,0 @@
-{
-  for (  AvroHdfsDataWriter avroHdfsDataWriter : avroHdfsDataWriters) {
-    avroHdfsDataWriter.close();
-  }
-}

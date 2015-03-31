@@ -1,3 +1,0 @@
-{
-  this.avroHdfsDataWriters=Lists.newArrayList();
-}
