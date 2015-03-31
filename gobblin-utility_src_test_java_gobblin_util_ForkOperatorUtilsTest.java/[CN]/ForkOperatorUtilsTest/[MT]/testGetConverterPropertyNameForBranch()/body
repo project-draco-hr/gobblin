@@ -1,9 +1,0 @@
-{
-  WorkUnitState workUnitState=new WorkUnitState();
-  workUnitState.setProp(PROPERTY_FOO,PATH_FOO);
-  Assert.assertEquals(ForkOperatorUtils.getConverterPropertyNameForBranch(workUnitState,PROPERTY_FOO),PROPERTY_FOO);
-  workUnitState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,-1);
-  Assert.assertEquals(ForkOperatorUtils.getConverterPropertyNameForBranch(workUnitState,PROPERTY_FOO),PROPERTY_FOO);
-  workUnitState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,0);
-  Assert.assertEquals(ForkOperatorUtils.getConverterPropertyNameForBranch(workUnitState,PROPERTY_FOO),PROPERTY_FOO + ".0");
-}
