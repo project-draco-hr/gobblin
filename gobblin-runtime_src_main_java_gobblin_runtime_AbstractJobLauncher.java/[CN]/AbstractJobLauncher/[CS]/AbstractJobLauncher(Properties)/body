@@ -1,7 +1,6 @@
 {
   this.properties=properties;
   this.jobStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
-  this.taskStateStore=new FsStateStore(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),TaskState.class);
   if (Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()))) {
     Injector injector=Guice.createInjector(new MetaStoreModule(properties));
     this.jobHistoryStore=Optional.of(injector.getInstance(JobHistoryStore.class));

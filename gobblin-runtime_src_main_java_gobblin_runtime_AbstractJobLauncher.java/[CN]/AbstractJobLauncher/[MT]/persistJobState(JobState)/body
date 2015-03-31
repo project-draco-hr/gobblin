@@ -5,9 +5,7 @@
   }
   String jobName=jobState.getJobName();
   String jobId=jobState.getJobId();
-  LOG.info("Persisting job/task states of job " + jobId);
-  this.taskStateStore.putAll(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,jobState.getTaskStates());
+  LOG.info("Persisting job states of job " + jobId);
   this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
-  this.taskStateStore.createAlias(jobName,jobId + TASK_STATE_STORE_TABLE_SUFFIX,"current" + TASK_STATE_STORE_TABLE_SUFFIX);
   this.jobStateStore.createAlias(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,"current" + JOB_STATE_STORE_TABLE_SUFFIX);
 }
