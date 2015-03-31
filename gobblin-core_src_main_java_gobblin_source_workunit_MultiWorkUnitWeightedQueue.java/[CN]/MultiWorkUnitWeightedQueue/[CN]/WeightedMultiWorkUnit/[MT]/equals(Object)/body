@@ -1,0 +1,4 @@
+{
+  WeightedMultiWorkUnit weightedMultiWorkUnit=(WeightedMultiWorkUnit)obj;
+  return this.weight == weightedMultiWorkUnit.getWeight();
+}
