@@ -1,0 +1,8 @@
+{
+  return new PathFilter(){
+    @Override public boolean accept(    Path path){
+      return path.getName().endsWith(AVRO_SUFFIX);
+    }
+  }
+;
+}

@@ -1,0 +1,4 @@
+{
+  this.weightedWorkUnitQueue=new PriorityQueue<WeightedMultiWorkUnit>(maxMultiWorkUnits);
+  this.maxMultiWorkUnits=maxMultiWorkUnits;
+}

@@ -1,0 +1,16 @@
+{
+  int numWorkUnits=10;
+  int weight=1;
+  MultiWorkUnitWeightedQueue multiWorkUnitWeightedQueue=new MultiWorkUnitWeightedQueue();
+  WorkUnit workUnit=new WorkUnit();
+  for (int i=0; i < numWorkUnits; i++) {
+    multiWorkUnitWeightedQueue.addWorkUnit(workUnit,weight);
+  }
+  List<WorkUnit> multiWorkUnitWeightedQueueList=multiWorkUnitWeightedQueue.getQueueAsList();
+  Assert.assertEquals(multiWorkUnitWeightedQueueList.size(),numWorkUnits);
+  MultiWorkUnit multiWorkUnit;
+  for (  WorkUnit workUnitElement : multiWorkUnitWeightedQueueList) {
+    multiWorkUnit=(MultiWorkUnit)workUnitElement;
+    Assert.assertEquals(multiWorkUnit.getWorkUnits().size(),1);
+  }
+}

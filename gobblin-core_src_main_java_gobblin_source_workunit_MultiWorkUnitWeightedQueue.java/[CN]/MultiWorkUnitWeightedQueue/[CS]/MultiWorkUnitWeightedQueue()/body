@@ -1,0 +1,3 @@
+{
+  this.weightedWorkUnitQueue=new PriorityQueue<WeightedMultiWorkUnit>();
+}

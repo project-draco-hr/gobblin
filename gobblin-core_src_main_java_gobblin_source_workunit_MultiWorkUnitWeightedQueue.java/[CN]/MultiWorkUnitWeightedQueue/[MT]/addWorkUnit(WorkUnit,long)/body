@@ -1,0 +1,12 @@
+{
+  WeightedMultiWorkUnit weightMultiWorkUnit;
+  if (this.numMultiWorkUnits < this.maxMultiWorkUnits) {
+    weightMultiWorkUnit=new WeightedMultiWorkUnit();
+    this.numMultiWorkUnits++;
+  }
+ else {
+    weightMultiWorkUnit=this.weightedWorkUnitQueue.poll();
+  }
+  weightMultiWorkUnit.addWorkUnit(weight,workUnit);
+  this.weightedWorkUnitQueue.offer(weightMultiWorkUnit);
+}

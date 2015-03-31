@@ -1,0 +1,4 @@
+{
+  this.addWorkUnit(newWorkUnit);
+  this.weight+=weight;
+}

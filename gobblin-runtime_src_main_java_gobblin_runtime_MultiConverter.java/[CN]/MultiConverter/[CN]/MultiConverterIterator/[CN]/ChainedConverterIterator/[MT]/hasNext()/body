@@ -1,0 +1,17 @@
+{
+  if (this.currentIterator.hasNext()) {
+    return true;
+  }
+  while (this.prevIterator.hasNext()) {
+    try {
+      this.currentIterator=converter.convertRecord(convertedSchemaMap.get(converter),this.prevIterator.next(),workUnitState).iterator();
+    }
+ catch (    DataConversionException e) {
+      Throwables.propagate(e);
+    }
+    if (this.currentIterator.hasNext()) {
+      return true;
+    }
+  }
+  return false;
+}

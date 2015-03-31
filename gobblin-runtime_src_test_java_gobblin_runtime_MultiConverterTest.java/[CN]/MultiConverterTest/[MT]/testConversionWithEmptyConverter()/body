@@ -9,4 +9,10 @@
   multiConverter=new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(),new TestConverter(),new EmptyConverter()));
   schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
   Assert.assertFalse(multiConverter.convertRecord(schema,TEST_RECORD,workUnitState).iterator().hasNext());
+  multiConverter=new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(),new MultiIdentityConverter(5),new TestConverter(),new EmptyConverter()));
+  schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
+  Assert.assertFalse(multiConverter.convertRecord(schema,TEST_RECORD,workUnitState).iterator().hasNext());
+  multiConverter=new MultiConverter(Lists.newArrayList(new SchemaSimplificationConverter(),new EmptyConverter(),new MultiIdentityConverter(5),new TestConverter()));
+  schema=(Schema)multiConverter.convertSchema(TEST_SCHEMA,workUnitState);
+  Assert.assertFalse(multiConverter.convertRecord(schema,TEST_RECORD,workUnitState).iterator().hasNext());
 }

@@ -1,0 +1,6 @@
+{
+  if (this.hasNext()) {
+    return this.currentIterator.next();
+  }
+  throw new NoSuchElementException();
+}
