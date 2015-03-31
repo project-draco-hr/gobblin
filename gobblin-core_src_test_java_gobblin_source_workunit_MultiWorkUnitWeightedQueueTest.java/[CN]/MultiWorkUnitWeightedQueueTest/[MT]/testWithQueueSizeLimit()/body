@@ -8,7 +8,7 @@
     multiWorkUnitWeightedQueue.addWorkUnit(workUnit,weight);
   }
   MultiWorkUnit multiWorkUnit;
-  for (  WorkUnit workUnitElement : multiWorkUnitWeightedQueue.getList()) {
+  for (  WorkUnit workUnitElement : multiWorkUnitWeightedQueue.getQueueAsList()) {
     multiWorkUnit=(MultiWorkUnit)workUnitElement;
     Assert.assertEquals(multiWorkUnit.getWorkUnits().size(),numWorkUnits / maxMultiWorkUnits);
   }
