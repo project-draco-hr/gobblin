@@ -1,0 +1,16 @@
+{
+  this.queueSizeGauge=new Gauge<Integer>(){
+    @Override public Integer getValue(){
+      return blockingDeque.size();
+    }
+  }
+;
+  this.fillRatioGauge=new Gauge<Double>(){
+    @Override public Double getValue(){
+      return (double)blockingDeque.size() / capacity;
+    }
+  }
+;
+  this.putsRateMeter=new Meter();
+  this.getsRateMeter=new Meter();
+}

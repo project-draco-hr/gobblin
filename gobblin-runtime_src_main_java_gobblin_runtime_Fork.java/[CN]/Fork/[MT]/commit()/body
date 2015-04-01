@@ -12,7 +12,7 @@
   }
  catch (  Throwable t) {
     this.logger.error(String.format("Fork %d of task %s failed to commit data",this.index,this.taskId),t);
-    setForkState(ForkState.SUCCEEDED,ForkState.FAILED);
+    this.forkState.set(ForkState.FAILED);
     Throwables.propagate(t);
   }
 }

@@ -1,3 +1,3 @@
 {
-  return this.getsRateMeter.isPresent() ? this.getsRateMeter.get().getCount() : 0l;
+  return this.getsRateMeter.getCount();
 }

@@ -1,24 +1,23 @@
 {
   while (true) {
-    Object record;
     try {
-      record=this.recordQueue.get();
+      Object record=this.recordQueue.get();
+      if (record == null) {
+        if (this.parentTaskDone) {
+          return;
+        }
+      }
+ else {
+        for (        Object convertedRecord : this.converter.convertRecord(this.convertedSchema,record,this.taskState)) {
+          if (this.rowLevelPolicyChecker.executePolicies(convertedRecord,this.rowLevelPolicyCheckingResult)) {
+            this.writer.write(convertedRecord);
+          }
+        }
+      }
     }
  catch (    InterruptedException ie) {
       this.logger.warn("Interrupted while trying to get a record off the queue",ie);
-      continue;
-    }
-    if (record == null) {
-      if (this.parentTaskDone) {
-        return;
-      }
-    }
- else {
-      for (      Object convertedRecord : this.converter.convertRecord(this.convertedSchema,record,this.taskState)) {
-        if (this.rowLevelPolicyChecker.executePolicies(convertedRecord,this.rowLevelPolicyCheckingResult)) {
-          this.writer.write(convertedRecord);
-        }
-      }
+      Throwables.propagate(ie);
     }
   }
 }

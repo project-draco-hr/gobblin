@@ -5,17 +5,17 @@
     setForkState(ForkState.RUNNING,ForkState.SUCCEEDED);
   }
  catch (  IOException ioe) {
-    setForkState(ForkState.RUNNING,ForkState.FAILED);
+    this.forkState.set(ForkState.FAILED);
     this.logger.error(String.format("Fork %d of task %s failed to process data records",this.index,this.taskId),ioe);
     Throwables.propagate(ioe);
   }
 catch (  DataConversionException dce) {
-    setForkState(ForkState.RUNNING,ForkState.FAILED);
+    this.forkState.set(ForkState.FAILED);
     this.logger.error(String.format("Fork %d of task %s failed to convert data records",this.index,this.taskId),dce);
     Throwables.propagate(dce);
   }
 catch (  Throwable t) {
-    setForkState(ForkState.RUNNING,ForkState.FAILED);
+    this.forkState.set(ForkState.FAILED);
     this.logger.error(String.format("Fork %d of task %s failed to process data records",this.index,this.taskId),t);
     Throwables.propagate(t);
   }

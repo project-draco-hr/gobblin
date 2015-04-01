@@ -1,6 +1,6 @@
 {
   MetricRegistry metricRegistry=new MetricRegistry();
-  this.boundedBlockingRecordQueue.stats().registerAll(metricRegistry,METRIC_NAME_PREFIX);
+  this.boundedBlockingRecordQueue.stats().get().registerAll(metricRegistry,METRIC_NAME_PREFIX);
   Map<String,Gauge> gauges=metricRegistry.getGauges();
   Assert.assertEquals(gauges.size(),2);
   Assert.assertEquals(gauges.get(MetricRegistry.name(METRIC_NAME_PREFIX,BoundedBlockingRecordQueue.QueueStats.QUEUE_SIZE)).getValue(),2);

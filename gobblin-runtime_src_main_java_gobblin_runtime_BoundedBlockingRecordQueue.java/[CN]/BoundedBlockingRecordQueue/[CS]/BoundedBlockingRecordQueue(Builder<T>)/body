@@ -5,6 +5,5 @@
   this.timeout=builder.timeout;
   this.timeoutTimeUnit=builder.timeoutTimeUnit;
   this.blockingDeque=Queues.newLinkedBlockingDeque(builder.capacity);
-  this.ifCollectStats=builder.ifCollectStats;
-  this.queueStats=new QueueStats(builder.ifCollectStats);
+  this.queueStats=builder.ifCollectStats ? Optional.of(new QueueStats()) : Optional.<QueueStats>absent();
 }
