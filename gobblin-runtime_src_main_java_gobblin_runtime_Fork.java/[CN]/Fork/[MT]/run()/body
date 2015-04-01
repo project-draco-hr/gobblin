@@ -1,8 +1,8 @@
 {
-  setForkState(ForkState.PENDING,ForkState.RUNNING);
+  compareAndSetForkState(ForkState.PENDING,ForkState.RUNNING);
   try {
     processRecords();
-    setForkState(ForkState.RUNNING,ForkState.SUCCEEDED);
+    compareAndSetForkState(ForkState.RUNNING,ForkState.SUCCEEDED);
   }
  catch (  IOException ioe) {
     this.forkState.set(ForkState.FAILED);

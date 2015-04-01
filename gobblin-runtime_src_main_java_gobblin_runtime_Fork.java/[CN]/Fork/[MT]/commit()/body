@@ -3,11 +3,11 @@
     if (checkDataQuality(this.convertedSchema)) {
       this.logger.info(String.format("Committing data for fork %d of task %s",this.index,this.taskId));
       commitData();
-      setForkState(ForkState.SUCCEEDED,ForkState.COMMITTED);
+      compareAndSetForkState(ForkState.SUCCEEDED,ForkState.COMMITTED);
     }
  else {
       this.logger.error(String.format("Fork %d of task %s failed to pass quality checking",this.index,this.taskId));
-      setForkState(ForkState.SUCCEEDED,ForkState.FAILED);
+      compareAndSetForkState(ForkState.SUCCEEDED,ForkState.FAILED);
     }
   }
  catch (  Throwable t) {

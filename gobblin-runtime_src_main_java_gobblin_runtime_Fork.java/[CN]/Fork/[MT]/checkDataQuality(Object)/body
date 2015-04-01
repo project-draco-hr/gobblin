@@ -2,7 +2,6 @@
   TaskState taskStateForFork=this.taskState;
   if (this.branches > 1) {
     taskStateForFork=new TaskState(this.taskState);
-    taskStateForFork.addAll(this.taskState);
   }
   taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
   taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.toString());
