@@ -1,0 +1,19 @@
+{
+  byte[] payload=getBytes(messageAndOffset.message().payload());
+  if (payload[0] != MAGIC_BYTE) {
+    throw new RuntimeException(String.format("Unknown magic byte for topic %s, partition %d",this.partition.getTopicName(),this.partition.getId()));
+  }
+  byte[] schemaIdByteArray=Arrays.copyOfRange(payload,1,1 + SCHEMA_ID_LENGTH_BYTE);
+  String schemaId=Hex.encodeHexString(schemaIdByteArray);
+  Schema schema=null;
+  schema=this.schemaRegistry.getSchemaById(schemaId);
+  reader.setSchema(schema);
+  Decoder binaryDecoder=DecoderFactory.get().binaryDecoder(payload,1 + SCHEMA_ID_LENGTH_BYTE,payload.length - 1 - SCHEMA_ID_LENGTH_BYTE,null);
+  try {
+    return reader.read((GenericData.Record)reuse,binaryDecoder);
+  }
+ catch (  IOException e) {
+    LOG.error(String.format("Error during decoding record for topic %s, partition %d: ",this.partition.getTopicName(),this.partition.getId()));
+    throw e;
+  }
+}

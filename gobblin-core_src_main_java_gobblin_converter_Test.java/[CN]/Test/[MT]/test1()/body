@@ -1,0 +1,13 @@
+{
+  Schema full=new Schema.Parser().parse(new File("/Users/ziliu/Documents/avrotest/pve.avsc"));
+  Schema less=new Schema.Parser().parse(new File("/Users/ziliu/Documents/avrotest/pve2.avsc"));
+  GenericRecord pve=read(full,"/Users/ziliu/Documents/avrotest/pve.json");
+  GenericRecord pve2=read(less,"/Users/ziliu/Documents/avrotest/pve2.json");
+  GenericRecord pve3=AvroUtils.evolveSchema(pve,less);
+  GenericRecord pve4=AvroUtils.evolveSchema(pve2,full);
+  DatumWriter<GenericRecord> dw=new GenericDatumWriter<GenericRecord>(full);
+  DataFileWriter writer=new DataFileWriter(dw);
+  writer.create(full,new File("test.avro"));
+  writer.append(pve4);
+  writer.close();
+}

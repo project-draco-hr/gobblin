@@ -1,0 +1,8 @@
+{
+  Preconditions.checkNotNull(state.getProp(KAFKA_BROKERS),"Need to specify at least one Kafka broker.");
+  KafkaWrapper.Builder builder=new KafkaWrapper.Builder();
+  if (state.getPropAsBoolean(USE_NEW_KAFKA_API,DEFAULT_USE_NEW_KAFKA_API)) {
+    builder=builder.withNewKafkaAPI();
+  }
+  return builder.withBrokers(state.getPropAsList(KAFKA_BROKERS)).build();
+}

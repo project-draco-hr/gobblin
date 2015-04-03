@@ -1,0 +1,36 @@
+{
+  String schemaUrl=KafkaAvroSchemaRegistry.this.url + GET_RESOURCE_BY_TYPE + topic;
+  LOG.debug("Fetching from URL : " + schemaUrl);
+  GetMethod get=new GetMethod(schemaUrl);
+  int statusCode;
+  String schemaString;
+  try {
+    statusCode=KafkaAvroSchemaRegistry.this.httpClient.executeMethod(get);
+    schemaString=get.getResponseBodyAsString();
+  }
+ catch (  HttpException e) {
+    throw new RuntimeException(e);
+  }
+catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
+ finally {
+    get.releaseConnection();
+  }
+  if (statusCode != HttpStatus.SC_OK) {
+    throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+  }
+  Schema schema;
+  if (schemaString.startsWith("{")) {
+    try {
+      schema=new Schema.Parser().parse(schemaString);
+    }
+ catch (    Exception e) {
+      throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+    }
+  }
+ else {
+    throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+  }
+  return schema;
+}

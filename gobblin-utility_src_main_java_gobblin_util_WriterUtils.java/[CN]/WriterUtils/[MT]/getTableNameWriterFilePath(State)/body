@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(state.contains(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY));
+  return new Path(state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY));
+}

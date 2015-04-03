@@ -1,0 +1,10 @@
+{
+  for (  FileStatus status : fileSystem.listStatus(path)) {
+    if (!status.isDir()) {
+      results.add(status);
+    }
+ else {
+      walk(results,fileSystem,status.getPath());
+    }
+  }
+}

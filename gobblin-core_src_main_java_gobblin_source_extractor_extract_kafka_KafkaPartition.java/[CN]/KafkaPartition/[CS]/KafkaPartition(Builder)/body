@@ -1,0 +1,5 @@
+{
+  this.id=builder.id;
+  this.topicName=builder.topicName;
+  this.leader=new KafkaLeader(builder.leaderId,builder.leaderHost,builder.leaderPort);
+}

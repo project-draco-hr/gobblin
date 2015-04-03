@@ -1,0 +1,8 @@
+{
+  SimpleConsumer consumer=getSimpleConsumer(partition.getLeader().getHost(),partition.getLeader().getPort());
+  FetchResponse fetchResponse=consumer.fetch(fetchRequest);
+  if (fetchResponse.hasError()) {
+    throw new RuntimeException(String.format("error code %d",fetchResponse.errorCode(partition.getTopicName(),partition.getId())));
+  }
+  return fetchResponse;
+}

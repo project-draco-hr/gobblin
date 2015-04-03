@@ -1,0 +1,33 @@
+{
+  Offsets offsets=new Offsets();
+  try {
+    offsets.setEarliestOffset(kafkaWrapper.getEarliestOffset(partition));
+    offsets.setLatestOffset(kafkaWrapper.getLatestOffset(partition));
+    if (shouldMoveToLatestOffset(partition,state)) {
+      offsets.startAtLatestOffset();
+    }
+ else {
+      offsets.startAt(getPreviousOffsetForPartition(partition,state));
+    }
+  }
+ catch (  KafkaOffsetRetrievalFailureException e) {
+    LOG.warn(String.format("Failed to retrieve earliest and/or latest offset for topic %s, partition %s. This partition will be skipped.",partition.getTopicName(),partition.getId()));
+    return null;
+  }
+catch (  PreviousOffsetNotFoundException e) {
+    LOG.warn(String.format("Previous offset for topic %s, partition %s does not exist. This partition will start from the earliest offset: %d",partition.getTopicName(),partition.getId(),offsets.getEarliestOffset()));
+    offsets.startAtEarliestOffset();
+  }
+catch (  StartOffsetOutOfRangeException e) {
+    LOG.warn(String.format("Start offset for topic %s, partition %s is out of range. Start offset = %d, earliest offset = %d, latest offset = %d.",partition.getTopicName(),partition.getId(),offsets.getStartOffset(),offsets.getEarliestOffset(),offsets.getLatestOffset()));
+    if (movingToEarliestOffsetAllowed(state)) {
+      LOG.warn("Moving to earliest offset allowed. This partition will start from the earliest offset: %d",offsets.getEarliestOffset());
+      offsets.startAtEarliestOffset();
+    }
+ else {
+      LOG.warn("Moving to earliest offset not allowed. This partition will be skipped.");
+      return null;
+    }
+  }
+  return getWorkUnitForTopicPartition(partition,state,offsets);
+}
