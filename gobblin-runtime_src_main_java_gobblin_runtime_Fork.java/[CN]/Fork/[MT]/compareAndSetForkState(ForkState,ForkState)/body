@@ -1,8 +1,5 @@
 {
-  if (this.forkState.compareAndSet(expectedState,newState)) {
-    this.taskState.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_STATE_KEY,this.index),newState.name());
-  }
- else {
+  if (!this.forkState.compareAndSet(expectedState,newState)) {
     throw new IllegalStateException(String.format("Expected fork state %s; actual fork state %s",expectedState.name(),this.forkState.get().name()));
   }
 }
