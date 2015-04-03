@@ -5,7 +5,6 @@
   this.taskId=taskState.getTaskId();
   this.branches=branches;
   this.index=index;
-  this.taskContext.getWorkUnitState().setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,index);
   this.converter=new MultiConverter(this.taskContext.getConverters(this.index));
   this.convertedSchema=this.converter.convertSchema(schema,this.taskState);
   this.rowLevelPolicyChecker=this.taskContext.getRowLevelPolicyChecker(this.taskState,this.index);
