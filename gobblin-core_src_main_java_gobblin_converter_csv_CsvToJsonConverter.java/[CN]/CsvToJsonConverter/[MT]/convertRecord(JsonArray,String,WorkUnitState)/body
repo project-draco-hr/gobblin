@@ -1,6 +1,8 @@
 {
   String strDelimiter=workUnit.getProp(ConfigurationKeys.CONVERTER_CSV_TO_JSON_DELIMITER);
-  if (StringUtils.isBlank(strDelimiter))   throw new DataConversionException("Delimiter cannot be empty",null);
+  if (Strings.isNullOrEmpty(strDelimiter)) {
+    throw new IllegalArgumentException("Delimiter cannot be empty");
+  }
   InputStreamCSVReader reader=new InputStreamCSVReader(inputRecord,strDelimiter.charAt(0),workUnit.getProp(ConfigurationKeys.CONVERTER_CSV_TO_JSON_ENCLOSEDCHAR,ConfigurationKeys.DEFAULT_CONVERTER_CSV_TO_JSON_ENCLOSEDCHAR).charAt(0));
   List<String> recordSplit;
   try {
