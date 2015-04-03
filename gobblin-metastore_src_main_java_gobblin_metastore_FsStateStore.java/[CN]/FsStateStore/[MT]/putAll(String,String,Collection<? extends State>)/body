@@ -5,7 +5,7 @@
   }
   Closer closer=Closer.create();
   try {
-    SequenceFile.Writer writer=closer.register(new SequenceFile.Writer(this.fs,this.conf,tablePath,Text.class,this.stateClass));
+    SequenceFile.Writer writer=closer.register(SequenceFile.createWriter(this.fs,this.conf,tablePath,Text.class,this.stateClass,SequenceFile.CompressionType.BLOCK,new DefaultCodec()));
     for (    State state : states) {
       writer.append(new Text(Strings.nullToEmpty(state.getId())),state);
     }

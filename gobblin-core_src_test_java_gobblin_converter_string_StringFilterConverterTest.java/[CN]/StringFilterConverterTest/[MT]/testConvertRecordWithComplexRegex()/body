@@ -1,6 +1,6 @@
 {
   WorkUnitState workUnitState=new WorkUnitState();
-  workUnitState.setProp(ConfigurationKeys.CONVERTER_FILTER_STRINGS_BY,".*");
+  workUnitState.setProp(ConfigurationKeys.CONVERTER_STRING_FILTER_PATTERN,".*");
   StringFilterConverter converter=new StringFilterConverter();
   converter.init(workUnitState);
   String test="HelloWorld";

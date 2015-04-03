@@ -29,13 +29,13 @@
   }
   JobState jobState=new JobState(jobName,jobId);
   jobState.addAll(jobProps);
-  jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,getFailureCount(jobName));
   jobState.setState(JobState.RunningState.PENDING);
-  LOG.info("Starting job " + jobId);
   SourceState sourceState;
   Source<?,?> source;
   try {
-    sourceState=new SourceState(jobState,getPreviousWorkUnitStates(jobName));
+    SourceState previousJobState=getPreviousJobState(jobName);
+    jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,previousJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0));
+    sourceState=new SourceState(jobState,previousJobState);
     source=new SourceDecorator(initSource(jobProps),jobId,LOG);
   }
  catch (  Throwable t) {
@@ -59,6 +59,7 @@
   long startTime=System.currentTimeMillis();
   jobState.setStartTime(startTime);
   jobState.setState(JobState.RunningState.RUNNING);
+  LOG.info("Starting job " + jobId);
   int taskIdSequence=0;
   int multiTaskIdSequence=0;
   for (  WorkUnit workUnit : workUnits.get()) {

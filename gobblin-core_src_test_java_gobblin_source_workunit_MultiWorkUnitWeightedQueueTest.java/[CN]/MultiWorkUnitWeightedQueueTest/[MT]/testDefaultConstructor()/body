@@ -6,7 +6,7 @@
   for (int i=0; i < numWorkUnits; i++) {
     multiWorkUnitWeightedQueue.addWorkUnit(workUnit,weight);
   }
-  List<WorkUnit> multiWorkUnitWeightedQueueList=multiWorkUnitWeightedQueue.getList();
+  List<WorkUnit> multiWorkUnitWeightedQueueList=multiWorkUnitWeightedQueue.getQueueAsList();
   Assert.assertEquals(multiWorkUnitWeightedQueueList.size(),numWorkUnits);
   MultiWorkUnit multiWorkUnit;
   for (  WorkUnit workUnitElement : multiWorkUnitWeightedQueueList) {
