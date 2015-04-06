@@ -4,7 +4,7 @@
     task.getTaskState().removeMetrics();
   }
   long interval=task.getRetryCount() * this.retryIntervalInSeconds;
-  this.retryExecutor.schedule(task,interval,TimeUnit.SECONDS);
+  this.taskRetryExecutor.schedule(task,interval,TimeUnit.SECONDS);
   LOG.info(String.format("Scheduled retry of failed task %s to run in %d seconds",task.getTaskId(),interval));
   task.incrementRetryCount();
 }

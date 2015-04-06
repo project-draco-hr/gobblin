@@ -1,4 +1,5 @@
 {
+  Preconditions.checkArgument(dir.getCanonicalPath().startsWith(jobConfigFileDir.getCanonicalPath()),String.format("%s is not an ancestor directory of %s",jobConfigFileDir,dir));
   while (!dir.equals(jobConfigFileDir.getParentFile())) {
     String[] propertiesFiles=dir.list(PROPERTIES_FILE_FILTER);
     if (propertiesFiles != null && propertiesFiles.length > 0) {

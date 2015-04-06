@@ -1,4 +1,0 @@
-{
-  super.addAll(otherState);
-  this.workunit=otherState.workunit;
-}

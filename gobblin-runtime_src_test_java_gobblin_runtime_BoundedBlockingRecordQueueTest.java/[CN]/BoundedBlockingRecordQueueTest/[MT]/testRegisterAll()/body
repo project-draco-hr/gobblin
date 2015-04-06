@@ -1,0 +1,11 @@
+{
+  MetricRegistry metricRegistry=new MetricRegistry();
+  this.boundedBlockingRecordQueue.stats().get().registerAll(metricRegistry,METRIC_NAME_PREFIX);
+  Map<String,Gauge> gauges=metricRegistry.getGauges();
+  Assert.assertEquals(gauges.size(),2);
+  Assert.assertEquals(gauges.get(MetricRegistry.name(METRIC_NAME_PREFIX,BoundedBlockingRecordQueue.QueueStats.QUEUE_SIZE)).getValue(),2);
+  Assert.assertEquals(gauges.get(MetricRegistry.name(METRIC_NAME_PREFIX,BoundedBlockingRecordQueue.QueueStats.FILL_RATIO)).getValue(),1d);
+  Assert.assertEquals(metricRegistry.getMeters().size(),2);
+  Assert.assertEquals(metricRegistry.meter(MetricRegistry.name(METRIC_NAME_PREFIX,BoundedBlockingRecordQueue.QueueStats.GET_ATTEMPT_RATE)).getCount(),7);
+  Assert.assertEquals(metricRegistry.meter(MetricRegistry.name(METRIC_NAME_PREFIX,BoundedBlockingRecordQueue.QueueStats.PUT_ATTEMPT_RATE)).getCount(),8);
+}

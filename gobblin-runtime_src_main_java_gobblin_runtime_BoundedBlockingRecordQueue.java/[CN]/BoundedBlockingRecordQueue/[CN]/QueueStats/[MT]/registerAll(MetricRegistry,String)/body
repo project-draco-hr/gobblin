@@ -1,0 +1,6 @@
+{
+  metricRegistry.register(MetricRegistry.name(prefix,QUEUE_SIZE),this.queueSizeGauge);
+  metricRegistry.register(MetricRegistry.name(prefix,FILL_RATIO),this.fillRatioGauge);
+  metricRegistry.register(MetricRegistry.name(prefix,PUT_ATTEMPT_RATE),this.putsRateMeter);
+  metricRegistry.register(MetricRegistry.name(prefix,GET_ATTEMPT_RATE),this.getsRateMeter);
+}
