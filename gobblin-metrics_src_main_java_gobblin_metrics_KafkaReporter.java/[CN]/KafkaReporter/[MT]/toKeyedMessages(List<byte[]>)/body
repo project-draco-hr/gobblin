@@ -1,0 +1,9 @@
+{
+  List<KeyedMessage<String,Message>> messages=new ArrayList<KeyedMessage<String,Message>>();
+  for (  byte[] bytes : bytesArray) {
+    if (bytes != null) {
+      messages.add(new KeyedMessage<String,Message>(_topic,new Message(bytes)));
+    }
+  }
+  return messages;
+}

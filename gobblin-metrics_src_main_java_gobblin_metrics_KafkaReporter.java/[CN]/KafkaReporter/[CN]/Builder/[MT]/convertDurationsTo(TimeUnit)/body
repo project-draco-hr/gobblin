@@ -1,0 +1,4 @@
+{
+  this._durationUnit=durationUnit;
+  return this;
+}

@@ -1,0 +1,4 @@
+{
+  this._filter=filter;
+  return this;
+}

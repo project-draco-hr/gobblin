@@ -1,0 +1,3 @@
+{
+  return new KafkaAvroReporter(_registry,_name,_filter,_rateUnit,_durationUnit,brokers,topic);
+}

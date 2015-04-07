@@ -1,0 +1,18 @@
+{
+  GenericRecord record=new GenericData.Record(_schema);
+  record.put("name",makeName(name,path));
+  record.put("value",value);
+  try {
+    w.write(record,e);
+    e.flush();
+    return out.toByteArray();
+  }
+ catch (  IOException e) {
+    exceptionCount++;
+    LOGGER.trace("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
+    if (exceptionCount % 1000 == 0) {
+      LOGGER.warn("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
+    }
+  }
+  return null;
+}

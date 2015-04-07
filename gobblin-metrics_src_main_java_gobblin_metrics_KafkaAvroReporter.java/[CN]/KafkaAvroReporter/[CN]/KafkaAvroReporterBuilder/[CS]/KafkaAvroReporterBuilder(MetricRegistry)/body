@@ -1,0 +1,8 @@
+{
+  super(registry);
+  this._registry=registry;
+  this._name="KafkaAvroReporter";
+  this._rateUnit=TimeUnit.SECONDS;
+  this._durationUnit=TimeUnit.MILLISECONDS;
+  this._filter=MetricFilter.ALL;
+}

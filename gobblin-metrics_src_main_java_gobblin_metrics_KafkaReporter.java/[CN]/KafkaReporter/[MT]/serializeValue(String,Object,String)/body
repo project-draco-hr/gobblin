@@ -1,0 +1,3 @@
+{
+  return stringifyValue(name,value,path).getBytes();
+}
