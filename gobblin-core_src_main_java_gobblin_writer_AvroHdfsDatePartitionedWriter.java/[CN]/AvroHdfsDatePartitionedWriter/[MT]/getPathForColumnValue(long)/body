@@ -1,0 +1,3 @@
+{
+  return new Path(this.baseFilePath,DATE_PARTITIONED_NAME + Path.SEPARATOR + DAILY_FOLDER_FORMATTER.print(timestamp));
+}

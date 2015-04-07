@@ -1,10 +1,16 @@
 {
   Optional<Object> writerPartitionColumnValue=AvroUtils.getFieldValue(record,this.writerPartitionColumn);
   if (writerPartitionColumnValue.isPresent()) {
-    Path path=getPath((Long)writerPartitionColumnValue.get());
-    if (!pathToWriterMap.containsKey(path)) {
-      DataWriter<GenericRecord> obj=new AvroDataWriterBuilder().writeTo(this.destination).writeInFormat(this.writerOutputFormat).withWriterId(this.writerId).withSchema(this.schema).forBranch(this.branch).build();
+    Path path=getPathForColumnValue((Long)writerPartitionColumnValue.get());
+    if (!this.pathToWriterMap.containsKey(path)) {
+      this.properties.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,this.branch),path.toString());
+      Destination newDest=Destination.of(this.destination.getType(),this.properties);
+      DataWriter<GenericRecord> avroHdfsDataWriter=new AvroDataWriterBuilder().writeTo(newDest).writeInFormat(this.writerOutputFormat).withWriterId(this.writerId).withSchema(this.schema).forBranch(this.branch).build();
+      avroHdfsDataWriter.write(record);
+      this.pathToWriterMap.put(path,avroHdfsDataWriter);
     }
-    this.pathToWriterMap.get(path).write(record);
+ else {
+      this.pathToWriterMap.get(path).write(record);
+    }
   }
 }

@@ -1,3 +1,0 @@
-{
-  return new Path(DAILY_FOLDER_FORMATTER.print(timestamp));
-}

@@ -1,0 +1,3 @@
+{
+  Schema parser=new Schema.Parser().parse(new File("/Users/stakiar/Documents/workspace_linkedin/gobblin-proxy_trunk/gobblin-github/test.txt"));
+}
