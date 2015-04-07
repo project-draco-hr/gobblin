@@ -35,7 +35,7 @@
   try {
     JobState previousJobState=getPreviousJobState(jobName);
     jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,previousJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0));
-    sourceState=new SourceState(jobState,getPreviousTaskStates(previousJobState));
+    sourceState=new SourceState(jobState,getPreviousWorkUnitStates(previousJobState));
     source=new SourceDecorator(initSource(jobProps),jobId,LOG);
   }
  catch (  Throwable t) {
