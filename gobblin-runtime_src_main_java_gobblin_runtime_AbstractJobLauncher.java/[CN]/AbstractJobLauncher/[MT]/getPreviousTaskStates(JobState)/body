@@ -1,0 +1,9 @@
+{
+  List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList();
+  for (  TaskState taskState : previousJobState.getTaskStates()) {
+    WorkUnitState workUnitState=new WorkUnitState(taskState.getWorkunit());
+    workUnitState.addAll(taskState);
+    previousWorkUnitStates.add(workUnitState);
+  }
+  return previousWorkUnitStates;
+}
