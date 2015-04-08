@@ -1,0 +1,7 @@
+{
+  Assert.assertTrue(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_METER_FACTORY.isInstance(this.meter));
+  Assert.assertFalse(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_METER_FACTORY.isInstance(this.histogram));
+  Assert.assertEquals(this.meter.getContext(),this.context);
+  Assert.assertEquals(this.meter.getName(),RECORD_PROCESS_RATE);
+  Assert.assertEquals(this.meter.getFullyQualifiedName(),MetricRegistry.name(JOB_ID,RECORD_PROCESS_RATE));
+}

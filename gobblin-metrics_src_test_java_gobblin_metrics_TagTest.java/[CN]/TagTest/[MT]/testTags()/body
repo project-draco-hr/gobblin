@@ -1,0 +1,8 @@
+{
+  Tag<String> jobIdTag=new Tag<String>(JOB_ID_KEY,JOB_ID);
+  Assert.assertEquals(jobIdTag.getKey(),JOB_ID_KEY);
+  Assert.assertEquals(jobIdTag.getValue(),JOB_ID);
+  Tag<Integer> projectVersionTag=new Tag<Integer>(PROJECT_VERSION_KEY,PROJECT_VERSION);
+  Assert.assertEquals(projectVersionTag.getKey(),PROJECT_VERSION_KEY);
+  Assert.assertEquals(projectVersionTag.getValue().intValue(),PROJECT_VERSION);
+}

@@ -1,0 +1,3 @@
+{
+  return contextAwareHistogram(name,ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_HISTOGRAM_FACTORY);
+}

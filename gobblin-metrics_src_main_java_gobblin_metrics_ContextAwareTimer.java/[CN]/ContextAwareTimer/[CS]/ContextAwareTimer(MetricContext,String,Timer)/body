@@ -1,0 +1,13 @@
+{
+  this.name=name;
+  this.context=context;
+  this.timer=timer;
+  this.tagged=new Tagged();
+  Optional<MetricContext> parentContext=context.getParent();
+  if (parentContext.isPresent()) {
+    this.parentTimer=Optional.fromNullable(parentContext.get().contextAwareTimer(name));
+  }
+ else {
+    this.parentTimer=Optional.absent();
+  }
+}

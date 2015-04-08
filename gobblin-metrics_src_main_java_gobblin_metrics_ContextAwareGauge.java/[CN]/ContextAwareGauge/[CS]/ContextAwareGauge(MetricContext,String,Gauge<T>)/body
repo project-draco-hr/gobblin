@@ -1,0 +1,6 @@
+{
+  this.name=name;
+  this.context=context;
+  this.tagged=new Tagged();
+  this.gauge=gauge;
+}

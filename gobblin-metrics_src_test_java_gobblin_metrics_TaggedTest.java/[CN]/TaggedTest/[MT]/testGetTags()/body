@@ -1,0 +1,8 @@
+{
+  List<Tag> tags=this.tagged.getTags();
+  Assert.assertEquals(tags.size(),2);
+  Assert.assertEquals(tags.get(0).getKey(),JOB_ID_KEY);
+  Assert.assertEquals(tags.get(0).getValue(),JOB_ID);
+  Assert.assertEquals(tags.get(1).getKey(),PROJECT_VERSION_KEY);
+  Assert.assertEquals(tags.get(1).getValue(),PROJECT_VERSION);
+}

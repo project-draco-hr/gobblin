@@ -1,0 +1,3 @@
+{
+  reportInContext(this.context,gauges,counters,histograms,meters,timers);
+}

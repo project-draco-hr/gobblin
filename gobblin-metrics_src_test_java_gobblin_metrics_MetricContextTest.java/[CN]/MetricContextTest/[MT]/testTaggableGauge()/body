@@ -1,0 +1,19 @@
+{
+  ContextAwareGauge<Long> queueSize=this.context.newContextAwareGauge(QUEUE_SIZE,new Gauge<Long>(){
+    @Override public Long getValue(){
+      return 1000l;
+    }
+  }
+);
+  this.context.register(QUEUE_SIZE,queueSize);
+  Assert.assertEquals(queueSize.getValue().longValue(),1000l);
+  Assert.assertEquals(this.context.getGauges().get(MetricRegistry.name(this.context.metricNamePrefix(),queueSize.getName())),queueSize);
+  Assert.assertEquals(queueSize.getContext(),this.context);
+  Assert.assertEquals(queueSize.getName(),QUEUE_SIZE);
+  Assert.assertTrue(queueSize.getTags().isEmpty());
+  queueSize.addTag(new Tag<String>(METRIC_GROUP_KEY,INPUT_RECORDS_GROUP));
+  Assert.assertEquals(queueSize.getTags().size(),1);
+  Assert.assertEquals(queueSize.getTags().get(0).getKey(),METRIC_GROUP_KEY);
+  Assert.assertEquals(queueSize.getTags().get(0).getValue(),INPUT_RECORDS_GROUP);
+  Assert.assertEquals(queueSize.getFullyQualifiedName(),MetricRegistry.name(INPUT_RECORDS_GROUP,QUEUE_SIZE));
+}

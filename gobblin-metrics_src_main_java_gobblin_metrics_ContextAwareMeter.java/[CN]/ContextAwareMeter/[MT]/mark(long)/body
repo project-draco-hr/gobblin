@@ -1,0 +1,6 @@
+{
+  this.meter.mark(n);
+  if (this.parentMeter.isPresent()) {
+    this.parentMeter.get().mark(n);
+  }
+}

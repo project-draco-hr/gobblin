@@ -1,0 +1,3 @@
+{
+  Assert.assertEquals(this.tagged.metricNamePrefix(),MetricRegistry.name(JOB_ID,Integer.toString(PROJECT_VERSION)));
+}

@@ -1,0 +1,13 @@
+{
+  Assert.assertEquals(context.getName(),CONTEXT_NAME);
+  Assert.assertEquals(gauges.size(),1);
+  Assert.assertTrue(gauges.containsKey(MetricRegistry.name(context.metricNamePrefix(),QUEUE_SIZE)));
+  Assert.assertEquals(counters.size(),1);
+  Assert.assertTrue(counters.containsKey(MetricRegistry.name(context.metricNamePrefix(),RECORDS_PROCESSED)));
+  Assert.assertEquals(histograms.size(),1);
+  Assert.assertTrue(histograms.containsKey(MetricRegistry.name(context.metricNamePrefix(),RECORD_SIZE_DISTRIBUTION)));
+  Assert.assertEquals(meters.size(),1);
+  Assert.assertTrue(meters.containsKey(MetricRegistry.name(context.metricNamePrefix(),RECORD_PROCESS_RATE)));
+  Assert.assertEquals(timers.size(),1);
+  Assert.assertTrue(timers.containsKey(MetricRegistry.name(context.metricNamePrefix(),TOTAL_DURATION)));
+}

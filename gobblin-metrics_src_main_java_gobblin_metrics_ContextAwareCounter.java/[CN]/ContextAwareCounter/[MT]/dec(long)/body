@@ -1,0 +1,6 @@
+{
+  this.counter.dec(n);
+  if (this.parentCounter.isPresent()) {
+    this.parentCounter.get().dec(n);
+  }
+}

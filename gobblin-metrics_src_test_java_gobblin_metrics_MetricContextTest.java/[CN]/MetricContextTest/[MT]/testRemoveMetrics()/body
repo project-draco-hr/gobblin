@@ -1,0 +1,9 @@
+{
+  Assert.assertTrue(this.childContext.remove(RECORDS_PROCESSED));
+  Assert.assertTrue(this.childContext.getCounters().isEmpty());
+  Assert.assertTrue(this.childContext.remove(RECORD_PROCESS_RATE));
+  Assert.assertTrue(this.childContext.getMeters().isEmpty());
+  Assert.assertTrue(this.childContext.remove(RECORD_SIZE_DISTRIBUTION));
+  Assert.assertTrue(this.childContext.getHistograms().isEmpty());
+  Assert.assertTrue(this.childContext.getNames().isEmpty());
+}

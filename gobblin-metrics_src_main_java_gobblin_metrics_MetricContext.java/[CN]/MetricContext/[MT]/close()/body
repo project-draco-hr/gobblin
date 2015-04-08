@@ -1,0 +1,5 @@
+{
+  stopMetricReporting();
+  reportMetrics();
+  this.closer.close();
+}

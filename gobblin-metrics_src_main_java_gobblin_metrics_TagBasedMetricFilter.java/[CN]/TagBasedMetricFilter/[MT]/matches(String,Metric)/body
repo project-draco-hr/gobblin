@@ -1,0 +1,3 @@
+{
+  return metric instanceof Taggable && ((Taggable)metric).getTags().containsAll(this.tags);
+}

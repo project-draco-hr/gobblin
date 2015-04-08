@@ -1,0 +1,7 @@
+{
+  Assert.assertTrue(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_TIMER_FACTORY.isInstance(this.timer));
+  Assert.assertFalse(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_TIMER_FACTORY.isInstance(this.counter));
+  Assert.assertEquals(this.timer.getContext(),this.context);
+  Assert.assertEquals(this.timer.getName(),TOTAL_DURATION);
+  Assert.assertEquals(this.timer.getFullyQualifiedName(),MetricRegistry.name(JOB_ID,TOTAL_DURATION));
+}
