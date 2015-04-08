@@ -2,7 +2,11 @@
   GenericRecord record=new GenericData.Record(_schema);
   record.put("name",makeName(name,path));
   record.put("value",value);
+  record.put("hostname",_host);
+  record.put("environment",_env);
+  record.put("tags",_tags);
   try {
+    out.reset();
     w.write(record,e);
     e.flush();
     return out.toByteArray();

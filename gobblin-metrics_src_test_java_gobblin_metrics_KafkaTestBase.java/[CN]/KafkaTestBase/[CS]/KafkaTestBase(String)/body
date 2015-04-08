@@ -1,13 +1,6 @@
 {
+  startServer();
   _topic=topic;
-  zkConnect=TestZKUtils.zookeeperConnect();
-  zkServer=new EmbeddedZookeeper(zkConnect);
-  zkClient=new ZkClient(zkServer.connectString(),30000,30000,ZKStringSerializer$.MODULE$);
-  kafkaPort=TestUtils.choosePort();
-  Properties props=TestUtils.createBrokerConfig(brokerId,kafkaPort,true);
-  KafkaConfig config=new KafkaConfig(props);
-  Time mock=new MockTime();
-  kafkaServer=TestUtils.createServer(config,mock);
   AdminUtils.createTopic(zkClient,topic,1,1,new Properties());
   List<KafkaServer> servers=new ArrayList<KafkaServer>();
   servers.add(kafkaServer);
@@ -18,6 +11,7 @@
   consumeProps.put("zookeeper.session.timeout.ms","400");
   consumeProps.put("zookeeper.sync.time.ms","200");
   consumeProps.put("auto.commit.interval.ms","1000");
+  consumeProps.put("consumer.timeout.ms","200");
   consumer=Consumer.createJavaConsumerConnector(new ConsumerConfig(consumeProps));
   Map<String,Integer> topicCountMap=new HashMap<String,Integer>();
   topicCountMap.put(_topic,1);

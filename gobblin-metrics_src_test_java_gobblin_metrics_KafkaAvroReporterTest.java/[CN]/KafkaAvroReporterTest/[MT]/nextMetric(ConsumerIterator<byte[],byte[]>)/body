@@ -1,0 +1,23 @@
+{
+  byte[] bytes=it.next().message();
+  Decoder decoder=DecoderFactory.get().binaryDecoder(bytes,null);
+  GenericRecord reuse=new GenericData.Record(_schema);
+  GenericRecord record=reader.read(reuse,decoder);
+  KafkaReporter.Metric metric=new KafkaReporter.Metric();
+  metric.name=record.get("name").toString();
+  metric.value=record.get("value");
+  if (record.get("hostname") != null) {
+    metric.host=record.get("hostname").toString();
+  }
+  if (record.get("environment") != null) {
+    metric.env=record.get("environment").toString();
+  }
+  metric.tags=new HashSet<String>();
+  if (record.get("tags") != null) {
+    for (    Object tag : (GenericArray)record.get("tags")) {
+      metric.tags.add(tag.toString());
+    }
+  }
+  System.out.println(String.format("%s:%s",metric.name,metric.value));
+  return metric;
+}

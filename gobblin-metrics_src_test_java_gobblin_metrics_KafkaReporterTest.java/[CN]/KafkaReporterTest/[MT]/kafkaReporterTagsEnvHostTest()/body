@@ -1,0 +1,24 @@
+{
+  MetricRegistry registry=new MetricRegistry();
+  Counter counter=registry.counter("com.linkedin.example.counter");
+  String host="host.linkedin.com";
+  String env="testing";
+  String tag1="tag1";
+  String tag2="tag2";
+  KafkaReporter kafkaReporter=getBuilder(registry).withHost(host).withEnv(env).withTags(tag1,tag2).build("localhost:" + kafkaPort,_topic);
+  counter.inc();
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  KafkaReporter.Metric metric=nextMetric(iterator);
+  Assert.assertEquals(1,Integer.parseInt(metric.value.toString()));
+  Assert.assertEquals(host,metric.host);
+  Assert.assertEquals(env,metric.env);
+  Assert.assertEquals(2,metric.tags.size());
+  Assert.assertTrue(metric.tags.contains(tag1));
+  Assert.assertTrue(metric.tags.contains(tag2));
+}

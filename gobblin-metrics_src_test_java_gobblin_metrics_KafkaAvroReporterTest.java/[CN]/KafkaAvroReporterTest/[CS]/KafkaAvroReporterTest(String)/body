@@ -1,0 +1,5 @@
+{
+  super(topic);
+  _schema=null;
+  reader=null;
+}

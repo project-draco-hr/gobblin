@@ -1,5 +1,4 @@
 {
-  System.out.println("***************HELLO******************");
   List<KeyedMessage<String,byte[]>> messages=new ArrayList<KeyedMessage<String,byte[]>>();
   for (  Entry<String,Gauge> gauge : gauges.entrySet()) {
     messages.addAll(toKeyedMessages(serializeGauge(gauge.getKey(),gauge.getValue())));
@@ -9,7 +8,7 @@
   }
   for (  Entry<String,Histogram> histogram : histograms.entrySet()) {
     messages.addAll(toKeyedMessages(serializeSnapshot(histogram.getKey(),histogram.getValue().getSnapshot())));
-    messages.addAll(toKeyedMessages(serializeSingleValue(histogram.getKey(),histogram.getValue().getCount())));
+    messages.addAll(toKeyedMessages(serializeSingleValue(histogram.getKey(),histogram.getValue().getCount(),"count")));
   }
   for (  Entry<String,Meter> meter : meters.entrySet()) {
     messages.addAll(toKeyedMessages(serializeMetered(meter.getKey(),meter.getValue())));
@@ -17,8 +16,7 @@
   for (  Entry<String,Timer> timer : timers.entrySet()) {
     messages.addAll(toKeyedMessages(serializeSnapshot(timer.getKey(),timer.getValue().getSnapshot())));
     messages.addAll(toKeyedMessages(serializeMetered(timer.getKey(),timer.getValue())));
-    messages.addAll(toKeyedMessages(serializeSingleValue(timer.getKey(),timer.getValue().getCount())));
+    messages.addAll(toKeyedMessages(serializeSingleValue(timer.getKey(),timer.getValue().getCount(),"count")));
   }
-  System.out.println(messages);
   _producer.send(messages);
 }
