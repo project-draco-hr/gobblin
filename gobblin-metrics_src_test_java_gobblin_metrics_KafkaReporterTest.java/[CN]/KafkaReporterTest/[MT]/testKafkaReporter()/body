@@ -20,7 +20,7 @@
   expected.put("com.linkedin.example.counter",1.0);
   expected.put("com.linkedin.example.meter.count",2.0);
   expected.put("com.linkedin.example.histogram.count",3.0);
-  expectMessagesWithValues(iterator,expected);
+  expectMetricsWithValues(iterator,expected);
   kafkaReporter.report();
   try {
     Thread.sleep(100);
@@ -44,6 +44,6 @@
   expectedSet.add("com.linkedin.example.histogram.99percentile");
   expectedSet.add("com.linkedin.example.histogram.999percentile");
   expectedSet.add("com.linkedin.example.histogram.count");
-  expectMessages(iterator,expectedSet,true);
+  expectMetrics(iterator,expectedSet,true);
   kafkaReporter.close();
 }
