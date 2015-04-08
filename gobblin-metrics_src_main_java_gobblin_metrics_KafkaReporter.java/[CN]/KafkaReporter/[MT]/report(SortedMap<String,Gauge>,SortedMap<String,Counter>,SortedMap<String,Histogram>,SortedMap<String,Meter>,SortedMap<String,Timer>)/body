@@ -1,5 +1,6 @@
 {
-  List<KeyedMessage<String,Message>> messages=new ArrayList<KeyedMessage<String,Message>>();
+  System.out.println("***************HELLO******************");
+  List<KeyedMessage<String,byte[]>> messages=new ArrayList<KeyedMessage<String,byte[]>>();
   for (  Entry<String,Gauge> gauge : gauges.entrySet()) {
     messages.addAll(toKeyedMessages(serializeGauge(gauge.getKey(),gauge.getValue())));
   }
@@ -18,5 +19,6 @@
     messages.addAll(toKeyedMessages(serializeMetered(timer.getKey(),timer.getValue())));
     messages.addAll(toKeyedMessages(serializeSingleValue(timer.getKey(),timer.getValue().getCount())));
   }
+  System.out.println(messages);
   _producer.send(messages);
 }

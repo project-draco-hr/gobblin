@@ -1,0 +1,6 @@
+{
+  consumer.shutdown();
+  kafkaServer.shutdown();
+  zkClient.close();
+  zkServer.shutdown();
+}

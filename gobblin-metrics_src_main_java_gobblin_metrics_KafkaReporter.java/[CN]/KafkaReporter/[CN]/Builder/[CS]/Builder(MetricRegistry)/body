@@ -4,4 +4,12 @@
   this._rateUnit=TimeUnit.SECONDS;
   this._durationUnit=TimeUnit.MILLISECONDS;
   this._filter=MetricFilter.ALL;
+  try {
+    this._host=InetAddress.getLocalHost().getHostName();
+  }
+ catch (  UnknownHostException e) {
+    this._host="";
+  }
+  this._env="dev";
+  this._tags=new HashSet<String>();
 }

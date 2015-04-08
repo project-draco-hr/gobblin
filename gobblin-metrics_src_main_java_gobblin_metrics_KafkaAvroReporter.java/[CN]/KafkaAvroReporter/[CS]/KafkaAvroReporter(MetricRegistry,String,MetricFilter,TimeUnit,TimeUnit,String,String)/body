@@ -1,9 +1,0 @@
-{
-  super(registry,name,filter,rateUnit,durationUnit,brokers,topic);
-  Schema.Parser parser=new Schema.Parser();
-  _schema=parser.parse(SchemaString);
-  exceptionCount=0;
-  out=new ByteArrayOutputStream();
-  e=EncoderFactory.get().binaryEncoder(out,null);
-  w=new GenericDatumWriter<GenericRecord>(_schema);
-}

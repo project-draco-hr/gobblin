@@ -1,0 +1,14 @@
+{
+  super(registry,name,filter,rateUnit,durationUnit);
+  exceptionCount=0;
+  _host=host;
+  _env=env;
+  _tags=tags;
+  Properties props=new Properties();
+  props.put("metadata.broker.list",brokers);
+  props.put("serializer.class","kafka.serializer.DefaultEncoder");
+  props.put("request.required.acks","1");
+  _config=new ProducerConfig(props);
+  _producer=new Producer<String,byte[]>(_config);
+  _topic=topic;
+}

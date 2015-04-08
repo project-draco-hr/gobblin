@@ -1,7 +1,0 @@
-MetricRegistry registry
-String name
-MetricFilter filter
-TimeUnit rateUnit
-TimeUnit durationUnit
-String brokers
-String topic
