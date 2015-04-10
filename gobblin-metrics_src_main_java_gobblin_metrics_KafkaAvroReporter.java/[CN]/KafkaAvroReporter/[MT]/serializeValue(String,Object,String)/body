@@ -1,3 +1,22 @@
 {
-  return _serializeValue(name,value,path);
+  GenericRecord record=new GenericData.Record(Schema);
+  record.put("name",makeName(name,path));
+  record.put("value",value);
+  record.put("hostname",host);
+  record.put("environment",env);
+  record.put("tags",tags);
+  try {
+    out.reset();
+    writer.write(record,encoder);
+    encoder.flush();
+    return out.toByteArray();
+  }
+ catch (  IOException e) {
+    LOGGER.trace("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
+    if (System.currentTimeMillis() - lastSerializeExceptionTime > 10000) {
+      LOGGER.warn("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
+      lastSerializeExceptionTime=System.currentTimeMillis();
+    }
+  }
+  return null;
 }

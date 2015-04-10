@@ -2,18 +2,18 @@
   Metric metric=new Metric();
   metric.name=makeName(name,path);
   metric.value=value;
-  metric.env=_env;
-  metric.tags=_tags;
-  metric.host=_host;
+  metric.env=env;
+  metric.tags=tags;
+  metric.host=host;
   metric.timestamp=System.currentTimeMillis();
   try {
     return mapper.writeValueAsString(metric);
   }
  catch (  Exception e) {
-    exceptionCount++;
     LOGGER.trace("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
-    if (exceptionCount % 1000 == 0) {
+    if (System.currentTimeMillis() - lastSerializeExceptionTime > 10000) {
       LOGGER.warn("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
+      lastSerializeExceptionTime=System.currentTimeMillis();
     }
   }
   return null;

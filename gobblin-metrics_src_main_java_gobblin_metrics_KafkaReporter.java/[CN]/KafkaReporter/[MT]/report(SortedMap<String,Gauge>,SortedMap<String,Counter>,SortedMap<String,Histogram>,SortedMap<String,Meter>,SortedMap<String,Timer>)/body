@@ -18,5 +18,5 @@
     messages.addAll(toKeyedMessages(serializeMetered(timer.getKey(),timer.getValue())));
     messages.addAll(toKeyedMessages(serializeSingleValue(timer.getKey(),timer.getValue().getCount(),"count")));
   }
-  _producer.send(messages);
+  producer.send(messages);
 }

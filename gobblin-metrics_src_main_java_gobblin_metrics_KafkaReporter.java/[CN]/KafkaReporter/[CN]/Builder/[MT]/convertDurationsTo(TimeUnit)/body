@@ -1,4 +1,4 @@
 {
-  this._durationUnit=durationUnit;
+  this.durationUnit=durationUnit;
   return self();
 }

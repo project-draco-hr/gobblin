@@ -1,7 +1,7 @@
 {
   byte[] bytes=it.next().message();
   Decoder decoder=DecoderFactory.get().binaryDecoder(bytes,null);
-  GenericRecord reuse=new GenericData.Record(_schema);
+  GenericRecord reuse=new GenericData.Record(schema);
   GenericRecord record=reader.read(reuse,decoder);
   KafkaReporter.Metric metric=new KafkaReporter.Metric();
   metric.name=record.get("name").toString();

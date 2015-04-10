@@ -3,7 +3,7 @@
   Counter counter=registry.counter("com.linkedin.example.counter");
   Meter meter=registry.meter("com.linkedin.example.meter");
   Histogram histogram=registry.histogram("com.linkedin.example.histogram");
-  KafkaReporter kafkaReporter=getBuilder(registry).build("localhost:" + kafkaPort,_topic);
+  KafkaReporter kafkaReporter=getBuilder(registry).build("localhost:" + kafkaPort,topic);
   counter.inc();
   meter.mark(2);
   histogram.update(1);

@@ -1,15 +1,15 @@
 {
-  this._registry=registry;
-  this._name="KafkaReporter";
-  this._rateUnit=TimeUnit.SECONDS;
-  this._durationUnit=TimeUnit.MILLISECONDS;
-  this._filter=MetricFilter.ALL;
+  this.registry=registry;
+  this.name="KafkaReporter";
+  this.rateUnit=TimeUnit.SECONDS;
+  this.durationUnit=TimeUnit.MILLISECONDS;
+  this.filter=MetricFilter.ALL;
   try {
-    this._host=InetAddress.getLocalHost().getHostName();
+    this.host=InetAddress.getLocalHost().getHostName();
   }
  catch (  UnknownHostException e) {
-    this._host="";
+    this.host="";
   }
-  this._env="dev";
-  this._tags=new HashSet<String>();
+  this.env="dev";
+  this.tags=new HashSet<String>();
 }

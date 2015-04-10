@@ -1,4 +1,4 @@
 {
-  Collections.addAll(this._tags,tags);
+  Collections.addAll(this.tags,tags);
   return self();
 }

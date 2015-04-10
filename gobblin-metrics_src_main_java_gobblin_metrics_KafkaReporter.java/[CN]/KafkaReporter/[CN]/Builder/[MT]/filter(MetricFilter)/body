@@ -1,4 +1,4 @@
 {
-  this._filter=filter;
+  this.filter=filter;
   return self();
 }

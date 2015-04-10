@@ -1,0 +1,7 @@
+{
+  super(builder);
+  lastSerializeExceptionTime=0;
+  out=new ByteArrayOutputStream();
+  encoder=EncoderFactory.get().binaryEncoder(out,null);
+  writer=new GenericDatumWriter<GenericRecord>(Schema);
+}

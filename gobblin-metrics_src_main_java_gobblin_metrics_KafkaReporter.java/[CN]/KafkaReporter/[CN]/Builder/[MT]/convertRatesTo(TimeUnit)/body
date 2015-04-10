@@ -1,4 +1,4 @@
 {
-  this._rateUnit=rateUnit;
+  this.rateUnit=rateUnit;
   return self();
 }

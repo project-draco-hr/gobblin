@@ -1,3 +1,5 @@
 {
-  return new KafkaReporter(_registry,_name,_filter,_rateUnit,_durationUnit,brokers,topic,_host,_env,_tags);
+  this.brokers=brokers;
+  this.topic=topic;
+  return new KafkaReporter(this);
 }

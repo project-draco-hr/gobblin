@@ -1,5 +1,4 @@
 {
-  Schema.Parser parser=new Schema.Parser();
-  _schema=parser.parse(KafkaAvroReporter.SchemaString);
-  reader=new GenericDatumReader<GenericRecord>(_schema);
+  schema=KafkaAvroReporter.Schema;
+  reader=new GenericDatumReader<GenericRecord>(schema);
 }

@@ -5,7 +5,7 @@
   String env="testing";
   String tag1="tag1";
   String tag2="tag2";
-  KafkaReporter kafkaReporter=getBuilder(registry).withHost(host).withEnv(env).withTags(tag1,tag2).build("localhost:" + kafkaPort,_topic);
+  KafkaReporter kafkaReporter=getBuilder(registry).withHost(host).withEnv(env).withTags(tag1,tag2).build("localhost:" + kafkaPort,topic);
   counter.inc();
   kafkaReporter.report();
   try {
