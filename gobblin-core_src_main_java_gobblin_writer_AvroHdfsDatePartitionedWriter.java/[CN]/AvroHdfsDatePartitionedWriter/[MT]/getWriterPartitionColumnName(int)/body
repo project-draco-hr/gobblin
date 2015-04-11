@@ -1,0 +1,3 @@
+{
+  return ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_PARTITION_COLUMN_NAME,branch);
+}
