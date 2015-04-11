@@ -1,0 +1,3 @@
+{
+  this.boundedBlockingRecordQueue=BoundedBlockingRecordQueue.<Integer>newBuilder().hasCapacity(2).useTimeout(100).useTimeoutTimeUnit(TimeUnit.MILLISECONDS).collectStats().build();
+}

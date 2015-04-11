@@ -1,0 +1,10 @@
+{
+  StringBuilder sb=new StringBuilder("[");
+  sb.append(QUEUE_SIZE).append("=").append(queueSize()).append(", ");
+  sb.append(FILL_RATIO).append("=").append(fillRatio()).append(", ");
+  sb.append(PUT_ATTEMPT_RATE).append("=").append(putAttemptRate()).append(", ");
+  sb.append(PUT_ATTEMPT_COUNT).append("=").append(putAttemptCount()).append(", ");
+  sb.append(GET_ATTEMPT_RATE).append("=").append(getAttemptRate()).append(", ");
+  sb.append(GET_ATTEMPT_COUNT).append("=").append(getAttemptCount()).append("]");
+  return sb.toString();
+}

@@ -1,0 +1,7 @@
+{
+  T record=this.blockingDeque.poll(this.timeout,this.timeoutTimeUnit);
+  if (this.queueStats.isPresent()) {
+    this.queueStats.get().getsRateMeter.mark();
+  }
+  return record;
+}

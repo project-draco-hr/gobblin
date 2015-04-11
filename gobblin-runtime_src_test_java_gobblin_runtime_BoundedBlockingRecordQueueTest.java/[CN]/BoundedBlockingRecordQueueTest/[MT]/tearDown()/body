@@ -1,0 +1,4 @@
+{
+  this.boundedBlockingRecordQueue.clear();
+  Assert.assertNull(this.boundedBlockingRecordQueue.get());
+}

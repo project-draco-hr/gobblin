@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(builder.capacity > 0,"Invalid queue capacity");
+  Preconditions.checkArgument(builder.timeout > 0,"Invalid timeout time");
+  this.capacity=builder.capacity;
+  this.timeout=builder.timeout;
+  this.timeoutTimeUnit=builder.timeoutTimeUnit;
+  this.blockingDeque=Queues.newLinkedBlockingDeque(builder.capacity);
+  this.queueStats=builder.ifCollectStats ? Optional.of(new QueueStats()) : Optional.<QueueStats>absent();
+}

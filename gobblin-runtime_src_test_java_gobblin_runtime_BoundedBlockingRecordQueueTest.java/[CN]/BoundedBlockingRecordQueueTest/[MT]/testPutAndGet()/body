@@ -1,0 +1,37 @@
+{
+  final List<Integer> produced=Lists.newArrayList();
+  Thread producer=new Thread(new Runnable(){
+    @Override public void run(){
+      for (int i=0; i < 6; i++) {
+        try {
+          boundedBlockingRecordQueue.put(i);
+          produced.add(i);
+        }
+ catch (        InterruptedException ie) {
+          throw new RuntimeException(ie);
+        }
+      }
+    }
+  }
+);
+  final List<Integer> consumed=Lists.newArrayList();
+  Thread consumer=new Thread(new Runnable(){
+    @Override public void run(){
+      try {
+        for (int i=0; i < 6; i++) {
+          consumed.add(boundedBlockingRecordQueue.get());
+        }
+      }
+ catch (      InterruptedException ie) {
+        throw new RuntimeException(ie);
+      }
+    }
+  }
+);
+  producer.start();
+  consumer.start();
+  producer.join();
+  consumer.join();
+  Assert.assertEquals(produced,consumed);
+  Assert.assertNull(this.boundedBlockingRecordQueue.get());
+}

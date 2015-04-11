@@ -1,7 +1,0 @@
-{
-  for (  Object convertedRecord : this.converter.convertRecord(this.convertedSchema,record,this.taskState)) {
-    if (this.rowLevelPolicyChecker.executePolicies(convertedRecord,this.rowLevelPolicyCheckingResult)) {
-      this.writer.write(convertedRecord);
-    }
-  }
-}
