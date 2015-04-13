@@ -19,10 +19,13 @@
     if (inMultipleBranches(forkedSchemas) && !(schema instanceof Copyable)) {
       throw new CopyNotSupportedException(schema + " is not copyable");
     }
+    if (schema instanceof Copyable) {
+      schema=((Copyable)schema).copy();
+    }
     CountDownLatch forkCountDownLatch=new CountDownLatch(branches);
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
-        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,branches > 1 ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
+        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,schema,branches,i,forkCountDownLatch));
         this.taskExecutor.submit(fork);
         this.forks.add(Optional.of(fork));
       }
