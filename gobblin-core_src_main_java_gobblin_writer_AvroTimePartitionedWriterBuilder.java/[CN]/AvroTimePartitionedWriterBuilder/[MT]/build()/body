@@ -5,7 +5,7 @@
   Preconditions.checkArgument(this.format == WriterOutputFormat.AVRO);
 switch (this.destination.getType()) {
 case HDFS:
-    return new AvroHdfsDatePartitionedWriter(this.destination,this.writerId,this.schema,this.format,this.branch);
+    return new AvroHdfsTimePartitionedWriter(this.destination,this.writerId,this.schema,this.format,this.branch);
 case KAFKA:
   throw new UnsupportedOperationException("The builder " + this.getClass().getName() + " cannot write to "+ this.destination.getType());
 default :

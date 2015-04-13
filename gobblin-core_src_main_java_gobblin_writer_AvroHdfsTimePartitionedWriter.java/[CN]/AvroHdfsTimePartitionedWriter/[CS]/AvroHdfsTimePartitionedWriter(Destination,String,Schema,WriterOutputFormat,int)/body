@@ -13,7 +13,7 @@
   Preconditions.checkNotNull(this.properties);
   this.baseFilePath=this.properties.getProp(getWriterFilePath(this.branch));
   this.partitionLevel=this.properties.getProp(getWriterPartitionLevel(this.branch),ConfigurationKeys.DEFAULT_WRITER_PARTITION_LEVEL);
-  this.timestampToPathFormatter=DateTimeFormat.forPattern(this.properties.getProp(getWriterPartitionPattern(this.branch),ConfigurationKeys.DEFAULT_WRITER_PARTITION_PATTERN));
+  this.timestampToPathFormatter=DateTimeFormat.forPattern(this.properties.getProp(getWriterPartitionPattern(this.branch),ConfigurationKeys.DEFAULT_WRITER_PARTITION_PATTERN)).withZone(DateTimeZone.forID(this.properties.getProp(ConfigurationKeys.WRITER_PARTITION_TIMEZONE,ConfigurationKeys.DEFAULT_WRITER_PARTITION_TIMEZONE)));
   Preconditions.checkArgument(this.properties.contains(getWriterPartitionColumnName(this.branch)),"Missing required property " + ConfigurationKeys.WRITER_PARTITION_COLUMN_NAME);
   this.partitionColumnName=this.properties.getProp(getWriterPartitionColumnName(this.branch));
   Optional<Schema> writerPartitionColumnSchema=AvroUtils.getFieldSchema(this.schema,this.partitionColumnName);
