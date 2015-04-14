@@ -1,0 +1,13 @@
+{
+  this.name=name;
+  this.parent=Optional.fromNullable(parent);
+  this.tagged=new Tagged(tags);
+  this.reportFullyQualifiedNames=reportFullyQualifiedNames;
+  this.includeTagKeys=includeTagKeys;
+  if (this.parent.isPresent()) {
+    this.parent.get().addChildContext(name,this);
+  }
+  for (  Map.Entry<String,ContextAwareScheduledReporter.Builder> entry : builders.entrySet()) {
+    this.contextAwareScheduledReporters.put(entry.getKey(),entry.getValue().build(this));
+  }
+}

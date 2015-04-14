@@ -1,0 +1,3 @@
+{
+  return this.forkState.compareAndSet(ForkState.SUCCEEDED,ForkState.SUCCEEDED);
+}

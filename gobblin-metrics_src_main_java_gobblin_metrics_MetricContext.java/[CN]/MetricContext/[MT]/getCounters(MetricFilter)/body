@@ -1,0 +1,3 @@
+{
+  return this.reportFullyQualifiedNames ? super.getCounters(filter) : getSimplyNamedMetrics(Counter.class,Optional.of(filter));
+}

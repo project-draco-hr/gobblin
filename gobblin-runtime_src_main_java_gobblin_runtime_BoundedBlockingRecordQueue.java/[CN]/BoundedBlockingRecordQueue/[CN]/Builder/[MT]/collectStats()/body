@@ -1,0 +1,4 @@
+{
+  this.ifCollectStats=true;
+  return this;
+}

@@ -1,0 +1,7 @@
+{
+  Assert.assertTrue(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_COUNTER_FACTORY.isInstance(this.counter));
+  Assert.assertFalse(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_COUNTER_FACTORY.isInstance(this.meter));
+  Assert.assertEquals(this.counter.getContext(),this.context);
+  Assert.assertEquals(this.counter.getName(),RECORDS_PROCESSED);
+  Assert.assertEquals(this.counter.getFullyQualifiedName(false),MetricRegistry.name(JOB_ID,RECORDS_PROCESSED));
+}

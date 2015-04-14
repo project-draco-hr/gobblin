@@ -1,0 +1,26 @@
+{
+  compareAndSetForkState(ForkState.PENDING,ForkState.RUNNING);
+  try {
+    processRecords();
+    compareAndSetForkState(ForkState.RUNNING,ForkState.SUCCEEDED);
+  }
+ catch (  IOException ioe) {
+    this.forkState.set(ForkState.FAILED);
+    this.logger.error(String.format("Fork %d of task %s failed to process data records",this.index,this.taskId),ioe);
+    Throwables.propagate(ioe);
+  }
+catch (  DataConversionException dce) {
+    this.forkState.set(ForkState.FAILED);
+    this.logger.error(String.format("Fork %d of task %s failed to convert data records",this.index,this.taskId),dce);
+    Throwables.propagate(dce);
+  }
+catch (  Throwable t) {
+    this.forkState.set(ForkState.FAILED);
+    this.logger.error(String.format("Fork %d of task %s failed to process data records",this.index,this.taskId),t);
+    Throwables.propagate(t);
+  }
+ finally {
+    this.recordQueue.clear();
+    this.countDownLatch.countDown();
+  }
+}

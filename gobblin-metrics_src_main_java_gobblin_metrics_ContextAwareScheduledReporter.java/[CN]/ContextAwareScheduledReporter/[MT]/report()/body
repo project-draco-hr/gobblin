@@ -1,0 +1,8 @@
+{
+  if (this.filter.isPresent()) {
+    report(this.context.getGauges(this.filter.get()),this.context.getCounters(this.filter.get()),this.context.getHistograms(this.filter.get()),this.context.getMeters(this.filter.get()),this.context.getTimers(this.filter.get()));
+  }
+ else {
+    report(this.context.getGauges(),this.context.getCounters(),this.context.getHistograms(),this.context.getMeters(),this.context.getTimers());
+  }
+}

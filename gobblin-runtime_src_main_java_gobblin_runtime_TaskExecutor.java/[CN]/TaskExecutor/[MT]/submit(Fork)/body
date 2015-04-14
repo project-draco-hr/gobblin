@@ -1,0 +1,4 @@
+{
+  LOG.info(String.format("Submitting fork %d of task %s",fork.getIndex(),fork.getTaskId()));
+  return this.forkExecutor.submit(fork);
+}

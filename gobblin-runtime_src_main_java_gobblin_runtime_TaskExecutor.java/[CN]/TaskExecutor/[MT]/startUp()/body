@@ -1,9 +1,12 @@
 {
   LOG.info("Starting the task executor");
-  if (this.executor.isShutdown() || this.executor.isTerminated()) {
-    throw new IllegalStateException();
+  if (this.taskExecutor.isShutdown() || this.taskExecutor.isTerminated()) {
+    throw new IllegalStateException("Task thread pool executor is shutdown or terminated");
   }
-  if (this.retryExecutor.isShutdown() || this.retryExecutor.isTerminated()) {
-    throw new IllegalStateException();
+  if (this.taskRetryExecutor.isShutdown() || this.taskRetryExecutor.isTerminated()) {
+    throw new IllegalStateException("Task retry thread pool executor is shutdown or terminated");
+  }
+  if (this.forkExecutor.isShutdown() || this.forkExecutor.isTerminated()) {
+    throw new IllegalStateException("Fork thread pool executor is shutdown or terminated");
   }
 }

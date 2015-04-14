@@ -1,0 +1,3 @@
+{
+  return contextAwareTimer(name,ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_TIMER_FACTORY);
+}

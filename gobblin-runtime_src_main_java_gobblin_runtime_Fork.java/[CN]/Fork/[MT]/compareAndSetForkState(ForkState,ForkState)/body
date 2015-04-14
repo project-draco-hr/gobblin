@@ -1,0 +1,5 @@
+{
+  if (!this.forkState.compareAndSet(expectedState,newState)) {
+    throw new IllegalStateException(String.format("Expected fork state %s; actual fork state %s",expectedState.name(),this.forkState.get().name()));
+  }
+}

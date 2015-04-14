@@ -1,0 +1,6 @@
+{
+  super.inc(n);
+  if (this.parentCounter.isPresent()) {
+    this.parentCounter.get().inc(n);
+  }
+}

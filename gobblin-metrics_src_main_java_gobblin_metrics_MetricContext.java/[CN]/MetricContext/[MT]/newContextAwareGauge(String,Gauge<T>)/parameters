@@ -1,0 +1,2 @@
+String name
+Gauge<T> gauge

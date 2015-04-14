@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(tag);
+  Preconditions.checkNotNull(tag.getValue());
+  this.tags.put(tag.getKey(),tag.getValue());
+}

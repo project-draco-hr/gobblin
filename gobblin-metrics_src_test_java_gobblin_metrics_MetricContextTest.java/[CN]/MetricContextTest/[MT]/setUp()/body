@@ -1,0 +1,9 @@
+{
+  this.context=MetricContext.builder(CONTEXT_NAME).addTag(new Tag<String>(JOB_ID_KEY,JOB_ID_PREFIX + 0)).addContextAwareScheduledReporter(TEST_REPORTER_NAME,new TestContextAwareScheduledReporter.TestContextAwareScheduledReporterBuilder(TEST_REPORTER_NAME)).reportFullyQualifiedNames(false).build();
+  Assert.assertEquals(this.context.getName(),CONTEXT_NAME);
+  Assert.assertFalse(this.context.getParent().isPresent());
+  Assert.assertEquals(this.context.getTags().size(),1);
+  Assert.assertEquals(this.context.getTags().get(0).getKey(),JOB_ID_KEY);
+  Assert.assertEquals(this.context.getTags().get(0).getValue(),JOB_ID_PREFIX + 0);
+  Assert.assertEquals(this.context.metricNamePrefix(false),JOB_ID_PREFIX + 0);
+}

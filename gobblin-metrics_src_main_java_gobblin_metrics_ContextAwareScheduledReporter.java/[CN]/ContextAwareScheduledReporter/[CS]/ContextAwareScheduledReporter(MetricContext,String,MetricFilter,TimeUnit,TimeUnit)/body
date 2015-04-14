@@ -1,0 +1,5 @@
+{
+  super(context,name,filter,rateUnit,durationUnit);
+  this.context=context;
+  this.filter=Optional.fromNullable(filter);
+}

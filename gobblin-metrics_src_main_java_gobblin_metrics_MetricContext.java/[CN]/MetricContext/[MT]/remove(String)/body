@@ -1,0 +1,3 @@
+{
+  return this.contextAwareMetrics.remove(name) != null && super.remove(MetricRegistry.name(metricNamePrefix(this.includeTagKeys),name)) && removeChildrenMetrics(name);
+}
