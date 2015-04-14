@@ -1,5 +1,0 @@
-String name
-MetricContext parent
-List<Tag> tags
-Map<String,ContextAwareScheduledReporter.Builder> builders
-boolean reportFullyQualifiedNames

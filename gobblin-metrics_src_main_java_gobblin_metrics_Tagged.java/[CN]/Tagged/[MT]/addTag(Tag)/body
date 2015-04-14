@@ -1,4 +1,0 @@
-{
-  Preconditions.checkNotNull(tag);
-  this.tags.add(tag);
-}

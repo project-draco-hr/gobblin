@@ -1,5 +1,5 @@
 {
-  this.histogram.update(value);
+  super.update(value);
   if (this.parentHistogram.isPresent()) {
     this.parentHistogram.get().update(value);
   }

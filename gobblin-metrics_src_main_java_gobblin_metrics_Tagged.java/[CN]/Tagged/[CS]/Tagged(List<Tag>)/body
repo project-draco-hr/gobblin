@@ -1,3 +1,0 @@
-{
-  this.tags=Lists.newArrayList(tags);
-}

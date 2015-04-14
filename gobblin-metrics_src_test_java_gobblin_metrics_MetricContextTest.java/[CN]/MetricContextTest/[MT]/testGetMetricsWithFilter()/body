@@ -2,17 +2,17 @@
   MetricFilter filter=new TagBasedMetricFilter(Lists.newArrayList(new Tag(METRIC_GROUP_KEY,INPUT_RECORDS_GROUP)));
   Map<String,Counter> counters=this.context.getCounters(filter);
   Assert.assertEquals(counters.size(),1);
-  Assert.assertTrue(counters.containsKey(MetricRegistry.name(this.context.metricNamePrefix(),RECORDS_PROCESSED)));
+  Assert.assertTrue(counters.containsKey(MetricRegistry.name(this.context.metricNamePrefix(false),RECORDS_PROCESSED)));
   Map<String,Meter> meters=this.context.getMeters(filter);
   Assert.assertEquals(meters.size(),1);
-  Assert.assertTrue(meters.containsKey(MetricRegistry.name(this.context.metricNamePrefix(),RECORD_PROCESS_RATE)));
+  Assert.assertTrue(meters.containsKey(MetricRegistry.name(this.context.metricNamePrefix(false),RECORD_PROCESS_RATE)));
   Map<String,Histogram> histograms=this.context.getHistograms(filter);
   Assert.assertEquals(histograms.size(),1);
-  Assert.assertTrue(histograms.containsKey(MetricRegistry.name(this.context.metricNamePrefix(),RECORD_SIZE_DISTRIBUTION)));
+  Assert.assertTrue(histograms.containsKey(MetricRegistry.name(this.context.metricNamePrefix(false),RECORD_SIZE_DISTRIBUTION)));
   Map<String,Timer> timers=this.context.getTimers(filter);
   Assert.assertEquals(timers.size(),1);
-  Assert.assertTrue(timers.containsKey(MetricRegistry.name(this.context.metricNamePrefix(),TOTAL_DURATION)));
+  Assert.assertTrue(timers.containsKey(MetricRegistry.name(this.context.metricNamePrefix(false),TOTAL_DURATION)));
   Map<String,Gauge> gauges=this.context.getGauges(filter);
   Assert.assertEquals(gauges.size(),1);
-  Assert.assertTrue(gauges.containsKey(MetricRegistry.name(this.context.metricNamePrefix(),QUEUE_SIZE)));
+  Assert.assertTrue(gauges.containsKey(MetricRegistry.name(this.context.metricNamePrefix(false),QUEUE_SIZE)));
 }

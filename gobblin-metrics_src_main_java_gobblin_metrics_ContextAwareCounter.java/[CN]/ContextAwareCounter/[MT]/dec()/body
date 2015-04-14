@@ -1,6 +1,3 @@
 {
-  this.counter.dec();
-  if (this.parentCounter.isPresent()) {
-    this.parentCounter.get().dec();
-  }
+  dec(1);
 }

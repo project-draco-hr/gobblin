@@ -1,3 +1,7 @@
 {
-  return ImmutableList.<Tag>builder().addAll(this.tags).build();
+  ImmutableList.Builder<Tag<?>> builder=ImmutableList.builder();
+  for (  Map.Entry<String,Object> entry : this.tags.entrySet()) {
+    builder.add(new Tag<Object>(entry.getKey(),entry.getValue()));
+  }
+  return builder.build();
 }

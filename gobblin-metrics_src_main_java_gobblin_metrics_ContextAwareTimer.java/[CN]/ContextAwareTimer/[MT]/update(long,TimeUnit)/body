@@ -1,5 +1,5 @@
 {
-  this.timer.update(duration,unit);
+  super.update(duration,unit);
   if (this.parentTimer.isPresent()) {
     this.parentTimer.get().update(duration,unit);
   }
