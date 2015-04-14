@@ -6,9 +6,11 @@
   if (forkedRecords.size() != branches) {
     throw new ForkBranchMismatchException(String.format("Number of forked data records [%d] is not equal to number of branches [%d]",forkedRecords.size(),branches));
   }
-  boolean makesCopy=inMultipleBranches(forkedRecords);
-  if (makesCopy && !(convertedRecord instanceof Copyable)) {
+  if (inMultipleBranches(forkedRecords) && !(convertedRecord instanceof Copyable)) {
     throw new CopyNotSupportedException(convertedRecord + " is not copyable");
+  }
+  if (convertedRecord instanceof Copyable) {
+    convertedRecord=((Copyable)convertedRecord).copy();
   }
   boolean allPutsSucceeded=false;
   boolean[] succeededPuts=new boolean[branches];
@@ -19,7 +21,7 @@
         continue;
       }
       if (this.forks.get(i).isPresent() && forkedRecords.get(i)) {
-        boolean succeeded=this.forks.get(i).get().putRecord(makesCopy ? ((Copyable)convertedRecord).copy() : convertedRecord);
+        boolean succeeded=this.forks.get(i).get().putRecord(convertedRecord);
         succeededPuts[i]=succeeded;
         if (!succeeded) {
           allPutsSucceeded=false;
