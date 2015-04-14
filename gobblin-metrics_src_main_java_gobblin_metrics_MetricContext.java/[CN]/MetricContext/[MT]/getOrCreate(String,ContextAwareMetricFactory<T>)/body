@@ -1,0 +1,12 @@
+{
+  Metric metric=this.contextAwareMetrics.get(name);
+  if (metric != null) {
+    if (factory.isInstance(metric)) {
+      return (T)metric;
+    }
+    throw new IllegalArgumentException(name + " is already used for a different type of metric");
+  }
+  Metric newMetric=factory.newMetric(this,name);
+  register(name,newMetric);
+  return (T)newMetric;
+}

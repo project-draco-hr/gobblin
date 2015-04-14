@@ -1,0 +1,9 @@
+{
+  if (metric instanceof MetricSet) {
+    registerAll((MetricSet)metric);
+  }
+  if (this.contextAwareMetrics.putIfAbsent(name,metric) != null) {
+    throw new IllegalArgumentException("A metric named " + name + " already exists");
+  }
+  return super.register(MetricRegistry.name(metricNamePrefix(this.includeTagKeys),name),metric);
+}

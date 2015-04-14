@@ -1,0 +1,3 @@
+{
+  return contextAwareMeter(name,ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_METER_FACTORY);
+}

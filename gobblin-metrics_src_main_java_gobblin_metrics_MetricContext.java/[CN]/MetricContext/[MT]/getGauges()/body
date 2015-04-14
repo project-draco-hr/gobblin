@@ -1,0 +1,3 @@
+{
+  return this.reportFullyQualifiedNames ? super.getGauges() : getSimplyNamedMetrics(Gauge.class,Optional.<MetricFilter>absent());
+}

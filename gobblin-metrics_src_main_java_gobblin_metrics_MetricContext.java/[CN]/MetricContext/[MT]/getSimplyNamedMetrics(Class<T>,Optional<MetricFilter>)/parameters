@@ -1,0 +1,2 @@
+Class<T> mClass
+Optional<MetricFilter> filter

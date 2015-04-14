@@ -1,0 +1,5 @@
+{
+  this.parent=parent;
+  this.tags.addAll(parent.getTags());
+  return this;
+}
