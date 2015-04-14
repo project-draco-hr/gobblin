@@ -1,3 +1,0 @@
-{
-  return String.format("%s.%s.%s",state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_NAME,branch),ConfigurationKeys.DEFAULT_WRITER_FILE_NAME),writerId,formatExtension);
-}

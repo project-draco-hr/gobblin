@@ -1,6 +1,0 @@
-{
-  if (state.contains(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,branch))) {
-    return state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,branch));
-  }
-  return WriterUtils.getDefaultWriterFilePath(state,branch);
-}
