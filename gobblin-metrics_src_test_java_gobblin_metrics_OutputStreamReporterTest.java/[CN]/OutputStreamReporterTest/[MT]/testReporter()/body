@@ -1,0 +1,37 @@
+{
+  MetricRegistry registry=new MetricRegistry();
+  Counter counter=registry.counter("com.linkedin.example.counter");
+  Meter meter=registry.meter("com.linkedin.example.meter");
+  Histogram histogram=registry.histogram("com.linkedin.example.histogram");
+  OutputStreamReporter reporter=OutputStreamReporter.forRegistry(registry).outputTo(stream).build();
+  counter.inc();
+  meter.mark(2);
+  histogram.update(1);
+  histogram.update(1);
+  histogram.update(2);
+  reporter.report();
+  String[] lines=stream.toString().split("\n");
+  Map<String,Set<String>> expected=new HashMap<String,Set<String>>();
+  Set<String> counterSubMetrics=new HashSet<String>();
+  counterSubMetrics.add("count");
+  expected.put("com.linkedin.example.counter",counterSubMetrics);
+  Set<String> histogramSubMetrics=new HashSet<String>();
+  histogramSubMetrics.add("count");
+  histogramSubMetrics.add("min");
+  histogramSubMetrics.add("max");
+  histogramSubMetrics.add("mean");
+  histogramSubMetrics.add("stddev");
+  histogramSubMetrics.add("median");
+  histogramSubMetrics.add("75% <");
+  histogramSubMetrics.add("95% <");
+  expected.put("com.linkedin.example.histogram",histogramSubMetrics);
+  Set<String> meterSubmetrics=new HashSet<String>();
+  meterSubmetrics.add("count");
+  meterSubmetrics.add("mean rate");
+  meterSubmetrics.add("1-minute rate");
+  meterSubmetrics.add("5-minute rate");
+  meterSubmetrics.add("15-minute rate");
+  expected.put("com.linkedin.example.meter",meterSubmetrics);
+  expectMetrics(expected,lines);
+  reporter.close();
+}

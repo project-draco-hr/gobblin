@@ -1,0 +1,9 @@
+{
+  super(builder.registry,"console-reporter",builder.filter,builder.rateUnit,builder.durationUnit);
+  this.output=builder.output;
+  this.locale=builder.locale;
+  this.clock=builder.clock;
+  this.dateFormat=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM,locale);
+  this.tags=builder.tags;
+  dateFormat.setTimeZone(builder.timeZone);
+}

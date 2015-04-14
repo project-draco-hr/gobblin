@@ -1,0 +1,4 @@
+{
+  this.output=new PrintStream(stream);
+  return self();
+}
