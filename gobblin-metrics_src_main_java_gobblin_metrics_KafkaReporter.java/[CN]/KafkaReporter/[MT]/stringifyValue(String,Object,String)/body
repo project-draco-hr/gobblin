@@ -2,9 +2,7 @@
   Metric metric=new Metric();
   metric.name=makeName(name,path);
   metric.value=value;
-  metric.env=env;
   metric.tags=tags;
-  metric.host=host;
   metric.timestamp=System.currentTimeMillis();
   try {
     return mapper.writeValueAsString(metric);

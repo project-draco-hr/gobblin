@@ -2,8 +2,6 @@
   GenericRecord record=new GenericData.Record(Schema);
   record.put("name",makeName(name,path));
   record.put("value",value);
-  record.put("hostname",host);
-  record.put("environment",env);
   record.put("tags",tags);
   try {
     out.reset();

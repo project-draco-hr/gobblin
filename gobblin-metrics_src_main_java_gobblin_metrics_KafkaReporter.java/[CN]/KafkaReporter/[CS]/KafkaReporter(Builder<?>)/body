@@ -1,8 +1,6 @@
 {
   super(builder.registry,builder.name,builder.filter,builder.rateUnit,builder.durationUnit);
   lastSerializeExceptionTime=0;
-  this.host=builder.host;
-  this.env=builder.env;
   this.tags=builder.tags;
   Properties props=new Properties();
   props.put("metadata.broker.list",builder.brokers);

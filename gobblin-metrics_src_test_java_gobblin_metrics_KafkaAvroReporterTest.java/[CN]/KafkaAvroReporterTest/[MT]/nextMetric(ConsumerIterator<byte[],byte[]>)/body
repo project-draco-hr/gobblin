@@ -6,16 +6,10 @@
   KafkaReporter.Metric metric=new KafkaReporter.Metric();
   metric.name=record.get("name").toString();
   metric.value=record.get("value");
-  if (record.get("hostname") != null) {
-    metric.host=record.get("hostname").toString();
-  }
-  if (record.get("environment") != null) {
-    metric.env=record.get("environment").toString();
-  }
-  metric.tags=new HashSet<String>();
+  metric.tags=new HashMap<String,String>();
   if (record.get("tags") != null) {
-    for (    Object tag : (GenericArray)record.get("tags")) {
-      metric.tags.add(tag.toString());
+    for (    Map.Entry<Utf8,Utf8> tag : ((HashMap<Utf8,Utf8>)record.get("tags")).entrySet()) {
+      metric.tags.put(tag.getKey().toString(),tag.getValue().toString());
     }
   }
   System.out.println(String.format("%s:%s",metric.name,metric.value));

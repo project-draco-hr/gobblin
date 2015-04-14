@@ -1,3 +1,6 @@
 {
+  if (MetricContext.class.isInstance(registry)) {
+    LOGGER.warn("Creating Kafka Avro Reporter from MetricContext using forRegistry method. Will not inherit tags.");
+  }
   return new BuilderImpl(registry);
 }
