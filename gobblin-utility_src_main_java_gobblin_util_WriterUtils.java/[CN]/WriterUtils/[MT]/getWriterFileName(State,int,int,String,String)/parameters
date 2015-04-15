@@ -1,0 +1,5 @@
+State state
+int numBranches
+int branchId
+String writerId
+String formatExtension

@@ -1,0 +1,5 @@
+State properties
+String fileName
+Schema schema
+int numBranches
+int branchId

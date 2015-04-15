@@ -1,0 +1,9 @@
+{
+  List<byte[]> metrics=new ArrayList<byte[]>();
+  metrics.add(serializeValue(name,meter.getCount(),"count"));
+  metrics.add(serializeValue(name,meter.getMeanRate(),"rate","mean"));
+  metrics.add(serializeValue(name,meter.getOneMinuteRate(),"rate","1m"));
+  metrics.add(serializeValue(name,meter.getFiveMinuteRate(),"rate","5m"));
+  metrics.add(serializeValue(name,meter.getFifteenMinuteRate(),"rate","15m"));
+  return metrics;
+}

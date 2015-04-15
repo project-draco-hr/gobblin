@@ -1,0 +1,7 @@
+{
+  this.output.printf(locale,"             count = %d%n",meter.getCount());
+  this.output.printf(locale,"         mean rate = %2.2f events/%s%n",convertRate(meter.getMeanRate()),getRateUnit());
+  this.output.printf(locale,"     1-minute rate = %2.2f events/%s%n",convertRate(meter.getOneMinuteRate()),getRateUnit());
+  this.output.printf(locale,"     5-minute rate = %2.2f events/%s%n",convertRate(meter.getFiveMinuteRate()),getRateUnit());
+  this.output.printf(locale,"    15-minute rate = %2.2f events/%s%n",convertRate(meter.getFifteenMinuteRate()),getRateUnit());
+}

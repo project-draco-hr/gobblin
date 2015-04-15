@@ -1,0 +1,6 @@
+{
+  String nextMessage=new String(it.next().message());
+  KafkaReporter.Metric metric=mapper.readValue(nextMessage,KafkaReporter.Metric.class);
+  System.out.println(nextMessage);
+  return metric;
+}

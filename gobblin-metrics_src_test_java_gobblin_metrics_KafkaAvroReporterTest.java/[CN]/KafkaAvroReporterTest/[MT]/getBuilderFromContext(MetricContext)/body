@@ -1,0 +1,3 @@
+{
+  return KafkaAvroReporter.forContext(context);
+}

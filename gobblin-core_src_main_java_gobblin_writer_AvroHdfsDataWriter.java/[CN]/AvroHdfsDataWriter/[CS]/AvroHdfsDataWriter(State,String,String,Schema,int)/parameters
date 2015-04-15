@@ -1,5 +1,0 @@
-State properties
-String relFilePath
-String fileName
-Schema schema
-int branch

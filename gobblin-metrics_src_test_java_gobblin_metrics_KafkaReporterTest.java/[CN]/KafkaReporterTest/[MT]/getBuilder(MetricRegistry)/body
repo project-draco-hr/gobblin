@@ -1,0 +1,3 @@
+{
+  return KafkaReporter.forRegistry(registry);
+}

@@ -1,6 +1,6 @@
 {
   this.parentTaskDone=true;
-  this.taskState.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_STATE_KEY,this.index),this.forkState.get().name());
+  this.taskState.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_STATE_KEY,this.branches,this.index),this.forkState.get().name());
   try {
     this.closer.close();
   }
