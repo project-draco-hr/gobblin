@@ -3,7 +3,7 @@
     throw new IOException(String.format("File %s already exists",avroFile));
   }
   FSDataOutputStream outputStream=this.fs.create(avroFile,true,bufferSize);
-  DataFileWriter<GenericRecord> writer=new DataFileWriter<GenericRecord>(new GenericDatumWriter<GenericRecord>());
+  DataFileWriter<GenericRecord> writer=new DataFileWriter<GenericRecord>(this.datumWriter);
 switch (codecType) {
 case DEFLATE:
     writer.setCodec(CodecFactory.deflateCodec(deflateLevel));
@@ -17,5 +17,5 @@ default :
 writer.setCodec(CodecFactory.deflateCodec(deflateLevel));
 break;
 }
-return writer.create(schema,outputStream);
+return writer.create(this.schema,outputStream);
 }
