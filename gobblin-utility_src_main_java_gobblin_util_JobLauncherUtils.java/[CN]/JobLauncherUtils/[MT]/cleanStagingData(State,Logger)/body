@@ -6,12 +6,16 @@
     Path stagingPath=WriterUtils.getWriterStagingDir(state,numBranches,branchId);
     if (fs.exists(stagingPath)) {
       logger.info("Cleaning up staging directory " + stagingPath.toUri().getPath());
-      fs.delete(stagingPath,true);
+      if (!fs.delete(stagingPath,true)) {
+        throw new IOException("Clean up staging directory " + stagingPath.toUri().getPath() + " failed");
+      }
     }
     Path outputPath=WriterUtils.getWriterOutputDir(state,numBranches,branchId);
     if (fs.exists(outputPath)) {
       logger.info("Cleaning up output directory " + outputPath.toUri().getPath());
-      fs.delete(outputPath,true);
+      if (!fs.delete(outputPath,true)) {
+        throw new IOException("Clean up output directory " + outputPath.toUri().getPath() + " failed");
+      }
     }
   }
 }
