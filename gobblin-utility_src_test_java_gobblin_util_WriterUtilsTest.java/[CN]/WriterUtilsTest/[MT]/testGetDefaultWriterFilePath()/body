@@ -1,0 +1,8 @@
+{
+  String namespace="gobblin.test";
+  String tableName="test-table";
+  SourceState sourceState=new SourceState();
+  WorkUnit state=new WorkUnit(sourceState,new Extract(sourceState,TableType.APPEND_ONLY,namespace,tableName));
+  Assert.assertEquals(WriterUtils.getWriterFilePath(state,0,0),new Path(state.getExtract().getOutputFilePath()));
+  Assert.assertEquals(WriterUtils.getWriterFilePath(state,2,0),new Path(state.getExtract().getOutputFilePath(),ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + "0"));
+}

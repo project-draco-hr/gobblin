@@ -32,6 +32,7 @@
   this.job.setMapOutputKeyClass(NullWritable.class);
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);
+  JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
   Path jobInputPath=new Path(mrJobDir,"input");
   Path jobInputFile=prepareJobInput(jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY),jobInputPath,workUnits);
   NLineInputFormat.addInputPath(this.job,jobInputFile);

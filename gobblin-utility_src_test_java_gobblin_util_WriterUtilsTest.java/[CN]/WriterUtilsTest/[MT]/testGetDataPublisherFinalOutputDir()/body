@@ -1,0 +1,12 @@
+{
+  State state=new State();
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,TEST_DATA_PUBLISHER_FINAL_DIR);
+  state.setProp(ConfigurationKeys.WRITER_FILE_PATH,TEST_WRITER_FILE_PATH);
+  Assert.assertEquals(WriterUtils.getDataPublisherFinalDir(state,0,0),new Path(TEST_DATA_PUBLISHER_FINAL_DIR,TEST_WRITER_FILE_PATH));
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR + ".0",TEST_DATA_PUBLISHER_FINAL_DIR);
+  state.setProp(ConfigurationKeys.WRITER_FILE_PATH + ".0",TEST_WRITER_FILE_PATH);
+  Assert.assertEquals(WriterUtils.getDataPublisherFinalDir(state,2,0),new Path(TEST_DATA_PUBLISHER_FINAL_DIR,TEST_WRITER_FILE_PATH));
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR + ".1",TEST_DATA_PUBLISHER_FINAL_DIR);
+  state.setProp(ConfigurationKeys.WRITER_FILE_PATH + ".1",TEST_WRITER_FILE_PATH);
+  Assert.assertEquals(WriterUtils.getDataPublisherFinalDir(state,2,1),new Path(TEST_DATA_PUBLISHER_FINAL_DIR,TEST_WRITER_FILE_PATH));
+}

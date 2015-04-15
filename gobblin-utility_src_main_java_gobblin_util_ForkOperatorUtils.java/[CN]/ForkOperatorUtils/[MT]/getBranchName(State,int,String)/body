@@ -1,4 +1,0 @@
-{
-  Preconditions.checkArgument(index >= 0,"index is expected to be non-negative");
-  return state.getProp(ConfigurationKeys.FORK_BRANCH_NAME_KEY + "." + index,defaultName);
-}

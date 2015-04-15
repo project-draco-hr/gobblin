@@ -1,5 +1,5 @@
 State properties
-String relFilePath
 String fileName
 Schema schema
-int branch
+int numBranches
+int branchId
