@@ -6,8 +6,8 @@
   taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
   taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.toString());
   try {
-    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(taskStateForFork,this.index).executePolicies();
-    TaskPublisher publisher=this.taskContext.getTaskPublisher(taskStateForFork,taskResults,this.index);
+    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(taskStateForFork,this.branches > 1 ? this.index : -1).executePolicies();
+    TaskPublisher publisher=this.taskContext.getTaskPublisher(taskStateForFork,taskResults,this.branches > 1 ? this.index : -1);
 switch (publisher.canPublish()) {
 case SUCCESS:
       return true;
