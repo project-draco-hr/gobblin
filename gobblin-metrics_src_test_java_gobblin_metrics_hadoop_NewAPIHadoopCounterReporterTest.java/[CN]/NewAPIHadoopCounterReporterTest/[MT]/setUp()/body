@@ -1,0 +1,6 @@
+{
+  TaskInputOutputContext<Object,Object,Object,Object> mockContext=Mockito.mock(TaskInputOutputContext.class);
+  this.recordsProcessed=Mockito.mock(Counter.class);
+  Mockito.when(mockContext.getCounter(CONTEXT_NAME,RECORDS_PROCESSED)).thenReturn(this.recordsProcessed);
+  this.hadoopCounterReporter=NewAPIHadoopCounterReporter.builder(mockContext).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.SECONDS).filter(MetricFilter.ALL).build(MetricContext.builder(CONTEXT_NAME).build());
+}

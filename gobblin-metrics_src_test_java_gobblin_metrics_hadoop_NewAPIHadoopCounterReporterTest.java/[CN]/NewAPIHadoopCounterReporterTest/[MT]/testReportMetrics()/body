@@ -1,0 +1,6 @@
+{
+  com.codahale.metrics.Counter recordsProcessedCounter=new com.codahale.metrics.Counter();
+  recordsProcessedCounter.inc(10l);
+  this.hadoopCounterReporter.report(ImmutableSortedMap.<String,Gauge>naturalOrder().build(),ImmutableSortedMap.<String,com.codahale.metrics.Counter>naturalOrder().put(RECORDS_PROCESSED,recordsProcessedCounter).build(),ImmutableSortedMap.<String,Histogram>naturalOrder().build(),ImmutableSortedMap.<String,Meter>naturalOrder().build(),ImmutableSortedMap.<String,Timer>naturalOrder().build());
+  Mockito.verify(this.recordsProcessed).setValue(10l);
+}

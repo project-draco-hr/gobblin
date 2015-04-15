@@ -1,0 +1,3 @@
+{
+  return new HadoopCounterReporter(context,this.name,this.filter,this.rateUnit,this.durationUnit,this.reporter);
+}

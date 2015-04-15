@@ -1,0 +1,5 @@
+{
+  for (  Map.Entry<String,Counter> entry : counters.entrySet()) {
+    this.hadoopContext.getCounter(context.getName(),entry.getKey()).setValue(entry.getValue().getCount());
+  }
+}
