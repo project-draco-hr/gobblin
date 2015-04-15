@@ -4,7 +4,7 @@
     int numBranches=workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
     for (int branchId=0; branchId < numBranches; branchId++) {
       Path writerOutput=WriterUtils.getWriterOutputDir(workUnitState,numBranches,branchId);
-      Path publisherOutput=WriterUtils.getDataPublisherFinalOutputDir(workUnitState,numBranches,branchId);
+      Path publisherOutput=WriterUtils.getDataPublisherFinalDir(workUnitState,numBranches,branchId);
       if (writerOutputPathMoved.contains(writerOutput)) {
         continue;
       }
