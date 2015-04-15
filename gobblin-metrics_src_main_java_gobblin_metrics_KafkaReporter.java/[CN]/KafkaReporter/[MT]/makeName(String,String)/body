@@ -1,7 +1,0 @@
-{
-  final StringBuilder sb=new StringBuilder(name);
-  for (  String part : path) {
-    sb.append('.').append(part);
-  }
-  return sb.toString();
-}

@@ -1,4 +1,4 @@
 {
-  schema=KafkaAvroReporter.Schema;
+  schema=KafkaAvroReporter.SCHEMA;
   reader=new GenericDatumReader<GenericRecord>(schema);
 }

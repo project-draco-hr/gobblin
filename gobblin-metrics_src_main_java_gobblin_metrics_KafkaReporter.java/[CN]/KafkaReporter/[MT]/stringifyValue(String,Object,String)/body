@@ -1,6 +1,6 @@
 {
   Metric metric=new Metric();
-  metric.name=makeName(name,path);
+  metric.name=MetricRegistry.name(name,path);
   metric.value=value;
   metric.tags=tags;
   metric.timestamp=System.currentTimeMillis();

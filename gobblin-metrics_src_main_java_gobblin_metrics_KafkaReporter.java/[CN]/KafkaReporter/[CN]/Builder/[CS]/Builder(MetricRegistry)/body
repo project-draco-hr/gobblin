@@ -4,5 +4,5 @@
   this.rateUnit=TimeUnit.SECONDS;
   this.durationUnit=TimeUnit.MILLISECONDS;
   this.filter=MetricFilter.ALL;
-  this.tags=new HashMap<String,String>();
+  this.tags=new LinkedHashMap<String,String>();
 }

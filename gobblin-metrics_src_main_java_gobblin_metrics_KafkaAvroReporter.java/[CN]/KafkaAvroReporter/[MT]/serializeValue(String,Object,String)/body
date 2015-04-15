@@ -1,19 +1,19 @@
 {
-  GenericRecord record=new GenericData.Record(Schema);
-  record.put("name",makeName(name,path));
+  GenericRecord record=new GenericData.Record(SCHEMA);
+  record.put("name",MetricRegistry.name(name,path));
   record.put("value",value);
   record.put("tags",tags);
   try {
-    out.reset();
-    writer.write(record,encoder);
-    encoder.flush();
+    this.out.reset();
+    this.writer.write(record,encoder);
+    this.encoder.flush();
     return out.toByteArray();
   }
  catch (  IOException e) {
     LOGGER.trace("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
-    if (System.currentTimeMillis() - lastSerializeExceptionTime > 10000) {
+    if (System.currentTimeMillis() - this.lastSerializeExceptionTime > 10000) {
       LOGGER.warn("Could not serialize Avro record for Kafka Metrics. Exception: %s",e.getMessage());
-      lastSerializeExceptionTime=System.currentTimeMillis();
+      this.lastSerializeExceptionTime=System.currentTimeMillis();
     }
   }
   return null;

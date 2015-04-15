@@ -5,5 +5,5 @@
   this.clock=builder.clock;
   this.dateFormat=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM,locale);
   this.tags=builder.tags;
-  dateFormat.setTimeZone(builder.timeZone);
+  this.dateFormat.setTimeZone(builder.timeZone);
 }

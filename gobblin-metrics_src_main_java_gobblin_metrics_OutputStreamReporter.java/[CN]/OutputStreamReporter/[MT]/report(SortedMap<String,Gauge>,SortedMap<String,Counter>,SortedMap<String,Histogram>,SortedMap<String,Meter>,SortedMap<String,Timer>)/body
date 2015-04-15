@@ -1,54 +1,54 @@
 {
   final String dateTime=dateFormat.format(new Date(clock.getTime()));
   printWithBanner(dateTime,'=');
-  output.println();
+  this.output.println();
   if (!tags.isEmpty()) {
     printWithBanner("-- Tags",'-');
     for (    Map.Entry<String,String> entry : tags.entrySet()) {
-      output.println(String.format("%s=%s",entry.getKey(),entry.getValue()));
+      this.output.println(String.format("%s=%s",entry.getKey(),entry.getValue()));
     }
-    output.println();
+    this.output.println();
   }
   if (!gauges.isEmpty()) {
     printWithBanner("-- Gauges",'-');
     for (    Map.Entry<String,Gauge> entry : gauges.entrySet()) {
-      output.println(entry.getKey());
+      this.output.println(entry.getKey());
       printGauge(entry);
     }
-    output.println();
+    this.output.println();
   }
   if (!counters.isEmpty()) {
     printWithBanner("-- Counters",'-');
     for (    Map.Entry<String,Counter> entry : counters.entrySet()) {
-      output.println(entry.getKey());
+      this.output.println(entry.getKey());
       printCounter(entry);
     }
-    output.println();
+    this.output.println();
   }
   if (!histograms.isEmpty()) {
     printWithBanner("-- Histograms",'-');
     for (    Map.Entry<String,Histogram> entry : histograms.entrySet()) {
-      output.println(entry.getKey());
+      this.output.println(entry.getKey());
       printHistogram(entry.getValue());
     }
-    output.println();
+    this.output.println();
   }
   if (!meters.isEmpty()) {
     printWithBanner("-- Meters",'-');
     for (    Map.Entry<String,Meter> entry : meters.entrySet()) {
-      output.println(entry.getKey());
+      this.output.println(entry.getKey());
       printMeter(entry.getValue());
     }
-    output.println();
+    this.output.println();
   }
   if (!timers.isEmpty()) {
     printWithBanner("-- Timers",'-');
     for (    Map.Entry<String,Timer> entry : timers.entrySet()) {
-      output.println(entry.getKey());
+      this.output.println(entry.getKey());
       printTimer(entry.getValue());
     }
-    output.println();
+    this.output.println();
   }
-  output.println();
-  output.flush();
+  this.output.println();
+  this.output.flush();
 }

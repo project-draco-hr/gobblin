@@ -1,18 +1,18 @@
 {
   final Snapshot snapshot=timer.getSnapshot();
-  output.printf(locale,"             count = %d%n",timer.getCount());
-  output.printf(locale,"         mean rate = %2.2f calls/%s%n",convertRate(timer.getMeanRate()),getRateUnit());
-  output.printf(locale,"     1-minute rate = %2.2f calls/%s%n",convertRate(timer.getOneMinuteRate()),getRateUnit());
-  output.printf(locale,"     5-minute rate = %2.2f calls/%s%n",convertRate(timer.getFiveMinuteRate()),getRateUnit());
-  output.printf(locale,"    15-minute rate = %2.2f calls/%s%n",convertRate(timer.getFifteenMinuteRate()),getRateUnit());
-  output.printf(locale,"               min = %2.2f %s%n",convertDuration(snapshot.getMin()),getDurationUnit());
-  output.printf(locale,"               max = %2.2f %s%n",convertDuration(snapshot.getMax()),getDurationUnit());
-  output.printf(locale,"              mean = %2.2f %s%n",convertDuration(snapshot.getMean()),getDurationUnit());
-  output.printf(locale,"            stddev = %2.2f %s%n",convertDuration(snapshot.getStdDev()),getDurationUnit());
-  output.printf(locale,"            median = %2.2f %s%n",convertDuration(snapshot.getMedian()),getDurationUnit());
-  output.printf(locale,"              75%% <= %2.2f %s%n",convertDuration(snapshot.get75thPercentile()),getDurationUnit());
-  output.printf(locale,"              95%% <= %2.2f %s%n",convertDuration(snapshot.get95thPercentile()),getDurationUnit());
-  output.printf(locale,"              98%% <= %2.2f %s%n",convertDuration(snapshot.get98thPercentile()),getDurationUnit());
-  output.printf(locale,"              99%% <= %2.2f %s%n",convertDuration(snapshot.get99thPercentile()),getDurationUnit());
-  output.printf(locale,"            99.9%% <= %2.2f %s%n",convertDuration(snapshot.get999thPercentile()),getDurationUnit());
+  this.output.printf(locale,"             count = %d%n",timer.getCount());
+  this.output.printf(locale,"         mean rate = %2.2f calls/%s%n",convertRate(timer.getMeanRate()),getRateUnit());
+  this.output.printf(locale,"     1-minute rate = %2.2f calls/%s%n",convertRate(timer.getOneMinuteRate()),getRateUnit());
+  this.output.printf(locale,"     5-minute rate = %2.2f calls/%s%n",convertRate(timer.getFiveMinuteRate()),getRateUnit());
+  this.output.printf(locale,"    15-minute rate = %2.2f calls/%s%n",convertRate(timer.getFifteenMinuteRate()),getRateUnit());
+  this.output.printf(locale,"               min = %2.2f %s%n",convertDuration(snapshot.getMin()),getDurationUnit());
+  this.output.printf(locale,"               max = %2.2f %s%n",convertDuration(snapshot.getMax()),getDurationUnit());
+  this.output.printf(locale,"              mean = %2.2f %s%n",convertDuration(snapshot.getMean()),getDurationUnit());
+  this.output.printf(locale,"            stddev = %2.2f %s%n",convertDuration(snapshot.getStdDev()),getDurationUnit());
+  this.output.printf(locale,"            median = %2.2f %s%n",convertDuration(snapshot.getMedian()),getDurationUnit());
+  this.output.printf(locale,"              75%% <= %2.2f %s%n",convertDuration(snapshot.get75thPercentile()),getDurationUnit());
+  this.output.printf(locale,"              95%% <= %2.2f %s%n",convertDuration(snapshot.get95thPercentile()),getDurationUnit());
+  this.output.printf(locale,"              98%% <= %2.2f %s%n",convertDuration(snapshot.get98thPercentile()),getDurationUnit());
+  this.output.printf(locale,"              99%% <= %2.2f %s%n",convertDuration(snapshot.get99thPercentile()),getDurationUnit());
+  this.output.printf(locale,"            99.9%% <= %2.2f %s%n",convertDuration(snapshot.get999thPercentile()),getDurationUnit());
 }
