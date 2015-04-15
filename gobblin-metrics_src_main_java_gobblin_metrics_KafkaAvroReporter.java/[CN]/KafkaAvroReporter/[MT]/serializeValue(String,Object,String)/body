@@ -2,10 +2,10 @@
   GenericRecord record=new GenericData.Record(SCHEMA);
   record.put("name",MetricRegistry.name(name,path));
   record.put("value",value);
-  record.put("tags",tags);
+  record.put("tags",this.tags);
   try {
     this.out.reset();
-    this.writer.write(record,encoder);
+    this.writer.write(record,this.encoder);
     this.encoder.flush();
     return out.toByteArray();
   }

@@ -1,7 +1,7 @@
 {
   super(builder);
   this.lastSerializeExceptionTime=0;
-  this.out=closer.register(new ByteArrayOutputStream());
-  this.encoder=EncoderFactory.get().binaryEncoder(out,null);
+  this.out=this.closer.register(new ByteArrayOutputStream());
+  this.encoder=EncoderFactory.get().binaryEncoder(this.out,null);
   this.writer=new GenericDatumWriter<GenericRecord>(SCHEMA);
 }
