@@ -1,0 +1,3 @@
+ConsumerIterator<byte[],byte[]> it
+Set<String> expected
+boolean strict

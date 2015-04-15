@@ -1,0 +1,18 @@
+{
+  Properties props=new Properties();
+  props.put("metadata.broker.list","localhost:" + kafkaPort);
+  props.put("serializer.class","kafka.serializer.StringEncoder");
+  props.put("request.required.acks","1");
+  ProducerConfig config=new ProducerConfig(props);
+  Producer<String,String> producer=new Producer<String,String>(config);
+  producer.send(new KeyedMessage<String,String>("test","testMessage"));
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  assert(iterator.hasNext());
+  Assert.assertEquals(new String(iterator.next().message()),"testMessage");
+  producer.close();
+}

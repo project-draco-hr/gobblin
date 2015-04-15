@@ -1,0 +1,19 @@
+{
+  MetricRegistry registry=new MetricRegistry();
+  Counter counter=registry.counter("com.linkedin.example.counter");
+  Map<String,String> tags=new HashMap<String,String>();
+  tags.put("testKey","testValue");
+  tags.put("key2","value2");
+  OutputStreamReporter reporter=OutputStreamReporter.forRegistry(registry).withTags(tags).outputTo(stream).build();
+  counter.inc();
+  reporter.report();
+  Assert.assertTrue(stream.toString().contains("key2=value2"));
+  Assert.assertTrue(stream.toString().contains("testKey=testValue"));
+  String[] lines=stream.toString().split("\n");
+  Map<String,Set<String>> expected=new HashMap<String,Set<String>>();
+  expectMetrics(expected,lines);
+  Set<String> counterSubMetrics=new HashSet<String>();
+  counterSubMetrics.add("count");
+  expected.put("com.linkedin.example.counter",counterSubMetrics);
+  reporter.close();
+}

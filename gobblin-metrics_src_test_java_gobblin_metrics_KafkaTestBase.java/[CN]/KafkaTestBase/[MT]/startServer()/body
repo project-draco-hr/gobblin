@@ -1,0 +1,16 @@
+{
+  if (serverStarted && serverClosed) {
+    throw new RuntimeException("Kafka test server has already been closed. Cannot generate Kafka server twice.");
+  }
+  if (!serverStarted) {
+    serverStarted=true;
+    zkConnect=TestZKUtils.zookeeperConnect();
+    zkServer=new EmbeddedZookeeper(zkConnect);
+    zkClient=new ZkClient(zkServer.connectString(),30000,30000,ZKStringSerializer$.MODULE$);
+    kafkaPort=TestUtils.choosePort();
+    Properties props=TestUtils.createBrokerConfig(brokerId,kafkaPort,true);
+    KafkaConfig config=new KafkaConfig(props);
+    Time mock=new MockTime();
+    kafkaServer=TestUtils.createServer(config,mock);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  String str=stringifyValue(name,value,path);
+  if (Strings.isNullOrEmpty(str)) {
+    return str.getBytes();
+  }
+ else {
+    return null;
+  }
+}
