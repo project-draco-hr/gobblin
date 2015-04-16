@@ -1,5 +1,5 @@
 {
   Properties jobProps=loadJobProps();
   jobProps.setProperty(ConfigurationKeys.EXTRACT_PULL_LIMIT,"10");
-  runTestWithPullLimit(jobProps);
+  this.jobLauncherTestHelper.runTestWithPullLimit(jobProps);
 }
