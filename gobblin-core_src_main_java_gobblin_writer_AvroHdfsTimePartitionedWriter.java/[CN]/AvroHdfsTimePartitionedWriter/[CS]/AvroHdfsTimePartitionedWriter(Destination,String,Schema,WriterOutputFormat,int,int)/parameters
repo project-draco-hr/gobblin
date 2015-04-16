@@ -2,4 +2,5 @@ Destination destination
 String writerId
 Schema schema
 WriterOutputFormat writerOutputFormat
+int numBranches
 int branch

@@ -1,3 +1,0 @@
-{
-  return ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,branch);
-}
