@@ -6,9 +6,6 @@
     LOG.info("Creating a new DataWriter for path: " + new Path(this.baseFilePath,writerOutputPath));
     DataWriter<GenericRecord> avroHdfsDataWriter=createAvroHdfsDataWriterForPath(writerOutputPath);
     this.pathToWriterMap.put(writerOutputPath,avroHdfsDataWriter);
-    avroHdfsDataWriter.write(record);
   }
- else {
-    this.pathToWriterMap.get(writerOutputPath).write(record);
-  }
+  this.pathToWriterMap.get(writerOutputPath).write(record);
 }

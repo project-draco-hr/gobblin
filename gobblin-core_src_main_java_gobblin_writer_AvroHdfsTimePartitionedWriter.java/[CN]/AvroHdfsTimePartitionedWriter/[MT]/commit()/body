@@ -1,5 +1,15 @@
 {
-  for (  DataWriter<GenericRecord> dataWriter : this.pathToWriterMap.values()) {
-    dataWriter.commit();
+  boolean commitFailed=false;
+  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+    try {
+      entry.getValue().commit();
+    }
+ catch (    IOException e) {
+      commitFailed=true;
+      LOG.error("Failed to close writer for path: " + entry.getKey(),e);
+    }
+  }
+  if (commitFailed) {
+    throw new IOException("Failed to commit all data for all writers");
   }
 }
