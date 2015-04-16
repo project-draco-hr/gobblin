@@ -1,0 +1,11 @@
+{
+  Optional<Object> writerPartitionColumnValue=AvroUtils.getFieldValue(record,this.partitionColumnName);
+  Preconditions.checkState(writerPartitionColumnValue.isPresent());
+  Path writerOutputPath=getPathForColumnValue((Long)writerPartitionColumnValue.get());
+  if (!this.pathToWriterMap.containsKey(writerOutputPath)) {
+    LOG.info("Creating a new DataWriter for path: " + new Path(this.baseFilePath,writerOutputPath));
+    DataWriter<GenericRecord> avroHdfsDataWriter=createAvroHdfsDataWriterForPath(writerOutputPath);
+    this.pathToWriterMap.put(writerOutputPath,avroHdfsDataWriter);
+  }
+  this.pathToWriterMap.get(writerOutputPath).write(record);
+}

@@ -1,5 +1,9 @@
 {
   Preconditions.checkNotNull(record);
+  if (this.properties.getPropAsBoolean(ConfigurationKeys.WRITER_SET_SCHEMA_PER_RECORD,ConfigurationKeys.DEFAULT_WRITER_SET_SCHEMA_PER_RECORD) && !this.schema.equals(record.getSchema())) {
+    this.schema=record.getSchema();
+    this.datumWriter.setSchema(record.getSchema());
+  }
   this.writer.append(record);
   this.count.incrementAndGet();
 }
