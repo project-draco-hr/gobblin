@@ -1,0 +1,24 @@
+{
+  Counter recordsProcessed=this.context.contextAwareCounter(RECORDS_PROCESSED);
+  recordsProcessed.inc(10l);
+  Meter recordsProcessRate=this.context.contextAwareMeter(RECORD_PROCESS_RATE);
+  recordsProcessRate.mark(1l);
+  recordsProcessRate.mark(2l);
+  recordsProcessRate.mark(3l);
+  Histogram recordsSizeDistribution=this.context.contextAwareHistogram(RECORD_SIZE_DISTRIBUTION);
+  recordsSizeDistribution.update(1);
+  recordsSizeDistribution.update(2);
+  recordsSizeDistribution.update(3);
+  Timer totalDuration=this.context.contextAwareTimer(TOTAL_DURATION);
+  totalDuration.update(1,TimeUnit.SECONDS);
+  totalDuration.update(2,TimeUnit.SECONDS);
+  totalDuration.update(3,TimeUnit.SECONDS);
+  Gauge<Long> queueSize=new Gauge<Long>(){
+    @Override public Long getValue(){
+      return 1000l;
+    }
+  }
+;
+  this.context.register(QUEUE_SIZE,queueSize);
+  this.context.reportMetrics();
+}

@@ -1,0 +1,3 @@
+{
+  return new GraphiteReporter(context,this.name,this.filter,this.rateUnit,this.durationUnit,this.graphiteSender);
+}

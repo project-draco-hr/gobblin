@@ -1,0 +1,3 @@
+{
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name),gauge.getValue().toString(),timeStamp);
+}
