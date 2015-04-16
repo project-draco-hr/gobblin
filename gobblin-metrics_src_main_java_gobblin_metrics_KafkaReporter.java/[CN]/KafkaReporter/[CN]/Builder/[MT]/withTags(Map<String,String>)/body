@@ -1,0 +1,4 @@
+{
+  this.tags.putAll(tags);
+  return self();
+}

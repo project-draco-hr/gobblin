@@ -1,0 +1,5 @@
+{
+  for (  State state : states) {
+    JobLauncherUtils.cleanStagingData(state,logger);
+  }
+}

@@ -1,0 +1,4 @@
+State state
+String path
+int numBranches
+int branchId

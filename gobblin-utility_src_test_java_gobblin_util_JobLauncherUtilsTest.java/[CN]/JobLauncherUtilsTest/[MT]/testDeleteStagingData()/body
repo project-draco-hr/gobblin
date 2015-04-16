@@ -8,7 +8,7 @@
   String writerPath0="test0";
   String writerPath1="test1";
   try {
-    State state=new State();
+    WorkUnitState state=new WorkUnitState();
     state.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,"2");
     state.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,2,0),ConfigurationKeys.LOCAL_FS_URI);
     state.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,2,1),ConfigurationKeys.LOCAL_FS_URI);

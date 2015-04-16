@@ -1,0 +1,7 @@
+{
+  for (  Map.Entry<String,Metric> entry : this.contextAwareMetrics.entrySet()) {
+    if (filter.matches(entry.getKey(),entry.getValue())) {
+      remove(entry.getKey());
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  this.tags=Maps.newLinkedHashMap();
+  addTags(tags);
+}

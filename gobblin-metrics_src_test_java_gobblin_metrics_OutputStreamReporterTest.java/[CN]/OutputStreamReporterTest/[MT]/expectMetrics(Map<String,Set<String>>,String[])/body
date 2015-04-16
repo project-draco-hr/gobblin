@@ -1,0 +1,24 @@
+{
+  Set<String> activeSet=new HashSet<String>();
+  String activeTopLevel="";
+  for (  String line : lines) {
+    System.out.println(line);
+    if (line.contains("com.linkedin.example")) {
+      Assert.assertTrue(activeSet.isEmpty(),String.format("%s does not contain all expected submetrics. Missing: %s",activeTopLevel,Arrays.toString(activeSet.toArray())));
+      activeTopLevel=line.trim();
+      if (metrics.containsKey(activeTopLevel)) {
+        activeSet=metrics.get(activeTopLevel);
+        metrics.remove(activeTopLevel);
+      }
+ else {
+        activeSet=new HashSet<String>();
+      }
+    }
+ else     if (line.contains("=")) {
+      String submetric=line.split("=")[0].trim();
+      activeSet.remove(submetric);
+    }
+  }
+  Assert.assertTrue(activeSet.isEmpty(),String.format("%s does not contain all expected submetrics. Missing: %s",activeTopLevel,Arrays.toString(activeSet.toArray())));
+  Assert.assertTrue(metrics.isEmpty(),String.format("Output does not contain all expected top level metrics. Missing: %s",Arrays.toString(metrics.keySet().toArray())));
+}

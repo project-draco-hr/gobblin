@@ -1,0 +1,49 @@
+{
+  MetricRegistry registry=new MetricRegistry();
+  Counter counter=registry.counter("com.linkedin.example.counter");
+  Meter meter=registry.meter("com.linkedin.example.meter");
+  Histogram histogram=registry.histogram("com.linkedin.example.histogram");
+  KafkaReporter kafkaReporter=getBuilder(registry).build("localhost:" + kafkaPort,topic);
+  counter.inc();
+  meter.mark(2);
+  histogram.update(1);
+  histogram.update(1);
+  histogram.update(2);
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  Map<String,Double> expected=new HashMap<String,Double>();
+  expected.put("com.linkedin.example.counter",1.0);
+  expected.put("com.linkedin.example.meter.count",2.0);
+  expected.put("com.linkedin.example.histogram.count",3.0);
+  expectMetricsWithValues(iterator,expected);
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  Set<String> expectedSet=new HashSet<String>();
+  expectedSet.add("com.linkedin.example.counter");
+  expectedSet.add("com.linkedin.example.meter.count");
+  expectedSet.add("com.linkedin.example.meter.rate.mean");
+  expectedSet.add("com.linkedin.example.meter.rate.1m");
+  expectedSet.add("com.linkedin.example.meter.rate.5m");
+  expectedSet.add("com.linkedin.example.meter.rate.15m");
+  expectedSet.add("com.linkedin.example.histogram.mean");
+  expectedSet.add("com.linkedin.example.histogram.min");
+  expectedSet.add("com.linkedin.example.histogram.max");
+  expectedSet.add("com.linkedin.example.histogram.median");
+  expectedSet.add("com.linkedin.example.histogram.75percentile");
+  expectedSet.add("com.linkedin.example.histogram.95percentile");
+  expectedSet.add("com.linkedin.example.histogram.99percentile");
+  expectedSet.add("com.linkedin.example.histogram.999percentile");
+  expectedSet.add("com.linkedin.example.histogram.count");
+  expectMetrics(iterator,expectedSet,true);
+  kafkaReporter.close();
+}

@@ -1,0 +1,3 @@
+{
+  return this.reportFullyQualifiedNames ? super.getHistograms(filter) : getSimplyNamedMetrics(Histogram.class,Optional.of(filter));
+}

@@ -1,0 +1,33 @@
+{
+  ContextAwareCounter jobRecordsProcessed=this.context.contextAwareCounter(RECORDS_PROCESSED);
+  Assert.assertEquals(this.context.getCounters().get(MetricRegistry.name(this.context.metricNamePrefix(false),jobRecordsProcessed.getName())),jobRecordsProcessed);
+  Assert.assertEquals(jobRecordsProcessed.getContext(),this.context);
+  Assert.assertEquals(jobRecordsProcessed.getName(),RECORDS_PROCESSED);
+  Assert.assertTrue(jobRecordsProcessed.getTags().isEmpty());
+  jobRecordsProcessed.addTag(new Tag<String>(METRIC_GROUP_KEY,INPUT_RECORDS_GROUP));
+  Assert.assertEquals(jobRecordsProcessed.getTags().size(),1);
+  Assert.assertEquals(jobRecordsProcessed.getTags().get(0).getKey(),METRIC_GROUP_KEY);
+  Assert.assertEquals(jobRecordsProcessed.getTags().get(0).getValue(),INPUT_RECORDS_GROUP);
+  Assert.assertEquals(jobRecordsProcessed.getFullyQualifiedName(false),MetricRegistry.name(INPUT_RECORDS_GROUP,RECORDS_PROCESSED));
+  jobRecordsProcessed.inc();
+  Assert.assertEquals(jobRecordsProcessed.getCount(),1l);
+  jobRecordsProcessed.inc(5);
+  Assert.assertEquals(jobRecordsProcessed.getCount(),6l);
+  jobRecordsProcessed.dec();
+  Assert.assertEquals(jobRecordsProcessed.getCount(),5l);
+  jobRecordsProcessed.dec(3);
+  Assert.assertEquals(jobRecordsProcessed.getCount(),2l);
+  ContextAwareCounter taskRecordsProcessed=this.childContext.contextAwareCounter(RECORDS_PROCESSED);
+  Assert.assertEquals(this.childContext.getCounters().get(MetricRegistry.name(this.childContext.metricNamePrefix(false),taskRecordsProcessed.getName())),taskRecordsProcessed);
+  Assert.assertEquals(taskRecordsProcessed.getContext(),this.childContext);
+  Assert.assertEquals(taskRecordsProcessed.getName(),RECORDS_PROCESSED);
+  taskRecordsProcessed.inc();
+  Assert.assertEquals(taskRecordsProcessed.getCount(),1l);
+  Assert.assertEquals(jobRecordsProcessed.getCount(),3l);
+  taskRecordsProcessed.inc(3);
+  Assert.assertEquals(taskRecordsProcessed.getCount(),4l);
+  Assert.assertEquals(jobRecordsProcessed.getCount(),6l);
+  taskRecordsProcessed.dec(4);
+  Assert.assertEquals(taskRecordsProcessed.getCount(),0l);
+  Assert.assertEquals(jobRecordsProcessed.getCount(),2l);
+}

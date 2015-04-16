@@ -1,26 +1,20 @@
 {
-  int branches=taskState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
-  for (int i=0; i < branches; i++) {
-    String writerFsUri=taskState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,branches,i),ConfigurationKeys.LOCAL_FS_URI);
+  int numBranches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  for (int branchId=0; branchId < numBranches; branchId++) {
+    String writerFsUri=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI);
     FileSystem fs=FileSystem.get(URI.create(writerFsUri),new Configuration());
-    String writerFilePath=taskState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,branches,i));
-    if (Strings.isNullOrEmpty(writerFilePath)) {
-      continue;
-    }
-    String stagingDirKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,branches,i);
-    if (taskState.contains(stagingDirKey)) {
-      Path stagingPath=new Path(taskState.getProp(stagingDirKey),writerFilePath);
-      if (fs.exists(stagingPath)) {
-        logger.info("Cleaning up staging directory " + stagingPath.toUri().getPath());
-        fs.delete(stagingPath,true);
+    Path stagingPath=WriterUtils.getWriterStagingDir(state,numBranches,branchId);
+    if (fs.exists(stagingPath)) {
+      logger.info("Cleaning up staging directory " + stagingPath.toUri().getPath());
+      if (!fs.delete(stagingPath,true)) {
+        throw new IOException("Clean up staging directory " + stagingPath.toUri().getPath() + " failed");
       }
     }
-    String outputDirKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,branches,i);
-    if (taskState.contains(outputDirKey)) {
-      Path outputPath=new Path(taskState.getProp(outputDirKey),writerFilePath);
-      if (fs.exists(outputPath)) {
-        logger.info("Cleaning up output directory " + outputPath.toUri().getPath());
-        fs.delete(outputPath,true);
+    Path outputPath=WriterUtils.getWriterOutputDir(state,numBranches,branchId);
+    if (fs.exists(outputPath)) {
+      logger.info("Cleaning up output directory " + outputPath.toUri().getPath());
+      if (!fs.delete(outputPath,true)) {
+        throw new IOException("Clean up output directory " + outputPath.toUri().getPath() + " failed");
       }
     }
   }

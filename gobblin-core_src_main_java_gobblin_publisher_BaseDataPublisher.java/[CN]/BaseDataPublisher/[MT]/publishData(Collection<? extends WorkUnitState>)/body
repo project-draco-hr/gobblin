@@ -1,22 +1,22 @@
 {
   Set<Path> writerOutputPathsMoved=Sets.newHashSet();
   for (  WorkUnitState workUnitState : states) {
-    for (int i=0; i < this.branches; i++) {
-      String writerFilePathKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,this.branches,i);
+    for (int i=0; i < this.numBranches; i++) {
+      String writerFilePathKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,this.numBranches,i);
       if (!workUnitState.contains(writerFilePathKey)) {
         continue;
       }
-      Path writerOutputDir=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,this.branches,i)),workUnitState.getProp(writerFilePathKey));
-      Path publisherOutputDir=new Path(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,this.branches,i)),workUnitState.getProp(writerFilePathKey));
+      Path writerOutputDir=WriterUtils.getWriterOutputDir(workUnitState,this.numBranches,i);
+      Path publisherOutputDir=WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,i);
       if (writerOutputPathsMoved.contains(writerOutputDir)) {
         continue;
       }
       if (this.fss.get(i).exists(publisherOutputDir)) {
-        boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,branches,i));
+        boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,this.numBranches,i));
         if (!replaceFinalOutputDir) {
-          boolean preserveFileName=workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_NAME,branches,i),false);
+          boolean preserveFileName=workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_NAME,this.numBranches,i),false);
           for (          FileStatus status : this.fss.get(i).listStatus(writerOutputDir)) {
-            Path finalOutputPath=preserveFileName ? new Path(publisherOutputDir,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,branches,i))) : new Path(publisherOutputDir,status.getPath().getName());
+            Path finalOutputPath=preserveFileName ? new Path(publisherOutputDir,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,this.numBranches,i))) : new Path(publisherOutputDir,status.getPath().getName());
             if (this.fss.get(i).rename(status.getPath(),finalOutputPath)) {
               LOG.info(String.format("Moved %s to %s",status.getPath(),finalOutputPath));
             }

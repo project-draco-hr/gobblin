@@ -1,0 +1,4 @@
+{
+  this.tagged.addTag(new Tag<String>(JOB_ID_KEY,JOB_ID));
+  this.tagged.addTag(new Tag<Integer>(PROJECT_VERSION_KEY,PROJECT_VERSION));
+}

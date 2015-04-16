@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(state);
+  Preconditions.checkNotNull(path);
+  Preconditions.checkArgument(numBranches >= 0,"The number of branches is expected to be non-negative");
+  Preconditions.checkArgument(branchId >= 0,"The branch id is expected to be non-negative");
+  return numBranches > 1 ? path + Path.SEPARATOR + state.getProp(ConfigurationKeys.FORK_BRANCH_NAME_KEY + "." + branchId,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + branchId) : path;
+}

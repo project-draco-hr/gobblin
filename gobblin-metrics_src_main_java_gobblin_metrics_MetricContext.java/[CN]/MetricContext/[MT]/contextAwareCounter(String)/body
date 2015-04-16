@@ -1,0 +1,3 @@
+{
+  return contextAwareCounter(name,ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_COUNTER_FACTORY);
+}

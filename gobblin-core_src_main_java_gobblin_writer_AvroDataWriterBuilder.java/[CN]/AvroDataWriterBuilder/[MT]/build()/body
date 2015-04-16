@@ -6,9 +6,8 @@
 switch (this.destination.getType()) {
 case HDFS:
     State properties=this.destination.getProperties();
-  String filePath=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,this.branch));
-String fileName=String.format("%s.%s.%s",properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_NAME,this.branch),"part"),this.writerId,this.format.getExtension());
-return new AvroHdfsDataWriter(properties,filePath,fileName,this.schema,this.branch);
+  String fileName=WriterUtils.getWriterFileName(properties,this.branches,this.branch,this.writerId,this.format.getExtension());
+return new AvroHdfsDataWriter(properties,fileName,this.schema,this.branches,this.branch);
 case KAFKA:
 return new AvroKafkaDataWriter();
 default :

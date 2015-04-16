@@ -1,0 +1,6 @@
+{
+  super.update(value);
+  if (this.parentHistogram.isPresent()) {
+    this.parentHistogram.get().update(value);
+  }
+}
