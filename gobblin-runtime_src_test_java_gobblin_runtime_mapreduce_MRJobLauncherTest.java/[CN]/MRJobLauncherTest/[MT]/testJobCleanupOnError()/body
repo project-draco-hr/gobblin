@@ -2,7 +2,7 @@
   Properties props=loadJobProps();
   try {
     this.jobLauncherTestHelper.runTest(props);
-    Assert.fail("Byteman is not configured properly, the testLaunchJob method should have throw an exception");
+    Assert.fail("Byteman is not configured properly, the runTest method should have throw an exception");
   }
  catch (  Exception e) {
   }
