@@ -20,25 +20,25 @@
   taskExecutionInfo.setTable(table);
   JobMetrics jobMetrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
   MetricArray metricArray=new MetricArray();
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.TASK,this.taskId).entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,MetricGroup.TASK,this.taskId).entrySet()) {
     Metric counter=new Metric();
-    counter.setGroup(JobMetrics.MetricGroup.TASK.name());
+    counter.setGroup(MetricGroup.TASK.name());
     counter.setName(entry.getKey());
     counter.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.COUNTER.name()));
     counter.setValue(Long.toString(((Counter)entry.getValue()).getCount()));
     metricArray.add(counter);
   }
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.METER,JobMetrics.MetricGroup.TASK,this.taskId).entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.METER,MetricGroup.TASK,this.taskId).entrySet()) {
     Metric meter=new Metric();
-    meter.setGroup(JobMetrics.MetricGroup.TASK.name());
+    meter.setGroup(MetricGroup.TASK.name());
     meter.setName(entry.getKey());
     meter.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.METER.name()));
     meter.setValue(Double.toString(((Meter)entry.getValue()).getMeanRate()));
     metricArray.add(meter);
   }
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.GAUGE,JobMetrics.MetricGroup.TASK,this.taskId).entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.GAUGE,MetricGroup.TASK,this.taskId).entrySet()) {
     Metric gauge=new Metric();
-    gauge.setGroup(JobMetrics.MetricGroup.TASK.name());
+    gauge.setGroup(MetricGroup.TASK.name());
     gauge.setName(entry.getKey());
     gauge.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.GAUGE.name()));
     gauge.setValue(((Gauge)entry.getValue()).getValue().toString());
