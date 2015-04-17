@@ -1,0 +1,3 @@
+{
+  return new SingleRecordIterable<CopyableGenericRecord>(new CopyableGenericRecord(inputRecord));
+}
