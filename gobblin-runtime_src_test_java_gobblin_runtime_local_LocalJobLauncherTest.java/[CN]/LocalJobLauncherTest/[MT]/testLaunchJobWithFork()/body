@@ -20,5 +20,5 @@
   jobProps.setProperty(ConfigurationKeys.WRITER_OUTPUT_DIR + ".1","gobblin-test/basicTest/tmp/taskOutput");
   jobProps.setProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR + ".0","gobblin-test/jobOutput");
   jobProps.setProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR + ".1","gobblin-test/jobOutput");
-  runTestWithFork(jobProps);
+  this.jobLauncherTestHelper.runTestWithFork(jobProps);
 }

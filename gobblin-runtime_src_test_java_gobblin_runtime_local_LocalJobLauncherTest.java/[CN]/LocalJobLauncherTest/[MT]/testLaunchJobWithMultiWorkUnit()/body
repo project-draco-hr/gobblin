@@ -1,5 +1,5 @@
 {
   Properties jobProps=loadJobProps();
   jobProps.setProperty("use.multiworkunit",Boolean.toString(true));
-  runTest(jobProps);
+  this.jobLauncherTestHelper.runTest(jobProps);
 }
