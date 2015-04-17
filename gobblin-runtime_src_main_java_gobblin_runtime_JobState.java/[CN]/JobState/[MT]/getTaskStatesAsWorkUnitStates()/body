@@ -1,0 +1,10 @@
+{
+  ImmutableList.Builder<WorkUnitState> builder=ImmutableList.builder();
+  for (  TaskState taskState : this.taskStates.values()) {
+    WorkUnitState workUnitState=new WorkUnitState(taskState.getWorkunit());
+    workUnitState.setId(taskState.getId());
+    workUnitState.addAll(taskState);
+    builder.add(workUnitState);
+  }
+  return builder.build();
+}

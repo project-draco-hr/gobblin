@@ -18,7 +18,7 @@
   Assert.assertTrue(isCancelled.get());
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
   String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
-  List<JobState> jobStateList=(List<JobState>)this.jobStateStore.getAll(jobName,jobId + ".jst");
+  List<JobState> jobStateList=this.jobStateStore.getAll(jobName,jobId + ".jst");
   Assert.assertTrue(jobStateList.isEmpty());
   FileSystem lfs=FileSystem.getLocal(new Configuration());
   Path jobLockFile=new Path(jobProps.getProperty(ConfigurationKeys.JOB_LOCK_DIR_KEY),jobName + FileBasedJobLock.LOCK_FILE_EXTENSION);

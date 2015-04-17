@@ -11,7 +11,7 @@
       State state=this.stateClass.newInstance();
       while (reader.next(key,state)) {
         if (key.toString().equals(stateId)) {
-          return state;
+          return (T)state;
         }
       }
     }
