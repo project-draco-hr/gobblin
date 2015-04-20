@@ -1,0 +1,12 @@
+{
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MIN.getName()),convertDuration ? Double.toString(convertDuration(snapshot.getMin())) : Long.toString(snapshot.getMin()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MAX.getName()),convertDuration ? Double.toString(convertDuration(snapshot.getMax())) : Long.toString(snapshot.getMax()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MEAN.getName()),Double.toString(convertDuration ? convertDuration(snapshot.getMean()) : snapshot.getMean()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.STDDEV.getName()),Double.toString(convertDuration ? convertDuration(snapshot.getStdDev()) : snapshot.getStdDev()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MEDIAN.getName()),Double.toString(convertDuration ? convertDuration(snapshot.getMedian()) : snapshot.getMedian()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_75TH.getName()),Double.toString(convertDuration ? convertDuration(snapshot.get75thPercentile()) : snapshot.get75thPercentile()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_95TH.getName()),Double.toString(convertDuration ? convertDuration(snapshot.get95thPercentile()) : snapshot.get95thPercentile()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_98TH.getName()),Double.toString(convertDuration ? convertDuration(snapshot.get98thPercentile()) : snapshot.get98thPercentile()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_99TH.getName()),Double.toString(convertDuration ? convertDuration(snapshot.get99thPercentile()) : snapshot.get99thPercentile()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_999TH.getName()),Double.toString(convertDuration ? convertDuration(snapshot.get999thPercentile()) : snapshot.get999thPercentile()),timeStamp);
+}

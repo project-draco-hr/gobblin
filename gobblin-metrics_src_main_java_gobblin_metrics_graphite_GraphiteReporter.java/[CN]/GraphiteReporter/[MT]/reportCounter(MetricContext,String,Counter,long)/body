@@ -1,3 +1,3 @@
 {
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name),Long.toString(counter.getCount()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName()),Long.toString(counter.getCount()),timeStamp);
 }

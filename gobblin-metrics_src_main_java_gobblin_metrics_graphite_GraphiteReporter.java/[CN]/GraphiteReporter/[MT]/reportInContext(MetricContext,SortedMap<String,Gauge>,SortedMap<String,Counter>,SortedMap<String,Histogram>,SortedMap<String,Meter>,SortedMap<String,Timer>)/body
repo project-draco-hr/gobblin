@@ -14,7 +14,7 @@
       reportHistogram(context,entry.getKey(),entry.getValue(),timeStamp);
     }
     for (    SortedMap.Entry<String,Meter> entry : meters.entrySet()) {
-      reportedMetered(context,entry.getKey(),entry.getValue(),timeStamp);
+      reportMetered(context,entry.getKey(),entry.getValue(),timeStamp);
     }
     for (    SortedMap.Entry<String,Timer> entry : timers.entrySet()) {
       reportTimer(context,entry.getKey(),entry.getValue(),timeStamp);

@@ -1,0 +1,3 @@
+{
+  this.hadoopContext.getCounter(context.getName(),name).increment(incremental);
+}

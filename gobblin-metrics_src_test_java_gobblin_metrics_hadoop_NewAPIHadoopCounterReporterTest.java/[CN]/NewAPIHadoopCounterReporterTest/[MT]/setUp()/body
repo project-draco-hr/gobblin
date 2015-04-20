@@ -1,6 +1,14 @@
 {
   TaskInputOutputContext<Object,Object,Object,Object> mockContext=Mockito.mock(TaskInputOutputContext.class);
-  this.recordsProcessed=Mockito.mock(Counter.class);
-  Mockito.when(mockContext.getCounter(CONTEXT_NAME,RECORDS_PROCESSED)).thenReturn(this.recordsProcessed);
+  this.recordsProcessedCount=Mockito.mock(Counter.class);
+  Mockito.when(mockContext.getCounter(CONTEXT_NAME,MetricRegistry.name(RECORDS_PROCESSED,Measurements.COUNT.getName()))).thenReturn(this.recordsProcessedCount);
+  this.recordProcessRateCount=Mockito.mock(Counter.class);
+  Mockito.when(mockContext.getCounter(CONTEXT_NAME,MetricRegistry.name(RECORD_PROCESS_RATE,Measurements.COUNT.getName()))).thenReturn(this.recordProcessRateCount);
+  this.recordSizeDistributionCount=Mockito.mock(Counter.class);
+  Mockito.when(mockContext.getCounter(CONTEXT_NAME,MetricRegistry.name(RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName()))).thenReturn(this.recordSizeDistributionCount);
+  this.totalDurationCount=Mockito.mock(Counter.class);
+  Mockito.when(mockContext.getCounter(CONTEXT_NAME,MetricRegistry.name(TOTAL_DURATION,Measurements.COUNT.getName()))).thenReturn(this.totalDurationCount);
+  this.queueSize=Mockito.mock(Counter.class);
+  Mockito.when(mockContext.getCounter(CONTEXT_NAME,QUEUE_SIZE)).thenReturn(this.queueSize);
   this.hadoopCounterReporter=NewAPIHadoopCounterReporter.builder(mockContext).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.SECONDS).filter(MetricFilter.ALL).build(MetricContext.builder(CONTEXT_NAME).build());
 }

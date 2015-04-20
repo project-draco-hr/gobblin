@@ -1,5 +1,5 @@
 {
-  TestGraphiteSender.TimestampedValue recordsProcessed=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORDS_PROCESSED));
+  TestGraphiteSender.TimestampedValue recordsProcessed=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORDS_PROCESSED,Measurements.COUNT.getName()));
   Assert.assertEquals(recordsProcessed.getValue(),Long.toString(10l));
   TestGraphiteSender.TimestampedValue recordsProcessRateCount=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_PROCESS_RATE,Measurements.COUNT.getName()));
   Assert.assertEquals(Long.parseLong(recordsProcessRateCount.getValue()),6l);

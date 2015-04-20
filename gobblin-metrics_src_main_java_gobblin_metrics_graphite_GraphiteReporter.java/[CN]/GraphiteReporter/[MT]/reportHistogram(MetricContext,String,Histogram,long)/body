@@ -1,14 +1,4 @@
 {
-  Snapshot snapshot=histogram.getSnapshot();
   this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName()),Long.toString(histogram.getCount()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MIN.getName()),Long.toString(snapshot.getMin()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MAX.getName()),Long.toString(snapshot.getMax()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MEAN.getName()),Double.toString(snapshot.getMean()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.STDDEV.getName()),Double.toString(snapshot.getStdDev()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MEDIAN.getName()),Double.toString(snapshot.getMedian()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_75TH.getName()),Double.toString(snapshot.get75thPercentile()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_95TH.getName()),Double.toString(snapshot.get95thPercentile()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_98TH.getName()),Double.toString(snapshot.get98thPercentile()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_99TH.getName()),Double.toString(snapshot.get99thPercentile()),timeStamp);
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.PERCENTILE_999TH.getName()),Double.toString(snapshot.get999thPercentile()),timeStamp);
+  reportSnapshot(context,name,histogram.getSnapshot(),timeStamp,false);
 }
