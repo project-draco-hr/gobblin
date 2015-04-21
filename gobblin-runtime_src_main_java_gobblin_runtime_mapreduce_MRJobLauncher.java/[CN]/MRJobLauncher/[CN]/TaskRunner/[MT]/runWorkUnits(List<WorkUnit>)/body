@@ -10,6 +10,8 @@
       this.taskStateStore.delete(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX);
     }
   }
+  JobMetrics jobMetrics=JobMetrics.get(null,jobId);
+  MetricContext.registerContext(jobMetrics.getMetricContext());
   List<Task> tasks=AbstractJobLauncher.runWorkUnits(jobId,workUnits,this.taskStateTracker,this.taskExecutor,new CountDownLatch(workUnits.size()));
   boolean hasTaskFailure=false;
   for (  Task task : tasks) {

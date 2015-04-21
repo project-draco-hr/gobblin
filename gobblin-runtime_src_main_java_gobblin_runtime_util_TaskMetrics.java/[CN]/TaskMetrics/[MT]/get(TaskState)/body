@@ -1,0 +1,3 @@
+{
+  return (TaskMetrics)METRICS_MAP.putIfAbsent(task.getJobId() + ":" + task.getTaskId(),new TaskMetrics(task));
+}

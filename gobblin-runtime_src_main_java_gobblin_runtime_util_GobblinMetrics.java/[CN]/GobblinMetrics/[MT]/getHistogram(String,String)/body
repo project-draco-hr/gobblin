@@ -1,0 +1,3 @@
+{
+  return this.metricContext.histogram(MetricRegistry.name(prefix,suffixes));
+}

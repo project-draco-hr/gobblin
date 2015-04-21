@@ -1,0 +1,10 @@
+{
+  CounterGroup jobCounterGroup=counters.getGroup(GobblinMetrics.MetricGroup.JOB.name());
+  for (  Counter jobCounter : jobCounterGroup) {
+    metrics.getCounter(jobCounter.getName()).inc(jobCounter.getValue());
+  }
+  CounterGroup taskCounterGroup=counters.getGroup(GobblinMetrics.MetricGroup.TASK.name());
+  for (  Counter taskCounter : taskCounterGroup) {
+    metrics.getCounter(taskCounter.getName()).inc(taskCounter.getValue());
+  }
+}

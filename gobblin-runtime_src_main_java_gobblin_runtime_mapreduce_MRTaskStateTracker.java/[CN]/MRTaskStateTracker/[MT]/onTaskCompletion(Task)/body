@@ -1,18 +1,18 @@
 {
   WorkUnit workUnit=task.getTaskState().getWorkunit();
-  if (JobMetrics.isEnabled(workUnit)) {
+  if (GobblinMetrics.isEnabled(workUnit)) {
     task.updateRecordMetrics();
     task.updateByteMetrics();
-    JobMetrics metrics=JobMetrics.get(task.getTaskState().getProp(ConfigurationKeys.JOB_NAME_KEY),task.getJobId());
+    TaskMetrics metrics=TaskMetrics.get(task.getTaskState());
     if (workUnit.getPropAsBoolean(ConfigurationKeys.MR_INCLUDE_TASK_COUNTERS_KEY,ConfigurationKeys.DEFAULT_MR_INCLUDE_TASK_COUNTERS)) {
-      Map<String,? extends Metric> taskLevelCounters=metrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.TASK,task.getTaskId());
+      Map<String,? extends Metric> taskLevelCounters=metrics.getMetricContext().getCounters();
       for (      Map.Entry<String,? extends Metric> entry : taskLevelCounters.entrySet()) {
-        this.context.getCounter(JobMetrics.MetricGroup.TASK.name(),entry.getKey()).setValue(((Counter)entry.getValue()).getCount());
+        this.context.getCounter(GobblinMetrics.MetricGroup.TASK.name(),entry.getKey()).setValue(((Counter)entry.getValue()).getCount());
       }
     }
-    Map<String,? extends Metric> jobLevelCounters=metrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,JobMetrics.MetricGroup.JOB,task.getJobId());
+    Map<String,? extends Metric> jobLevelCounters=JobMetrics.get(null,task.getJobId()).getMetricContext().getCounters();
     for (    Map.Entry<String,? extends Metric> entry : jobLevelCounters.entrySet()) {
-      this.context.getCounter(JobMetrics.MetricGroup.JOB.name(),entry.getKey()).increment(((Counter)entry.getValue()).getCount());
+      this.context.getCounter(GobblinMetrics.MetricGroup.JOB.name(),entry.getKey()).increment(((Counter)entry.getValue()).getCount());
     }
   }
   task.markTaskCompletion();

@@ -1,3 +1,0 @@
-{
-  return this.metricRegistry.register(metricName(group,id,name),gauge);
-}

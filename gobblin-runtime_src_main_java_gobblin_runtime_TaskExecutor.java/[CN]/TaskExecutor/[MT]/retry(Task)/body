@@ -1,7 +1,6 @@
 {
-  if (JobMetrics.isEnabled(task.getTaskState().getWorkunit())) {
+  if (GobblinMetrics.isEnabled(task.getTaskState().getWorkunit())) {
     task.getTaskState().adjustJobMetricsOnRetry(task.getTaskState().getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY));
-    task.getTaskState().removeMetrics();
   }
   long interval=task.getRetryCount() * this.retryIntervalInSeconds;
   this.taskRetryExecutor.schedule(task,interval,TimeUnit.SECONDS);

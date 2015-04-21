@@ -1,5 +1,5 @@
 {
-  if (JobMetrics.isEnabled(this.task.getTaskState().getWorkunit())) {
+  if (GobblinMetrics.isEnabled(this.task.getTaskState().getWorkunit())) {
     this.task.updateRecordMetrics();
   }
 }

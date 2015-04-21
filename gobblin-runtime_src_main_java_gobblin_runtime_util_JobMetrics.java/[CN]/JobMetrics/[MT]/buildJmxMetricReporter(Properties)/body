@@ -1,0 +1,7 @@
+{
+  if (!Boolean.valueOf(properties.getProperty(ConfigurationKeys.METRICS_REPORTING_JMX_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_JMX_ENABLED))) {
+    LOGGER.info("Not reporting metrics to JMX");
+    return;
+  }
+  this.jmxReporter=Optional.of(closer.register(JmxReporter.forRegistry(this.metricContext).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build()));
+}
