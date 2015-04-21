@@ -1,4 +1,5 @@
 {
-  Preconditions.checkArgument(state.contains(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,numBranches,branchId)),"Missing required property " + ConfigurationKeys.WRITER_STAGING_DIR);
+  String writerStagingDirKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,numBranches,branchId);
+  Preconditions.checkArgument(state.contains(writerStagingDirKey),"Missing required property " + writerStagingDirKey);
   return new Path(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_DIR,numBranches,branchId)),WriterUtils.getWriterFilePath(state,numBranches,branchId));
 }

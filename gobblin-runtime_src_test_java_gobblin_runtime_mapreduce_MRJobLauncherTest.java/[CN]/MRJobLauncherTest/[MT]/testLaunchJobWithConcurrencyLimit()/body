@@ -1,9 +1,9 @@
 {
   Properties jobProps=loadJobProps();
   jobProps.setProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,"2");
-  runTest(jobProps);
+  this.jobLauncherTestHelper.runTest(jobProps);
   jobProps.setProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,"3");
-  runTest(jobProps);
+  this.jobLauncherTestHelper.runTest(jobProps);
   jobProps.setProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,"5");
-  runTest(jobProps);
+  this.jobLauncherTestHelper.runTest(jobProps);
 }

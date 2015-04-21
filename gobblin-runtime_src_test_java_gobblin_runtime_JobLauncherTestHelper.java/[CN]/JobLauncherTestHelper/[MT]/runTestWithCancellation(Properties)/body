@@ -1,5 +1,5 @@
 {
-  final JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.properties);
+  final JobLauncher jobLauncher=JobLauncherFactory.newJobLauncher(this.launcherProps);
   final AtomicBoolean isCancelled=new AtomicBoolean(false);
   Thread thread=new Thread(new Runnable(){
     @Override public void run(){

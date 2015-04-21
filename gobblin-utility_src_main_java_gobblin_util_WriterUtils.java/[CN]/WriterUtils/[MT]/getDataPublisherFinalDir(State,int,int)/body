@@ -1,4 +1,5 @@
 {
-  Preconditions.checkArgument(state.contains(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,numBranches,branchId)),"Missing required property " + ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR);
+  String dataPublisherFinalDirKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,numBranches,branchId);
+  Preconditions.checkArgument(state.contains(dataPublisherFinalDirKey),"Missing required property " + dataPublisherFinalDirKey);
   return new Path(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,numBranches,branchId)),WriterUtils.getWriterFilePath(state,numBranches,branchId));
 }
