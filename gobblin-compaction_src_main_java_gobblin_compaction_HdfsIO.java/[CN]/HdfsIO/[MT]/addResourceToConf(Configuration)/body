@@ -1,7 +1,10 @@
 {
-  conf.setStrings(getHdfsUriHadoopPropertyName(),HDFS_URI_DEFAULT);
   addHadoopConfigPropertiesToConf(conf);
+  String hdfsUriProp=getHdfsUriHadoopPropertyName();
   if (CompactionRunner.properties.containsKey(HDFS_URI)) {
-    conf.setStrings(getHdfsUriHadoopPropertyName(),CompactionRunner.properties.getProperty(HDFS_URI));
+    conf.setStrings(hdfsUriProp,CompactionRunner.properties.getProperty(HDFS_URI));
+  }
+  if (Strings.isNullOrEmpty(conf.get(hdfsUriProp))) {
+    conf.set(hdfsUriProp,HDFS_URI_DEFAULT);
   }
 }
