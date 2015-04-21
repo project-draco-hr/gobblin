@@ -1,0 +1,27 @@
+{
+  Counter counter=this.metrics.getCounter(MetricGroup.JOB,JOB_ID,"records");
+  counter.inc();
+  Assert.assertEquals(counter.getCount(),1L);
+  counter=this.metrics.getCounter(MetricGroup.JOB,JOB_ID,"records");
+  counter.inc(2);
+  Assert.assertEquals(counter.getCount(),3L);
+  counter=this.metrics.getCounter(MetricGroup.TASK,TASK_ID,"records");
+  counter.inc();
+  Assert.assertEquals(counter.getCount(),1L);
+  counter=this.metrics.getCounter(MetricGroup.TASK,TASK_ID,"records");
+  counter.inc(2);
+  Assert.assertEquals(counter.getCount(),3L);
+  Meter meter=this.metrics.getMeter(MetricGroup.JOB,JOB_ID,"recordsPerSec");
+  meter.mark(3);
+  Assert.assertEquals(meter.getCount(),3L);
+  meter=this.metrics.getMeter(MetricGroup.TASK,TASK_ID,"recordsPerSec");
+  meter.mark(3);
+  Assert.assertEquals(meter.getCount(),3L);
+  Gauge<Long> gauge=this.metrics.getGauge(MetricGroup.JOB,JOB_ID,"expectedRecords",new Gauge<Long>(){
+    @Override public Long getValue(){
+      return 10L;
+    }
+  }
+);
+  Assert.assertEquals(gauge.getValue().longValue(),10L);
+}

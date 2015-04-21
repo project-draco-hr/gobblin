@@ -1,6 +1,6 @@
 {
   JobMetrics metrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
-  for (  String name : metrics.getMetricsOfGroup(JobMetrics.MetricGroup.TASK).keySet()) {
+  for (  String name : metrics.getMetricsOfGroup(MetricGroup.TASK).keySet()) {
     if (name.contains(this.taskId)) {
       metrics.removeMetric(name);
     }

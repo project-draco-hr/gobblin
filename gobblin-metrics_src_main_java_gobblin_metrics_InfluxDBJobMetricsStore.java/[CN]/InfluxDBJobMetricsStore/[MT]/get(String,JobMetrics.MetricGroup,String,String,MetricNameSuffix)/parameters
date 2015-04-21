@@ -1,5 +1,0 @@
-String jobName
-JobMetrics.MetricGroup metricGroup
-String id
-String name
-MetricNameSuffix suffix

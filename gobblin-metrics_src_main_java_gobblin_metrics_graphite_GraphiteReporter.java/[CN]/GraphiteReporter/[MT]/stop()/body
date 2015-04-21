@@ -1,0 +1,13 @@
+{
+  try {
+    super.stop();
+  }
+  finally {
+    try {
+      this.graphiteSender.close();
+    }
+ catch (    IOException ioe) {
+      LOGGER.error("Error closing the Graphite sender",ioe);
+    }
+  }
+}

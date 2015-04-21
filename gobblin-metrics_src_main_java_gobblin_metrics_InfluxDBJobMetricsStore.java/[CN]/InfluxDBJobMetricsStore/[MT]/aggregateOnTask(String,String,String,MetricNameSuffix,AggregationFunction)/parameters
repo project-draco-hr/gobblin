@@ -1,5 +1,0 @@
-String jobName
-String taskId
-String name
-MetricNameSuffix suffix
-AggregationFunction aggFunction

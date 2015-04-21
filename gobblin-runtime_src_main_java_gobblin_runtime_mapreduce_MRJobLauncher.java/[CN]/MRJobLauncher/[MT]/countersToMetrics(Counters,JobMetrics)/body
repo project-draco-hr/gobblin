@@ -1,9 +1,9 @@
 {
-  CounterGroup jobCounterGroup=counters.getGroup(JobMetrics.MetricGroup.JOB.name());
+  CounterGroup jobCounterGroup=counters.getGroup(MetricGroup.JOB.name());
   for (  Counter jobCounter : jobCounterGroup) {
     metrics.getCounter(jobCounter.getName()).inc(jobCounter.getValue());
   }
-  CounterGroup taskCounterGroup=counters.getGroup(JobMetrics.MetricGroup.TASK.name());
+  CounterGroup taskCounterGroup=counters.getGroup(MetricGroup.TASK.name());
   for (  Counter taskCounter : taskCounterGroup) {
     metrics.getCounter(taskCounter.getName()).inc(taskCounter.getValue());
   }

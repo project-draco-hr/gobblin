@@ -1,4 +1,0 @@
-{
-  this.influxDB.deleteDatabase(JOB_METRICS_DB);
-  this.influxDB.deleteDatabase(TASK_METRICS_DB);
-}
