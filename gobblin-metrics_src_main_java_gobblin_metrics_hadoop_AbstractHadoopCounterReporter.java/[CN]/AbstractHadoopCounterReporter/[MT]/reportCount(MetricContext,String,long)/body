@@ -1,0 +1,4 @@
+{
+  reportIncremental(context,MetricRegistry.name(name,Measurements.COUNT.getName()),calculateIncremental(name,currentCount));
+  this.previousCounts.put(name,currentCount);
+}

@@ -1,4 +1,4 @@
 {
   this.durationUnit=durationUnit;
-  return this;
+  return (B)this;
 }

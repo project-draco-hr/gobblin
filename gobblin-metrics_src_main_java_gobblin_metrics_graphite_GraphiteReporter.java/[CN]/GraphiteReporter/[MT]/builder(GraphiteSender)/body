@@ -1,0 +1,3 @@
+{
+  return builder(GraphiteReporter.class.getName(),graphiteSender);
+}

@@ -1,0 +1,7 @@
+{
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName()),Long.toString(metered.getCount()),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.RATE_1MIN.getName()),Double.toHexString(convertRate(metered.getOneMinuteRate())),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.RATE_5MIN.getName()),Double.toString(convertRate(metered.getFiveMinuteRate())),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.RATE_15MIN.getName()),Double.toString(convertRate(metered.getFifteenMinuteRate())),timeStamp);
+  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.MEAN_RATE.getName()),Double.toString(convertRate(metered.getMeanRate())),timeStamp);
+}

@@ -1,7 +1,8 @@
 {
+  this.randomId=(new Random()).nextInt();
   Tag<String> componentTag=new Tag("component","converter");
   Tag<String> classTag=new Tag("class",this.getClass().getCanonicalName());
   MetricContext parentContext;
-  MetricContext.Builder builder=state.contains(METRIC_CONTEXT_NAME_KEY) && (parentContext=MetricContext.getContext(state.getProp(METRIC_CONTEXT_NAME_KEY))) != null ? parentContext.childBuilder(klazz.getCanonicalName()) : MetricContext.builder(klazz.getClass().getCanonicalName());
+  MetricContext.Builder builder=state.contains(METRIC_CONTEXT_NAME_KEY) && (parentContext=MetricContext.getContext(state.getProp(METRIC_CONTEXT_NAME_KEY))) != null ? parentContext.childBuilder(klazz.getCanonicalName() + "." + this.randomId) : MetricContext.builder(klazz.getCanonicalName() + "." + this.randomId);
   this.metricContext=builder.addTag(componentTag).addTag(classTag).build();
 }

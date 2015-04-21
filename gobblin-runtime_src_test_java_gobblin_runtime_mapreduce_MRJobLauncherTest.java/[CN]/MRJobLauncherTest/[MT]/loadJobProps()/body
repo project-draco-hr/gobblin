@@ -1,7 +1,7 @@
 {
   Properties jobProps=new Properties();
   jobProps.load(new FileReader("gobblin-test/resource/mr-job-conf/GobblinMRTest.pull"));
-  jobProps.putAll(this.properties);
-  jobProps.setProperty(SOURCE_FILE_LIST_KEY,"gobblin-test/resource/source/test.avro.0," + "gobblin-test/resource/source/test.avro.1," + "gobblin-test/resource/source/test.avro.2,"+ "gobblin-test/resource/source/test.avro.3");
+  jobProps.putAll(this.launcherProps);
+  jobProps.setProperty(JobLauncherTestHelper.SOURCE_FILE_LIST_KEY,"gobblin-test/resource/source/test.avro.0," + "gobblin-test/resource/source/test.avro.1," + "gobblin-test/resource/source/test.avro.2,"+ "gobblin-test/resource/source/test.avro.3");
   return jobProps;
 }

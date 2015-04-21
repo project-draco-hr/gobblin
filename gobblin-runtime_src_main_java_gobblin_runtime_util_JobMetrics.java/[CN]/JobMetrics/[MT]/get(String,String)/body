@@ -1,3 +1,6 @@
 {
-  return (JobMetrics)METRICS_MAP.putIfAbsent(jobId,new JobMetrics(jobName,jobId));
+  if (!METRICS_MAP.containsKey(jobId)) {
+    METRICS_MAP.putIfAbsent(jobId,new JobMetrics(jobName,jobId));
+  }
+  return (JobMetrics)METRICS_MAP.get(jobId);
 }

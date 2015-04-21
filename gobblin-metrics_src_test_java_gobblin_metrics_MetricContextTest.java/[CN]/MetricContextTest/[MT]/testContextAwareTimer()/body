@@ -15,6 +15,5 @@
   Assert.assertEquals(jobTotalDuration.getCount(),3l);
   Assert.assertEquals(jobTotalDuration.getSnapshot().getMin(),TimeUnit.SECONDS.toNanos(50l));
   Assert.assertEquals(jobTotalDuration.getSnapshot().getMax(),TimeUnit.SECONDS.toNanos(150l));
-  Assert.assertEquals(jobTotalDuration.getSnapshot().getMedian(),TimeUnit.SECONDS.toNanos(100l) * 1d);
   Assert.assertTrue(jobTotalDuration.time().stop() >= 0l);
 }
