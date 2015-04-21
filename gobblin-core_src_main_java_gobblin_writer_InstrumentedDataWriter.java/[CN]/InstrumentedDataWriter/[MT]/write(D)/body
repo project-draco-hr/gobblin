@@ -1,0 +1,12 @@
+{
+  try {
+    long startTimeNanos=System.nanoTime();
+    beforeWrite(record);
+    writeImpl(record);
+    onSuccessfulWrite(startTimeNanos);
+  }
+ catch (  IOException exception) {
+    onException(exception);
+    throw exception;
+  }
+}

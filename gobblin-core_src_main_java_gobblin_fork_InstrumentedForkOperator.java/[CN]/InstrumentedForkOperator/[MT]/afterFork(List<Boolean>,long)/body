@@ -1,0 +1,8 @@
+{
+  int forksGenerated=0;
+  for (  Boolean fork : forks) {
+    forksGenerated+=fork ? 1 : 0;
+  }
+  this.outputForks.mark(forksGenerated);
+  this.forkOperatorTimer.update(System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
+}

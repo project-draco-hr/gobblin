@@ -1,1 +1,1 @@
-Converter<Object,Object,Object,Object>
+InstrumentedConverter<Object,Object,Object,Object>

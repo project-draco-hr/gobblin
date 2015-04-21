@@ -1,0 +1,12 @@
+{
+switch (result) {
+case FAILED:
+    this.failedRecordsMeter.mark();
+  break;
+case PASSED:
+this.passedRecordsMeter.mark();
+break;
+default :
+}
+this.policyTimer.update(System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
+}

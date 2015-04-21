@@ -1,0 +1,3 @@
+{
+  metricContext.close();
+}

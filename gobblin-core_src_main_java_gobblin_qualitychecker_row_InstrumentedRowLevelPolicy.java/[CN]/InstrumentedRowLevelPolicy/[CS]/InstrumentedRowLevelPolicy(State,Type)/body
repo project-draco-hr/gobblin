@@ -1,0 +1,9 @@
+{
+  super(state,type);
+  this.closer=Closer.create();
+  this.instrumented=closer.register(new Instrumented(state,this.getClass()));
+  this.recordsMeter=this.instrumented.getContext().contextAwareMeter("gobblin.qualitychecker.records.in");
+  this.passedRecordsMeter=this.instrumented.getContext().contextAwareMeter("gobblin.qualitychecker.records.passed");
+  this.failedRecordsMeter=this.instrumented.getContext().contextAwareMeter("gobblin.qualitychecker.records.failed");
+  this.policyTimer=this.instrumented.getContext().contextAwareTimer("gobblin.qualitychecker.policy.timer");
+}

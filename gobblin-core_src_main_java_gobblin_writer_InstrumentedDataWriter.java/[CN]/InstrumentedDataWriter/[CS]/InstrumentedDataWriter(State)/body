@@ -1,0 +1,8 @@
+{
+  this.closer=Closer.create();
+  this.instrumented=this.closer.register(new Instrumented(state,this.getClass()));
+  this.recordsInMeter=this.instrumented.getContext().meter("gobblin.writer.records.in");
+  this.successfulWriteMeter=this.instrumented.getContext().meter("gobblin.writer.records.written");
+  this.exceptionWriteMeter=this.instrumented.getContext().meter("gobblin.writer.records.failed");
+  this.dataWriterTimer=this.instrumented.getContext().timer("gobblin.writer.timer");
+}

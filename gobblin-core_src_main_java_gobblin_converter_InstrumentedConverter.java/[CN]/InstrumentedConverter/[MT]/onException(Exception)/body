@@ -1,0 +1,5 @@
+{
+  if (DataConversionException.class.isInstance(exception)) {
+    recordsException.mark();
+  }
+}

@@ -1,0 +1,6 @@
+{
+  extractorTimer.update(System.nanoTime() - startTime,TimeUnit.NANOSECONDS);
+  if (record != null) {
+    readRecordsMeter.mark();
+  }
+}
