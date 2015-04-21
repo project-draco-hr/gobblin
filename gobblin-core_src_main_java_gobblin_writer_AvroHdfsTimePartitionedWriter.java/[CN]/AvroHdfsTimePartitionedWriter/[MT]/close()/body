@@ -1,0 +1,15 @@
+{
+  boolean closeFailed=false;
+  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+    try {
+      entry.getValue().close();
+    }
+ catch (    IOException e) {
+      closeFailed=true;
+      LOG.error("Failed to close writer for path: " + entry.getKey(),e);
+    }
+  }
+  if (closeFailed) {
+    throw new IOException("Failed to close all writers");
+  }
+}

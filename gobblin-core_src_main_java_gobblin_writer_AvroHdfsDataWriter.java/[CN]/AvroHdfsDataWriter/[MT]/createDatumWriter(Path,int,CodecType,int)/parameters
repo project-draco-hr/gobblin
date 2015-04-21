@@ -1,0 +1,4 @@
+Path avroFile
+int bufferSize
+CodecType codecType
+int deflateLevel

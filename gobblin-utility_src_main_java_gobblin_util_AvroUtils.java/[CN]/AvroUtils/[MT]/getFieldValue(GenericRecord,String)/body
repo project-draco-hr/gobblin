@@ -2,7 +2,7 @@
   Preconditions.checkNotNull(record);
   Preconditions.checkArgument(!Strings.isNullOrEmpty(fieldLocation));
   Splitter splitter=Splitter.on(FIELD_LOCATION_DELIMITER).omitEmptyStrings().trimResults();
-  List<String> pathList=Lists.newArrayList(splitter.split(fieldLocation));
+  List<String> pathList=splitter.splitToList(fieldLocation);
   if (pathList.size() == 0) {
     return Optional.absent();
   }

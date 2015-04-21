@@ -1,0 +1,15 @@
+{
+  boolean cleanupFailed=false;
+  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+    try {
+      entry.getValue().cleanup();
+    }
+ catch (    IOException e) {
+      cleanupFailed=true;
+      LOG.error("Failed to cleanup writer for path: " + entry.getKey(),e);
+    }
+  }
+  if (cleanupFailed) {
+    throw new IOException("Failed to cleanup all writers");
+  }
+}

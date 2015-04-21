@@ -1,0 +1,8 @@
+{
+  State state=new State();
+  for (  String key : this.properties.getPropertyNames()) {
+    state.setProp(key,this.properties.getProp(key));
+  }
+  state.setProp(getWriterFilePath(),path.toString());
+  return new AvroDataWriterBuilder().writeTo(Destination.of(this.destination.getType(),state)).writeInFormat(this.writerOutputFormat).withWriterId(this.writerId).withSchema(this.schema).forBranch(this.branch).build();
+}

@@ -1,0 +1,15 @@
+{
+  Properties props=loadJobProps();
+  try {
+    this.jobLauncherTestHelper.runTest(props);
+    Assert.fail("Byteman is not configured properly, the runTest method should have throw an exception");
+  }
+ catch (  Exception e) {
+  }
+  Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_STAGING_DIR));
+  Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  File stagingDir=new File(props.getProperty(ConfigurationKeys.WRITER_STAGING_DIR));
+  File outputDir=new File(props.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  Assert.assertEquals(FileUtils.listFiles(stagingDir,null,true).size(),0);
+  Assert.assertEquals(FileUtils.listFiles(outputDir,null,true).size(),0);
+}
