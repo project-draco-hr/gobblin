@@ -1,0 +1,3 @@
+{
+  GLOBAL_CONTEXTS.putIfAbsent(context.getName(),context);
+}

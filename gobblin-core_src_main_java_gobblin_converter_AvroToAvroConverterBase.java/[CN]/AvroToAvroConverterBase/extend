@@ -1,1 +1,1 @@
-Converter<Schema,Schema,GenericRecord,GenericRecord>
+InstrumentedConverter<Schema,Schema,GenericRecord,GenericRecord>

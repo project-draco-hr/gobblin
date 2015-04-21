@@ -1,5 +1,4 @@
 {
-  this.closer=Closer.create();
   this.instrumented=closer.register(new Instrumented(workUnitState,this.getClass()));
   this.inputMeter=this.instrumented.getContext().meter("gobblin.fork.operator.records.in");
   this.outputForks=this.instrumented.getContext().meter("gobblin.fork.operator.forks.out");
