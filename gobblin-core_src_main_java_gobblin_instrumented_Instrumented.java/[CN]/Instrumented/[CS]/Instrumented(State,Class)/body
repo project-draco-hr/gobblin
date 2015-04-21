@@ -1,7 +1,23 @@
 {
   this.randomId=(new Random()).nextInt();
-  Tag<String> componentTag=new Tag("component","converter");
-  Tag<String> classTag=new Tag("class",this.getClass().getCanonicalName());
+  String component="unknown";
+  if (Converter.class.isAssignableFrom(klazz)) {
+    component="converter";
+  }
+ else   if (ForkOperator.class.isAssignableFrom(klazz)) {
+    component="forkOperator";
+  }
+ else   if (RowLevelPolicy.class.isAssignableFrom(klazz)) {
+    component="rowLevelPolicy";
+  }
+ else   if (Extractor.class.isAssignableFrom(klazz)) {
+    component="extractor";
+  }
+ else   if (DataWriter.class.isAssignableFrom(klazz)) {
+    component="writer";
+  }
+  Tag<String> componentTag=new Tag("component",component);
+  Tag<String> classTag=new Tag("class",klazz.getCanonicalName());
   MetricContext parentContext;
   MetricContext.Builder builder=state.contains(METRIC_CONTEXT_NAME_KEY) && (parentContext=MetricContext.getContext(state.getProp(METRIC_CONTEXT_NAME_KEY))) != null ? parentContext.childBuilder(klazz.getCanonicalName() + "." + this.randomId) : MetricContext.builder(klazz.getCanonicalName() + "." + this.randomId);
   this.metricContext=builder.addTag(componentTag).addTag(classTag).build();

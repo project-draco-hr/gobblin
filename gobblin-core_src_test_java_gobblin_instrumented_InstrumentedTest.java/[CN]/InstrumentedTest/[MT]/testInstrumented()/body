@@ -1,0 +1,19 @@
+{
+  MetricContext parentContext=MetricContext.builder("parent.context").build();
+  MetricContext.registerContext(parentContext);
+  State state=new State();
+  state.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,parentContext.getName());
+  Instrumented instrumented=new Instrumented(state,InstrumentedExtractor.class);
+  Assert.assertNotNull(instrumented.getContext());
+  Assert.assertTrue(instrumented.getContext().getParent().isPresent());
+  Assert.assertEquals(instrumented.getContext().getParent().get(),parentContext);
+  List<Tag<?>> tags=instrumented.getContext().getTags();
+  Map<String,String> expectedTags=new HashMap<String,String>();
+  expectedTags.put("component","extractor");
+  expectedTags.put("class",InstrumentedExtractor.class.getCanonicalName());
+  Assert.assertEquals(tags.size(),expectedTags.size());
+  for (  Tag<?> tag : tags) {
+    Assert.assertTrue(expectedTags.containsKey(tag.getKey()));
+    Assert.assertEquals(expectedTags.get(tag.getKey()),tag.getValue().toString());
+  }
+}

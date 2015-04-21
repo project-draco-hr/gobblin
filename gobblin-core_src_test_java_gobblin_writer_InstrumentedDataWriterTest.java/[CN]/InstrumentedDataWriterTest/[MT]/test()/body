@@ -1,0 +1,11 @@
+{
+  State state=new State();
+  TestInstrumentedDataWriter writer=new TestInstrumentedDataWriter(state);
+  writer.write("test");
+  Map<String,Long> metrics=MetricsHelper.dumpMetrics(writer.instrumented);
+  Assert.assertEquals(metrics.get("gobblin.writer.records.in"),Long.valueOf(1));
+  Assert.assertEquals(metrics.get("gobblin.writer.records.written"),Long.valueOf(1));
+  Assert.assertEquals(metrics.get("gobblin.writer.records.failed"),Long.valueOf(0));
+  Assert.assertEquals(metrics.get("gobblin.writer.timer"),Long.valueOf(1));
+  Assert.assertEquals(MetricsHelper.dumpTags(writer.instrumented).get("component"),"writer");
+}

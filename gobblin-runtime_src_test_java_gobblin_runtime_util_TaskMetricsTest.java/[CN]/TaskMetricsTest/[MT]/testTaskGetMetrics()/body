@@ -1,0 +1,18 @@
+{
+  String jobId="job_456";
+  String taskId="task_456";
+  String jobName="jobName";
+  JobState jobState=new JobState(jobName,jobId);
+  JobMetrics jobMetrics=JobMetrics.get(jobState);
+  State props=new State();
+  props.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
+  props.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+  SourceState sourceState=new SourceState(props,new ArrayList<WorkUnitState>());
+  WorkUnit workUnit=new WorkUnit(sourceState,null);
+  WorkUnitState workUnitState=new WorkUnitState(workUnit);
+  TaskState taskState=new TaskState(workUnitState);
+  TaskMetrics taskMetrics=new TaskMetrics(taskState);
+  Assert.assertNotNull(taskMetrics.getMetricContext());
+  Assert.assertTrue(taskMetrics.getMetricContext().getParent().isPresent());
+  Assert.assertEquals(taskMetrics.getMetricContext().getParent().get(),jobMetrics.getMetricContext());
+}

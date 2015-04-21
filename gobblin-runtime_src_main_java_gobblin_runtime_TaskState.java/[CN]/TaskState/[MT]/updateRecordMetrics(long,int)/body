@@ -1,10 +1,10 @@
 {
   TaskMetrics metrics=TaskMetrics.get(this);
   String forkBranchId=ForkOperatorUtils.getForkId(this.taskId,branchIndex);
-  Counter taskRecordCounter=metrics.getCounter(GobblinMetrics.MetricGroup.TASK.name(),forkBranchId,RECORDS);
+  Counter taskRecordCounter=metrics.getCounter(gobblin.runtime.util.MetricGroup.TASK.name(),forkBranchId,RECORDS);
   long inc=recordsWritten - taskRecordCounter.getCount();
   taskRecordCounter.inc(inc);
-  metrics.getMeter(GobblinMetrics.MetricGroup.TASK.name(),forkBranchId,RECORDS_PER_SECOND).mark(inc);
-  metrics.getCounter(GobblinMetrics.MetricGroup.JOB.name(),this.jobId,RECORDS).inc(inc);
-  metrics.getMeter(GobblinMetrics.MetricGroup.JOB.name(),this.jobId,RECORDS_PER_SECOND).mark(inc);
+  metrics.getMeter(MetricGroup.TASK.name(),forkBranchId,RECORDS_PER_SECOND).mark(inc);
+  metrics.getCounter(MetricGroup.JOB.name(),this.jobId,RECORDS).inc(inc);
+  metrics.getMeter(MetricGroup.JOB.name(),this.jobId,RECORDS_PER_SECOND).mark(inc);
 }
