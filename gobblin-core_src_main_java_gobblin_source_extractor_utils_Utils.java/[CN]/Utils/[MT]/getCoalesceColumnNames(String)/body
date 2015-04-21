@@ -1,5 +1,5 @@
 {
-  if (columnOrColumnList == null) {
+  if (Strings.isNullOrEmpty(columnOrColumnList)) {
     return null;
   }
   if (columnOrColumnList.contains(",")) {
