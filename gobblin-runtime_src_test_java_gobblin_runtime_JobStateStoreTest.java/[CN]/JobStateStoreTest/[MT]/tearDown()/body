@@ -1,0 +1,3 @@
+{
+  this.jobStateStore.delete(JOB_NAME);
+}

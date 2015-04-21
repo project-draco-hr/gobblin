@@ -1,0 +1,13 @@
+{
+  if (sourceState.getPreviousWorkUnitStates().isEmpty()) {
+    return initializeWorkUnits(sourceState);
+  }
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (  WorkUnitState workUnitState : sourceState.getPreviousWorkUnitStates()) {
+    WorkUnit workUnit=sourceState.createWorkUnit(sourceState.createExtract(Extract.TableType.SNAPSHOT_ONLY,NAMESPACE,TABLE));
+    workUnit.setLowWaterMark(workUnitState.getHighWaterMark() + 1);
+    workUnit.setHighWaterMark(workUnitState.getHighWaterMark() + NUM_RECORDS_TO_EXTRACT_PER_EXTRACTOR);
+    workUnits.add(workUnit);
+  }
+  return workUnits;
+}
