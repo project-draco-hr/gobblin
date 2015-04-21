@@ -1,0 +1,27 @@
+{
+  TestGraphiteSender.TimestampedValue recordsProcessed=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORDS_PROCESSED,Measurements.COUNT.getName()));
+  Assert.assertEquals(recordsProcessed.getValue(),Long.toString(10l));
+  TestGraphiteSender.TimestampedValue recordsProcessRateCount=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_PROCESS_RATE,Measurements.COUNT.getName()));
+  Assert.assertEquals(Long.parseLong(recordsProcessRateCount.getValue()),6l);
+  TestGraphiteSender.TimestampedValue recordsProcessMeanRate=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_PROCESS_RATE,Measurements.MEAN_RATE.getName()));
+  Assert.assertTrue(Double.parseDouble(recordsProcessMeanRate.getValue()) > 0d);
+  TestGraphiteSender.TimestampedValue recordsSizeDistributionCount=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName()));
+  Assert.assertEquals(Long.parseLong(recordsSizeDistributionCount.getValue()),3l);
+  TestGraphiteSender.TimestampedValue recordsSizeDistributionMin=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_SIZE_DISTRIBUTION,Measurements.MIN.getName()));
+  Assert.assertEquals(Long.parseLong(recordsSizeDistributionMin.getValue()),1l);
+  TestGraphiteSender.TimestampedValue recordsSizeDistributionMax=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_SIZE_DISTRIBUTION,Measurements.MAX.getName()));
+  Assert.assertEquals(Long.parseLong(recordsSizeDistributionMax.getValue()),3l);
+  TestGraphiteSender.TimestampedValue recordsSizeDistributionMedian=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,RECORD_SIZE_DISTRIBUTION,Measurements.MEDIAN.getName()));
+  Assert.assertEquals(Double.parseDouble(recordsSizeDistributionMedian.getValue()),2d);
+  TestGraphiteSender.TimestampedValue totalDurationCount=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,TOTAL_DURATION,Measurements.COUNT.getName()));
+  Assert.assertEquals(Long.parseLong(totalDurationCount.getValue()),3l);
+  TestGraphiteSender.TimestampedValue totalDurationMin=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,TOTAL_DURATION,Measurements.MIN.getName()));
+  Assert.assertEquals(Double.parseDouble(totalDurationMin.getValue()),1000d);
+  TestGraphiteSender.TimestampedValue totalDurationMax=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,TOTAL_DURATION,Measurements.MAX.getName()));
+  Assert.assertEquals(Double.parseDouble(totalDurationMax.getValue()),3000d);
+  TestGraphiteSender.TimestampedValue totalDurationMedian=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,TOTAL_DURATION,Measurements.MEDIAN.getName()));
+  Assert.assertEquals(Double.parseDouble(totalDurationMedian.getValue()),2000d);
+  TestGraphiteSender.TimestampedValue queueSize=this.testGraphiteSender.getMetric(MetricRegistry.name(CONTEXT_NAME,QUEUE_SIZE));
+  Assert.assertEquals(Long.parseLong(queueSize.getValue()),1000l);
+  Assert.assertTrue(queueSize.getTimestamp() <= System.currentTimeMillis() / 1000l);
+}

@@ -1,7 +1,6 @@
 {
-  Properties properties=new Properties();
+  this.properties=new Properties();
   properties.load(new FileReader("gobblin-test/resource/gobblin.test.properties"));
-  this.jobLauncher=new LocalJobLauncher(properties);
   this.jobStateStore=new FsStateStore<JobState>(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
   this.jobProps=new Properties();
   this.jobProps.putAll(properties);

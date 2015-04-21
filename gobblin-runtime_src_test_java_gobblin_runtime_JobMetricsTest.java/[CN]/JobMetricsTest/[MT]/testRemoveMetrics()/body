@@ -1,0 +1,25 @@
+{
+  Assert.assertEquals(this.metrics.getMetrics().size(),5);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.JOB).size(),3);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.TASK).size(),2);
+  this.metrics.removeMetric(JobMetrics.metricName(MetricGroup.JOB,JOB_ID,"records"));
+  Assert.assertEquals(this.metrics.getMetrics().size(),4);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.JOB).size(),2);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.TASK).size(),2);
+  this.metrics.removeMetric(JobMetrics.metricName(MetricGroup.JOB,JOB_ID,"recordsPerSec"));
+  Assert.assertEquals(this.metrics.getMetrics().size(),3);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.JOB).size(),1);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.TASK).size(),2);
+  this.metrics.removeMetric(JobMetrics.metricName(MetricGroup.TASK,TASK_ID,"records"));
+  Assert.assertEquals(this.metrics.getMetrics().size(),2);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.JOB).size(),1);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.TASK).size(),1);
+  this.metrics.removeMetric(JobMetrics.metricName(MetricGroup.TASK,TASK_ID,"recordsPerSec"));
+  Assert.assertEquals(this.metrics.getMetrics().size(),1);
+  Assert.assertEquals(this.metrics.getMetricsOfGroup(MetricGroup.JOB).size(),1);
+  Assert.assertTrue(this.metrics.getMetricsOfGroup(MetricGroup.TASK).isEmpty());
+  this.metrics.removeMetric(JobMetrics.metricName(MetricGroup.JOB,JOB_ID,"expectedRecords"));
+  Assert.assertTrue(this.metrics.getMetrics().isEmpty());
+  Assert.assertTrue(this.metrics.getMetricsOfGroup(MetricGroup.JOB).isEmpty());
+  Assert.assertTrue(this.metrics.getMetricsOfGroup(MetricGroup.TASK).isEmpty());
+}

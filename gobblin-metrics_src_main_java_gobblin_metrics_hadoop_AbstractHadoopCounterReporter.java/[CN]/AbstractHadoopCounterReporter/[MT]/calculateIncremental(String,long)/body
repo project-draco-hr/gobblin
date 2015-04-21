@@ -1,0 +1,6 @@
+{
+  if (this.previousCounts.containsKey(name)) {
+    return currentCount - this.previousCounts.get(name);
+  }
+  return currentCount;
+}

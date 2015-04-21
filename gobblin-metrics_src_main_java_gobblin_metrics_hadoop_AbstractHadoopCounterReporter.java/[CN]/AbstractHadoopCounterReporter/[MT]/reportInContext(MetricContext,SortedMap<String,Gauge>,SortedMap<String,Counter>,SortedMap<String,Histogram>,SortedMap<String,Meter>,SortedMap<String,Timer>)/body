@@ -1,0 +1,18 @@
+{
+  for (  Map.Entry<String,Gauge> entry : gauges.entrySet()) {
+    Gauge gauge=entry.getValue();
+    if (gauge.getValue() instanceof Long || gauge.getValue() instanceof Integer || gauge.getValue() instanceof Short|| gauge.getValue() instanceof Byte)     reportValue(context,entry.getKey(),((Number)gauge.getValue()).longValue());
+  }
+  for (  Map.Entry<String,Counter> entry : counters.entrySet()) {
+    reportCount(context,entry.getKey(),entry.getValue().getCount());
+  }
+  for (  Map.Entry<String,Meter> entry : meters.entrySet()) {
+    reportCount(context,entry.getKey(),entry.getValue().getCount());
+  }
+  for (  Map.Entry<String,Histogram> entry : histograms.entrySet()) {
+    reportCount(context,entry.getKey(),entry.getValue().getCount());
+  }
+  for (  Map.Entry<String,Timer> entry : timers.entrySet()) {
+    reportCount(context,entry.getKey(),entry.getValue().getCount());
+  }
+}

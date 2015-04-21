@@ -1,0 +1,3 @@
+{
+  this.data.put(name,new TimestampedValue(timestamp,value));
+}

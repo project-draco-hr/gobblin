@@ -1,0 +1,22 @@
+{
+  List<String> names=Lists.newArrayList();
+  if (metric instanceof Counter || metric instanceof Meter || metric instanceof Gauge) {
+    names.add(rootName);
+  }
+ else   if (metric instanceof Histogram) {
+    names.add(rootName + Measurements.MIN.getName());
+    names.add(rootName + Measurements.MAX.getName());
+    names.add(rootName + Measurements.MEDIAN.getName());
+    names.add(rootName + Measurements.MEAN.getName());
+    names.add(rootName + Measurements.STDDEV.getName());
+  }
+ else   if (metric instanceof Timer) {
+    names.add(rootName + Measurements.MEAN_RATE.getName());
+    names.add(rootName + Measurements.MIN.getName());
+    names.add(rootName + Measurements.MAX.getName());
+    names.add(rootName + Measurements.MEDIAN.getName());
+    names.add(rootName + Measurements.MEAN.getName());
+    names.add(rootName + Measurements.STDDEV.getName());
+  }
+  return names;
+}

@@ -2,9 +2,9 @@
   JobMetrics metrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
   for (int i=0; i < branches; i++) {
     String forkBranchId=ForkOperatorUtils.getForkId(this.taskId,i);
-    long recordsWritten=metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,forkBranchId,RECORDS)).getCount();
-    long bytesWritten=metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.TASK,forkBranchId,BYTES)).getCount();
-    metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,RECORDS)).dec(recordsWritten);
-    metrics.getCounter(JobMetrics.metricName(JobMetrics.MetricGroup.JOB,this.jobId,BYTES)).dec(bytesWritten);
+    long recordsWritten=metrics.getCounter(JobMetrics.metricName(MetricGroup.TASK,forkBranchId,RECORDS)).getCount();
+    long bytesWritten=metrics.getCounter(JobMetrics.metricName(MetricGroup.TASK,forkBranchId,BYTES)).getCount();
+    metrics.getCounter(JobMetrics.metricName(MetricGroup.JOB,this.jobId,RECORDS)).dec(recordsWritten);
+    metrics.getCounter(JobMetrics.metricName(MetricGroup.JOB,this.jobId,BYTES)).dec(bytesWritten);
   }
 }
