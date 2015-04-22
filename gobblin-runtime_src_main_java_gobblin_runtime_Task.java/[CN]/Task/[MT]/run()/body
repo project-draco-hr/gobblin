@@ -38,7 +38,7 @@
     long pullLimit=this.taskState.getPropAsLong(ConfigurationKeys.EXTRACT_PULL_LIMIT,0);
     long recordsPulled=0;
     Object record=null;
-    while ((pullLimit <= 0 || recordsPulled < pullLimit) && (record=extractor.readRecord(record)) != null) {
+    while ((pullLimit <= 0 || recordsPulled < pullLimit) && (record=extractor.readRecord()) != null) {
       recordsPulled++;
       for (      Object convertedRecord : converter.convertRecord(schema,record,this.taskState)) {
         processRecord(convertedRecord,forkOperator,rowChecker,rowResults,branches);

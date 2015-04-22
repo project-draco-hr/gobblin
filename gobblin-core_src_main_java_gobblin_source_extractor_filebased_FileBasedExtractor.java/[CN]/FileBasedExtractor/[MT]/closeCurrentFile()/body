@@ -1,0 +1,10 @@
+{
+  try {
+    this.closer.close();
+  }
+ catch (  IOException e) {
+    if (this.currentFile != null) {
+      LOGGER.error("Failed to close file: " + this.currentFile,e);
+    }
+  }
+}
