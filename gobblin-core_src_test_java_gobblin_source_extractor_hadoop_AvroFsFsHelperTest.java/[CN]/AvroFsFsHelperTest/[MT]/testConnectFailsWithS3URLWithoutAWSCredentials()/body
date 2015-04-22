@@ -2,6 +2,6 @@
   Configuration conf=new Configuration();
   SourceState sourceState=new SourceState();
   sourceState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,"s3://support.elasticmapreduce/spark/install-spark/");
-  HadoopFsHelper fsHelper=new HadoopFsHelper(sourceState,conf);
+  AvroFsFsHelper fsHelper=new AvroFsFsHelper(sourceState,conf);
   fsHelper.connect();
 }

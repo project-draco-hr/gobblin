@@ -1,4 +1,4 @@
 {
-  this.fsHelper=new HadoopFsHelper(state);
+  this.fsHelper=new AvroFsFsHelper(state);
   this.fsHelper.connect();
 }

@@ -1,6 +1,6 @@
 {
   try {
-    return this.closer.register(((HadoopFsHelper)this.fsHelper).getAvroFile(file));
+    return this.closer.register(((AvroFsFsHelper)this.fsHelper).getAvroFile(file));
   }
  catch (  FileBasedHelperException e) {
     Throwables.propagate(e);

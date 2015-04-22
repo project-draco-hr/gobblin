@@ -2,7 +2,7 @@
   if (this.workUnit.contains(ConfigurationKeys.SOURCE_SCHEMA)) {
     return new Schema.Parser().parse(this.workUnit.getProp(ConfigurationKeys.SOURCE_SCHEMA));
   }
-  HadoopFsHelper hfsHelper=(HadoopFsHelper)this.fsHelper;
+  AvroFsFsHelper hfsHelper=(AvroFsFsHelper)this.fsHelper;
   if (this.filesToPull.isEmpty()) {
     return null;
   }

@@ -6,7 +6,7 @@
  catch (  FileBasedHelperException e) {
     Throwables.propagate(e);
   }
-  HadoopFsHelper fsHelper=(HadoopFsHelper)this.fsHelper;
+  AvroFsFsHelper fsHelper=(AvroFsFsHelper)this.fsHelper;
   this.fs=fsHelper.getFileSystem();
   this.sourceState=state;
   this.lowWaterMark=getLowWaterMark(state.getPreviousWorkUnitStates(),state.getProp(DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE,DAILY_FOLDER_FORMATTER.print(DEFAULT_DATE_PARTITIONED_SOURCE_MIN_WATERMARK_VALUE)));
