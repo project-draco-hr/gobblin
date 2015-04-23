@@ -1,0 +1,9 @@
+{
+  try {
+    return this.closer.register(((AvroFsHelper)this.fsHelper).getAvroFile(file));
+  }
+ catch (  FileBasedHelperException e) {
+    Throwables.propagate(e);
+  }
+  return null;
+}

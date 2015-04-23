@@ -1,3 +1,0 @@
-{
-  super(workUnitState,new HadoopFsHelper(workUnitState));
-}

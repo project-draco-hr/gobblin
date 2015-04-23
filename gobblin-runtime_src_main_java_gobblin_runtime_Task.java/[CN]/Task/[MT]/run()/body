@@ -19,13 +19,10 @@
     if (inMultipleBranches(forkedSchemas) && !(schema instanceof Copyable)) {
       throw new CopyNotSupportedException(schema + " is not copyable");
     }
-    if (schema instanceof Copyable) {
-      schema=((Copyable)schema).copy();
-    }
     CountDownLatch forkCountDownLatch=new CountDownLatch(branches);
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
-        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,schema,branches,i,forkCountDownLatch));
+        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
         this.taskExecutor.submit(fork);
         this.forks.add(Optional.of(fork));
       }
@@ -37,8 +34,8 @@
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
     long pullLimit=this.taskState.getPropAsLong(ConfigurationKeys.EXTRACT_PULL_LIMIT,0);
     long recordsPulled=0;
-    Object record=null;
-    while ((pullLimit <= 0 || recordsPulled < pullLimit) && (record=extractor.readRecord(record)) != null) {
+    Object record;
+    while ((pullLimit <= 0 || recordsPulled < pullLimit) && (record=extractor.readRecord(null)) != null) {
       recordsPulled++;
       for (      Object convertedRecord : converter.convertRecord(schema,record,this.taskState)) {
         processRecord(convertedRecord,forkOperator,rowChecker,rowResults,branches);

@@ -1,0 +1,20 @@
+{
+  DataFileReader<GenericRecord> dfr=null;
+  try {
+    dfr=new DataFileReader<GenericRecord>(new FsInput(new Path(file),fs.getConf()),new GenericDatumReader<GenericRecord>());
+    return dfr.getSchema();
+  }
+ catch (  IOException e) {
+    throw new FileBasedHelperException("Failed to open avro file " + file + " due to error "+ e.getMessage(),e);
+  }
+ finally {
+    if (dfr != null) {
+      try {
+        dfr.close();
+      }
+ catch (      IOException e) {
+        LOGGER.error("Failed to close avro file " + file,e);
+      }
+    }
+  }
+}

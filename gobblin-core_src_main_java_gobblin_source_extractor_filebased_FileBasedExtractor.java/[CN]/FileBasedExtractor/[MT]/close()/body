@@ -3,6 +3,6 @@
     this.fsHelper.close();
   }
  catch (  FileBasedHelperException e) {
-    log.error("Could not successfully close file system helper due to error: " + e.getMessage(),e);
+    LOGGER.error("Could not successfully close file system helper due to error: " + e.getMessage(),e);
   }
 }
