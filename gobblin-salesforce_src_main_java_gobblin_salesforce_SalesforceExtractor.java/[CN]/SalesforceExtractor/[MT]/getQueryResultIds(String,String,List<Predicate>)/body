@@ -21,7 +21,7 @@
       query=query + limitString;
     }
     this.log.info("QUERY:" + query);
-    ByteArrayInputStream bout=new ByteArrayInputStream(query.getBytes(Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
+    ByteArrayInputStream bout=new ByteArrayInputStream(query.getBytes(ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
     this.bulkBatchInfo=bulkConnection.createBatchFromStream(this.bulkJob,bout);
     int retryInterval=30 + (int)Math.ceil((float)this.getExpectedRecordCount() / 10000) * 2;
     this.log.info("Salesforce bulk api retry interval in seconds:" + retryInterval);
