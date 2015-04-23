@@ -1,0 +1,6 @@
+{
+  if (offset < this.earliestOffset || offset > this.latestOffset + 1) {
+    throw new StartOffsetOutOfRangeException(String.format("start offset = %d, earliest offset = %d, latest offset = %d",offset,this.earliestOffset,this.latestOffset));
+  }
+  this.startOffset=offset;
+}

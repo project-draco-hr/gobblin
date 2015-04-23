@@ -1,0 +1,4 @@
+{
+  Map<TopicAndPartition,PartitionOffsetRequestInfo> offsetRequestInfo=Collections.singletonMap(new TopicAndPartition(partition.getTopicName(),partition.getId()),new PartitionOffsetRequestInfo(kafka.api.OffsetRequest.LatestTime(),1));
+  return getOffset(partition,offsetRequestInfo);
+}

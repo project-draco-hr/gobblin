@@ -1,0 +1,3 @@
+{
+  return this.kafkaAPI.getFilteredTopics(blacklist,whitelist);
+}

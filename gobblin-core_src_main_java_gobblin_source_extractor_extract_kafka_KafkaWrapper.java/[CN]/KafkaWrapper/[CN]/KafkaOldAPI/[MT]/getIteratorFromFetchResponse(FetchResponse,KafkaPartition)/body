@@ -1,0 +1,10 @@
+{
+  try {
+    ByteBufferMessageSet messageBuffer=fetchResponse.messageSet(partition.getTopicName(),partition.getId());
+    return messageBuffer.iterator();
+  }
+ catch (  Exception e) {
+    LOG.warn(String.format("Failed to retrieve next message buffer for topic %s, partition %d: %s." + "The remainder of this partition will be skipped.",partition.getTopicName(),partition.getId(),e.getMessage()));
+    return null;
+  }
+}

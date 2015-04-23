@@ -1,0 +1,7 @@
+{
+  for (  String broker : brokers) {
+    Preconditions.checkArgument(broker.matches(".+:\\d+"),String.format("Invalid broker: %s. Must be in the format of address:port.",broker));
+  }
+  this.brokers=Lists.newArrayList(brokers);
+  return this;
+}

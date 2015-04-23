@@ -1,0 +1,4 @@
+{
+  this.leaderHost=leaderHost;
+  return this;
+}

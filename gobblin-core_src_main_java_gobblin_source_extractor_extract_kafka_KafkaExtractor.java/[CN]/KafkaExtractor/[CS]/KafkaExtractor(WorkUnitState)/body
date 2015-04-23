@@ -1,0 +1,10 @@
+{
+  this.workUnitState=state;
+  this.partition=new KafkaPartition.Builder().withId(state.getPropAsInt(KafkaSource.PARTITION_ID)).withTopicName(state.getProp(KafkaSource.TOPIC_NAME)).withLeaderId(state.getPropAsInt(KafkaSource.LEADER_ID)).withLeaderHost(state.getProp(KafkaSource.LEADER_HOST)).withLeaderPort(state.getPropAsInt(KafkaSource.LEADER_PORT)).build();
+  this.lowWatermark=state.getPropAsLong(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY);
+  this.highWatermark=state.getPropAsLong(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY);
+  this.closer=Closer.create();
+  this.kafkaWrapper=closer.register(KafkaWrapper.create(state));
+  this.messageIterator=null;
+  this.nextWatermark=this.lowWatermark;
+}

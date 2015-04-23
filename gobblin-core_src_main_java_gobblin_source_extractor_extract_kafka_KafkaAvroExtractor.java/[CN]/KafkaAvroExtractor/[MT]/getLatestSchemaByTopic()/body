@@ -1,0 +1,3 @@
+{
+  return this.schemaRegistry.getLatestSchemaByTopic(this.partition.getTopicName());
+}

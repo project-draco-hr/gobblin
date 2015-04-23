@@ -2,5 +2,10 @@
   if (state.contains(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,numBranches,branchId))) {
     return new Path(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PATH,numBranches,branchId)));
   }
+switch (getWriterFilePathType(state)) {
+case TABLENAME:
+    return WriterUtils.getTableNameWriterFilePath(state);
+default :
   return WriterUtils.getDefaultWriterFilePath(state,numBranches,branchId);
+}
 }

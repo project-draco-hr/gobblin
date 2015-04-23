@@ -1,0 +1,5 @@
+{
+  List<FileStatus> results=Lists.newArrayList();
+  walk(results,fileSystem,path);
+  return results;
+}

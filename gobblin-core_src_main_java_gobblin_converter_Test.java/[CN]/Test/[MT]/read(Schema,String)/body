@@ -1,0 +1,5 @@
+{
+  Decoder d=new DecoderFactory().jsonDecoder(s,new FileInputStream(path));
+  GenericDatumReader<GenericRecord> reader=new GenericDatumReader<GenericRecord>(s);
+  return reader.read(null,d);
+}

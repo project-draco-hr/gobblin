@@ -1,0 +1,3 @@
+String broker
+Set<String> blacklist
+Set<String> whitelist

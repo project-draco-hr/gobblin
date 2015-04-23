@@ -1,0 +1,26 @@
+{
+  if (this.nextWatermark >= this.highWatermark) {
+    return null;
+  }
+  if (this.messageIterator == null || !this.messageIterator.hasNext()) {
+    this.messageIterator=this.kafkaWrapper.fetchNextMessageBuffer(this.partition,this.nextWatermark,this.highWatermark);
+    if (this.messageIterator == null || !this.messageIterator.hasNext()) {
+      return null;
+    }
+  }
+  MessageAndOffset nextValidMessage=null;
+  do {
+    if (!this.messageIterator.hasNext()) {
+      return null;
+    }
+    nextValidMessage=this.messageIterator.next();
+  }
+ while (nextValidMessage.offset() < this.nextWatermark);
+  this.nextWatermark=nextValidMessage.offset() + 1;
+  try {
+    return decodeRecord(nextValidMessage,null);
+  }
+ catch (  SchemaNotFoundException e) {
+    throw new RuntimeException(e);
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return partitionState.createExtract(DEFAULT_TABLE_TYPE,DEFAULT_NAMESPACE_NAME,topicName);
+}

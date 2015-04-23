@@ -1,0 +1,10 @@
+{
+  List<TopicMetadata> filteredTopicMetadataList=Lists.newArrayList();
+  for (  String broker : KafkaWrapper.this.getBrokers()) {
+    filteredTopicMetadataList=fetchTopicMetadataFromBroker(broker,blacklist,whitelist);
+    if (filteredTopicMetadataList != null) {
+      return filteredTopicMetadataList;
+    }
+  }
+  throw new RuntimeException("Fetching topic metadata from all brokers failed. See log warning for more information.");
+}

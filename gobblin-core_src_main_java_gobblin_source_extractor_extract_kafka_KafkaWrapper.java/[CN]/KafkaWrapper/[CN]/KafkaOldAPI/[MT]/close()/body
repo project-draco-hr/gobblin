@@ -1,0 +1,18 @@
+{
+  int numOfConsumersNotClosed=0;
+  for (  SimpleConsumer consumer : this.activeConsumers.values()) {
+    if (consumer != null) {
+      try {
+        consumer.close();
+      }
+ catch (      Exception e) {
+        LOG.warn(String.format("Failed to close Kafka Consumer %s:%d",consumer.host(),consumer.port()));
+        numOfConsumersNotClosed++;
+      }
+    }
+  }
+  this.activeConsumers.clear();
+  if (numOfConsumersNotClosed > 0) {
+    throw new IOException(numOfConsumersNotClosed + " consumer(s) failed to close.");
+  }
+}

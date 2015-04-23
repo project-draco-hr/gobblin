@@ -1,0 +1,14 @@
+{
+  if (nextOffset > maxOffset) {
+    return null;
+  }
+  FetchRequest fetchRequest=createFetchRequest(partition,nextOffset);
+  try {
+    FetchResponse fetchResponse=getFetchResponseForFetchRequest(fetchRequest,partition);
+    return getIteratorFromFetchResponse(fetchResponse,partition);
+  }
+ catch (  Exception e) {
+    LOG.warn(String.format("Fetch message buffer for topic %s, partition %d has failed: %s. Will refresh topic metadata and retry",partition.getTopicName(),partition.getId(),e.getMessage()));
+    return refreshTopicMetadataAndRetryFetch(partition,fetchRequest);
+  }
+}

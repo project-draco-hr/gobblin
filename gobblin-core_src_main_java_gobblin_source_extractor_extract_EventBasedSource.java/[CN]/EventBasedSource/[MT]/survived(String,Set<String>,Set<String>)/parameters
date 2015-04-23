@@ -1,0 +1,3 @@
+String candidate
+Set<String> blacklist
+Set<String> whitelist

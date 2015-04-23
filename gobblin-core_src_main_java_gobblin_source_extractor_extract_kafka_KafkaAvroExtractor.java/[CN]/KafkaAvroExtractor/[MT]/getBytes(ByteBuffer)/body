@@ -1,0 +1,9 @@
+{
+  byte[] bytes=null;
+  if (buf != null) {
+    int size=buf.remaining();
+    bytes=new byte[size];
+    buf.get(bytes,buf.position(),size);
+  }
+  return bytes;
+}

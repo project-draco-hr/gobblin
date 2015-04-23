@@ -1,0 +1,3 @@
+{
+  return ImmutableSortedSet.copyOf(String.CASE_INSENSITIVE_ORDER,Splitter.on(",").trimResults().omitEmptyStrings().split(getProperty(key,def)));
+}

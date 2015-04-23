@@ -1,0 +1,10 @@
+{
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (  KafkaPartition partition : topic.getPartitions()) {
+    WorkUnit workUnit=getWorkUnitForTopicPartition(kafkaWrapper,partition,state);
+    if (workUnit != null) {
+      workUnits.add(workUnit);
+    }
+  }
+  return workUnits;
+}

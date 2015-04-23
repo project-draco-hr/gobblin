@@ -1,0 +1,13 @@
+{
+  SourceState partitionState=new SourceState();
+  partitionState.addAll(state);
+  partitionState.setProp(TOPIC_NAME,partition.getTopicName());
+  partitionState.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,partition.getTopicName());
+  partitionState.setProp(PARTITION_ID,partition.getId());
+  partitionState.setProp(LEADER_ID,partition.getLeader().getId());
+  partitionState.setProp(LEADER_HOST,partition.getLeader().getHost());
+  partitionState.setProp(LEADER_PORT,partition.getLeader().getPort());
+  partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,offsets.getStartOffset());
+  partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,offsets.getLatestOffset());
+  return partitionState;
+}

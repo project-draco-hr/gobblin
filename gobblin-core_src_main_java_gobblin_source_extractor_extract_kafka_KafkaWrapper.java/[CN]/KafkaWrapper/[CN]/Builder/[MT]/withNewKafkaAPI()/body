@@ -1,0 +1,4 @@
+{
+  this.useNewKafkaAPI=true;
+  return this;
+}
