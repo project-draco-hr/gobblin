@@ -1,13 +1,12 @@
 {
-  MetricContext parentContext=MetricContext.builder("parent.context").build();
-  MetricContext.registerContext(parentContext);
+  GobblinMetrics gobblinMetrics=GobblinMetrics.get("parent.context");
   State state=new State();
-  state.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,parentContext.getName());
+  state.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,gobblinMetrics.getName());
   Instrumented instrumented=new Instrumented(state,InstrumentedExtractor.class);
-  Assert.assertNotNull(instrumented.getContext());
-  Assert.assertTrue(instrumented.getContext().getParent().isPresent());
-  Assert.assertEquals(instrumented.getContext().getParent().get(),parentContext);
-  List<Tag<?>> tags=instrumented.getContext().getTags();
+  Assert.assertNotNull(instrumented.getMetricContext());
+  Assert.assertTrue(instrumented.getMetricContext().getParent().isPresent());
+  Assert.assertEquals(instrumented.getMetricContext().getParent().get(),gobblinMetrics.getMetricContext());
+  List<Tag<?>> tags=instrumented.getMetricContext().getTags();
   Map<String,String> expectedTags=new HashMap<String,String>();
   expectedTags.put("component","extractor");
   expectedTags.put("class",InstrumentedExtractor.class.getCanonicalName());

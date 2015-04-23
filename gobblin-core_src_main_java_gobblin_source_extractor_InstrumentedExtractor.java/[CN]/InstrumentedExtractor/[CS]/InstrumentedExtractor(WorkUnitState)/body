@@ -1,8 +1,8 @@
 {
   super();
   closer=Closer.create();
-  this.instrumented=closer.register(new Instrumented(workUnitState,this.getClass()));
-  this.readRecordsMeter=this.instrumented.getContext().contextAwareMeter("gobblin.extractor.records.read");
-  this.dataRecordExceptionsMeter=this.instrumented.getContext().contextAwareMeter("gobblin.extractor.records.failed");
-  this.extractorTimer=this.instrumented.getContext().contextAwareTimer("gobblin.extractor.extract.time");
+  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass()));
+  this.readRecordsMeter=this.metricContext.contextAwareMeter("gobblin.extractor.records.read");
+  this.dataRecordExceptionsMeter=this.metricContext.contextAwareMeter("gobblin.extractor.records.failed");
+  this.extractorTimer=this.metricContext.contextAwareTimer("gobblin.extractor.extract.time");
 }

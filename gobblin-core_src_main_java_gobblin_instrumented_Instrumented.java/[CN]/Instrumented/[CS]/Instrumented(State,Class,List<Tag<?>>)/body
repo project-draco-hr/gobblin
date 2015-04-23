@@ -1,0 +1,3 @@
+{
+  this.metricContext=getMetricContext(state,klazz,tags);
+}

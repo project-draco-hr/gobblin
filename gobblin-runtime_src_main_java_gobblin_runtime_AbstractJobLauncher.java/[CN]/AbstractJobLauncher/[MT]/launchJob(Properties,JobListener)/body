@@ -29,7 +29,8 @@
   }
   JobState jobState=new JobState(jobName,jobId);
   jobState.addAll(jobProps);
-  jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,metricContext.getName());
+  JobMetrics jobMetrics=JobMetrics.get(jobState);
+  jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,jobMetrics.getName());
   jobState.setState(JobState.RunningState.PENDING);
   SourceState sourceState;
   Source<?,?> source;
@@ -76,15 +77,9 @@
       addWorkUnit(workUnit,jobState,taskIdSequence++);
     }
   }
-  Optional<JobMetrics> jobMetrics=Optional.absent();
   try {
     if (GobblinMetrics.isEnabled(jobProps)) {
-      jobMetrics=Optional.fromNullable(JobMetrics.get(jobName,jobId));
-      if (jobMetrics.isPresent()) {
-        jobMetrics.get().startMetricReporting(jobProps);
-        MetricContext.registerContext(jobMetrics.get().getMetricContext());
-        jobState.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,jobMetrics.get().getMetricContext().getName());
-      }
+      jobMetrics.startMetricReporting(jobProps);
     }
     if (this.jobHistoryStore.isPresent()) {
       try {
@@ -130,10 +125,8 @@
       }
     }
     if (GobblinMetrics.isEnabled(jobProps)) {
-      if (jobMetrics.isPresent()) {
-        jobMetrics.get().stopMetricReporting();
-      }
-      GobblinMetrics.remove(jobId);
+      jobMetrics.stopMetricReporting();
+      GobblinMetricsRegistry.getInstance().remove(jobId);
     }
   }
   if (Optional.fromNullable(jobListener).isPresent()) {

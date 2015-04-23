@@ -1,8 +1,4 @@
 {
-  super(name(task));
+  super(name(task),parentContextForTask(task),tagsForTask(task));
   this.jobId=task.getJobId();
-  JobMetrics parentJobContext=JobMetrics.get(null,task.getJobId());
-  List<Tag<?>> tags=new ArrayList<Tag<?>>();
-  tags.add(new Tag<String>("taskId",task.getTaskId()));
-  this.metricContext=parentJobContext.getMetricContext().childBuilder("gobblin.metrics." + task.getJobId() + "."+ task.getTaskId()).addTags(tags).build();
 }

@@ -1,7 +1,0 @@
-{
-  Map<String,String> output=new HashMap<String,String>();
-  for (  Tag<?> tag : instrumented.getContext().getTags()) {
-    output.put(tag.getKey(),tag.getValue().toString());
-  }
-  return output;
-}

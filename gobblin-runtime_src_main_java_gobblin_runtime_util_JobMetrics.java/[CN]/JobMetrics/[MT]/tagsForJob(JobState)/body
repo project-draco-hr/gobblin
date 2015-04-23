@@ -1,0 +1,6 @@
+{
+  List<Tag<?>> tags=new ArrayList<Tag<?>>();
+  tags.add(new Tag<String>("jobName",job.getJobName() == null ? "" : job.getJobName()));
+  tags.add(new Tag<String>("jobId",job.getJobId()));
+  return tags;
+}

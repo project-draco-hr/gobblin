@@ -1,6 +1,7 @@
 {
-  if (!METRICS_MAP.containsKey(name(task))) {
-    METRICS_MAP.putIfAbsent(name(task),new TaskMetrics(task));
+  GobblinMetricsRegistry registry=GobblinMetricsRegistry.getInstance();
+  if (!registry.containsKey(name(task))) {
+    registry.putIfAbsent(name(task),new TaskMetrics(task));
   }
-  return (TaskMetrics)METRICS_MAP.get(name(task));
+  return (TaskMetrics)registry.get(name(task));
 }

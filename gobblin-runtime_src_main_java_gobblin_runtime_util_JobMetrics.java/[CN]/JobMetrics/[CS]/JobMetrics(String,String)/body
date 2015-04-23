@@ -1,8 +1,0 @@
-{
-  super(jobId);
-  this.jobName=jobName;
-  List<Tag<?>> tags=new ArrayList<Tag<?>>();
-  tags.add(new Tag<String>("jobName",jobName == null ? "" : jobName));
-  tags.add(new Tag<String>("jobId",jobId));
-  this.metricContext=new MetricContext.Builder("gobblin.metrics.job." + jobId).addTags(tags).build();
-}

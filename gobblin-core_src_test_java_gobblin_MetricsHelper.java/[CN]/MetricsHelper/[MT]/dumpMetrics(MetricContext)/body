@@ -1,0 +1,10 @@
+{
+  Map<String,Long> output=new HashMap<String,Long>();
+  for (  Map.Entry<String,Meter> entry : context.getMeters().entrySet()) {
+    output.put(entry.getKey(),entry.getValue().getCount());
+  }
+  for (  Map.Entry<String,Timer> entry : context.getTimers().entrySet()) {
+    output.put(entry.getKey(),entry.getValue().getCount());
+  }
+  return output;
+}

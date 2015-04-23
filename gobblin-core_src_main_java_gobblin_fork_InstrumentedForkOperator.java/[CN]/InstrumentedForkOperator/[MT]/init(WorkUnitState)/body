@@ -1,6 +1,6 @@
 {
-  this.instrumented=closer.register(new Instrumented(workUnitState,this.getClass()));
-  this.inputMeter=this.instrumented.getContext().meter("gobblin.fork.operator.records.in");
-  this.outputForks=this.instrumented.getContext().meter("gobblin.fork.operator.forks.out");
-  this.forkOperatorTimer=this.instrumented.getContext().timer("gobblin.fork.operator.timer");
+  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass()));
+  this.inputMeter=this.metricContext.meter("gobblin.fork.operator.records.in");
+  this.outputForks=this.metricContext.meter("gobblin.fork.operator.forks.out");
+  this.forkOperatorTimer=this.metricContext.timer("gobblin.fork.operator.timer");
 }
