@@ -1,0 +1,24 @@
+{
+  Preconditions.checkArgument(numOfMultiWorkunits >= 1);
+  long totalEstDataSize=0;
+  for (  List<WorkUnit> workUnitsForTopic : workUnits) {
+    for (    WorkUnit workUnit : workUnitsForTopic) {
+      setWorkUnitEstSize(workUnit);
+      totalEstDataSize+=getWorkUnitEstSize(workUnit);
+    }
+  }
+  long avgGroupSize=(long)((double)totalEstDataSize / (double)numOfMultiWorkunits / 3.0);
+  List<MultiWorkUnit> groups=Lists.newArrayList();
+  for (  List<WorkUnit> workUnitsForTopic : workUnits) {
+    long estimatedDataSizeForTopic=calcTotalEstSizeForTopic(workUnitsForTopic);
+    if (estimatedDataSizeForTopic < avgGroupSize) {
+      MultiWorkUnit group=new MultiWorkUnit();
+      this.addWorkUnitsToMultiWorkUnit(workUnitsForTopic,group);
+      groups.add(group);
+    }
+ else {
+      groups.addAll(bestFitDecreasingBinPacking(workUnitsForTopic,avgGroupSize));
+    }
+  }
+  return worstFitDecreasingBinPacking(groups,numOfMultiWorkunits);
+}

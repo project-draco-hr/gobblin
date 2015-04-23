@@ -1,0 +1,5 @@
+{
+  this.totalRecordSize+=nextValidMessage.message().payloadSize();
+  this.recordCount++;
+  this.avgRecordSize=this.totalRecordSize / this.recordCount;
+}

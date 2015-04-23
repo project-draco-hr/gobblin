@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(workUnit.contains(ESTIMATED_DATA_SIZE));
+  return workUnit.getPropAsLong(ESTIMATED_DATA_SIZE);
+}

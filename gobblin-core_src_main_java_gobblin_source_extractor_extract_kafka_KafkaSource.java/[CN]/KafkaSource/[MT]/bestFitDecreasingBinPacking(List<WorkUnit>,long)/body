@@ -1,0 +1,16 @@
+{
+  Collections.sort(workUnits,this.sortBySizeDescComparator);
+  Queue<MultiWorkUnit> pQueue=new PriorityQueue<MultiWorkUnit>(workUnits.size(),this.sortBySizeDescComparator);
+  for (  WorkUnit workUnit : workUnits) {
+    MultiWorkUnit bestGroup=findAndPopBestFitGroup(workUnit,pQueue,avgGroupSize);
+    if (bestGroup != null) {
+      addWorkUnitToMultiWorkUnit(workUnit,bestGroup);
+    }
+ else {
+      bestGroup=new MultiWorkUnit();
+      addWorkUnitToMultiWorkUnit(workUnit,bestGroup);
+    }
+    pQueue.add(bestGroup);
+  }
+  return Lists.newArrayList(pQueue);
+}
