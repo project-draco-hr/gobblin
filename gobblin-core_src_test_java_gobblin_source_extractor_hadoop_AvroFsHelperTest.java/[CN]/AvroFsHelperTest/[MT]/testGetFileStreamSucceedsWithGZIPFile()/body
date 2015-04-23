@@ -3,9 +3,9 @@
   URL rootUrl=getClass().getResource("/source/");
   String rootPath=rootUrl.toString();
   sourceState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,rootPath);
-  AvroFsFsHelper fsHelper=new AvroFsFsHelper(sourceState);
+  AvroFsHelper fsHelper=new AvroFsHelper(sourceState);
   fsHelper.connect();
-  URL url=getClass().getResource("/source/simple.tsv");
+  URL url=getClass().getResource("/source/simple.tsv.gz");
   String path=url.toString();
   InputStream in=fsHelper.getFileStream(path);
   String contents=IOUtils.toString(in,"UTF-8");

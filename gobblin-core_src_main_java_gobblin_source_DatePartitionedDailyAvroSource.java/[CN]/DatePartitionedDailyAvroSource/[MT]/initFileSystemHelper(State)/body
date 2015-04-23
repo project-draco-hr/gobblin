@@ -1,4 +1,4 @@
 {
-  this.fsHelper=new AvroFsFsHelper(state);
+  this.fsHelper=new AvroFsHelper(state);
   this.fsHelper.connect();
 }

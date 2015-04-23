@@ -1,3 +1,3 @@
 {
-  super(workUnitState,new AvroFsFsHelper(workUnitState));
+  super(workUnitState,new AvroFsHelper(workUnitState));
 }
