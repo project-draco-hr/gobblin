@@ -1,3 +1,5 @@
 {
-  this.context.close();
+  if (this.context != null) {
+    this.context.close();
+  }
 }

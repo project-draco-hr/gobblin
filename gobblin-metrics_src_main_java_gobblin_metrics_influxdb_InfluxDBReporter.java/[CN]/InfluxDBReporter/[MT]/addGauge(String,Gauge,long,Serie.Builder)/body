@@ -1,0 +1,3 @@
+{
+  return builder.values(timeStamp,name,gauge.getValue());
+}
