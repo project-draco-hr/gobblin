@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(fieldNameComponents.size() > level);
+  if (!this.children.containsKey(fieldNameComponents.get(level))) {
+    this.children.put(fieldNameComponents.get(level),new AvroSchemaFieldRemover());
+  }
+  if (level < fieldNameComponents.size() - 1) {
+    this.children.get(fieldNameComponents.get(level)).addChildren(fieldNameComponents,level + 1);
+  }
+}

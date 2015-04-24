@@ -1,0 +1,4 @@
+{
+  this.children=Maps.newHashMap();
+  this.schemaMap=Maps.newHashMap();
+}
