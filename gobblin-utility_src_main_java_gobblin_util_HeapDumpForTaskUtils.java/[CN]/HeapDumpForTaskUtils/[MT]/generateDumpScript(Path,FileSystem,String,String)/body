@@ -9,7 +9,7 @@
     if (!fs.exists(dumpDir)) {
       fs.mkdirs(dumpDir);
     }
-    BufferedWriter scriptWriter=closer.register(new BufferedWriter(new OutputStreamWriter(fs.create(dumpScript),Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING))));
+    BufferedWriter scriptWriter=closer.register(new BufferedWriter(new OutputStreamWriter(fs.create(dumpScript),ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     scriptWriter.write("#!/bin/sh\n");
     scriptWriter.write("if [ -n \"$HADOOP_PREFIX\" ]; then\n");
     scriptWriter.write("  ${HADOOP_PREFIX}/bin/hadoop dfs -put " + heapFileName + " "+ dumpDir+ "/${PWD//\\//_}.hprof\n");
