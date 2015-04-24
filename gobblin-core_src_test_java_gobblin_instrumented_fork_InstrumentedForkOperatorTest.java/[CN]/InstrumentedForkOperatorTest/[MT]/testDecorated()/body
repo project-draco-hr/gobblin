@@ -1,0 +1,6 @@
+{
+  InstrumentedForkOperatorBase instrumentedFork=new InstrumentedForkOperatorDecorator(new TestInstrumentedForkOperator());
+  testBase(instrumentedFork);
+  InstrumentedForkOperatorBase notInstrumentedFork=new InstrumentedForkOperatorDecorator(new TestForkOperator());
+  testBase(notInstrumentedFork);
+}

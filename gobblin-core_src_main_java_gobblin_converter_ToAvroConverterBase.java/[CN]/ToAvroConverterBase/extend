@@ -1,1 +1,1 @@
-InstrumentedConverter<SI,Schema,DI,GenericRecord>
+Converter<SI,Schema,DI,GenericRecord>

@@ -1,0 +1,3 @@
+{
+  return this.isEmbeddedInstrumented ? this.embeddedPolicy.executePolicy(record) : super.executePolicy(record);
+}

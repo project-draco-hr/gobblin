@@ -1,0 +1,3 @@
+{
+  return this.isEmbeddedInstrumented ? this.embeddedConverter.convertRecord(outputSchema,inputRecord,workUnit) : super.convertRecord(outputSchema,inputRecord,workUnit);
+}

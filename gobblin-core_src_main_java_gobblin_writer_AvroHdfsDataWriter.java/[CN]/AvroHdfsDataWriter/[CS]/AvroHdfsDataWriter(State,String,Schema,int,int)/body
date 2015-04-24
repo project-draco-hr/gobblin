@@ -1,5 +1,4 @@
 {
-  super(properties);
   String uri=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI);
   Path stagingDir=WriterUtils.getWriterStagingDir(properties,numBranches,branchId);
   Path outputDir=WriterUtils.getWriterOutputDir(properties,numBranches,branchId);

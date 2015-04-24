@@ -1,7 +1,6 @@
 {
   ForkOperator<String,String> dummyForkOperator=new IdentityForkOperator<String,String>();
   WorkUnitState workUnitState=new WorkUnitState();
-  dummyForkOperator.init(workUnitState);
   workUnitState.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,2);
   List<Boolean> schemas=dummyForkOperator.forkSchema(workUnitState,"");
   Assert.assertEquals(schemas,Arrays.asList(true,true));

@@ -1,5 +1,4 @@
 {
-  super(workUnitState);
   this.workUnitState=workUnitState;
   this.workUnit=workUnitState.getWorkunit();
   this.filesToPull=Lists.newArrayList(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,""));
