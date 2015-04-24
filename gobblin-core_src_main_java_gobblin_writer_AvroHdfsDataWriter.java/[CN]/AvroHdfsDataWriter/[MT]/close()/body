@@ -5,5 +5,4 @@
   this.writer.flush();
   this.writer.close();
   this.closed=true;
-  super.close();
 }

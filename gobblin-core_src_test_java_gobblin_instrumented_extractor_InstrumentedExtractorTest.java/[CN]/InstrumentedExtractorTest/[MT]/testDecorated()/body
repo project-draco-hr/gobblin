@@ -1,0 +1,7 @@
+{
+  WorkUnitState state=new WorkUnitState();
+  InstrumentedExtractorBase instrumentedExtractor=new InstrumentedExtractorDecorator(state,new TestInstrumentedExtractor(state));
+  testBase(instrumentedExtractor);
+  InstrumentedExtractorBase nonInstrumentedExtractor=new InstrumentedExtractorDecorator(state,new TestExtractor());
+  testBase(nonInstrumentedExtractor);
+}

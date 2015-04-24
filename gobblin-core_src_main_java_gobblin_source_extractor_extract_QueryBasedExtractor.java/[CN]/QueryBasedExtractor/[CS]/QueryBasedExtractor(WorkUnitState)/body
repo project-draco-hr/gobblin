@@ -1,5 +1,4 @@
 {
-  super(workUnitState);
   this.workUnitState=workUnitState;
   this.workUnit=this.workUnitState.getWorkunit();
   this.schema=this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SCHEMA);

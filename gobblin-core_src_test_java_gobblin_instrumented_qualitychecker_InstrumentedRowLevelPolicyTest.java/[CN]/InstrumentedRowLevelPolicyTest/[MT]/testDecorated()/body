@@ -1,0 +1,12 @@
+{
+  State state=new State();
+  InstrumentedRowLevelPolicyBase instrumentedPolicy=new InstrumentedRowLevelPolicyDecorator(new TestInstrumentedRowLevelPolicy(state,null));
+  testBase(instrumentedPolicy);
+  InstrumentedRowLevelPolicyBase notInstrumentedPolicy=new InstrumentedRowLevelPolicyDecorator(new RowLevelPolicy(state,null){
+    @Override public Result executePolicy(    Object record){
+      return Result.PASSED;
+    }
+  }
+);
+  testBase(notInstrumentedPolicy);
+}

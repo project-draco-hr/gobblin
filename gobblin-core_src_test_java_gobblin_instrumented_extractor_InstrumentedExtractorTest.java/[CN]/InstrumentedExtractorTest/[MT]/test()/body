@@ -1,0 +1,5 @@
+{
+  WorkUnitState state=new WorkUnitState();
+  TestInstrumentedExtractor extractor=new TestInstrumentedExtractor(state);
+  testBase(extractor);
+}

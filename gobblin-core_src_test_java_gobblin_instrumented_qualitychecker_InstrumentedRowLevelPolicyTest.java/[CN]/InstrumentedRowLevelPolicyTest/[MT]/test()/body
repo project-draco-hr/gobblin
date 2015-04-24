@@ -1,0 +1,5 @@
+{
+  State state=new State();
+  TestInstrumentedRowLevelPolicy policy=new TestInstrumentedRowLevelPolicy(state,null);
+  testBase(policy);
+}
