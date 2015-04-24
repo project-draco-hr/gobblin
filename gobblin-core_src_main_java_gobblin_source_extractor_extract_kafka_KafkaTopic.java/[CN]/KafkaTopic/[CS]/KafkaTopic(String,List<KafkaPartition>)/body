@@ -1,0 +1,7 @@
+{
+  this.name=name;
+  this.partitions=Lists.newArrayList();
+  for (  KafkaPartition partition : partitions) {
+    this.partitions.add(new KafkaPartition(partition));
+  }
+}

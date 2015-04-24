@@ -1,0 +1,18 @@
+{
+  if (this.workUnit.contains(ConfigurationKeys.SOURCE_SCHEMA)) {
+    return new Schema.Parser().parse(this.workUnit.getProp(ConfigurationKeys.SOURCE_SCHEMA));
+  }
+  AvroFsHelper hfsHelper=(AvroFsHelper)this.fsHelper;
+  if (this.filesToPull.isEmpty()) {
+    return null;
+  }
+ else {
+    try {
+      return hfsHelper.getAvroSchema(this.filesToPull.get(0));
+    }
+ catch (    FileBasedHelperException e) {
+      Throwables.propagate(e);
+      return null;
+    }
+  }
+}

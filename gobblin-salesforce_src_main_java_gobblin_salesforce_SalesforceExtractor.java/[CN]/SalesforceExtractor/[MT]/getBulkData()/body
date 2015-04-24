@@ -6,7 +6,7 @@
       if (this.bulkResultIdCount < this.bulkResultIdList.size()) {
         this.log.info("Stream resultset for resultId:" + bulkResultIdList.get(bulkResultIdCount));
         this.setNewBulkResultSet(true);
-        this.bulkBufferedReader=new BufferedReader(new InputStreamReader(this.bulkConnection.getQueryResultStream(bulkJob.getId(),bulkBatchInfo.getId(),bulkResultIdList.get(bulkResultIdCount)),Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
+        this.bulkBufferedReader=new BufferedReader(new InputStreamReader(this.bulkConnection.getQueryResultStream(bulkJob.getId(),bulkBatchInfo.getId(),bulkResultIdList.get(bulkResultIdCount)),ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
         this.bulkResultIdCount++;
       }
  else {

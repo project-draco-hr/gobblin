@@ -1,0 +1,20 @@
+{
+  ImmutableList.Builder<WorkUnit> builder=new ImmutableList.Builder<WorkUnit>();
+  Closer closer=Closer.create();
+  try {
+    KafkaWrapper kafkaWrapper=closer.register(KafkaWrapper.create(state));
+    List<KafkaTopic> topics=getFilteredTopics(kafkaWrapper,state);
+    for (    KafkaTopic topic : topics) {
+      builder.addAll(getWorkUnitsForTopic(kafkaWrapper,topic,state));
+    }
+    return builder.build();
+  }
+  finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      LOG.error("Failed to close kafkaWrapper",e);
+    }
+  }
+}

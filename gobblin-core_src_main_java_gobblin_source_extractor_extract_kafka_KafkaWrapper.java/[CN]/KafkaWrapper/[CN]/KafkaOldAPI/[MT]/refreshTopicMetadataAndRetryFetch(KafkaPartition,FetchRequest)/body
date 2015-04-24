@@ -1,0 +1,11 @@
+{
+  try {
+    refreshTopicMetadata(partition);
+    FetchResponse fetchResponse=getFetchResponseForFetchRequest(fetchRequest,partition);
+    return getIteratorFromFetchResponse(fetchResponse,partition);
+  }
+ catch (  Exception e) {
+    LOG.warn(String.format("Fetch message buffer for topic %s, partition %d has failed: %s. This partition will be skipped.",partition.getTopicName(),partition.getId(),e.getMessage()));
+    return null;
+  }
+}

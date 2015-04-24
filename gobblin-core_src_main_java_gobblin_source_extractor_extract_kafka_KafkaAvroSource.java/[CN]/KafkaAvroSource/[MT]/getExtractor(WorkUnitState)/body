@@ -1,0 +1,8 @@
+{
+  try {
+    return new KafkaAvroExtractor(state);
+  }
+ catch (  SchemaNotFoundException e) {
+    throw new IOException(e);
+  }
+}

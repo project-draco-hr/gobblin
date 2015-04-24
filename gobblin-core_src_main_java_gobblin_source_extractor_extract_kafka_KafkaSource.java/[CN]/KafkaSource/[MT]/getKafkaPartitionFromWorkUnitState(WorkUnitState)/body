@@ -1,0 +1,6 @@
+{
+  if (workUnitState.contains(TOPIC_NAME) && workUnitState.contains(PARTITION_ID)) {
+    return new KafkaPartition.Builder().withTopicName(workUnitState.getProp(TOPIC_NAME)).withId(workUnitState.getPropAsInt(PARTITION_ID)).build();
+  }
+  return null;
+}

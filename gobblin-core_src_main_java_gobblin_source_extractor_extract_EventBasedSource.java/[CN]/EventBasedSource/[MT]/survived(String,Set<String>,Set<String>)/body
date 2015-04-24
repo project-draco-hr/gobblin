@@ -1,0 +1,8 @@
+{
+  if (!whitelist.isEmpty()) {
+    return whitelist.contains(candidate);
+  }
+ else {
+    return !blacklist.contains(candidate);
+  }
+}

@@ -48,7 +48,7 @@
     }
     private void loadJobConfig(    Properties jobProps,    File file){
       try {
-        jobProps.load(new InputStreamReader(new FileInputStream(file),Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
+        jobProps.load(new InputStreamReader(new FileInputStream(file),ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
         jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       }
  catch (      Exception e) {

@@ -1,0 +1,3 @@
+List<FileStatus> results
+FileSystem fileSystem
+Path path

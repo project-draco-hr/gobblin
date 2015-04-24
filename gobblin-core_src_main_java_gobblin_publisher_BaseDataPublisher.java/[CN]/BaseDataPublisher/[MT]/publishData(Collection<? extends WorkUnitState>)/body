@@ -10,16 +10,7 @@
       if (this.fss.get(branchId).exists(publisherOutputDir)) {
         boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,this.numBranches,branchId));
         if (!replaceFinalOutputDir) {
-          boolean preserveFileName=workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_NAME,this.numBranches,branchId),false);
-          for (          FileStatus status : this.fss.get(branchId).listStatus(writerOutputDir)) {
-            Path finalOutputPath=preserveFileName ? new Path(publisherOutputDir,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,this.numBranches,branchId))) : new Path(publisherOutputDir,status.getPath().getName());
-            if (this.fss.get(branchId).rename(status.getPath(),finalOutputPath)) {
-              LOG.info(String.format("Moved %s to %s",status.getPath(),finalOutputPath));
-            }
- else {
-              throw new IOException("Failed to move file from " + status.getPath() + " to "+ finalOutputPath);
-            }
-          }
+          addWriterOutputToExistingDir(writerOutputDir,publisherOutputDir,workUnitState,branchId);
           writerOutputPathsMoved.add(writerOutputDir);
           continue;
         }

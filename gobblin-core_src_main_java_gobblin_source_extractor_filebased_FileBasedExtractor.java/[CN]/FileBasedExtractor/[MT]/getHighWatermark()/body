@@ -1,4 +1,4 @@
 {
-  log.info("High Watermark is -1 for file based extractors");
+  LOGGER.info("High Watermark is -1 for file based extractors");
   return -1;
 }

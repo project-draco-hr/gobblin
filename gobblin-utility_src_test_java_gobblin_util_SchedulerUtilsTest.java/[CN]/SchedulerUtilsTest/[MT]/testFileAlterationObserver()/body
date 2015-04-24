@@ -22,7 +22,7 @@
     File commonPropsFile=new File(SUB_DIR1,"test.properties");
     Files.touch(commonPropsFile);
     File newJobConfigFile=new File(SUB_DIR11,"test112.pull");
-    Files.append("k1=v1",newJobConfigFile,Charset.forName(ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
+    Files.append("k1=v1",newJobConfigFile,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
     semaphore.acquire(3);
     Assert.assertEquals(fileAltered.size(),3);
     Assert.assertTrue(fileAltered.contains(jobConfigFile));

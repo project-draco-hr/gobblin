@@ -1,0 +1,8 @@
+{
+  Preconditions.checkArgument(state.contains(KAFKA_SCHEMA_REGISTRY_URL),"Schema registry URL not provided.");
+  this.url=state.getProp(KAFKA_SCHEMA_REGISTRY_URL);
+  int maxCacheSize=state.getPropAsInt(KAFKA_SCHEMA_REGISTRY_MAX_CACHE_SIZE,DEFAULT_KAFKA_SCHEMA_REGISTRY_MAX_CACHE_SIZE);
+  int expireAfterWriteMin=state.getPropAsInt(KAFKA_SCHEMA_REGISTRY_CACHE_EXPIRE_AFTER_WRITE_MIN,DEFAULT_KAFKA_SCHEMA_REGISTRY_CACHE_EXPIRE_AFTER_WRITE_MIN);
+  this.cachedSchemasById=CacheBuilder.newBuilder().maximumSize(maxCacheSize).expireAfterWrite(expireAfterWriteMin,TimeUnit.MINUTES).build(new KafkaSchemaCacheLoader());
+  this.httpClient=new HttpClient(new MultiThreadedHttpConnectionManager());
+}

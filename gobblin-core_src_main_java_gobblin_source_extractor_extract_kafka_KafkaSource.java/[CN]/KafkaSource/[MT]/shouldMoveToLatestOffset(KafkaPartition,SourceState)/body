@@ -1,0 +1,9 @@
+{
+  if (!state.contains(TOPICS_MOVE_TO_LATEST_OFFSET)) {
+    return false;
+  }
+  if (this.moveToLatestTopics.isEmpty()) {
+    this.moveToLatestTopics.addAll(Splitter.on(',').trimResults().omitEmptyStrings().splitToList(state.getProp(TOPICS_MOVE_TO_LATEST_OFFSET)));
+  }
+  return this.moveToLatestTopics.contains(partition.getTopicName()) || moveToLatestTopics.contains(ALL_TOPICS);
+}

@@ -1,0 +1,3 @@
+KafkaWrapper kafkaWrapper
+KafkaPartition partition
+SourceState state

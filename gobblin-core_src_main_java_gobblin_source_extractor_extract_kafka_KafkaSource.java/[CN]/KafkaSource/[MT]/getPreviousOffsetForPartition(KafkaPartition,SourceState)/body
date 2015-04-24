@@ -1,0 +1,9 @@
+{
+  if (this.previousOffsets.isEmpty()) {
+    getAllPreviousOffsets(state);
+  }
+  if (this.previousOffsets.containsKey(partition)) {
+    return this.previousOffsets.get(partition);
+  }
+  throw new PreviousOffsetNotFoundException(String.format("Previous offset for topic %s, partition %s not found.",partition.getTopicName(),partition.getId()));
+}

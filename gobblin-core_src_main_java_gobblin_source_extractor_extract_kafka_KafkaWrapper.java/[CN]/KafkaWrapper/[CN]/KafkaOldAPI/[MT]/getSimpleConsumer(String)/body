@@ -1,0 +1,10 @@
+{
+  if (this.activeConsumers.containsKey(broker)) {
+    return this.activeConsumers.get(broker);
+  }
+ else {
+    SimpleConsumer consumer=this.createSimpleConsumer(broker);
+    this.activeConsumers.putIfAbsent(broker,consumer);
+    return consumer;
+  }
+}

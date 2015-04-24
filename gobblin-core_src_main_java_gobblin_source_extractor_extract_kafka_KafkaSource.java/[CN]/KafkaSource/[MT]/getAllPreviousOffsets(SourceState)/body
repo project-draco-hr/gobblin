@@ -1,0 +1,13 @@
+{
+  this.previousOffsets.clear();
+  for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
+    KafkaPartition partition=getKafkaPartitionFromWorkUnitState(workUnitState);
+    if (partition == null) {
+      continue;
+    }
+    long previousOffset=workUnitState.getHighWaterMark();
+    if (previousOffset != ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {
+      this.previousOffsets.put(partition,previousOffset);
+    }
+  }
+}

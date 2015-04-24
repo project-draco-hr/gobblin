@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(!brokers.isEmpty(),"Need to specify at least one Kafka broker.");
+  return new KafkaWrapper(this);
+}

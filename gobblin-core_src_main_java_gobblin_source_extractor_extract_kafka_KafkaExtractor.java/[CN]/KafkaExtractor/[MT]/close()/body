@@ -1,0 +1,4 @@
+{
+  this.workUnitState.setHighWaterMark(this.nextWatermark);
+  this.closer.close();
+}

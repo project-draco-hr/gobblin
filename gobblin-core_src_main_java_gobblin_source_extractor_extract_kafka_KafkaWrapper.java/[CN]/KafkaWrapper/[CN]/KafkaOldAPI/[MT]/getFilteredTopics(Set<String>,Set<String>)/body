@@ -1,0 +1,9 @@
+{
+  List<TopicMetadata> topicMetadataList=getFilteredMetadataList(blacklist,whitelist);
+  List<KafkaTopic> filteredTopics=Lists.newArrayList();
+  for (  TopicMetadata topicMetadata : topicMetadataList) {
+    List<KafkaPartition> partitions=getPartitionsForTopic(topicMetadata);
+    filteredTopics.add(new KafkaTopic(topicMetadata.topic(),partitions));
+  }
+  return filteredTopics;
+}

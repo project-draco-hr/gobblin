@@ -9,9 +9,6 @@
   if (inMultipleBranches(forkedRecords) && !(convertedRecord instanceof Copyable)) {
     throw new CopyNotSupportedException(convertedRecord + " is not copyable");
   }
-  if (convertedRecord instanceof Copyable) {
-    convertedRecord=((Copyable)convertedRecord).copy();
-  }
   boolean allPutsSucceeded=false;
   boolean[] succeededPuts=new boolean[branches];
   while (!allPutsSucceeded) {
@@ -21,7 +18,7 @@
         continue;
       }
       if (this.forks.get(i).isPresent() && forkedRecords.get(i)) {
-        boolean succeeded=this.forks.get(i).get().putRecord(convertedRecord);
+        boolean succeeded=this.forks.get(i).get().putRecord(convertedRecord instanceof Copyable ? ((Copyable)convertedRecord).copy() : convertedRecord);
         succeededPuts[i]=succeeded;
         if (!succeeded) {
           allPutsSucceeded=false;

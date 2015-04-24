@@ -1,0 +1,5 @@
+{
+  this.useNewKafkaAPI=builder.useNewKafkaAPI;
+  this.brokers=builder.brokers;
+  this.kafkaAPI=getKafkaAPI();
+}

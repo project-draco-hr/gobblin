@@ -1,0 +1,4 @@
+{
+  String pathTypeStr=state.getProp(ConfigurationKeys.WRITER_FILE_PATH_TYPE,ConfigurationKeys.DEFAULT_WRITER_FILE_PATH_TYPE);
+  return WriterFilePathType.valueOf(pathTypeStr.toUpperCase());
+}
