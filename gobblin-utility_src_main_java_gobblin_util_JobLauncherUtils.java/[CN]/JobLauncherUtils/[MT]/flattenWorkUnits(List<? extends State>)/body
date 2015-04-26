@@ -2,9 +2,7 @@
   List<State> flattenedWorkUnits=Lists.newArrayList();
   for (  State state : states) {
     if (state instanceof MultiWorkUnit) {
-      for (      State mulitWorkUnitChild : ((MultiWorkUnit)state).getWorkUnits()) {
-        flattenedWorkUnits.add(mulitWorkUnitChild);
-      }
+      flattenedWorkUnits.addAll(flattenWorkUnits(((MultiWorkUnit)state).getWorkUnits()));
     }
  else {
       flattenedWorkUnits.add(state);
