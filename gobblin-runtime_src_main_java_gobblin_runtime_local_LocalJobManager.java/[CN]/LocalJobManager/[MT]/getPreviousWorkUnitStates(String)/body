@@ -1,7 +1,15 @@
 {
   if (!this.lastJobIdMap.containsKey(jobName)) {
-    return Lists.newArrayList();
+    return ImmutableList.of();
   }
   LOG.info("Loading task states of the most recent run of job " + jobName);
-  return (List<WorkUnitState>)this.taskStateStore.getAll(jobName,this.lastJobIdMap.get(jobName) + TASK_STATE_STORE_TABLE_SUFFIX);
+  List<TaskState> taskStates=this.taskStateStore.getAll(jobName,this.lastJobIdMap.get(jobName) + TASK_STATE_STORE_TABLE_SUFFIX);
+  ImmutableList.Builder<WorkUnitState> workUnitStates=ImmutableList.builder();
+  for (  TaskState taskState : taskStates) {
+    WorkUnitState workUnitState=new WorkUnitState(taskState.getWorkunit());
+    workUnitState.setId(taskState.getId());
+    workUnitState.addAll(taskState);
+    workUnitStates.add(workUnitState);
+  }
+  return workUnitStates.build();
 }

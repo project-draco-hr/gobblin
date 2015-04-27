@@ -1,5 +1,5 @@
 {
-  List<State> states=Lists.newArrayList();
+  List<T> states=Lists.newArrayList();
   Path storePath=new Path(this.storeRootDir,storeName);
   if (!this.fs.exists(storePath)) {
     return states;

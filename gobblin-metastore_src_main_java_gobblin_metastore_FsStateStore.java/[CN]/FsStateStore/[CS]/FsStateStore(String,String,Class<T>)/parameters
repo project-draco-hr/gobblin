@@ -1,0 +1,3 @@
+String fsUri
+String storeRootDir
+Class<T> stateClass

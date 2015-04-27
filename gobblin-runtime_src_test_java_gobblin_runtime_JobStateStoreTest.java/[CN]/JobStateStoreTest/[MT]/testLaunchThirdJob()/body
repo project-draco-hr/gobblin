@@ -1,0 +1,4 @@
+{
+  new LocalJobLauncher(this.properties).launchJob(this.jobProps,null);
+  verifyJobState(3);
+}

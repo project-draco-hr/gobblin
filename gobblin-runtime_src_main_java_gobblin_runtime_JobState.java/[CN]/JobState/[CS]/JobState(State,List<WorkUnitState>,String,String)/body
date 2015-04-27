@@ -1,0 +1,6 @@
+{
+  super(properties,previousTaskStates);
+  this.jobName=jobName;
+  this.jobId=jobId;
+  this.setId(jobId);
+}

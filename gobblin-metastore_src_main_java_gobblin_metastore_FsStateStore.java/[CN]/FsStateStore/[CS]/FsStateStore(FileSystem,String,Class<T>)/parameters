@@ -1,0 +1,3 @@
+FileSystem fs
+String storeRootDir
+Class<T> stateClass

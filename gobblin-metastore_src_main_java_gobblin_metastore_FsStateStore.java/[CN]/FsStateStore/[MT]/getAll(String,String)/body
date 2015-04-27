@@ -1,5 +1,5 @@
 {
-  List<State> states=Lists.newArrayList();
+  List<T> states=Lists.newArrayList();
   Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
   if (!this.fs.exists(tablePath)) {
     return states;
@@ -9,7 +9,7 @@
     SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
     try {
       Text key=new Text();
-      State state=this.stateClass.newInstance();
+      T state=this.stateClass.newInstance();
       while (reader.next(key,state)) {
         states.add(state);
         state=this.stateClass.newInstance();

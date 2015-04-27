@@ -1,0 +1,7 @@
+{
+  if (this.current > this.workUnitState.getPropAsInt(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY)) {
+    return null;
+  }
+  this.workUnitState.setProp(LAST_READ_RECORD_KEY,this.current);
+  return this.current++;
+}
