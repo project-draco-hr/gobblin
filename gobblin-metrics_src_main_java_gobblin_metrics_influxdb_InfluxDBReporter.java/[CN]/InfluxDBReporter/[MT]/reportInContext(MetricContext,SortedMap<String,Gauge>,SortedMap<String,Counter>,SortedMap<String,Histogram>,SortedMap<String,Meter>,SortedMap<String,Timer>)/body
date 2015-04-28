@@ -1,0 +1,20 @@
+{
+  long timeStamp=System.currentTimeMillis();
+  Serie.Builder builder=new Serie.Builder(context.getName()).columns(TIMESTAMP,NAME,VALUE);
+  for (  Map.Entry<String,Gauge> entry : gauges.entrySet()) {
+    builder=addGauge(entry.getKey(),entry.getValue(),timeStamp,builder);
+  }
+  for (  Map.Entry<String,Counter> entry : counters.entrySet()) {
+    builder=addCounter(entry.getKey(),entry.getValue(),timeStamp,builder);
+  }
+  for (  Map.Entry<String,Histogram> entry : histograms.entrySet()) {
+    builder=addHistogram(entry.getKey(),entry.getValue(),timeStamp,builder);
+  }
+  for (  Map.Entry<String,Meter> entry : meters.entrySet()) {
+    builder=addMetered(entry.getKey(),entry.getValue(),timeStamp,builder);
+  }
+  for (  Map.Entry<String,Timer> entry : timers.entrySet()) {
+    builder=addTimer(entry.getKey(),entry.getValue(),timeStamp,builder);
+  }
+  this.influxDB.write(this.database,this.timeUnit,builder.build());
+}

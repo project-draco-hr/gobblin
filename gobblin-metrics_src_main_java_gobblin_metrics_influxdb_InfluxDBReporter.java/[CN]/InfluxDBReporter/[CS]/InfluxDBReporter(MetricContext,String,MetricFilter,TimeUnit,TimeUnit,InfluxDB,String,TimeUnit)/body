@@ -1,0 +1,6 @@
+{
+  super(context,name,filter,rateUnit,durationUnit);
+  this.influxDB=influxDB;
+  this.database=database;
+  this.timeUnit=timeUnit;
+}

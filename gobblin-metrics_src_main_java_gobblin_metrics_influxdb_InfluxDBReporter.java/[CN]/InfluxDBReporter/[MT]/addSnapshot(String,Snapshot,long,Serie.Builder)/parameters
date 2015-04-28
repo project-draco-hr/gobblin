@@ -1,0 +1,4 @@
+String name
+Snapshot snapshot
+long timeStamp
+Serie.Builder builder
