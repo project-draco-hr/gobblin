@@ -2,7 +2,7 @@
   super();
   closer=Closer.create();
   this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass()));
-  this.readRecordsMeter=this.metricContext.contextAwareMeter("gobblin.extractor.records.read");
-  this.dataRecordExceptionsMeter=this.metricContext.contextAwareMeter("gobblin.extractor.records.failed");
-  this.extractorTimer=this.metricContext.contextAwareTimer("gobblin.extractor.extract.time");
+  this.readRecordsMeter=this.metricContext.contextAwareMeter(MetricNames.Extractor.RECORDS_READ);
+  this.dataRecordExceptionsMeter=this.metricContext.contextAwareMeter(MetricNames.Extractor.RECORDS_FAILED);
+  this.extractorTimer=this.metricContext.contextAwareTimer(MetricNames.Extractor.EXTRACT_TIME);
 }

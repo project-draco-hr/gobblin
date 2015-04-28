@@ -8,7 +8,7 @@
   Assert.assertEquals(instrumented.getMetricContext().getParent().get(),gobblinMetrics.getMetricContext());
   List<Tag<?>> tags=instrumented.getMetricContext().getTags();
   Map<String,String> expectedTags=new HashMap<String,String>();
-  expectedTags.put("component","extractor");
+  expectedTags.put("construct",Constructs.EXTRACTOR.toString());
   expectedTags.put("class",InstrumentedExtractor.class.getCanonicalName());
   Assert.assertEquals(tags.size(),expectedTags.size());
   for (  Tag<?> tag : tags) {
