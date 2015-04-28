@@ -1,0 +1,7 @@
+{
+  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName())).values(timeStamp,metered.getCount()).build());
+  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.MEAN_RATE.getName())).values(timeStamp,convertRate(metered.getMeanRate())).build());
+  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.RATE_1MIN.getName())).values(timeStamp,convertRate(metered.getOneMinuteRate())).build());
+  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.RATE_5MIN.getName())).values(timeStamp,convertRate(metered.getFiveMinuteRate())).build());
+  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.RATE_15MIN.getName())).values(timeStamp,convertRate(metered.getFifteenMinuteRate())).build());
+}

@@ -1,4 +1,4 @@
+MetricContext context
 String name
 Gauge gauge
 long timeStamp
-Serie.Builder builder

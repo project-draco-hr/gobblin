@@ -1,0 +1,3 @@
+{
+  return new Serie.Builder(serieName).columns(TIMESTAMP,VALUE);
+}

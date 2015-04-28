@@ -1,0 +1,3 @@
+{
+  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name)).values(timeStamp,gauge.getValue()).build());
+}

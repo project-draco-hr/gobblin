@@ -25,33 +25,19 @@
   SortedMap<String,Meter> meters=ImmutableSortedMap.<String,Meter>naturalOrder().put(RECORD_PROCESS_RATE,recordProcessRateMeter).build();
   SortedMap<String,Timer> timers=ImmutableSortedMap.<String,Timer>naturalOrder().put(TOTAL_DURATION,totalDurationTimer).build();
   this.influxDBReporter.report(gauges,counters,histograms,meters,timers);
-  Serie serie=this.influxDB.getSerie(0);
-  Assert.assertEquals(serie.getName(),CONTEXT_NAME);
-  Assert.assertEquals(Arrays.asList(serie.getColumns()),ImmutableList.of(InfluxDBReporter.TIMESTAMP,InfluxDBReporter.NAME,InfluxDBReporter.VALUE));
-  List<Map<String,Object>> rows=serie.getRows();
-  Assert.assertEquals(rows.size(),33);
-  Map<String,Object> namesToValues=Maps.newHashMap();
-  for (  Map<String,Object> row : rows) {
-    namesToValues.put((String)row.get(InfluxDBReporter.NAME),row.get(InfluxDBReporter.VALUE));
-  }
-  Assert.assertEquals(((Integer)namesToValues.get(QUEUE_SIZE)).intValue(),1000);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORDS_PROCESSED,Measurements.COUNT.getName()))).longValue(),10l);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_PROCESS_RATE,Measurements.COUNT.getName()))).longValue(),6l);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName()))).longValue(),3l);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(TOTAL_DURATION,Measurements.COUNT.getName()))).longValue(),3l);
+  Assert.assertEquals(((Integer)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,QUEUE_SIZE)).getRows().get(0).get(InfluxDBReporter.VALUE)).intValue(),1000);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,RECORDS_PROCESSED,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),10l);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,RECORD_PROCESS_RATE,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),6l);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),3l);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,TOTAL_DURATION,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),3l);
   recordsProcessedCounter.inc(5l);
   recordSizeDistributionHistogram.update(4);
   recordProcessRateMeter.mark(4l);
   totalDurationTimer.update(4,TimeUnit.SECONDS);
   this.influxDBReporter.report(gauges,counters,histograms,meters,timers);
-  rows=this.influxDB.getSerie(1).getRows();
-  namesToValues.clear();
-  for (  Map<String,Object> row : rows) {
-    namesToValues.put((String)row.get(InfluxDBReporter.NAME),row.get(InfluxDBReporter.VALUE));
-  }
-  Assert.assertEquals(((Integer)namesToValues.get(QUEUE_SIZE)).intValue(),1000);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORDS_PROCESSED,Measurements.COUNT.getName()))).longValue(),15l);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_PROCESS_RATE,Measurements.COUNT.getName()))).longValue(),10l);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName()))).longValue(),4l);
-  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(TOTAL_DURATION,Measurements.COUNT.getName()))).longValue(),4l);
+  Assert.assertEquals(((Integer)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,QUEUE_SIZE)).getRows().get(0).get(InfluxDBReporter.VALUE)).intValue(),1000);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,RECORDS_PROCESSED,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),15l);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,RECORD_PROCESS_RATE,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),10l);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),4l);
+  Assert.assertEquals(((Long)this.influxDB.getSerie(MetricRegistry.name(CONTEXT_NAME,TOTAL_DURATION,Measurements.COUNT.getName())).getRows().get(0).get(InfluxDBReporter.VALUE)).longValue(),4l);
 }

@@ -1,3 +1,0 @@
-{
-  return builder.values(timeStamp,MetricRegistry.name(name,Measurements.COUNT.getName()),counter.getCount());
-}

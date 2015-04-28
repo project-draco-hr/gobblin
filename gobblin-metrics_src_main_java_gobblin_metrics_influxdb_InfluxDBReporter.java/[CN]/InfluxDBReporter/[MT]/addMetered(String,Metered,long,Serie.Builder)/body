@@ -1,3 +1,0 @@
-{
-  return builder.values(timeStamp,MetricRegistry.name(name,Measurements.COUNT.getName()),metered.getCount()).values(timeStamp,MetricRegistry.name(name,Measurements.RATE_1MIN.getName()),metered.getOneMinuteRate()).values(timeStamp,MetricRegistry.name(name,Measurements.RATE_5MIN.getName()),metered.getFiveMinuteRate()).values(timeStamp,MetricRegistry.name(name,Measurements.RATE_15MIN.getName()),metered.getFifteenMinuteRate()).values(timeStamp,MetricRegistry.name(name,Measurements.MEAN_RATE.getName()),metered.getMeanRate());
-}
