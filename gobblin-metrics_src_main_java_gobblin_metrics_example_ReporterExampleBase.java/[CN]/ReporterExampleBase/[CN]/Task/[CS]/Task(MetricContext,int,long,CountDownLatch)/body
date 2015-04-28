@@ -1,0 +1,6 @@
+{
+  this.context=context;
+  this.taskIndex=taskIndex;
+  this.totalRecords=totalRecords;
+  this.countDownLatch=countDownLatch;
+}
