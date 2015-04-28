@@ -1,0 +1,3 @@
+MetricReport report
+Set<String> expected
+boolean strict

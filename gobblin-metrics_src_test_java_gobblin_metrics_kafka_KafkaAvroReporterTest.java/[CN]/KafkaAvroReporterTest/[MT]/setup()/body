@@ -1,4 +1,3 @@
 {
-  schema=KafkaAvroReporter.SCHEMA;
-  reader=new GenericDatumReader<GenericRecord>(schema);
+  reader=new SpecificDatumReader<MetricReport>(MetricReport.class);
 }

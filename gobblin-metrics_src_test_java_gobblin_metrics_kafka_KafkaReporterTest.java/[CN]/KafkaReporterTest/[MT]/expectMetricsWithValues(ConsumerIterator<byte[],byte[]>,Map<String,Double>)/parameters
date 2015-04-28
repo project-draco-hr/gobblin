@@ -1,2 +1,0 @@
-ConsumerIterator<byte[],byte[]> it
-Map<String,Double> expected

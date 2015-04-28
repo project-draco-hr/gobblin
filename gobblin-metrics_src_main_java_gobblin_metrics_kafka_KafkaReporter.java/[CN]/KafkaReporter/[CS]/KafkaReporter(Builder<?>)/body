@@ -10,4 +10,7 @@
   this.config=new ProducerConfig(props);
   this.producer=closer.register(new ProducerCloseable<String,byte[]>(config));
   this.topic=builder.topic;
+  this.out=this.closer.register(new ByteArrayOutputStream());
+  this.encoder=getEncoder(out);
+  this.writer=new SpecificDatumWriter<MetricReport>(MetricReport.class);
 }
