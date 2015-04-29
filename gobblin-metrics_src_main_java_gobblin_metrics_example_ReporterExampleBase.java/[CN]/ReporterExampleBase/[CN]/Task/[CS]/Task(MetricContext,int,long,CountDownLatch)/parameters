@@ -1,0 +1,4 @@
+MetricContext context
+int taskIndex
+long totalRecords
+CountDownLatch countDownLatch
