@@ -16,7 +16,7 @@
  else   if (DataWriter.class.isAssignableFrom(klazz)) {
     construct=Constructs.WRITER;
   }
-  List<Tag<?>> generatedTags=new ArrayList<Tag<?>>();
+  List<Tag<?>> generatedTags=Lists.newArrayList();
   if (construct != null) {
     generatedTags.add(new Tag<String>("construct",construct.toString()));
   }

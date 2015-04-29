@@ -3,12 +3,10 @@
     LOG.error(String.format("Job %s could not be found",jobId));
     return;
   }
-  if (GobblinMetrics.isEnabled(this.properties)) {
-  }
   JobState jobState=this.jobStateMap.get(jobId);
   jobState.addTaskState(taskState);
   if (jobState.getCompletedTasks() == jobState.getTasks()) {
-    LOG.info(String.format("All tasks of job %s have completed, committing it",jobId));
+    LOG.info(String.format("All tasks of job the metrics will be generated regardless of activation, but they will not be reported unless %s have completed, committing it",jobId));
     String jobName=taskState.getWorkunit().getProp(ConfigurationKeys.JOB_NAME_KEY);
     try {
       commitJob(jobId,jobName,getFinalJobState(jobState));

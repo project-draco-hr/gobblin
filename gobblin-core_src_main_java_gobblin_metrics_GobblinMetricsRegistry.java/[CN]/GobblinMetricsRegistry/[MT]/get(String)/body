@@ -1,3 +1,3 @@
 {
-  return metricsMap.get(id);
+  return this.metricsMap.get(id);
 }

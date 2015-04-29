@@ -1,0 +1,3 @@
+{
+  return this.isEmbeddedInstrumented ? forkDataRecordImpl(workUnitState,input) : super.forkDataRecord(workUnitState,input);
+}

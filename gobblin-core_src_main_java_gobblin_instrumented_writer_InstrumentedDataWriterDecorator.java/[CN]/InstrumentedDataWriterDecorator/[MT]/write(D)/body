@@ -1,6 +1,6 @@
 {
   if (this.isEmbeddedInstrumented) {
-    this.embeddedWriter.write(record);
+    writeImpl(record);
   }
  else {
     super.write(record);

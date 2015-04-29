@@ -1,3 +1,3 @@
 {
-  return this.isEmbeddedInstrumented ? this.embeddedExtractor.readRecord(reuse) : super.readRecord(reuse);
+  return this.isEmbeddedInstrumented ? readRecordImpl(reuse) : super.readRecord(reuse);
 }
