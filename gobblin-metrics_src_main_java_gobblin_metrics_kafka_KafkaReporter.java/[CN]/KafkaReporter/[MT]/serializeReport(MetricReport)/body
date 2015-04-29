@@ -1,7 +1,10 @@
 {
+  if (!this.writerOpt.isPresent()) {
+    return null;
+  }
   try {
     this.out.reset();
-    this.writer.write(report,this.encoder);
+    this.writerOpt.get().write(report,this.encoder);
     this.encoder.flush();
     return out.toByteArray();
   }

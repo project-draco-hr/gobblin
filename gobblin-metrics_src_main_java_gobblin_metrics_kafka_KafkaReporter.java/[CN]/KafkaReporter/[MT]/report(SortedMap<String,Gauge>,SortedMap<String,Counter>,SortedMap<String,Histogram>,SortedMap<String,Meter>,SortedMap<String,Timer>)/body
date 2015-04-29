@@ -1,5 +1,5 @@
 {
-  if (!this.reportMetrics) {
+  if (!this.reportMetrics || !this.producerOpt.isPresent()) {
     return;
   }
   List<Metric> metrics=new ArrayList<Metric>();
@@ -26,6 +26,6 @@
   if (serializedReport != null) {
     List<KeyedMessage<String,byte[]>> messages=new ArrayList<KeyedMessage<String,byte[]>>();
     messages.add(new KeyedMessage<String,byte[]>(this.topic,serializeReport(report)));
-    this.producer.send(messages);
+    this.producerOpt.get().send(messages);
   }
 }

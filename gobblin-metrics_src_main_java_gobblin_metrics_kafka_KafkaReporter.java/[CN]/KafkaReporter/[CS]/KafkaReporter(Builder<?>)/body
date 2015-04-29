@@ -1,16 +1,22 @@
 {
   super(builder.registry,builder.name,builder.filter,builder.rateUnit,builder.durationUnit);
   this.closer=Closer.create();
-  this.lastSerializeExceptionTime=0;
-  this.tags=builder.tags;
-  Properties props=new Properties();
-  props.put("metadata.broker.list",builder.brokers);
-  props.put("serializer.class","kafka.serializer.DefaultEncoder");
-  props.put("request.required.acks","1");
-  this.config=new ProducerConfig(props);
-  this.producer=closer.register(new ProducerCloseable<String,byte[]>(config));
   this.topic=builder.topic;
+  this.tags=builder.tags;
   this.out=this.closer.register(new ByteArrayOutputStream());
   this.encoder=getEncoder(out);
-  this.writer=new SpecificDatumWriter<MetricReport>(MetricReport.class);
+  this.reportMetrics=this.encoder != null;
+  if (this.reportMetrics) {
+    Properties props=new Properties();
+    props.put("metadata.broker.list",builder.brokers);
+    props.put("serializer.class","kafka.serializer.DefaultEncoder");
+    props.put("request.required.acks","1");
+    ProducerConfig config=new ProducerConfig(props);
+    this.writerOpt=Optional.of(new SpecificDatumWriter<MetricReport>(MetricReport.class));
+    this.producerOpt=Optional.of(closer.register(new ProducerCloseable<String,byte[]>(config)));
+  }
+ else {
+    this.writerOpt=Optional.absent();
+    this.producerOpt=Optional.absent();
+  }
 }
