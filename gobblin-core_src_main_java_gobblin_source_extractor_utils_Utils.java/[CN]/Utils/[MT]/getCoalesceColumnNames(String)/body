@@ -1,0 +1,9 @@
+{
+  if (Strings.isNullOrEmpty(columnOrColumnList)) {
+    return null;
+  }
+  if (columnOrColumnList.contains(",")) {
+    return "COALESCE(" + columnOrColumnList + ")";
+  }
+  return columnOrColumnList;
+}
