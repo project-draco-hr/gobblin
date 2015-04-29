@@ -1,3 +1,0 @@
-{
-  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName())).values(timeStamp,counter.getCount()).build());
-}

@@ -1,0 +1,12 @@
+{
+  series.add(buildSerie(context,name,Optional.of(Measurements.MIN),timeStamp,convertDuration ? convertDuration(snapshot.getMin()) : snapshot.getMin()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.MAX),timeStamp,convertDuration ? convertDuration(snapshot.getMax()) : snapshot.getMax()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.MEAN),timeStamp,convertDuration ? convertDuration(snapshot.getMean()) : snapshot.getMean()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.STDDEV),timeStamp,convertDuration ? convertDuration(snapshot.getStdDev()) : snapshot.getStdDev()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.MEDIAN),timeStamp,convertDuration ? convertDuration(snapshot.getMedian()) : snapshot.getMedian()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.PERCENTILE_75TH),timeStamp,convertDuration ? convertDuration(snapshot.get75thPercentile()) : snapshot.get75thPercentile()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.PERCENTILE_95TH),timeStamp,convertDuration ? convertDuration(snapshot.get95thPercentile()) : snapshot.get95thPercentile()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.PERCENTILE_98TH),timeStamp,convertDuration ? convertDuration(snapshot.get98thPercentile()) : snapshot.get98thPercentile()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.PERCENTILE_99TH),timeStamp,convertDuration ? convertDuration(snapshot.get99thPercentile()) : snapshot.get99thPercentile()));
+  series.add(buildSerie(context,name,Optional.of(Measurements.PERCENTILE_999TH),timeStamp,convertDuration ? convertDuration(snapshot.get999thPercentile()) : snapshot.get999thPercentile()));
+}

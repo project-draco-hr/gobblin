@@ -1,5 +1,5 @@
+List<Serie> series
 MetricContext context
 String name
-Snapshot snapshot
+Counter counter
 long timeStamp
-boolean convertDuration

@@ -1,0 +1,4 @@
+{
+  String serieName=measurements.isPresent() ? MetricRegistry.name(context.getName(),metricName,measurements.get().getName()) : MetricRegistry.name(context.getName(),metricName);
+  return new Serie.Builder(serieName).columns(TIMESTAMP,VALUE).values(timeStamp,value).build();
+}

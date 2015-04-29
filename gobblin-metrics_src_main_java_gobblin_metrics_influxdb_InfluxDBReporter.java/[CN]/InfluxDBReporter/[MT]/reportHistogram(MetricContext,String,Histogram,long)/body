@@ -1,4 +1,0 @@
-{
-  this.influxDB.write(this.database,this.timeUnit,getSerieBuilder(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName())).values(timeStamp,histogram.getCount()).build());
-  reportSnapshot(context,name,histogram.getSnapshot(),timeStamp,false);
-}

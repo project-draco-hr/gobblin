@@ -1,4 +1,5 @@
+List<Serie> series
 MetricContext context
 String name
-Metered metered
+Histogram histogram
 long timeStamp

@@ -1,4 +1,0 @@
-{
-  reportMetered(context,name,timer,timeStamp);
-  reportSnapshot(context,name,timer.getSnapshot(),timeStamp,true);
-}

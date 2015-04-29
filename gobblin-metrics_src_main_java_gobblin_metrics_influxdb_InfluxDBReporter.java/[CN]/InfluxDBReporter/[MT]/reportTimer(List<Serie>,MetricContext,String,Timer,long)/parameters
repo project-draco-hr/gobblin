@@ -1,3 +1,4 @@
+List<Serie> series
 MetricContext context
 String name
 Timer timer
