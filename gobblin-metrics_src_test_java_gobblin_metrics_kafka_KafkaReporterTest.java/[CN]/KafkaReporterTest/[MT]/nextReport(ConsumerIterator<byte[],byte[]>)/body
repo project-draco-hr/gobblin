@@ -1,6 +1,4 @@
 {
   Assert.assertTrue(it.hasNext());
-  String nextMessage=new String(it.next().message());
-  MetricReport metricReport=mapper.readValue(nextMessage,MetricReport.class);
-  return metricReport;
+  return KafkaReporter.deserializeReport(new MetricReport(),it.next().message());
 }

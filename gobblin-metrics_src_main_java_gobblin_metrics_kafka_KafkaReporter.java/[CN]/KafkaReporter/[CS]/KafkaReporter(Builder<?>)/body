@@ -3,7 +3,8 @@
   this.closer=Closer.create();
   this.topic=builder.topic;
   this.tags=builder.tags;
-  this.out=this.closer.register(new ByteArrayOutputStream());
+  this.byteArrayOutputStream=new ByteArrayOutputStream();
+  this.out=this.closer.register(new DataOutputStream(byteArrayOutputStream));
   this.encoder=getEncoder(out);
   this.reportMetrics=this.encoder != null;
   if (this.reportMetrics) {

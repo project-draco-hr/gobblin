@@ -3,10 +3,11 @@
     return null;
   }
   try {
-    this.out.reset();
+    this.byteArrayOutputStream.reset();
+    this.out.writeInt(SCHEMA_VERSION);
     this.writerOpt.get().write(report,this.encoder);
     this.encoder.flush();
-    return out.toByteArray();
+    return this.byteArrayOutputStream.toByteArray();
   }
  catch (  IOException exception) {
     LOGGER.warn("Could not serialize Avro record for Kafka Metrics. Exception: %s",exception.getMessage());

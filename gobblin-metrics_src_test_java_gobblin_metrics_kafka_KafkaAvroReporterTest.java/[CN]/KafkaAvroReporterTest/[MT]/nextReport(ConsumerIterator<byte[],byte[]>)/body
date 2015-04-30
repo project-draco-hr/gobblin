@@ -1,7 +1,4 @@
 {
-  byte[] bytes=it.next().message();
-  Decoder decoder=DecoderFactory.get().binaryDecoder(bytes,null);
-  MetricReport reuse=new MetricReport();
-  MetricReport report=reader.read(reuse,decoder);
-  return report;
+  Assert.assertTrue(it.hasNext());
+  return KafkaAvroReporter.deserializeReport(new MetricReport(),it.next().message());
 }
