@@ -1,0 +1,21 @@
+{
+  MetricRegistry registry=new MetricRegistry();
+  Counter counter=registry.counter("com.linkedin.example.counter");
+  Tag<?> tag1=new Tag<String>("tag1","value1");
+  Tag<?> tag2=new Tag<Integer>("tag2",2);
+  KafkaReporter kafkaReporter=getBuilder(registry).withTags(Lists.newArrayList(tag1,tag2)).build("localhost:" + kafkaPort,topic);
+  counter.inc();
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  MetricReport metricReport=nextReport(iterator);
+  Assert.assertEquals(2,metricReport.getTags().size());
+  Assert.assertTrue(metricReport.getTags().containsKey(tag1.getKey()));
+  Assert.assertEquals(metricReport.getTags().get(tag1.getKey()),tag1.getValue().toString());
+  Assert.assertTrue(metricReport.getTags().containsKey(tag2.getKey()));
+  Assert.assertEquals(metricReport.getTags().get(tag2.getKey()),tag2.getValue().toString());
+}

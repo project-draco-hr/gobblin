@@ -1,5 +1,10 @@
 {
-  List<byte[]> metrics=new ArrayList<byte[]>();
-  metrics.add(serializeValue(name,gauge.getValue()));
+  List<Metric> metrics=new ArrayList<Metric>();
+  try {
+    metrics.add(new Metric(name,Double.parseDouble(gauge.getValue().toString())));
+  }
+ catch (  NumberFormatException exception) {
+    LOGGER.info("Failed to serialize gauge metric. Not compatible with double value.");
+  }
   return metrics;
 }
