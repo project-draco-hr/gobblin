@@ -11,9 +11,8 @@
  catch (  InterruptedException ex) {
     Thread.currentThread().interrupt();
   }
-  KafkaReporter.Metric metric=nextMetric(iterator);
-  Assert.assertEquals(1,Integer.parseInt(metric.value.toString()));
-  Assert.assertEquals(1,metric.tags.size());
-  Assert.assertTrue(metric.tags.containsKey(tag1.getKey()));
-  Assert.assertEquals(metric.tags.get(tag1.getKey()),tag1.getValue().toString());
+  MetricReport metricReport=nextReport(iterator);
+  Assert.assertEquals(1,metricReport.getTags().size());
+  Assert.assertTrue(metricReport.getTags().containsKey(tag1.getKey()));
+  Assert.assertEquals(metricReport.getTags().get(tag1.getKey()),tag1.getValue().toString());
 }

@@ -6,7 +6,7 @@
     }
     throw new IllegalArgumentException(name + " is already used for a different type of metric");
   }
-  Metric newMetric=factory.newMetric(this,name);
+  T newMetric=factory.newMetric(this,name);
   register(name,newMetric);
-  return (T)newMetric;
+  return newMetric;
 }

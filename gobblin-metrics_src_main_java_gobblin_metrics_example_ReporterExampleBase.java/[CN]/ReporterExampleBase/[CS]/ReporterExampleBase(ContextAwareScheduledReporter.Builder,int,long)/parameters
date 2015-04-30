@@ -1,0 +1,3 @@
+ContextAwareScheduledReporter.Builder reporterBuilder
+int tasks
+long totalRecords

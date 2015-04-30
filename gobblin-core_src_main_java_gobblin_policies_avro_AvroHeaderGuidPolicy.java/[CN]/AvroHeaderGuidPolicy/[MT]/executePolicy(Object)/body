@@ -1,0 +1,10 @@
+{
+  if (!(record instanceof GenericRecord)) {
+    return RowLevelPolicy.Result.FAILED;
+  }
+  GenericRecord header=(GenericRecord)((GenericRecord)record).get("header");
+  if (header == null || header.get("guid") == null) {
+    return RowLevelPolicy.Result.FAILED;
+  }
+  return RowLevelPolicy.Result.PASSED;
+}

@@ -1,0 +1,5 @@
+{
+  this.tags=tags;
+  this.timestamp=timestamp;
+  this.metrics=metrics;
+}

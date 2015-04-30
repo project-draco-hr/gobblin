@@ -1,0 +1,4 @@
+{
+  this.contextAwareReporterBuilders.put(builder.getName(),builder);
+  return this;
+}

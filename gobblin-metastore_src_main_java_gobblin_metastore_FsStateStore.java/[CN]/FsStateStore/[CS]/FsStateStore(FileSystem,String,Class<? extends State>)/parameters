@@ -1,3 +1,0 @@
-FileSystem fs
-String storeRootDir
-Class<? extends State> stateClass

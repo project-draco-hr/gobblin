@@ -1,2 +1,0 @@
-String storeUrl
-Class<? extends State> stateClass

@@ -1,0 +1,19 @@
+{
+  Preconditions.checkArgument(checkReaderWriterCompatibility(newSchema,record.getSchema()).getType() == COMPATIBLE);
+  Closer closer=Closer.create();
+  try {
+    ByteArrayOutputStream out=closer.register(new ByteArrayOutputStream());
+    Encoder encoder=new EncoderFactory().directBinaryEncoder(out,null);
+    DatumWriter<GenericRecord> writer=new GenericDatumWriter<GenericRecord>(record.getSchema());
+    writer.write(record,encoder);
+    BinaryDecoder decoder=new DecoderFactory().binaryDecoder(out.toByteArray(),null);
+    DatumReader<GenericRecord> reader=new GenericDatumReader<GenericRecord>(record.getSchema(),newSchema);
+    return reader.read(null,decoder);
+  }
+ catch (  IOException e) {
+    throw new IOException(String.format("Cannot convert avro record to new schema. Origianl schema = %s, new schema = %s",record.getSchema(),newSchema),e);
+  }
+ finally {
+    closer.close();
+  }
+}

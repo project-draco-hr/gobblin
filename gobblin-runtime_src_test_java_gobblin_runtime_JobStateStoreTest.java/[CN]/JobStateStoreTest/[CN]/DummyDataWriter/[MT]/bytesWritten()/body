@@ -1,0 +1,3 @@
+{
+  return DummySource.NUM_RECORDS_TO_EXTRACT_PER_EXTRACTOR * 4;
+}

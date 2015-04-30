@@ -1,5 +1,5 @@
 {
-  this.childContext=this.context.childBuilder(CHILD_CONTEXT_NAME).addTag(new Tag<String>(TASK_ID_KEY,TASK_ID_PREFIX + 0)).addContextAwareScheduledReporter(TEST_REPORTER_NAME,new TestContextAwareScheduledReporter.TestContextAwareScheduledReporterBuilder(TEST_REPORTER_NAME)).reportFullyQualifiedNames(false).build();
+  this.childContext=this.context.childBuilder(CHILD_CONTEXT_NAME).addTag(new Tag<String>(TASK_ID_KEY,TASK_ID_PREFIX + 0)).addContextAwareScheduledReporter(new TestContextAwareScheduledReporter.TestContextAwareScheduledReporterBuilder(TEST_REPORTER_NAME)).reportFullyQualifiedNames(false).build();
   Assert.assertEquals(this.childContext.getName(),CHILD_CONTEXT_NAME);
   Assert.assertTrue(this.childContext.getParent().isPresent());
   Assert.assertEquals(this.childContext.getParent().get(),this.context);

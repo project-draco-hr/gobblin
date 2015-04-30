@@ -1,0 +1,3 @@
+WorkUnit workUnit
+Queue<MultiWorkUnit> pQueue
+long avgGroupSize

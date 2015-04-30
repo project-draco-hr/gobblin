@@ -1,0 +1,11 @@
+{
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (int i=0; i < NUM_WORK_UNITS; i++) {
+    WorkUnit workUnit=sourceState.createWorkUnit(sourceState.createExtract(Extract.TableType.SNAPSHOT_ONLY,NAMESPACE,TABLE));
+    workUnit.setLowWaterMark(i * NUM_RECORDS_TO_EXTRACT_PER_EXTRACTOR + 1);
+    workUnit.setHighWaterMark((i + 1) * NUM_RECORDS_TO_EXTRACT_PER_EXTRACTOR);
+    workUnit.setProp(WORK_UNIT_INDEX_KEY,i);
+    workUnits.add(workUnit);
+  }
+  return workUnits;
+}

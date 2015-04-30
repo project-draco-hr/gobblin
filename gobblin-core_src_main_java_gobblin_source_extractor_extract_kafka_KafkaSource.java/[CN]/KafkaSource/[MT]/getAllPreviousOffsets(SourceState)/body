@@ -1,7 +1,7 @@
 {
   this.previousOffsets.clear();
   for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
-    KafkaPartition partition=getKafkaPartitionFromWorkUnitState(workUnitState);
+    KafkaPartition partition=getKafkaPartitionFromState(workUnitState);
     if (partition == null) {
       continue;
     }

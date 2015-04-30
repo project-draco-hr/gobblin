@@ -1,0 +1,3 @@
+{
+  this.series.addAll(Arrays.asList(series));
+}

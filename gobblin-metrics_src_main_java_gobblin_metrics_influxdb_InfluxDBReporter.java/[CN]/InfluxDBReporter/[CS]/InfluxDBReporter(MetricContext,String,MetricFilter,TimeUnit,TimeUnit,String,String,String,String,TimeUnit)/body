@@ -1,0 +1,3 @@
+{
+  this(context,name,filter,rateUnit,durationUnit,InfluxDBFactory.connect(url,user,password),database,timeUnit);
+}

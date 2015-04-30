@@ -1,0 +1,4 @@
+{
+  builder=builder.values(timeStamp,MetricRegistry.name(name,Measurements.COUNT.getName()),histogram.getCount());
+  return addSnapshot(name,histogram.getSnapshot(),timeStamp,builder);
+}

@@ -1,0 +1,5 @@
+{
+  this.workUnitState=workUnitState;
+  workUnitState.setProp(FOO,BAR);
+  this.current=Integer.parseInt(this.workUnitState.getProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY));
+}

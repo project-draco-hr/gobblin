@@ -1,0 +1,21 @@
+{
+  Collections.sort(groups,this.sortBySizeDescComparator);
+  Queue<MultiWorkUnit> pQueue=new PriorityQueue<MultiWorkUnit>(numOfMultiWorkUnits,this.sortBySizeAscComparator);
+  for (int i=0; i < numOfMultiWorkUnits; i++) {
+    MultiWorkUnit multiWorkUnit=new MultiWorkUnit();
+    this.setWorkUnitEstSize(multiWorkUnit,0);
+    pQueue.add(multiWorkUnit);
+  }
+  for (  MultiWorkUnit group : groups) {
+    MultiWorkUnit lightestMultiWorkUnit=pQueue.poll();
+    this.addWorkUnitsToMultiWorkUnit(group.getWorkUnits(),lightestMultiWorkUnit);
+    pQueue.add(lightestMultiWorkUnit);
+  }
+  List<WorkUnit> multiWorkUnits=Lists.newArrayList();
+  multiWorkUnits.addAll(pQueue);
+  Collections.sort(multiWorkUnits,this.sortBySizeAscComparator);
+  long minLoad=this.getWorkUnitEstSize(multiWorkUnits.get(0));
+  long maxLoad=this.getWorkUnitEstSize(multiWorkUnits.get(multiWorkUnits.size() - 1));
+  LOG.info(String.format("Min data size of multiWorkUnit = %d; Max data size of multiWorkUnit = %d; Diff = %f%%",minLoad,maxLoad,(double)(maxLoad - minLoad) / (double)maxLoad * 100.0));
+  return multiWorkUnits;
+}

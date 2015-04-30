@@ -1,0 +1,12 @@
+{
+  if (workUnit.contains(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY)) {
+    String removeFieldsPropName=workUnit.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY) + REMOVE_FIELDS;
+    if (workUnit.contains(removeFieldsPropName)) {
+      this.fieldRemover=Optional.of(new AvroSchemaFieldRemover(workUnit.getProp(removeFieldsPropName)));
+    }
+ else {
+      this.fieldRemover=Optional.absent();
+    }
+  }
+  return this;
+}

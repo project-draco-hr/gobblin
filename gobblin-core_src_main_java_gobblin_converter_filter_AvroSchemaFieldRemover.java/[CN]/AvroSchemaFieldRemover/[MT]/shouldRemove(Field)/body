@@ -1,0 +1,3 @@
+{
+  return this.children.containsKey(field.name()) && this.children.get(field.name()).children.isEmpty();
+}

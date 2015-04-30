@@ -1,9 +1,0 @@
-{
-  String str=stringifyValue(name,value,path);
-  if (!Strings.isNullOrEmpty(str)) {
-    return str.getBytes(Charsets.UTF_8);
-  }
- else {
-    return null;
-  }
-}
