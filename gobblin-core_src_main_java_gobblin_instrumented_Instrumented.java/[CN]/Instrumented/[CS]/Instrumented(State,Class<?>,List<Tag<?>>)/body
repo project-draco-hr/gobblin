@@ -1,9 +1,10 @@
 {
+  this.closer=Closer.create();
   this.instrumentationEnabled=GobblinMetrics.isEnabled(state);
   if (isInstrumentationEnabled()) {
-    this.metricContext=getMetricContext(state,klazz,tags);
+    this.metricContext=Optional.fromNullable(closer.register(getMetricContext(state,klazz,tags)));
   }
  else {
-    this.metricContext=new MetricContext.Builder("NULL").build();
+    this.metricContext=Optional.absent();
   }
 }
