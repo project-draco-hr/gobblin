@@ -1,0 +1,39 @@
+{
+  Counter totalRecordsCounter=this.context.contextAwareCounter(TOTAL_RECORDS);
+  Meter recordProcessRateMeter=this.context.contextAwareMeter(RECORD_PROCESS_RATE);
+  Timer recordProcessTimeTimer=this.context.contextAwareTimer(RECORD_PROCESS_TIME);
+  Histogram recordSizesHistogram=this.context.contextAwareHistogram(RECORD_SIZES);
+  try {
+    this.context.startMetricReporting(1,TimeUnit.SECONDS);
+    for (int i=0; i < this.totalRecords; i++) {
+      totalRecordsCounter.inc();
+      recordProcessRateMeter.mark();
+      recordSizesHistogram.update((this.rand.nextLong() & Long.MAX_VALUE) % 5000l);
+      if (i % 100 == 0) {
+        LOGGER.info(String.format("Task %d has processed %d records so far",this.taskIndex,i));
+      }
+      long processTime=(this.rand.nextLong() & Long.MAX_VALUE) % 10;
+      try {
+        Thread.sleep(processTime);
+      }
+ catch (      InterruptedException ie) {
+        LOGGER.warn(String.format("Task %d has been interrupted",this.taskIndex));
+        Thread.currentThread().interrupt();
+        return;
+      }
+      recordProcessTimeTimer.update(processTime,TimeUnit.MILLISECONDS);
+    }
+    LOGGER.info(String.format("Task %d has processed all %d records",this.taskIndex,this.totalRecords));
+  }
+  finally {
+    try {
+      this.context.close();
+    }
+ catch (    IOException ioe) {
+      LOGGER.error("Failed to close context: " + this.context.getName(),ioe);
+    }
+ finally {
+      this.countDownLatch.countDown();
+    }
+  }
+}

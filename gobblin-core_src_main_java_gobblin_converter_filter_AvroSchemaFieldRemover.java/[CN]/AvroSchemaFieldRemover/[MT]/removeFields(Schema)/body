@@ -1,0 +1,19 @@
+{
+switch (schema.getType()) {
+case RECORD:
+    if (this.schemaMap.containsKey(schema.getFullName())) {
+      return this.schemaMap.get(schema.getFullName());
+    }
+ else {
+      return this.removeFieldsFromRecords(schema);
+    }
+case UNION:
+  return this.removeFieldsFromUnion(schema);
+case ARRAY:
+return this.removeFieldsFromArray(schema);
+case MAP:
+return this.removeFieldsFromMap(schema);
+default :
+return schema;
+}
+}

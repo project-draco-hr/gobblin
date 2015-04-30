@@ -1,0 +1,4 @@
+String name
+Histogram histogram
+long timeStamp
+Serie.Builder builder

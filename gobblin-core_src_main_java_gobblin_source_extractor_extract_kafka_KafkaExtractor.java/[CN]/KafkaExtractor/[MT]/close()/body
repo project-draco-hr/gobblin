@@ -1,4 +1,14 @@
 {
+  LOG.info(String.format("Last offset pulled for partition %s:%d = %d",this.partition.getTopicName(),this.partition.getId(),this.nextWatermark - 1));
   this.workUnitState.setHighWaterMark(this.nextWatermark);
+  if (this.avgRecordSize > 0) {
+    LOG.info(String.format("Avg event size pulled for partition %s:%d = %d",this.partition.getTopicName(),this.partition.getId(),this.avgRecordSize));
+    this.workUnitState.setProp(KafkaSource.getWorkUnitSizePropName(this.workUnitState),this.avgRecordSize);
+  }
+ else {
+    LOG.info(String.format("Partition %s:%d not pulled",this.partition.getTopicName(),this.partition.getId()));
+    long previousAvgRecordSize=this.workUnitState.getPropAsLong(KafkaSource.getWorkUnitSizePropName(this.workUnitState),KafkaSource.DEFAULT_AVG_EVENT_SIZE);
+    this.workUnitState.setProp(KafkaSource.getWorkUnitSizePropName(this.workUnitState),previousAvgRecordSize);
+  }
   this.closer.close();
 }

@@ -1,0 +1,12 @@
+{
+  if (pQueue.isEmpty()) {
+    return null;
+  }
+  long currGroupSize=getWorkUnitEstSize(pQueue.peek());
+  if (currGroupSize + getWorkUnitEstSize(workUnit) <= avgGroupSize) {
+    return pQueue.poll();
+  }
+ else {
+    return null;
+  }
+}

@@ -1,0 +1,13 @@
+{
+  if (!(record instanceof GenericRecord)) {
+    return RowLevelPolicy.Result.FAILED;
+  }
+  GenericRecord header=(GenericRecord)((GenericRecord)record).get("header");
+  if (header == null) {
+    return RowLevelPolicy.Result.FAILED;
+  }
+  if (header.get("time") != null || header.get("timestamp") != null) {
+    return RowLevelPolicy.Result.PASSED;
+  }
+  return RowLevelPolicy.Result.FAILED;
+}

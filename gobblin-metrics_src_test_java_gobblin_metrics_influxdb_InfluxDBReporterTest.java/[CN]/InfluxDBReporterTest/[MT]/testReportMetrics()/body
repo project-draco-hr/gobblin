@@ -1,0 +1,57 @@
+{
+  Gauge<Integer> queueSizeGauge=new Gauge<Integer>(){
+    @Override public Integer getValue(){
+      return 1000;
+    }
+  }
+;
+  Counter recordsProcessedCounter=new Counter();
+  recordsProcessedCounter.inc(10l);
+  Histogram recordSizeDistributionHistogram=new Histogram(new ExponentiallyDecayingReservoir());
+  recordSizeDistributionHistogram.update(1);
+  recordSizeDistributionHistogram.update(2);
+  recordSizeDistributionHistogram.update(3);
+  Meter recordProcessRateMeter=new Meter();
+  recordProcessRateMeter.mark(1l);
+  recordProcessRateMeter.mark(2l);
+  recordProcessRateMeter.mark(3l);
+  Timer totalDurationTimer=new Timer();
+  totalDurationTimer.update(1,TimeUnit.SECONDS);
+  totalDurationTimer.update(2,TimeUnit.SECONDS);
+  totalDurationTimer.update(3,TimeUnit.SECONDS);
+  SortedMap<String,Counter> counters=ImmutableSortedMap.<String,Counter>naturalOrder().put(RECORDS_PROCESSED,recordsProcessedCounter).build();
+  SortedMap<String,Gauge> gauges=ImmutableSortedMap.<String,Gauge>naturalOrder().put(QUEUE_SIZE,queueSizeGauge).build();
+  SortedMap<String,Histogram> histograms=ImmutableSortedMap.<String,Histogram>naturalOrder().put(RECORD_SIZE_DISTRIBUTION,recordSizeDistributionHistogram).build();
+  SortedMap<String,Meter> meters=ImmutableSortedMap.<String,Meter>naturalOrder().put(RECORD_PROCESS_RATE,recordProcessRateMeter).build();
+  SortedMap<String,Timer> timers=ImmutableSortedMap.<String,Timer>naturalOrder().put(TOTAL_DURATION,totalDurationTimer).build();
+  this.influxDBReporter.report(gauges,counters,histograms,meters,timers);
+  Serie serie=this.influxDB.getSerie(0);
+  Assert.assertEquals(serie.getName(),CONTEXT_NAME);
+  Assert.assertEquals(Arrays.asList(serie.getColumns()),ImmutableList.of(InfluxDBReporter.TIMESTAMP,InfluxDBReporter.NAME,InfluxDBReporter.VALUE));
+  List<Map<String,Object>> rows=serie.getRows();
+  Assert.assertEquals(rows.size(),33);
+  Map<String,Object> namesToValues=Maps.newHashMap();
+  for (  Map<String,Object> row : rows) {
+    namesToValues.put((String)row.get(InfluxDBReporter.NAME),row.get(InfluxDBReporter.VALUE));
+  }
+  Assert.assertEquals(((Integer)namesToValues.get(QUEUE_SIZE)).intValue(),1000);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORDS_PROCESSED,Measurements.COUNT.getName()))).longValue(),10l);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_PROCESS_RATE,Measurements.COUNT.getName()))).longValue(),6l);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName()))).longValue(),3l);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(TOTAL_DURATION,Measurements.COUNT.getName()))).longValue(),3l);
+  recordsProcessedCounter.inc(5l);
+  recordSizeDistributionHistogram.update(4);
+  recordProcessRateMeter.mark(4l);
+  totalDurationTimer.update(4,TimeUnit.SECONDS);
+  this.influxDBReporter.report(gauges,counters,histograms,meters,timers);
+  rows=this.influxDB.getSerie(1).getRows();
+  namesToValues.clear();
+  for (  Map<String,Object> row : rows) {
+    namesToValues.put((String)row.get(InfluxDBReporter.NAME),row.get(InfluxDBReporter.VALUE));
+  }
+  Assert.assertEquals(((Integer)namesToValues.get(QUEUE_SIZE)).intValue(),1000);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORDS_PROCESSED,Measurements.COUNT.getName()))).longValue(),15l);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_PROCESS_RATE,Measurements.COUNT.getName()))).longValue(),10l);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(RECORD_SIZE_DISTRIBUTION,Measurements.COUNT.getName()))).longValue(),4l);
+  Assert.assertEquals(((Long)namesToValues.get(MetricRegistry.name(TOTAL_DURATION,Measurements.COUNT.getName()))).longValue(),4l);
+}

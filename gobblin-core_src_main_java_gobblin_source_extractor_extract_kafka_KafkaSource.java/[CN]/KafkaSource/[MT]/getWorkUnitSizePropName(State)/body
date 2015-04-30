@@ -1,0 +1,3 @@
+{
+  return state.getProp(TOPIC_NAME) + "." + state.getPropAsInt(PARTITION_ID)+ "."+ AVG_EVENT_SIZE;
+}

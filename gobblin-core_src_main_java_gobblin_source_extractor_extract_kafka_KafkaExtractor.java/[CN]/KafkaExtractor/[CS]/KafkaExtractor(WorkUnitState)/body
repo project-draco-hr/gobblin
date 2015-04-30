@@ -7,4 +7,7 @@
   this.kafkaWrapper=closer.register(KafkaWrapper.create(state));
   this.messageIterator=null;
   this.nextWatermark=this.lowWatermark;
+  this.totalRecordSize=0;
+  this.recordCount=0;
+  this.avgRecordSize=0;
 }
