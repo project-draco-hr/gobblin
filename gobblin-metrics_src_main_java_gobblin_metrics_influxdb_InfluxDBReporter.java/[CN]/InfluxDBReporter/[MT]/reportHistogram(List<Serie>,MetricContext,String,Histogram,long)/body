@@ -1,0 +1,4 @@
+{
+  series.add(buildSerie(context,name,Optional.of(Measurements.COUNT),timeStamp,histogram.getCount()));
+  reportSnapshot(series,context,name,histogram.getSnapshot(),timeStamp,false);
+}

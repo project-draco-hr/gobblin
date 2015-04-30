@@ -1,3 +1,5 @@
 {
-  this.series.addAll(Arrays.asList(series));
+  for (  Serie serie : series) {
+    this.series.put(serie.getName(),serie);
+  }
 }

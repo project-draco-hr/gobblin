@@ -1,4 +1,0 @@
-{
-  builder=addMetered(name,timer,timeStamp,builder);
-  return addSnapshot(name,timer.getSnapshot(),timeStamp,builder);
-}

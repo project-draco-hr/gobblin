@@ -1,20 +1,20 @@
 {
   long timeStamp=System.currentTimeMillis();
-  Serie.Builder builder=new Serie.Builder(context.getName()).columns(TIMESTAMP,NAME,VALUE);
+  List<Serie> series=Lists.newArrayList();
   for (  Map.Entry<String,Gauge> entry : gauges.entrySet()) {
-    builder=addGauge(entry.getKey(),entry.getValue(),timeStamp,builder);
+    reportGauge(series,context,entry.getKey(),entry.getValue(),timeStamp);
   }
   for (  Map.Entry<String,Counter> entry : counters.entrySet()) {
-    builder=addCounter(entry.getKey(),entry.getValue(),timeStamp,builder);
+    reportCounter(series,context,entry.getKey(),entry.getValue(),timeStamp);
   }
   for (  Map.Entry<String,Histogram> entry : histograms.entrySet()) {
-    builder=addHistogram(entry.getKey(),entry.getValue(),timeStamp,builder);
+    reportHistogram(series,context,entry.getKey(),entry.getValue(),timeStamp);
   }
   for (  Map.Entry<String,Meter> entry : meters.entrySet()) {
-    builder=addMetered(entry.getKey(),entry.getValue(),timeStamp,builder);
+    reportMetered(series,context,entry.getKey(),entry.getValue(),timeStamp);
   }
   for (  Map.Entry<String,Timer> entry : timers.entrySet()) {
-    builder=addTimer(entry.getKey(),entry.getValue(),timeStamp,builder);
+    reportTimer(series,context,entry.getKey(),entry.getValue(),timeStamp);
   }
-  this.influxDB.write(this.database,this.timeUnit,builder.build());
+  this.influxDB.write(this.database,this.timeUnit,series.toArray(new Serie[series.size()]));
 }

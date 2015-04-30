@@ -1,0 +1,6 @@
+List<Serie> series
+MetricContext context
+String name
+Snapshot snapshot
+long timeStamp
+boolean convertDuration
