@@ -1,5 +1,7 @@
 {
-  fork.init(new WorkUnitState());
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
+  fork.init(state);
   fork.forkDataRecord(new WorkUnitState(),"in");
   Map<String,Long> metrics=MetricsHelper.dumpMetrics(fork.getMetricContext());
   Assert.assertEquals(metrics.get(MetricNames.ForkOperatorMetrics.RECORDS_IN_METER),Long.valueOf(1));

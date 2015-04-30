@@ -1,5 +1,7 @@
 {
-  converter.init(new WorkUnitState());
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
+  converter.init(state);
   Iterable<String> iterable=converter.convertRecord("schema","record",new WorkUnitState());
   Map<String,Long> metrics=MetricsHelper.dumpMetrics(converter.getMetricContext());
   Assert.assertEquals(metrics.get(MetricNames.ConverterMetrics.RECORDS_IN_METER),Long.valueOf(1));

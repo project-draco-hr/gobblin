@@ -1,6 +1,9 @@
 {
-  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass()));
-  this.inputMeter=this.metricContext.meter(MetricNames.ForkOperatorMetrics.RECORDS_IN_METER);
-  this.outputForks=this.metricContext.meter(MetricNames.ForkOperatorMetrics.FORKS_OUT_METER);
-  this.forkOperatorTimer=this.metricContext.timer(MetricNames.ForkOperatorMetrics.FORK_TIMER);
+  this.instrumentationEnabled=GobblinMetrics.isEnabled(workUnitState);
+  if (isInstrumentationEnabled()) {
+    this.metricContext=Optional.fromNullable(closer.register(Instrumented.getMetricContext(workUnitState,this.getClass())));
+    this.inputMeter=Instrumented.meter(this.metricContext,MetricNames.ForkOperatorMetrics.RECORDS_IN_METER);
+    this.outputForks=Instrumented.meter(this.metricContext,MetricNames.ForkOperatorMetrics.FORKS_OUT_METER);
+    this.forkOperatorTimer=Instrumented.timer(this.metricContext,MetricNames.ForkOperatorMetrics.FORK_TIMER);
+  }
 }

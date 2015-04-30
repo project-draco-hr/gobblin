@@ -1,5 +1,5 @@
 {
   if (DataRecordException.class.isInstance(exception)) {
-    dataRecordExceptionsMeter.mark();
+    Instrumented.markMeter(dataRecordExceptionsMeter);
   }
 }

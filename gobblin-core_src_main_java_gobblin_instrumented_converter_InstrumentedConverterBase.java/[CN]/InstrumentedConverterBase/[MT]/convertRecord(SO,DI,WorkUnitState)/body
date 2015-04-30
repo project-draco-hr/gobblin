@@ -1,4 +1,7 @@
 {
+  if (!isInstrumentationEnabled()) {
+    return convertRecordImpl(outputSchema,inputRecord,workUnit);
+  }
   try {
     long startTime=System.nanoTime();
     beforeConvert(outputSchema,inputRecord,workUnit);

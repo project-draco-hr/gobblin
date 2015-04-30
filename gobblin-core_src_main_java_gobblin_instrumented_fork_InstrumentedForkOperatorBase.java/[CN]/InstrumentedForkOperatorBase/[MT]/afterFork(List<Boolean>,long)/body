@@ -3,6 +3,6 @@
   for (  Boolean fork : forks) {
     forksGenerated+=fork ? 1 : 0;
   }
-  this.outputForks.mark(forksGenerated);
-  this.forkOperatorTimer.update(System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
+  Instrumented.markMeter(this.outputForks,forksGenerated);
+  Instrumented.updateTimer(this.forkOperatorTimer,System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
 }

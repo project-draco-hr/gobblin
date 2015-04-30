@@ -1,4 +1,8 @@
 {
+  if (!isInstrumentationEnabled()) {
+    writeImpl(record);
+    return;
+  }
   try {
     long startTimeNanos=System.nanoTime();
     beforeWrite(record);

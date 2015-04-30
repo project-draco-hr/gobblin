@@ -1,4 +1,7 @@
 {
+  if (!isInstrumentationEnabled()) {
+    return readRecordImpl(reuse);
+  }
   try {
     long startTimeNanos=System.nanoTime();
     beforeRead();

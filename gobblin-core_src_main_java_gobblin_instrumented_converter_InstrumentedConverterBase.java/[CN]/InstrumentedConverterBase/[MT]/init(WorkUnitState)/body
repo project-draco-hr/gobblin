@@ -1,9 +1,12 @@
 {
   Converter<SI,SO,DI,DO> converter=super.init(workUnit);
-  this.metricContext=closer.register(Instrumented.getMetricContext(workUnit,this.getClass()));
-  this.recordsIn=this.metricContext.meter(MetricNames.ConverterMetrics.RECORDS_IN_METER);
-  this.recordsOut=this.metricContext.meter(MetricNames.ConverterMetrics.RECORDS_OUT_METER);
-  this.recordsException=this.metricContext.meter(MetricNames.ConverterMetrics.RECORDS_FAILED_METER);
-  this.converterTimer=this.metricContext.timer(MetricNames.ConverterMetrics.CONVERT_TIMER);
+  this.instrumentationEnabled=GobblinMetrics.isEnabled(workUnit);
+  if (isInstrumentationEnabled()) {
+    this.metricContext=Optional.fromNullable(closer.register(Instrumented.getMetricContext(workUnit,this.getClass())));
+    this.recordsInMeter=Instrumented.meter(this.metricContext,MetricNames.ConverterMetrics.RECORDS_IN_METER);
+    this.recordsOutMeter=Instrumented.meter(this.metricContext,MetricNames.ConverterMetrics.RECORDS_OUT_METER);
+    this.recordsExceptionMeter=Instrumented.meter(this.metricContext,MetricNames.ConverterMetrics.RECORDS_FAILED_METER);
+    this.converterTimer=Instrumented.timer(this.metricContext,MetricNames.ConverterMetrics.CONVERT_TIMER);
+  }
   return converter;
 }

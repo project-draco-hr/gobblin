@@ -1,8 +1,14 @@
 {
   this.closer=Closer.create();
-  this.metricContext=this.closer.register(Instrumented.getMetricContext(state,this.getClass()));
-  this.recordsInMeter=this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_IN_METER);
-  this.successfulWriteMeter=this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_WRITTEN_METER);
-  this.exceptionWriteMeter=this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_FAILED_METER);
-  this.dataWriterTimer=this.metricContext.timer(MetricNames.DataWriterMetrics.WRITE_TIMER);
+  this.instrumentationEnabled=GobblinMetrics.isEnabled(state);
+  if (isInstrumentationEnabled()) {
+    this.metricContext=Optional.fromNullable(this.closer.register(Instrumented.getMetricContext(state,this.getClass())));
+  }
+ else {
+    this.metricContext=Optional.absent();
+  }
+  this.recordsInMeter=Instrumented.meter(this.metricContext,MetricNames.DataWriterMetrics.RECORDS_IN_METER);
+  this.successfulWriteMeter=Instrumented.meter(this.metricContext,MetricNames.DataWriterMetrics.RECORDS_WRITTEN_METER);
+  this.exceptionWriteMeter=Instrumented.meter(this.metricContext,MetricNames.DataWriterMetrics.RECORDS_FAILED_METER);
+  this.dataWriterTimer=Instrumented.timer(this.metricContext,MetricNames.DataWriterMetrics.WRITE_TIMER);
 }

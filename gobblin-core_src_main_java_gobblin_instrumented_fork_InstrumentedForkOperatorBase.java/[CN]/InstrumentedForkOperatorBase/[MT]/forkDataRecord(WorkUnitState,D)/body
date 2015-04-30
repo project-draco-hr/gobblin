@@ -1,4 +1,7 @@
 {
+  if (!isInstrumentationEnabled()) {
+    return forkDataRecordImpl(workUnitState,input);
+  }
   long startTimeNanos=System.nanoTime();
   beforeFork(input);
   List<Boolean> result=forkDataRecordImpl(workUnitState,input);

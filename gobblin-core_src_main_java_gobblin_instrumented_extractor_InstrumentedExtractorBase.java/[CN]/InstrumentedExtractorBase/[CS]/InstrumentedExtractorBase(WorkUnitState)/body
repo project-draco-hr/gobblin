@@ -1,8 +1,14 @@
 {
   super();
-  closer=Closer.create();
-  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass()));
-  this.readRecordsMeter=this.metricContext.contextAwareMeter(MetricNames.ExtractorMetrics.RECORDS_READ_METER);
-  this.dataRecordExceptionsMeter=this.metricContext.contextAwareMeter(MetricNames.ExtractorMetrics.RECORDS_FAILED_METER);
-  this.extractorTimer=this.metricContext.contextAwareTimer(MetricNames.ExtractorMetrics.EXTRACT_TIMER);
+  this.closer=Closer.create();
+  this.instrumentationEnabled=GobblinMetrics.isEnabled(workUnitState);
+  if (isInstrumentationEnabled()) {
+    this.metricContext=Optional.fromNullable(closer.register(Instrumented.getMetricContext(workUnitState,this.getClass())));
+  }
+ else {
+    this.metricContext=Optional.absent();
+  }
+  this.readRecordsMeter=Instrumented.meter(this.metricContext,MetricNames.ExtractorMetrics.RECORDS_READ_METER);
+  this.dataRecordExceptionsMeter=Instrumented.meter(this.metricContext,MetricNames.ExtractorMetrics.RECORDS_FAILED_METER);
+  this.extractorTimer=Instrumented.timer(this.metricContext,MetricNames.ExtractorMetrics.EXTRACT_TIMER);
 }

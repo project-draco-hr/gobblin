@@ -1,5 +1,6 @@
 {
   WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
   InstrumentedExtractorBase instrumentedExtractor=new InstrumentedExtractorDecorator(state,new TestInstrumentedExtractor(state));
   testBase(instrumentedExtractor);
   InstrumentedExtractorBase nonInstrumentedExtractor=new InstrumentedExtractorDecorator(state,new TestExtractor());

@@ -1,3 +1,9 @@
 {
-  this.metricContext=getMetricContext(state,klazz,tags);
+  this.instrumentationEnabled=GobblinMetrics.isEnabled(state);
+  if (isInstrumentationEnabled()) {
+    this.metricContext=getMetricContext(state,klazz,tags);
+  }
+ else {
+    this.metricContext=new MetricContext.Builder("NULL").build();
+  }
 }
