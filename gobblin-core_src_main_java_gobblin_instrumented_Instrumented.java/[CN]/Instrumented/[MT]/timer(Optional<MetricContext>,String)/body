@@ -1,8 +1,0 @@
-{
-  return context.transform(new Function<MetricContext,Timer>(){
-    @Override public Timer apply(    MetricContext context1){
-      return context1.timer(name);
-    }
-  }
-);
-}

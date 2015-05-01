@@ -1,8 +1,0 @@
-{
-  return context.transform(new Function<MetricContext,Meter>(){
-    @Override public Meter apply(    MetricContext context1){
-      return context1.meter(name);
-    }
-  }
-);
-}
