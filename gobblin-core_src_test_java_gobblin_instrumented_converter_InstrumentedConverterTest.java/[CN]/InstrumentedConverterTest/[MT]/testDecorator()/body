@@ -1,0 +1,6 @@
+{
+  InstrumentedConverterBase instrumentedConverter=new InstrumentedConverterDecorator(new TestInstrumentedConverter());
+  testBase(instrumentedConverter);
+  InstrumentedConverterBase nonInstrumentedConverter=new InstrumentedConverterDecorator(new IdentityConverter());
+  testBase(nonInstrumentedConverter);
+}

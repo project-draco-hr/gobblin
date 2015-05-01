@@ -1,8 +1,0 @@
-{
-  JobMetrics metrics=JobMetrics.get(this.jobName,this.jobId);
-  for (  String name : metrics.getMetricsOfGroup(MetricGroup.JOB).keySet()) {
-    if (name.contains(this.jobId)) {
-      metrics.removeMetric(name);
-    }
-  }
-}

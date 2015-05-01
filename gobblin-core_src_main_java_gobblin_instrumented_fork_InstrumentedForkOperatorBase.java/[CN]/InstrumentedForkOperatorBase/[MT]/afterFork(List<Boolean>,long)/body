@@ -1,0 +1,8 @@
+{
+  int forksGenerated=0;
+  for (  Boolean fork : forks) {
+    forksGenerated+=fork ? 1 : 0;
+  }
+  Instrumented.markMeter(this.outputForks,forksGenerated);
+  Instrumented.updateTimer(this.forkOperatorTimer,System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
+}

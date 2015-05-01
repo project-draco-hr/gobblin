@@ -1,0 +1,3 @@
+{
+  return this.metricContext.timer(MetricRegistry.name(prefix,suffixes));
+}

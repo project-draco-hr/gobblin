@@ -1,0 +1,4 @@
+{
+  this.embeddedConverter=this.embeddedConverter.init(workUnit);
+  return super.init(workUnit);
+}

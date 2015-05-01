@@ -1,0 +1,6 @@
+{
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
+  TestInstrumentedRowLevelPolicy policy=new TestInstrumentedRowLevelPolicy(state,null);
+  testBase(policy);
+}

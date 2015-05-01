@@ -1,0 +1,5 @@
+{
+  if (DataConversionException.class.isInstance(exception)) {
+    Instrumented.markMeter(this.recordsExceptionMeter);
+  }
+}

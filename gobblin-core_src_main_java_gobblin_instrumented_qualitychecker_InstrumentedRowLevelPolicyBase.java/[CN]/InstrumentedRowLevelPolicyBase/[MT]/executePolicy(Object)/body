@@ -1,0 +1,10 @@
+{
+  if (!isInstrumentationEnabled()) {
+    return executePolicyImpl(record);
+  }
+  long startTime=System.nanoTime();
+  beforeCheck(record);
+  Result result=executePolicyImpl(record);
+  afterCheck(result,startTime);
+  return result;
+}

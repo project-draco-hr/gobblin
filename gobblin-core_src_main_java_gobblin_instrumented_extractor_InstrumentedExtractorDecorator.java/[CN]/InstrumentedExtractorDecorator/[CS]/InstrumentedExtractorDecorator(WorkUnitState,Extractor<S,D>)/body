@@ -1,0 +1,5 @@
+{
+  super(workUnitState);
+  this.embeddedExtractor=extractor;
+  this.isEmbeddedInstrumented=InstrumentedExtractorBase.class.isInstance(extractor);
+}

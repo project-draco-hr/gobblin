@@ -1,0 +1,3 @@
+{
+  return this.metricContext.counter(MetricRegistry.name(prefix,suffixes));
+}

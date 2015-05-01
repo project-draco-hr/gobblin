@@ -1,0 +1,20 @@
+{
+  if (!isInstrumentationEnabled()) {
+    return readRecordImpl(reuse);
+  }
+  try {
+    long startTimeNanos=System.nanoTime();
+    beforeRead();
+    D record=readRecordImpl(reuse);
+    afterRead(record,startTimeNanos);
+    return record;
+  }
+ catch (  DataRecordException exception) {
+    onException(exception);
+    throw exception;
+  }
+catch (  IOException exception) {
+    onException(exception);
+    throw exception;
+  }
+}

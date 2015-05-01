@@ -1,0 +1,27 @@
+{
+  int randomId=(new Random()).nextInt();
+  Constructs construct=null;
+  if (Converter.class.isAssignableFrom(klazz)) {
+    construct=Constructs.CONVERTER;
+  }
+ else   if (ForkOperator.class.isAssignableFrom(klazz)) {
+    construct=Constructs.FORK_OPERATOR;
+  }
+ else   if (RowLevelPolicy.class.isAssignableFrom(klazz)) {
+    construct=Constructs.ROW_QUALITY_CHECKER;
+  }
+ else   if (Extractor.class.isAssignableFrom(klazz)) {
+    construct=Constructs.EXTRACTOR;
+  }
+ else   if (DataWriter.class.isAssignableFrom(klazz)) {
+    construct=Constructs.WRITER;
+  }
+  List<Tag<?>> generatedTags=Lists.newArrayList();
+  if (construct != null) {
+    generatedTags.add(new Tag<String>("construct",construct.toString()));
+  }
+  generatedTags.add(new Tag<String>("class",klazz.getCanonicalName()));
+  GobblinMetrics gobblinMetrics;
+  MetricContext.Builder builder=state.contains(METRIC_CONTEXT_NAME_KEY) && (gobblinMetrics=GobblinMetricsRegistry.getInstance().get(state.getProp(METRIC_CONTEXT_NAME_KEY))) != null ? gobblinMetrics.getMetricContext().childBuilder(klazz.getCanonicalName() + "." + randomId) : MetricContext.builder(klazz.getCanonicalName() + "." + randomId);
+  return builder.addTags(generatedTags).addTags(tags).build();
+}

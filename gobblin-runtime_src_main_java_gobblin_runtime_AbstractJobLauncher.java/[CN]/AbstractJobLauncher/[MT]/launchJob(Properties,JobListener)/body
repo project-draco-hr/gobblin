@@ -40,6 +40,8 @@
     unlockJob(jobName,jobLockOptional);
     throw new JobException(errMsg,t);
   }
+  JobMetrics jobMetrics=JobMetrics.get(jobState);
+  jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,jobMetrics.getName());
   jobState.setState(JobState.RunningState.PENDING);
   Optional<List<WorkUnit>> workUnits=Optional.fromNullable(source.getWorkunits(jobState));
   if (!workUnits.isPresent()) {
@@ -72,13 +74,9 @@
       addWorkUnit(workUnit,jobState,taskIdSequence++);
     }
   }
-  Optional<JobMetrics> jobMetrics=Optional.absent();
   try {
-    if (JobMetrics.isEnabled(jobProps)) {
-      jobMetrics=Optional.fromNullable(JobMetrics.get(jobName,jobId));
-      if (jobMetrics.isPresent()) {
-        jobMetrics.get().startMetricReporting(jobProps);
-      }
+    if (GobblinMetrics.isEnabled(jobProps)) {
+      jobMetrics.startMetricReporting(jobProps);
     }
     if (this.jobHistoryStore.isPresent()) {
       try {
@@ -125,11 +123,9 @@
         LOG.error("Failed to write job execution information to the job history store: " + t,t);
       }
     }
-    if (JobMetrics.isEnabled(jobProps)) {
-      if (jobMetrics.isPresent()) {
-        jobMetrics.get().stopMetricReporting();
-      }
-      JobMetrics.remove(jobId);
+    if (GobblinMetrics.isEnabled(jobProps)) {
+      jobMetrics.stopMetricReporting();
+      GobblinMetricsRegistry.getInstance().remove(jobId);
     }
   }
   if (Optional.fromNullable(jobListener).isPresent()) {

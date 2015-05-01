@@ -1,0 +1,7 @@
+{
+  List<Boolean> output=new ArrayList<Boolean>();
+  output.add(true);
+  output.add(false);
+  output.add(true);
+  return output;
+}

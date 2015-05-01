@@ -1,0 +1,34 @@
+{
+  String jobName="testJob";
+  String jobId="job_123";
+  JobState jobState=new JobState(jobName,jobId);
+  JobMetrics jobMetrics=JobMetrics.get(jobState);
+  Map<String,String> expectedTags=new HashMap<String,String>();
+  expectedTags.put("jobName",jobName);
+  expectedTags.put("jobId",jobId);
+  Assert.assertNotNull(jobMetrics.getMetricContext());
+  List<Tag<?>> tags=jobMetrics.getMetricContext().getTags();
+  Assert.assertEquals(tags.size(),2);
+  Assert.assertTrue(expectedTags.containsKey(tags.get(0).getKey()));
+  Assert.assertEquals(tags.get(0).getValue(),expectedTags.get(tags.get(0).getKey()));
+  Assert.assertTrue(expectedTags.containsKey(tags.get(1).getKey()));
+  Assert.assertEquals(tags.get(1).getValue(),expectedTags.get(tags.get(1).getKey()));
+  JobMetrics jobMetrics1=JobMetrics.get(jobName + "_",jobId);
+  Assert.assertNotNull(jobMetrics1.getMetricContext());
+  tags=jobMetrics1.getMetricContext().getTags();
+  Assert.assertEquals(tags.size(),2);
+  Assert.assertTrue(expectedTags.containsKey(tags.get(0).getKey()));
+  Assert.assertEquals(tags.get(0).getValue(),expectedTags.get(tags.get(0).getKey()));
+  Assert.assertTrue(expectedTags.containsKey(tags.get(1).getKey()));
+  Assert.assertEquals(tags.get(1).getValue(),expectedTags.get(tags.get(1).getKey()));
+  GobblinMetricsRegistry.getInstance().remove(jobMetrics.getId());
+  JobMetrics jobMetrics2=JobMetrics.get(jobName + "_",jobId);
+  Assert.assertNotNull(jobMetrics2.getMetricContext());
+  tags=jobMetrics2.getMetricContext().getTags();
+  expectedTags.put("jobName",jobName + "_");
+  Assert.assertEquals(tags.size(),2);
+  Assert.assertTrue(expectedTags.containsKey(tags.get(0).getKey()));
+  Assert.assertEquals(tags.get(0).getValue(),expectedTags.get(tags.get(0).getKey()));
+  Assert.assertTrue(expectedTags.containsKey(tags.get(1).getKey()));
+  Assert.assertEquals(tags.get(1).getValue(),expectedTags.get(tags.get(1).getKey()));
+}

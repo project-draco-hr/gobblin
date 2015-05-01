@@ -1,0 +1,5 @@
+{
+  super(policy.getTaskState(),policy.getType());
+  this.embeddedPolicy=policy;
+  this.isEmbeddedInstrumented=InstrumentedRowLevelPolicyBase.class.isInstance(policy);
+}

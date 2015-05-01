@@ -1,8 +1,8 @@
 {
-  JobMetrics metrics=JobMetrics.get(this.getProp(ConfigurationKeys.JOB_NAME_KEY),this.jobId);
+  TaskMetrics metrics=TaskMetrics.get(this);
   String forkBranchId=ForkOperatorUtils.getForkId(this.taskId,branchIndex);
-  metrics.getCounter(JobMetrics.metricName(MetricGroup.TASK,forkBranchId,BYTES)).inc(bytesWritten);
-  metrics.getMeter(JobMetrics.metricName(MetricGroup.TASK,forkBranchId,BYTES_PER_SECOND)).mark(bytesWritten);
-  metrics.getCounter(JobMetrics.metricName(MetricGroup.JOB,this.jobId,BYTES)).inc(bytesWritten);
-  metrics.getMeter(JobMetrics.metricName(MetricGroup.JOB,this.jobId,BYTES_PER_SECOND)).mark(bytesWritten);
+  metrics.getCounter(MetricGroup.TASK.name(),forkBranchId,BYTES).inc(bytesWritten);
+  metrics.getMeter(MetricGroup.TASK.name(),forkBranchId,BYTES_PER_SECOND).mark(bytesWritten);
+  metrics.getCounter(MetricGroup.JOB.name(),this.jobId,BYTES).inc(bytesWritten);
+  metrics.getMeter(MetricGroup.JOB.name(),this.jobId,BYTES_PER_SECOND).mark(bytesWritten);
 }

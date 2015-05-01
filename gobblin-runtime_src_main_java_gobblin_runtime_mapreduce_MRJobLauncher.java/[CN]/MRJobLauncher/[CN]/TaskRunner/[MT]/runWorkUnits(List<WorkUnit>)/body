@@ -4,7 +4,9 @@
     return;
   }
   String jobId=workUnits.get(0).getProp(ConfigurationKeys.JOB_ID_KEY);
+  JobMetrics jobMetrics=JobMetrics.get(null,jobId);
   for (  WorkUnit workUnit : workUnits) {
+    workUnit.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,jobMetrics.getName());
     String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
     if (this.taskStateStore.exists(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX)) {
       this.taskStateStore.delete(jobId,taskId + TASK_STATE_STORE_TABLE_SUFFIX);
