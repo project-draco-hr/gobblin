@@ -1,0 +1,3 @@
+{
+  return this.isEmbeddedInstrumented ? ((InstrumentedRowLevelPolicyBase)embeddedPolicy).getMetricContext() : super.getMetricContext();
+}

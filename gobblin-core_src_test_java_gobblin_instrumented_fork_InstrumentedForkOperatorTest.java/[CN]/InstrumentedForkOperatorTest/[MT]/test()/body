@@ -1,0 +1,4 @@
+{
+  TestInstrumentedForkOperator fork=new TestInstrumentedForkOperator();
+  testBase(fork);
+}

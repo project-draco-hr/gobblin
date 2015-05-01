@@ -1,0 +1,8 @@
+{
+  if (this.isEmbeddedInstrumented) {
+    writeImpl(record);
+  }
+ else {
+    super.write(record);
+  }
+}

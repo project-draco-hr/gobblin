@@ -1,4 +1,7 @@
 {
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  String jobId=JobLauncherUtils.newJobId(jobName);
+  jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,jobId);
   Closer closer=Closer.create();
   try {
     JobLauncher jobLauncher=closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps,jobProps));
@@ -7,8 +10,6 @@
   finally {
     closer.close();
   }
-  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-  String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
   List<JobState> jobStateList=this.jobStateStore.getAll(jobName,jobId + ".jst");
   JobState jobState=jobStateList.get(0);
   Assert.assertEquals(jobState.getState(),JobState.RunningState.COMMITTED);

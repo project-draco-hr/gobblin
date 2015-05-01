@@ -1,0 +1,8 @@
+{
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
+  InstrumentedDataWriterBase instrumentedWriter=new InstrumentedDataWriterDecorator(new TestInstrumentedDataWriter(state),state);
+  testBase(instrumentedWriter);
+  InstrumentedDataWriterBase notInstrumentedWriter=new InstrumentedDataWriterDecorator(new TestDataWriter(),state);
+  testBase(notInstrumentedWriter);
+}

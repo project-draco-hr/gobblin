@@ -1,7 +1,10 @@
 {
+  Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
   String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-  if (Strings.isNullOrEmpty(jobName)) {
-    throw new JobException("A job must have a job name specified by job.name");
+  boolean disabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_DISABLED_KEY,"false"));
+  if (disabled) {
+    LOG.info("Skipping disabled job " + jobName);
+    return;
   }
   jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,JobLauncherUtils.newJobId(jobName));
   Closer closer=Closer.create();

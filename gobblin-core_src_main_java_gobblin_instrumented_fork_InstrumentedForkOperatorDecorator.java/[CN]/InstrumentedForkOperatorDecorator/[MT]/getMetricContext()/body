@@ -1,0 +1,3 @@
+{
+  return this.isEmbeddedInstrumented ? ((InstrumentedForkOperatorBase)embeddedFork).getMetricContext() : super.getMetricContext();
+}

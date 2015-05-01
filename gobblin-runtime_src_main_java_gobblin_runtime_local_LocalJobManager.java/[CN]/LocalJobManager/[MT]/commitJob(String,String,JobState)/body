@@ -21,9 +21,6 @@
     throw e;
   }
  finally {
-    if (JobMetrics.isEnabled(this.properties)) {
-      jobState.removeMetrics();
-    }
     boolean runOnce=Boolean.valueOf(jobState.getProp(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
     persistJobState(jobState);
     cleanupJobOnCompletion(jobState,runOnce);

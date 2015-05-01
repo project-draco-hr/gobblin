@@ -1,0 +1,10 @@
+{
+  if (this.jobHistoryStore.isPresent()) {
+    try {
+      this.jobHistoryStore.get().put(this.jobState.toJobExecutionInfo());
+    }
+ catch (    IOException ioe) {
+      LOG.error("Failed to write job execution information to the job history store: " + ioe,ioe);
+    }
+  }
+}

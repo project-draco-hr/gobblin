@@ -1,30 +1,15 @@
 {
-  if (Boolean.valueOf(this.jobProps.getProperty(ConfigurationKeys.JOB_DISABLED_KEY,Boolean.FALSE.toString()))) {
-    LOG.info(String.format("Not launching job %s as it is disabled",this.jobName));
-    return;
-  }
-  Optional<JobLock> jobLockOptional=Optional.absent();
-  boolean jobLockEnabled=Boolean.valueOf(this.jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
-  if (jobLockEnabled) {
-    try {
-      jobLockOptional=Optional.of(getJobLock());
-    }
- catch (    IOException ioe) {
-      throw new JobException("Failed to get job lock for job " + this.jobName,ioe);
-    }
-  }
-  if (!tryLockJob(jobLockOptional)) {
+  if (!tryLockJob()) {
     throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobName));
   }
-  this.jobState.setState(JobState.RunningState.PENDING);
   Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.source.getWorkunits(this.jobState));
   if (!workUnits.isPresent()) {
-    unlockJob(jobLockOptional);
+    unlockJob();
     throw new JobException("Failed to get work units for job " + this.jobId);
   }
   if (workUnits.get().isEmpty()) {
     LOG.warn("No work units have been created for job " + this.jobId);
-    unlockJob(jobLockOptional);
+    unlockJob();
     return;
   }
   long startTime=System.currentTimeMillis();
@@ -46,22 +31,11 @@
       addWorkUnit(workUnit,taskIdSequence++);
     }
   }
-  Optional<JobMetrics> jobMetrics=Optional.absent();
-  if (JobMetrics.isEnabled(this.jobProps)) {
-    jobMetrics=Optional.fromNullable(JobMetrics.get(this.jobName,this.jobId));
-    if (jobMetrics.isPresent()) {
-      jobMetrics.get().startMetricReporting(this.jobProps);
-    }
-  }
-  if (this.jobHistoryStore.isPresent()) {
-    try {
-      this.jobHistoryStore.get().put(this.jobState.toJobExecutionInfo());
-    }
- catch (    Throwable t) {
-      LOG.error("Failed to write job execution information to the job history store: " + t,t);
-    }
-  }
   try {
+    if (this.jobMetricsOptional.isPresent()) {
+      this.jobMetricsOptional.get().startMetricReporting(this.jobProps);
+    }
+    storeJobExecutionInfo();
     runWorkUnits(workUnits.get());
     if (this.jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled",this.jobId));
@@ -84,27 +58,17 @@
       persistJobState();
     }
  catch (    Throwable t) {
-      LOG.error(String.format("Failed to persist job/task states of job %s: %s",this.jobId,t),t);
+      LOG.error(String.format("Failed to persist job state of job %s: %s",this.jobId,t),t);
       this.jobState.setState(JobState.RunningState.FAILED);
     }
     cleanupStagingData();
-    unlockJob(jobLockOptional);
-  }
-  if (this.jobHistoryStore.isPresent()) {
-    try {
-      this.jobHistoryStore.get().put(this.jobState.toJobExecutionInfo());
+    storeJobExecutionInfo();
+    if (this.jobMetricsOptional.isPresent()) {
+      this.jobMetricsOptional.get().stopMetricReporting();
     }
- catch (    Throwable t) {
-      LOG.error("Failed to write job execution information to the job history store: " + t,t);
-    }
+    unlockJob();
   }
-  if (JobMetrics.isEnabled(this.jobProps)) {
-    if (jobMetrics.isPresent()) {
-      jobMetrics.get().stopMetricReporting();
-    }
-    JobMetrics.remove(this.jobId);
-  }
-  if (Optional.fromNullable(jobListener).isPresent()) {
+  if (jobListener != null) {
     jobListener.onJobCompletion(this.jobState);
   }
   if (this.jobState.getState() == JobState.RunningState.FAILED) {

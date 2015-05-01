@@ -1,8 +1,4 @@
 {
-  if (this.fs == null || !this.serviceManager.isHealthy()) {
-    LOG.error("Not running the task because the mapper was not setup properly");
-    return;
-  }
   WorkUnit workUnit=(value.toString().endsWith(MULTI_WORK_UNIT_FILE_EXTENSION) ? new MultiWorkUnit() : new WorkUnit());
   Closer closer=Closer.create();
   try {

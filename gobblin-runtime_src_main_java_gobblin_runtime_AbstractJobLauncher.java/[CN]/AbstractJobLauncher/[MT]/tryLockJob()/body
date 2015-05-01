@@ -1,0 +1,12 @@
+{
+  try {
+    if (this.jobLockEnabled) {
+      this.jobLockOptional=Optional.of(getJobLock());
+    }
+    return !this.jobLockOptional.isPresent() || this.jobLockOptional.get().tryLock();
+  }
+ catch (  IOException ioe) {
+    LOG.error(String.format("Failed to acquire job lock for job %s: %s",this.jobName,ioe),ioe);
+    return false;
+  }
+}

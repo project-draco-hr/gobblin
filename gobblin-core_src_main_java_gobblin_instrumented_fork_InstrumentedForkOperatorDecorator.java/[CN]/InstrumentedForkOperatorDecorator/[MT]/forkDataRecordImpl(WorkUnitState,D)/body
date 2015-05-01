@@ -1,0 +1,3 @@
+{
+  return embeddedFork.forkDataRecord(workUnitState,input);
+}

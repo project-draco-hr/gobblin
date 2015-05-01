@@ -1,0 +1,12 @@
+{
+switch (result) {
+case FAILED:
+    Instrumented.markMeter(this.failedRecordsMeter);
+  break;
+case PASSED:
+Instrumented.markMeter(this.passedRecordsMeter);
+break;
+default :
+}
+Instrumented.updateTimer(this.policyTimer,System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
+}

@@ -6,4 +6,11 @@
   this.taskStateTracker=taskStateTracker;
   this.taskExecutor=taskExecutor;
   this.countDownLatch=countDownLatch;
+  if (GobblinMetrics.isEnabled(this.taskState)) {
+    this.taskMetricsOptional=Optional.of(TaskMetrics.get(this.taskState));
+    this.taskContext.setMetricsContextName(this.taskMetricsOptional.get().getName());
+  }
+ else {
+    this.taskMetricsOptional=Optional.absent();
+  }
 }

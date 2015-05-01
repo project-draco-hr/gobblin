@@ -1,3 +1,10 @@
 {
-  this.source.shutdown(this.jobState);
+  try {
+    this.source.shutdown(this.jobState);
+  }
+  finally {
+    if (GobblinMetrics.isEnabled(this.jobProps)) {
+      GobblinMetricsRegistry.getInstance().remove(this.jobId);
+    }
+  }
 }

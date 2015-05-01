@@ -17,29 +17,29 @@
     taskExecutionInfos.add(taskState.toTaskExecutionInfo());
   }
   jobExecutionInfo.setTaskExecutions(taskExecutionInfos);
-  JobMetrics jobMetrics=JobMetrics.get(this.jobName,this.jobId);
+  JobMetrics jobMetrics=JobMetrics.get(this);
   MetricArray metricArray=new MetricArray();
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.COUNTER,MetricGroup.JOB,this.jobId).entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricContext().getCounters().entrySet()) {
     Metric counter=new Metric();
     counter.setGroup(MetricGroup.JOB.name());
     counter.setName(entry.getKey());
-    counter.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.COUNTER.name()));
+    counter.setType(MetricTypeEnum.valueOf(GobblinMetrics.MetricType.COUNTER.name()));
     counter.setValue(Long.toString(((Counter)entry.getValue()).getCount()));
     metricArray.add(counter);
   }
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.METER,MetricGroup.JOB,this.jobId).entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricContext().getMeters().entrySet()) {
     Metric meter=new Metric();
     meter.setGroup(MetricGroup.JOB.name());
     meter.setName(entry.getKey());
-    meter.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.METER.name()));
+    meter.setType(MetricTypeEnum.valueOf(GobblinMetrics.MetricType.METER.name()));
     meter.setValue(Double.toString(((Meter)entry.getValue()).getMeanRate()));
     metricArray.add(meter);
   }
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricsOfType(JobMetrics.MetricType.GAUGE,MetricGroup.JOB,this.jobId).entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricContext().getGauges().entrySet()) {
     Metric gauge=new Metric();
     gauge.setGroup(MetricGroup.JOB.name());
     gauge.setName(entry.getKey());
-    gauge.setType(MetricTypeEnum.valueOf(JobMetrics.MetricType.GAUGE.name()));
+    gauge.setType(MetricTypeEnum.valueOf(GobblinMetrics.MetricType.GAUGE.name()));
     gauge.setValue(((Gauge)entry.getValue()).getValue().toString());
     metricArray.add(gauge);
   }

@@ -1,3 +1,0 @@
-{
-  return this.metricRegistry.counter(metricName(group,id,name));
-}
