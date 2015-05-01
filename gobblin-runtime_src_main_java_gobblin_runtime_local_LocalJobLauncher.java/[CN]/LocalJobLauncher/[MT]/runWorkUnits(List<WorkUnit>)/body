@@ -1,0 +1,30 @@
+{
+  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
+  List<WorkUnit> workUnitsToRun=Lists.newArrayList();
+  for (  WorkUnit workUnit : workUnits) {
+    if (workUnit instanceof MultiWorkUnit) {
+      workUnitsToRun.addAll(((MultiWorkUnit)workUnit).getWorkUnits());
+    }
+ else {
+      workUnitsToRun.add(workUnit);
+    }
+  }
+  if (workUnitsToRun.isEmpty()) {
+    LOG.warn("No work units to run");
+    return;
+  }
+  this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
+  List<Task> tasks=AbstractJobLauncher.runWorkUnits(this.jobId,workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
+  if (this.isCancelled) {
+    this.jobState.setState(JobState.RunningState.CANCELLED);
+  }
+ else   if (this.jobState.getState() == JobState.RunningState.RUNNING) {
+    this.jobState.setState(JobState.RunningState.SUCCESSFUL);
+  }
+  for (  Task task : tasks) {
+    this.jobState.addTaskState(task.getTaskState());
+    if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+      this.jobState.setState(JobState.RunningState.FAILED);
+    }
+  }
+}

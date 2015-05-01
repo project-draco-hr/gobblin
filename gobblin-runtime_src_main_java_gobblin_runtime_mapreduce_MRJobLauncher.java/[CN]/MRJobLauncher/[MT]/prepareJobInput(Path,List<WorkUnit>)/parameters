@@ -1,0 +1,2 @@
+Path jobInputPath
+List<WorkUnit> workUnits

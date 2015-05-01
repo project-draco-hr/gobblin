@@ -1,0 +1,113 @@
+{
+  if (Boolean.valueOf(this.jobProps.getProperty(ConfigurationKeys.JOB_DISABLED_KEY,Boolean.FALSE.toString()))) {
+    LOG.info(String.format("Not launching job %s as it is disabled",this.jobName));
+    return;
+  }
+  Optional<JobLock> jobLockOptional=Optional.absent();
+  boolean jobLockEnabled=Boolean.valueOf(this.jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
+  if (jobLockEnabled) {
+    try {
+      jobLockOptional=Optional.of(getJobLock());
+    }
+ catch (    IOException ioe) {
+      throw new JobException("Failed to get job lock for job " + this.jobName,ioe);
+    }
+  }
+  if (!tryLockJob(jobLockOptional)) {
+    throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobName));
+  }
+  this.jobState.setState(JobState.RunningState.PENDING);
+  Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.source.getWorkunits(this.jobState));
+  if (!workUnits.isPresent()) {
+    unlockJob(jobLockOptional);
+    throw new JobException("Failed to get work units for job " + this.jobId);
+  }
+  if (workUnits.get().isEmpty()) {
+    LOG.warn("No work units have been created for job " + this.jobId);
+    unlockJob(jobLockOptional);
+    return;
+  }
+  long startTime=System.currentTimeMillis();
+  this.jobState.setStartTime(startTime);
+  this.jobState.setState(JobState.RunningState.RUNNING);
+  LOG.info("Starting job " + this.jobId);
+  int taskIdSequence=0;
+  int multiTaskIdSequence=0;
+  for (  WorkUnit workUnit : workUnits.get()) {
+    if (workUnit instanceof MultiWorkUnit) {
+      String multiTaskId=JobLauncherUtils.newMultiTaskId(this.jobId,multiTaskIdSequence++);
+      workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
+      workUnit.setId(multiTaskId);
+      for (      WorkUnit innerWorkUnit : ((MultiWorkUnit)workUnit).getWorkUnits()) {
+        addWorkUnit(innerWorkUnit,taskIdSequence++);
+      }
+    }
+ else {
+      addWorkUnit(workUnit,taskIdSequence++);
+    }
+  }
+  Optional<JobMetrics> jobMetrics=Optional.absent();
+  if (JobMetrics.isEnabled(this.jobProps)) {
+    jobMetrics=Optional.fromNullable(JobMetrics.get(this.jobName,this.jobId));
+    if (jobMetrics.isPresent()) {
+      jobMetrics.get().startMetricReporting(this.jobProps);
+    }
+  }
+  if (this.jobHistoryStore.isPresent()) {
+    try {
+      this.jobHistoryStore.get().put(this.jobState.toJobExecutionInfo());
+    }
+ catch (    Throwable t) {
+      LOG.error("Failed to write job execution information to the job history store: " + t,t);
+    }
+  }
+  try {
+    runWorkUnits(workUnits.get());
+    if (this.jobState.getState() == JobState.RunningState.CANCELLED) {
+      LOG.info(String.format("Job %s has been cancelled",this.jobId));
+      return;
+    }
+    setFinalJobState();
+    commitJob();
+  }
+ catch (  Throwable t) {
+    this.jobState.setState(JobState.RunningState.FAILED);
+    String errMsg="Failed to launch and run job " + this.jobId;
+    LOG.error(errMsg + ": " + t,t);
+    throw new JobException(errMsg,t);
+  }
+ finally {
+    long endTime=System.currentTimeMillis();
+    this.jobState.setEndTime(endTime);
+    this.jobState.setDuration(endTime - startTime);
+    try {
+      persistJobState();
+    }
+ catch (    Throwable t) {
+      LOG.error(String.format("Failed to persist job/task states of job %s: %s",this.jobId,t),t);
+      this.jobState.setState(JobState.RunningState.FAILED);
+    }
+    cleanupStagingData();
+    unlockJob(jobLockOptional);
+  }
+  if (this.jobHistoryStore.isPresent()) {
+    try {
+      this.jobHistoryStore.get().put(this.jobState.toJobExecutionInfo());
+    }
+ catch (    Throwable t) {
+      LOG.error("Failed to write job execution information to the job history store: " + t,t);
+    }
+  }
+  if (JobMetrics.isEnabled(this.jobProps)) {
+    if (jobMetrics.isPresent()) {
+      jobMetrics.get().stopMetricReporting();
+    }
+    JobMetrics.remove(this.jobId);
+  }
+  if (Optional.fromNullable(jobListener).isPresent()) {
+    jobListener.onJobCompletion(this.jobState);
+  }
+  if (this.jobState.getState() == JobState.RunningState.FAILED) {
+    throw new JobException(String.format("Job %s failed",this.jobId));
+  }
+}

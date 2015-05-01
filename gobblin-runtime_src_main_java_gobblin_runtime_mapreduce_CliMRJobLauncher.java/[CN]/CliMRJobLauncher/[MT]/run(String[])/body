@@ -2,13 +2,20 @@
   final Properties jobProps=new Properties();
   jobProps.putAll(this.sysConfig);
   jobProps.putAll(this.jobConfig);
+  Closer closer=Closer.create();
   try {
-    new MRJobLauncher(this.sysConfig,getConf()).launchJob(jobProps,null);
+    closer.register(new MRJobLauncher(this.sysConfig,jobProps,getConf())).launchJob(null);
   }
  catch (  JobException je) {
     System.err.println("Failed to launch the job due to the following exception:");
     System.err.println(je.toString());
     return 1;
+  }
+catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
   }
   return 0;
 }

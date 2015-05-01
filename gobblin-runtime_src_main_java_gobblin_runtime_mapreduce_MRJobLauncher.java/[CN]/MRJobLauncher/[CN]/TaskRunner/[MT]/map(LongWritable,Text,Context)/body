@@ -1,5 +1,5 @@
 {
-  if (!Optional.fromNullable(this.fs).isPresent() || !this.serviceManager.isHealthy()) {
+  if (this.fs == null || !this.serviceManager.isHealthy()) {
     LOG.error("Not running the task because the mapper was not setup properly");
     return;
   }

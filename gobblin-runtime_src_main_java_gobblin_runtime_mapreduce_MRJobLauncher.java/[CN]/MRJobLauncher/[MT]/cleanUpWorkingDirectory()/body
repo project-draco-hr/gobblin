@@ -1,0 +1,11 @@
+{
+  try {
+    if (this.mrJobDir != null && this.fs.exists(this.mrJobDir)) {
+      this.fs.delete(this.mrJobDir,true);
+      LOG.info("Deleted working directory " + this.mrJobDir);
+    }
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to delete working directory " + this.mrJobDir);
+  }
+}

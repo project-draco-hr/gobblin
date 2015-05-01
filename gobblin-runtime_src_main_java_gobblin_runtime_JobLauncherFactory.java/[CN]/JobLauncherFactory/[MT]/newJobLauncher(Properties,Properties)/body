@@ -1,0 +1,11 @@
+{
+  JobLauncherType launcherType=JobLauncherType.valueOf(properties.getProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherType.LOCAL.name()));
+switch (launcherType) {
+case LOCAL:
+    return new LocalJobLauncher(properties,jobProps);
+case MAPREDUCE:
+  return new MRJobLauncher(properties,jobProps);
+default :
+throw new RuntimeException("Unsupported job launcher type: " + launcherType.name());
+}
+}

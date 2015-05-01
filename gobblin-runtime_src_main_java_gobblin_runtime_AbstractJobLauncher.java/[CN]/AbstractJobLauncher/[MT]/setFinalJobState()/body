@@ -1,0 +1,18 @@
+{
+  this.jobState.setEndTime(System.currentTimeMillis());
+  this.jobState.setDuration(this.jobState.getEndTime() - this.jobState.getStartTime());
+  for (  TaskState taskState : this.jobState.getTaskStates()) {
+    this.jobState.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,taskState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1));
+    if (taskState.getWorkingState() != WorkUnitState.WorkingState.SUCCESSFUL && this.jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
+      this.jobState.setState(JobState.RunningState.FAILED);
+      break;
+    }
+  }
+  if (this.jobState.getState() == JobState.RunningState.SUCCESSFUL) {
+    this.jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
+  }
+  if (this.jobState.getState() == JobState.RunningState.FAILED) {
+    int failures=this.jobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0) + 1;
+    this.jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,failures);
+  }
+}

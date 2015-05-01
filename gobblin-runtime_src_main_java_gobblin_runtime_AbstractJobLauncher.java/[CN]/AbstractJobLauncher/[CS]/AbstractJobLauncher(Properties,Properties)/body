@@ -1,0 +1,23 @@
+{
+  Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
+  this.properties=properties;
+  this.jobProps=jobProps;
+  this.jobStateStore=new FsStateStore<JobState>(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
+  if (Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()))) {
+    Injector injector=Guice.createInjector(new MetaStoreModule(properties));
+    this.jobHistoryStore=Optional.of(injector.getInstance(JobHistoryStore.class));
+  }
+ else {
+    this.jobHistoryStore=Optional.absent();
+  }
+  this.jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  this.jobId=this.jobProps.containsKey(ConfigurationKeys.JOB_ID_KEY) ? this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY) : JobLauncherUtils.newJobId(this.jobName);
+  this.jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,this.jobId);
+  State jobPropsState=new State();
+  jobPropsState.addAll(this.jobProps);
+  JobState previousJobState=getPreviousJobState(this.jobName);
+  this.jobState=new JobState(jobPropsState,previousJobState.getTaskStatesAsWorkUnitStates(),this.jobName,this.jobId);
+  this.jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,previousJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0));
+  this.jobCommitPolicy=JobCommitPolicy.getCommitPolicy(this.jobState);
+  this.source=new SourceDecorator(initSource(this.jobProps),this.jobId,LOG);
+}

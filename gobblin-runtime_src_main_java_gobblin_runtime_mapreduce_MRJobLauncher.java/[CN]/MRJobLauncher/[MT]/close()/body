@@ -1,0 +1,16 @@
+{
+  try {
+    super.close();
+  }
+  finally {
+    if (!this.isCancelled && this.job != null && !this.job.isComplete()) {
+      LOG.info("Killing Hadoop MR job " + this.job.getJobID());
+      try {
+        this.job.killJob();
+      }
+  finally {
+        cleanUpWorkingDirectory();
+      }
+    }
+  }
+}

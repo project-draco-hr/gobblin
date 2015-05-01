@@ -1,0 +1,3 @@
+{
+  sendEmail(jobState,String.format("Gobblin notification: job %s has been cancelled",jobId),message);
+}
