@@ -8,4 +8,8 @@
   if (this.jmxReporter.isPresent()) {
     this.jmxReporter.get().start();
   }
+  buildKafkaReporter(properties);
+  if (this.kafkaReporter.isPresent()) {
+    this.kafkaReporter.get().start(reportInterval,TimeUnit.MILLISECONDS);
+  }
 }

@@ -1,4 +1,9 @@
 {
-  this.output=new PrintStream(stream);
+  try {
+    this.output=new PrintStream(stream,false,"UTF-8");
+  }
+ catch (  UnsupportedEncodingException exception) {
+    LOGGER.error("Unsupported encoding in OutputStreamReporter. This is an error with the code itself.",exception);
+  }
   return self();
 }
