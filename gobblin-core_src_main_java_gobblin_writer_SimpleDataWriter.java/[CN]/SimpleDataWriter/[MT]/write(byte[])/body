@@ -1,0 +1,17 @@
+{
+  Preconditions.checkNotNull(record);
+  byte[] toWrite=record;
+  if (recordDelimiter.isPresent()) {
+    toWrite=Arrays.copyOf(record,record.length + 1);
+    toWrite[toWrite.length - 1]=recordDelimiter.get();
+  }
+  if (prependSize) {
+    long recordSize=toWrite.length;
+    ByteBuffer buf=ByteBuffer.allocate(Longs.BYTES);
+    buf.putLong(recordSize);
+    toWrite=ArrayUtils.addAll(buf.array(),toWrite);
+  }
+  this.stagingFileOutputStream.write(toWrite);
+  bytesWritten+=toWrite.length;
+  recordsWritten++;
+}
