@@ -1,0 +1,3 @@
+{
+  return this.workunit.getWatermarkInterval().getActualHighWatermark();
+}

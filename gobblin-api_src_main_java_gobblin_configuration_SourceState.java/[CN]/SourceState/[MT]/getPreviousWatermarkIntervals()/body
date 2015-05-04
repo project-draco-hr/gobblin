@@ -1,0 +1,7 @@
+{
+  List<WatermarkInterval> previousWatermarks=Lists.newArrayList();
+  for (  WorkUnitState workUnitState : this.previousTaskStates) {
+    previousWatermarks.add(workUnitState.getWatermarkInterval());
+  }
+  return previousWatermarks;
+}

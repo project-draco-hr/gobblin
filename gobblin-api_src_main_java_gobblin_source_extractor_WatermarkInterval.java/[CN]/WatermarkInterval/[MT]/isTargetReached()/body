@@ -1,0 +1,3 @@
+{
+  return this.actualHighWatermark.equals(this.expectedHighWatermark);
+}

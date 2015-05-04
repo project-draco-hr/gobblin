@@ -1,0 +1,5 @@
+{
+  this.lowWatermark=this.objectMapper.readValue(Text.readString(in),Watermark.class);
+  this.expectedHighWatermark=this.objectMapper.readValue(Text.readString(in),Watermark.class);
+  this.actualHighWatermark=this.objectMapper.readValue(Text.readString(in),Watermark.class);
+}

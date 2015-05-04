@@ -1,0 +1,5 @@
+{
+  Text.writeString(out,this.objectMapper.writeValueAsString(this.lowWatermark));
+  Text.writeString(out,this.objectMapper.writeValueAsString(this.expectedHighWatermark));
+  Text.writeString(out,this.objectMapper.writeValueAsString(this.actualHighWatermark));
+}

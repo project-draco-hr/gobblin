@@ -1,0 +1,6 @@
+{
+  this.lowWatermark=lowWatermark;
+  this.expectedHighWatermark=expectedHighWatermark;
+  this.actualHighWatermark=lowWatermark.copy();
+  this.objectMapper=new ObjectMapper();
+}

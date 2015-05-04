@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(this.lowWatermark,"Must specify a low watermark");
+  Preconditions.checkNotNull(this.expectedHighWatermark,"Must specify an expected high watermark");
+  return new WatermarkInterval(this.lowWatermark,this.expectedHighWatermark);
+}

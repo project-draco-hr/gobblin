@@ -1,0 +1,4 @@
+{
+  this(state,extract);
+  this.watermarkInterval=watermarkInterval;
+}

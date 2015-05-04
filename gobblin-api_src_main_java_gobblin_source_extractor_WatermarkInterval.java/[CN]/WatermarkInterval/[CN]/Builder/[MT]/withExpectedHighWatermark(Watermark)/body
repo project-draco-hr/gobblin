@@ -1,0 +1,4 @@
+{
+  this.expectedHighWatermark=expectedHighWatermark;
+  return this;
+}

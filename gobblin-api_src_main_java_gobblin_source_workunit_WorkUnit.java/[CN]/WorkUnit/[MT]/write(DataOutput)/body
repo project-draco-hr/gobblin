@@ -1,4 +1,5 @@
 {
   super.write(out);
   this.extract.write(out);
+  this.watermarkInterval.write(out);
 }
