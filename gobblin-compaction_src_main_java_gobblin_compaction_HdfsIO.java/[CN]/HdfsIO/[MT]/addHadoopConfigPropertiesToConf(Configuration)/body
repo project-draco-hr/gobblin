@@ -3,7 +3,7 @@
   for (  String propertyName : propertyNames) {
     if (propertyName.startsWith(HADOOP_CONFIGFILE_)) {
       String hadoopConfigFile=CompactionRunner.properties.getProperty(propertyName);
-      conf.addResource(hadoopConfigFile);
+      conf.addResource(new Path(hadoopConfigFile));
       LOG.info("Added Hadoop Config File: " + hadoopConfigFile);
     }
   }

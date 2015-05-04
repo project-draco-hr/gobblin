@@ -1,6 +1,7 @@
 {
   String tableName=getNameWithJobId(jobID);
   String dropTableStmt=String.format(DROP_TABLE_STMT,tableName);
-  String createTableStmt=String.format(CREATE_TABLE_STMT,tableName,HdfsIO.getHdfsUri() + this.dataLocationInHdfs,HdfsIO.getHdfsUri() + this.schemaLocationInHdfs);
+  String hdfsUri=HdfsIO.getHdfsUri();
+  String createTableStmt=String.format(CREATE_TABLE_STMT,tableName,hdfsUri + this.dataLocationInHdfs,hdfsUri + this.schemaLocationInHdfs);
   conn.executeStatements(dropTableStmt,createTableStmt);
 }

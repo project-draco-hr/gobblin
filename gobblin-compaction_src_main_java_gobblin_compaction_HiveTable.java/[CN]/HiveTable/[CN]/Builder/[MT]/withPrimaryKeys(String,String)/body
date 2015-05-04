@@ -1,5 +1,0 @@
-{
-  this.primaryKeys.add(firstKeyAttr);
-  this.primaryKeys.addAll(Arrays.asList(remainingKeyAttr));
-  return (T)this;
-}
