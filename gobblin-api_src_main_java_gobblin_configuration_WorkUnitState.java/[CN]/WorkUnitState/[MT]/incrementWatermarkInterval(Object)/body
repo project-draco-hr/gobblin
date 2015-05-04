@@ -1,0 +1,3 @@
+{
+  this.watermarkInterval.increment(record);
+}
