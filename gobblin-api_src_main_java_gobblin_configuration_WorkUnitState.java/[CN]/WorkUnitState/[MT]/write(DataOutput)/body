@@ -1,4 +1,6 @@
 {
+  setProp(ConfigurationKeys.WORK_UNIT_STATE_COMPLEX_ACTUAL_HIGH_WATER_MARK_CLASS,this.actualHighWatermark.getClass());
+  setProp(ConfigurationKeys.WORK_UNIT_STATE_COMPLEX_ACTUAL_HIGH_WATER_MARK_VALUE,this.actualHighWatermark.toJson());
   this.workunit.write(out);
   super.write(out);
 }

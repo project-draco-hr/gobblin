@@ -1,4 +1,3 @@
 {
   this.workunit=workUnit;
-  this.watermarkInterval=workUnit.getWatermarkInterval();
 }

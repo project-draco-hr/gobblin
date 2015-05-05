@@ -1,4 +1,19 @@
 {
   this.workunit.readFields(in);
   super.readFields(in);
+  if (contains(ConfigurationKeys.WORK_UNIT_STATE_COMPLEX_ACTUAL_HIGH_WATER_MARK_CLASS) && contains(ConfigurationKeys.WORK_UNIT_STATE_COMPLEX_ACTUAL_HIGH_WATER_MARK_VALUE)) {
+    try {
+      this.actualHighWatermark=(Watermark)Class.forName(getProp(ConfigurationKeys.WORK_UNIT_STATE_COMPLEX_ACTUAL_HIGH_WATER_MARK_CLASS)).newInstance();
+      this.actualHighWatermark.fromJson(GSON.fromJson(getProp(ConfigurationKeys.WORK_UNIT_STATE_COMPLEX_ACTUAL_HIGH_WATER_MARK_VALUE),JsonElement.class));
+    }
+ catch (    InstantiationException e) {
+      throw new IOException("Could not intiailize actualHighWatermark",e);
+    }
+catch (    IllegalAccessException e) {
+      throw new IOException("Could not intiailize actualHighWatermark",e);
+    }
+catch (    ClassNotFoundException e) {
+      throw new IOException("Could not intiailize actualHighWatermark",e);
+    }
+  }
 }

@@ -1,14 +1,5 @@
 {
-  Closer closer=Closer.create();
-  try {
-    ByteArrayOutputStream watermarkIntervalOut=closer.register(new ByteArrayOutputStream());
-    this.watermarkInterval.write(closer.register(new DataOutputStream(watermarkIntervalOut)));
-    watermarkIntervalOut.flush();
-    setProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY,watermarkIntervalOut.toString(Charsets.UTF_8.toString()));
-  }
-  finally {
-    closer.close();
-  }
+  setProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY,this.watermarkInterval.toJson());
   super.write(out);
   this.extract.write(out);
 }

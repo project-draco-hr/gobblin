@@ -1,4 +1,3 @@
 {
   this.workunit=new WorkUnit(null,null);
-  this.watermarkInterval=new WatermarkInterval();
 }

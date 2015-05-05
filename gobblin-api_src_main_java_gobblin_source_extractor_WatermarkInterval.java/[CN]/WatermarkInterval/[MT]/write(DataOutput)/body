@@ -1,8 +1,0 @@
-{
-  Text.writeString(out,this.lowWatermark.getClass().getName());
-  Text.writeString(out,this.lowWatermark.toJson());
-  Text.writeString(out,this.expectedHighWatermark.getClass().getName());
-  Text.writeString(out,this.expectedHighWatermark.toJson());
-  Text.writeString(out,this.actualHighWatermark.getClass().getName());
-  Text.writeString(out,this.actualHighWatermark.toJson());
-}

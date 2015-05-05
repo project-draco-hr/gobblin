@@ -1,0 +1,6 @@
+{
+  JsonObject jsonObject=new JsonObject();
+  jsonObject.addProperty(WATERMARK_TO_JSON_CLASS_NAME,watermark.getClass().getName());
+  jsonObject.add(WATERMARK_TO_JSON_VALUE,watermark.toJson());
+  return jsonObject;
+}
