@@ -1,3 +1,0 @@
-{
-  this.workUnitState.incrementWatermarkInterval(record);
-}

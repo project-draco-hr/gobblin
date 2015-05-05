@@ -1,5 +1,8 @@
 {
+  ByteArrayOutputStream watermarkIntervalOut=new ByteArrayOutputStream();
+  this.watermarkInterval.write(new DataOutputStream(watermarkIntervalOut));
+  watermarkIntervalOut.flush();
+  setProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY,watermarkIntervalOut.toString(Charsets.UTF_8.toString()));
   super.write(out);
   this.extract.write(out);
-  this.watermarkInterval.write(out);
 }

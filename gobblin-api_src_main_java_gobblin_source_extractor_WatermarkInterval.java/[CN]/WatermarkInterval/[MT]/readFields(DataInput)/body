@@ -1,5 +1,41 @@
 {
-  this.lowWatermark=this.objectMapper.readValue(Text.readString(in),Watermark.class);
-  this.expectedHighWatermark=this.objectMapper.readValue(Text.readString(in),Watermark.class);
-  this.actualHighWatermark=this.objectMapper.readValue(Text.readString(in),Watermark.class);
+  try {
+    this.lowWatermark=(Watermark)Class.forName(Text.readString(in)).newInstance();
+    this.lowWatermark.initFromJson(Text.readString(in));
+  }
+ catch (  InstantiationException e) {
+    throw new IOException("Could not properly initialize the low watermark",e);
+  }
+catch (  IllegalAccessException e) {
+    throw new IOException("Could not properly initialize the low watermark",e);
+  }
+catch (  ClassNotFoundException e) {
+    throw new IOException("Could not properly initialize the low watermark",e);
+  }
+  try {
+    this.expectedHighWatermark=(Watermark)Class.forName(Text.readString(in)).newInstance();
+    this.expectedHighWatermark.initFromJson(Text.readString(in));
+  }
+ catch (  InstantiationException e) {
+    throw new IOException("Could not properly initialize the expected high watermark",e);
+  }
+catch (  IllegalAccessException e) {
+    throw new IOException("Could not properly initialize the expected high watermark",e);
+  }
+catch (  ClassNotFoundException e) {
+    throw new IOException("Could not properly initialize the expected high watermark",e);
+  }
+  try {
+    this.actualHighWatermark=(Watermark)Class.forName(Text.readString(in)).newInstance();
+    this.actualHighWatermark.initFromJson(Text.readString(in));
+  }
+ catch (  InstantiationException e) {
+    throw new IOException("Could not properly initialize the actual high watermark",e);
+  }
+catch (  IllegalAccessException e) {
+    throw new IOException("Could not properly initialize the actual high watermark",e);
+  }
+catch (  ClassNotFoundException e) {
+    throw new IOException("Could not properly initialize the actual high watermark",e);
+  }
 }

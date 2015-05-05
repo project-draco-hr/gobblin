@@ -1,5 +1,4 @@
 {
   this.workunit.readFields(in);
-  this.watermarkInterval.readFields(in);
   super.readFields(in);
 }

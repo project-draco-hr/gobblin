@@ -1,5 +1,7 @@
 {
   super.readFields(in);
   this.extract.readFields(in);
-  this.watermarkInterval.readFields(in);
+  ByteArrayInputStream watermarkIntervalIn=new ByteArrayInputStream(getProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY).getBytes());
+  this.watermarkInterval=new WatermarkInterval();
+  this.watermarkInterval.readFields(new DataInputStream(watermarkIntervalIn));
 }

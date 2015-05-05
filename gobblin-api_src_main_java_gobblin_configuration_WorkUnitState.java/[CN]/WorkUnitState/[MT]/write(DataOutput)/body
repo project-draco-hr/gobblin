@@ -1,5 +1,4 @@
 {
   this.workunit.write(out);
-  this.watermarkInterval.write(out);
   super.write(out);
 }
