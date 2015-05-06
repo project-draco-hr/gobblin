@@ -1,0 +1,11 @@
+{
+  JobState.RunningState runningState=jobState.getState();
+  if (runningState == JobState.RunningState.PENDING || runningState == JobState.RunningState.RUNNING || runningState == JobState.RunningState.CANCELLED) {
+    return;
+  }
+  String jobName=jobState.getJobName();
+  String jobId=jobState.getJobId();
+  LOG.info("Persisting job state of job " + jobId);
+  this.jobContext.getJobStateStore().put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
+  this.jobContext.getJobStateStore().createAlias(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,"current" + JOB_STATE_STORE_TABLE_SUFFIX);
+}

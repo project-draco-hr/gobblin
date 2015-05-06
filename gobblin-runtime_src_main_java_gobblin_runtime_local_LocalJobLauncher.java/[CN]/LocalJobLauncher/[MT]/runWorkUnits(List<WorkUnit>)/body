@@ -1,5 +1,4 @@
 {
-  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
   List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     if (workUnit instanceof MultiWorkUnit) {
@@ -13,18 +12,29 @@
     LOG.warn("No work units to run");
     return;
   }
+  String jobId=this.jobContext.getJobId();
+  JobState jobState=this.jobContext.getJobState();
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
-  List<Task> tasks=AbstractJobLauncher.runWorkUnits(this.jobId,workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
-  if (this.isCancelled) {
-    this.jobState.setState(JobState.RunningState.CANCELLED);
+  List<Task> tasks=AbstractJobLauncher.submitWorkUnits(this.jobContext.getJobId(),workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
+  LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
+  while (this.countDownLatch.getCount() > 0) {
+    LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnits.size(),jobId));
+    this.countDownLatch.await(1,TimeUnit.MINUTES);
   }
- else   if (this.jobState.getState() == JobState.RunningState.RUNNING) {
-    this.jobState.setState(JobState.RunningState.SUCCESSFUL);
+synchronized (this.cancellationExecutor) {
+    if (this.cancellationExecuted) {
+      jobState.setState(JobState.RunningState.CANCELLED);
+      return;
+    }
+  }
+  LOG.info(String.format("All tasks of job %s have completed",jobId));
+  if (jobState.getState() == JobState.RunningState.RUNNING) {
+    jobState.setState(JobState.RunningState.SUCCESSFUL);
   }
   for (  Task task : tasks) {
-    this.jobState.addTaskState(task.getTaskState());
+    jobState.addTaskState(task.getTaskState());
     if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
-      this.jobState.setState(JobState.RunningState.FAILED);
+      jobState.setState(JobState.RunningState.FAILED);
     }
   }
 }

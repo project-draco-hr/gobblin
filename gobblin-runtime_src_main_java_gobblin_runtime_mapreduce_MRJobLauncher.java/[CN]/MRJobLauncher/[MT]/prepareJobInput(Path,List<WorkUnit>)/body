@@ -1,7 +1,7 @@
 {
   Closer closer=Closer.create();
   try {
-    Path jobInputFile=new Path(jobInputPath,this.jobId + ".wulist");
+    Path jobInputFile=new Path(jobInputPath,this.jobContext.getJobId() + ".wulist");
     OutputStream os=closer.register(this.fs.create(jobInputFile));
     Writer osw=closer.register(new OutputStreamWriter(os,ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
     Writer bw=closer.register(new BufferedWriter(osw));

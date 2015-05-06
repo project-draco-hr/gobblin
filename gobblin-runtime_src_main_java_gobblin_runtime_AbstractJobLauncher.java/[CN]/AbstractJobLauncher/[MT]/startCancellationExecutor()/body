@@ -1,0 +1,16 @@
+{
+  this.cancellationExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+synchronized (cancellationExecutor) {
+        if (!cancellationExecuted && cancellationRequested) {
+          executeCancellation();
+          cancellationExecuted=true;
+synchronized (cancellationLock) {
+            cancellationLock.notify();
+          }
+        }
+      }
+    }
+  }
+,0,1,TimeUnit.SECONDS);
+}

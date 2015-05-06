@@ -5,27 +5,32 @@
   this.conf.set("mapred.max.map.failures.percent","100");
   this.conf.set("mapreduce.map.failures.maxpercent","100");
   this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
-  this.mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),this.jobName);
-  if (this.fs.exists(this.mrJobDir)) {
-    LOG.warn("Job working directory already exists for job " + this.jobName);
-    this.fs.delete(this.mrJobDir,true);
+  String jobName=this.jobContext.getJobName();
+  JobState jobState=this.jobContext.getJobState();
+  Path mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName);
+  if (this.fs.exists(mrJobDir)) {
+    LOG.warn("Job working directory already exists for job " + jobName);
+    this.fs.delete(mrJobDir,true);
   }
-  JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
   try {
-    Path jobOutputPath=prepareHadoopJob(this.jobName,this.jobProps,workUnits);
+    JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
+    Path jobOutputPath=prepareHadoopJob(this.jobProps,workUnits,mrJobDir);
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
-    if (!this.jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
-      this.jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
+    if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
+      jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
     }
+    LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
     this.job.waitForCompletion(true);
-    if (this.isCancelled) {
-      this.jobState.setState(JobState.RunningState.CANCELLED);
-      return;
+synchronized (this.cancellationExecutor) {
+      if (this.cancellationExecuted) {
+        jobState.setState(JobState.RunningState.CANCELLED);
+        return;
+      }
     }
-    this.jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
-    this.jobState.addTaskStates(collectOutput(new Path(jobOutputPath,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY))));
-    countersToMetrics(this.job.getCounters(),JobMetrics.get(this.jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+    jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
+    jobState.addTaskStates(collectOutput(new Path(jobOutputPath,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY))));
+    countersToMetrics(this.job.getCounters(),JobMetrics.get(jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
   }
   finally {
     cleanUpWorkingDirectory();

@@ -1,34 +1,10 @@
 {
   Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
-  this.properties=new Properties();
-  this.properties.putAll(properties);
+  this.sysProps=new Properties();
+  this.sysProps.putAll(sysProps);
   this.jobProps=new Properties();
   this.jobProps.putAll(jobProps);
-  this.jobStateStore=new FsStateStore<JobState>(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
-  boolean jobHistoryStoreEnabled=Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()));
-  if (jobHistoryStoreEnabled) {
-    Injector injector=Guice.createInjector(new MetaStoreModule(properties));
-    this.jobHistoryStore=Optional.of(injector.getInstance(JobHistoryStore.class));
-  }
- else {
-    this.jobHistoryStore=Optional.absent();
-  }
-  this.jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-  this.jobId=this.jobProps.containsKey(ConfigurationKeys.JOB_ID_KEY) ? this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY) : JobLauncherUtils.newJobId(this.jobName);
-  this.jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,this.jobId);
-  this.jobCommitPolicy=JobCommitPolicy.getCommitPolicy(this.jobProps);
-  this.jobLockEnabled=Boolean.valueOf(this.jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
-  State jobPropsState=new State();
-  jobPropsState.addAll(this.jobProps);
-  JobState previousJobState=getPreviousJobState(this.jobName);
-  this.jobState=new JobState(jobPropsState,previousJobState.getTaskStatesAsWorkUnitStates(),this.jobName,this.jobId);
-  this.jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,previousJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0));
-  if (GobblinMetrics.isEnabled(this.jobProps)) {
-    this.jobMetricsOptional=Optional.of(JobMetrics.get(this.jobState));
-    this.jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,this.jobMetricsOptional.get().getName());
-  }
- else {
-    this.jobMetricsOptional=Optional.absent();
-  }
-  this.source=new SourceDecorator(initSource(),this.jobId,LOG);
+  this.jobContext=new JobContext(this.sysProps,this.jobProps,LOG);
+  this.cancellationExecutor=new ScheduledThreadPoolExecutor(1,ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("CancellationExecutor")));
+  this.cancellationExecutor.setMaximumPoolSize(1);
 }

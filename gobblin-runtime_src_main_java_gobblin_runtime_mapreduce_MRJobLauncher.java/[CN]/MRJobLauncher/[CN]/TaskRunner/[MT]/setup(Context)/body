@@ -4,8 +4,7 @@
     this.taskStateStore=new FsStateStore<TaskState>(this.fs,SequenceFileOutputFormat.getOutputPath(context).toUri().getPath(),TaskState.class);
   }
  catch (  IOException ioe) {
-    LOG.error("Failed to setup the mapper task",ioe);
-    throw new RuntimeException(ioe);
+    throw new RuntimeException("Failed to setup the mapper task",ioe);
   }
   this.taskExecutor=new TaskExecutor(context.getConfiguration());
   this.taskStateTracker=new MRTaskStateTracker(context);

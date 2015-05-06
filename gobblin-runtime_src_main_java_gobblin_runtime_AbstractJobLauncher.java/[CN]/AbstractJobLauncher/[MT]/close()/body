@@ -1,10 +1,11 @@
 {
+  this.cancellationExecutor.shutdownNow();
   try {
-    this.source.shutdown(this.jobState);
+    this.jobContext.getSource().shutdown(this.jobContext.getJobState());
   }
   finally {
     if (GobblinMetrics.isEnabled(this.jobProps)) {
-      GobblinMetricsRegistry.getInstance().remove(this.jobId);
+      GobblinMetricsRegistry.getInstance().remove(this.jobContext.getJobId());
     }
   }
 }

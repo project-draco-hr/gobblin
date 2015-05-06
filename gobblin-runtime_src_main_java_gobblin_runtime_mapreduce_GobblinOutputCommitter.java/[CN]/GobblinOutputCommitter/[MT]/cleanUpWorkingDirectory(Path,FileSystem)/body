@@ -1,0 +1,6 @@
+{
+  if (fs.exists(mrJobDir)) {
+    fs.delete(mrJobDir,true);
+    LOG.info("Deleted working directory " + mrJobDir);
+  }
+}
