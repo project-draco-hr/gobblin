@@ -7,7 +7,7 @@ synchronized (this.cancellationExecutor) {
     this.cancellationRequested=true;
 synchronized (this.cancellationLock) {
       try {
-        this.cancellationLock.wait(TimeUnit.SECONDS.toMillis(5));
+        this.cancellationLock.wait(TimeUnit.SECONDS.toMillis(60));
       }
  catch (      InterruptedException ie) {
         Thread.currentThread().interrupt();

@@ -21,7 +21,7 @@
     LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnits.size(),jobId));
     this.countDownLatch.await(1,TimeUnit.MINUTES);
   }
-synchronized (this.cancellationExecutor) {
+synchronized (this.cancellationLock) {
     if (this.cancellationExecuted) {
       jobState.setState(JobState.RunningState.CANCELLED);
       return;

@@ -22,7 +22,7 @@
     }
     LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
     this.job.waitForCompletion(true);
-synchronized (this.cancellationExecutor) {
+synchronized (this.cancellationLock) {
       if (this.cancellationExecuted) {
         jobState.setState(JobState.RunningState.CANCELLED);
         return;

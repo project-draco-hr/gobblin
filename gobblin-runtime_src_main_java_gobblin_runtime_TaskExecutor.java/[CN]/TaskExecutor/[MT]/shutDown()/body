@@ -1,6 +1,6 @@
 {
-  LOG.info("Stopping the task executor ");
-  this.taskExecutor.shutdown();
-  this.taskRetryExecutor.shutdown();
-  this.forkExecutor.shutdown();
+  LOG.info("Stopping the task executor");
+  ExecutorsUtils.shutdownExecutorService(this.taskExecutor);
+  ExecutorsUtils.shutdownExecutorService(this.taskRetryExecutor);
+  ExecutorsUtils.shutdownExecutorService(this.forkExecutor);
 }

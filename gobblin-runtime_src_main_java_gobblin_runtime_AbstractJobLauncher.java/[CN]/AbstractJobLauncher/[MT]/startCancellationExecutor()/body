@@ -1,13 +1,11 @@
 {
   this.cancellationExecutor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
-synchronized (cancellationExecutor) {
+synchronized (cancellationLock) {
         if (!cancellationExecuted && cancellationRequested) {
           executeCancellation();
           cancellationExecuted=true;
-synchronized (cancellationLock) {
-            cancellationLock.notify();
-          }
+          cancellationLock.notify();
         }
       }
     }
