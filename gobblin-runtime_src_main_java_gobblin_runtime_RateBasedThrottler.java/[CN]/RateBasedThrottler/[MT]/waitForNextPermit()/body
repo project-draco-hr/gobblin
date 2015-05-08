@@ -1,0 +1,4 @@
+{
+  this.semaphore.acquire();
+  return true;
+}

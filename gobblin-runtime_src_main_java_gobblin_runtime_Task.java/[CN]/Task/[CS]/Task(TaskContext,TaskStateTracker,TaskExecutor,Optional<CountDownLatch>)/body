@@ -1,7 +1,6 @@
 {
   this.taskContext=context;
-  this.taskMetrics=TaskMetrics.get(this.taskContext.getTaskState());
-  this.taskContext.setMetricsContextName(this.taskMetrics.getName());
+  this.taskContext.setMetricsContextName(TaskMetrics.get(this.taskContext.getTaskState()).getName());
   this.taskState=context.getTaskState();
   this.jobId=this.taskState.getJobId();
   this.taskId=this.taskState.getTaskId();

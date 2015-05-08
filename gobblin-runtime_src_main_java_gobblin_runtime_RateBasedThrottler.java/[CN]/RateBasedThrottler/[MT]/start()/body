@@ -1,0 +1,9 @@
+{
+  this.permitRestockExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      semaphore.drainPermits();
+      semaphore.release(maximumRate);
+    }
+  }
+,1,1,this.timeUnit);
+}

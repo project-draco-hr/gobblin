@@ -5,7 +5,7 @@
   this.forks.clear();
   Closer closer=Closer.create();
   try {
-    Extractor extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,new ExtractorDecorator(new SourceDecorator(this.taskContext.getSource(),this.jobId,LOG).getExtractor(this.taskState),this.taskId,LOG)));
+    Extractor extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,this.taskContext.getExtractor()));
     Converter converter=new MultiConverter(this.taskContext.getConverters());
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);

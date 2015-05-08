@@ -1,0 +1,12 @@
+{
+  try {
+    if (this.throttler.waitForNextPermit()) {
+      return this.extractor.readRecord(reuse);
+    }
+    return null;
+  }
+ catch (  InterruptedException ie) {
+    Thread.currentThread().interrupt();
+    throw new IOException("Interrupted while waiting for the next permit from the throttler",ie);
+  }
+}

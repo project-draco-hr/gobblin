@@ -1,0 +1,9 @@
+{
+  Meter meter=new Meter();
+  for (int i=0; i < 1000; i++) {
+    Assert.assertTrue(this.throttler.waitForNextPermit());
+    meter.mark();
+    Thread.sleep((RANDOM.nextInt() & Integer.MAX_VALUE) % 10);
+  }
+  Assert.assertTrue(DoubleMath.fuzzyEquals(meter.getMeanRate(),20d,20d * 0.05));
+}
