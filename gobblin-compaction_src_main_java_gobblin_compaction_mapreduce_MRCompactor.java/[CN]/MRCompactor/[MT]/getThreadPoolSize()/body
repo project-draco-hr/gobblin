@@ -1,0 +1,3 @@
+{
+  return this.state.getPropAsInt(ConfigurationKeys.COMPACTION_THREAD_POOL_SIZE,ConfigurationKeys.DEFAULT_COMPACTION_THREAD_POOL_SIZE);
+}

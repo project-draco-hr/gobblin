@@ -1,0 +1,20 @@
+{
+  List<State> allJobProps=Lists.newArrayList();
+  if (!fs.exists(this.topicInputDir)) {
+    LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ topic);
+    return allJobProps;
+  }
+  String folderStructure=getFolderStructure();
+  for (  FileStatus status : this.fs.globStatus(new Path(this.topicInputDir,folderStructure))) {
+    DateTime folderTime=getFolderTime(status.getPath());
+    if (shouldProcessFolder(status.getPath(),folderTime)) {
+      Path jobOutputDir=new Path(this.topicOutputDir,folderTime.toString(this.timeFormatter));
+      Path jobTmpDir=new Path(this.topicTmpDir,folderTime.toString(this.timeFormatter));
+      Optional<State> jobProps=createJobProps(status.getPath(),jobOutputDir,jobTmpDir);
+      if (jobProps.isPresent()) {
+        allJobProps.add(jobProps.get());
+      }
+    }
+  }
+  return allJobProps;
+}

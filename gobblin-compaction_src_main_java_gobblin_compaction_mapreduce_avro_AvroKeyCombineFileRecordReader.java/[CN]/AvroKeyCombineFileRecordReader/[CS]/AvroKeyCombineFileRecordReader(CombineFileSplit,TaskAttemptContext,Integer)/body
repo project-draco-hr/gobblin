@@ -1,0 +1,3 @@
+{
+  this(split,AvroJob.getInputKeySchema(cx.getConfiguration()),idx);
+}

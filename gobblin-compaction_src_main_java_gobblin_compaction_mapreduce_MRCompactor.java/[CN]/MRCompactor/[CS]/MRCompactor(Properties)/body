@@ -1,0 +1,12 @@
+{
+  this.state=new State();
+  state.addAll(props);
+  this.inputDir=getInputDir();
+  this.inputSubDir=getInputSubDir();
+  this.destDir=getDestDir();
+  this.destSubDir=getDestSubDir();
+  this.tmpDir=getTmpDir();
+  this.fs=getFileSystem();
+  this.executorService=createExecutorService();
+  this.futures=Lists.newArrayList();
+}

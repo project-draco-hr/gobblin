@@ -1,0 +1,9 @@
+{
+  checkOutputPathExistence();
+  Configuration conf=HadoopUtils.getConfFromState(this.jobProps);
+  Job job=Job.getInstance(conf);
+  this.configureJob(job);
+  this.submit(job);
+  this.moveTmpPathToOutputPath();
+  return null;
+}

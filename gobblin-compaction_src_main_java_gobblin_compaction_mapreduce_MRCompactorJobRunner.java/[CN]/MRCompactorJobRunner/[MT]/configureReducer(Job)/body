@@ -1,0 +1,7 @@
+{
+  setOutputFormatClass(job);
+  setReducerClass(job);
+  setOutputKeyClass(job);
+  setOutputValueClass(job);
+  setNumberOfReducers(job);
+}

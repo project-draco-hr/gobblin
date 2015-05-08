@@ -1,0 +1,4 @@
+{
+  short mode=(short)this.jobProps.getPropAsInt(ConfigurationKeys.COMPACTION_OUTPUT_PERMISSION,ConfigurationKeys.DEFAULT_COMPACTION_OUTPUT_PERMISSION);
+  return new FsPermission(mode);
+}

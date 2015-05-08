@@ -1,0 +1,11 @@
+{
+  if (this.fs.exists(this.outputPath)) {
+    if (shouldOverwriteExistingOutputPath()) {
+      LOG.warn("Output path " + this.outputPath + " exists. Will be overwritten.");
+      fs.delete(this.outputPath,true);
+    }
+ else {
+      throw new IOException(String.format("Output path %s exists, property %s set to false. Cannot proceed.",this.outputPath,ConfigurationKeys.COMPACTION_FORCE_REPROCESS));
+    }
+  }
+}

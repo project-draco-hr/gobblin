@@ -1,0 +1,7 @@
+{
+  LOG.info(String.format("Moving %s to %s",this.tmpPath,this.outputPath));
+  this.fs.mkdirs(this.outputPath.getParent(),this.perm);
+  if (!this.fs.rename(this.tmpPath,this.outputPath)) {
+    throw new IOException(String.format("Unable to move %s to %s",this.tmpPath,this.outputPath));
+  }
+}

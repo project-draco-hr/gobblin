@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(this.state.contains(ConfigurationKeys.COMPACTION_INPUT_DIR),"Property " + ConfigurationKeys.COMPACTION_INPUT_DIR + " not provided");
+  return this.state.getProp(ConfigurationKeys.COMPACTION_INPUT_DIR);
+}

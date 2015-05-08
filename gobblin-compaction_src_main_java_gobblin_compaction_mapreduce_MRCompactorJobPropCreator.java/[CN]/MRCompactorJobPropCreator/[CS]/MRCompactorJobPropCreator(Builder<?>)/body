@@ -1,0 +1,8 @@
+{
+  this.topic=builder.topic;
+  this.topicInputDir=builder.topicInputDir;
+  this.topicOutputDir=builder.topicOutputDir;
+  this.topicTmpDir=builder.topicTmpDir;
+  this.fs=builder.fs;
+  this.state=builder.state;
+}

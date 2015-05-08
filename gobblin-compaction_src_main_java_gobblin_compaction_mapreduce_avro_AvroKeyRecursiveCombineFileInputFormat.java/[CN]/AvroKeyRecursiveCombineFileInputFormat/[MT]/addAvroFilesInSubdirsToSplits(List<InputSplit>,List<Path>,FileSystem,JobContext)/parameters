@@ -1,0 +1,4 @@
+List<InputSplit> splits
+List<Path> subdirs
+FileSystem fs
+JobContext cx

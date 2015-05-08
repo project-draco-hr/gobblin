@@ -1,0 +1,4 @@
+{
+  this.topicTmpDir=topicTmpDir;
+  return (T)this;
+}

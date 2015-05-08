@@ -1,0 +1,8 @@
+{
+  Configuration conf=new Configuration();
+  for (  String propName : this.state.getPropertyNames()) {
+    conf.set(propName,this.state.getProp(propName));
+  }
+  URI uri=URI.create(this.state.getProp(ConfigurationKeys.COMPACTION_FILE_SYSTEM_URI,ConfigurationKeys.LOCAL_FS_URI));
+  return FileSystem.get(uri,conf);
+}

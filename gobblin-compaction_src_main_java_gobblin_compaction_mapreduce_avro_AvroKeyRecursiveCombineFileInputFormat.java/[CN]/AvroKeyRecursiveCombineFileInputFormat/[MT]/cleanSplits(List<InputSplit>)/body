@@ -1,0 +1,13 @@
+{
+  List<InputSplit> cleanedSplits=Lists.newArrayList();
+  for (int i=0; i < splits.size(); i++) {
+    CombineFileSplit oldSplit=(CombineFileSplit)splits.get(i);
+    String[] locations=oldSplit.getLocations();
+    Preconditions.checkNotNull(locations,"CombineFileSplit.getLocations() returned null");
+    if (locations.length > SPLIT_MAX_NUM_LOCATIONS) {
+      locations=Arrays.copyOf(locations,SPLIT_MAX_NUM_LOCATIONS);
+    }
+    cleanedSplits.add(new CombineFileSplit(oldSplit.getPaths(),oldSplit.getStartOffsets(),oldSplit.getLengths(),locations));
+  }
+  return cleanedSplits;
+}

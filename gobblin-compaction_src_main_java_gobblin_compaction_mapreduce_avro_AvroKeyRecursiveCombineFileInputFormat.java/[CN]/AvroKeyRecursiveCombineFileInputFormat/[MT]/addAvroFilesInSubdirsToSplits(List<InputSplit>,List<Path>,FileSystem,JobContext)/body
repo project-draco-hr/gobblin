@@ -1,0 +1,6 @@
+{
+  List<Path> files=findAvroFilesInDirs(subdirs,fs);
+  Job helperJob=Job.getInstance(cx.getConfiguration());
+  setInputPaths(helperJob,files.toArray(new Path[files.size()]));
+  splits.addAll(super.getSplits(helperJob));
+}

@@ -1,0 +1,3 @@
+{
+  return this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_USE_ALL_ATTRIBUTES,ConfigurationKeys.DEFAULT_COMPACTION_USE_ALL_ATTRIBUTES);
+}

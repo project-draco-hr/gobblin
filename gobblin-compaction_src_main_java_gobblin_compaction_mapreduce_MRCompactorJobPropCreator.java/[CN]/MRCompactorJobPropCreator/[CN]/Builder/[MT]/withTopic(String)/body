@@ -1,0 +1,4 @@
+{
+  this.topic=topic;
+  return (T)this;
+}

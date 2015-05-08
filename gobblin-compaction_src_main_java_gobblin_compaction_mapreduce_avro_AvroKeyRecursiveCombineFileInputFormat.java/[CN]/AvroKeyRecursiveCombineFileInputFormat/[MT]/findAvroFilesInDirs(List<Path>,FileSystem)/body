@@ -1,0 +1,11 @@
+{
+  List<Path> files=Lists.newArrayList();
+  for (  Path dir : dirs) {
+    for (    FileStatus status : HadoopUtils.listStatusRecursive(fs,dir)) {
+      if (FilenameUtils.isExtension(status.getPath().getName(),AVRO)) {
+        files.add(status.getPath());
+      }
+    }
+  }
+  return files;
+}

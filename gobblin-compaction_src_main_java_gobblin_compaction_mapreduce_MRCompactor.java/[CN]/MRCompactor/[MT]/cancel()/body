@@ -1,0 +1,8 @@
+{
+  this.executorService.shutdownNow();
+  for (  Job hadoopJob : MRCompactor.RUNNING_MR_JOBS) {
+    if (!hadoopJob.isComplete()) {
+      hadoopJob.killJob();
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  Closer closer=Closer.create();
+  try {
+    InputStream in=closer.register(fs.open(filePath));
+    return new Schema.Parser().parse(in);
+  }
+  finally {
+    closer.close();
+  }
+}
