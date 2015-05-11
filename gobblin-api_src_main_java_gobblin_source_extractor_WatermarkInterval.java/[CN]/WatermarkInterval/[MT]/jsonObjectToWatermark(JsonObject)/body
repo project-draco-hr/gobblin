@@ -1,5 +1,0 @@
-{
-  Watermark watermark=(Watermark)Class.forName(jsonObject.get(WATERMARK_TO_JSON_CLASS_NAME).getAsString()).newInstance();
-  watermark.fromJson(jsonObject.get(WATERMARK_TO_JSON_VALUE));
-  return watermark;
-}

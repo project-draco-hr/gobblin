@@ -1,8 +1,6 @@
 {
-  JsonArray jsonArray=new JsonArray();
-  JsonObject lowWatermarkJson=watermarkToJsonObject(this.lowWatermark);
-  JsonObject expectedHighWatermarkJson=watermarkToJsonObject(this.expectedHighWatermark);
-  jsonArray.add(lowWatermarkJson);
-  jsonArray.add(expectedHighWatermarkJson);
-  return jsonArray;
+  JsonObject jsonObject=new JsonObject();
+  jsonObject.add(LOW_WATERMARK_TO_JSON_KEY,this.lowWatermark.toJson());
+  jsonObject.add(EXPECTED_HIGH_WATERMARK_TO_JSON_KEY,this.expectedHighWatermark.toJson());
+  return jsonObject;
 }

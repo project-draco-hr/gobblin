@@ -1,5 +1,4 @@
 {
-  setProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY,this.watermarkInterval.toJson());
   super.write(out);
   this.extract.write(out);
 }

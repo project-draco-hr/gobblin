@@ -1,8 +1,4 @@
 {
   super.readFields(in);
   this.extract.readFields(in);
-  if (contains(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY)) {
-    this.watermarkInterval=new WatermarkInterval();
-    this.watermarkInterval.fromJson(GSON.fromJson(getProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY),JsonElement.class));
-  }
 }
