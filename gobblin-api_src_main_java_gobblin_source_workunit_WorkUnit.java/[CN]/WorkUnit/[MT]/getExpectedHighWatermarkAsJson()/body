@@ -1,3 +1,0 @@
-{
-  return GSON.toJsonTree(getProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY)).getAsJsonObject().get(WatermarkInterval.EXPECTED_HIGH_WATERMARK_TO_JSON_KEY);
-}
