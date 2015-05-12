@@ -1,8 +1,0 @@
-{
-  try {
-    this.embeddedWriter.close();
-  }
-  finally {
-    super.close();
-  }
-}

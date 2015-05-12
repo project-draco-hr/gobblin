@@ -1,8 +1,0 @@
-{
-  try {
-    this.embeddedExtractor.close();
-  }
-  finally {
-    super.close();
-  }
-}
