@@ -125,7 +125,7 @@
     }
     if (GobblinMetrics.isEnabled(jobProps)) {
       jobMetrics.stopMetricReporting();
-      GobblinMetricsRegistry.getInstance().remove(jobId);
+      JobMetrics.remove(jobState);
     }
   }
   if (Optional.fromNullable(jobListener).isPresent()) {
