@@ -9,5 +9,6 @@
  catch (  InterruptedException ie) {
     executorService.shutdownNow();
     Thread.currentThread().interrupt();
+    throw ie;
   }
 }
