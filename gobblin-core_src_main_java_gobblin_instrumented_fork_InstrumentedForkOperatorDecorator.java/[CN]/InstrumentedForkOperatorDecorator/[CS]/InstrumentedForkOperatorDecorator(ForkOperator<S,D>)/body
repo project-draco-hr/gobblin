@@ -1,4 +1,4 @@
 {
-  this.embeddedFork=forkOperator;
+  this.embeddedForkOperator=forkOperator;
   this.isEmbeddedInstrumented=InstrumentedForkOperatorBase.class.isInstance(forkOperator);
 }

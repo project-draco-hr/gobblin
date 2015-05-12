@@ -1,0 +1,8 @@
+{
+  try {
+    this.embeddedForkOperator.close();
+  }
+  finally {
+    super.close();
+  }
+}

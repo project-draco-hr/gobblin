@@ -1,3 +1,3 @@
 {
-  return "gobblin.metrics." + job.getJobId();
+  return "gobblin.metrics." + jobState.getJobId();
 }
