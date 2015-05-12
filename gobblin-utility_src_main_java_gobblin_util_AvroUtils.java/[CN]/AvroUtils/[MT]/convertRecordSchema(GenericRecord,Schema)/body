@@ -1,5 +1,7 @@
 {
-  Preconditions.checkArgument(checkReaderWriterCompatibility(newSchema,record.getSchema()).getType() == COMPATIBLE);
+  if (checkReaderWriterCompatibility(newSchema,record.getSchema()).getType() != COMPATIBLE) {
+    LOG.warn("Record schema not compatible with writer schema. Converting record schema to writer schema may fail.");
+  }
   Closer closer=Closer.create();
   try {
     ByteArrayOutputStream out=closer.register(new ByteArrayOutputStream());

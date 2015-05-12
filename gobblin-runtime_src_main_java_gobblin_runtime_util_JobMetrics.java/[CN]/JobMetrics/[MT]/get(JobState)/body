@@ -1,7 +1,8 @@
 {
   GobblinMetricsRegistry registry=GobblinMetricsRegistry.getInstance();
-  if (!registry.containsKey(name(job))) {
-    registry.putIfAbsent(name(job),new JobMetrics(job));
+  String name=name(jobState);
+  if (!registry.containsKey(name)) {
+    registry.putIfAbsent(name,new JobMetrics(jobState));
   }
-  return (JobMetrics)registry.get(name(job));
+  return (JobMetrics)registry.get(name);
 }

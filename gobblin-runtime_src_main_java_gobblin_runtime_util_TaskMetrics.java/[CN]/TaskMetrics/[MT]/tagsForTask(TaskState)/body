@@ -1,5 +1,5 @@
 {
-  List<Tag<?>> tags=new ArrayList<Tag<?>>();
-  tags.add(new Tag<String>("taskId",task.getTaskId()));
+  List<Tag<?>> tags=Lists.newArrayList();
+  tags.add(new Tag<String>("taskId",taskState.getTaskId()));
   return tags;
 }

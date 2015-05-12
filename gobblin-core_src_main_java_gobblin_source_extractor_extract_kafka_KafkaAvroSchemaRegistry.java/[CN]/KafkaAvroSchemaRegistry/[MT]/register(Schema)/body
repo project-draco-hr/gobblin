@@ -6,6 +6,26 @@
     LOG.debug("Loading: " + post.getURI());
     int statusCode=httpClient.executeMethod(post);
     if (statusCode != HttpStatus.SC_CREATED)     LOG.error("Error occurred while trying to register schema: " + statusCode);
+    String response;
+    response=post.getResponseBodyAsString();
+    if (response != null) {
+      LOG.info("Received response " + response);
+    }
+    String schemaId;
+    Header[] headers=post.getResponseHeaders(SCHEMA_ID_HEADER_NAME);
+    if (headers.length != 1) {
+      LOG.error("Error reading schemaId returned by registerSchema call");
+      throw new RuntimeException("Error reading schemaId returned by registerSchema call");
+    }
+ else     if (!headers[0].getValue().startsWith(SCHEMA_ID_HEADER_PREFIX)) {
+      LOG.error("Error parsing schemaId returned by registerSchema call");
+      throw new RuntimeException("Error parsing schemaId returned by registerSchema call");
+    }
+ else {
+      LOG.info("Registered schema successfully");
+      schemaId=headers[0].getValue().substring(SCHEMA_ID_HEADER_PREFIX.length());
+    }
+    return schemaId;
   }
  catch (  URIException e) {
     throw new RuntimeException(e);
@@ -19,29 +39,4 @@ catch (  IOException e) {
  finally {
     post.releaseConnection();
   }
-  LOG.info("Registered schema successfully");
-  String response;
-  try {
-    response=post.getResponseBodyAsString();
-    if (response != null) {
-      LOG.info("Received response " + response);
-    }
-  }
- catch (  IOException e) {
-    throw new RuntimeException(e);
-  }
-  String schemaId;
-  Header[] headers=post.getResponseHeaders(SCHEMA_ID_HEADER_NAME);
-  if (headers.length != 1) {
-    LOG.error("Error reading schemaId returned by registerSchema call");
-    throw new RuntimeException("Error reading schemaId returned by registerSchema call");
-  }
- else   if (!headers[0].getValue().startsWith(SCHEMA_ID_HEADER_PREFIX)) {
-    LOG.error("Error parsing schemaId returned by registerSchema call");
-    throw new RuntimeException("Error parsing schemaId returned by registerSchema call");
-  }
- else {
-    schemaId=headers[0].getValue().substring(SCHEMA_ID_HEADER_PREFIX.length());
-  }
-  return schemaId;
 }

@@ -67,6 +67,7 @@
     storeJobExecutionInfo();
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
       this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
+      JobMetrics.remove(jobState);
     }
     unlockJob();
   }

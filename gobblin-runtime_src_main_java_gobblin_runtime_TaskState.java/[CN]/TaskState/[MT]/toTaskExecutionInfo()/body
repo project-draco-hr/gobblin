@@ -18,9 +18,9 @@
     table.setType(TableTypeEnum.valueOf(extract.getType().name()));
   }
   taskExecutionInfo.setTable(table);
-  TaskMetrics jobMetrics=TaskMetrics.get(this);
+  TaskMetrics taskMetrics=TaskMetrics.get(this);
   MetricArray metricArray=new MetricArray();
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricContext().getCounters().entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : taskMetrics.getMetricContext().getCounters().entrySet()) {
     Metric counter=new Metric();
     counter.setGroup(MetricGroup.TASK.name());
     counter.setName(entry.getKey());
@@ -28,7 +28,7 @@
     counter.setValue(Long.toString(((Counter)entry.getValue()).getCount()));
     metricArray.add(counter);
   }
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricContext().getMeters().entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : taskMetrics.getMetricContext().getMeters().entrySet()) {
     Metric meter=new Metric();
     meter.setGroup(MetricGroup.TASK.name());
     meter.setName(entry.getKey());
@@ -36,7 +36,7 @@
     meter.setValue(Double.toString(((Meter)entry.getValue()).getMeanRate()));
     metricArray.add(meter);
   }
-  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : jobMetrics.getMetricContext().getGauges().entrySet()) {
+  for (  Map.Entry<String,? extends com.codahale.metrics.Metric> entry : taskMetrics.getMetricContext().getGauges().entrySet()) {
     Metric gauge=new Metric();
     gauge.setGroup(MetricGroup.TASK.name());
     gauge.setName(entry.getKey());
