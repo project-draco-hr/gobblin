@@ -21,10 +21,12 @@
     LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnits.size(),jobId));
     this.countDownLatch.await(1,TimeUnit.MINUTES);
   }
-synchronized (this.cancellationLock) {
-    if (this.cancellationExecuted) {
-      jobState.setState(JobState.RunningState.CANCELLED);
-      return;
+  if (this.cancellationRequested) {
+synchronized (this.cancellationExecution) {
+      if (jobState.getState() == JobState.RunningState.CANCELLED) {
+        LOG.info(String.format("Job %s has been cancelled, aborting now",this.jobContext.getJobId()));
+        return;
+      }
     }
   }
   LOG.info(String.format("All tasks of job %s have completed",jobId));

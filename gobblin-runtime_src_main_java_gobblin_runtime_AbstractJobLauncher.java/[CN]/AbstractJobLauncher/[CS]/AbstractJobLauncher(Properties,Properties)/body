@@ -5,6 +5,5 @@
   this.jobProps=new Properties();
   this.jobProps.putAll(jobProps);
   this.jobContext=new JobContext(this.sysProps,this.jobProps,LOG);
-  this.cancellationExecutor=new ScheduledThreadPoolExecutor(1,ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("CancellationExecutor")));
-  this.cancellationExecutor.setMaximumPoolSize(1);
+  this.cancellationExecutor=Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("CancellationExecutor")));
 }

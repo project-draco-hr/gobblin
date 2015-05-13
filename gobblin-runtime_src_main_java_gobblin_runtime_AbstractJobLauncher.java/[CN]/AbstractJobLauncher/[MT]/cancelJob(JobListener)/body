@@ -1,21 +1,23 @@
 {
-synchronized (this.cancellationExecutor) {
+synchronized (this.cancellationRequest) {
     if (this.cancellationRequested) {
-      LOG.info(String.format("Job %s has already been cancelled or cancellation has already been requested",this.jobContext.getJobId()));
       return;
     }
     this.cancellationRequested=true;
-synchronized (this.cancellationLock) {
-      try {
-        this.cancellationLock.wait(TimeUnit.SECONDS.toMillis(60));
+    this.cancellationRequest.notify();
+  }
+synchronized (this.cancellationExecution) {
+    try {
+      while (!this.cancellationExecuted) {
+        this.cancellationExecution.wait();
       }
- catch (      InterruptedException ie) {
-        Thread.currentThread().interrupt();
-        return;
+      this.jobContext.getJobState().setState(JobState.RunningState.CANCELLED);
+      if (jobListener != null) {
+        jobListener.onJobCancellation(this.jobContext.getJobState());
       }
     }
-  }
-  if (jobListener != null) {
-    jobListener.onJobCancellation(this.jobContext.getJobState());
+ catch (    InterruptedException ie) {
+      Thread.currentThread().interrupt();
+    }
   }
 }

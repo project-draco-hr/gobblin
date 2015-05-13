@@ -1,14 +1,24 @@
 {
-  this.cancellationExecutor.scheduleAtFixedRate(new Runnable(){
+  this.cancellationExecutor.execute(new Runnable(){
     @Override public void run(){
-synchronized (cancellationLock) {
-        if (!cancellationExecuted && cancellationRequested) {
+synchronized (cancellationRequest) {
+        try {
+          while (!cancellationRequested) {
+            cancellationRequest.wait();
+          }
+          LOG.info("Cancellation has been requested for job " + jobContext.getJobId());
           executeCancellation();
-          cancellationExecuted=true;
-          cancellationLock.notify();
+          LOG.info("Cancellation has been executed for job " + jobContext.getJobId());
         }
+ catch (        InterruptedException ie) {
+          Thread.currentThread().interrupt();
+        }
+      }
+synchronized (cancellationExecution) {
+        cancellationExecuted=true;
+        cancellationExecution.notify();
       }
     }
   }
-,0,1,TimeUnit.SECONDS);
+);
 }
