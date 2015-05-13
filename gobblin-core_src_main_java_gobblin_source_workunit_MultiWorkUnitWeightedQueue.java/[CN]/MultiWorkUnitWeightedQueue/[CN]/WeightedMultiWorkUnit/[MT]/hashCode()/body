@@ -1,0 +1,3 @@
+{
+  return super.hashCode() + Long.valueOf(this.weight).hashCode();
+}

@@ -1,0 +1,3 @@
+{
+  return id == null ? this.properties.hashCode() : this.properties.hashCode() + this.id.hashCode();
+}
