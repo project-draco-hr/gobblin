@@ -1,3 +1,7 @@
 {
-  return id == null ? this.properties.hashCode() : this.properties.hashCode() + this.id.hashCode();
+  final int prime=31;
+  int result=1;
+  result=prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+  result=prime * result + ((this.properties == null) ? 0 : this.properties.hashCode());
+  return result;
 }
