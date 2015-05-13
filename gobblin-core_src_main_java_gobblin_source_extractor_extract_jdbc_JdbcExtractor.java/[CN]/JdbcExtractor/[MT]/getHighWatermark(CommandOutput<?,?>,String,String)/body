@@ -6,7 +6,7 @@
     resultset=itr.next();
   }
  else {
-    log.error("Failed to get high watermark from Mysql - Resultset has no records");
+    throw new HighWatermarkException("Failed to get high watermark from Mysql - Resultset has no records");
   }
   Long HighWatermark;
   try {
