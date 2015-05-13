@@ -1,5 +1,8 @@
 {
+  JobMetrics jobMetrics=JobMetrics.get(jobState);
+  GobblinMetrics.TimingGaugeContext startDependentServicesTimer=jobMetrics.singleUseTimer(MetricNames.RunJobTimings.START_DEPENDENT_SERVICES);
   this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
+  startDependentServicesTimer.stop();
   List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     if (workUnit instanceof MultiWorkUnit) {
@@ -15,7 +18,9 @@
   }
   String jobId=jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
+  GobblinMetrics.TimingGaugeContext runWorkUnitsTimer=jobMetrics.singleUseTimer(MetricNames.RunJobTimings.RUN_WORK_UNITS);
   List<Task> tasks=AbstractJobLauncher.runWorkUnits(jobId,workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
+  runWorkUnitsTimer.stop();
   if (isCancelled) {
     jobState.setState(JobState.RunningState.CANCELLED);
   }

@@ -2,7 +2,7 @@
   super();
   this.closer=Closer.create();
   this.instrumentationEnabled=GobblinMetrics.isEnabled(workUnitState);
-  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass()));
+  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,this.getClass(),generateTags(workUnitState)));
   if (isInstrumentationEnabled()) {
     this.readRecordsMeter=Optional.of(this.metricContext.meter(MetricNames.ExtractorMetrics.RECORDS_READ_METER));
     this.dataRecordExceptionsMeter=Optional.of(this.metricContext.meter(MetricNames.ExtractorMetrics.RECORDS_FAILED_METER));

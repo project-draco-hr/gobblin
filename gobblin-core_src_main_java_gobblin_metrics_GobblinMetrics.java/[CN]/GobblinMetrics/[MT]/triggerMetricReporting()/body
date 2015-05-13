@@ -1,0 +1,5 @@
+{
+  if (this.fileReporter.isPresent()) {
+    this.fileReporter.get().report();
+  }
+}

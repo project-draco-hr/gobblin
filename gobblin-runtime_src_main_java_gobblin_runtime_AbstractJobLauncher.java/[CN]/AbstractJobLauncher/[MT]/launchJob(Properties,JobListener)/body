@@ -43,12 +43,15 @@
   JobMetrics jobMetrics=JobMetrics.get(jobState);
   jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,jobMetrics.getName());
   jobState.setState(JobState.RunningState.PENDING);
+  boolean metricsEnabled=GobblinMetrics.isEnabled(jobState);
+  GobblinMetrics.TimingGaugeContext createWorkUnitsTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.CREATE_WORK_UNITS);
   Optional<List<WorkUnit>> workUnits=Optional.fromNullable(source.getWorkunits(jobState));
   if (!workUnits.isPresent()) {
     source.shutdown(jobState);
     unlockJob(jobName,jobLockOptional);
     throw new JobException("Failed to get work units for job " + jobId);
   }
+  createWorkUnitsTimer.stop();
   if (workUnits.get().isEmpty()) {
     LOG.warn("No work units have been created for job " + jobId);
     source.shutdown(jobState);
@@ -59,6 +62,7 @@
   jobState.setStartTime(startTime);
   jobState.setState(JobState.RunningState.RUNNING);
   LOG.info("Starting job " + jobId);
+  GobblinMetrics.TimingGaugeContext addWorkUnitsTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.ADD_WORK_UNITS);
   int taskIdSequence=0;
   int multiTaskIdSequence=0;
   for (  WorkUnit workUnit : workUnits.get()) {
@@ -74,10 +78,12 @@
       addWorkUnit(workUnit,jobState,taskIdSequence++);
     }
   }
+  addWorkUnitsTimer.stop();
   try {
     if (GobblinMetrics.isEnabled(jobProps)) {
       jobMetrics.startMetricReporting(jobProps);
     }
+    GobblinMetrics.TimingGaugeContext writeJobHistoryTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.WRITE_JOB_HISTORY);
     if (this.jobHistoryStore.isPresent()) {
       try {
         this.jobHistoryStore.get().put(jobState.toJobExecutionInfo());
@@ -86,14 +92,19 @@
         LOG.error("Failed to write job execution information to the job history store: " + t,t);
       }
     }
+    writeJobHistoryTimer.stop();
+    GobblinMetrics.TimingGaugeContext runJobTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.RUN_JOB);
     runJob(jobName,jobProps,jobState,workUnits.get());
+    runJobTimer.stop();
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled",jobId));
       return;
     }
+    GobblinMetrics.TimingGaugeContext commitJobTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.COMMIT_JOB);
     JobCommitPolicy commitPolicy=JobCommitPolicy.getCommitPolicy(jobState);
     setFinalJobState(commitPolicy,jobState);
     commitJob(jobId,commitPolicy,jobState);
+    commitJobTimer.stop();
   }
  catch (  Throwable t) {
     jobState.setState(JobState.RunningState.FAILED);
@@ -102,6 +113,7 @@
     throw new JobException(errMsg,t);
   }
  finally {
+    GobblinMetrics.TimingGaugeContext jobCleanupTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.CLEANUP_JOB);
     source.shutdown(jobState);
     try {
       persistJobState(jobState);
@@ -123,7 +135,9 @@
         LOG.error("Failed to write job execution information to the job history store: " + t,t);
       }
     }
+    jobCleanupTimer.stop();
     if (GobblinMetrics.isEnabled(jobProps)) {
+      jobMetrics.triggerMetricReporting();
       jobMetrics.stopMetricReporting();
       JobMetrics.remove(jobState);
     }

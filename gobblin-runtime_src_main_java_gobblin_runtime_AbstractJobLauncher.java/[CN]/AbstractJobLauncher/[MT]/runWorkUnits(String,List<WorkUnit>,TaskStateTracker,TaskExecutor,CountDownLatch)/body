@@ -1,4 +1,6 @@
 {
+  JobMetrics jobMetrics=JobMetrics.get(null,jobId);
+  Timer.Context scheduleWorkUnitsTimer=jobMetrics.getTimer(MetricNames.RunJobTimings.SCHEDULE_WORK_UNTIS).time();
   List<Task> tasks=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
@@ -12,6 +14,7 @@
     LOG.info(String.format("Submitting task %s to run",taskId));
     taskExecutor.submit(task);
   }
+  scheduleWorkUnitsTimer.stop();
   LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
   while (countDownLatch.getCount() > 0) {
     LOG.info(String.format("%d out of %d tasks of job %s are running",countDownLatch.getCount(),workUnits.size(),jobId));

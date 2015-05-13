@@ -1,0 +1,6 @@
+{
+  List<Tag<?>> tags=super.generateTags(state);
+  tags.add(new Tag<String>("topic",state.getProp(KafkaSource.TOPIC_NAME)));
+  tags.add(new Tag<Integer>("partition",state.getPropAsInt(KafkaSource.PARTITION_ID)));
+  return tags;
+}
