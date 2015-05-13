@@ -24,8 +24,7 @@
     this.job.waitForCompletion(true);
     if (this.cancellationRequested) {
 synchronized (this.cancellationExecution) {
-        if (jobState.getState() == JobState.RunningState.CANCELLED) {
-          LOG.info(String.format("Job %s has been cancelled, aborting now",this.jobContext.getJobId()));
+        if (this.cancellationExecuted) {
           return;
         }
       }

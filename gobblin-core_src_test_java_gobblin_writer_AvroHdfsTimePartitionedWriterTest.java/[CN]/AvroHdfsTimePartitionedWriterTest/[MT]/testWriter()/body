@@ -10,13 +10,12 @@
   this.writer.close();
   this.writer.commit();
   Assert.assertEquals(FileUtils.listFiles(new File(TEST_ROOT_DIR),new String[]{"avro"},true).size(),3);
-  String fileName=FILE_NAME + "." + WRITER_ID+ ".avro";
   File baseOutputDir=new File(OUTPUT_DIR,BASE_FILE_PATH + Path.SEPARATOR + ConfigurationKeys.DEFAULT_WRITER_PARTITION_LEVEL);
   Assert.assertTrue(baseOutputDir.exists());
-  File outputDir20150101=new File(baseOutputDir,"2015" + Path.SEPARATOR + "01"+ Path.SEPARATOR+ "01"+ Path.SEPARATOR+ fileName);
+  File outputDir20150101=new File(baseOutputDir,"2015" + Path.SEPARATOR + "01"+ Path.SEPARATOR+ "01"+ Path.SEPARATOR+ FILE_NAME);
   Assert.assertTrue(outputDir20150101.exists());
-  File outputDir20150102=new File(baseOutputDir,"2015" + Path.SEPARATOR + "01"+ Path.SEPARATOR+ "02"+ Path.SEPARATOR+ fileName);
+  File outputDir20150102=new File(baseOutputDir,"2015" + Path.SEPARATOR + "01"+ Path.SEPARATOR+ "02"+ Path.SEPARATOR+ FILE_NAME);
   Assert.assertTrue(outputDir20150102.exists());
-  File outputDir20150103=new File(baseOutputDir,"2015" + Path.SEPARATOR + "01"+ Path.SEPARATOR+ "03"+ Path.SEPARATOR+ fileName);
+  File outputDir20150103=new File(baseOutputDir,"2015" + Path.SEPARATOR + "01"+ Path.SEPARATOR+ "03"+ Path.SEPARATOR+ FILE_NAME);
   Assert.assertTrue(outputDir20150103.exists());
 }

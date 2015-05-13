@@ -39,7 +39,7 @@
     storeJobExecutionInfo();
     runWorkUnits(workUnits.get());
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
-      LOG.info(String.format("Job %s has been cancelled",jobId));
+      LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
       return;
     }
     setFinalJobState(jobState);

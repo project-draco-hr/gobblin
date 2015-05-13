@@ -5,7 +5,7 @@
   Assert.assertEquals(this.writer.recordsWritten(),3);
   this.writer.close();
   this.writer.commit();
-  File outputFile=new File(TestConstants.TEST_OUTPUT_DIR + Path.SEPARATOR + this.filePath,TestConstants.TEST_FILE_NAME + "." + TestConstants.TEST_WRITER_ID+ "."+ TestConstants.TEST_FILE_EXTENSION);
+  File outputFile=new File(TestConstants.TEST_OUTPUT_DIR + Path.SEPARATOR + this.filePath,TestConstants.TEST_FILE_NAME);
   DataFileReader<GenericRecord> reader=new DataFileReader<GenericRecord>(outputFile,new GenericDatumReader<GenericRecord>(this.schema));
   GenericRecord user1=reader.next();
   Assert.assertEquals(user1.get("name").toString(),"Alyssa");

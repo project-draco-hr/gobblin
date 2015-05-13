@@ -1,11 +1,11 @@
 {
   this.log.info("Get high watermark using JDBC");
-  long CalculatedHighWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+  long calculatedHighWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
   try {
     List<Command> cmds=this.getHighWatermarkMetadata(schema,entity,watermarkColumn,predicateList);
     CommandOutput<?,?> response=this.executeSql(cmds);
-    CalculatedHighWatermark=this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
-    return CalculatedHighWatermark;
+    calculatedHighWatermark=this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
+    return calculatedHighWatermark;
   }
  catch (  Exception e) {
     throw new HighWatermarkException("Failed to get high watermark using JDBC; error - " + e.getMessage(),e);

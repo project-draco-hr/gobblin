@@ -16,7 +16,8 @@ synchronized (cancellationRequest) {
       }
 synchronized (cancellationExecution) {
         cancellationExecuted=true;
-        cancellationExecution.notify();
+        jobContext.getJobState().setState(JobState.RunningState.CANCELLED);
+        cancellationExecution.notifyAll();
       }
     }
   }

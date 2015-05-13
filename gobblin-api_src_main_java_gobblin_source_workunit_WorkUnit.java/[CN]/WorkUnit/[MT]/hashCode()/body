@@ -1,0 +1,6 @@
+{
+  final int prime=31;
+  int result=super.hashCode();
+  result=prime * result + ((this.extract == null) ? 0 : this.extract.hashCode());
+  return result;
+}
