@@ -1,0 +1,2 @@
+MessageAndOffset messageAndOffset
+byte[] reuse
