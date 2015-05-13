@@ -7,5 +7,5 @@
  else {
     value=0;
   }
-  results.put(new RowLevelPolicyResultPair(policy,result),new Long(1 + value));
+  results.put(new RowLevelPolicyResultPair(policy,result),Long.valueOf(1 + value));
 }

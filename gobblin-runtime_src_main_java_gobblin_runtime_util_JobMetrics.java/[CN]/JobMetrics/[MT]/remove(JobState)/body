@@ -1,0 +1,6 @@
+{
+  remove(name(jobState));
+  for (  TaskState taskState : jobState.getTaskStates()) {
+    TaskMetrics.remove(taskState);
+  }
+}

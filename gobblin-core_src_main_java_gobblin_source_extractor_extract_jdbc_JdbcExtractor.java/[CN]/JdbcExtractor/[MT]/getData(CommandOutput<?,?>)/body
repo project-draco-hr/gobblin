@@ -10,7 +10,7 @@
     resultset=itr.next();
   }
  else {
-    log.error("Failed to get source record count from Mysql - Resultset has no records");
+    throw new DataRecordException("Failed to get source record count from Mysql - Resultset has no records");
   }
   try {
     final ResultSetMetaData resultsetMetadata=resultset.getMetaData();

@@ -1,7 +1,8 @@
 {
   GobblinMetricsRegistry registry=GobblinMetricsRegistry.getInstance();
-  if (!registry.containsKey(name(task))) {
-    registry.putIfAbsent(name(task),new TaskMetrics(task));
+  String name=name(taskState);
+  if (!registry.containsKey(name)) {
+    registry.putIfAbsent(name,new TaskMetrics(taskState));
   }
-  return (TaskMetrics)registry.get(name(task));
+  return (TaskMetrics)registry.get(name);
 }

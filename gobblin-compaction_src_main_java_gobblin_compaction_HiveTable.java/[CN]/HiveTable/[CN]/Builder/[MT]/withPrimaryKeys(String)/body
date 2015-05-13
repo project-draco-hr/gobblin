@@ -1,0 +1,5 @@
+{
+  List<String> keyAttrsList=Splitter.on(",").trimResults().omitEmptyStrings().splitToList(keyAttrs);
+  this.primaryKeys.addAll(keyAttrsList);
+  return (T)this;
+}
