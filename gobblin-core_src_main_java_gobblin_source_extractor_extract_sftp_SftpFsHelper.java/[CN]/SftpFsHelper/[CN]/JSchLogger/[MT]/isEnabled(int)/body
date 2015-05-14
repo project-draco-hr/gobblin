@@ -10,6 +10,7 @@ case ERROR:
 return log.isErrorEnabled();
 case FATAL:
 return log.isErrorEnabled();
-}
+default :
 return false;
+}
 }

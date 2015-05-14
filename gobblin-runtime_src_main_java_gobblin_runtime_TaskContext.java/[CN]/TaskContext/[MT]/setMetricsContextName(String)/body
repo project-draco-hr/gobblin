@@ -1,3 +1,0 @@
-{
-  this.workUnitState.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,name);
-}

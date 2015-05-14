@@ -5,6 +5,9 @@
   if (this.jmxReporter.isPresent()) {
     this.jmxReporter.get().stop();
   }
+  if (this.kafkaReporter.isPresent()) {
+    this.kafkaReporter.get().stop();
+  }
   try {
     this.closer.close();
   }

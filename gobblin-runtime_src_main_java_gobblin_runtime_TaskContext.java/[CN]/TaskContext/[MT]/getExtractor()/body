@@ -1,6 +1,6 @@
 {
   try {
-    return getSource().getExtractor(this.workUnitState);
+    return getSource().getExtractor(this.taskState);
   }
  catch (  IOException ioe) {
     throw new RuntimeException(ioe);
