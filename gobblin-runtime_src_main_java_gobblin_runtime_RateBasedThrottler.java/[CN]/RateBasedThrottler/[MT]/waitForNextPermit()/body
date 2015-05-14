@@ -1,4 +1,4 @@
 {
-  this.semaphore.acquire();
+  this.permits.acquire();
   return true;
 }

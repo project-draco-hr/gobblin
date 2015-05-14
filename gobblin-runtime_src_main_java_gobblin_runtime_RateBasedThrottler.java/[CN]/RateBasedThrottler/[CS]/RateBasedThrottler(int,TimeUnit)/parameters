@@ -1,2 +1,2 @@
-int maximumRate
+int rateLimit
 TimeUnit timeUnit

@@ -1,0 +1,22 @@
+{
+  Preconditions.checkArgument(state.contains(ConfigurationKeys.EXTRACT_THROTTLING_TYPE_KEY),String.format("Missing configuration property %s for the throttler type",ConfigurationKeys.EXTRACT_THROTTLING_TYPE_KEY));
+  Throttler.Type type=Throttler.Type.forName(state.getProp(ConfigurationKeys.EXTRACT_THROTTLING_TYPE_KEY));
+switch (type) {
+case RATE_BASED:
+    Preconditions.checkArgument(state.contains(ConfigurationKeys.EXTRACT_THROTTLING_RATE_LIMIT_KEY));
+  int rateLimit=Integer.parseInt(state.getProp(ConfigurationKeys.EXTRACT_THROTTLING_RATE_LIMIT_KEY));
+TimeUnit rateTimeUnit=TimeUnit.valueOf(state.getProp(ConfigurationKeys.EXTRACT_THROTTLING_RATE_LIMIT_TIMEUNIT_KEY,ConfigurationKeys.DEFAULT_EXTRACT_THROTTLING_RATE_LIMIT_TIMEUNIT).toUpperCase());
+return new RateBasedThrottler(rateLimit,rateTimeUnit);
+case TIME_BASED:
+Preconditions.checkArgument(state.contains(ConfigurationKeys.EXTRACT_THROTTLING_TIME_LIMIT_KEY));
+long timeLimit=Long.parseLong(state.getProp(ConfigurationKeys.EXTRACT_THROTTLING_TIME_LIMIT_KEY));
+TimeUnit timeTimeUnit=TimeUnit.valueOf(state.getProp(ConfigurationKeys.EXTRACT_THROTTLING_TIME_LIMIT_TIMEUNIT_KEY,ConfigurationKeys.DEFAULT_EXTRACT_THROTTLING_TIME_LIMIT_TIMEUNIT).toUpperCase());
+return new TimeBasedThrottler(timeLimit,timeTimeUnit);
+case COUNT_BASED:
+Preconditions.checkArgument(state.contains(ConfigurationKeys.EXTRACT_THROTTLING_COUNT_LIMIT_KEY));
+long countLimit=Long.parseLong(state.getProp(ConfigurationKeys.EXTRACT_THROTTLING_COUNT_LIMIT_KEY));
+return new CountBasedThrottler(countLimit);
+default :
+throw new IllegalArgumentException("Unrecognized throttler type: " + type.toString());
+}
+}
