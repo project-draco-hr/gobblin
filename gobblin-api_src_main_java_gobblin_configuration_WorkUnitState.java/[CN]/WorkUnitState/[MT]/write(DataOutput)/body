@@ -1,4 +1,4 @@
 {
-  workunit.write(out);
+  this.workunit.write(out);
   super.write(out);
 }

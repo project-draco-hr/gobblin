@@ -1,4 +1,4 @@
 {
-  workunit.readFields(in);
+  this.workunit.readFields(in);
   super.readFields(in);
 }
