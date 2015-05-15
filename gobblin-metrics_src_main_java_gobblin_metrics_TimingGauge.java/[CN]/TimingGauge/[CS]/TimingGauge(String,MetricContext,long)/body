@@ -1,8 +1,0 @@
-{
-  super(context,name,new Gauge<Long>(){
-    @Override public Long getValue(){
-      return value;
-    }
-  }
-);
-}

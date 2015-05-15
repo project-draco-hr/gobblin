@@ -1,0 +1,12 @@
+{
+  List<Object> lineage=Lists.newArrayList(obj);
+  if (obj instanceof Decorator) {
+    lineage=((Decorator)obj).getDecoratorLineage();
+  }
+  for (  Object node : lineage) {
+    if (node instanceof Instrumentable) {
+      return true;
+    }
+  }
+  return false;
+}

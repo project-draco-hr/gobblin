@@ -1,0 +1,3 @@
+{
+  return DecoratorUtils.resolveDecoratorLineage(this,this.embeddedConverter);
+}

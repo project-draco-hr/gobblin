@@ -1,4 +1,4 @@
 {
   this.embeddedForkOperator.init(workUnitState);
-  super.init(workUnitState);
+  super.init(workUnitState,DecoratorUtils.resolveUnderlyingObject(this.embeddedForkOperator).getClass());
 }

@@ -1,0 +1,8 @@
+{
+  if (underlyingCandidate instanceof Decorator) {
+    return ((Decorator)underlyingCandidate).getUnderlying();
+  }
+ else {
+    return underlyingCandidate;
+  }
+}

@@ -1,3 +1,0 @@
-{
-  getMetricContext().register(new TimingGauge(this.name,getMetricContext(),System.currentTimeMillis() - this.startTime));
-}

@@ -1,4 +1,5 @@
 {
+  JobMetrics jobMetrics=JobMetrics.get(jobState);
   for (  String name : jobProps.stringPropertyNames()) {
     this.conf.set(name,jobProps.getProperty(name));
   }
@@ -7,6 +8,7 @@
     LOG.warn("Job working directory already exists for job " + jobName);
     this.fs.delete(mrJobDir,true);
   }
+  Timer.Context populateDistributedCacheTimer=jobMetrics.getTimer(MetricNames.RunJobTimings.DISTRIBUTED_CACHE).time();
   Path jarFileDir=new Path(mrJobDir,"_jars");
   if (jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
     addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY));
@@ -20,6 +22,8 @@
   if (jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
     addHDFSFiles(jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY));
   }
+  populateDistributedCacheTimer.stop();
+  Timer.Context setupMRJobTimer=jobMetrics.getTimer(MetricNames.RunJobTimings.SETUP_MR_JOB).time();
   this.conf.set("mapred.max.map.failures.percent","100");
   this.conf.set("mapreduce.map.failures.maxpercent","100");
   this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
@@ -45,13 +49,16 @@
       NLineInputFormat.setNumLinesPerSplit(this.job,numTasksPerMapper);
     }
   }
+  setupMRJobTimer.stop();
   try {
+    Timer.Context runJobTimer=jobMetrics.getTimer(MetricNames.RunJobTimings.RUN_MR_JOB).time();
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
     if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
       jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,job.getTrackingURL());
     }
     this.job.waitForCompletion(true);
+    runJobTimer.stop();
     if (this.isCancelled) {
       jobState.setState(JobState.RunningState.CANCELLED);
       return;

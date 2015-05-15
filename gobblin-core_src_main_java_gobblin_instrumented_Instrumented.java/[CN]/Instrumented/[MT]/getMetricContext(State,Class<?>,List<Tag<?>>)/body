@@ -20,7 +20,7 @@
   if (construct != null) {
     generatedTags.add(new Tag<String>("construct",construct.toString()));
   }
-  generatedTags.add(new Tag<String>("class",klazz.getCanonicalName()));
+  generatedTags.add(new Tag<String>("class",klazz.isAnonymousClass() ? "anonymous" : klazz.getCanonicalName()));
   GobblinMetrics gobblinMetrics;
   MetricContext.Builder builder=state.contains(METRIC_CONTEXT_NAME_KEY) && (gobblinMetrics=GobblinMetricsRegistry.getInstance().get(state.getProp(METRIC_CONTEXT_NAME_KEY))) != null ? gobblinMetrics.getMetricContext().childBuilder(klazz.getCanonicalName() + "." + randomId) : MetricContext.builder(klazz.getCanonicalName() + "." + randomId);
   return builder.addTags(generatedTags).addTags(tags).build();

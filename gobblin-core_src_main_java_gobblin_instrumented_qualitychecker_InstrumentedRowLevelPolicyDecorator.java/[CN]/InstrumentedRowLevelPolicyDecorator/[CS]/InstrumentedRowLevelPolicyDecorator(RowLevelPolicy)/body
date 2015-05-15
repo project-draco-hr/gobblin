@@ -1,5 +1,5 @@
 {
-  super(policy.getTaskState(),policy.getType());
+  super(policy.getTaskState(),policy.getType(),Optional.<Class<?>>of(DecoratorUtils.resolveUnderlyingObject(policy).getClass()));
   this.embeddedPolicy=policy;
-  this.isEmbeddedInstrumented=InstrumentedRowLevelPolicyBase.class.isInstance(policy);
+  this.isEmbeddedInstrumented=Instrumented.isLineageInstrumented(policy);
 }

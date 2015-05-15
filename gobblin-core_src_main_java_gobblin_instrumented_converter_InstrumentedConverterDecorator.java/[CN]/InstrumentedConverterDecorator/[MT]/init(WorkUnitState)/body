@@ -1,4 +1,4 @@
 {
   this.embeddedConverter=this.embeddedConverter.init(workUnit);
-  return super.init(workUnit);
+  return super.init(workUnit,DecoratorUtils.resolveUnderlyingObject(this.embeddedConverter).getClass());
 }

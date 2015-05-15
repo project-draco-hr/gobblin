@@ -44,7 +44,7 @@
   jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,jobMetrics.getName());
   jobState.setState(JobState.RunningState.PENDING);
   boolean metricsEnabled=GobblinMetrics.isEnabled(jobState);
-  GobblinMetrics.TimingGaugeContext createWorkUnitsTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.CREATE_WORK_UNITS);
+  Timer.Context createWorkUnitsTimer=jobMetrics.getTimer(MetricNames.LauncherTimings.CREATE_WORK_UNITS).time();
   Optional<List<WorkUnit>> workUnits=Optional.fromNullable(source.getWorkunits(jobState));
   if (!workUnits.isPresent()) {
     source.shutdown(jobState);
@@ -62,7 +62,7 @@
   jobState.setStartTime(startTime);
   jobState.setState(JobState.RunningState.RUNNING);
   LOG.info("Starting job " + jobId);
-  GobblinMetrics.TimingGaugeContext addWorkUnitsTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.ADD_WORK_UNITS);
+  Timer.Context addWorkUnitsTimer=jobMetrics.getTimer(MetricNames.LauncherTimings.ADD_WORK_UNITS).time();
   int taskIdSequence=0;
   int multiTaskIdSequence=0;
   for (  WorkUnit workUnit : workUnits.get()) {
@@ -83,7 +83,7 @@
     if (GobblinMetrics.isEnabled(jobProps)) {
       jobMetrics.startMetricReporting(jobProps);
     }
-    GobblinMetrics.TimingGaugeContext writeJobHistoryTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.WRITE_JOB_HISTORY);
+    Timer.Context writeJobHistoryTimer=jobMetrics.getTimer(MetricNames.LauncherTimings.WRITE_JOB_HISTORY).time();
     if (this.jobHistoryStore.isPresent()) {
       try {
         this.jobHistoryStore.get().put(jobState.toJobExecutionInfo());
@@ -93,14 +93,14 @@
       }
     }
     writeJobHistoryTimer.stop();
-    GobblinMetrics.TimingGaugeContext runJobTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.RUN_JOB);
+    Timer.Context runJobTimer=jobMetrics.getTimer(MetricNames.LauncherTimings.RUN_JOB).time();
     runJob(jobName,jobProps,jobState,workUnits.get());
     runJobTimer.stop();
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled",jobId));
       return;
     }
-    GobblinMetrics.TimingGaugeContext commitJobTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.COMMIT_JOB);
+    Timer.Context commitJobTimer=jobMetrics.getTimer(MetricNames.LauncherTimings.COMMIT_JOB).time();
     JobCommitPolicy commitPolicy=JobCommitPolicy.getCommitPolicy(jobState);
     setFinalJobState(commitPolicy,jobState);
     commitJob(jobId,commitPolicy,jobState);
@@ -113,7 +113,7 @@
     throw new JobException(errMsg,t);
   }
  finally {
-    GobblinMetrics.TimingGaugeContext jobCleanupTimer=jobMetrics.singleUseTimer(MetricNames.LauncherTimings.CLEANUP_JOB);
+    Timer.Context jobCleanupTimer=jobMetrics.getTimer(MetricNames.LauncherTimings.CLEANUP_JOB).time();
     source.shutdown(jobState);
     try {
       persistJobState(jobState);
