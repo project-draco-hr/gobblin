@@ -1,0 +1,8 @@
+{
+  super(properties,jobProps);
+  this.conf=conf;
+  URI fsUri=URI.create(this.sysProps.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
+  this.fs=FileSystem.get(fsUri,conf);
+  this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + this.jobContext.getJobName());
+  startCancellationExecutor();
+}

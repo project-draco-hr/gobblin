@@ -1,0 +1,3 @@
+Properties jobProps
+List<WorkUnit> workUnits
+Path mrJobDir

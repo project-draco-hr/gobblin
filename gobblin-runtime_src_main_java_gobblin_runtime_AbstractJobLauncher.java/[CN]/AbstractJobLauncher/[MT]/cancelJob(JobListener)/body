@@ -1,0 +1,22 @@
+{
+synchronized (this.cancellationRequest) {
+    if (this.cancellationRequested) {
+      return;
+    }
+    this.cancellationRequested=true;
+    this.cancellationRequest.notify();
+  }
+synchronized (this.cancellationExecution) {
+    try {
+      while (!this.cancellationExecuted) {
+        this.cancellationExecution.wait();
+      }
+      if (jobListener != null) {
+        jobListener.onJobCancellation(this.jobContext.getJobState());
+      }
+    }
+ catch (    InterruptedException ie) {
+      Thread.currentThread().interrupt();
+    }
+  }
+}

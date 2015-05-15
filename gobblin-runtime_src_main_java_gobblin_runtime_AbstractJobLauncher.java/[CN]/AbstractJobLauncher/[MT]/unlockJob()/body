@@ -1,0 +1,10 @@
+{
+  if (this.jobLockOptional.isPresent()) {
+    try {
+      this.jobLockOptional.get().unlock();
+    }
+ catch (    IOException ioe) {
+      LOG.error(String.format("Failed to unlock for job %s: %s",this.jobContext.getJobId(),ioe),ioe);
+    }
+  }
+}

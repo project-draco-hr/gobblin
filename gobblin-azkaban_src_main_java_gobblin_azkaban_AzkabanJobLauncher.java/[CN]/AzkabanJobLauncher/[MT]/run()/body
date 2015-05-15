@@ -1,3 +1,8 @@
 {
-  this.jobLauncher.launchJob(this.properties,new EmailNotificationJobListener());
+  try {
+    this.jobLauncher.launchJob(this.jobListener);
+  }
+  finally {
+    this.closer.close();
+  }
 }

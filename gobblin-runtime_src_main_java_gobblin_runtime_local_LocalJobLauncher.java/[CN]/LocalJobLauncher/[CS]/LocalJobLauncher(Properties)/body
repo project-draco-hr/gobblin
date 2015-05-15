@@ -1,6 +1,0 @@
-{
-  super(properties);
-  this.taskExecutor=new TaskExecutor(properties);
-  this.taskStateTracker=new LocalTaskStateTracker2(properties,this.taskExecutor);
-  this.serviceManager=new ServiceManager(Lists.newArrayList(this.taskExecutor,this.taskStateTracker));
-}

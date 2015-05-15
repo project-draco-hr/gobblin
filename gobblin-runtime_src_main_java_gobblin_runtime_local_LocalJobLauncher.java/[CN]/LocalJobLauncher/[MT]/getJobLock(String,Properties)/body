@@ -1,4 +1,0 @@
-{
-  URI fsUri=URI.create(jobProps.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
-  return new FileBasedJobLock(FileSystem.get(fsUri,new Configuration()),jobProps.getProperty(ConfigurationKeys.JOB_LOCK_DIR_KEY),jobName);
-}

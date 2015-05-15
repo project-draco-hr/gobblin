@@ -1,0 +1,3 @@
+String jobId
+String message
+State jobState

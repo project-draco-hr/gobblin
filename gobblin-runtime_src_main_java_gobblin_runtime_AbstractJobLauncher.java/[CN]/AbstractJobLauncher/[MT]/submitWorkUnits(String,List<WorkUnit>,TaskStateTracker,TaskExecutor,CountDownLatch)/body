@@ -1,0 +1,16 @@
+{
+  List<Task> tasks=Lists.newArrayList();
+  for (  WorkUnit workUnit : workUnits) {
+    String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
+    WorkUnitState workUnitState=new WorkUnitState(workUnit);
+    workUnitState.setId(taskId);
+    workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
+    workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+    Task task=new Task(new TaskContext(workUnitState),stateTracker,taskExecutor,Optional.of(countDownLatch));
+    stateTracker.registerNewTask(task);
+    tasks.add(task);
+    LOG.info(String.format("Submitting task %s to run",taskId));
+    taskExecutor.submit(task);
+  }
+  return tasks;
+}
