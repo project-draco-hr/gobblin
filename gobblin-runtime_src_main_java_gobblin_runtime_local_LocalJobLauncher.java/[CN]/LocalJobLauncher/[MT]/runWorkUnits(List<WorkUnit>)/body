@@ -1,4 +1,5 @@
 {
+  Optional<Timer.Context> scheduleWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.SCHEDULE_WORK_UNTIS);
   List<WorkUnit> workUnitsToRun=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     if (workUnit instanceof MultiWorkUnit) {
@@ -8,12 +9,14 @@
       workUnitsToRun.add(workUnit);
     }
   }
+  Instrumented.endTimer(scheduleWorkUnitsTimer);
   if (workUnitsToRun.isEmpty()) {
     LOG.warn("No work units to run");
     return;
   }
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
+  Optional<Timer.Context> runWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.RUN_WORK_UNITS);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
   List<Task> tasks=AbstractJobLauncher.submitWorkUnits(this.jobContext.getJobId(),workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
   LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
@@ -21,6 +24,7 @@
     LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnits.size(),jobId));
     this.countDownLatch.await(1,TimeUnit.MINUTES);
   }
+  Instrumented.endTimer(runWorkUnitsTimer);
   if (this.cancellationRequested) {
 synchronized (this.cancellationExecution) {
       if (this.cancellationExecuted) {

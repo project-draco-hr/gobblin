@@ -1,4 +1,5 @@
 {
+  Optional<Timer.Context> distributedCacheSetupTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.DISTRIBUTED_CACHE);
   Path jarFileDir=new Path(mrJobDir,"_jars");
   if (jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
     addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY));
@@ -12,6 +13,8 @@
   if (jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
     addHDFSFiles(jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY));
   }
+  Instrumented.endTimer(distributedCacheSetupTimer);
+  Optional<Timer.Context> setupMRJobTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.SETUP_MR_JOB);
   this.job.setJarByClass(MRJobLauncher.class);
   this.job.setMapperClass(TaskRunner.class);
   this.job.setNumReduceTasks(0);
@@ -32,5 +35,6 @@
       NLineInputFormat.setNumLinesPerSplit(this.job,numTasksPerMapper);
     }
   }
+  Instrumented.endTimer(setupMRJobTimer);
   return jobOutputPath;
 }

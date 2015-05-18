@@ -13,15 +13,19 @@
     this.fs.delete(mrJobDir,true);
   }
   try {
+    Optional<Timer.Context> cleanStagingDataTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.CLEAN_STAGING_DATA);
     JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
+    Instrumented.endTimer(cleanStagingDataTimer);
     Path jobOutputPath=prepareHadoopJob(this.jobProps,workUnits,mrJobDir);
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
     if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
       jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
     }
+    Optional<Timer.Context> runMRJobTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.RUN_MR_JOB);
     LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
     this.job.waitForCompletion(true);
+    Instrumented.endTimer(runMRJobTimer);
     if (this.cancellationRequested) {
 synchronized (this.cancellationExecution) {
         if (this.cancellationExecuted) {
