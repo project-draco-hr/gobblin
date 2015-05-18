@@ -1,0 +1,12 @@
+{
+  if (properties.contains(ConfigurationKeys.WRITER_FILE_REPLICATION_FACTOR)) {
+    fs.setReplication(outputFile,(short)properties.getPropAsInt(ConfigurationKeys.WRITER_FILE_REPLICATION_FACTOR));
+  }
+  if (properties.contains(ConfigurationKeys.WRITER_FILE_PERMISSIONS)) {
+    short permissions=(short)properties.getPropAsInt(ConfigurationKeys.WRITER_FILE_PERMISSIONS);
+    fs.setPermission(outputFile,new FsPermission(permissions));
+  }
+  if (properties.contains(ConfigurationKeys.WRITER_FILE_OWNER) && properties.contains(ConfigurationKeys.WRITER_FILE_GROUP)) {
+    fs.setOwner(outputFile,properties.getProp(ConfigurationKeys.WRITER_FILE_OWNER),properties.getProp(ConfigurationKeys.WRITER_FILE_GROUP));
+  }
+}

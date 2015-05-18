@@ -13,14 +13,5 @@
   if (!this.fs.rename(this.stagingFile,this.outputFile)) {
     throw new IOException("Failed to commit data from " + this.stagingFile + " to "+ this.outputFile);
   }
-  if (properties.contains(ConfigurationKeys.HDFS_FILE_REPLICATION_FACTOR)) {
-    fs.setReplication(outputFile,(short)properties.getPropAsInt(ConfigurationKeys.HDFS_FILE_REPLICATION_FACTOR));
-  }
-  if (properties.contains(ConfigurationKeys.HDFS_FILE_PERMISSIONS)) {
-    short permissions=(short)properties.getPropAsInt(ConfigurationKeys.HDFS_FILE_PERMISSIONS);
-    fs.setPermission(outputFile,new FsPermission(permissions));
-  }
-  if (properties.contains(ConfigurationKeys.HDFS_FILE_OWNER) && properties.contains(ConfigurationKeys.HDFS_FILE_GROUP)) {
-    fs.setOwner(outputFile,properties.getProp(ConfigurationKeys.HDFS_FILE_OWNER),properties.getProp(ConfigurationKeys.HDFS_FILE_GROUP));
-  }
+  setFileAttributes();
 }
