@@ -1,0 +1,5 @@
+{
+  Preconditions.checkElementIndex(idx,this.values.size());
+  Preconditions.checkArgument(this.values.get(idx) < Long.MAX_VALUE);
+  this.values.set(idx,this.values.get(idx) + 1);
+}

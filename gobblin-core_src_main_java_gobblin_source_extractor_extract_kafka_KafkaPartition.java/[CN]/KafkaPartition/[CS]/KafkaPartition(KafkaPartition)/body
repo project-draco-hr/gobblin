@@ -1,5 +1,5 @@
 {
   this.topicName=other.topicName;
   this.id=other.id;
-  this.leader=new KafkaLeader(other.leader.id,other.leader.host,other.leader.port);
+  this.leader=new KafkaLeader(other.leader.id,other.leader.hostAndPort);
 }

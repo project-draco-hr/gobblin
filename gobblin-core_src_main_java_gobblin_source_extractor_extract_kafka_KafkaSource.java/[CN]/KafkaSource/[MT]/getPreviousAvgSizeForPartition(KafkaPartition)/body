@@ -1,10 +1,10 @@
 {
   if (this.previousAvgSizes.containsKey(partition)) {
-    LOG.info(String.format("Estimated avg event size for partition %s:%d is %d",partition.getTopicName(),partition.getId(),this.previousAvgSizes.get(partition)));
+    LOG.info(String.format("Estimated avg event size for partition %s is %d",partition,this.previousAvgSizes.get(partition)));
     return this.previousAvgSizes.get(partition);
   }
  else {
-    LOG.warn(String.format("Avg event size for partition %s:%d not available, using default size %d",partition.getTopicName(),partition.getId(),DEFAULT_AVG_EVENT_SIZE));
+    LOG.warn(String.format("Avg event size for partition %s not available, using default size %d",partition,DEFAULT_AVG_EVENT_SIZE));
     return DEFAULT_AVG_EVENT_SIZE;
   }
 }

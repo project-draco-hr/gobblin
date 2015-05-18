@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(wm instanceof MultiLongWatermark);
+  MultiLongWatermark other=(MultiLongWatermark)wm;
+  Preconditions.checkArgument(this.values.size() == other.values.size(),String.format("%s.%s can only compare two watermarks with the same number of values",MultiLongWatermark.class.getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName()));
+  ComparisonChain cc=ComparisonChain.start();
+  for (int i=0; i < this.values.size(); i++) {
+    cc.compare(this.values.get(i),other.values.get(i));
+  }
+  return cc.result();
+}

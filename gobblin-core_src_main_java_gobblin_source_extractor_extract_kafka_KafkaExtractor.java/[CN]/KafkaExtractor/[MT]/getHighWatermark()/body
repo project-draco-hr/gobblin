@@ -1,3 +1,3 @@
 {
-  return this.highWatermark;
+  return 0;
 }

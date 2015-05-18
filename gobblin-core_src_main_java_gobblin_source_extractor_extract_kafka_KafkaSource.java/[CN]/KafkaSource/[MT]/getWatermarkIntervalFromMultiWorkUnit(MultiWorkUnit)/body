@@ -1,0 +1,9 @@
+{
+  MultiLongWatermark lowWatermark=new MultiLongWatermark();
+  MultiLongWatermark expectedHighWatermark=new MultiLongWatermark();
+  for (  WorkUnit workUnit : multiWorkUnit.getWorkUnits()) {
+    lowWatermark.add(workUnit.getLowWaterMark());
+    expectedHighWatermark.add(workUnit.getHighWaterMark());
+  }
+  return new WatermarkInterval(lowWatermark,expectedHighWatermark);
+}

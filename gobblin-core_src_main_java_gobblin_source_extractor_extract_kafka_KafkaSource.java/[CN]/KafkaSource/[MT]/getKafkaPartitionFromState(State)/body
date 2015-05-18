@@ -1,4 +1,0 @@
-{
-  Preconditions.checkArgument(state.contains(TOPIC_NAME) && state.contains(PARTITION_ID));
-  return new KafkaPartition.Builder().withTopicName(state.getProp(TOPIC_NAME)).withId(state.getPropAsInt(PARTITION_ID)).build();
-}
