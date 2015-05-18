@@ -1,4 +1,10 @@
 {
-  new LocalJobLauncher(this.properties).launchJob(this.jobProps,null);
+  Closer closer=Closer.create();
+  try {
+    closer.register(new LocalJobLauncher(this.properties,this.jobProps)).launchJob(null);
+  }
+  finally {
+    closer.close();
+  }
   verifyJobState(3);
 }

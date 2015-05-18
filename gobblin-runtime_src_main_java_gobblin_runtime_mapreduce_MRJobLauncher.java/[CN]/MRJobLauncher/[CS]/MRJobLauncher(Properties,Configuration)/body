@@ -1,6 +1,0 @@
-{
-  super(properties);
-  this.conf=conf;
-  URI fsUri=URI.create(this.properties.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
-  this.fs=FileSystem.get(fsUri,conf);
-}

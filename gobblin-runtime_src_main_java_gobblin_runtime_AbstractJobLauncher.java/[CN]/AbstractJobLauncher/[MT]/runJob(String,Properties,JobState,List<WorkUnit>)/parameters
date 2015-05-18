@@ -1,4 +1,0 @@
-String jobName
-Properties jobProps
-JobState jobState
-List<WorkUnit> workUnits

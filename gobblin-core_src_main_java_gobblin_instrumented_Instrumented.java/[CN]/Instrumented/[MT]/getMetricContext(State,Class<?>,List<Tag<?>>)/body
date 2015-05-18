@@ -1,5 +1,5 @@
 {
-  int randomId=(new Random()).nextInt();
+  int randomId=RAND.nextInt();
   Constructs construct=null;
   if (Converter.class.isAssignableFrom(klazz)) {
     construct=Constructs.CONVERTER;

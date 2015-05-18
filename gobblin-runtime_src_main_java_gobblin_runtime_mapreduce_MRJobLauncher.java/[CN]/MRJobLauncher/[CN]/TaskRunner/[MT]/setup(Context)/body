@@ -4,8 +4,7 @@
     this.taskStateStore=new FsStateStore<TaskState>(this.fs,SequenceFileOutputFormat.getOutputPath(context).toUri().getPath(),TaskState.class);
   }
  catch (  IOException ioe) {
-    LOG.error("Failed to setup the mapper task",ioe);
-    return;
+    throw new RuntimeException("Failed to setup the mapper task",ioe);
   }
   this.taskExecutor=new TaskExecutor(context.getConfiguration());
   this.taskStateTracker=new MRTaskStateTracker(context);
@@ -14,5 +13,7 @@
     this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
   }
  catch (  TimeoutException te) {
+    LOG.error("Timed out while waiting for the service manager to start up",te);
+    throw new RuntimeException(te);
   }
 }

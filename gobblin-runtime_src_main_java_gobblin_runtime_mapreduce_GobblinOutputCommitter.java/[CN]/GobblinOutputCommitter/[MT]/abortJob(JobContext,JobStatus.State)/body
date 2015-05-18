@@ -37,8 +37,11 @@
     }
   }
   finally {
-    if (fs.exists(mrJobDir)) {
-      fs.delete(mrJobDir,true);
+    try {
+      cleanUpWorkingDirectory(mrJobDir,fs);
+    }
+  finally {
+      super.abortJob(jobContext,state);
     }
   }
 }

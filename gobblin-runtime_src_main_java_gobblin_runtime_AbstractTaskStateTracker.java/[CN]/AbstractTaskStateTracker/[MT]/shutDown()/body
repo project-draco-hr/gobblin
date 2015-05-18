@@ -1,4 +1,4 @@
 {
   this.logger.info("Stopping the task state tracker");
-  this.taskMetricsUpdaterExecutor.shutdown();
+  ExecutorsUtils.shutdownExecutorService(this.taskMetricsUpdaterExecutor);
 }

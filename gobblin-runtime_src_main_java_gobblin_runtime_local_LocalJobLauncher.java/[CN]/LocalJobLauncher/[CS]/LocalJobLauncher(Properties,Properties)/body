@@ -1,0 +1,8 @@
+{
+  super(sysProps,jobProps);
+  this.taskExecutor=new TaskExecutor(sysProps);
+  this.taskStateTracker=new LocalTaskStateTracker2(sysProps,this.taskExecutor);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(this.taskExecutor,this.taskStateTracker));
+  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
+  startCancellationExecutor();
+}

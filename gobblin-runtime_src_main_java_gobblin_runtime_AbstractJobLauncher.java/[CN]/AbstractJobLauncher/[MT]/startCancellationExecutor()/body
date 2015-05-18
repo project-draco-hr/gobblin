@@ -1,0 +1,25 @@
+{
+  this.cancellationExecutor.execute(new Runnable(){
+    @Override public void run(){
+synchronized (cancellationRequest) {
+        try {
+          while (!cancellationRequested) {
+            cancellationRequest.wait();
+          }
+          LOG.info("Cancellation has been requested for job " + jobContext.getJobId());
+          executeCancellation();
+          LOG.info("Cancellation has been executed for job " + jobContext.getJobId());
+        }
+ catch (        InterruptedException ie) {
+          Thread.currentThread().interrupt();
+        }
+      }
+synchronized (cancellationExecution) {
+        cancellationExecuted=true;
+        jobContext.getJobState().setState(JobState.RunningState.CANCELLED);
+        cancellationExecution.notifyAll();
+      }
+    }
+  }
+);
+}
