@@ -1,9 +1,0 @@
-{
-  Assert.assertTrue(this.throttler.waitForNextPermit());
-  Thread.sleep(1000);
-  Assert.assertTrue(this.throttler.waitForNextPermit());
-  Thread.sleep(1000);
-  Assert.assertTrue(this.throttler.waitForNextPermit());
-  Thread.sleep(1100);
-  Assert.assertFalse(this.throttler.waitForNextPermit());
-}

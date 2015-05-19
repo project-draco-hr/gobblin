@@ -1,9 +1,0 @@
-{
-  this.permitRestockExecutor.scheduleAtFixedRate(new Runnable(){
-    @Override public void run(){
-      permits.drainPermits();
-      permits.release(rateLimit);
-    }
-  }
-,1,1,this.timeUnit);
-}

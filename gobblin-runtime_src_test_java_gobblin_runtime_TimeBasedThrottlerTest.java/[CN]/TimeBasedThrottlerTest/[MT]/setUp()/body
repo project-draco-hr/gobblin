@@ -1,4 +1,0 @@
-{
-  this.throttler=new TimeBasedThrottler(3l,TimeUnit.SECONDS);
-  this.throttler.start();
-}

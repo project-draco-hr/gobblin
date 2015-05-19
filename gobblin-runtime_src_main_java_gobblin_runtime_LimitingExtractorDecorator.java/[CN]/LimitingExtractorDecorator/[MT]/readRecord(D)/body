@@ -1,0 +1,12 @@
+{
+  try {
+    if (this.limiter.acquirePermits(1)) {
+      return this.extractor.readRecord(reuse);
+    }
+    return null;
+  }
+ catch (  InterruptedException ie) {
+    Thread.currentThread().interrupt();
+    throw new IOException("Interrupted while trying to acquire the next permit",ie);
+  }
+}

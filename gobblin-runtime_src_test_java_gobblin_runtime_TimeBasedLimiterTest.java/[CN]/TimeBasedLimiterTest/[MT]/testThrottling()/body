@@ -1,0 +1,9 @@
+{
+  Assert.assertTrue(this.limiter.acquirePermits(1));
+  Thread.sleep(1000);
+  Assert.assertTrue(this.limiter.acquirePermits(1));
+  Thread.sleep(1000);
+  Assert.assertTrue(this.limiter.acquirePermits(1));
+  Thread.sleep(1100);
+  Assert.assertFalse(this.limiter.acquirePermits(1));
+}

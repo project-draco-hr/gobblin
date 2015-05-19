@@ -1,0 +1,4 @@
+{
+  this.permits.acquire(permits);
+  return true;
+}

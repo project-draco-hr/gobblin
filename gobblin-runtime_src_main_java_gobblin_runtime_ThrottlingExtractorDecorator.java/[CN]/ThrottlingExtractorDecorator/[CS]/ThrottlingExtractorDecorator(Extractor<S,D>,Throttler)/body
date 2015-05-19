@@ -1,5 +1,0 @@
-{
-  this.extractor=extractor;
-  this.throttler=throttler;
-  this.throttler.start();
-}

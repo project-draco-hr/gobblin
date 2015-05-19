@@ -1,6 +1,0 @@
-{
-  this.rateLimit=rateLimit;
-  this.timeUnit=timeUnit;
-  this.permits=new Semaphore(rateLimit);
-  this.permitRestockExecutor=new ScheduledThreadPoolExecutor(1,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("RateBaseThrottler")));
-}
