@@ -1,0 +1,2 @@
+JsonElement jsonElement
+Class<? extends Watermark> clazz

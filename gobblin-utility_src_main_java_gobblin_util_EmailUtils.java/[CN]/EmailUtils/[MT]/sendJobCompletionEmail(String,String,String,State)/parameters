@@ -1,4 +1,4 @@
-String jobName
+String jobId
 String message
 String state
 State jobState

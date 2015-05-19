@@ -1,0 +1,11 @@
+{
+  try {
+    this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
+  }
+ catch (  TimeoutException te) {
+    LOG.warn("Timed out while waiting for the service manager to be stopped",te);
+  }
+ finally {
+    super.close();
+  }
+}

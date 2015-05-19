@@ -1,0 +1,7 @@
+{
+  if (this.countDownLatch != null) {
+    while (this.countDownLatch.getCount() > 0) {
+      this.countDownLatch.countDown();
+    }
+  }
+}

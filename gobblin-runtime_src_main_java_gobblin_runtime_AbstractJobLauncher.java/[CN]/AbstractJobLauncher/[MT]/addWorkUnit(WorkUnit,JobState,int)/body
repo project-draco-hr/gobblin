@@ -1,8 +1,0 @@
-{
-  workUnit.setProp(ConfigurationKeys.JOB_ID_KEY,jobState.getJobId());
-  String taskId=JobLauncherUtils.newTaskId(jobState.getJobId(),sequence);
-  workUnit.setId(taskId);
-  workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-  jobState.addTask();
-  jobState.addTaskState(new TaskState(new WorkUnitState(workUnit)));
-}

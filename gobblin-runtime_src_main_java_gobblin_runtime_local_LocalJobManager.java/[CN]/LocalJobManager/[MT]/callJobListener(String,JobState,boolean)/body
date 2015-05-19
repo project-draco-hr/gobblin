@@ -1,6 +1,6 @@
 {
   JobListener jobListener=runOnce ? this.jobListenerMap.remove(jobName) : this.jobListenerMap.get(jobName);
   if (jobListener != null) {
-    jobListener.jobCompleted(jobState);
+    jobListener.onJobCompletion(jobState);
   }
 }

@@ -1,0 +1,14 @@
+{
+  try {
+    if (!this.job.isComplete()) {
+      LOG.info("Killing the Hadoop MR job for job " + this.jobContext.getJobId());
+      this.job.killJob();
+    }
+  }
+ catch (  IllegalStateException ise) {
+    LOG.error("The Hadoop MR job has not started for job " + this.jobContext.getJobId());
+  }
+catch (  IOException ioe) {
+    LOG.error("Failed to kill the Hadoop MR job for job " + this.jobContext.getJobId());
+  }
+}
