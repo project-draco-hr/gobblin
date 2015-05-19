@@ -1,0 +1,15 @@
+{
+  String reporterClasses=properties.getProperty(ConfigurationKeys.METRICS_CUSTOM_BUILDERS);
+  if (Strings.isNullOrEmpty(reporterClasses)) {
+    return;
+  }
+  for (  String reporterClass : Splitter.on(",").split(reporterClasses)) {
+    try {
+      ScheduledReporter reporter=((CustomReporterBuilder)Class.forName(reporterClass).getConstructor().newInstance()).getReporter(this.metricContext,properties);
+      this.scheduledReporters.add(reporter);
+    }
+ catch (    Exception exception) {
+      LOGGER.warn("Could not create metric reporter from builder " + reporterClass + ".",exception);
+    }
+  }
+}

@@ -22,5 +22,5 @@
     LOGGER.warn("Kafka metrics reporting format " + reportingFormat + " not recognized. Will report in json format.",exception);
     formatEnum=KafkaReportingFormats.JSON;
   }
-  this.kafkaReporter=Optional.of(formatEnum.reporterBuilder(this.metricContext).build(brokers,topic));
+  this.scheduledReporters.add(this.closer.register(formatEnum.reporterBuilder(this.metricContext).build(brokers,topic)));
 }

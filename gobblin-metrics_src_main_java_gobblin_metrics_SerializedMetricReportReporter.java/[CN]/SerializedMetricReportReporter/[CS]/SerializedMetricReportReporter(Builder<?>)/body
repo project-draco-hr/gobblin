@@ -1,0 +1,13 @@
+{
+  super(builder);
+  this.byteArrayOutputStream=new ByteArrayOutputStream();
+  this.out=this.closer.register(new DataOutputStream(byteArrayOutputStream));
+  this.encoder=getEncoder(out);
+  this.reportMetrics=this.encoder != null;
+  if (this.reportMetrics) {
+    this.writerOpt=Optional.of(new SpecificDatumWriter<MetricReport>(MetricReport.class));
+  }
+ else {
+    this.writerOpt=Optional.absent();
+  }
+}
