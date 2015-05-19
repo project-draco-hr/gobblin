@@ -1,8 +1,10 @@
 {
+  Set<String> result=new HashSet<String>();
   int columnCount=resultsetMetadata.getColumnCount();
   for (int i=1; i <= columnCount; i++) {
     if (resultsetMetadata.getColumnType(i) == Types.LONGVARBINARY || resultsetMetadata.getColumnType(i) == Types.BINARY) {
-      input.add(resultsetMetadata.getColumnName(i));
+      result.add(resultsetMetadata.getColumnName(i));
     }
   }
+  return result;
 }

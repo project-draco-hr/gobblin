@@ -15,23 +15,17 @@
   try {
     final ResultSetMetaData resultsetMetadata=resultset.getMetaData();
     final int columnCount=resultsetMetadata.getColumnCount();
-    Base64.Encoder encoder=Base64.getEncoder();
     int batchSize=this.workUnit.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_FETCH_SIZE,0);
     batchSize=(batchSize == 0 ? ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE : batchSize);
     int recordCount=0;
-    Set<String> blobDataNames=new HashSet<String>();
-    boolean initialed_blobDataNames=false;
+    Set<String> blobDataNames=this.getBlobTypeColumnNames(resultsetMetadata);
     while (resultset.next()) {
-      if (!initialed_blobDataNames) {
-        initialBlobTypeHashSet(blobDataNames,resultsetMetadata);
-        initialed_blobDataNames=true;
-      }
       List<String> record=new ArrayList<String>();
       for (int i=1; i <= columnCount; i++) {
         if (blobDataNames.contains(resultsetMetadata.getColumnName(i))) {
           Blob logBlob=resultset.getBlob(i);
           byte[] ba=logBlob.getBytes(1L,(int)(logBlob.length()));
-          String baString=encoder.encodeToString(ba);
+          String baString=Base64.encodeBase64String(ba);
           record.add(baString);
         }
  else {
