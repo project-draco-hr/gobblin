@@ -1,0 +1,79 @@
+{
+  String jobId=this.jobContext.getJobId();
+  JobState jobState=this.jobContext.getJobState();
+  try {
+    if (!tryLockJob()) {
+      throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
+    }
+    Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
+    if (!workUnits.isPresent()) {
+      jobState.setState(JobState.RunningState.FAILED);
+      throw new JobException("Failed to get work units for job " + jobId);
+    }
+    if (workUnits.get().isEmpty()) {
+      LOG.warn("No work units have been created for job " + jobId);
+      return;
+    }
+    long startTime=System.currentTimeMillis();
+    jobState.setStartTime(startTime);
+    jobState.setState(JobState.RunningState.RUNNING);
+    LOG.info("Starting job " + jobId);
+    int taskIdSequence=0;
+    int multiTaskIdSequence=0;
+    for (    WorkUnit workUnit : workUnits.get()) {
+      if (workUnit instanceof MultiWorkUnit) {
+        String multiTaskId=JobLauncherUtils.newMultiTaskId(jobId,multiTaskIdSequence++);
+        workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
+        workUnit.setId(multiTaskId);
+        for (        WorkUnit innerWorkUnit : ((MultiWorkUnit)workUnit).getWorkUnits()) {
+          addWorkUnit(innerWorkUnit,taskIdSequence++,jobState);
+        }
+      }
+ else {
+        addWorkUnit(workUnit,taskIdSequence++,jobState);
+      }
+    }
+    if (this.jobContext.getJobMetricsOptional().isPresent()) {
+      this.jobContext.getJobMetricsOptional().get().startMetricReporting(this.jobProps);
+    }
+    storeJobExecutionInfo();
+    runWorkUnits(workUnits.get());
+    if (jobState.getState() == JobState.RunningState.CANCELLED) {
+      LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
+      return;
+    }
+    setFinalJobState(jobState);
+    commitJob(jobState);
+  }
+ catch (  Throwable t) {
+    jobState.setState(JobState.RunningState.FAILED);
+    String errMsg="Failed to launch and run job " + jobId;
+    LOG.error(errMsg + ": " + t,t);
+    throw new JobException(errMsg,t);
+  }
+ finally {
+    long endTime=System.currentTimeMillis();
+    jobState.setEndTime(endTime);
+    jobState.setDuration(endTime - jobState.getStartTime());
+    try {
+      persistJobState(jobState);
+    }
+ catch (    Throwable t) {
+      LOG.error(String.format("Failed to persist job state of job %s: %s",jobId,t),t);
+      jobState.setState(JobState.RunningState.FAILED);
+    }
+    cleanupStagingData(jobState);
+    storeJobExecutionInfo();
+    if (this.jobContext.getJobMetricsOptional().isPresent()) {
+      this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
+      JobMetrics.remove(jobState);
+    }
+    unlockJob();
+  }
+  if (jobListener != null) {
+    jobListener.onJobCompletion(jobState);
+  }
+  if (jobState.getState() == JobState.RunningState.FAILED) {
+    throw new JobException(String.format("Job %s failed",jobId));
+  }
+}

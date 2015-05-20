@@ -1,0 +1,7 @@
+{
+  GobblinMetricsRegistry registry=GobblinMetricsRegistry.getInstance();
+  if (!registry.containsKey(id)) {
+    registry.putIfAbsent(id,new GobblinMetrics(id,parentContext,tags));
+  }
+  return registry.get(id);
+}

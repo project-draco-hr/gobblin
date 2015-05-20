@@ -6,7 +6,7 @@
     resultset=itr.next();
   }
  else {
-    log.error("Failed to get schema from Mysql - Resultset has no records");
+    throw new SchemaException("Failed to get schema from Mysql - Resultset has no records");
   }
   JsonArray fieldJsonArray=new JsonArray();
   try {

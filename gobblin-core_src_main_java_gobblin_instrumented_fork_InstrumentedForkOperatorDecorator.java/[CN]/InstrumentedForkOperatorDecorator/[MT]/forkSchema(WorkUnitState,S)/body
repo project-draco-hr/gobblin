@@ -1,0 +1,3 @@
+{
+  return embeddedForkOperator.forkSchema(workUnitState,input);
+}

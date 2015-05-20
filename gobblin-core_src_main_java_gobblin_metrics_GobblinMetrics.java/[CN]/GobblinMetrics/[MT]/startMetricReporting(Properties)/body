@@ -1,0 +1,20 @@
+{
+  if (this.reportingStarted) {
+    LOGGER.warn("Metric reporting has already started");
+    return;
+  }
+  buildFileMetricReporter(properties);
+  long reportInterval=Long.parseLong(properties.getProperty(ConfigurationKeys.METRICS_REPORT_INTERVAL_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORT_INTERVAL));
+  if (this.fileReporter.isPresent()) {
+    this.fileReporter.get().start(reportInterval,TimeUnit.MILLISECONDS);
+  }
+  buildJmxMetricReporter(properties);
+  if (this.jmxReporter.isPresent()) {
+    this.jmxReporter.get().start();
+  }
+  buildKafkaReporter(properties);
+  if (this.kafkaReporter.isPresent()) {
+    this.kafkaReporter.get().start(reportInterval,TimeUnit.MILLISECONDS);
+  }
+  this.reportingStarted=true;
+}

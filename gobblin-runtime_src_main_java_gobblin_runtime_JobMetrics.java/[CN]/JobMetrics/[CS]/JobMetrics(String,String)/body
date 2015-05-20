@@ -1,4 +1,0 @@
-{
-  this.jobName=jobName;
-  this.jobId=jobId;
-}

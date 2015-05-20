@@ -1,0 +1,15 @@
+{
+switch (field$) {
+case 0:
+    tags=(java.util.Map<java.lang.String,java.lang.String>)value$;
+  break;
+case 1:
+timestamp=(java.lang.Long)value$;
+break;
+case 2:
+metrics=(java.util.List<gobblin.metrics.Metric>)value$;
+break;
+default :
+throw new org.apache.avro.AvroRuntimeException("Bad index");
+}
+}

@@ -1,0 +1,12 @@
+{
+  Path mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),this.jobContext.getJobName());
+  try {
+    if (this.fs.exists(mrJobDir)) {
+      this.fs.delete(mrJobDir,true);
+      LOG.info("Deleted working directory " + mrJobDir);
+    }
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to delete working directory " + mrJobDir);
+  }
+}

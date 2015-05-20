@@ -1,3 +1,5 @@
 {
-  this.hadoopCounterReporter.close();
+  if (this.hadoopCounterReporter != null) {
+    this.hadoopCounterReporter.close();
+  }
 }

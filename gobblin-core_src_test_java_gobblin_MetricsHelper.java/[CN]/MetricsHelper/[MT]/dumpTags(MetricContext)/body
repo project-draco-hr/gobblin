@@ -1,0 +1,7 @@
+{
+  Map<String,String> output=new HashMap<String,String>();
+  for (  Tag<?> tag : context.getTags()) {
+    output.put(tag.getKey(),tag.getValue().toString());
+  }
+  return output;
+}

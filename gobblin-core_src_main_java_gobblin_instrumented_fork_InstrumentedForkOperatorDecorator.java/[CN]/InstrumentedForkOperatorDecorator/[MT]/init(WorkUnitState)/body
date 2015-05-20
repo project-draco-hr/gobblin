@@ -1,0 +1,4 @@
+{
+  this.embeddedForkOperator.init(workUnitState);
+  super.init(workUnitState);
+}

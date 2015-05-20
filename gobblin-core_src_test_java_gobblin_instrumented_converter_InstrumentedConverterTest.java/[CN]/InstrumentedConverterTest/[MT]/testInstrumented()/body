@@ -1,0 +1,4 @@
+{
+  TestInstrumentedConverter converter=new TestInstrumentedConverter();
+  testBase(converter);
+}

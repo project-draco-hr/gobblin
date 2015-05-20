@@ -1,0 +1,19 @@
+{
+  GobblinMetrics gobblinMetrics=GobblinMetrics.get("parent.context");
+  State state=new State();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
+  state.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,gobblinMetrics.getName());
+  Instrumented instrumented=new Instrumented(state,InstrumentedExtractor.class);
+  Assert.assertNotNull(instrumented.getMetricContext());
+  Assert.assertTrue(instrumented.getMetricContext().getParent().isPresent());
+  Assert.assertEquals(instrumented.getMetricContext().getParent().get(),gobblinMetrics.getMetricContext());
+  List<Tag<?>> tags=instrumented.getMetricContext().getTags();
+  Map<String,String> expectedTags=new HashMap<String,String>();
+  expectedTags.put("construct",Constructs.EXTRACTOR.toString());
+  expectedTags.put("class",InstrumentedExtractor.class.getCanonicalName());
+  Assert.assertEquals(tags.size(),expectedTags.size());
+  for (  Tag<?> tag : tags) {
+    Assert.assertTrue(expectedTags.containsKey(tag.getKey()));
+    Assert.assertEquals(expectedTags.get(tag.getKey()),tag.getValue().toString());
+  }
+}

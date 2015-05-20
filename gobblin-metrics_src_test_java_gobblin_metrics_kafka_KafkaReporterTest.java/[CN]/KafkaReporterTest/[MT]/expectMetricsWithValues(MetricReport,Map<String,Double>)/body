@@ -1,0 +1,10 @@
+{
+  List<Metric> metricIterator=report.getMetrics();
+  for (  Metric metric : metricIterator) {
+    if (expected.containsKey(metric.getName())) {
+      Assert.assertEquals(expected.get(metric.getName()),metric.getValue());
+      expected.remove(metric.getName());
+    }
+  }
+  Assert.assertTrue(expected.isEmpty());
+}

@@ -1,0 +1,4 @@
+{
+  this.embeddedConverter=converter;
+  this.isEmbeddedInstrumented=InstrumentedConverterBase.class.isInstance(converter);
+}

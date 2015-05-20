@@ -6,6 +6,7 @@
       sb.append(" AND ");
     }
     sb.append(table.getNameWithJobId(this.jobId) + "." + keyAttribute+ " IS NULL");
+    addAnd=true;
   }
   return sb.toString();
 }

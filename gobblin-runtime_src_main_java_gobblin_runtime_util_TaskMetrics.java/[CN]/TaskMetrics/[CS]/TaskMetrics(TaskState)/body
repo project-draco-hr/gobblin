@@ -1,0 +1,4 @@
+{
+  super(name(taskState),parentContextForTask(taskState),tagsForTask(taskState));
+  this.jobId=taskState.getJobId();
+}

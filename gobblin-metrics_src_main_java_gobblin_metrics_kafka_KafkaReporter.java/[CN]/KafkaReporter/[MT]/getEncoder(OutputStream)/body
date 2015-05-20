@@ -1,0 +1,9 @@
+{
+  try {
+    return EncoderFactory.get().jsonEncoder(MetricReport.SCHEMA$,out);
+  }
+ catch (  IOException exception) {
+    LOGGER.warn("KafkaReporter serializer failed to initialize. Will not report Metrics to Kafka.",exception);
+    return null;
+  }
+}

@@ -1,5 +1,0 @@
-{
-  List<byte[]> metrics=new ArrayList<byte[]>();
-  metrics.add(serializeValue(name,value,path));
-  return metrics;
-}

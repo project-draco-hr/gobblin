@@ -15,5 +15,8 @@ break;
 case FATAL:
 log.error(message);
 break;
+default :
+log.info(message);
+break;
 }
 }

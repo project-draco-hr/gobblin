@@ -1,4 +1,6 @@
 {
-  this.workUnitState=workUnitState;
   this.workUnit=workUnitState.getWorkunit();
+  this.taskState=new TaskState(workUnitState);
+  this.taskMetrics=TaskMetrics.get(this.taskState);
+  this.taskState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,this.taskMetrics.getName());
 }

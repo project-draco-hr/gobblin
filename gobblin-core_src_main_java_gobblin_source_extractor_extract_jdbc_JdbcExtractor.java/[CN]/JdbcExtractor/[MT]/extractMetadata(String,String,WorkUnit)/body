@@ -36,7 +36,7 @@
       this.workUnitState.setProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY,derivedWatermarkColumnName);
     }
     String outputColProjection=Joiner.on(",").useForNull("null").join(this.columnList);
-    outputColProjection=outputColProjection.replace(derivedWatermarkColumnName,getWatermarkColumnName(watermarkColumn) + " AS " + derivedWatermarkColumnName);
+    outputColProjection=outputColProjection.replace(derivedWatermarkColumnName,Utils.getCoalesceColumnNames(watermarkColumn) + " AS " + derivedWatermarkColumnName);
     this.setOutputColumnProjection(outputColProjection);
     String extractQuery=this.getExtractQuery(schema,entity,inputQuery);
     this.setHeaderRecord(headerColumns);

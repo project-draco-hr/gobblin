@@ -5,7 +5,7 @@
   }
   String jobName=jobState.getJobName();
   String jobId=jobState.getJobId();
-  LOG.info("Persisting job states of job " + jobId);
-  this.jobStateStore.put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
-  this.jobStateStore.createAlias(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,"current" + JOB_STATE_STORE_TABLE_SUFFIX);
+  LOG.info("Persisting job state of job " + jobId);
+  this.jobContext.getJobStateStore().put(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,jobState);
+  this.jobContext.getJobStateStore().createAlias(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX,"current" + JOB_STATE_STORE_TABLE_SUFFIX);
 }

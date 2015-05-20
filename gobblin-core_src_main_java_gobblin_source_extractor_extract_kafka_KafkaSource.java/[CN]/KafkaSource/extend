@@ -1,1 +1,1 @@
-EventBasedSource<Schema,GenericRecord>
+EventBasedSource<S,D>

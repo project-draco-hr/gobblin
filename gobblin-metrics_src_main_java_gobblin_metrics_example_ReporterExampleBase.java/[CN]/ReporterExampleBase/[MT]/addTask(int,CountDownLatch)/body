@@ -1,0 +1,5 @@
+{
+  MetricContext taskContext=this.context.childBuilder("Task" + taskIndex).addTag(new Tag<String>(TASK_ID_KEY,TASK_ID_PREFIX + taskIndex)).addContextAwareScheduledReporter(this.reporterBuilder).build();
+  Task task=new Task(taskContext,taskIndex,this.totalRecords,countDownLatch);
+  this.executor.execute(task);
+}

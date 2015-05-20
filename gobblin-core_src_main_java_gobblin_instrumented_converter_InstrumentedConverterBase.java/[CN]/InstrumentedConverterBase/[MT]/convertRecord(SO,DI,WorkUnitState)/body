@@ -1,0 +1,22 @@
+{
+  if (!isInstrumentationEnabled()) {
+    return convertRecordImpl(outputSchema,inputRecord,workUnit);
+  }
+  try {
+    long startTime=System.nanoTime();
+    beforeConvert(outputSchema,inputRecord,workUnit);
+    final Iterable<DO> it=convertRecordImpl(outputSchema,inputRecord,workUnit);
+    afterConvert(it,startTime);
+    return Iterables.transform(it,new Function<DO,DO>(){
+      @Override public DO apply(      DO input){
+        onIterableNext(input);
+        return input;
+      }
+    }
+);
+  }
+ catch (  DataConversionException exception) {
+    onException(exception);
+    throw exception;
+  }
+}

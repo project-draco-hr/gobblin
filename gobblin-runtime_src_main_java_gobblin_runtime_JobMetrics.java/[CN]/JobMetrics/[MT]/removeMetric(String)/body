@@ -1,3 +1,0 @@
-{
-  this.metricRegistry.remove(name);
-}

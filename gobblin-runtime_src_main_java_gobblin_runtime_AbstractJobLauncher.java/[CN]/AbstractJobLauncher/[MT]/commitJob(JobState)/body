@@ -1,0 +1,23 @@
+{
+  JobCommitPolicy jobCommitPolicy=this.jobContext.getJobCommitPolicy();
+  if (!canCommit(jobCommitPolicy,jobState)) {
+    LOG.info("Job data will not be committed due to commit policy: " + jobCommitPolicy);
+    return;
+  }
+  LOG.info(String.format("Publishing job data of job %s with commit policy %s",this.jobContext.getJobId(),jobCommitPolicy.name()));
+  Closer closer=Closer.create();
+  try {
+    Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+    Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(State.class);
+    DataPublisher publisher=closer.register(dataPublisherConstructor.newInstance(jobState));
+    publisher.initialize();
+    publisher.publish(jobState.getTaskStates());
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  jobState.setState(JobState.RunningState.COMMITTED);
+}

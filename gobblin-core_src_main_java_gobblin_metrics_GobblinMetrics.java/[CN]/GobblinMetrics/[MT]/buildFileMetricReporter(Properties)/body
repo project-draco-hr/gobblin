@@ -1,0 +1,29 @@
+{
+  if (!Boolean.valueOf(properties.getProperty(ConfigurationKeys.METRICS_REPORTING_FILE_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_FILE_ENABLED))) {
+    LOGGER.info("Not reporting metrics to log files");
+    return;
+  }
+  if (!properties.containsKey(ConfigurationKeys.METRICS_LOG_DIR_KEY)) {
+    LOGGER.error("Not reporting metrics to log files because " + ConfigurationKeys.METRICS_LOG_DIR_KEY + " is undefined");
+    return;
+  }
+  try {
+    String fsUri=properties.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI);
+    FileSystem fs=FileSystem.get(URI.create(fsUri),new Configuration());
+    Path metricsLogDir=new Path(properties.getProperty(ConfigurationKeys.METRICS_LOG_DIR_KEY),this.getName());
+    if (!fs.exists(metricsLogDir) && !fs.mkdirs(metricsLogDir)) {
+      LOGGER.error("Failed to create metric log directory for metrics " + this.getName());
+      return;
+    }
+    Path metricLogFile=new Path(metricsLogDir,this.id + ".metrics.log");
+    boolean append=false;
+    if (fs.exists(metricLogFile)) {
+      LOGGER.info(String.format("Metric log file %s already exists, appending to it",metricLogFile));
+      append=true;
+    }
+    this.fileReporter=Optional.of(closer.register(OutputStreamReporter.forContext(this.metricContext).outputTo(append ? fs.append(metricLogFile) : fs.create(metricLogFile,true)).build()));
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to build file metric reporter for job " + this.id,ioe);
+  }
+}

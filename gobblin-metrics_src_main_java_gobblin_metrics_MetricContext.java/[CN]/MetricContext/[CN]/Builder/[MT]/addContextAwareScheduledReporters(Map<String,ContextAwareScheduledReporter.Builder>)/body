@@ -1,4 +1,0 @@
-{
-  this.contextAwareReporterBuilders.putAll(builders);
-  return this;
-}

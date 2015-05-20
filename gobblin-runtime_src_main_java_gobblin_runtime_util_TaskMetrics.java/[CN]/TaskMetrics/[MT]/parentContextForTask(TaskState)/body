@@ -1,0 +1,3 @@
+{
+  return JobMetrics.get(taskState.getProp(ConfigurationKeys.JOB_NAME_KEY),taskState.getJobId()).getMetricContext();
+}

@@ -1,5 +1,5 @@
 {
   this.log.debug("Getting date predicate for Sqlserver");
   String formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,DATE_FORMAT);
-  return this.getWatermarkColumnName(column) + " " + operator+ " '"+ formattedvalue+ "'";
+  return Utils.getCoalesceColumnNames(column) + " " + operator+ " '"+ formattedvalue+ "'";
 }

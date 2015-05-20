@@ -1,0 +1,4 @@
+{
+  Instrumented.updateTimer(this.dataWriterTimer,System.nanoTime() - startTimeNanos,TimeUnit.NANOSECONDS);
+  Instrumented.markMeter(this.successfulWriteMeter);
+}

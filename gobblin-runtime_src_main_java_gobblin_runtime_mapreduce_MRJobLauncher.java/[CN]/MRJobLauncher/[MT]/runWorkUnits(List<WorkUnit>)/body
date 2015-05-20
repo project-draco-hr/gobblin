@@ -1,0 +1,33 @@
+{
+  String jobName=this.jobContext.getJobName();
+  JobState jobState=this.jobContext.getJobState();
+  Path mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName);
+  if (this.fs.exists(mrJobDir)) {
+    LOG.warn("Job working directory already exists for job " + jobName);
+    this.fs.delete(mrJobDir,true);
+  }
+  try {
+    JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
+    Path jobOutputPath=prepareHadoopJob(this.jobProps,workUnits,mrJobDir);
+    LOG.info("Launching Hadoop MR job " + this.job.getJobName());
+    this.job.submit();
+    if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
+      jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
+    }
+    LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
+    this.job.waitForCompletion(true);
+    if (this.cancellationRequested) {
+synchronized (this.cancellationExecution) {
+        if (this.cancellationExecuted) {
+          return;
+        }
+      }
+    }
+    jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
+    jobState.addTaskStates(collectOutput(new Path(jobOutputPath,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY))));
+    countersToMetrics(this.job.getCounters(),JobMetrics.get(jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+  }
+  finally {
+    cleanUpWorkingDirectory();
+  }
+}

@@ -1,0 +1,13 @@
+{
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(true));
+  InstrumentedRowLevelPolicyBase instrumentedPolicy=new InstrumentedRowLevelPolicyDecorator(new TestInstrumentedRowLevelPolicy(state,null));
+  testBase(instrumentedPolicy);
+  InstrumentedRowLevelPolicyBase notInstrumentedPolicy=new InstrumentedRowLevelPolicyDecorator(new RowLevelPolicy(state,null){
+    @Override public Result executePolicy(    Object record){
+      return Result.PASSED;
+    }
+  }
+);
+  testBase(notInstrumentedPolicy);
+}

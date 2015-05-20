@@ -1,0 +1,30 @@
+{
+  Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
+  this.jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  this.jobId=jobProps.containsKey(ConfigurationKeys.JOB_ID_KEY) ? jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY) : JobLauncherUtils.newJobId(this.jobName);
+  jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,this.jobId);
+  this.jobCommitPolicy=JobCommitPolicy.getCommitPolicy(jobProps);
+  this.jobLockEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
+  this.jobStateStore=new FsStateStore<JobState>(sysProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),sysProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
+  boolean jobHistoryStoreEnabled=Boolean.valueOf(sysProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()));
+  if (jobHistoryStoreEnabled) {
+    Injector injector=Guice.createInjector(new MetaStoreModule(sysProps));
+    this.jobHistoryStoreOptional=Optional.of(injector.getInstance(JobHistoryStore.class));
+  }
+ else {
+    this.jobHistoryStoreOptional=Optional.absent();
+  }
+  State jobPropsState=new State();
+  jobPropsState.addAll(jobProps);
+  JobState previousJobState=getPreviousJobState(this.jobName);
+  this.jobState=new JobState(jobPropsState,previousJobState.getTaskStatesAsWorkUnitStates(),this.jobName,this.jobId);
+  this.jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,previousJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0));
+  if (GobblinMetrics.isEnabled(jobProps)) {
+    this.jobMetricsOptional=Optional.of(JobMetrics.get(this.jobState));
+    this.jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,this.jobMetricsOptional.get().getName());
+  }
+ else {
+    this.jobMetricsOptional=Optional.absent();
+  }
+  this.source=new SourceDecorator((Source<?,?>)Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance(),this.jobId,logger);
+}

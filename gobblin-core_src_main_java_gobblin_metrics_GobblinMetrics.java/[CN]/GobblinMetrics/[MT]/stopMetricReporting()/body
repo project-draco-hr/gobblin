@@ -1,0 +1,22 @@
+{
+  if (!this.reportingStarted) {
+    LOGGER.warn("Metric reporting has not started yet");
+    return;
+  }
+  if (this.fileReporter.isPresent()) {
+    this.fileReporter.get().stop();
+  }
+  if (this.jmxReporter.isPresent()) {
+    this.jmxReporter.get().stop();
+  }
+  if (this.kafkaReporter.isPresent()) {
+    this.kafkaReporter.get().stop();
+  }
+  try {
+    this.closer.close();
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to close metric output stream for job " + this.id,ioe);
+  }
+  this.reportingStarted=false;
+}

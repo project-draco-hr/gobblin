@@ -1,0 +1,4 @@
+{
+  this.id=id;
+  this.metricContext=parentContext == null ? new MetricContext.Builder(id).addTags(tags).build() : parentContext.childBuilder(id).addTags(tags).build();
+}

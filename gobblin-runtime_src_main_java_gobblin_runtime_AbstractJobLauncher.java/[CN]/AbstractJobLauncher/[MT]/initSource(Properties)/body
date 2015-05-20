@@ -1,3 +1,0 @@
-{
-  return (Source<?,?>)Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
-}
