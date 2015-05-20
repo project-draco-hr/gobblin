@@ -1,8 +1,9 @@
 {
-  Preconditions.checkArgument(wm instanceof MultiLongWatermark);
+  if (!(wm instanceof MultiLongWatermark)) {
+    throw new ClassCastException("Cannot compare MultiLongWatermark with " + wm.getClass().getSimpleName());
+  }
   MultiLongWatermark other=(MultiLongWatermark)wm;
-  Preconditions.checkArgument(this.values.size() == other.values.size(),String.format("%s.%s can only compare two watermarks with the same number of values",MultiLongWatermark.class.getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName()));
-  ComparisonChain cc=ComparisonChain.start();
+  ComparisonChain cc=ComparisonChain.start().compare(this.size(),other.size());
   for (int i=0; i < this.values.size(); i++) {
     cc.compare(this.values.get(i),other.values.get(i));
   }
