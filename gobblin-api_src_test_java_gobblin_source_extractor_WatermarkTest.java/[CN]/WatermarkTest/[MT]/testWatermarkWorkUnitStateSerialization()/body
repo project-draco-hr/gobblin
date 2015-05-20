@@ -1,0 +1,9 @@
+{
+  long actualHighWatermarkValue=50;
+  TestWatermark actualHighWatermark=new TestWatermark();
+  actualHighWatermark.setLongWatermark(actualHighWatermarkValue);
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.setActualHighWatermark(actualHighWatermark);
+  TestWatermark deserializedActualHighWatermark=(TestWatermark)WatermarkSerializerHelper.convertJsonToWatermark(workUnitState.getActualHighWatermark(),TestWatermark.class);
+  Assert.assertEquals(deserializedActualHighWatermark.getLongWatermark(),actualHighWatermarkValue);
+}
