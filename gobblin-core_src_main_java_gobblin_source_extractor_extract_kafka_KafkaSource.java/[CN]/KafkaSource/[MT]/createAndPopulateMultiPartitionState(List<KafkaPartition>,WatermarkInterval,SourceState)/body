@@ -8,7 +8,6 @@
     partitionsState.setProp(KafkaUtils.getPartitionPropName(KafkaSource.PARTITION_ID,i),partitions.get(i).getId());
     partitionsState.setProp(KafkaUtils.getPartitionPropName(KafkaSource.LEADER_ID,i),partitions.get(i).getLeader().getId());
     partitionsState.setProp(KafkaUtils.getPartitionPropName(KafkaSource.LEADER_HOSTANDPORT,i),partitions.get(i).getLeader().getHostAndPort());
-    partitionsState.setWatermarkInterval(interval);
   }
   return partitionsState;
 }

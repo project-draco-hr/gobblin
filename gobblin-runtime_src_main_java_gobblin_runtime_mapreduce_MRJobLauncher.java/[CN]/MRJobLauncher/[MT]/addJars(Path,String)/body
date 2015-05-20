@@ -1,5 +1,5 @@
 {
-  LocalFileSystem lfs=FileSystem.getLocal(conf);
+  LocalFileSystem lfs=FileSystem.getLocal(this.conf);
   for (  String jarFile : SPLITTER.split(jarFileList)) {
     Path srcJarFile=new Path(jarFile);
     FileStatus[] fileStatusList=lfs.globStatus(srcJarFile);

@@ -5,7 +5,6 @@
   String codecType=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_CODEC_TYPE,numBranches,branchId),AvroHdfsDataWriter.CodecType.DEFLATE.name());
   int bufferSize=Integer.parseInt(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUFFER_SIZE,numBranches,branchId),ConfigurationKeys.DEFAULT_BUFFER_SIZE));
   int deflateLevel=Integer.parseInt(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DEFLATE_LEVEL,numBranches,branchId),ConfigurationKeys.DEFAULT_DEFLATE_LEVEL));
-  this.properties=properties;
   this.schema=schema;
   Configuration conf=new Configuration();
   for (  String key : properties.getPropertyNames()) {

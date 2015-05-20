@@ -1,3 +1,0 @@
-{
-  setProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY,interval.toJson());
-}
