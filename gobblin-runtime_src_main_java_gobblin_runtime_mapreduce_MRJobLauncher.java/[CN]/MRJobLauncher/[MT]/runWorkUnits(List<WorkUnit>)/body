@@ -1,14 +1,9 @@
 {
   String jobName=this.jobContext.getJobName();
   JobState jobState=this.jobContext.getJobState();
-  Path mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName);
-  if (this.fs.exists(mrJobDir)) {
-    LOG.warn("Job working directory already exists for job " + jobName);
-    this.fs.delete(mrJobDir,true);
-  }
   try {
     JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
-    Path jobOutputPath=prepareHadoopJob(this.jobProps,workUnits,mrJobDir);
+    Path jobOutputPath=prepareHadoopJob(workUnits);
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
     if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
