@@ -1,16 +1,21 @@
 {
   if (oldSchema == null) {
+    LOG.warn("No previous schema available, use the new schema instead.");
     return newSchema;
   }
-  List<Field> combinedFields=new ArrayList<Field>();
+  if (!(oldSchema.getType().equals(Type.RECORD) && newSchema.getType().equals(Type.RECORD))) {
+    LOG.warn("Both previous schema and new schema need to be record type. Quit merging schema.");
+    return newSchema;
+  }
+  List<Field> combinedFields=Lists.newArrayList();
   for (  Field newFld : newSchema.getFields()) {
     combinedFields.add(new Field(newFld.name(),newFld.schema(),newFld.doc(),newFld.defaultValue()));
   }
   for (  Field oldFld : oldSchema.getFields()) {
     if (newSchema.getField(oldFld.name()) == null) {
+      List<Schema> union=Lists.newArrayList();
       Schema oldFldSchema=oldFld.schema();
       if (oldFldSchema.getType().equals(Type.UNION)) {
-        List<Schema> union=new ArrayList<Schema>();
         union.add(Schema.create(Type.NULL));
         for (        Schema itemInUion : oldFldSchema.getTypes()) {
           if (!itemInUion.getType().equals(Type.NULL)) {
@@ -21,7 +26,6 @@
         combinedFields.add(new Field(oldFld.name(),newFldSchema,oldFld.doc(),oldFld.defaultValue()));
       }
  else {
-        List<Schema> union=new ArrayList<Schema>();
         union.add(Schema.create(Type.NULL));
         union.add(oldFldSchema);
         Schema newFldSchema=Schema.createUnion(union);
