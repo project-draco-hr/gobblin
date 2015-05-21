@@ -1,6 +1,7 @@
 {
+  Closer closer=Closer.create();
   try {
-    if (this.limiter.acquirePermits(1)) {
+    if (closer.register(this.limiter.acquirePermits(1)) != null) {
       return this.extractor.readRecord(reuse);
     }
     return null;
@@ -8,5 +9,11 @@
  catch (  InterruptedException ie) {
     Thread.currentThread().interrupt();
     throw new IOException("Interrupted while trying to acquire the next permit",ie);
+  }
+catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
   }
 }

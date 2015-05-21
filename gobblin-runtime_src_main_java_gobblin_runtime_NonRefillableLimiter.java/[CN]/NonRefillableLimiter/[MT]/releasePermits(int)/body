@@ -1,3 +1,0 @@
-{
-  throw new UnsupportedOperationException("Permit refills are not supported by a " + NonRefillableLimiter.class.getSimpleName());
-}

@@ -1,7 +1,7 @@
 {
   Properties jobProps=loadJobProps();
   jobProps.setProperty(ConfigurationKeys.EXTRACT_LIMIT_ENABLED_KEY,Boolean.TRUE.toString());
-  jobProps.setProperty(ConfigurationKeys.EXTRACT_LIMIT_TYPE_KEY,Limiter.Type.COUNT_BASED.toString());
-  jobProps.setProperty(ConfigurationKeys.EXTRACT_LIMIT_COUNT_LIMIT_KEY,"10");
+  jobProps.setProperty(DefaultLimiterFactory.EXTRACT_LIMIT_TYPE_KEY,BaseLimiterType.COUNT_BASED.toString());
+  jobProps.setProperty(DefaultLimiterFactory.EXTRACT_LIMIT_COUNT_LIMIT_KEY,"10");
   this.jobLauncherTestHelper.runTestWithPullLimit(jobProps);
 }

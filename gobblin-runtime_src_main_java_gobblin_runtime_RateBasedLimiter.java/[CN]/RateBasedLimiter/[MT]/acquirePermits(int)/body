@@ -1,4 +1,0 @@
-{
-  this.rateLimiter.acquire(permits);
-  return true;
-}
