@@ -1,0 +1,10 @@
+{
+  Schema oldSchema1=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}, "+ "{\"name\": \"number\", \"type\": \"int\"}"+ "]}");
+  Schema newSchema1=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}"+ "]}");
+  Schema expectedOutputSchema1=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}, "+ "{\"name\": \"number\", \"type\": [\"null\", \"int\"]}"+ "]}");
+  Assert.assertEquals(expectedOutputSchema1,AvroUtils.nullifyFiledsForSchemaMerge(oldSchema1,newSchema1));
+  Schema oldSchema2=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}, "+ "{\"name\": \"number\", \"type\": {\"type\": \"array\", \"items\": \"string\"}}"+ "]}");
+  Schema newSchema2=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}"+ "]}");
+  Schema expectedOutputSchema2=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}, "+ "{\"name\": \"number\", \"type\": [\"null\", {\"type\": \"array\", \"items\": \"string\"}]}"+ "]}");
+  Assert.assertEquals(expectedOutputSchema2,AvroUtils.nullifyFiledsForSchemaMerge(oldSchema2,newSchema2));
+}

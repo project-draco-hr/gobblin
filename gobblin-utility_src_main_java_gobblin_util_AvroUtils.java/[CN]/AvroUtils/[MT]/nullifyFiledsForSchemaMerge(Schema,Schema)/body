@@ -1,0 +1,35 @@
+{
+  if (oldSchema == null) {
+    return newSchema;
+  }
+  List<Field> combinedFields=new ArrayList<Field>();
+  for (  Field newFld : newSchema.getFields()) {
+    combinedFields.add(new Field(newFld.name(),newFld.schema(),newFld.doc(),newFld.defaultValue()));
+  }
+  for (  Field oldFld : oldSchema.getFields()) {
+    if (newSchema.getField(oldFld.name()) == null) {
+      Schema oldFldSchema=oldFld.schema();
+      if (oldFldSchema.getType().equals(Type.UNION)) {
+        List<Schema> union=new ArrayList<Schema>();
+        union.add(Schema.create(Type.NULL));
+        for (        Schema itemInUion : oldFldSchema.getTypes()) {
+          if (!itemInUion.getType().equals(Type.NULL)) {
+            union.add(itemInUion);
+          }
+        }
+        Schema newFldSchema=Schema.createUnion(union);
+        combinedFields.add(new Field(oldFld.name(),newFldSchema,oldFld.doc(),oldFld.defaultValue()));
+      }
+ else {
+        List<Schema> union=new ArrayList<Schema>();
+        union.add(Schema.create(Type.NULL));
+        union.add(oldFldSchema);
+        Schema newFldSchema=Schema.createUnion(union);
+        combinedFields.add(new Field(oldFld.name(),newFldSchema,oldFld.doc(),oldFld.defaultValue()));
+      }
+    }
+  }
+  Schema mergedSchema=Schema.createRecord(newSchema.getName(),newSchema.getDoc(),newSchema.getNamespace(),newSchema.isError());
+  mergedSchema.setFields(combinedFields);
+  return mergedSchema;
+}

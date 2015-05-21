@@ -1,0 +1,21 @@
+{
+  Configuration conf=new Configuration();
+  for (  String key : workUnitState.getPropertyNames()) {
+    conf.set(key,workUnitState.getProp(key));
+  }
+  Path originalSchemaPath=null;
+  if (workUnitState.contains(ConfigurationKeys.CONVERTER_AVRO_NULLIFY_FIELDS_ORIGINAL_SCHEMA_PATH)) {
+    originalSchemaPath=new Path(workUnitState.getProp(ConfigurationKeys.CONVERTER_AVRO_NULLIFY_FIELDS_ORIGINAL_SCHEMA_PATH));
+  }
+ else {
+    originalSchemaPath=WriterUtils.getDataPublisherFinalDir(workUnitState,workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1),workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCH_ID_KEY,0)).getParent();
+  }
+  try {
+    Schema prevSchema=AvroUtils.getDirectorySchema(originalSchemaPath,conf,false);
+    Schema mergedSchema=AvroUtils.nullifyFiledsForSchemaMerge(prevSchema,currentAvroSchema);
+    return mergedSchema;
+  }
+ catch (  Exception e) {
+    throw new SchemaConversionException("Unable to nullify fields in the new avro schema.");
+  }
+}

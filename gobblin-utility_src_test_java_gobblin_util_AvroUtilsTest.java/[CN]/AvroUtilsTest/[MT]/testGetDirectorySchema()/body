@@ -1,0 +1,7 @@
+{
+  Configuration conf=new Configuration();
+  conf.set("fs.default.name","file:///");
+  conf.set("mapred.job.tracker","local");
+  Path mockAvroFilePath=new Path(AVRO_DIR);
+  Assert.assertNotNull(AvroUtils.getDirectorySchema(mockAvroFilePath,conf,true));
+}

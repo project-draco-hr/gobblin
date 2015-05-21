@@ -20,5 +20,8 @@
   }
   Schema avroSchema=Schema.createRecord(workUnit.getExtract().getTable(),"",workUnit.getExtract().getNamespace(),false);
   avroSchema.setFields(fields);
+  if (workUnit.getPropAsBoolean(ConfigurationKeys.CONVERTER_AVRO_NULLIFY_FIELDS_ENABLED,ConfigurationKeys.DEFAULT_CONVERTER_AVRO_NULLIFY_FIELDS_ENABLED)) {
+    return this.generateSchemaWithNullifiedField(workUnit,avroSchema);
+  }
   return avroSchema;
 }

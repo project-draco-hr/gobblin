@@ -1,0 +1,10 @@
+{
+  if (dir.isDir()) {
+    for (    FileStatus f : fs.listStatus(dir.getPath())) {
+      getAllNestedAvroFiles(f,files,fs);
+    }
+  }
+ else   if (dir.getPath().getName().endsWith(AVRO_SUFFIX)) {
+    files.add(dir);
+  }
+}

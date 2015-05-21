@@ -1,0 +1,15 @@
+{
+  List<FileStatus> files=new ArrayList<FileStatus>();
+  if (fs.exists(directory)) {
+    getAllNestedAvroFiles(fs.getFileStatus(directory),files,fs);
+    if (files.size() > 0) {
+      Collections.sort(files,new Comparator<FileStatus>(){
+        @Override public int compare(        FileStatus file1,        FileStatus file2){
+          return Long.valueOf(file2.getModificationTime()).compareTo(Long.valueOf(file1.getModificationTime()));
+        }
+      }
+);
+    }
+  }
+  return files;
+}
