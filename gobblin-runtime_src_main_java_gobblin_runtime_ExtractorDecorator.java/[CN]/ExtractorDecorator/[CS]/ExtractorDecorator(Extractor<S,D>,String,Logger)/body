@@ -1,5 +1,0 @@
-{
-  this.extractor=extractor;
-  this.taskId=taskId;
-  this.logger=logger;
-}
