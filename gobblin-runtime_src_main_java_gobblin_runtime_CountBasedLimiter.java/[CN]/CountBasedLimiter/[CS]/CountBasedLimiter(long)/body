@@ -1,0 +1,4 @@
+{
+  this.countLimit=countLimit;
+  this.count=0;
+}
