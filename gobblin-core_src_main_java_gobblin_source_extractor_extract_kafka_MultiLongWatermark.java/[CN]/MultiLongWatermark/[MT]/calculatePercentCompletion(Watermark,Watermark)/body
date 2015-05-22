@@ -1,5 +1,5 @@
 {
-  Preconditions.checkArgument(lowWatermark instanceof MultiLongWatermark,String.format("Arguments of %s.%s must be of type %s",MultiLongWatermark.class.getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName(),MultiLongWatermark.class.getSimpleName()));
+  Preconditions.checkArgument(lowWatermark instanceof MultiLongWatermark && highWatermark instanceof MultiLongWatermark,String.format("Arguments of %s.%s must be of type %s",MultiLongWatermark.class.getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName(),MultiLongWatermark.class.getSimpleName()));
   long pulled=((MultiLongWatermark)lowWatermark).getGap(this);
   long all=((MultiLongWatermark)lowWatermark).getGap((MultiLongWatermark)highWatermark);
   Preconditions.checkState(all > 0);
