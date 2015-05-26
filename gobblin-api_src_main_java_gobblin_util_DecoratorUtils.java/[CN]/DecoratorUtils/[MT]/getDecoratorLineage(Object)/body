@@ -1,0 +1,9 @@
+{
+  List<Object> lineage=Lists.newArrayList(obj);
+  Object currentObject=obj;
+  while (currentObject instanceof Decorator) {
+    currentObject=((Decorator)currentObject).getDirectlyUnderlying();
+    lineage.add(currentObject);
+  }
+  return Lists.reverse(lineage);
+}

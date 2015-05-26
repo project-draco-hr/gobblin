@@ -11,4 +11,5 @@
   this.totalRecordSize=0;
   this.recordCount=0;
   this.avgRecordSize=0;
+  switchMetricContext(Lists.<Tag<?>>newArrayList(new Tag<Integer>("partition",this.partition.getId())));
 }

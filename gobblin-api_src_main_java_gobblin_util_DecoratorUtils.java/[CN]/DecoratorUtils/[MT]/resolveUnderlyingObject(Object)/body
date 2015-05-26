@@ -1,8 +1,7 @@
 {
-  if (underlyingCandidate instanceof Decorator) {
-    return ((Decorator)underlyingCandidate).getUnderlying();
+  Object underlying=obj;
+  while (underlying instanceof Decorator) {
+    underlying=((Decorator)underlying).getDirectlyUnderlying();
   }
- else {
-    return underlyingCandidate;
-  }
+  return underlying;
 }

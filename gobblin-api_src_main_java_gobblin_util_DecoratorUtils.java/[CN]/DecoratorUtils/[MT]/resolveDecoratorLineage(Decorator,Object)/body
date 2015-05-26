@@ -1,5 +1,0 @@
-{
-  List<Object> lineage=Decorator.class.isInstance(underlying) ? ((Decorator)underlying).getDecoratorLineage() : Lists.newArrayList(underlying);
-  lineage.add(decorator);
-  return lineage;
-}
