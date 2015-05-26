@@ -1,4 +1,4 @@
 {
-  this.metricContext=this.closer.register(Instrumented.copyMetricContext(this.metricContext,tags,Optional.<String>absent()));
+  this.metricContext=this.closer.register(Instrumented.newContextFromReferenceContext(this.metricContext,tags,Optional.<String>absent()));
   regenerateMetrics();
 }

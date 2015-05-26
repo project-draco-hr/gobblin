@@ -1,5 +1,5 @@
 {
-  Optional<Timer.Context> distributedCacheSetupTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.DISTRIBUTED_CACHE);
+  Optional<Timer.Context> distributedCacheSetupTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.MR_DISTRIBUTED_CACHE_POPULATE);
   Path jarFileDir=new Path(this.mrJobDir,"_jars");
   if (jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
     addJars(jarFileDir,jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY));

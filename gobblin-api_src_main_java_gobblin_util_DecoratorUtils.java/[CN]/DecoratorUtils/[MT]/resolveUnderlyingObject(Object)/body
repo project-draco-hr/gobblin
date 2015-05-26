@@ -1,7 +1,6 @@
 {
-  Object underlying=obj;
-  while (underlying instanceof Decorator) {
-    underlying=((Decorator)underlying).getDirectlyUnderlying();
+  while (obj instanceof Decorator) {
+    obj=((Decorator)obj).getDecoratedObject();
   }
-  return underlying;
+  return obj;
 }
