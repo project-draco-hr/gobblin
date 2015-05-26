@@ -1,0 +1,3 @@
+{
+  return this.canIssuePermit ? NO_OP_CLOSEABLE : null;
+}

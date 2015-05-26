@@ -1,0 +1,4 @@
+{
+  this.rateLimiter.acquire(Ints.checkedCast(permits));
+  return NO_OP_CLOSEABLE;
+}

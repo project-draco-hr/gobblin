@@ -1,15 +1,16 @@
 {
-  super(state);
   this.workUnitState=state;
-  this.partition=new KafkaPartition.Builder().withId(state.getPropAsInt(KafkaSource.PARTITION_ID)).withTopicName(state.getProp(KafkaSource.TOPIC_NAME)).withLeaderId(state.getPropAsInt(KafkaSource.LEADER_ID)).withLeaderHost(state.getProp(KafkaSource.LEADER_HOST)).withLeaderPort(state.getPropAsInt(KafkaSource.LEADER_PORT)).build();
-  this.lowWatermark=state.getPropAsLong(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY);
-  this.highWatermark=state.getPropAsLong(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY);
+  this.topicName=KafkaUtils.getTopicName(state);
+  this.partitions=KafkaUtils.getPartitions(state);
+  this.lowWatermark=GSON.fromJson(state.getWorkunit().getLowWatermark(),MultiLongWatermark.class);
+  this.highWatermark=GSON.fromJson(state.getWorkunit().getExpectedHighWatermark(),MultiLongWatermark.class);
+  this.nextWatermark=new MultiLongWatermark(this.lowWatermark);
   this.closer=Closer.create();
   this.kafkaWrapper=closer.register(KafkaWrapper.create(state));
+  this.decodingErrorCount=Maps.newHashMap();
+  this.totalEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
+  this.eventCounts=Maps.newHashMapWithExpectedSize(this.partitions.size());
+  this.avgEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
   this.messageIterator=null;
-  this.nextWatermark=this.lowWatermark;
-  this.totalRecordSize=0;
-  this.recordCount=0;
-  this.avgRecordSize=0;
-  switchMetricContext(Lists.<Tag<?>>newArrayList(new Tag<Integer>("partition",this.partition.getId())));
+  this.currentPartitionIdx=0;
 }

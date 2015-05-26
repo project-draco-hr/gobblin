@@ -1,8 +1,21 @@
 {
   super(properties,jobProps);
   this.conf=conf;
+  for (  String name : this.jobProps.stringPropertyNames()) {
+    this.conf.set(name,this.jobProps.getProperty(name));
+  }
+  this.conf.set("mapred.max.map.failures.percent","100");
+  this.conf.set("mapreduce.map.failures.maxpercent","100");
+  this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
   URI fsUri=URI.create(this.sysProps.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
   this.fs=FileSystem.get(fsUri,conf);
+  this.mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobContext.getJobName());
+  if (this.fs.exists(this.mrJobDir)) {
+    LOG.warn("Job working directory already exists for job " + jobContext.getJobName());
+    this.fs.delete(this.mrJobDir,true);
+  }
+  this.fs.mkdirs(this.mrJobDir);
+  addDependencies();
   this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + this.jobContext.getJobName());
   startCancellationExecutor();
 }

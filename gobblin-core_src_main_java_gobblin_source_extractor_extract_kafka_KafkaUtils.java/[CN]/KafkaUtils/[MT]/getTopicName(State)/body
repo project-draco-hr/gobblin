@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(state.contains(KafkaSource.TOPIC_NAME));
+  return state.getProp(KafkaSource.TOPIC_NAME);
+}

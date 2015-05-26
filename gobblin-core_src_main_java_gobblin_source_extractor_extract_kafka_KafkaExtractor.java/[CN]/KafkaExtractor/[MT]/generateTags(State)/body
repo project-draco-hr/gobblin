@@ -1,5 +1,0 @@
-{
-  List<Tag<?>> tags=super.generateTags(state);
-  tags.add(new Tag<String>("topic",state.getProp(KafkaSource.TOPIC_NAME)));
-  return tags;
-}

@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(highWatermark);
+  Preconditions.checkArgument(this.values.size() == highWatermark.values.size());
+  long diff=0;
+  for (int i=0; i < this.values.size(); i++) {
+    Preconditions.checkArgument(this.values.get(i) <= highWatermark.values.get(i));
+    diff+=highWatermark.values.get(i) - this.values.get(i);
+  }
+  return diff;
+}

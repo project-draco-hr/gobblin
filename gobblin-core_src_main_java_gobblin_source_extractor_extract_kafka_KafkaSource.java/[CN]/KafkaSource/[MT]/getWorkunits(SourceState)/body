@@ -9,7 +9,7 @@
     }
     int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
     this.getAllPreviousAvgSizes(state);
-    return ImmutableList.copyOf(getMultiWorkunits(workUnits,numOfMultiWorkunits));
+    return ImmutableList.copyOf(getMultiWorkunits(workUnits,numOfMultiWorkunits,state));
   }
   finally {
     try {

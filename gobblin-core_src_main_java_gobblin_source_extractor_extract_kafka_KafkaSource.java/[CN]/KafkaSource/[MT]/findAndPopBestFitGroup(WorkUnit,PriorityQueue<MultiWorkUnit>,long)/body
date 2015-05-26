@@ -1,0 +1,18 @@
+{
+  List<MultiWorkUnit> fullWorkUnits=Lists.newArrayList();
+  MultiWorkUnit bestFit=null;
+  while (!pQueue.isEmpty()) {
+    MultiWorkUnit candidate=pQueue.poll();
+    if (getWorkUnitEstSize(candidate) + getWorkUnitEstSize(workUnit) <= avgGroupSize) {
+      bestFit=candidate;
+      break;
+    }
+ else {
+      fullWorkUnits.add(candidate);
+    }
+  }
+  for (  MultiWorkUnit fullWorkUnit : fullWorkUnits) {
+    pQueue.add(fullWorkUnit);
+  }
+  return bestFit;
+}

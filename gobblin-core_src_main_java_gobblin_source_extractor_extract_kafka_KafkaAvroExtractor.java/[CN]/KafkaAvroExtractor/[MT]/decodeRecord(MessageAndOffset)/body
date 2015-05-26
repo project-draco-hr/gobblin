@@ -1,0 +1,23 @@
+{
+  byte[] payload=getBytes(messageAndOffset.message().payload());
+  if (payload[0] != MAGIC_BYTE) {
+    throw new RuntimeException(String.format("Unknown magic byte for partition %s",this.getCurrentPartition()));
+  }
+  byte[] schemaIdByteArray=Arrays.copyOfRange(payload,1,1 + SCHEMA_ID_LENGTH_BYTE);
+  String schemaId=Hex.encodeHexString(schemaIdByteArray);
+  Schema schema=null;
+  schema=this.schemaRegistry.getSchemaById(schemaId);
+  reader.setSchema(schema);
+  Decoder binaryDecoder=DecoderFactory.get().binaryDecoder(payload,1 + SCHEMA_ID_LENGTH_BYTE,payload.length - 1 - SCHEMA_ID_LENGTH_BYTE,null);
+  try {
+    GenericRecord record=reader.read(null,binaryDecoder);
+    if (!record.getSchema().equals(this.schema)) {
+      record=AvroUtils.convertRecordSchema(record,this.schema);
+    }
+    return record;
+  }
+ catch (  IOException e) {
+    LOG.error(String.format("Error during decoding record for partition %s: ",this.getCurrentPartition()));
+    throw e;
+  }
+}

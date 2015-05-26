@@ -4,7 +4,7 @@
     return messageBuffer.iterator();
   }
  catch (  Exception e) {
-    LOG.warn(String.format("Failed to retrieve next message buffer for topic %s, partition %d: %s." + "The remainder of this partition will be skipped.",partition.getTopicName(),partition.getId(),e.getMessage()));
+    LOG.warn(String.format("Failed to retrieve next message buffer for partition %s: %s." + "The remainder of this partition will be skipped.",partition,e));
     return null;
   }
 }

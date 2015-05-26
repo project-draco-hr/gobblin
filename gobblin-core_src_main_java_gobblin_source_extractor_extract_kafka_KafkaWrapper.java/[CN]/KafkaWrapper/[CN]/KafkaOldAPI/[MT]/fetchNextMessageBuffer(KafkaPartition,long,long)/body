@@ -8,7 +8,7 @@
     return getIteratorFromFetchResponse(fetchResponse,partition);
   }
  catch (  Exception e) {
-    LOG.warn(String.format("Fetch message buffer for topic %s, partition %d has failed: %s. Will refresh topic metadata and retry",partition.getTopicName(),partition.getId(),e.getMessage()));
+    LOG.warn(String.format("Fetch message buffer for partition %s has failed: %s. Will refresh topic metadata and retry",partition,e));
     return refreshTopicMetadataAndRetryFetch(partition,fetchRequest);
   }
 }
