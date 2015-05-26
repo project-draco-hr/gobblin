@@ -1,0 +1,4 @@
+{
+  int currentPartitionId=this.partitions.get(this.currentPartitionIdx).getId();
+  switchMetricContext(Lists.<Tag<?>>newArrayList(new Tag<Integer>("kafka_partition",currentPartitionId)));
+}
