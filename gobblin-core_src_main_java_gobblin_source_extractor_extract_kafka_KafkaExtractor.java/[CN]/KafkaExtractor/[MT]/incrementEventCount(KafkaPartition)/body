@@ -1,0 +1,8 @@
+{
+  if (this.eventCounts.containsKey(partition)) {
+    this.eventCounts.put(partition,this.eventCounts.get(partition) + 1);
+  }
+ else {
+    this.eventCounts.put(partition,1);
+  }
+}

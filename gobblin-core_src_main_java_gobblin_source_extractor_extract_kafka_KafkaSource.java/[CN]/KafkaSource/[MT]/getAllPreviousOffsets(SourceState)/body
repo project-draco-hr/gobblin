@@ -1,13 +1,11 @@
 {
   this.previousOffsets.clear();
   for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
-    KafkaPartition partition=getKafkaPartitionFromState(workUnitState);
-    if (partition == null) {
-      continue;
-    }
-    long previousOffset=workUnitState.getHighWaterMark();
-    if (previousOffset != ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {
-      this.previousOffsets.put(partition,previousOffset);
+    List<KafkaPartition> partitions=KafkaUtils.getPartitions(workUnitState);
+    MultiLongWatermark watermark=GSON.fromJson(workUnitState.getActualHighWatermark(),MultiLongWatermark.class);
+    Preconditions.checkArgument(partitions.size() == watermark.size(),String.format("Num of partitions doesn't match number of watermarks: partitions=%s, watermarks=%s",partitions,watermark));
+    for (int i=0; i < partitions.size(); i++) {
+      if (watermark.get(i) != ConfigurationKeys.DEFAULT_WATERMARK_VALUE)       this.previousOffsets.put(partitions.get(i),watermark.get(i));
     }
   }
 }

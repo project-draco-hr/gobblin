@@ -1,0 +1,4 @@
+{
+  this.currentPartitionIdx++;
+  this.messageIterator=null;
+}

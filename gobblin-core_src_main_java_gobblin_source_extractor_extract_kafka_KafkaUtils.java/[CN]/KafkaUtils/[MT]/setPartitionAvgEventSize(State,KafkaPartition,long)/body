@@ -1,0 +1,3 @@
+{
+  state.setProp(KafkaSource.TOPIC_NAME + "." + KafkaSource.PARTITION_ID+ "."+ KafkaSource.AVG_EVENT_SIZE,size);
+}

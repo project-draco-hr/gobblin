@@ -1,5 +1,5 @@
 {
-  this.totalRecordSize+=nextValidMessage.message().payloadSize();
-  this.recordCount++;
-  this.avgRecordSize=this.totalRecordSize / this.recordCount;
+  increaseTotalEventSize(getCurrentPartition(),messageJustPulled.message().payloadSize());
+  incrementEventCount(getCurrentPartition());
+  this.avgEventSizes.put(getCurrentPartition(),this.totalEventSizes.get(getCurrentPartition()) / this.eventCounts.get(getCurrentPartition()));
 }
