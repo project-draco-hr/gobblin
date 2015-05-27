@@ -1,0 +1,9 @@
+{
+  List<Object> lineage=DecoratorUtils.getDecoratorLineage(obj);
+  for (  Object node : lineage) {
+    if (node instanceof Instrumentable) {
+      return true;
+    }
+  }
+  return false;
+}

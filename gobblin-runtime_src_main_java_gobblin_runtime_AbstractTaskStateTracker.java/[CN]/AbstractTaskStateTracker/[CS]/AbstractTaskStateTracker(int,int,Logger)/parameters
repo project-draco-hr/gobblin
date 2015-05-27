@@ -1,3 +1,0 @@
-int coreThreadPoolSize
-int maxThreadPoolSize
-Logger logger

@@ -1,0 +1,4 @@
+{
+  super(registry,name,filter,rateUnit,durationUnit);
+  this.registry=registry;
+}

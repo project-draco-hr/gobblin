@@ -1,4 +1,5 @@
 {
+  Optional<Timer.Context> setupMRJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.MR_JOB_SETUP);
   this.job.setJarByClass(MRJobLauncher.class);
   this.job.setMapperClass(TaskRunner.class);
   this.job.setNumReduceTasks(0);
@@ -19,5 +20,6 @@
       NLineInputFormat.setNumLinesPerSplit(this.job,numTasksPerMapper);
     }
   }
+  Instrumented.endTimer(setupMRJobTimer);
   return jobOutputPath;
 }

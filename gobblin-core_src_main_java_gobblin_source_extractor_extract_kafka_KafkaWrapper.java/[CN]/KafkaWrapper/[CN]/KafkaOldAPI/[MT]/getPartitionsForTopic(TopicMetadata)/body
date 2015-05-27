@@ -1,7 +1,7 @@
 {
   List<KafkaPartition> partitions=Lists.newArrayList();
   for (  PartitionMetadata partitionMetadata : topicMetadata.partitionsMetadata()) {
-    partitions.add(new KafkaPartition.Builder().withId(partitionMetadata.partitionId()).withTopicName(topicMetadata.topic()).withLeaderId(partitionMetadata.leader().id()).withLeaderHost(partitionMetadata.leader().host()).withLeaderPort(partitionMetadata.leader().port()).build());
+    partitions.add(new KafkaPartition.Builder().withId(partitionMetadata.partitionId()).withTopicName(topicMetadata.topic()).withLeaderId(partitionMetadata.leader().id()).withLeaderHostAndPort(partitionMetadata.leader().host(),partitionMetadata.leader().port()).build());
   }
   return partitions;
 }

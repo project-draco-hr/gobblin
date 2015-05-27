@@ -1,0 +1,8 @@
+{
+  Preconditions.checkArgument(lowWatermark instanceof MultiLongWatermark && highWatermark instanceof MultiLongWatermark,String.format("Arguments of %s.%s must be of type %s",MultiLongWatermark.class.getSimpleName(),Thread.currentThread().getStackTrace()[1].getMethodName(),MultiLongWatermark.class.getSimpleName()));
+  long pulled=((MultiLongWatermark)lowWatermark).getGap(this);
+  long all=((MultiLongWatermark)lowWatermark).getGap((MultiLongWatermark)highWatermark);
+  Preconditions.checkState(all > 0);
+  long percent=LongMath.divide(pulled * 100,all,RoundingMode.HALF_UP);
+  return Shorts.checkedCast(percent);
+}

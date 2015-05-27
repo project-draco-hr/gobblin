@@ -1,5 +1,5 @@
 {
   for (  WorkUnit workUnit : workUnits) {
-    this.addWorkUnitToMultiWorkUnit(workUnit,multiWorkUnit);
+    addWorkUnitToMultiWorkUnit(workUnit,multiWorkUnit);
   }
 }

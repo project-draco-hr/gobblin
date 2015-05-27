@@ -1,0 +1,18 @@
+{
+  String newName=name.orNull();
+  if (Strings.isNullOrEmpty(newName)) {
+    UUID uuid=UUID.randomUUID();
+    String randomIdPrefix="uuid:";
+    String oldName=context.getName();
+    List<String> splitName=Strings.isNullOrEmpty(oldName) ? Lists.<String>newArrayList() : Splitter.on(".").splitToList(oldName);
+    if (splitName.size() > 0 && StringUtils.startsWith(Iterables.getLast(splitName),randomIdPrefix)) {
+      splitName.set(splitName.size() - 1,String.format("%s%s",randomIdPrefix,uuid.toString()));
+    }
+ else {
+      splitName.add(String.format("%s%s",randomIdPrefix,uuid.toString()));
+    }
+    newName=Joiner.on(".").join(splitName);
+  }
+  MetricContext.Builder builder=context.getParent().isPresent() ? context.getParent().get().childBuilder(newName) : MetricContext.builder(newName);
+  return builder.addTags(context.getTags()).addTags(newTags).build();
+}

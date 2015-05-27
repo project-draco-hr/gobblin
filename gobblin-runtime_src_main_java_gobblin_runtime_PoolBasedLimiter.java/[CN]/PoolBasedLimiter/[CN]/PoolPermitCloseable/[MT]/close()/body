@@ -1,0 +1,3 @@
+{
+  this.permitPool.release(this.permits);
+}

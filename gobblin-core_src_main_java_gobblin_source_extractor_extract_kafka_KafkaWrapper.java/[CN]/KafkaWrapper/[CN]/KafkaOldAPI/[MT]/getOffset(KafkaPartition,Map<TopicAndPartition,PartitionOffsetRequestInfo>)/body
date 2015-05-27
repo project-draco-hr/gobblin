@@ -1,5 +1,5 @@
 {
-  SimpleConsumer consumer=this.getSimpleConsumer(partition.getLeader().getHost(),partition.getLeader().getPort());
+  SimpleConsumer consumer=this.getSimpleConsumer(partition.getLeader().getHostAndPort());
   for (int i=0; i < NUM_TRIES_FETCH_OFFSET; i++) {
     try {
       OffsetResponse offsetResponse=consumer.getOffsetsBefore(new OffsetRequest(offsetRequestInfo,kafka.api.OffsetRequest.CurrentVersion(),DEFAULT_KAFKA_CLIENT_NAME));
@@ -9,16 +9,16 @@
       return offsetResponse.offsets(partition.getTopicName(),partition.getId())[0];
     }
  catch (    Exception e) {
-      LOG.warn(String.format("Fetching offset for topic %s, partition %d has failed %d time(s). Reason: %s",partition.getTopicName(),partition.getId(),i + 1,e.getMessage()));
+      LOG.warn(String.format("Fetching offset for partition %s has failed %d time(s). Reason: %s",partition,i + 1,e));
       if (i < NUM_TRIES_FETCH_OFFSET - 1) {
         try {
           Thread.sleep((long)((i + Math.random()) * 1000));
         }
  catch (        InterruptedException e2) {
-          LOG.error("Caught interrupted exception between retries of getting latest offsets. " + e2.getMessage());
+          LOG.error("Caught interrupted exception between retries of getting latest offsets. " + e2);
         }
       }
     }
   }
-  throw new KafkaOffsetRetrievalFailureException(String.format("Fetching offset for topic %s, partition %d has failed.",partition.getTopicName(),partition.getId()));
+  throw new KafkaOffsetRetrievalFailureException(String.format("Fetching offset for partition %s has failed.",partition));
 }

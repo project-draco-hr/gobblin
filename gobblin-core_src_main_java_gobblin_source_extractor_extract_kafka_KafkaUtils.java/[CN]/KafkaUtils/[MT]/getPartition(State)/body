@@ -1,0 +1,11 @@
+{
+  Preconditions.checkArgument(state.contains(KafkaSource.TOPIC_NAME) && state.contains(KafkaSource.PARTITION_ID));
+  KafkaPartition.Builder builder=new KafkaPartition.Builder().withTopicName(state.getProp(KafkaSource.TOPIC_NAME)).withId(state.getPropAsInt(KafkaSource.PARTITION_ID));
+  if (state.contains(KafkaSource.LEADER_ID)) {
+    builder=builder.withLeaderId(state.getPropAsInt(KafkaSource.LEADER_ID));
+  }
+  if (state.contains(KafkaSource.LEADER_HOSTANDPORT)) {
+    builder=builder.withLeaderHostAndPort(state.getProp(KafkaSource.LEADER_HOSTANDPORT));
+  }
+  return builder.build();
+}
