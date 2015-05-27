@@ -1,0 +1,4 @@
+{
+  Preconditions.checkElementIndex(idx,this.values.size());
+  return this.values.set(idx,value);
+}

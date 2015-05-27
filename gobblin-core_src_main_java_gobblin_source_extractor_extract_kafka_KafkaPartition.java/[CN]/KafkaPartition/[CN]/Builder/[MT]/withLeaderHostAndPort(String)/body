@@ -1,0 +1,4 @@
+{
+  this.leaderHostAndPort=HostAndPort.fromString(hostPortString);
+  return this;
+}

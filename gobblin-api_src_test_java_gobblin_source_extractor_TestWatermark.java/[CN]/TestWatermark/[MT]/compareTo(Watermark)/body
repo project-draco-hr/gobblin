@@ -1,4 +1,0 @@
-{
-  TestWatermark testWatermark=GSON.fromJson(watermark.toJson(),this.getClass());
-  return Longs.compare(this.watermark,testWatermark.getLongWatermark());
-}

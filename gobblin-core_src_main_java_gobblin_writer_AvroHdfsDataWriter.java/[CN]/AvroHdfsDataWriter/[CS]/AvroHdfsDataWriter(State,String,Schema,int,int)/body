@@ -11,6 +11,7 @@
     conf.set(key,properties.getProp(key));
   }
   this.fs=FileSystem.get(URI.create(uri),conf);
+  this.properties=properties;
   this.stagingFile=new Path(stagingDir,fileName);
   if (this.fs.exists(this.stagingFile)) {
     LOG.warn(String.format("Task staging file %s already exists, deleting it",this.stagingFile));

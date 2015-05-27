@@ -1,0 +1,18 @@
+{
+  try {
+    boolean throttlingEnabled=this.taskState.getPropAsBoolean(ConfigurationKeys.EXTRACT_LIMIT_ENABLED_KEY,ConfigurationKeys.DEFAULT_EXTRACT_LIMIT_ENABLED);
+    if (throttlingEnabled) {
+      Limiter limiter=DefaultLimiterFactory.newLimiter(this.taskState);
+      if (!(limiter instanceof NonRefillableLimiter)) {
+        throw new IllegalArgumentException("The Limiter used with an Extractor should be an instance of " + NonRefillableLimiter.class.getSimpleName());
+      }
+      return new LimitingExtractorDecorator(getSource().getExtractor(this.taskState),limiter);
+    }
+ else {
+      return getSource().getExtractor(this.taskState);
+    }
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException(ioe);
+  }
+}

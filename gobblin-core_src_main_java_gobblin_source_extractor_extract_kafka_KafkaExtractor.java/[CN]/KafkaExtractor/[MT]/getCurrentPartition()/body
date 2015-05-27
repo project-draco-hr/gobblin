@@ -1,0 +1,3 @@
+{
+  return this.partitions.get(this.currentPartitionIdx);
+}

@@ -1,0 +1,7 @@
+{
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (  MultiWorkUnit multiWorkUnit : multiWorkUnits) {
+    workUnits.add(squeezeMultiWorkUnit(multiWorkUnit,state));
+  }
+  return workUnits;
+}

@@ -1,14 +1,19 @@
 {
-  LOG.info(String.format("Last offset pulled for partition %s:%d = %d",this.partition.getTopicName(),this.partition.getId(),this.nextWatermark - 1));
-  this.workUnitState.setHighWaterMark(this.nextWatermark);
-  if (this.avgRecordSize > 0) {
-    LOG.info(String.format("Avg event size pulled for partition %s:%d = %d",this.partition.getTopicName(),this.partition.getId(),this.avgRecordSize));
-    this.workUnitState.setProp(KafkaSource.getWorkUnitSizePropName(this.workUnitState),this.avgRecordSize);
+  for (int i=0; i < this.partitions.size(); i++) {
+    LOG.info(String.format("Last offset pulled for partition %s = %d",this.partitions.get(i),this.nextWatermark.get(i) - 1));
   }
+  this.workUnitState.setActualHighWatermark(this.nextWatermark);
+  for (  KafkaPartition partition : this.partitions) {
+    if (this.avgEventSizes.containsKey(partition)) {
+      long avgSize=this.avgEventSizes.get(partition);
+      LOG.info(String.format("Avg event size pulled for partition %s = %d",partition,avgSize));
+      KafkaUtils.setPartitionAvgEventSize(this.workUnitState,partition,avgSize);
+    }
  else {
-    LOG.info(String.format("Partition %s:%d not pulled",this.partition.getTopicName(),this.partition.getId()));
-    long previousAvgRecordSize=this.workUnitState.getPropAsLong(KafkaSource.getWorkUnitSizePropName(this.workUnitState),KafkaSource.DEFAULT_AVG_EVENT_SIZE);
-    this.workUnitState.setProp(KafkaSource.getWorkUnitSizePropName(this.workUnitState),previousAvgRecordSize);
+      LOG.info(String.format("Partition %s not pulled",partition));
+      long previousAvgRecordSize=KafkaUtils.getPartitionAvgEventSize(this.workUnitState,partition,KafkaSource.DEFAULT_AVG_EVENT_SIZE);
+      KafkaUtils.setPartitionAvgEventSize(this.workUnitState,partition,previousAvgRecordSize);
+    }
   }
   this.closer.close();
 }

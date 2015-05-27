@@ -1,0 +1,10 @@
+{
+  WatermarkInterval interval=getWatermarkIntervalFromMultiWorkUnit(multiWorkUnit);
+  List<KafkaPartition> partitions=getPartitionsFromMultiWorkUnit(multiWorkUnit);
+  Preconditions.checkArgument(!partitions.isEmpty(),"There must be at least one partition in the multiWorkUnit");
+  SourceState partitionState=createAndPopulateMultiPartitionState(partitions,interval,state);
+  partitionState.setProp(ESTIMATED_DATA_SIZE,multiWorkUnit.getProp(ESTIMATED_DATA_SIZE));
+  Extract extract=createExtract(partitionState,partitions.get(0).getTopicName());
+  LOG.info(String.format("Creating workunit for partitions %s",partitions));
+  return new WorkUnit(partitionState,extract,interval);
+}

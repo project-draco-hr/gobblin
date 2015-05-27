@@ -1,3 +1,0 @@
-{
-  return this.getSimpleConsumer(host + ":" + port);
-}

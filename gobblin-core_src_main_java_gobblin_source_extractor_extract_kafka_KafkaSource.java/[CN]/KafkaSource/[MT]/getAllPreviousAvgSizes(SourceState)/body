@@ -1,11 +1,10 @@
 {
   this.previousAvgSizes.clear();
   for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
-    KafkaPartition partition=getKafkaPartitionFromState(workUnitState);
-    if (partition == null) {
-      continue;
+    List<KafkaPartition> partitions=KafkaUtils.getPartitions(workUnitState);
+    for (    KafkaPartition partition : partitions) {
+      long previousAvgSize=KafkaUtils.getPartitionAvgEventSize(workUnitState,partition,DEFAULT_AVG_EVENT_SIZE);
+      this.previousAvgSizes.put(partition,previousAvgSize);
     }
-    long previousAvgSize=workUnitState.getPropAsLong(getWorkUnitSizePropName(workUnitState),DEFAULT_AVG_EVENT_SIZE);
-    this.previousAvgSizes.put(partition,previousAvgSize);
   }
 }
