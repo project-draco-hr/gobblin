@@ -5,13 +5,13 @@
     if (!tryLockJob()) {
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
     }
-    Optional<Timer.Context> createWorkyunitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_CREATE);
+    Optional<Timer.Context> createWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_CREATE);
     Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
     if (!workUnits.isPresent()) {
       jobState.setState(JobState.RunningState.FAILED);
       throw new JobException("Failed to get work units for job " + jobId);
     }
-    Instrumented.endTimer(createWorkyunitsTimer);
+    Instrumented.endTimer(createWorkUnitsTimer);
     if (workUnits.get().isEmpty()) {
       LOG.warn("No work units have been created for job " + jobId);
       return;
