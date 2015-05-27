@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(coreThreadPoolSize > 0,"Thread pool size should be positive");
+  this.taskMetricsUpdaterExecutor=new ScheduledThreadPoolExecutor(coreThreadPoolSize,ExecutorsUtils.newThreadFactory(Optional.of(logger),Optional.of("TaskStateTracker-%d")));
+  this.logger=logger;
+}

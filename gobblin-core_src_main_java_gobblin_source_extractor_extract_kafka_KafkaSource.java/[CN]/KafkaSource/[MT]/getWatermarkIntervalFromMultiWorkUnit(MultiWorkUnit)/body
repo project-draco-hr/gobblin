@@ -1,0 +1,9 @@
+{
+  List<Long> lowWatermarkValues=Lists.newArrayList();
+  List<Long> expectedHighWatermarkValues=Lists.newArrayList();
+  for (  WorkUnit workUnit : multiWorkUnit.getWorkUnits()) {
+    lowWatermarkValues.add(workUnit.getLowWaterMark());
+    expectedHighWatermarkValues.add(workUnit.getHighWaterMark());
+  }
+  return new WatermarkInterval(new MultiLongWatermark(lowWatermarkValues),new MultiLongWatermark(expectedHighWatermarkValues));
+}

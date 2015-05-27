@@ -1,0 +1,7 @@
+{
+  List<KafkaPartition> partitions=Lists.newArrayList();
+  for (  WorkUnit workUnit : multiWorkUnit.getWorkUnits()) {
+    partitions.add(KafkaUtils.getPartition(workUnit));
+  }
+  return partitions;
+}

@@ -1,5 +1,5 @@
 {
-  long avgSize=this.getPreviousAvgSizeForPartition(this.getKafkaPartitionFromState(workUnit));
+  long avgSize=this.getPreviousAvgSizeForPartition(KafkaUtils.getPartition(workUnit));
   long numOfEvents=workUnit.getPropAsLong(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY) - workUnit.getPropAsLong(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY);
   workUnit.setProp(ESTIMATED_DATA_SIZE,avgSize * numOfEvents);
 }

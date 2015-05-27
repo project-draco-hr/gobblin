@@ -1,28 +1,17 @@
 {
-  for (  String name : this.jobProps.stringPropertyNames()) {
-    this.conf.set(name,this.jobProps.getProperty(name));
-  }
-  this.conf.set("mapred.max.map.failures.percent","100");
-  this.conf.set("mapreduce.map.failures.maxpercent","100");
-  this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
   String jobName=this.jobContext.getJobName();
   JobState jobState=this.jobContext.getJobState();
-  Path mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobName);
-  if (this.fs.exists(mrJobDir)) {
-    LOG.warn("Job working directory already exists for job " + jobName);
-    this.fs.delete(mrJobDir,true);
-  }
   try {
-    Optional<Timer.Context> cleanStagingDataTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.CLEAN_STAGING_DATA);
+    Optional<Timer.Context> cleanStagingDataTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.MR_STAGING_DATA_CLEAN);
     JobLauncherUtils.cleanStagingData(JobLauncherUtils.flattenWorkUnits(workUnits),LOG);
     Instrumented.endTimer(cleanStagingDataTimer);
-    Path jobOutputPath=prepareHadoopJob(this.jobProps,workUnits,mrJobDir);
+    Path jobOutputPath=prepareHadoopJob(workUnits);
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
     if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
       jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
     }
-    Optional<Timer.Context> runMRJobTimer=Instrumented.timerContext(this.runtimeMetrics,MetricNames.RunJobTimings.RUN_MR_JOB);
+    Optional<Timer.Context> runMRJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.MR_JOB_RUN);
     LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
     this.job.waitForCompletion(true);
     Instrumented.endTimer(runMRJobTimer);

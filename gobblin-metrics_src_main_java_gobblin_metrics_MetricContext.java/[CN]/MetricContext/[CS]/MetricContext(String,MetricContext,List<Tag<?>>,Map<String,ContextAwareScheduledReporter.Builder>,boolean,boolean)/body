@@ -1,4 +1,5 @@
 {
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(name));
   this.name=name;
   this.parent=Optional.fromNullable(parent);
   this.tagged=new Tagged(tags);

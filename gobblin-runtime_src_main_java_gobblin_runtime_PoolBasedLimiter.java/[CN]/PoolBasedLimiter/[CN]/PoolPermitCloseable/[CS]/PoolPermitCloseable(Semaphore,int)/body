@@ -1,0 +1,4 @@
+{
+  this.permitPool=permitPool;
+  this.permits=permits;
+}

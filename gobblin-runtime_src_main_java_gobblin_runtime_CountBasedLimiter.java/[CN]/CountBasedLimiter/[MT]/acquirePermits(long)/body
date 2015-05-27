@@ -1,0 +1,7 @@
+{
+  if (this.count + permits <= this.countLimit) {
+    this.count+=permits;
+    return NO_OP_CLOSEABLE;
+  }
+  return null;
+}

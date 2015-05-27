@@ -1,28 +1,49 @@
 {
-  if (this.nextWatermark >= this.highWatermark) {
-    return null;
+  if (currentPartitionFinished()) {
+    moveToNextPartition();
   }
-  if (this.messageIterator == null || !this.messageIterator.hasNext()) {
-    this.messageIterator=this.kafkaWrapper.fetchNextMessageBuffer(this.partition,this.nextWatermark,this.highWatermark);
+  while (!allPartitionsFinished()) {
     if (this.messageIterator == null || !this.messageIterator.hasNext()) {
-      return null;
+      try {
+        this.messageIterator=fetchNextMessageBuffer();
+      }
+ catch (      Exception e) {
+        LOG.error(String.format("Failed to fetch next message buffer for partition %s. Will skip this partition.",getCurrentPartition()));
+        moveToNextPartition();
+        continue;
+      }
+      if (this.messageIterator == null || !this.messageIterator.hasNext()) {
+        moveToNextPartition();
+        continue;
+      }
     }
-  }
-  MessageAndOffset nextValidMessage=null;
-  do {
-    if (!this.messageIterator.hasNext()) {
-      return null;
+    MessageAndOffset nextValidMessage=null;
+    do {
+      if (!this.messageIterator.hasNext()) {
+        break;
+      }
+      do {
+        nextValidMessage=this.messageIterator.next();
+      }
+ while (nextValidMessage.offset() < this.nextWatermark.get(this.currentPartitionIdx));
+      this.nextWatermark.set(this.currentPartitionIdx,nextValidMessage.nextOffset());
+      try {
+        D record=decodeRecord(nextValidMessage);
+        this.maintainStats(nextValidMessage);
+        return record;
+      }
+ catch (      SchemaNotFoundException e) {
+        if (shouldLogError()) {
+          LOG.error(String.format("An event from partition %s has a schema ID that doesn't exist in the schema registry.",getCurrentPartition()));
+        }
+      }
+catch (      Exception e) {
+        if (shouldLogError()) {
+          LOG.error(String.format("An event from partition %s cannot be decoded.",getCurrentPartition()));
+        }
+      }
     }
-    nextValidMessage=this.messageIterator.next();
+ while (!currentPartitionFinished());
   }
- while (nextValidMessage.offset() < this.nextWatermark);
-  this.nextWatermark=nextValidMessage.offset() + 1;
-  try {
-    D record=decodeRecord(nextValidMessage,null);
-    this.maintainStats(nextValidMessage);
-    return record;
-  }
- catch (  SchemaNotFoundException e) {
-    throw new RuntimeException(e);
-  }
+  return null;
 }

@@ -1,0 +1,3 @@
+{
+  return this.kafkaWrapper.fetchNextMessageBuffer(this.partitions.get(this.currentPartitionIdx),this.nextWatermark.get(this.currentPartitionIdx),this.highWatermark.get(this.currentPartitionIdx));
+}

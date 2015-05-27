@@ -5,8 +5,7 @@
   partitionState.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,partition.getTopicName());
   partitionState.setProp(PARTITION_ID,partition.getId());
   partitionState.setProp(LEADER_ID,partition.getLeader().getId());
-  partitionState.setProp(LEADER_HOST,partition.getLeader().getHost());
-  partitionState.setProp(LEADER_PORT,partition.getLeader().getPort());
+  partitionState.setProp(LEADER_HOSTANDPORT,partition.getLeader().getHostAndPort().toString());
   partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,offsets.getStartOffset());
   partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,offsets.getLatestOffset());
   return partitionState;

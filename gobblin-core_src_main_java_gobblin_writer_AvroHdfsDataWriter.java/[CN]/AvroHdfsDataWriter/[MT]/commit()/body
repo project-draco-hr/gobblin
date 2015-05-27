@@ -13,4 +13,5 @@
   if (!this.fs.rename(this.stagingFile,this.outputFile)) {
     throw new IOException("Failed to commit data from " + this.stagingFile + " to "+ this.outputFile);
   }
+  WriterUtils.setFileAttributesFromState(properties,fs,outputFile);
 }

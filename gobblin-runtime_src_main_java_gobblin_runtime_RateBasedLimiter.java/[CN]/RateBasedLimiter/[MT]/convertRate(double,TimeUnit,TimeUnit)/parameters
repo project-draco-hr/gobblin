@@ -1,0 +1,3 @@
+double originalRate
+TimeUnit originalTimeUnit
+TimeUnit targetTimeUnit

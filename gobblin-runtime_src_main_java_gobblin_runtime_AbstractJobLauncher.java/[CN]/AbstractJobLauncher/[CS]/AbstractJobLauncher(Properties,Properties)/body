@@ -6,7 +6,7 @@
   this.jobProps.putAll(jobProps);
   this.jobContext=new JobContext(this.sysProps,this.jobProps,LOG);
   this.cancellationExecutor=Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("CancellationExecutor")));
-  this.runtimeMetrics=this.jobContext.getJobMetricsOptional().transform(new Function<JobMetrics,MetricContext>(){
+  this.runtimeMetricContext=this.jobContext.getJobMetricsOptional().transform(new Function<JobMetrics,MetricContext>(){
     @Override public MetricContext apply(    JobMetrics input){
       return input.getMetricContext();
     }

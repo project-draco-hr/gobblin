@@ -1,3 +1,3 @@
 {
-  this.leader=new KafkaLeader(leaderId,leaderHost,leaderPort);
+  this.leader=new KafkaLeader(leaderId,HostAndPort.fromParts(leaderHost,leaderPort));
 }

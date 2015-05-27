@@ -5,7 +5,7 @@
     return getIteratorFromFetchResponse(fetchResponse,partition);
   }
  catch (  Exception e) {
-    LOG.warn(String.format("Fetch message buffer for topic %s, partition %d has failed: %s. This partition will be skipped.",partition.getTopicName(),partition.getId(),e.getMessage()));
+    LOG.warn(String.format("Fetch message buffer for partition %s has failed: %s. This partition will be skipped.",partition,e));
     return null;
   }
 }
