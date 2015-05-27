@@ -1,6 +1,6 @@
 {
   timer.transform(new Function<Timer.Context,Timer.Context>(){
-    @Override public Timer.Context apply(    Timer.Context input){
+    @Override public Timer.Context apply(    @Nonnull Timer.Context input){
       input.close();
       return input;
     }

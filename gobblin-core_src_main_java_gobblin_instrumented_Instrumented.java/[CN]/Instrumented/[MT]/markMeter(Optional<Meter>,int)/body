@@ -1,6 +1,6 @@
 {
   meter.transform(new Function<Meter,Meter>(){
-    @Override public Meter apply(    Meter input){
+    @Override public Meter apply(    @Nonnull Meter input){
       input.mark(value);
       return input;
     }
