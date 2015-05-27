@@ -1,5 +1,5 @@
 {
-  super(workUnitState);
+  super(workUnitState,Optional.<Class<?>>of(DecoratorUtils.resolveUnderlyingObject(extractor).getClass()));
   this.embeddedExtractor=this.closer.register(extractor);
-  this.isEmbeddedInstrumented=InstrumentedExtractorBase.class.isInstance(extractor);
+  this.isEmbeddedInstrumented=Instrumented.isLineageInstrumented(extractor);
 }

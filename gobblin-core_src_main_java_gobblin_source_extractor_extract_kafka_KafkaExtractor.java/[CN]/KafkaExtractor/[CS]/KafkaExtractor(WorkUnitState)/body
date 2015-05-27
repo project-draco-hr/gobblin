@@ -1,4 +1,5 @@
 {
+  super(state);
   this.workUnitState=state;
   this.topicName=KafkaUtils.getTopicName(state);
   this.partitions=KafkaUtils.getPartitions(state);
@@ -13,4 +14,5 @@
   this.avgEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
   this.messageIterator=null;
   this.currentPartitionIdx=0;
+  switchMetricContextToCurrentPartition();
 }

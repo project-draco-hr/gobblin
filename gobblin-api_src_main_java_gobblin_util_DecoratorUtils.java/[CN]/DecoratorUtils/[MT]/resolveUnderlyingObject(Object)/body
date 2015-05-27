@@ -1,0 +1,6 @@
+{
+  while (obj instanceof Decorator) {
+    obj=((Decorator)obj).getDecoratedObject();
+  }
+  return obj;
+}

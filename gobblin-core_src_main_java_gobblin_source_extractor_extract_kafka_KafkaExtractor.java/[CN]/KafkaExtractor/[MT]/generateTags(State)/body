@@ -1,0 +1,5 @@
+{
+  List<Tag<?>> tags=super.generateTags(state);
+  tags.add(new Tag<String>("kafka_topic",KafkaUtils.getTopicName(state)));
+  return tags;
+}

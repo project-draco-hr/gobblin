@@ -1,0 +1,3 @@
+{
+  report(context.getGauges(),context.getCounters(),context.getHistograms(),context.getMeters(),context.getTimers());
+}

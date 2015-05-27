@@ -1,6 +1,3 @@
 {
-  if (MetricContext.class.isInstance(registry)) {
-    LOGGER.warn("Creating Kafka Reporter from MetricContext using forRegistry method. Will not inherit tags.");
-  }
   return new BuilderImpl(registry);
 }

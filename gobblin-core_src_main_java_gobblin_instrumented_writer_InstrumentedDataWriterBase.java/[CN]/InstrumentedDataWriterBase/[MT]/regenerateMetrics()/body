@@ -1,0 +1,14 @@
+{
+  if (isInstrumentationEnabled()) {
+    this.recordsInMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_IN_METER));
+    this.successfulWriteMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_WRITTEN_METER));
+    this.exceptionWriteMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_FAILED_METER));
+    this.dataWriterTimer=Optional.of(this.metricContext.timer(MetricNames.DataWriterMetrics.WRITE_TIMER));
+  }
+ else {
+    this.recordsInMeter=Optional.absent();
+    this.successfulWriteMeter=Optional.absent();
+    this.exceptionWriteMeter=Optional.absent();
+    this.dataWriterTimer=Optional.absent();
+  }
+}

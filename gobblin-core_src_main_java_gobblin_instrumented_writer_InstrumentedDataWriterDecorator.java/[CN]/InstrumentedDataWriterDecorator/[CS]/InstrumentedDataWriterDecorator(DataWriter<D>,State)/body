@@ -1,5 +1,5 @@
 {
-  super(state);
+  super(state,Optional.<Class<?>>of(DecoratorUtils.resolveUnderlyingObject(writer).getClass()));
   this.embeddedWriter=this.closer.register(writer);
-  this.isEmbeddedInstrumented=InstrumentedDataWriterBase.class.isInstance(writer);
+  this.isEmbeddedInstrumented=Instrumented.isLineageInstrumented(writer);
 }
