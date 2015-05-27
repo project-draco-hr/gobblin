@@ -4,7 +4,7 @@
     UUID uuid=UUID.randomUUID();
     String randomIdPrefix="uuid:";
     String oldName=context.getName();
-    List<String> splitName=Strings.isNullOrEmpty(oldName) ? Lists.<String>newArrayList() : Splitter.on(".").splitToList(oldName);
+    List<String> splitName=Strings.isNullOrEmpty(oldName) ? Lists.<String>newArrayList() : Lists.newArrayList(Splitter.on(".").splitToList(oldName));
     if (splitName.size() > 0 && StringUtils.startsWith(Iterables.getLast(splitName),randomIdPrefix)) {
       splitName.set(splitName.size() - 1,String.format("%s%s",randomIdPrefix,uuid.toString()));
     }
