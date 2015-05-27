@@ -5,13 +5,13 @@
     if (!tryLockJob()) {
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
     }
-    Optional<Timer.Context> createWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_CREATE);
+    Optional<Timer.Context> workUnitsCreationTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_CREATION);
     Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
+    Instrumented.endTimer(workUnitsCreationTimer);
     if (!workUnits.isPresent()) {
       jobState.setState(JobState.RunningState.FAILED);
       throw new JobException("Failed to get work units for job " + jobId);
     }
-    Instrumented.endTimer(createWorkUnitsTimer);
     if (workUnits.get().isEmpty()) {
       LOG.warn("No work units have been created for job " + jobId);
       return;
@@ -20,7 +20,7 @@
     jobState.setStartTime(startTime);
     jobState.setState(JobState.RunningState.RUNNING);
     LOG.info("Starting job " + jobId);
-    Optional<Timer.Context> addWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_ADD);
+    Optional<Timer.Context> workUnitsPreparationTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_PREPARATION);
     int taskIdSequence=0;
     int multiTaskIdSequence=0;
     for (    WorkUnit workUnit : workUnits.get()) {
@@ -36,24 +36,22 @@
         addWorkUnit(workUnit,taskIdSequence++,jobState);
       }
     }
-    Instrumented.endTimer(addWorkUnitsTimer);
+    Instrumented.endTimer(workUnitsPreparationTimer);
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
       this.jobContext.getJobMetricsOptional().get().startMetricReporting(this.jobProps);
     }
-    Optional<Timer.Context> writeJobHistoryTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_HISTORY_WRITE);
     storeJobExecutionInfo();
-    Instrumented.endTimer(writeJobHistoryTimer);
-    Optional<Timer.Context> runJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_RUN);
+    Optional<Timer.Context> jobRunTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_RUN);
     runWorkUnits(workUnits.get());
-    Instrumented.endTimer(runJobTimer);
+    Instrumented.endTimer(jobRunTimer);
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
       return;
     }
-    Optional<Timer.Context> commitJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_COMMIT);
+    Optional<Timer.Context> jobCommitTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_COMMIT);
     setFinalJobState(jobState);
     commitJob(jobState);
-    Instrumented.endTimer(commitJobTimer);
+    Instrumented.endTimer(jobCommitTimer);
   }
  catch (  Throwable t) {
     jobState.setState(JobState.RunningState.FAILED);
@@ -62,7 +60,6 @@
     throw new JobException(errMsg,t);
   }
  finally {
-    Optional<Timer.Context> jobCleanupTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_CLEANUP);
     long endTime=System.currentTimeMillis();
     jobState.setEndTime(endTime);
     jobState.setDuration(endTime - jobState.getStartTime());
@@ -73,9 +70,10 @@
       LOG.error(String.format("Failed to persist job state of job %s: %s",jobId,t),t);
       jobState.setState(JobState.RunningState.FAILED);
     }
+    Optional<Timer.Context> jobCleanupTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_CLEANUP);
     cleanupStagingData(jobState);
-    storeJobExecutionInfo();
     Instrumented.endTimer(jobCleanupTimer);
+    storeJobExecutionInfo();
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
       this.jobContext.getJobMetricsOptional().get().triggerMetricReporting();
       this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
