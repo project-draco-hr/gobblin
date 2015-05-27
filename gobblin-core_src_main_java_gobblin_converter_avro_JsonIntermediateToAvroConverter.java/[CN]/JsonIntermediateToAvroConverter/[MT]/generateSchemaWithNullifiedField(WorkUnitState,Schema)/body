@@ -1,0 +1,23 @@
+{
+  Configuration conf=new Configuration();
+  for (  String key : workUnitState.getPropertyNames()) {
+    conf.set(key,workUnitState.getProp(key));
+  }
+  Path originalSchemaPath=null;
+  if (workUnitState.contains(CONVERTER_AVRO_NULLIFY_FIELDS_ORIGINAL_SCHEMA_PATH)) {
+    originalSchemaPath=new Path(workUnitState.getProp(CONVERTER_AVRO_NULLIFY_FIELDS_ORIGINAL_SCHEMA_PATH));
+  }
+ else {
+    LOG.info("Property " + CONVERTER_AVRO_NULLIFY_FIELDS_ORIGINAL_SCHEMA_PATH + "is not specified. Trying to get the orignal schema from previous avro files.");
+    originalSchemaPath=WriterUtils.getDataPublisherFinalDir(workUnitState,workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1),workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCH_ID_KEY,0)).getParent();
+  }
+  try {
+    Schema prevSchema=AvroUtils.getDirectorySchema(originalSchemaPath,conf,false);
+    Schema mergedSchema=AvroUtils.nullifyFieldsForSchemaMerge(prevSchema,currentAvroSchema);
+    return mergedSchema;
+  }
+ catch (  IOException ioe) {
+    LOG.error("Unable to nullify fields. Will retain the current avro schema.",ioe);
+    return currentAvroSchema;
+  }
+}

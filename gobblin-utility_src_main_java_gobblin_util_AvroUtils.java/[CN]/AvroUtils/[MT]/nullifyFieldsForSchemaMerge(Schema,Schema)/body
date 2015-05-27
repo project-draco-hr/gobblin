@@ -1,0 +1,39 @@
+{
+  if (oldSchema == null) {
+    LOG.warn("No previous schema available, use the new schema instead.");
+    return newSchema;
+  }
+  if (!(oldSchema.getType().equals(Type.RECORD) && newSchema.getType().equals(Type.RECORD))) {
+    LOG.warn("Both previous schema and new schema need to be record type. Quit merging schema.");
+    return newSchema;
+  }
+  List<Field> combinedFields=Lists.newArrayList();
+  for (  Field newFld : newSchema.getFields()) {
+    combinedFields.add(new Field(newFld.name(),newFld.schema(),newFld.doc(),newFld.defaultValue()));
+  }
+  for (  Field oldFld : oldSchema.getFields()) {
+    if (newSchema.getField(oldFld.name()) == null) {
+      List<Schema> union=Lists.newArrayList();
+      Schema oldFldSchema=oldFld.schema();
+      if (oldFldSchema.getType().equals(Type.UNION)) {
+        union.add(Schema.create(Type.NULL));
+        for (        Schema itemInUion : oldFldSchema.getTypes()) {
+          if (!itemInUion.getType().equals(Type.NULL)) {
+            union.add(itemInUion);
+          }
+        }
+        Schema newFldSchema=Schema.createUnion(union);
+        combinedFields.add(new Field(oldFld.name(),newFldSchema,oldFld.doc(),oldFld.defaultValue()));
+      }
+ else {
+        union.add(Schema.create(Type.NULL));
+        union.add(oldFldSchema);
+        Schema newFldSchema=Schema.createUnion(union);
+        combinedFields.add(new Field(oldFld.name(),newFldSchema,oldFld.doc(),oldFld.defaultValue()));
+      }
+    }
+  }
+  Schema mergedSchema=Schema.createRecord(newSchema.getName(),newSchema.getDoc(),newSchema.getNamespace(),newSchema.isError());
+  mergedSchema.setFields(combinedFields);
+  return mergedSchema;
+}

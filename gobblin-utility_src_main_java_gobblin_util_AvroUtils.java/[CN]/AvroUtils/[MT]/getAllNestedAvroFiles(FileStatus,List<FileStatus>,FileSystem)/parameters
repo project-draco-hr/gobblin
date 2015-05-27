@@ -1,0 +1,3 @@
+FileStatus dir
+List<FileStatus> files
+FileSystem fs

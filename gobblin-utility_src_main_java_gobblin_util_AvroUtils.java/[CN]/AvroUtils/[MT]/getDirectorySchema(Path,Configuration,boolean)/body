@@ -1,0 +1,27 @@
+{
+  Schema schema=null;
+  Closer closer=Closer.create();
+  try {
+    List<FileStatus> files=getDirectorySchemaHelper(directory,FileSystem.get(conf));
+    if (files == null || files.size() == 0) {
+      LOG.warn("There is no previous avro file in the directory: " + directory);
+    }
+ else {
+      FileStatus file=latest ? files.get(0) : files.get(files.size() - 1);
+      LOG.info("Path to get the avro schema: " + file);
+      FsInput fi=new FsInput(file.getPath(),conf);
+      GenericDatumReader<GenericRecord> genReader=new GenericDatumReader<GenericRecord>();
+      schema=new DataFileReader<GenericRecord>(fi,genReader).getSchema();
+    }
+  }
+ catch (  IOException ioe) {
+    throw new IOException("Cannot get the schema for directory " + directory,ioe);
+  }
+catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  return schema;
+}
