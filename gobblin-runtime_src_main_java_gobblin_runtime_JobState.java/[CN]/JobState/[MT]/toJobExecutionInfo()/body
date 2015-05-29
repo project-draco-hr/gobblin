@@ -2,8 +2,12 @@
   JobExecutionInfo jobExecutionInfo=new JobExecutionInfo();
   jobExecutionInfo.setJobName(this.jobName);
   jobExecutionInfo.setJobId(this.jobId);
-  jobExecutionInfo.setStartTime(this.startTime);
-  jobExecutionInfo.setEndTime(this.endTime);
+  if (this.startTime > 0) {
+    jobExecutionInfo.setStartTime(this.startTime);
+  }
+  if (this.endTime > 0) {
+    jobExecutionInfo.setEndTime(this.endTime);
+  }
   jobExecutionInfo.setDuration(this.duration);
   jobExecutionInfo.setState(JobStateEnum.valueOf(this.state.name()));
   jobExecutionInfo.setLaunchedTasks(this.tasks);
