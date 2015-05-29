@@ -5,10 +5,16 @@
   }
   for (  String reporterClass : Splitter.on(",").split(reporterClasses)) {
     try {
-      ScheduledReporter reporter=((CustomReporterBuilder)Class.forName(reporterClass).getConstructor().newInstance()).getReporter(this.metricContext,properties);
+      ScheduledReporter reporter=((CustomReporterFactory)Class.forName(reporterClass).getConstructor().newInstance()).newScheduledReporter(this.metricContext,properties);
       this.scheduledReporters.add(reporter);
     }
- catch (    Exception exception) {
+ catch (    ClassNotFoundException exception) {
+      LOGGER.warn(String.format("Failed to create metric reporter: requested CustomReporterFactory %s not found.",reporterClass),exception);
+    }
+catch (    NoSuchMethodException exception) {
+      LOGGER.warn(String.format("Failed to create metric reporter: requested CustomReporterFactory %s " + "does not have parameterless constructor.",reporterClass),exception);
+    }
+catch (    Exception exception) {
       LOGGER.warn("Could not create metric reporter from builder " + reporterClass + ".",exception);
     }
   }

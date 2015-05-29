@@ -1,12 +1,3 @@
 {
-  List<Metric> metrics=new ArrayList<Metric>();
-  metrics.add(serializeValue(name,snapshot.getMean(),"mean"));
-  metrics.add(serializeValue(name,snapshot.getMin(),"min"));
-  metrics.add(serializeValue(name,snapshot.getMax(),"max"));
-  metrics.add(serializeValue(name,snapshot.getMedian(),"median"));
-  metrics.add(serializeValue(name,snapshot.get75thPercentile(),"75percentile"));
-  metrics.add(serializeValue(name,snapshot.get95thPercentile(),"95percentile"));
-  metrics.add(serializeValue(name,snapshot.get99thPercentile(),"99percentile"));
-  metrics.add(serializeValue(name,snapshot.get999thPercentile(),"999percentile"));
-  return metrics;
+  return Lists.newArrayList(serializeValue(name,snapshot.getMean(),Measurements.MEAN.name()),serializeValue(name,snapshot.getMin(),Measurements.MIN.name()),serializeValue(name,snapshot.getMax(),Measurements.MAX.name()),serializeValue(name,snapshot.getMedian(),Measurements.MEDIAN.name()),serializeValue(name,snapshot.get75thPercentile(),Measurements.PERCENTILE_75TH.name()),serializeValue(name,snapshot.get95thPercentile(),Measurements.PERCENTILE_95TH.name()),serializeValue(name,snapshot.get99thPercentile(),Measurements.PERCENTILE_99TH.name()),serializeValue(name,snapshot.get999thPercentile(),Measurements.PERCENTILE_999TH.name()));
 }

@@ -1,9 +1,3 @@
 {
-  List<Metric> metrics=new ArrayList<Metric>();
-  metrics.add(serializeValue(name,meter.getCount(),"count"));
-  metrics.add(serializeValue(name,meter.getMeanRate(),"rate","mean"));
-  metrics.add(serializeValue(name,meter.getOneMinuteRate(),"rate","1m"));
-  metrics.add(serializeValue(name,meter.getFiveMinuteRate(),"rate","5m"));
-  metrics.add(serializeValue(name,meter.getFifteenMinuteRate(),"rate","15m"));
-  return metrics;
+  return Lists.newArrayList(serializeValue(name,meter.getCount(),Measurements.COUNT.name()),serializeValue(name,meter.getMeanRate(),Measurements.MEAN_RATE.name()),serializeValue(name,meter.getOneMinuteRate(),Measurements.RATE_1MIN.name()),serializeValue(name,meter.getFiveMinuteRate(),Measurements.RATE_5MIN.name()),serializeValue(name,meter.getFifteenMinuteRate(),Measurements.RATE_15MIN.name()));
 }

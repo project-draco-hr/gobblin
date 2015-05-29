@@ -1,4 +1,4 @@
 {
   Assert.assertTrue(it.hasNext());
-  return KafkaReporter.deserializeReport(new MetricReport(),it.next().message());
+  return MetricReportUtils.deserializeReportFromJson(new MetricReport(),it.next().message());
 }

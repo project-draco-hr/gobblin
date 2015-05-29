@@ -1,8 +1,8 @@
 {
   this.registry=registry;
-  this.name="KafkaReporter";
+  this.name="MetricReportReporter";
   this.rateUnit=TimeUnit.SECONDS;
   this.durationUnit=TimeUnit.MILLISECONDS;
   this.filter=MetricFilter.ALL;
-  this.tags=new LinkedHashMap<String,String>();
+  this.tags=Maps.newHashMap();
 }

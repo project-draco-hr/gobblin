@@ -1,9 +1,11 @@
 {
   try {
-    super.close();
     this.closer.close();
   }
  catch (  Exception e) {
     LOGGER.warn("Exception when closing KafkaReporter",e);
+  }
+ finally {
+    super.close();
   }
 }

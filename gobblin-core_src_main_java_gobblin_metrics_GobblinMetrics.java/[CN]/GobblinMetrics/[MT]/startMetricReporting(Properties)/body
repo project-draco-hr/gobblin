@@ -9,7 +9,7 @@
     this.jmxReporter.get().start();
   }
   buildFileMetricReporter(properties);
-  buildKafkaReporter(properties);
+  buidlKafkaMetricReporter(properties);
   buildCustomMetricReporters(properties);
   for (  ScheduledReporter reporter : this.scheduledReporters) {
     reporter.start(reportInterval,TimeUnit.MILLISECONDS);

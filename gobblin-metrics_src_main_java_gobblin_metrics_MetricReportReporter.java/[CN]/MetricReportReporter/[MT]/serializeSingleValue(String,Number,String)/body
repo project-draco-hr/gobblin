@@ -1,5 +1,3 @@
 {
-  List<Metric> metrics=new ArrayList<Metric>();
-  metrics.add(serializeValue(name,value,path));
-  return metrics;
+  return Lists.newArrayList(serializeValue(name,value,path));
 }

@@ -1,5 +1,5 @@
 {
-  List<Metric> metrics=new ArrayList<Metric>();
+  List<Metric> metrics=Lists.newArrayList();
   for (  Map.Entry<String,Gauge> gauge : gauges.entrySet()) {
     metrics.addAll(serializeGauge(gauge.getKey(),gauge.getValue()));
   }
@@ -8,7 +8,7 @@
   }
   for (  Map.Entry<String,Histogram> histogram : histograms.entrySet()) {
     metrics.addAll(serializeSnapshot(histogram.getKey(),histogram.getValue().getSnapshot()));
-    metrics.addAll(serializeSingleValue(histogram.getKey(),histogram.getValue().getCount(),"count"));
+    metrics.addAll(serializeCounter(histogram.getKey(),histogram.getValue()));
   }
   for (  Map.Entry<String,Meter> meter : meters.entrySet()) {
     metrics.addAll(serializeMetered(meter.getKey(),meter.getValue()));
@@ -16,11 +16,11 @@
   for (  Map.Entry<String,Timer> timer : timers.entrySet()) {
     metrics.addAll(serializeSnapshot(timer.getKey(),timer.getValue().getSnapshot()));
     metrics.addAll(serializeMetered(timer.getKey(),timer.getValue()));
-    metrics.addAll(serializeSingleValue(timer.getKey(),timer.getValue().getCount(),"count"));
+    metrics.addAll(serializeSingleValue(timer.getKey(),timer.getValue().getCount(),Measurements.COUNT.getName()));
   }
   Map<String,String> allTags=Maps.newHashMap();
   allTags.putAll(tags);
   allTags.putAll(this.tags);
-  MetricReport report=new MetricReport(allTags,new DateTime().getMillis(),metrics);
-  pushReport(report);
+  MetricReport report=new MetricReport(allTags,System.currentTimeMillis(),metrics);
+  emitReport(report);
 }
