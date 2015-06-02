@@ -7,8 +7,8 @@
   expectedHighWatermark.setLongWatermark(expectedHighWatermarkValue);
   WatermarkInterval watermarkInterval=new WatermarkInterval(lowWatermark,expectedHighWatermark);
   WorkUnit workUnit=new WorkUnit(null,null,watermarkInterval);
-  TestWatermark deserializedLowWatermark=(TestWatermark)WatermarkSerializerHelper.convertJsonToWatermark(workUnit.getLowWatermark(),TestWatermark.class);
-  TestWatermark deserializedExpectedHighWatermark=(TestWatermark)WatermarkSerializerHelper.convertJsonToWatermark(workUnit.getExpectedHighWatermark(),TestWatermark.class);
+  TestWatermark deserializedLowWatermark=WatermarkSerializerHelper.convertJsonToWatermark(workUnit.getLowWatermark(),TestWatermark.class);
+  TestWatermark deserializedExpectedHighWatermark=WatermarkSerializerHelper.convertJsonToWatermark(workUnit.getExpectedHighWatermark(),TestWatermark.class);
   Assert.assertEquals(deserializedLowWatermark.getLongWatermark(),lowWatermarkValue);
   Assert.assertEquals(deserializedExpectedHighWatermark.getLongWatermark(),expectedHighWatermarkValue);
 }
