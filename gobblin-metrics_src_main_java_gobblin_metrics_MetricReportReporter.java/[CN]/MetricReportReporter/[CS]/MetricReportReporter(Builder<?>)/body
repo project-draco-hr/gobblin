@@ -1,0 +1,5 @@
+{
+  super(builder.registry,builder.name,builder.filter,builder.rateUnit,builder.durationUnit);
+  this.tags=ImmutableMap.copyOf(builder.tags);
+  this.closer=Closer.create();
+}

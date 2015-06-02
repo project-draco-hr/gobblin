@@ -21,7 +21,7 @@
       LOGGER.info(String.format("Metric log file %s already exists, appending to it",metricLogFile));
       append=true;
     }
-    this.fileReporter=Optional.of(closer.register(OutputStreamReporter.forContext(this.metricContext).outputTo(append ? fs.append(metricLogFile) : fs.create(metricLogFile,true)).build()));
+    this.scheduledReporters.add(this.closer.register(OutputStreamReporter.forContext(this.metricContext).outputTo(append ? fs.append(metricLogFile) : fs.create(metricLogFile,true)).build()));
   }
  catch (  IOException ioe) {
     LOGGER.error("Failed to build file metric reporter for job " + this.id,ioe);
