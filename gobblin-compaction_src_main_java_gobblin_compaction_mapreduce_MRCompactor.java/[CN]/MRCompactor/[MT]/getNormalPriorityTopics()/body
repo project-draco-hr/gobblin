@@ -1,0 +1,4 @@
+{
+  List<String> list=this.state.getPropAsList(ConfigurationKeys.COMPACTION_NORMAL_PRIORITY_TOPICS,StringUtils.EMPTY);
+  return getPatternsFromStrings(list);
+}

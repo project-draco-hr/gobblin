@@ -1,0 +1,5 @@
+{
+  processPriorityTopics(topics,getHighPriorityTopics());
+  processPriorityTopics(topics,getNormalPriorityTopics());
+  processRemainingTopics(topics);
+}

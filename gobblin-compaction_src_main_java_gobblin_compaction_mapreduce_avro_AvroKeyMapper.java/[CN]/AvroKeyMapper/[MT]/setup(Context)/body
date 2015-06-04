@@ -1,0 +1,5 @@
+{
+  keySchema=AvroJob.getMapOutputKeySchema(context.getConfiguration());
+  outKey=new AvroKey<GenericRecord>();
+  outValue=new AvroValue<GenericRecord>();
+}

@@ -1,0 +1,3 @@
+{
+  return this.state.getProp(ConfigurationKeys.COMPACTION_TMP_DIR,ConfigurationKeys.DEFAULT_COMPACTION_TMP_DIR);
+}

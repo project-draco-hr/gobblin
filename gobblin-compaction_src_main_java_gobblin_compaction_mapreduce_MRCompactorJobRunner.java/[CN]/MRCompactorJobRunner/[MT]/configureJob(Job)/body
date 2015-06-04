@@ -1,0 +1,5 @@
+{
+  configureInputAndOutputPaths(job);
+  configureMapper(job);
+  configureReducer(job);
+}

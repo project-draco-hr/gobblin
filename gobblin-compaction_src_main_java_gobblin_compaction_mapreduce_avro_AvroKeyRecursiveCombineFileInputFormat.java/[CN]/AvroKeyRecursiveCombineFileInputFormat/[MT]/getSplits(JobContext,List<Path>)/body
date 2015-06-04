@@ -1,0 +1,22 @@
+{
+  List<InputSplit> splits=Lists.newArrayList();
+  List<Path> subdirs=Lists.newArrayList();
+  long totalFileCount=0;
+  FileSystem fs=FileSystem.get(cx.getConfiguration());
+  for (  Path input : dirs) {
+    long count=fs.getContentSummary(input).getFileCount();
+    subdirs.add(input);
+    if (totalFileCount + count < GET_SPLIT_NUM_FILES_TRHESHOLD) {
+      totalFileCount+=count;
+    }
+ else {
+      addAvroFilesInSubdirsToSplits(splits,subdirs,fs,cx);
+      subdirs.clear();
+      totalFileCount=0;
+    }
+  }
+  if (totalFileCount > 0) {
+    addAvroFilesInSubdirsToSplits(splits,subdirs,fs,cx);
+  }
+  return splits;
+}

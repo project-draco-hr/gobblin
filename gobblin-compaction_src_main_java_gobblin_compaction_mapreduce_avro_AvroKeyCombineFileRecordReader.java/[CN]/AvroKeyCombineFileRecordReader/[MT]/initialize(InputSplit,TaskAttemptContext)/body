@@ -1,0 +1,3 @@
+{
+  super.initialize(new FileSplit(this.split.getPath(this.idx),this.split.getOffset(this.idx),this.split.getLength(this.idx),null),cx);
+}

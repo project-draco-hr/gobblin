@@ -1,0 +1,15 @@
+{
+  Set<String> topics=Sets.newHashSet();
+  List<Pattern> blacklist=getBlackList();
+  List<Pattern> whitelist=getWhiteList();
+  for (  FileStatus status : this.fs.listStatus(new Path(this.inputDir))) {
+    if (status.isDir()) {
+      String topic=status.getPath().getName();
+      if (survived(topic,blacklist,whitelist)) {
+        LOG.info("found topic: " + status.getPath().getName());
+        topics.add(status.getPath().getName());
+      }
+    }
+  }
+  return topics;
+}

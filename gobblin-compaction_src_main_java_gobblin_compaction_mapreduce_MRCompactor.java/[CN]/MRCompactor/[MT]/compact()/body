@@ -1,0 +1,23 @@
+{
+  try {
+    Set<String> topics=findAllTopics();
+    processTopics(topics);
+  }
+  finally {
+    this.executorService.shutdown();
+    try {
+      executorService.awaitTermination(getMRJobTimeoutValue(),TimeUnit.MINUTES);
+      for (      Future<?> future : this.futures) {
+        future.get();
+      }
+    }
+ catch (    InterruptedException e) {
+      LOG.warn("Interrupted while waiting for Hadoop jobs to complete",e);
+      throw new RuntimeException(e);
+    }
+catch (    ExecutionException e) {
+      LOG.warn("Got an Exception while processing an input folder",e);
+      throw new RuntimeException(e);
+    }
+  }
+}

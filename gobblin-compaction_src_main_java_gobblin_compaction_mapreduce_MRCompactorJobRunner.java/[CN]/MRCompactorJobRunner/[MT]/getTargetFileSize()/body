@@ -1,0 +1,3 @@
+{
+  return this.jobProps.getPropAsLong(ConfigurationKeys.COMPACTION_TARGET_OUTPUT_FILE_SIZE,ConfigurationKeys.DEFAULT_COMPACTION_TARGET_OUTPUT_FILE_SIZE);
+}

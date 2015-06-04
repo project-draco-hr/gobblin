@@ -1,0 +1,3 @@
+{
+  return this.jobProps.contains(ConfigurationKeys.COMPACTION_AVRO_KEY_SCHEMA_LOC);
+}

@@ -1,0 +1,5 @@
+{
+  super(inputKeySchema);
+  this.split=split;
+  this.idx=idx;
+}

@@ -1,0 +1,11 @@
+{
+  List<Field> fields=new ArrayList<Schema.Field>();
+  for (  Field field : schema.getFields()) {
+    if (field.schema().getType() != Schema.Type.MAP) {
+      fields.add(new Field(field.name(),field.schema(),field.doc(),field.defaultValue(),field.order()));
+    }
+  }
+  Schema newSchema=Schema.createRecord(schema.getName(),schema.getDoc(),schema.getName(),false);
+  newSchema.setFields(fields);
+  return newSchema;
+}

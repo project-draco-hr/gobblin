@@ -1,0 +1,5 @@
+{
+  String minTimeAgoStr=this.state.getProp(ConfigurationKeys.COMPACTION_TIMEBASED_MIN_TIME_AGO,ConfigurationKeys.DEFAULT_COMPACTION_TIMEBASED_MIN_TIME_AGO);
+  Period minTimeAgo=periodFormatter.parsePeriod(minTimeAgoStr);
+  return currentTime.minus(minTimeAgo);
+}

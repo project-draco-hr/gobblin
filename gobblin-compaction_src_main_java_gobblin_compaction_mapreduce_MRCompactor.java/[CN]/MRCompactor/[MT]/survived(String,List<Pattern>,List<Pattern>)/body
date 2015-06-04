@@ -1,0 +1,8 @@
+{
+  if (!whitelist.isEmpty()) {
+    return stringInPatterns(topic,whitelist);
+  }
+ else {
+    return !stringInPatterns(topic,blacklist);
+  }
+}

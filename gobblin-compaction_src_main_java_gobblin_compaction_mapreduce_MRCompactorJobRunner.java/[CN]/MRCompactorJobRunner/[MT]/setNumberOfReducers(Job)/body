@@ -1,0 +1,5 @@
+{
+  long inputSize=getInputSize();
+  long targetFileSize=getTargetFileSize();
+  job.setNumReduceTasks(Math.min(Ints.checkedCast(inputSize / targetFileSize) + 1,getMaxNumReducers()));
+}

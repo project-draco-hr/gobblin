@@ -1,0 +1,15 @@
+{
+  Path[] sourceDirs=FileInputFormat.getInputPaths(job);
+  List<FileStatus> files=new ArrayList<FileStatus>();
+  for (  Path sourceDir : sourceDirs) {
+    files.addAll(Arrays.asList(this.fs.listStatus(sourceDir)));
+  }
+  Collections.sort(files,new LastModifiedDescComparator());
+  for (  FileStatus file : files) {
+    Schema schema=getNewestSchemaFromSource(file.getPath());
+    if (schema != null) {
+      return schema;
+    }
+  }
+  return null;
+}

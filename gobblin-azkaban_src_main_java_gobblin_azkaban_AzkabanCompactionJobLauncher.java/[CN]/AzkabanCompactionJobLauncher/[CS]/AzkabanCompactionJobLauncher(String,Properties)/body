@@ -1,0 +1,5 @@
+{
+  super(jobId,LOG);
+  this.properties=new Properties();
+  this.properties.putAll(props);
+}

@@ -1,0 +1,10 @@
+{
+  if (context.getNumReduceTasks() == 0) {
+    context.write(key,NullWritable.get());
+  }
+ else {
+    outKey.datum(AvroUtils.convertRecordSchema(key.datum(),keySchema));
+    outValue.datum(key.datum());
+    context.write(outKey,outValue);
+  }
+}

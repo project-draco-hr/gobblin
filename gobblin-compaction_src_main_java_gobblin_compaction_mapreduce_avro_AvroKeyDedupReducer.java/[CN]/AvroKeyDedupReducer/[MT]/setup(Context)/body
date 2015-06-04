@@ -1,0 +1,3 @@
+{
+  outKey=new AvroKey<GenericRecord>();
+}

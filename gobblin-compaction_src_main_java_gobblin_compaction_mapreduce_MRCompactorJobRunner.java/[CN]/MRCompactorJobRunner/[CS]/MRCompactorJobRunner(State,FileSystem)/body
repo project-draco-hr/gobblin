@@ -1,0 +1,9 @@
+{
+  this.jobProps=jobProps;
+  this.topic=jobProps.getProp(ConfigurationKeys.COMPACTION_TOPIC);
+  this.inputPath=new Path(jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_INPUT_DIR));
+  this.outputPath=new Path(jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_DEST_DIR));
+  this.tmpPath=new Path(jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_TMP_DIR));
+  this.fs=fs;
+  this.perm=getOutputPermission();
+}

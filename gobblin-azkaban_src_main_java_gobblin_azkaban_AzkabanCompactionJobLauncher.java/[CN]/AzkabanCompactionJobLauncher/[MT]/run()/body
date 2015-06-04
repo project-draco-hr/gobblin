@@ -1,0 +1,4 @@
+{
+  Class<? extends Compactor> compactorClass=getCompactorClass();
+  compactorClass.getDeclaredConstructor(Properties.class).newInstance(this.properties).compact();
+}
