@@ -1,8 +1,4 @@
 {
-  JobState.RunningState runningState=jobState.getState();
-  if (runningState == JobState.RunningState.PENDING || runningState == JobState.RunningState.RUNNING || runningState == JobState.RunningState.CANCELLED) {
-    return;
-  }
   String jobName=jobState.getJobName();
   String jobId=jobState.getJobId();
   LOG.info("Persisting job state of job " + jobId);
