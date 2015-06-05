@@ -1,0 +1,7 @@
+{
+  Properties props=new Properties();
+  for (  Map.Entry<String,String> entry : configuration) {
+    props.put(entry.getKey(),entry.getValue());
+  }
+  startMetricReporting(props);
+}

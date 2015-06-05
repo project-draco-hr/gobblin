@@ -1,4 +1,7 @@
 {
+  if (this.currentPartitionIdx >= this.partitions.size()) {
+    return;
+  }
   int currentPartitionId=this.getCurrentPartition().getId();
   switchMetricContext(Lists.<Tag<?>>newArrayList(new Tag<Integer>("kafka_partition",currentPartitionId)));
 }
