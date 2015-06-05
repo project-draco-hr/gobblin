@@ -15,7 +15,11 @@
       LOGGER.error("Failed to create metric log directory for metrics " + this.getName());
       return;
     }
-    Path metricLogFile=new Path(metricsLogDir,this.id + ".metrics.log");
+    String metricsFileSuffix=properties.getProperty(ConfigurationKeys.METRICS_FILE_SUFFIX,"");
+    if (!Strings.isNullOrEmpty(metricsFileSuffix) && !metricsFileSuffix.startsWith(".")) {
+      metricsFileSuffix="." + metricsFileSuffix;
+    }
+    Path metricLogFile=new Path(metricsLogDir,this.id + metricsFileSuffix + ".metrics.log");
     boolean append=false;
     if (fs.exists(metricLogFile)) {
       LOGGER.info(String.format("Metric log file %s already exists, appending to it",metricLogFile));

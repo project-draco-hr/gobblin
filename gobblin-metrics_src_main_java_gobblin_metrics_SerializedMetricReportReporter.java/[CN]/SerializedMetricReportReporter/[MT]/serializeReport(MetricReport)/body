@@ -4,7 +4,7 @@
   }
   try {
     this.byteArrayOutputStream.reset();
-    this.out.writeInt(MetricReportUtils.SCHEMA_VERSION);
+    writeSchemaVersioningInformation(this.out);
     this.writerOpt.get().write(report,this.encoder);
     this.encoder.flush();
     return this.byteArrayOutputStream.toByteArray();
