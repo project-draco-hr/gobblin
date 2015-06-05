@@ -4,4 +4,9 @@
   }
  catch (  TimeoutException te) {
   }
+ finally {
+    if (this.jobMetrics.isPresent()) {
+      this.jobMetrics.get().stopMetricReporting();
+    }
+  }
 }
