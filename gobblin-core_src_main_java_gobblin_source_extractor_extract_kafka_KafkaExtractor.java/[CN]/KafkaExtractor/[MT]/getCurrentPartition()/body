@@ -1,3 +1,4 @@
 {
+  Preconditions.checkElementIndex(this.currentPartitionIdx,this.partitions.size(),"KafkaExtractor has finished extracting all partitions. There's no current partition.");
   return this.partitions.get(this.currentPartitionIdx);
 }
