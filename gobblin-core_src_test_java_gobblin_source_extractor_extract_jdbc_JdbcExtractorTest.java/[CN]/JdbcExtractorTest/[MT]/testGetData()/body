@@ -1,0 +1,18 @@
+{
+  CommandOutput<JdbcCommand,ResultSet> output=new JdbcCommandOutput();
+  output.put(new JdbcCommand(),buildMockResultSet());
+  State state=new WorkUnitState();
+  state.setId("id");
+  JdbcExtractor jdbcExtractor=new MysqlExtractor((WorkUnitState)state);
+  List<String> columnNames=Lists.newArrayListWithCapacity(COLUMNS.size());
+  for (  MockJdbcColumn mockJdbcColumn : COLUMNS) {
+    columnNames.add(mockJdbcColumn.getColumnName());
+  }
+  jdbcExtractor.setHeaderRecord(columnNames);
+  Iterator<JsonElement> itr=jdbcExtractor.getData(output);
+  assertTrue(itr.hasNext());
+  JsonObject obj=itr.next().getAsJsonObject();
+  for (  MockJdbcColumn column : COLUMNS) {
+    assertEquals(obj.get(column.getColumnName()).getAsString(),column.getValue());
+  }
+}

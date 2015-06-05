@@ -1,0 +1,8 @@
+{
+  byte[] ba=logBlob.getBytes(1L,(int)(logBlob.length()));
+  if (ba == null) {
+    return StringUtils.EMPTY;
+  }
+  String baString=Base64.encodeBase64String(ba);
+  return baString;
+}
