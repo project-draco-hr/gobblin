@@ -15,7 +15,7 @@
       LOGGER.error("Failed to create metric log directory for metrics " + this.getName());
       return;
     }
-    String metricsFileSuffix=properties.getProperty(ConfigurationKeys.METRICS_FILE_SUFFIX,"");
+    String metricsFileSuffix=properties.getProperty(ConfigurationKeys.METRICS_FILE_SUFFIX,ConfigurationKeys.DEFAULT_METRICS_FILE_SUFFIX);
     if (!Strings.isNullOrEmpty(metricsFileSuffix) && !metricsFileSuffix.startsWith(".")) {
       metricsFileSuffix="." + metricsFileSuffix;
     }

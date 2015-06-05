@@ -1,5 +1,4 @@
 {
-  LOG.info(properties.toString());
   Preconditions.checkArgument(properties.containsKey(KAFKA_SCHEMA_REGISTRY_URL),"Schema registry URL not provided.");
   this.url=properties.getProperty(KAFKA_SCHEMA_REGISTRY_URL);
   int maxCacheSize=Integer.parseInt(properties.getProperty(KAFKA_SCHEMA_REGISTRY_MAX_CACHE_SIZE,DEFAULT_KAFKA_SCHEMA_REGISTRY_MAX_CACHE_SIZE));
