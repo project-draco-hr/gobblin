@@ -1,3 +1,5 @@
 {
   super(builder);
+  this.registry=builder.registry;
+  this.registrySchemaId=Optional.absent();
 }

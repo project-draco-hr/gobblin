@@ -4,7 +4,7 @@
     while (context.nextKeyValue()) {
       this.map(context.getCurrentKey(),context.getCurrentValue(),context);
     }
-    runWorkUnits(this.workUnits);
+    runWorkUnits(this.workUnits,context);
   }
   finally {
     this.cleanup(context);

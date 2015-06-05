@@ -1,0 +1,8 @@
+{
+  if (this.decodingErrorCount.containsKey(getCurrentPartition())) {
+    this.decodingErrorCount.put(getCurrentPartition(),this.decodingErrorCount.get(getCurrentPartition()) + 1);
+  }
+ else {
+    this.decodingErrorCount.put(getCurrentPartition(),1);
+  }
+}
