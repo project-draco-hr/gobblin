@@ -1,0 +1,11 @@
+{
+  Closer closer=Closer.create();
+  try {
+    SeekableInput sin=closer.register(new FsInput(dataFile,fs.getConf()));
+    DataFileReader<GenericRecord> reader=closer.register(new DataFileReader<GenericRecord>(sin,new GenericDatumReader<GenericRecord>()));
+    return reader.getSchema();
+  }
+  finally {
+    closer.close();
+  }
+}

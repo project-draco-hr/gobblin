@@ -1,5 +1,7 @@
 {
   this.currentPartitionIdx++;
   this.messageIterator=null;
-  switchMetricContextToCurrentPartition();
+  if (this.currentPartitionIdx < this.partitions.size()) {
+    switchMetricContextToCurrentPartition();
+  }
 }

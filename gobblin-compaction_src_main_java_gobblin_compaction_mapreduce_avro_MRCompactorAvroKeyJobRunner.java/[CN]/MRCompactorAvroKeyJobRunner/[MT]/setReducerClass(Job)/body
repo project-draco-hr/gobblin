@@ -1,0 +1,3 @@
+{
+  job.setReducerClass(AvroKeyDedupReducer.class);
+}

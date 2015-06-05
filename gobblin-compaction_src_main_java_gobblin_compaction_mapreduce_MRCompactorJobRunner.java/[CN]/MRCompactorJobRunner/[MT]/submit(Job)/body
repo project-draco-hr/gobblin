@@ -1,0 +1,9 @@
+{
+  job.submit();
+  MRCompactor.addRunningHadoopJob(job);
+  LOG.info(String.format("MR job submitted for topic %s, input %s, url: %s",this.topic,this.inputPath,job.getTrackingURL()));
+  job.waitForCompletion(false);
+  if (!job.isSuccessful()) {
+    throw new RuntimeException(String.format("MR job failed for topic %s, input %s, url: %s",this.topic,this.inputPath,job.getTrackingURL()));
+  }
+}

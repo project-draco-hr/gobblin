@@ -1,0 +1,9 @@
+{
+  try {
+    @SuppressWarnings("unchecked") Class<? extends MRCompactorJobRunner> cls=(Class<? extends MRCompactorJobRunner>)Class.forName(jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_RUNNER_CLASS,ConfigurationKeys.DEFAULT_COMPACTION_JOB_RUNNER_CLASS));
+    return cls.getDeclaredConstructor(State.class,FileSystem.class).newInstance(jobProps,this.fs);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Cannot instantiate MRCompactorJobRunner",e);
+  }
+}

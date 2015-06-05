@@ -1,0 +1,3 @@
+{
+  return this.jobProps.getPropAsInt(ConfigurationKeys.COMPACTION_MAX_NUM_REDUCERS,ConfigurationKeys.DEFAULT_COMPACTION_MAX_NUM_REDUCERS);
+}

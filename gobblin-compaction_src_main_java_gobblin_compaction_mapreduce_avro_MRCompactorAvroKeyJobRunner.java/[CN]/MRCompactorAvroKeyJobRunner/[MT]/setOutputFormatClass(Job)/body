@@ -1,0 +1,3 @@
+{
+  job.setOutputFormatClass(AvroKeyOutputFormat.class);
+}

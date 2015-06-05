@@ -1,0 +1,3 @@
+{
+  return this.state.getPropAsBoolean(ConfigurationKeys.COMPACTION_FORCE_REPROCESS,false);
+}

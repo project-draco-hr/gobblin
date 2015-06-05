@@ -1,0 +1,3 @@
+{
+  return this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_FORCE_REPROCESS,ConfigurationKeys.DEFAULT_COMPACTION_FORCE_REPROCESS);
+}

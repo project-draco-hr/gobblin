@@ -1,0 +1,3 @@
+{
+  return this.folderTimePattern.replaceAll("[a-zA-Z0-9]+","*");
+}

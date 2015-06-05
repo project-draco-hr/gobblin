@@ -1,0 +1,3 @@
+{
+  job.setMapOutputValueClass(AvroValue.class);
+}

@@ -1,0 +1,6 @@
+{
+  setInputFormatClass(job);
+  setMapperClass(job);
+  setMapOutputKeyClass(job);
+  setMapOutputValueClass(job);
+}

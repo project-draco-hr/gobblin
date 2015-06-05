@@ -1,0 +1,2 @@
+Set<String> topics
+List<Pattern> priorityTopics

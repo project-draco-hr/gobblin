@@ -1,14 +1,15 @@
 {
-  if (currentPartitionFinished()) {
-    moveToNextPartition();
-  }
   while (!allPartitionsFinished()) {
+    if (currentPartitionFinished()) {
+      moveToNextPartition();
+      continue;
+    }
     if (this.messageIterator == null || !this.messageIterator.hasNext()) {
       try {
         this.messageIterator=fetchNextMessageBuffer();
       }
  catch (      Exception e) {
-        LOG.error(String.format("Failed to fetch next message buffer for partition %s. Will skip this partition.",getCurrentPartition()));
+        LOG.error(String.format("Failed to fetch next message buffer for partition %s. Will skip this partition.",getCurrentPartition()),e);
         moveToNextPartition();
         continue;
       }
@@ -34,12 +35,14 @@
       }
  catch (      SchemaNotFoundException e) {
         if (shouldLogError()) {
-          LOG.error(String.format("An event from partition %s has a schema ID that doesn't exist in the schema registry.",getCurrentPartition()));
+          LOG.error(String.format("An event from partition %s has a schema ID that doesn't exist in the schema registry.",getCurrentPartition()),e);
+          incrementErrorCount();
         }
       }
 catch (      Exception e) {
         if (shouldLogError()) {
-          LOG.error(String.format("An event from partition %s cannot be decoded.",getCurrentPartition()));
+          LOG.error(String.format("An event from partition %s cannot be decoded.",getCurrentPartition()),e);
+          incrementErrorCount();
         }
       }
     }

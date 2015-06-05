@@ -1,0 +1,3 @@
+{
+  return this.state.getPropAsLong(ConfigurationKeys.COMPACTION_MR_JOB_TIMEOUT_MINUTES,ConfigurationKeys.DEFAULT_COMPACTION_MR_JOB_TIMEOUT_MINUTES);
+}

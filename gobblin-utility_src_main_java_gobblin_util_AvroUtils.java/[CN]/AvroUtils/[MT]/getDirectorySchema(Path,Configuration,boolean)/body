@@ -11,7 +11,7 @@
       LOG.info("Path to get the avro schema: " + file);
       FsInput fi=new FsInput(file.getPath(),conf);
       GenericDatumReader<GenericRecord> genReader=new GenericDatumReader<GenericRecord>();
-      schema=new DataFileReader<GenericRecord>(fi,genReader).getSchema();
+      schema=closer.register(new DataFileReader<GenericRecord>(fi,genReader)).getSchema();
     }
   }
  catch (  IOException ioe) {

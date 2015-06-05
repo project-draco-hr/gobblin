@@ -1,0 +1,4 @@
+{
+  super.setMaxSplitSize(cx.getConfiguration().getLong(ConfigurationKeys.COMPACTION_MAPRED_MAX_SPLIT_SIZE,ConfigurationKeys.DEFAULT_COMPACTION_MAPRED_MAX_SPLIT_SIZE));
+  super.setMinSplitSizeNode(cx.getConfiguration().getLong(ConfigurationKeys.COMPACTION_MAPRED_MIN_SPLIT_SIZE,ConfigurationKeys.DEFAULT_COMPACTION_MAPRED_MIN_SPLIT_SIZE));
+}
