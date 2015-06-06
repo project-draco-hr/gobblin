@@ -4,9 +4,8 @@
     conf.set(key,this.getState().getProp(key));
   }
   this.numBranches=this.getState().getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
-  URI uri;
   for (int i=0; i < this.numBranches; i++) {
-    uri=URI.create(this.getState().getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,this.numBranches,i),ConfigurationKeys.LOCAL_FS_URI));
+    URI uri=URI.create(this.getState().getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,this.numBranches,i),ConfigurationKeys.LOCAL_FS_URI));
     this.fss.add(FileSystem.get(uri,conf));
   }
 }
