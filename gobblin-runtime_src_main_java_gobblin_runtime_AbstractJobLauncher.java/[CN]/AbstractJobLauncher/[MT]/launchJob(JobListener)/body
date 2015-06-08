@@ -37,8 +37,12 @@
     Optional<Timer.Context> jobCommitTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_COMMIT);
     setFinalJobState(jobState);
     if (canCommit(this.jobContext.getJobCommitPolicy(),jobState)) {
-      commitJob(jobState);
-      persistJobState(jobState);
+      try {
+        commitJob(jobState);
+      }
+  finally {
+        persistJobState(jobState);
+      }
     }
     Instrumented.endTimer(jobCommitTimer);
   }

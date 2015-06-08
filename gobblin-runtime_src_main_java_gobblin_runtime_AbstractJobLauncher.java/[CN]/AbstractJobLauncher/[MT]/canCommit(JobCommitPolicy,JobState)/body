@@ -1,7 +1,3 @@
 {
-  JobState.RunningState runningState=jobState.getState();
-  if (runningState == JobState.RunningState.PENDING || runningState == JobState.RunningState.RUNNING || runningState == JobState.RunningState.CANCELLED) {
-    return false;
-  }
   return commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && jobState.getState() == JobState.RunningState.SUCCESSFUL);
 }

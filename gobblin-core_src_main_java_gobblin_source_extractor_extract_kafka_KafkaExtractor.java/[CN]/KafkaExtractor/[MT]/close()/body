@@ -2,7 +2,9 @@
   for (int i=0; i < this.partitions.size(); i++) {
     LOG.info(String.format("Last offset pulled for partition %s = %d",this.partitions.get(i),this.nextWatermark.get(i) - 1));
   }
-  this.workUnitState.setActualHighWatermark(this.nextWatermark);
+  if (this.workUnitState.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
+    this.workUnitState.setActualHighWatermark(this.nextWatermark);
+  }
   for (  KafkaPartition partition : this.partitions) {
     if (this.avgEventSizes.containsKey(partition)) {
       long avgSize=this.avgEventSizes.get(partition);
