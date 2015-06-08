@@ -1,7 +1,7 @@
 {
   for (  TaskState taskState : jobState.getTaskStates()) {
     if (taskState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
-      taskState.restoreActualHighWatermark();
+      taskState.backoffActualHighWatermark();
     }
   }
   String jobName=jobState.getJobName();
