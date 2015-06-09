@@ -1,5 +1,6 @@
 {
-  if (this.children.putIfAbsent(childContextName,childContext) != null) {
+  if (this.children.getIfPresent(childContextName) != null) {
     throw new IllegalArgumentException("A child context named " + childContextName + " already exists");
   }
+  this.children.put(childContextName,childContext);
 }
