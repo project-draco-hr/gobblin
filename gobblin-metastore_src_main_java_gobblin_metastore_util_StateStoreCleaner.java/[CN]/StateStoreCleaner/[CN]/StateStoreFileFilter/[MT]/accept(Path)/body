@@ -1,0 +1,3 @@
+{
+  return Files.getFileExtension(path.getName()).equalsIgnoreCase("jst");
+}
