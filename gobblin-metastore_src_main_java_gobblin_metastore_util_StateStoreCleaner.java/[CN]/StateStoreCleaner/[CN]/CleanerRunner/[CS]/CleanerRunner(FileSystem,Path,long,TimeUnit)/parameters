@@ -1,0 +1,4 @@
+FileSystem fs
+Path stateStoreDir
+long retention
+TimeUnit retentionTimeUnit

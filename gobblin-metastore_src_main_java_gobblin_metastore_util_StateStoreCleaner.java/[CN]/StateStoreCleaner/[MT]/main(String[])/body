@@ -1,0 +1,18 @@
+{
+  if (args.length != 1) {
+    System.err.println("Usage: " + StateStoreCleaner.class.getSimpleName() + " <configuration file>");
+    System.exit(1);
+  }
+  Closer closer=Closer.create();
+  try {
+    Properties properties=new Properties();
+    properties.load(closer.register(new FileInputStream(args[0])));
+    new StateStoreCleaner(properties).run();
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}
