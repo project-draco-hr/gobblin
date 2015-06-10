@@ -24,7 +24,7 @@ synchronized (this.cancellationExecution) {
     }
     jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
     jobState.addTaskStates(collectOutput(new Path(jobOutputPath,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY))));
-    countersToMetrics(this.job.getCounters(),JobMetrics.get(jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+    countersToMetrics(Optional.fromNullable(this.job.getCounters()),JobMetrics.get(jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
   }
   finally {
     cleanUpWorkingDirectory();

@@ -1,0 +1,10 @@
+{
+  FileStatus[] stateStoreDirs=this.fs.listStatus(this.stateStoreRootDir);
+  if (stateStoreDirs == null || stateStoreDirs.length == 0) {
+    LOGGER.warn("The state store root directory does not exist or is empty");
+    return;
+  }
+  for (  FileStatus stateStoreDir : stateStoreDirs) {
+    this.cleanerRunnerExecutor.submit(new CleanerRunner(this.fs,stateStoreDir.getPath(),this.retention,this.retentionTimeUnit));
+  }
+}

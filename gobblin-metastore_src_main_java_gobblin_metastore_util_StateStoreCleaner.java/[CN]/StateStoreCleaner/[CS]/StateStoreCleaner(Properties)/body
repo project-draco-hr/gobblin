@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(properties.containsKey(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),"Missing configuration property for the state store root directory: " + ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY);
+  this.stateStoreRootDir=new Path(properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY));
+  this.retention=Long.parseLong(properties.getProperty(STATE_STORE_CLEANER_RETENTION_KEY,DEFAULT_STATE_STORE_CLEANER_RETENTION));
+  this.retentionTimeUnit=TimeUnit.valueOf(properties.getProperty(STATE_STORE_CLEANER_RETENTION_TIMEUNIT_KEY,DEFAULT_STATE_STORE_CLEANER_RETENTION_TIMEUNIT).toUpperCase());
+  this.cleanerRunnerExecutor=Executors.newFixedThreadPool(Integer.parseInt(properties.getProperty(STATE_STORE_CLEANER_EXECUTOR_THREADS_KEY,DEFAULT_STATE_STORE_CLEANER_EXECUTOR_THREADS)),ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("StateStoreCleaner")));
+  URI fsUri=URI.create(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
+  this.fs=FileSystem.get(fsUri,new Configuration());
+}
