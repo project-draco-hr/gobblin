@@ -1,0 +1,10 @@
+{
+  List<Tag<?>> tags=Lists.newArrayList();
+  for (  String tagKeyValue : state.getPropAsList(METRICS_STATE_CUSTOM_TAGS,"")) {
+    Tag<?> tag=Tag.fromString(tagKeyValue);
+    if (tag != null) {
+      tags.add(tag);
+    }
+  }
+  return tags;
+}
