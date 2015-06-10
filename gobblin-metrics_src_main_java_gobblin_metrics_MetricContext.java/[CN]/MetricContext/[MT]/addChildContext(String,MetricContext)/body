@@ -1,5 +1,5 @@
 {
-  if (this.children.putIfAbsent(childContextName,childContext) != null) {
+  if (this.children.asMap().putIfAbsent(childContextName,childContext) != null) {
     throw new IllegalArgumentException("A child context named " + childContextName + " already exists");
   }
 }

@@ -7,7 +7,7 @@
     this.jmxReporter.get().stop();
   }
   for (  ScheduledReporter reporter : this.scheduledReporters) {
-    reporter.stop();
+    reporter.close();
   }
   try {
     this.closer.close();
