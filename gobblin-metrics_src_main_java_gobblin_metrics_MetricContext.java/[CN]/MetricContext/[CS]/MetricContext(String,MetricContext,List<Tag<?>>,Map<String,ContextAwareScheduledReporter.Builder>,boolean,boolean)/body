@@ -3,6 +3,7 @@
   this.name=name;
   this.parent=Optional.fromNullable(parent);
   this.tagged=new Tagged(tags);
+  this.tagged.addTag(new Tag<String>(METRIC_CONTEXT_ID_TAG_NAME,UUID.randomUUID().toString()));
   this.reportFullyQualifiedNames=reportFullyQualifiedNames;
   this.includeTagKeys=includeTagKeys;
   if (this.parent.isPresent()) {
