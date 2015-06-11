@@ -1,0 +1,34 @@
+{
+  byte[] randomBytesStage={1,2,3,4,5,6,7,8,9,0};
+  byte[] randomBytesWrite={11,12,13,14,15};
+  Path stagingFile=new Path(TestConstants.TEST_STAGING_DIR + Path.SEPARATOR + this.filePath,TestConstants.TEST_FILE_NAME + "." + TestConstants.TEST_WRITER_ID+ "."+ "tmp");
+  Configuration conf=new Configuration();
+  for (  String key : properties.getPropertyNames()) {
+    conf.set(key,properties.getProp(key));
+  }
+  FileSystem fs=FileSystem.get(URI.create(TestConstants.TEST_FS_URI),conf);
+  OutputStream os=fs.create(stagingFile);
+  os.write(randomBytesStage);
+  os.flush();
+  os.close();
+  DataWriter<byte[]> writer=new SimpleDataWriterBuilder().writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).withSchema(this.schema).forBranch(0).build();
+  writer.write(randomBytesWrite);
+  writer.close();
+  writer.commit();
+  Assert.assertEquals(writer.recordsWritten(),1);
+  Assert.assertEquals(writer.bytesWritten(),randomBytesWrite.length + 1);
+  String pathKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FINAL_OUTPUT_PATH,0);
+  Assert.assertTrue(properties.contains(pathKey));
+  File writeFile=new File(properties.getProp(pathKey));
+  int c, i=0;
+  InputStream is=new FileInputStream(writeFile);
+  while ((c=is.read()) != -1) {
+    if (i == 5) {
+      Assert.assertEquals(c,(byte)newLine);
+      i++;
+      continue;
+    }
+    Assert.assertEquals(randomBytesWrite[i],c);
+    i++;
+  }
+}
