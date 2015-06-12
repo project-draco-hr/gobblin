@@ -1,10 +1,5 @@
 {
-  JobCommitPolicy jobCommitPolicy=this.jobContext.getJobCommitPolicy();
-  if (!canCommit(jobCommitPolicy,jobState)) {
-    LOG.info("Job data will not be committed due to commit policy: " + jobCommitPolicy);
-    return;
-  }
-  LOG.info(String.format("Publishing job data of job %s with commit policy %s",this.jobContext.getJobId(),jobCommitPolicy.name()));
+  LOG.info(String.format("Publishing data of job %s with commit policy %s",this.jobContext.getJobId(),this.jobContext.getJobCommitPolicy().name()));
   Closer closer=Closer.create();
   try {
     Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(jobState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));

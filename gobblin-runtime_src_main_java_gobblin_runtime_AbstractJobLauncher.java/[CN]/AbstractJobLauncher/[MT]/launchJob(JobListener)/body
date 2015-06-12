@@ -21,21 +21,7 @@
     jobState.setState(JobState.RunningState.RUNNING);
     LOG.info("Starting job " + jobId);
     Optional<Timer.Context> workUnitsPreparationTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_PREPARATION);
-    int taskIdSequence=0;
-    int multiTaskIdSequence=0;
-    for (    WorkUnit workUnit : workUnits.get()) {
-      if (workUnit instanceof MultiWorkUnit) {
-        String multiTaskId=JobLauncherUtils.newMultiTaskId(jobId,multiTaskIdSequence++);
-        workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
-        workUnit.setId(multiTaskId);
-        for (        WorkUnit innerWorkUnit : ((MultiWorkUnit)workUnit).getWorkUnits()) {
-          addWorkUnit(innerWorkUnit,taskIdSequence++,jobState);
-        }
-      }
- else {
-        addWorkUnit(workUnit,taskIdSequence++,jobState);
-      }
-    }
+    prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
     Instrumented.endTimer(workUnitsPreparationTimer);
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
       this.jobContext.getJobMetricsOptional().get().startMetricReporting(this.jobProps);
@@ -50,7 +36,14 @@
     }
     Optional<Timer.Context> jobCommitTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_COMMIT);
     setFinalJobState(jobState);
-    commitJob(jobState);
+    if (canCommit(this.jobContext.getJobCommitPolicy(),jobState)) {
+      try {
+        commitJob(jobState);
+      }
+  finally {
+        persistJobState(jobState);
+      }
+    }
     Instrumented.endTimer(jobCommitTimer);
   }
  catch (  Throwable t) {
@@ -63,13 +56,6 @@
     long endTime=System.currentTimeMillis();
     jobState.setEndTime(endTime);
     jobState.setDuration(endTime - jobState.getStartTime());
-    try {
-      persistJobState(jobState);
-    }
- catch (    Throwable t) {
-      LOG.error(String.format("Failed to persist job state of job %s: %s",jobId,t),t);
-      jobState.setState(JobState.RunningState.FAILED);
-    }
     Optional<Timer.Context> jobCleanupTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_CLEANUP);
     cleanupStagingData(jobState);
     Instrumented.endTimer(jobCleanupTimer);
