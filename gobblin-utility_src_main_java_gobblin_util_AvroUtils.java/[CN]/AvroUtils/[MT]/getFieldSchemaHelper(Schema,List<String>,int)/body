@@ -1,4 +1,7 @@
 {
+  if (schema.getField(pathList.get(field)) == null) {
+    return Optional.absent();
+  }
   if ((field + 1) == pathList.size()) {
     return Optional.fromNullable(schema.getField(pathList.get(field)).schema());
   }

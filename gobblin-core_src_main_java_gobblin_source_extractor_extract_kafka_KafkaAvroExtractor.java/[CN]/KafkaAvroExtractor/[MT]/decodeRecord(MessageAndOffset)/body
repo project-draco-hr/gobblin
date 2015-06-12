@@ -7,12 +7,12 @@
   String schemaId=Hex.encodeHexString(schemaIdByteArray);
   Schema schema=null;
   schema=this.schemaRegistry.getSchemaById(schemaId);
-  reader.setSchema(schema);
+  reader.get().setSchema(schema);
   Decoder binaryDecoder=DecoderFactory.get().binaryDecoder(payload,1 + KafkaAvroSchemaRegistry.SCHEMA_ID_LENGTH_BYTE,payload.length - 1 - KafkaAvroSchemaRegistry.SCHEMA_ID_LENGTH_BYTE,null);
   try {
-    GenericRecord record=reader.read(null,binaryDecoder);
+    GenericRecord record=reader.get().read(null,binaryDecoder);
     if (!record.getSchema().equals(this.schema)) {
-      record=AvroUtils.convertRecordSchema(record,this.schema);
+      record=AvroUtils.convertRecordSchema(record,this.schema.get());
     }
     return record;
   }
