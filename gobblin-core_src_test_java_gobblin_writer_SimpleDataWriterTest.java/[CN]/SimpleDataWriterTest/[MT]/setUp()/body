@@ -1,0 +1,18 @@
+{
+  File stagingDir=new File(TestConstants.TEST_STAGING_DIR);
+  File outputDir=new File(TestConstants.TEST_OUTPUT_DIR);
+  if (!stagingDir.exists()) {
+    stagingDir.mkdirs();
+  }
+  if (!outputDir.exists()) {
+    outputDir.mkdirs();
+  }
+  this.filePath=TestConstants.TEST_EXTRACT_NAMESPACE.replaceAll("\\.","/") + "/" + TestConstants.TEST_EXTRACT_TABLE+ "/"+ TestConstants.TEST_EXTRACT_ID+ "_"+ TestConstants.TEST_EXTRACT_PULL_TYPE;
+  properties.setProp(ConfigurationKeys.SIMPLE_WRITER_DELIMITER,"\n");
+  properties.setProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,TestConstants.TEST_FS_URI);
+  properties.setProp(ConfigurationKeys.WRITER_STAGING_DIR,TestConstants.TEST_STAGING_DIR);
+  properties.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,TestConstants.TEST_OUTPUT_DIR);
+  properties.setProp(ConfigurationKeys.WRITER_FILE_PATH,this.filePath);
+  properties.setProp(ConfigurationKeys.WRITER_FILE_NAME,TestConstants.TEST_FILE_NAME);
+  properties.setProp(ConfigurationKeys.SIMPLE_WRITER_PREPEND_SIZE,false);
+}

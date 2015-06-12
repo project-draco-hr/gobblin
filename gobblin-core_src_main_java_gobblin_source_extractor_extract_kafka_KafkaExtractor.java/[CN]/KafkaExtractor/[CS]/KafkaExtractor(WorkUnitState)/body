@@ -15,4 +15,5 @@
   this.messageIterator=null;
   this.currentPartitionIdx=0;
   switchMetricContextToCurrentPartition();
+  this.workUnitState.setActualHighWatermark(this.lowWatermark);
 }

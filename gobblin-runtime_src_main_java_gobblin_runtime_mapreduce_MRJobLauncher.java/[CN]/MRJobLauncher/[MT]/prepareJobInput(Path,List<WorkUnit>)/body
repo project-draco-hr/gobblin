@@ -5,7 +5,13 @@
     OutputStream os=closer.register(this.fs.create(jobInputFile));
     Writer osw=closer.register(new OutputStreamWriter(os,ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
     Writer bw=closer.register(new BufferedWriter(osw));
+    int multiTaskIdSequence=0;
     for (    WorkUnit workUnit : workUnits) {
+      if (workUnit instanceof MultiWorkUnit) {
+        String multiTaskId=JobLauncherUtils.newMultiTaskId(jobContext.getJobId(),multiTaskIdSequence++);
+        workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
+        workUnit.setId(multiTaskId);
+      }
       Closer workUnitFileCloser=Closer.create();
       try {
         Path workUnitFile=new Path(jobInputPath,workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + ((workUnit instanceof MultiWorkUnit) ? MULTI_WORK_UNIT_FILE_EXTENSION : WORK_UNIT_FILE_EXTENSION));

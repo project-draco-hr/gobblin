@@ -1,0 +1,6 @@
+{
+  File testRootDir=new File(TestConstants.TEST_ROOT_DIR);
+  if (testRootDir.exists()) {
+    FileUtil.fullyDelete(testRootDir);
+  }
+}

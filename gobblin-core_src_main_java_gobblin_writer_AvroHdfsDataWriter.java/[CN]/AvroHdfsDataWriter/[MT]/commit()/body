@@ -8,10 +8,7 @@
   LOG.info(String.format("Moving data from %s to %s",this.stagingFile,this.outputFile));
   if (this.fs.exists(this.outputFile)) {
     LOG.warn(String.format("Task output file %s already exists",this.outputFile));
-    this.fs.delete(this.outputFile,false);
+    HadoopUtils.deletePath(this.fs,this.outputFile,false);
   }
-  if (!this.fs.rename(this.stagingFile,this.outputFile)) {
-    throw new IOException("Failed to commit data from " + this.stagingFile + " to "+ this.outputFile);
-  }
-  WriterUtils.setFileAttributesFromState(properties,fs,outputFile);
+  HadoopUtils.renamePath(this.fs,this.stagingFile,this.outputFile);
 }

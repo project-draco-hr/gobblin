@@ -1,0 +1,5 @@
+{
+  State properties=this.destination.getProperties();
+  String fileName=WriterUtils.getWriterFileName(properties,this.branches,this.branch,this.writerId,this.format.getExtension());
+  return new SimpleDataWriter(properties,fileName,this.branches,this.branch);
+}

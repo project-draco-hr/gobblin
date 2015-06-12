@@ -1,0 +1,12 @@
+{
+  List<WorkUnit> flattenedWorkUnits=Lists.newArrayList();
+  for (  WorkUnit workUnit : workUnits) {
+    if (workUnit instanceof MultiWorkUnit) {
+      flattenedWorkUnits.addAll(flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits()));
+    }
+ else {
+      flattenedWorkUnits.add(workUnit);
+    }
+  }
+  return flattenedWorkUnits;
+}
