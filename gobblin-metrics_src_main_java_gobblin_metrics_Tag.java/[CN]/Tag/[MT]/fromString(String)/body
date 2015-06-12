@@ -1,0 +1,9 @@
+{
+  List<String> splitKeyValue=Splitter.on(KEY_VALUE_SEPARATOR).limit(2).omitEmptyStrings().splitToList(tagKeyValue);
+  if (splitKeyValue.size() == 2) {
+    return new Tag<String>(splitKeyValue.get(0),splitKeyValue.get(1));
+  }
+ else {
+    return null;
+  }
+}

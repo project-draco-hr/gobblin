@@ -1,0 +1,8 @@
+{
+  if (contains(key)) {
+    setProp(key,Joiner.on(",").join(getProp(key),value));
+  }
+ else {
+    setProp(key,value);
+  }
+}

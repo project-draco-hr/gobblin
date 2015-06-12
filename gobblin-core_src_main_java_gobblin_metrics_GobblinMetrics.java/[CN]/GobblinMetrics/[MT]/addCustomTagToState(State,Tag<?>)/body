@@ -1,0 +1,3 @@
+{
+  state.appendToListProp(METRICS_STATE_CUSTOM_TAGS,tag.toString());
+}
