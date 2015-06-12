@@ -5,7 +5,7 @@
   }
   List<TopicMetadata> filteredTopicMetadataList=Lists.newArrayList();
   for (  TopicMetadata topicMetadata : topicMetadataList) {
-    if (EventBasedSource.survived(topicMetadata.topic(),blacklist,whitelist)) {
+    if (DatasetFilterUtils.survived(topicMetadata.topic(),blacklist,whitelist)) {
       filteredTopicMetadataList.add(topicMetadata);
     }
   }

@@ -1,0 +1,2 @@
+List<Pattern> blacklist
+List<Pattern> whitelist
