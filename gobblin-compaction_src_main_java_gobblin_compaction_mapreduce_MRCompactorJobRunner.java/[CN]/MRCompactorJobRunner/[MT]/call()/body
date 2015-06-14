@@ -1,5 +1,8 @@
 {
-  checkOutputPathExistence();
+  if (this.fs.exists(this.outputPath) && !canOverwriteOutputDir()) {
+    LOG.warn(String.format("Output path %s exists. Will not compact %s.",this.outputPath,this.inputPath));
+    return null;
+  }
   Configuration conf=HadoopUtils.getConfFromState(this.jobProps);
   Job job=Job.getInstance(conf);
   this.configureJob(job);
