@@ -1,7 +1,7 @@
 {
   for (Iterator<String> it=topics.iterator(); it.hasNext(); ) {
     String topic=it.next();
-    if (stringInPatterns(topic,priorityTopics)) {
+    if (DatasetFilterUtils.stringInPatterns(topic,priorityTopics)) {
       processTopic(topic);
       it.remove();
     }
