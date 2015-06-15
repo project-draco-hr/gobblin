@@ -1,0 +1,7 @@
+{
+  MockResultSet mrs=new MockResultSet(StringUtils.EMPTY);
+  for (  MockJdbcColumn column : COLUMNS) {
+    mrs.addColumn(column.getColumnName(),ImmutableList.of(column.getValue()));
+  }
+  return mrs;
+}
