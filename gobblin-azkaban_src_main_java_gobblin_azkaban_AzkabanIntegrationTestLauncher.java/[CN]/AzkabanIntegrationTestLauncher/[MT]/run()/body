@@ -1,0 +1,6 @@
+{
+  launcher=createTestHarnessInstance();
+  launcher.configure(properties);
+  launcher.prepareTest();
+  launcher.launchTest();
+}
