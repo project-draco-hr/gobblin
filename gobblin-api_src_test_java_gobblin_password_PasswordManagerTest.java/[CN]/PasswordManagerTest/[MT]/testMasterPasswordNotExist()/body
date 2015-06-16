@@ -1,0 +1,6 @@
+{
+  String password="ENC(" + UUID.randomUUID().toString() + ")";
+  State state=new State();
+  state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC,UUID.randomUUID());
+  Assert.assertEquals(PasswordManager.getInstance(state).readPassword(password),password);
+}

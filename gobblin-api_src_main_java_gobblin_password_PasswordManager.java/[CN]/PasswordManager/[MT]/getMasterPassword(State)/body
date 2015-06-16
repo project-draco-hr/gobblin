@@ -1,0 +1,12 @@
+{
+  if (!state.contains(ConfigurationKeys.ENCRYPT_KEY_LOC)) {
+    LOG.warn(String.format("Property %s not set. Cannot decrypt any encrypted password.",ConfigurationKeys.ENCRYPT_KEY_LOC));
+    return Optional.absent();
+  }
+  try {
+    return getMasterPassword(new Path(state.getProp(ConfigurationKeys.ENCRYPT_KEY_LOC)));
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to obtain master password from " + state.getProp(ConfigurationKeys.ENCRYPT_KEY_LOC),e);
+  }
+}

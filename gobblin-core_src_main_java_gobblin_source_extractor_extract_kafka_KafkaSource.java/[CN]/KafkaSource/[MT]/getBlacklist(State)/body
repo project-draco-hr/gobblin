@@ -1,4 +1,4 @@
 {
-  List<String> list=state.getPropAsList(ConfigurationKeys.COMPACTION_BLACKLIST,StringUtils.EMPTY);
+  List<String> list=state.getPropAsList(TOPIC_BLACKLIST,StringUtils.EMPTY);
   return DatasetFilterUtils.getPatternsFromStrings(list);
 }

@@ -1,0 +1,12 @@
+{
+  CommandLine cl=parseArgs(args);
+  if (shouldPrintUsageAndExit(cl)) {
+    printUsage();
+    return;
+  }
+  String plain=cl.getOptionValue(PLAIN_PWD_OPTION);
+  String masterPassword=cl.getOptionValue(MASTER_PWD_OPTION);
+  StrongTextEncryptor encryptor=new StrongTextEncryptor();
+  encryptor.setPassword(masterPassword);
+  System.out.println("ENC(" + encryptor.encrypt(plain) + ")");
+}
