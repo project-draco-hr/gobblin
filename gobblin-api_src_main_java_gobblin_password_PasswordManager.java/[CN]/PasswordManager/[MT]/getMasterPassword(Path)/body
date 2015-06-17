@@ -7,7 +7,7 @@
       return Optional.absent();
     }
     InputStream in=closer.register(fs.open(masterPwdLoc));
-    return Optional.of(new LineReader(new InputStreamReader(in)).readLine());
+    return Optional.of(new LineReader(new InputStreamReader(in,Charsets.UTF_8)).readLine());
   }
  catch (  IOException e) {
     throw new RuntimeException("Failed to obtain master password from " + masterPwdLoc,e);
