@@ -1,7 +1,7 @@
 {
   Closer closer=Closer.create();
   try {
-    closer.register(new LocalJobLauncher(this.properties,this.jobProps)).launchJob(null);
+    closer.register(new LocalJobLauncher(this.jobConfig)).launchJob(null);
   }
   finally {
     closer.close();

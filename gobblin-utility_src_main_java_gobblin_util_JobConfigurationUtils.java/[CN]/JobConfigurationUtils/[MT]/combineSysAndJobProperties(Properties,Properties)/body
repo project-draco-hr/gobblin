@@ -1,0 +1,6 @@
+{
+  Properties combinedJobProps=new Properties();
+  combinedJobProps.putAll(sysProps);
+  combinedJobProps.putAll(jobProps);
+  return combinedJobProps;
+}
