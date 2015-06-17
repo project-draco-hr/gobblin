@@ -6,7 +6,7 @@
   }
   email.setFrom(state.getProp(ConfigurationKeys.EMAIL_FROM_KEY));
   if (state.contains(ConfigurationKeys.EMAIL_USER_KEY) && state.contains(ConfigurationKeys.EMAIL_PASSWORD_KEY)) {
-    email.setAuthentication(state.getProp(ConfigurationKeys.EMAIL_USER_KEY),state.getProp(ConfigurationKeys.EMAIL_PASSWORD_KEY));
+    email.setAuthentication(state.getProp(ConfigurationKeys.EMAIL_USER_KEY),PasswordManager.getInstance(state).readPassword(state.getProp(ConfigurationKeys.EMAIL_PASSWORD_KEY)));
   }
   Iterable<String> tos=Splitter.on(',').trimResults().omitEmptyStrings().split(state.getProp(ConfigurationKeys.EMAIL_TOS_KEY));
   for (  String to : tos) {
