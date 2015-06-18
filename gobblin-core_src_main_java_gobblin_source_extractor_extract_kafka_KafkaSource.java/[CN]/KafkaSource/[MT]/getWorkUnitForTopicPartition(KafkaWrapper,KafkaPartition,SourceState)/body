@@ -1,20 +1,29 @@
 {
   Offsets offsets=new Offsets();
+  boolean failedToGetKafkaOffsets=false;
   try {
     offsets.setEarliestOffset(kafkaWrapper.getEarliestOffset(partition));
     offsets.setLatestOffset(kafkaWrapper.getLatestOffset(partition));
-    if (shouldMoveToLatestOffset(partition,state)) {
-      offsets.startAtLatestOffset();
-    }
- else {
-      offsets.startAt(getPreviousOffsetForPartition(partition,state));
-    }
   }
  catch (  KafkaOffsetRetrievalFailureException e) {
-    LOG.warn(String.format("Failed to retrieve earliest and/or latest offset for partition %s. This partition will be skipped.",partition));
-    return null;
+    failedToGetKafkaOffsets=true;
   }
-catch (  PreviousOffsetNotFoundException e) {
+  long previousOffset=0;
+  boolean previousOffsetNotFound=false;
+  try {
+    previousOffset=getPreviousOffsetForPartition(partition,state);
+  }
+ catch (  PreviousOffsetNotFoundException e) {
+    previousOffsetNotFound=true;
+  }
+  if (failedToGetKafkaOffsets) {
+    LOG.warn(String.format("Failed to retrieve earliest and/or latest offset for partition %s. This partition will be skipped.",partition));
+    return previousOffsetNotFound ? null : getEmptyWorkunit(partition,state,previousOffset);
+  }
+  if (shouldMoveToLatestOffset(partition,state)) {
+    offsets.startAtLatestOffset();
+  }
+ else   if (previousOffsetNotFound) {
     String offsetNotFoundMsg=String.format("Previous offset for partition %s does not exist. ",partition);
     String offsetOption=state.getProp(BOOTSTRAP_WITH_OFFSET,DEFAULT_BOOTSTRAP_WITH_OFFSET).toLowerCase();
     if (offsetOption.equals(LATEST_OFFSET)) {
@@ -30,20 +39,25 @@ catch (  PreviousOffsetNotFoundException e) {
       return null;
     }
   }
-catch (  StartOffsetOutOfRangeException e) {
-    String offsetOutOfRangeMsg=String.format(String.format("Start offset for partition %s is out of range. Start offset = %d, earliest offset = %d, latest offset = %d.",partition,offsets.getStartOffset(),offsets.getEarliestOffset(),offsets.getLatestOffset()));
-    String offsetOption=state.getProp(RESET_ON_OFFSET_OUT_OF_RANGE,DEFAULT_RESET_ON_OFFSET_OUT_OF_RANGE).toLowerCase();
-    if (offsetOption.equals(LATEST_OFFSET) || (offsetOption.equals(NEAREST_OFFSET) && offsets.getStartOffset() >= offsets.getLatestOffset())) {
-      LOG.warn(offsetOutOfRangeMsg + "This partition will start from the latest offset: " + offsets.getLatestOffset());
-      offsets.startAtLatestOffset();
-    }
- else     if (offsetOption.equals(EARLIEST_OFFSET) || offsetOption.equals(NEAREST_OFFSET)) {
-      LOG.warn(offsetOutOfRangeMsg + "This partition will start from the earliest offset: " + offsets.getEarliestOffset());
-      offsets.startAtEarliestOffset();
-    }
  else {
-      LOG.warn(offsetOutOfRangeMsg + "This partition will be skipped.");
-      return null;
+    try {
+      offsets.startAt(previousOffset);
+    }
+ catch (    StartOffsetOutOfRangeException e) {
+      String offsetOutOfRangeMsg=String.format(String.format("Start offset for partition %s is out of range. Start offset = %d, earliest offset = %d, latest offset = %d.",partition,offsets.getStartOffset(),offsets.getEarliestOffset(),offsets.getLatestOffset()));
+      String offsetOption=state.getProp(RESET_ON_OFFSET_OUT_OF_RANGE,DEFAULT_RESET_ON_OFFSET_OUT_OF_RANGE).toLowerCase();
+      if (offsetOption.equals(LATEST_OFFSET) || (offsetOption.equals(NEAREST_OFFSET) && offsets.getStartOffset() >= offsets.getLatestOffset())) {
+        LOG.warn(offsetOutOfRangeMsg + "This partition will start from the latest offset: " + offsets.getLatestOffset());
+        offsets.startAtLatestOffset();
+      }
+ else       if (offsetOption.equals(EARLIEST_OFFSET) || offsetOption.equals(NEAREST_OFFSET)) {
+        LOG.warn(offsetOutOfRangeMsg + "This partition will start from the earliest offset: " + offsets.getEarliestOffset());
+        offsets.startAtEarliestOffset();
+      }
+ else {
+        LOG.warn(offsetOutOfRangeMsg + "This partition will be skipped.");
+        return getEmptyWorkunit(partition,state,previousOffset);
+      }
     }
   }
   return getWorkUnitForTopicPartition(partition,state,offsets);
