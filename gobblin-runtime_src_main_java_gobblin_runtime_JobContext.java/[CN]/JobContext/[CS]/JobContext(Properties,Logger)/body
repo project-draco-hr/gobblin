@@ -5,10 +5,10 @@
   jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,this.jobId);
   this.jobCommitPolicy=JobCommitPolicy.getCommitPolicy(jobProps);
   this.jobLockEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
-  this.jobStateStore=new FsStateStore<JobState>(sysProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),sysProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
-  boolean jobHistoryStoreEnabled=Boolean.valueOf(sysProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()));
+  this.jobStateStore=new FsStateStore<JobState>(jobProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),jobProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
+  boolean jobHistoryStoreEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()));
   if (jobHistoryStoreEnabled) {
-    Injector injector=Guice.createInjector(new MetaStoreModule(sysProps));
+    Injector injector=Guice.createInjector(new MetaStoreModule(jobProps));
     this.jobHistoryStoreOptional=Optional.of(injector.getInstance(JobHistoryStore.class));
   }
  else {

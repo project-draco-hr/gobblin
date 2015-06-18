@@ -1,0 +1,5 @@
+{
+  for (  String name : properties.stringPropertyNames()) {
+    configuration.set(name,properties.getProperty(name));
+  }
+}

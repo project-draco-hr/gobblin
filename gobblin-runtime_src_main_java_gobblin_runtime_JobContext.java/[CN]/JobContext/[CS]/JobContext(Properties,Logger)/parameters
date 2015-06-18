@@ -1,2 +1,2 @@
-Properties sysProps
 Properties jobProps
+Logger logger
