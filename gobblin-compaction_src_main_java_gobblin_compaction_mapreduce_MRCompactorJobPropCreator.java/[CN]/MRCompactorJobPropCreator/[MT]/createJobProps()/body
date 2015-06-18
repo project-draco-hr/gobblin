@@ -4,11 +4,5 @@
     LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ topic);
     return emptyJobProps;
   }
-  Optional<State> jobProps=createJobProps(this.topicInputDir,this.topicOutputDir,this.topicTmpDir);
-  if (jobProps.isPresent()) {
-    return Collections.singletonList(jobProps.get());
-  }
- else {
-    return emptyJobProps;
-  }
+  return Collections.singletonList(createJobProps(this.topicInputDir,this.topicOutputDir,this.topicTmpDir));
 }

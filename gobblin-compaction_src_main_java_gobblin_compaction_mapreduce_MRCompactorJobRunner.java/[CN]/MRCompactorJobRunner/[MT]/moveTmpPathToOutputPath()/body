@@ -1,7 +1,10 @@
 {
   LOG.info(String.format("Moving %s to %s",this.tmpPath,this.outputPath));
+  this.fs.delete(this.outputPath,true);
   this.fs.mkdirs(this.outputPath.getParent(),this.perm);
   if (!this.fs.rename(this.tmpPath,this.outputPath)) {
     throw new IOException(String.format("Unable to move %s to %s",this.tmpPath,this.outputPath));
   }
+  Path completionFilePath=new Path(this.outputPath,ConfigurationKeys.COMPACTION_COMPLETE_FILE_NAME);
+  this.fs.createNewFile(completionFilePath);
 }

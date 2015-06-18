@@ -5,16 +5,7 @@
   jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_INPUT_DIR,jobInputDir);
   jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_DEST_DIR,jobOutputDir);
   jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_TMP_DIR,jobTmpDir);
+  jobProps.setProp(ConfigurationKeys.COMPACTION_ENABLE_SUCCESS_FILE,false);
   LOG.info(String.format("Created MR job properties for input %s and output %s.",jobInputDir,jobOutputDir));
-  if (!fs.exists(jobOutputDir)) {
-    return Optional.of(jobProps);
-  }
- else   if (forceReprocess()) {
-    LOG.info(String.format("Outout dir %s for topic %s exists, force reprocess = true. Reprocessing.",topic,jobOutputDir));
-    return Optional.of(jobProps);
-  }
- else {
-    LOG.info(String.format("Outout dir %s for topic %s exists, force reprocess = false. Skipping.",topic,jobOutputDir));
-    return Optional.absent();
-  }
+  return jobProps;
 }
