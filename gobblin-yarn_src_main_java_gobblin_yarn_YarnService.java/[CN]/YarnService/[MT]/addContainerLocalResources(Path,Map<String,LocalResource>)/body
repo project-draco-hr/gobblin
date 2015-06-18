@@ -1,0 +1,11 @@
+{
+  if (!this.fs.exists(destDir)) {
+    return;
+  }
+  FileStatus[] statuses=this.fs.listStatus(destDir);
+  if (statuses != null) {
+    for (    FileStatus status : statuses) {
+      addFileAsLocalResource(status,resourceMap);
+    }
+  }
+}

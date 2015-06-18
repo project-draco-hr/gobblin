@@ -1,0 +1,3 @@
+{
+  this.eventBus.post(new NewJobConfigArrival(jobName,jobConfig));
+}

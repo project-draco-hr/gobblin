@@ -1,0 +1,8 @@
+{
+  try {
+    this.scheduledReporters.put(task.getTaskId(),scheduleTaskMetricsUpdater(new YarnTaskMetricsUpdater(task),task));
+  }
+ catch (  RejectedExecutionException ree) {
+    LOGGER.error(String.format("Scheduling of task state reporter for task %s was rejected",task.getTaskId()));
+  }
+}

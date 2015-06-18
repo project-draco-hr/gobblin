@@ -1,0 +1,12 @@
+{
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.appName,applicationId);
+  Path containerWorkDir=new Path(appWorkDir,ConfigurationConstants.CONTAINER_WORK_DIR_NAME);
+  if (this.config.hasPath(ConfigurationConstants.CONTAINER_JARS_KEY)) {
+    Path appJarsDestDir=new Path(containerWorkDir,ConfigurationConstants.APP_JARS_DIR_NAME);
+    addAppJars(this.config.getString(ConfigurationConstants.CONTAINER_JARS_KEY),Optional.<Map<String,LocalResource>>absent(),appJarsDestDir);
+  }
+  if (this.config.hasPath(ConfigurationConstants.CONTAINER_FILES_LOCAL_KEY)) {
+    Path appFilesDestDir=new Path(containerWorkDir,ConfigurationConstants.APP_FILES_DIR_NAME);
+    addAppLocalFiles(this.config.getString(ConfigurationConstants.CONTAINER_FILES_LOCAL_KEY),Optional.<Map<String,LocalResource>>absent(),appFilesDestDir);
+  }
+}

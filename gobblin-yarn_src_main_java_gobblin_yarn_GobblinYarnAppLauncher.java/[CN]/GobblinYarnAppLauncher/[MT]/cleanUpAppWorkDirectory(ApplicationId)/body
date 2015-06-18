@@ -1,0 +1,6 @@
+{
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.appName,applicationId);
+  if (this.fs.exists(appWorkDir)) {
+    this.fs.delete(appWorkDir,true);
+  }
+}

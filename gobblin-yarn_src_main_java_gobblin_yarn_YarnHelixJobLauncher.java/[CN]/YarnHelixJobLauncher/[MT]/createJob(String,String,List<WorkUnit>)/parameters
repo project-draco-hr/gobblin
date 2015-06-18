@@ -1,0 +1,3 @@
+String jobName
+String jobId
+List<WorkUnit> workUnits

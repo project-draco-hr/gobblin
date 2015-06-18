@@ -1,0 +1,5 @@
+{
+  this.jobName=jobName;
+  this.jobConfig=new Properties();
+  this.jobConfig.putAll(jobConfig);
+}

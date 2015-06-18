@@ -1,0 +1,4 @@
+WorkUnit workUnit
+Map<String,TaskConfig> taskConfigMap
+String jobName
+String jobId

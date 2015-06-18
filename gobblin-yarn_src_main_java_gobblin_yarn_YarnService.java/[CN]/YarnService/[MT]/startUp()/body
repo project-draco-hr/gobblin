@@ -1,0 +1,9 @@
+{
+  LOGGER.info("Starting the YarnService");
+  this.amrmClientAsync.start();
+  this.nmClientAsync.start();
+  RegisterApplicationMasterResponse response=this.amrmClientAsync.registerApplicationMaster(YarnHelixUtils.getHostname(),-1,"");
+  LOGGER.info("ApplicationMaster registration response: " + response);
+  LOGGER.info("Requesting initial containers");
+  requestContainers(this.initialContainers);
+}

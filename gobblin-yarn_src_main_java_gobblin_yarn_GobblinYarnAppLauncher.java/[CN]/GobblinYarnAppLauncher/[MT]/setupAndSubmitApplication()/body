@@ -1,0 +1,25 @@
+{
+  YarnClientApplication gobblinYarnApp=this.yarnClient.createApplication();
+  ApplicationSubmissionContext appSubmissionContext=gobblinYarnApp.getApplicationSubmissionContext();
+  ApplicationId applicationId=appSubmissionContext.getApplicationId();
+  GetNewApplicationResponse newApplicationResponse=gobblinYarnApp.getNewApplicationResponse();
+  Resource resource=prepareContainerResource(newApplicationResponse);
+  ContainerLaunchContext amContainerLaunchContext=Records.newRecord(ContainerLaunchContext.class);
+  Map<String,LocalResource> appMasterLocalResources=Maps.newHashMap();
+  addAppMasterLocalResources(applicationId,appMasterLocalResources);
+  amContainerLaunchContext.setLocalResources(appMasterLocalResources);
+  amContainerLaunchContext.setEnvironment(getEnvironmentVariables());
+  amContainerLaunchContext.setCommands(Lists.newArrayList(buildApplicationMasterCommand(resource.getMemory())));
+  if (UserGroupInformation.isSecurityEnabled()) {
+    setupSecurityTokens(amContainerLaunchContext);
+  }
+  appSubmissionContext.setApplicationName(this.appName);
+  appSubmissionContext.setResource(resource);
+  appSubmissionContext.setQueue(this.appQueueName);
+  appSubmissionContext.setPriority(Priority.newInstance(0));
+  appSubmissionContext.setAMContainerSpec(amContainerLaunchContext);
+  addContainerLocalResources(applicationId);
+  LOGGER.info("Submitting application " + applicationId);
+  this.yarnClient.submitApplication(appSubmissionContext);
+  return applicationId;
+}

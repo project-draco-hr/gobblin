@@ -1,0 +1,2 @@
+ApplicationId applicationId
+Map<String,LocalResource> resources

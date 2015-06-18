@@ -1,0 +1,19 @@
+{
+  for (  final Container container : containers) {
+    LOGGER.info(String.format("Container %s has been allocated",container.getId()));
+    containerMap.put(container.getId(),container);
+    containerToParticipantMap.put(container.getId(),YarnHelixUtils.getParticipantId(container.getNodeId().getHost(),container.getId()));
+    containerLaunchExecutor.submit(new Runnable(){
+      @Override public void run(){
+        try {
+          LOGGER.info("Starting container " + container.getId());
+          nmClientAsync.startContainerAsync(container,newContainerLaunchContext(container));
+        }
+ catch (        IOException ioe) {
+          LOGGER.error("Failed to start container " + container.getId(),ioe);
+        }
+      }
+    }
+);
+  }
+}

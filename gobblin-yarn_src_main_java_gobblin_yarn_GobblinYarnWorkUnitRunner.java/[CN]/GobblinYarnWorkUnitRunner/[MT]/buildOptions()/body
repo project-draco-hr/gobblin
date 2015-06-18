@@ -1,0 +1,5 @@
+{
+  Options options=new Options();
+  options.addOption("a",ConfigurationConstants.APPLICATION_NAME_OPTION_NAME,true,"Yarn application name");
+  return options;
+}

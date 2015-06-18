@@ -1,0 +1,14 @@
+{
+  FileSystem localFs=FileSystem.getLocal(this.yarnConfiguration);
+  FileStatus[] libJarFiles=localFs.listStatus(srcLibJarDir);
+  if (libJarFiles == null || libJarFiles.length == 0) {
+    return;
+  }
+  for (  FileStatus libJarFile : libJarFiles) {
+    Path destFilePath=new Path(destDir,libJarFile.getPath().getName());
+    this.fs.copyFromLocalFile(libJarFile.getPath(),destFilePath);
+    if (resourceMap.isPresent()) {
+      addFileAsLocalResource(destFilePath,LocalResourceType.FILE,resourceMap.get());
+    }
+  }
+}

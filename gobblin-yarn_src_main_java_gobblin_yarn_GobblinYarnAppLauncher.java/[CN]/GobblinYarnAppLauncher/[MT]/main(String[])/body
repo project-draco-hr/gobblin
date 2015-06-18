@@ -1,0 +1,24 @@
+{
+  Closer closer=Closer.create();
+  try {
+    final GobblinYarnAppLauncher gobblinYarnAppLauncher=closer.register(new GobblinYarnAppLauncher(ConfigFactory.load()));
+    Runtime.getRuntime().addShutdownHook(new Thread(){
+      @Override public void run(){
+        try {
+          gobblinYarnAppLauncher.close();
+        }
+ catch (        IOException ioe) {
+          LOGGER.error("Failed to shutdown the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
+        }
+      }
+    }
+);
+    gobblinYarnAppLauncher.launch();
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

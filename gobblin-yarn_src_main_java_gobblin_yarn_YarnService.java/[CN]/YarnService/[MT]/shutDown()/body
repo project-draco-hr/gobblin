@@ -1,0 +1,20 @@
+{
+  LOGGER.info("Stopping the YarnService");
+  this.nmClientAsync.stop();
+  try {
+    this.amrmClientAsync.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED,null,null);
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to unregister the ApplicationMaster",ioe);
+  }
+catch (  YarnException ye) {
+    LOGGER.error("Failed to unregister the ApplicationMaster",ye);
+  }
+catch (  Exception e) {
+    LOGGER.error("Failed to unregister the ApplicationMaster",e);
+  }
+ finally {
+    this.amrmClientAsync.stop();
+  }
+  ExecutorsUtils.shutdownExecutorService(this.containerLaunchExecutor);
+}

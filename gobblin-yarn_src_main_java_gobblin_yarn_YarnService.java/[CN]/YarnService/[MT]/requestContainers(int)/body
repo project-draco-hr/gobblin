@@ -1,0 +1,10 @@
+{
+  for (int i=0; i < containersRequested; i++) {
+    Priority priority=Records.newRecord(Priority.class);
+    priority.setPriority(0);
+    Resource capability=Records.newRecord(Resource.class);
+    capability.setMemory(this.containerMemoryMbs);
+    capability.setVirtualCores(this.containerCores);
+    this.amrmClientAsync.addContainerRequest(new AMRMClient.ContainerRequest(capability,null,null,priority));
+  }
+}

@@ -1,0 +1,4 @@
+{
+  this.jobConfig=jobConfig;
+  this.jobListener=jobListener;
+}

@@ -1,0 +1,16 @@
+{
+  Closer closer=Closer.create();
+  try {
+    Path workUnitFile=new Path(workUnitFileDir,workUnit.getId() + WORK_UNIT_FILE_EXTENSION);
+    OutputStream os=closer.register(this.fs.create(workUnitFile));
+    DataOutputStream dos=closer.register(new DataOutputStream(os));
+    workUnit.write(dos);
+    return workUnitFile.toString();
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

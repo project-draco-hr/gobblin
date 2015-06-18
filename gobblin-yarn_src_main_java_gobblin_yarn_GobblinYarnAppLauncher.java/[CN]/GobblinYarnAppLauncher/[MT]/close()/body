@@ -1,0 +1,20 @@
+{
+  try {
+    ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor);
+  }
+ catch (  InterruptedException ie) {
+    LOGGER.error("Interrupted while waiting for the application status monitor to shutdown",ie);
+    Thread.currentThread().interrupt();
+  }
+  try {
+    if (this.applicationId != null && this.yarnClient.getApplicationReport(this.applicationId).getYarnApplicationState() == YarnApplicationState.RUNNING) {
+      this.yarnClient.killApplication(this.applicationId);
+    }
+  }
+ catch (  YarnException ye) {
+    LOGGER.error("Failed to kill the Yarn application " + this.applicationId);
+  }
+ finally {
+    this.yarnClient.stop();
+  }
+}

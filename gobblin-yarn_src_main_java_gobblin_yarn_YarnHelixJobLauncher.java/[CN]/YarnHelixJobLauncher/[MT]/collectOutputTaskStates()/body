@@ -1,0 +1,34 @@
+{
+  List<TaskState> taskStates=Lists.newArrayList();
+  Path outputTaskStateDir=new Path(this.appWorkDir,ConfigurationConstants.OUTPUT_TASK_STATE_DIR_NAME + Path.SEPARATOR + this.jobContext.getJobId());
+  FileStatus[] fileStatuses=this.fs.listStatus(outputTaskStateDir,new PathFilter(){
+    @Override public boolean accept(    Path path){
+      return path.getName().endsWith(TASK_STATE_STORE_TABLE_SUFFIX);
+    }
+  }
+);
+  if (fileStatuses == null || fileStatuses.length == 0) {
+    return taskStates;
+  }
+  for (  FileStatus status : fileStatuses) {
+    LOGGER.info("Found output task state file " + status.getPath());
+    Closer closer=Closer.create();
+    try {
+      SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs.getConf(),SequenceFile.Reader.file(status.getPath())));
+      Text text=new Text();
+      TaskState taskState=new TaskState();
+      while (reader.next(text,taskState)) {
+        taskStates.add(taskState);
+        taskState=new TaskState();
+      }
+    }
+ catch (    Throwable t) {
+      throw closer.rethrow(t);
+    }
+ finally {
+      closer.close();
+    }
+  }
+  LOGGER.info(String.format("Collected task state of %d completed tasks",taskStates.size()));
+  return taskStates;
+}

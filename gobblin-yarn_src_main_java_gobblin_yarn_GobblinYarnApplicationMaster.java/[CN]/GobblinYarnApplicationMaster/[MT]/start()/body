@@ -1,0 +1,14 @@
+{
+  LOGGER.info("Starting the Gobblin Yarn ApplicationMaster");
+  addShutdownHook();
+  try {
+    this.helixManager.connect();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("The HelixManager failed to connect",e);
+  }
+  registerJvmMetrics();
+  this.jmxReporter.start();
+  this.serviceManager.startAsync();
+  this.serviceManager.awaitHealthy();
+}

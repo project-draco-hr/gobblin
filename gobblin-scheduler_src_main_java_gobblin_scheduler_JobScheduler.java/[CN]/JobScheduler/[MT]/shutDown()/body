@@ -1,7 +1,12 @@
 {
   LOG.info("Stopping the job scheduler");
-  this.scheduler.shutdown(true);
   if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
     this.fileAlterationMonitor.stop(1000);
+  }
+  try {
+    ExecutorsUtils.shutdownExecutorService(this.jobExecutor);
+  }
+  finally {
+    this.scheduler.shutdown(true);
   }
 }

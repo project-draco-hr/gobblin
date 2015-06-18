@@ -1,0 +1,5 @@
+{
+  for (  NodeReport nodeReport : updatedNodes) {
+    LOGGER.info("Received node update report: " + nodeReport.getHealthReport());
+  }
+}

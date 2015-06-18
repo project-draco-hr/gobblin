@@ -1,0 +1,3 @@
+{
+  return hostName + "_" + containerId.toString();
+}

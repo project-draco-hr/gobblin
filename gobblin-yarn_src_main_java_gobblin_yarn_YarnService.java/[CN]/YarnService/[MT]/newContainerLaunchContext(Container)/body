@@ -1,0 +1,19 @@
+{
+  ContainerLaunchContext containerLaunchContext=Records.newRecord(ContainerLaunchContext.class);
+  Map<String,LocalResource> resourceMap=Maps.newHashMap();
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,this.applicationId);
+  Path containerWorkDir=new Path(appWorkDir,ConfigurationConstants.CONTAINER_WORK_DIR_NAME);
+  addContainerLocalResources(new Path(appWorkDir,ConfigurationConstants.LIB_JARS_DIR_NAME),resourceMap);
+  addContainerLocalResources(new Path(containerWorkDir,ConfigurationConstants.APP_JARS_DIR_NAME),resourceMap);
+  addContainerLocalResources(new Path(containerWorkDir,ConfigurationConstants.APP_FILES_DIR_NAME),resourceMap);
+  if (this.config.hasPath(ConfigurationConstants.CONTAINER_FILES_REMOTE_KEY)) {
+    addRemoteAppFiles(this.config.getString(ConfigurationConstants.CONTAINER_FILES_REMOTE_KEY),resourceMap);
+  }
+  containerLaunchContext.setLocalResources(resourceMap);
+  containerLaunchContext.setEnvironment(getEnvironmentVariables());
+  containerLaunchContext.setCommands(Lists.newArrayList(buildContainerCommand(container)));
+  if (UserGroupInformation.isSecurityEnabled()) {
+    containerLaunchContext.setTokens(this.tokens.duplicate());
+  }
+  return containerLaunchContext;
+}

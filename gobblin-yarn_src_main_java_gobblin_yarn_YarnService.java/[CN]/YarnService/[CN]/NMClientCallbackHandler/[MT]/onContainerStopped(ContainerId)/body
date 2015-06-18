@@ -1,0 +1,3 @@
+{
+  LOGGER.info(String.format("Container %s has been stopped",containerId));
+}

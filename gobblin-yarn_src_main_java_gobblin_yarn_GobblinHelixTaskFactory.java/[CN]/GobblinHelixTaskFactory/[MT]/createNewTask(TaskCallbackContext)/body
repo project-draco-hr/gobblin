@@ -1,0 +1,8 @@
+{
+  try {
+    return new GobblinHelixTask(context,this.taskExecutor,this.taskStateTracker,this.fs,this.appWorkDir);
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException("Failed to create a new GobblinHelixTask",ioe);
+  }
+}

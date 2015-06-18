@@ -1,0 +1,5 @@
+{
+  for (  Map.Entry<String,Metric> entry : metricSet.getMetrics().entrySet()) {
+    this.metricRegistry.register(MetricRegistry.name(prefix,entry.getKey()),entry.getValue());
+  }
+}

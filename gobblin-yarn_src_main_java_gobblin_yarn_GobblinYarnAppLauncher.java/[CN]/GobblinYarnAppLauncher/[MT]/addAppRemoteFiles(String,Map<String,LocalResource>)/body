@@ -1,0 +1,5 @@
+{
+  for (  String hdfsFilePath : SPLITTER.split(hdfsFileList)) {
+    addFileAsLocalResource(new Path(hdfsFilePath),LocalResourceType.FILE,resourceMap);
+  }
+}

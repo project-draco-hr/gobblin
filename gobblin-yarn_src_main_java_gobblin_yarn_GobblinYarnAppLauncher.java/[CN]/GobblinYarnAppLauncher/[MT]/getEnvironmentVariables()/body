@@ -1,0 +1,12 @@
+{
+  Map<String,String> environmentVariableMap=Maps.newHashMap();
+  Apps.addToEnvironment(environmentVariableMap,ApplicationConstants.Environment.JAVA_HOME.key(),System.getenv(ApplicationConstants.Environment.JAVA_HOME.key()));
+  Apps.addToEnvironment(environmentVariableMap,ApplicationConstants.Environment.CLASSPATH.key(),ApplicationConstants.Environment.PWD.$() + File.separator + "*");
+  String[] classpaths=this.yarnConfiguration.getStrings(YarnConfiguration.YARN_APPLICATION_CLASSPATH,YarnConfiguration.DEFAULT_YARN_APPLICATION_CLASSPATH);
+  if (classpaths != null) {
+    for (    String classpath : classpaths) {
+      Apps.addToEnvironment(environmentVariableMap,ApplicationConstants.Environment.CLASSPATH.key(),classpath.trim());
+    }
+  }
+  return environmentVariableMap;
+}

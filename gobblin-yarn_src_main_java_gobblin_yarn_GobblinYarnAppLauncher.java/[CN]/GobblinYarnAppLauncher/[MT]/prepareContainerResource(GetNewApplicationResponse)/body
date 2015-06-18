@@ -1,0 +1,15 @@
+{
+  int memoryMbs=this.config.hasPath(ConfigurationConstants.APP_MASTER_MEMORY_MBS_KEY) ? this.config.getInt(ConfigurationConstants.APP_MASTER_MEMORY_MBS_KEY) : ConfigurationConstants.DEFAULT_APP_MASTER_MEMORY_MBS;
+  int maximumMemoryCapacity=newApplicationResponse.getMaximumResourceCapability().getMemory();
+  if (memoryMbs > maximumMemoryCapacity) {
+    LOGGER.info(String.format("Specified AM memory [%d] is above the maximum memory capacity [%d] of the " + "cluster, using the maximum memory capacity instead.",memoryMbs,maximumMemoryCapacity));
+    memoryMbs=maximumMemoryCapacity;
+  }
+  int vCores=this.config.hasPath(ConfigurationConstants.APP_MASTER_CORES_KEY) ? this.config.getInt(ConfigurationConstants.APP_MASTER_CORES_KEY) : ConfigurationConstants.DEFAULT_APP_MASTER_CORES;
+  int maximumVirtualCoreCapacity=newApplicationResponse.getMaximumResourceCapability().getVirtualCores();
+  if (vCores > maximumVirtualCoreCapacity) {
+    LOGGER.info(String.format("Specified AM vcores [%d] is above the maximum vcore capacity [%d] of the " + "cluster, using the maximum vcore capacity instead.",memoryMbs,maximumMemoryCapacity));
+    vCores=maximumVirtualCoreCapacity;
+  }
+  return Resource.newInstance(memoryMbs,vCores);
+}

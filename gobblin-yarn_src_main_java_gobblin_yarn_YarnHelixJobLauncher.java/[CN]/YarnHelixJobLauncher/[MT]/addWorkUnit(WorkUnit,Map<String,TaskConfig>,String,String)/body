@@ -1,0 +1,11 @@
+{
+  String workUnitFilePath=persistWorkUnit(new Path(this.inputWorkUnitDir,jobId),workUnit);
+  Map<String,String> rawConfigMap=Maps.newHashMap();
+  rawConfigMap.put(ConfigurationConstants.WORK_UNIT_FILE_PATH,workUnitFilePath);
+  rawConfigMap.put(ConfigurationKeys.JOB_NAME_KEY,jobName);
+  rawConfigMap.put(ConfigurationKeys.JOB_ID_KEY,jobId);
+  rawConfigMap.put(ConfigurationKeys.TASK_ID_KEY,workUnit.getId());
+  rawConfigMap.put("TASK_SUCCESS_OPTIONAL","true");
+  LOGGER.info("Adding WorkUnit " + workUnit.getId());
+  taskConfigMap.put(workUnit.getId(),TaskConfig.from(rawConfigMap));
+}

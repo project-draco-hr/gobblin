@@ -1,0 +1,3 @@
+Path destFilePath
+LocalResourceType resourceType
+Map<String,LocalResource> resourceMap

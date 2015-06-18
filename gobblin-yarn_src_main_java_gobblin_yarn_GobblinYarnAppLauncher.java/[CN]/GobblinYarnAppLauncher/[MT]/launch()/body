@@ -1,0 +1,35 @@
+{
+  createGobblinYarnHelixCluster();
+  this.yarnClient.start();
+  this.applicationId=setupAndSubmitApplication();
+  Future<ApplicationReport> result=this.applicationStatusMonitor.submit(new Callable<ApplicationReport>(){
+    @Override public ApplicationReport call() throws IOException, YarnException, InterruptedException {
+      while (true) {
+        ApplicationReport appReport=yarnClient.getApplicationReport(applicationId);
+        YarnApplicationState appState=appReport.getYarnApplicationState();
+        if (appState == YarnApplicationState.FINISHED || appState == YarnApplicationState.FAILED || appState == YarnApplicationState.KILLED) {
+          LOGGER.info("Gobblin Yarn application finished with final status: " + appReport.getFinalApplicationStatus().toString());
+          if (appReport.getFinalApplicationStatus() == FinalApplicationStatus.FAILED) {
+            LOGGER.error("Gobblin Yarn application failed for the following reason: " + appReport.getDiagnostics());
+          }
+          return appReport;
+        }
+        LOGGER.info("Gobblin Yarn application state: " + appState.toString());
+        Thread.sleep(TimeUnit.SECONDS.toMillis(60));
+      }
+    }
+  }
+);
+  try {
+    return result.get();
+  }
+ catch (  InterruptedException ie) {
+    throw new IOException(ie);
+  }
+catch (  ExecutionException ee) {
+    throw new IOException(ee);
+  }
+ finally {
+    cleanUpAppWorkDirectory(applicationId);
+  }
+}

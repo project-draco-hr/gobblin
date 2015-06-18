@@ -1,0 +1,16 @@
+{
+  int newContainersRequested=newContainerRequest.getNewContainersRequested();
+  if (newContainersRequested <= 0) {
+    LOGGER.error("Invalid number of new containers requested: " + newContainersRequested);
+    return;
+  }
+  try {
+    requestContainers(newContainersRequested);
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to handle new container request",ioe);
+  }
+catch (  YarnException ye) {
+    LOGGER.error("Failed to handle new container request",ye);
+  }
+}
