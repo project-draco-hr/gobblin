@@ -8,6 +8,7 @@
     Path jobOutputPath=prepareHadoopJob(workUnits);
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
+    this.hadoopJobSubmitted=true;
     if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
       jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
     }
