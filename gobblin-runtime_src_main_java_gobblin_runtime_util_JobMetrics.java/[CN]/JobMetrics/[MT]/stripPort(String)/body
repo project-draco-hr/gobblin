@@ -1,0 +1,16 @@
+{
+  if (clusterIdentifier != null) {
+    try {
+      URI uri=new URI(clusterIdentifier.trim());
+      if (uri.isOpaque()) {
+        clusterIdentifier=uri.getScheme();
+      }
+ else {
+        clusterIdentifier=uri.getHost();
+      }
+    }
+ catch (    URISyntaxException e) {
+    }
+  }
+  return clusterIdentifier;
+}
