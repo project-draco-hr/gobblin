@@ -16,9 +16,5 @@
   this.baseFilePath=WriterUtils.getWriterFilePath(this.properties,numBranches,branch);
   this.partitionLevel=this.properties.getProp(getWriterPartitionLevel(),ConfigurationKeys.DEFAULT_WRITER_PARTITION_LEVEL);
   this.timestampToPathFormatter=DateTimeFormat.forPattern(this.properties.getProp(getWriterPartitionPattern(),ConfigurationKeys.DEFAULT_WRITER_PARTITION_PATTERN)).withZone(DateTimeZone.forID(this.properties.getProp(ConfigurationKeys.WRITER_PARTITION_TIMEZONE,ConfigurationKeys.DEFAULT_WRITER_PARTITION_TIMEZONE)));
-  Preconditions.checkArgument(this.properties.contains(getWriterPartitionColumnName()),"Missing required property " + ConfigurationKeys.WRITER_PARTITION_COLUMN_NAME);
-  this.partitionColumnName=this.properties.getProp(getWriterPartitionColumnName());
-  Optional<Schema> writerPartitionColumnSchema=AvroUtils.getFieldSchema(this.schema,this.partitionColumnName);
-  Preconditions.checkArgument(writerPartitionColumnSchema.isPresent(),"The column " + this.partitionColumnName + " specified by "+ ConfigurationKeys.WRITER_PARTITION_COLUMN_NAME+ " is not in the writer input schema");
-  Preconditions.checkArgument(writerPartitionColumnSchema.get().getType().equals(Schema.Type.LONG),"The column " + this.partitionColumnName + " specified by "+ ConfigurationKeys.WRITER_PARTITION_COLUMN_NAME+ " must be of type "+ Schema.Type.LONG);
+  this.partitionColumnName=Optional.fromNullable(this.properties.getProp(getWriterPartitionColumnName()));
 }
