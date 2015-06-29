@@ -1,0 +1,7 @@
+{
+  Options options=new Options();
+  options.addOption(new Option("h","print this message"));
+  options.addOption(Option.builder(StringUtils.EMPTY + PLAIN_PWD_OPTION).argName("plain password").hasArg().desc("plain password to be encrypted").build());
+  options.addOption(Option.builder(StringUtils.EMPTY + MASTER_PWD_OPTION).argName("master password").hasArg().desc("master password used to encrypt the plain password").build());
+  return options;
+}

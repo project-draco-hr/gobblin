@@ -1,0 +1,10 @@
+{
+  super(jobProps);
+  Optional<Timer.Context> jobLocalSetupTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.JOB_LOCAL_SETUP);
+  this.taskExecutor=new TaskExecutor(jobProps);
+  this.taskStateTracker=new LocalTaskStateTracker2(jobProps,this.taskExecutor);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(this.taskExecutor,this.taskStateTracker));
+  this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
+  startCancellationExecutor();
+  Instrumented.endTimer(jobLocalSetupTimer);
+}

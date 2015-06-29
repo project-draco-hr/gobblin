@@ -1,0 +1,9 @@
+{
+  try {
+    Optional<String> absent=Optional.absent();
+    return CACHED_INSTANCES.get(absent);
+  }
+ catch (  ExecutionException e) {
+    throw new RuntimeException("Unable to get an instance of PasswordManager",e);
+  }
+}

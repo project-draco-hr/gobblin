@@ -1,0 +1,13 @@
+{
+  List<TopicMetadata> topicMetadataList=fetchTopicMetadataFromBroker(broker);
+  if (topicMetadataList == null) {
+    return null;
+  }
+  List<TopicMetadata> filteredTopicMetadataList=Lists.newArrayList();
+  for (  TopicMetadata topicMetadata : topicMetadataList) {
+    if (DatasetFilterUtils.survived(topicMetadata.topic(),blacklist,whitelist)) {
+      filteredTopicMetadataList.add(topicMetadata);
+    }
+  }
+  return filteredTopicMetadataList;
+}

@@ -13,7 +13,7 @@
       partnerConfig.setProxy(super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
     }
     partnerConfig.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME));
-    partnerConfig.setPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
+    partnerConfig.setPassword(PasswordManager.getInstance(this.workUnit).readPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD)));
     partnerConfig.setAuthEndpoint(soapAuthEndPoint);
     PartnerConnection connection=new PartnerConnection(partnerConfig);
     String soapEndpoint=partnerConfig.getServiceEndpoint();

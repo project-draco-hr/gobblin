@@ -1,0 +1,5 @@
+{
+  for (  String key : state.getPropertyNames()) {
+    configuration.set(key,state.getProp(key));
+  }
+}

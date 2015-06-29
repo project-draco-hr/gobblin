@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(this.encryptor.isPresent(),"A master password needs to be provided for encrypting passwords.");
+  try {
+    return this.encryptor.get().encrypt(plain);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to encrypt password",e);
+  }
+}

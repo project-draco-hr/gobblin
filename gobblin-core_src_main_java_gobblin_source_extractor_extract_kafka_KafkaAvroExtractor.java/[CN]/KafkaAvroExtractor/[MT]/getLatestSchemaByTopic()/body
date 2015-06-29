@@ -1,3 +1,9 @@
 {
-  return this.schemaRegistry.getLatestSchemaByTopic(this.topicName);
+  try {
+    return this.schemaRegistry.getLatestSchemaByTopic(this.topicName);
+  }
+ catch (  SchemaNotFoundException e) {
+    LOG.error(String.format("Cannot find latest schema for topic %s. This topic will be skipped",this.topicName),e);
+    return null;
+  }
 }

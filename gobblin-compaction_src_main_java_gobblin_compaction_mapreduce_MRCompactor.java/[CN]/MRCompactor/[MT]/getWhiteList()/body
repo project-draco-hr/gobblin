@@ -1,4 +1,0 @@
-{
-  List<String> list=this.state.getPropAsList(ConfigurationKeys.COMPACTION_WHITELIST,StringUtils.EMPTY);
-  return getPatternsFromStrings(list);
-}

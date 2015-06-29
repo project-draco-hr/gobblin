@@ -1,0 +1,12 @@
+{
+  Preconditions.checkNotNull(record);
+  if (!fieldLocation.isPresent()) {
+    return Optional.absent();
+  }
+  Splitter splitter=Splitter.on(FIELD_LOCATION_DELIMITER).omitEmptyStrings().trimResults();
+  List<String> pathList=splitter.splitToList(fieldLocation.get());
+  if (pathList.size() == 0) {
+    return Optional.absent();
+  }
+  return AvroUtils.getFieldHelper(record,pathList,0);
+}

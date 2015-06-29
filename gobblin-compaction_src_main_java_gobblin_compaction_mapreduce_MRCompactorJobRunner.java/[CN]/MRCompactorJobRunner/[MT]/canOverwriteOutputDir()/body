@@ -1,0 +1,3 @@
+{
+  return this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_OVERWRITE_OUTPUT_DIR,ConfigurationKeys.DEFAULT_COMPACTION_OVERWRITE_OUTPUT_DIR);
+}

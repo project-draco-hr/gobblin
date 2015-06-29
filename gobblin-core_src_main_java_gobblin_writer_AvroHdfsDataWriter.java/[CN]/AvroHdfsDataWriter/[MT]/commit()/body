@@ -10,5 +10,6 @@
     LOG.warn(String.format("Task output file %s already exists",this.outputFile));
     HadoopUtils.deletePath(this.fs,this.outputFile,false);
   }
+  WriterUtils.setFileAttributesFromState(properties,fs,outputFile);
   HadoopUtils.renamePath(this.fs,this.stagingFile,this.outputFile);
 }

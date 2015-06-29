@@ -1,0 +1,3 @@
+String broker
+List<Pattern> blacklist
+List<Pattern> whitelist
