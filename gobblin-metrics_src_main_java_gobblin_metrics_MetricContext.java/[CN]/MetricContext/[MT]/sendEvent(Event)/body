@@ -1,0 +1,4 @@
+{
+  EventNotification notification=new EventNotification(event);
+  sendNotification(notification);
+}

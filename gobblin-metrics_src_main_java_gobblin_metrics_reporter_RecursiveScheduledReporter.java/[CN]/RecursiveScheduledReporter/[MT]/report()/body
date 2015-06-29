@@ -1,0 +1,3 @@
+{
+  reportContextTree(this.registry);
+}

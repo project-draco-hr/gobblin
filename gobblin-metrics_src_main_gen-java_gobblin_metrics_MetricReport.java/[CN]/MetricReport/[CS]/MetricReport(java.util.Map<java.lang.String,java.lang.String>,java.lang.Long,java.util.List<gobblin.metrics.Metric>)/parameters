@@ -1,3 +1,0 @@
-java.util.Map<java.lang.String,java.lang.String> tags
-java.lang.Long timestamp
-java.util.List<gobblin.metrics.Metric> metrics
