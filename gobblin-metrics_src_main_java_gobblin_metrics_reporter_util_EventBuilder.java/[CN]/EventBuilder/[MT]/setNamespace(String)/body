@@ -1,0 +1,5 @@
+{
+  EventBuilder other=new EventBuilder(this);
+  other.builder.setNamespace(namespace);
+  return other;
+}

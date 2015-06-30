@@ -1,14 +1,14 @@
 {
-  this.output.printf(locale,"             count = %d%n",histogram.getCount());
+  this.outputBufferPrintStream.printf(locale,"             count = %d%n",histogram.getCount());
   Snapshot snapshot=histogram.getSnapshot();
-  this.output.printf(locale,"               min = %d%n",snapshot.getMin());
-  this.output.printf(locale,"               max = %d%n",snapshot.getMax());
-  this.output.printf(locale,"              mean = %2.2f%n",snapshot.getMean());
-  this.output.printf(locale,"            stddev = %2.2f%n",snapshot.getStdDev());
-  this.output.printf(locale,"            median = %2.2f%n",snapshot.getMedian());
-  this.output.printf(locale,"              75%% <= %2.2f%n",snapshot.get75thPercentile());
-  this.output.printf(locale,"              95%% <= %2.2f%n",snapshot.get95thPercentile());
-  this.output.printf(locale,"              98%% <= %2.2f%n",snapshot.get98thPercentile());
-  this.output.printf(locale,"              99%% <= %2.2f%n",snapshot.get99thPercentile());
-  this.output.printf(locale,"            99.9%% <= %2.2f%n",snapshot.get999thPercentile());
+  this.outputBufferPrintStream.printf(locale,"               min = %d%n",snapshot.getMin());
+  this.outputBufferPrintStream.printf(locale,"               max = %d%n",snapshot.getMax());
+  this.outputBufferPrintStream.printf(locale,"              mean = %2.2f%n",snapshot.getMean());
+  this.outputBufferPrintStream.printf(locale,"            stddev = %2.2f%n",snapshot.getStdDev());
+  this.outputBufferPrintStream.printf(locale,"            median = %2.2f%n",snapshot.getMedian());
+  this.outputBufferPrintStream.printf(locale,"              75%% <= %2.2f%n",snapshot.get75thPercentile());
+  this.outputBufferPrintStream.printf(locale,"              95%% <= %2.2f%n",snapshot.get95thPercentile());
+  this.outputBufferPrintStream.printf(locale,"              98%% <= %2.2f%n",snapshot.get98thPercentile());
+  this.outputBufferPrintStream.printf(locale,"              99%% <= %2.2f%n",snapshot.get99thPercentile());
+  this.outputBufferPrintStream.printf(locale,"            99.9%% <= %2.2f%n",snapshot.get999thPercentile());
 }

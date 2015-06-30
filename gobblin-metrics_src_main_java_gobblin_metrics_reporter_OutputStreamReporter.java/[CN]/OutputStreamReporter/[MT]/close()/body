@@ -1,4 +1,11 @@
 {
-  super.close();
-  output.close();
+  try {
+    this.closer.close();
+  }
+ catch (  IOException exception) {
+    LOGGER.warn("Failed to close output streams.");
+  }
+ finally {
+    super.close();
+  }
 }

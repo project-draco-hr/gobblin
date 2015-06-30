@@ -1,0 +1,13 @@
+{
+  EventBuilder other=new EventBuilder(this);
+  Map<String,String> metadata;
+  if (other.builder.hasMetadata()) {
+    metadata=other.builder.getMetadata();
+  }
+ else {
+    metadata=Maps.newHashMap();
+  }
+  metadata.put(key,value);
+  other.builder.setMetadata(metadata);
+  return other;
+}

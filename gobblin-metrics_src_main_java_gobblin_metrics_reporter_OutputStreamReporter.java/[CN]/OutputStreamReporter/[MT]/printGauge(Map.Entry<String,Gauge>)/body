@@ -1,3 +1,3 @@
 {
-  this.output.printf(locale,"             value = %s%n",entry.getValue().getValue());
+  this.outputBufferPrintStream.printf(locale,"             value = %s%n",entry.getValue().getValue());
 }

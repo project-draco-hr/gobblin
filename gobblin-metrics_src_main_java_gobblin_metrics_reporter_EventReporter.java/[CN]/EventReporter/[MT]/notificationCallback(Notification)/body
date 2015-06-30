@@ -1,0 +1,5 @@
+{
+  if (notification instanceof EventNotification) {
+    addEventToReportingQueue(((EventNotification)notification).event);
+  }
+}

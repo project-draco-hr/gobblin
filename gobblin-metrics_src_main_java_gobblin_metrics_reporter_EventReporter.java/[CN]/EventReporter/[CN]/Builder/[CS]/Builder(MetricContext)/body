@@ -1,0 +1,7 @@
+{
+  this.context=context;
+  this.name="MetricReportReporter";
+  this.rateUnit=TimeUnit.SECONDS;
+  this.durationUnit=TimeUnit.MILLISECONDS;
+  this.filter=MetricFilter.ALL;
+}

@@ -1,0 +1,8 @@
+{
+  Event nextEvent;
+  List<byte[]> events=Lists.newArrayList();
+  while (null != (nextEvent=queue.poll())) {
+    events.add(this.serializer.serializeRecord(nextEvent));
+  }
+  this.kafkaPusher.pushMessages(events);
+}

@@ -1,0 +1,10 @@
+{
+  this.closer=Closer.create();
+  this.topic=topic;
+  Properties props=new Properties();
+  props.put("metadata.broker.list",brokers);
+  props.put("serializer.class","kafka.serializer.DefaultEncoder");
+  props.put("request.required.acks","1");
+  ProducerConfig config=new ProducerConfig(props);
+  this.producer=this.closer.register(new ProducerCloseable<String,byte[]>(config));
+}

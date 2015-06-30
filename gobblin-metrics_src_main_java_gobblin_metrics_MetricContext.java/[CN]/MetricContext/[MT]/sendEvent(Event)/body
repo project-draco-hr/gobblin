@@ -1,4 +1,14 @@
 {
-  EventNotification notification=new EventNotification(event);
+  Event eventCopy=Event.newBuilder(event).build();
+  eventCopy.setTimestamp(System.currentTimeMillis());
+  Map<String,String> originalMetadata=eventCopy.getMetadata();
+  Map<String,Object> tags=getTagMap();
+  Map<String,String> newMetadata=Maps.newHashMap();
+  for (  Map.Entry<String,Object> entry : tags.entrySet()) {
+    newMetadata.put(entry.getKey(),entry.getValue().toString());
+  }
+  newMetadata.putAll(originalMetadata);
+  eventCopy.setMetadata(newMetadata);
+  EventNotification notification=new EventNotification(eventCopy);
   sendNotification(notification);
 }

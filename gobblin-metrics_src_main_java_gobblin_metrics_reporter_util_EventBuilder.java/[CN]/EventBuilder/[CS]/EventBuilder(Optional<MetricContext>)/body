@@ -1,0 +1,4 @@
+{
+  this.builder=Event.newBuilder();
+  this.context=context;
+}

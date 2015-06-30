@@ -10,4 +10,5 @@
     }
   }
 );
+  this.eventBuilder=new EventBuilder(this.runtimeMetricContext).setNamespace("gobblin.runtime");
 }

@@ -1,57 +1,64 @@
 {
+  this.outputBuffer.reset();
   final String dateTime=dateFormat.format(new Date(clock.getTime()));
   printWithBanner(dateTime,'=');
-  this.output.println();
+  this.outputBufferPrintStream.println();
   Map<String,String> allTags=Maps.newHashMap();
   allTags.putAll(tags);
   allTags.putAll(this.tags);
   if (!allTags.isEmpty()) {
     printWithBanner("-- Tags",'-');
     for (    Map.Entry<String,String> entry : allTags.entrySet()) {
-      this.output.println(String.format("%s=%s",entry.getKey(),entry.getValue()));
+      this.outputBufferPrintStream.println(String.format("%s=%s",entry.getKey(),entry.getValue()));
     }
-    this.output.println();
+    this.outputBufferPrintStream.println();
   }
   if (!gauges.isEmpty()) {
     printWithBanner("-- Gauges",'-');
     for (    Map.Entry<String,Gauge> entry : gauges.entrySet()) {
-      this.output.println(entry.getKey());
+      this.outputBufferPrintStream.println(entry.getKey());
       printGauge(entry);
     }
-    this.output.println();
+    this.outputBufferPrintStream.println();
   }
   if (!counters.isEmpty()) {
     printWithBanner("-- Counters",'-');
     for (    Map.Entry<String,Counter> entry : counters.entrySet()) {
-      this.output.println(entry.getKey());
+      this.outputBufferPrintStream.println(entry.getKey());
       printCounter(entry);
     }
-    this.output.println();
+    this.outputBufferPrintStream.println();
   }
   if (!histograms.isEmpty()) {
     printWithBanner("-- Histograms",'-');
     for (    Map.Entry<String,Histogram> entry : histograms.entrySet()) {
-      this.output.println(entry.getKey());
+      this.outputBufferPrintStream.println(entry.getKey());
       printHistogram(entry.getValue());
     }
-    this.output.println();
+    this.outputBufferPrintStream.println();
   }
   if (!meters.isEmpty()) {
     printWithBanner("-- Meters",'-');
     for (    Map.Entry<String,Meter> entry : meters.entrySet()) {
-      this.output.println(entry.getKey());
+      this.outputBufferPrintStream.println(entry.getKey());
       printMeter(entry.getValue());
     }
-    this.output.println();
+    this.outputBufferPrintStream.println();
   }
   if (!timers.isEmpty()) {
     printWithBanner("-- Timers",'-');
     for (    Map.Entry<String,Timer> entry : timers.entrySet()) {
-      this.output.println(entry.getKey());
+      this.outputBufferPrintStream.println(entry.getKey());
       printTimer(entry.getValue());
     }
-    this.output.println();
+    this.outputBufferPrintStream.println();
   }
-  this.output.println();
-  this.output.flush();
+  this.outputBufferPrintStream.println();
+  this.outputBufferPrintStream.flush();
+  try {
+    this.outputBuffer.writeTo(this.output);
+  }
+ catch (  IOException exception) {
+    LOGGER.warn("Failed to write metric report to output stream.");
+  }
 }

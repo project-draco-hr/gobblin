@@ -1,0 +1,3 @@
+{
+  this.reportingQueue.add(event);
+}

@@ -1,3 +1,0 @@
-{
-  reader=new SpecificDatumReader<MetricReport>(MetricReport.class);
-}

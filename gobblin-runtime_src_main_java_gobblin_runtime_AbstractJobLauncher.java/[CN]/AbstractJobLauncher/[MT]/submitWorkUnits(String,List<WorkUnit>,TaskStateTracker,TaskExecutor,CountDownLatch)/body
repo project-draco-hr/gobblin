@@ -12,5 +12,6 @@
     LOG.info(String.format("Submitting task %s to run",taskId));
     taskExecutor.submit(task);
   }
+  new EventBuilder(JobMetrics.get(jobId).getMetricContext()).setNamespace("gobblin.runtime").setName("WorkUnitsSubmitted").addMetadata("workunitsCount",Integer.toString(workUnits.size())).submit();
   return tasks;
 }
