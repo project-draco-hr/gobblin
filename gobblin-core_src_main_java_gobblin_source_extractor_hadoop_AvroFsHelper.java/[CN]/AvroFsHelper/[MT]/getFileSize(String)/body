@@ -1,0 +1,8 @@
+{
+  try {
+    return fs.getFileStatus(new Path(filePath)).getLen();
+  }
+ catch (  IOException e) {
+    throw new FileBasedHelperException(String.format("Failed to get size for file at path %s due to error %s",filePath,e.getMessage()),e);
+  }
+}
