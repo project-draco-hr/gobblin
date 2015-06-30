@@ -1,0 +1,4 @@
+{
+  State state=new State(properties);
+  addCustomTagToState(state,tag);
+}
