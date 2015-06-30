@@ -1,5 +1,11 @@
 {
-  Optional<Object> writerPartitionColumnValue=AvroUtils.getFieldValue(record,this.partitionColumnName);
+  Optional<Object> writerPartitionColumnValue;
+  if (this.partitionColumnName.isPresent()) {
+    writerPartitionColumnValue=AvroUtils.getFieldValue(record,this.partitionColumnName.get());
+  }
+ else {
+    writerPartitionColumnValue=Optional.absent();
+  }
   long recordTimestamp=writerPartitionColumnValue.orNull() instanceof Long ? (Long)writerPartitionColumnValue.get() : System.currentTimeMillis();
   Path writerOutputPath=getPathForColumnValue(recordTimestamp);
   if (!this.pathToWriterMap.containsKey(writerOutputPath)) {
