@@ -1,0 +1,6 @@
+{
+  String partitionLevel=workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_PARTITION_LEVEL,this.numBranches,branchId),ConfigurationKeys.DEFAULT_WRITER_PARTITION_LEVEL);
+  String partitionPattern=workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_PARTITION_PATTERN,this.numBranches,branchId),ConfigurationKeys.DEFAULT_WRITER_PARTITION_PATTERN);
+  Path writerOutputDirWithDateGlob=new Path(writerOutputDir,partitionLevel + Path.SEPARATOR + partitionPattern.replaceAll("\\w+","*"));
+  return new Path(writerOutputDirWithDateGlob,writerOutputFileName);
+}
