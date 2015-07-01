@@ -1,4 +1,4 @@
 {
   Assert.assertTrue(it.hasNext());
-  return EventUtils.deserializeReportFromAvroSerialization(new Event(),it.next().message());
+  return EventUtils.deserializeReportFromAvroSerialization(new GobblinTrackingEvent(),it.next().message());
 }

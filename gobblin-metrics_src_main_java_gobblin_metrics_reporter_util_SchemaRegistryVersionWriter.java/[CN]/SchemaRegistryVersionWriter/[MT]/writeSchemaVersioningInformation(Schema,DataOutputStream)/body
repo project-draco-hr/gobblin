@@ -1,7 +1,7 @@
 {
   if (!this.registrySchemaIds.containsKey(schema)) {
-    String schemaId=this.registry.register(MetricReport.SCHEMA$);
-    this.registrySchemaIds.putIfAbsent(schema,schemaId);
+    String schemaId=this.registry.register(schema);
+    this.registrySchemaIds.put(schema,schemaId);
   }
   outputStream.writeByte(KafkaAvroSchemaRegistry.MAGIC_BYTE);
   try {

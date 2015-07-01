@@ -1,0 +1,21 @@
+{
+  if (queue.size() <= 0) {
+    return;
+  }
+  this.outputBuffer.reset();
+  GobblinTrackingEvent nextEvent;
+  final String dateTime=dateFormat.format(new Date());
+  printWithBanner(dateTime,'=');
+  this.outputBufferPrintStream.println();
+  printWithBanner("-- Events",'-');
+  while (null != (nextEvent=queue.poll())) {
+    this.outputBufferPrintStream.println(new String(this.serializer.serializeRecord(nextEvent)));
+  }
+  this.outputBufferPrintStream.println();
+  try {
+    this.outputBuffer.writeTo(this.output);
+  }
+ catch (  IOException exception) {
+    LOGGER.warn("Failed to write events to output stream.");
+  }
+}

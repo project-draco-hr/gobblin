@@ -1,5 +1,0 @@
-{
-  EventBuilder other=new EventBuilder(this);
-  other.builder.setName(value);
-  return other;
-}

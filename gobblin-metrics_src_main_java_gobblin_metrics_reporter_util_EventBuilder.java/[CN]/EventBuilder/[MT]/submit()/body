@@ -1,5 +1,0 @@
-{
-  if (this.context.isPresent()) {
-    this.context.get().sendEvent(this.builder.build());
-  }
-}

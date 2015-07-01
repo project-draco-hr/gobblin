@@ -1,6 +1,6 @@
 {
   super(builder);
-  this.serializer=this.closer.register(new AvroJsonSerializer<Event>(Event.SCHEMA$,new NoopSchemaVersionWriter()));
+  this.serializer=this.closer.register(new AvroJsonSerializer<GobblinTrackingEvent>(GobblinTrackingEvent.SCHEMA$,new NoopSchemaVersionWriter()));
   this.output=builder.output;
   this.outputBuffer=new ByteArrayOutputStream();
   this.outputBufferPrintStream=this.closer.register(new PrintStream(this.outputBuffer));

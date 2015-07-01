@@ -3,19 +3,19 @@
   JobState jobState=this.jobContext.getJobState();
   try {
     if (!tryLockJob()) {
-      this.eventBuilder.setName("LockInUse").submit();
+      this.eventSubmitter.submit("LockInUse");
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
     }
     Optional<Timer.Context> workUnitsCreationTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_CREATION);
     Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
     Instrumented.endTimer(workUnitsCreationTimer);
     if (!workUnits.isPresent()) {
-      this.eventBuilder.setName("WorkUnitsMissing").submit();
+      this.eventSubmitter.submit("WorkUnitsMissing");
       jobState.setState(JobState.RunningState.FAILED);
       throw new JobException("Failed to get work units for job " + jobId);
     }
     if (workUnits.get().isEmpty()) {
-      this.eventBuilder.setName("WorkUnitsEmpty").submit();
+      this.eventSubmitter.submit("WorkUnitsEmpty");
       LOG.warn("No work units have been created for job " + jobId);
       return;
     }
@@ -35,13 +35,13 @@
     Instrumented.endTimer(jobRunTimer);
 switch (jobState.getState()) {
 case CANCELLED:
-      this.eventBuilder.setName("JobCancelled").submit();
+      this.eventSubmitter.submit("JobCancelled");
     break;
 case SUCCESSFUL:
-  this.eventBuilder.setName("JobSucceeded").submit();
+  this.eventSubmitter.submit("JobSucceeded");
 break;
 case FAILED:
-this.eventBuilder.setName("JobFailed").submit();
+this.eventSubmitter.submit("JobFailed");
 break;
 default :
 }

@@ -3,7 +3,7 @@
   KafkaEventReporter kafkaReporter=getBuilder(context).build("localhost:" + kafkaPort,topic);
   String namespace="gobblin.metrics.test";
   String eventName="testEvent";
-  Event event=new Event();
+  GobblinTrackingEvent event=new GobblinTrackingEvent();
   event.setName(eventName);
   event.setNamespace(namespace);
   event.setMetadata(Maps.<String,String>newHashMap());
@@ -21,7 +21,7 @@
  catch (  InterruptedException ex) {
     Thread.currentThread().interrupt();
   }
-  Event retrievedEvent=nextEvent(this.iterator);
+  GobblinTrackingEvent retrievedEvent=nextEvent(this.iterator);
   Assert.assertEquals(retrievedEvent.getNamespace(),namespace);
   Assert.assertEquals(retrievedEvent.getName(),eventName);
   Assert.assertEquals(retrievedEvent.getMetadata().size(),1);

@@ -1,0 +1,21 @@
+{
+  if (!READER.isPresent()) {
+    READER=Optional.of(new SpecificDatumReader<GobblinTrackingEvent>(GobblinTrackingEvent.class));
+  }
+  Closer closer=Closer.create();
+  try {
+    DataInputStream inputStream=closer.register(new DataInputStream(new ByteArrayInputStream(bytes)));
+    int versionNumber=inputStream.readInt();
+    if (versionNumber != SCHEMA_VERSION) {
+      throw new IOException(String.format("MetricReport schema version not recognized. Found version %d, expected %d.",versionNumber,SCHEMA_VERSION));
+    }
+    Decoder decoder=DecoderFactory.get().jsonDecoder(GobblinTrackingEvent.SCHEMA$,inputStream);
+    return READER.get().read(reuse,decoder);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

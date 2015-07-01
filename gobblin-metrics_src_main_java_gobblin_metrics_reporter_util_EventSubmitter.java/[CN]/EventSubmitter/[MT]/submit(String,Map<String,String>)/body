@@ -1,0 +1,8 @@
+{
+  if (this.metricContext.isPresent()) {
+    if (!additionalMetadata.isEmpty()) {
+      this.metadata.putAll(additionalMetadata);
+    }
+    this.metricContext.get().sendEvent(new GobblinTrackingEvent(0l,this.namespace,name,this.metadata));
+  }
+}

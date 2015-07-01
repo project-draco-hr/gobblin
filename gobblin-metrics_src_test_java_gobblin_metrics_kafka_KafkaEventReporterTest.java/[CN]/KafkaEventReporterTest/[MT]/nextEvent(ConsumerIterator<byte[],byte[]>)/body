@@ -1,4 +1,4 @@
 {
   Assert.assertTrue(it.hasNext());
-  return EventUtils.deserializeReportFromJson(new Event(),it.next().message());
+  return EventUtils.deserializeReportFromJson(new GobblinTrackingEvent(),it.next().message());
 }

@@ -1,0 +1,5 @@
+{
+  this.metadata=builder.metadata;
+  this.namespace=builder.namespace;
+  this.metricContext=builder.metricContext;
+}
