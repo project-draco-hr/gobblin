@@ -2,7 +2,7 @@
   if (cl.hasOption(HELP_OPTION)) {
     return true;
   }
-  if (!cl.hasOption(PLAIN_PWD_OPTION) || !cl.hasOption(MASTER_PWD_OPTION)) {
+  if (!cl.hasOption(PLAIN_PWD_OPTION) || !masterpasswordProvided(cl)) {
     return true;
   }
   return false;

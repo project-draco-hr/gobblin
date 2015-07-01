@@ -1,9 +1,12 @@
 {
   String password=UUID.randomUUID().toString();
-  File masterPwdFile=getMasterPwdFile();
+  String masterPassword=UUID.randomUUID().toString();
+  File masterPwdFile=getMasterPwdFile(masterPassword);
   State state=new State();
   state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC,masterPwdFile.toString());
-  String encrypted=PasswordManager.getInstance(state).encryptPassword(password);
+  BasicTextEncryptor encryptor=new BasicTextEncryptor();
+  encryptor.setPassword(masterPassword);
+  String encrypted=encryptor.encrypt(password);
   encrypted="ENC(" + encrypted + ")";
   String decrypted=PasswordManager.getInstance(state).readPassword(encrypted);
   Assert.assertEquals(decrypted,password);

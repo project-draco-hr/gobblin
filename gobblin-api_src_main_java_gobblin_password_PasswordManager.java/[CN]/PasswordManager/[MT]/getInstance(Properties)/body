@@ -1,8 +1,3 @@
 {
-  try {
-    return CACHED_INSTANCES.get(getMasterPassword(new State(props)));
-  }
- catch (  ExecutionException e) {
-    throw new RuntimeException("Unable to get an instance of PasswordManager",e);
-  }
+  return getInstance(new State(props));
 }
