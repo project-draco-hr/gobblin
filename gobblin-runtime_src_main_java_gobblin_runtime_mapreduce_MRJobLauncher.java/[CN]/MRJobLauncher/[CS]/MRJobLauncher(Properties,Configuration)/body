@@ -15,5 +15,6 @@
   this.fs.mkdirs(this.mrJobDir);
   addDependencies();
   this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + this.jobContext.getJobName());
+  this.stateSerDeRunnerThreads=Integer.parseInt(jobProps.getProperty(ParallelStateSerDeRunner.STATE_SERDE_RUNNER_THREADS_KEY,ParallelStateSerDeRunner.DEFAULT_STATE_SERDE_RUNNER_THREADS));
   startCancellationExecutor();
 }

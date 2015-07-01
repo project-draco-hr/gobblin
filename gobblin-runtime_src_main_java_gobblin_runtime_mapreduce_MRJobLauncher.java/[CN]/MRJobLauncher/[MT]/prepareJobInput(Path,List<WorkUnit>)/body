@@ -5,6 +5,7 @@
     OutputStream os=closer.register(this.fs.create(jobInputFile));
     Writer osw=closer.register(new OutputStreamWriter(os,ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
     Writer bw=closer.register(new BufferedWriter(osw));
+    ParallelStateSerDeRunner stateSerDeRunner=closer.register(new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs));
     int multiTaskIdSequence=0;
     for (    WorkUnit workUnit : workUnits) {
       if (workUnit instanceof MultiWorkUnit) {
@@ -12,21 +13,11 @@
         workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
         workUnit.setId(multiTaskId);
       }
-      Closer workUnitFileCloser=Closer.create();
-      try {
-        Path workUnitFile=new Path(jobInputPath,workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + ((workUnit instanceof MultiWorkUnit) ? MULTI_WORK_UNIT_FILE_EXTENSION : WORK_UNIT_FILE_EXTENSION));
-        os=workUnitFileCloser.register(this.fs.create(workUnitFile));
-        DataOutputStream dos=workUnitFileCloser.register(new DataOutputStream(os));
-        workUnit.write(dos);
-        bw.write(workUnitFile.toUri().getPath() + "\n");
-      }
- catch (      Throwable t) {
-        throw workUnitFileCloser.rethrow(t);
-      }
- finally {
-        workUnitFileCloser.close();
-      }
+      Path workUnitFile=new Path(jobInputPath,workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + ((workUnit instanceof MultiWorkUnit) ? MULTI_WORK_UNIT_FILE_EXTENSION : WORK_UNIT_FILE_EXTENSION));
+      stateSerDeRunner.serializeToFile(workUnit,workUnitFile);
+      bw.write(workUnitFile.toUri().getPath() + "\n");
     }
+    stateSerDeRunner.awaitDone();
     return jobInputFile;
   }
  catch (  Throwable t) {
