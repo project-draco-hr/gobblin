@@ -10,7 +10,6 @@
     workUnit2.setProp("foo","baz");
     workUnit2.setProp("b",20);
     stateSerDeRunner.serializeToFile(workUnit2,new Path(this.outputPath,"wu2"));
-    stateSerDeRunner.awaitDone();
   }
  catch (  Throwable t) {
     throw closer.rethrow(t);

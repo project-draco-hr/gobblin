@@ -1,18 +1,11 @@
 {
+  WorkUnit workUnit1=new WorkUnit();
+  WorkUnit workUnit2=new WorkUnit();
   Closer closer=Closer.create();
   try {
     ParallelStateSerDeRunner stateSerDeRunner=closer.register(new ParallelStateSerDeRunner(2,this.fs));
-    WorkUnit workUnit1=new WorkUnit();
     stateSerDeRunner.deserializeFromFile(workUnit1,new Path(this.outputPath,"wu1"));
-    WorkUnit workUnit2=new WorkUnit();
     stateSerDeRunner.deserializeFromFile(workUnit2,new Path(this.outputPath,"wu2"));
-    stateSerDeRunner.awaitDone();
-    Assert.assertEquals(workUnit1.getPropertyNames().size(),2);
-    Assert.assertEquals(workUnit1.getProp("foo"),"bar");
-    Assert.assertEquals(workUnit1.getPropAsInt("a"),10);
-    Assert.assertEquals(workUnit2.getPropertyNames().size(),2);
-    Assert.assertEquals(workUnit2.getProp("foo"),"baz");
-    Assert.assertEquals(workUnit2.getPropAsInt("b"),20);
   }
  catch (  Throwable t) {
     throw closer.rethrow(t);
@@ -20,4 +13,10 @@
  finally {
     closer.close();
   }
+  Assert.assertEquals(workUnit1.getPropertyNames().size(),2);
+  Assert.assertEquals(workUnit1.getProp("foo"),"bar");
+  Assert.assertEquals(workUnit1.getPropAsInt("a"),10);
+  Assert.assertEquals(workUnit2.getPropertyNames().size(),2);
+  Assert.assertEquals(workUnit2.getProp("foo"),"baz");
+  Assert.assertEquals(workUnit2.getPropAsInt("b"),20);
 }

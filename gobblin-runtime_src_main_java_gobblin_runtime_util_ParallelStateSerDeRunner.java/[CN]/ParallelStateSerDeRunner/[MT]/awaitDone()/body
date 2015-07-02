@@ -1,5 +1,0 @@
-{
-  for (  Future<?> future : this.futures) {
-    future.get();
-  }
-}

@@ -15,7 +15,6 @@
     for (    FileStatus status : fileStatuses) {
       stateSerDeRunner.deserializeFromSequenceFile(Text.class,TaskState.class,status.getPath(),taskStateQueue);
     }
-    stateSerDeRunner.awaitDone();
   }
  catch (  Throwable t) {
     throw closer.rethrow(t);

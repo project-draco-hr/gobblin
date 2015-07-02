@@ -1,11 +1,11 @@
 {
+  Path jobInputFile=new Path(jobInputPath,this.jobContext.getJobId() + ".wulist");
   Closer closer=Closer.create();
   try {
-    Path jobInputFile=new Path(jobInputPath,this.jobContext.getJobId() + ".wulist");
+    ParallelStateSerDeRunner stateSerDeRunner=closer.register(new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs));
     OutputStream os=closer.register(this.fs.create(jobInputFile));
     Writer osw=closer.register(new OutputStreamWriter(os,ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
     Writer bw=closer.register(new BufferedWriter(osw));
-    ParallelStateSerDeRunner stateSerDeRunner=closer.register(new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs));
     int multiTaskIdSequence=0;
     for (    WorkUnit workUnit : workUnits) {
       if (workUnit instanceof MultiWorkUnit) {
@@ -17,8 +17,6 @@
       stateSerDeRunner.serializeToFile(workUnit,workUnitFile);
       bw.write(workUnitFile.toUri().getPath() + "\n");
     }
-    stateSerDeRunner.awaitDone();
-    return jobInputFile;
   }
  catch (  Throwable t) {
     throw closer.rethrow(t);
@@ -26,4 +24,5 @@
  finally {
     closer.close();
   }
+  return jobInputFile;
 }
