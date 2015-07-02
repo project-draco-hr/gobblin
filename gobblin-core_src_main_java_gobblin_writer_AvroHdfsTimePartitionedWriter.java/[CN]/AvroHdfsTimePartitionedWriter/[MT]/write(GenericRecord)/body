@@ -9,8 +9,9 @@
   long recordTimestamp=writerPartitionColumnValue.orNull() instanceof Long ? (Long)writerPartitionColumnValue.get() : System.currentTimeMillis();
   Path writerOutputPath=getPathForColumnValue(recordTimestamp);
   if (!this.pathToWriterMap.containsKey(writerOutputPath)) {
-    LOG.info("Creating a new DataWriter for path: " + new Path(this.baseFilePath,writerOutputPath));
-    DataWriter<GenericRecord> avroHdfsDataWriter=createAvroHdfsDataWriterForPath(writerOutputPath);
+    Path writerOutputPathWithBase=new Path(this.baseFilePath,writerOutputPath);
+    LOG.info("Creating a new DataWriter for path: " + writerOutputPathWithBase);
+    DataWriter<GenericRecord> avroHdfsDataWriter=createAvroHdfsDataWriterForPath(writerOutputPathWithBase);
     this.pathToWriterMap.put(writerOutputPath,avroHdfsDataWriter);
   }
   this.pathToWriterMap.get(writerOutputPath).write(record);

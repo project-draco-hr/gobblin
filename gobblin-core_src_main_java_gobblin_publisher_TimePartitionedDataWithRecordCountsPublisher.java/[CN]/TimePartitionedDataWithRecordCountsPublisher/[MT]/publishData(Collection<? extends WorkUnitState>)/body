@@ -1,0 +1,42 @@
+{
+  Set<Path> publisherDirsProcessed=Sets.newHashSet();
+  for (  WorkUnitState workUnitState : states) {
+    for (int branchId=0; branchId < this.numBranches; branchId++) {
+      Path writerOutputDir=WriterUtils.getWriterOutputDir(workUnitState,this.numBranches,branchId);
+      FileSystem fileSystem=this.fss.get(branchId);
+      if (!fileSystem.exists(writerOutputDir)) {
+        LOG.warn("WorkUnit " + workUnitState.getId() + " produced no data");
+        workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+        break;
+      }
+      boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,this.numBranches,branchId));
+      Path publisherOutputDir=WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,branchId);
+      if (!publisherDirsProcessed.contains(publisherOutputDir) && replaceFinalOutputDir && fileSystem.exists(publisherOutputDir)) {
+        fileSystem.delete(publisherOutputDir,true);
+      }
+      publisherDirsProcessed.add(publisherOutputDir);
+      List<String> filePathToRecordCountMappings=workUnitState.getPropAsList(ForkOperatorUtils.getPropertyNameForBranch("paths.to.record.counts.mapping",this.numBranches,branchId),"");
+      if (filePathToRecordCountMappings.isEmpty()) {
+        LOG.warn("No record count mappings found for WorkUnit " + workUnitState.getId() + " branch "+ branchId);
+      }
+      for (      String filePathToRecordCountMap : filePathToRecordCountMappings) {
+        String filePath;
+        int recordsWritten;
+        try {
+          filePath=filePathToRecordCountMap.split(":")[0];
+          recordsWritten=Integer.parseInt(filePathToRecordCountMap.split(":")[1]);
+        }
+ catch (        IndexOutOfBoundsException e) {
+          LOG.error("Error parsing filePathToRecordCountMap: " + filePathToRecordCountMap);
+          continue;
+        }
+catch (        NumberFormatException e) {
+          LOG.error("Error parsing filePathToRecordCountMap recordsWritten: " + filePathToRecordCountMap);
+          continue;
+        }
+        moveAndAddRowCounts(writerOutputDir,publisherOutputDir,filePath,recordsWritten,fileSystem);
+      }
+    }
+    workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+  }
+}

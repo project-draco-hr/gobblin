@@ -1,0 +1,5 @@
+Path inputDir
+Path outputDir
+String filePathOld
+int recordsWritten
+FileSystem fileSystem
