@@ -1,1 +1,2 @@
 Optional<String> masterPassword
+boolean useStrongEncryptor

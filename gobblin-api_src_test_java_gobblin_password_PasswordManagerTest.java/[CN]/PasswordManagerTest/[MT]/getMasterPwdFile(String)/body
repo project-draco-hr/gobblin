@@ -1,5 +1,5 @@
 {
   File masterPwdFile=File.createTempFile("masterPassword",null);
-  Files.write(UUID.randomUUID().toString(),masterPwdFile,Charset.defaultCharset());
+  Files.write(masterPwd,masterPwdFile,Charset.defaultCharset());
   return masterPwdFile;
 }
