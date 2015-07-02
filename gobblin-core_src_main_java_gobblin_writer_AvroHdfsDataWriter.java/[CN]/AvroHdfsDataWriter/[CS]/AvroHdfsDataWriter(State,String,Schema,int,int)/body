@@ -1,9 +1,22 @@
 {
   super(properties,fileName,numBranches,branchId);
-  String codecType=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_CODEC_TYPE,numBranches,branchId),AvroHdfsDataWriter.CodecType.DEFLATE.name());
+  CodecFactory codecFactory;
+  String codecType=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_CODEC_TYPE,numBranches,branchId));
+  String deflateLevel=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DEFLATE_LEVEL,numBranches,branchId));
+  if (codecType == null) {
+    codecFactory=CodecFactory.deflateCodec(9);
+  }
+ else   if (codecType.equals(DataFileConstants.DEFLATE_CODEC) && deflateLevel != null) {
+    codecFactory=CodecFactory.deflateCodec(Integer.parseInt(deflateLevel));
+  }
+ else {
+    codecFactory=CodecFactory.fromString(codecType);
+  }
   int bufferSize=Integer.parseInt(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUFFER_SIZE,numBranches,branchId),ConfigurationKeys.DEFAULT_BUFFER_SIZE));
-  int deflateLevel=Integer.parseInt(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DEFLATE_LEVEL,numBranches,branchId),ConfigurationKeys.DEFAULT_DEFLATE_LEVEL));
+  short replication=properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_REPLICATION_FACTOR,numBranches,branchId),this.fs.getDefaultReplication(new Path(fileName)));
+  long blockSize=properties.getPropAsLong(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_BLOCK_SIZE,numBranches,branchId),this.fs.getDefaultBlockSize(new Path(fileName)));
+  FsPermission permissions=new FsPermission(properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PERMISSIONS,numBranches,branchId),FsPermission.getDefault().toShort()));
   this.schema=schema;
   this.datumWriter=new GenericDatumWriter<GenericRecord>();
-  this.writer=createDatumWriter(this.stagingFile,bufferSize,CodecType.valueOf(codecType),deflateLevel);
+  this.writer=createDatumWriter(this.stagingFile,bufferSize,codecFactory,replication,blockSize,permissions);
 }
