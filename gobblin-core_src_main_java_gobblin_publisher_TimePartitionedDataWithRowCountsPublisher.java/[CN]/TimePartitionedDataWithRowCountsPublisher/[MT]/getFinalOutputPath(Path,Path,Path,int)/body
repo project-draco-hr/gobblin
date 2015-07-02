@@ -1,0 +1,7 @@
+{
+  String fileName=writerOutFilePath.getName();
+  String writerOutputPathStr=writerOutFilePath.getParent().toString();
+  String pathSuffix=writerOutputPathStr.substring(writerOutputPathStr.indexOf(writerOutputDir.toString()) + writerOutputDir.toString().length() + 1);
+  String outputFileName=fileName.substring(0,fileName.lastIndexOf(".")) + "." + recordsWritten+ fileName.substring(fileName.lastIndexOf("."));
+  return new Path(publisherOutputDir,pathSuffix + Path.SEPARATOR + outputFileName);
+}

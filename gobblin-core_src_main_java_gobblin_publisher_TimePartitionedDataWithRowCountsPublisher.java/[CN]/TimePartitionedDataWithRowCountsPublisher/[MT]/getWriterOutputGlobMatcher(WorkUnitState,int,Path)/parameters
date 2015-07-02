@@ -1,4 +1,3 @@
 WorkUnitState workUnitState
 int branchId
 Path writerOutputDir
-String writerOutputFileName

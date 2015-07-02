@@ -1,0 +1,4 @@
+Path writerOutputDir
+Path publisherOutputDir
+Path writerOutFilePath
+int recordsWritten
