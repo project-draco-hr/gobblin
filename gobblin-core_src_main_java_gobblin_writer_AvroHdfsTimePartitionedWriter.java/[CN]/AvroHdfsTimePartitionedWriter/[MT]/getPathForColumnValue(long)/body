@@ -1,3 +1,3 @@
 {
-  return new Path(this.partitionLevel,this.timestampToPathFormatter.print(timestamp));
+  return new Path(this.baseFilePath,partitionLevel + Path.SEPARATOR + timestampToPathFormatter.print(timestamp));
 }

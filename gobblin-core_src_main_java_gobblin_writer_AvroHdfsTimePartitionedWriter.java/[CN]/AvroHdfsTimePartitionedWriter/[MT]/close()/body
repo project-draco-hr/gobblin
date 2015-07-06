@@ -1,18 +1,14 @@
 {
-  String fileName=WriterUtils.getWriterFileName(this.properties,this.numBranches,this.branch,this.writerId,this.writerOutputFormat.getExtension());
-  List<String> pathToRecordCountMapList=Lists.newArrayList();
   boolean closeFailed=false;
   for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
     try {
       entry.getValue().close();
-      pathToRecordCountMapList.add(new Path(entry.getKey(),fileName) + ":" + entry.getValue().recordsWritten());
     }
  catch (    IOException e) {
       closeFailed=true;
       LOG.error("Failed to close writer for path: " + entry.getKey(),e);
     }
   }
-  this.properties.setProp(ForkOperatorUtils.getPropertyNameForBranch("paths.to.record.counts.mapping",this.numBranches,this.branch),Joiner.on(",").join(pathToRecordCountMapList));
   if (closeFailed) {
     throw new IOException("Failed to close all writers");
   }
