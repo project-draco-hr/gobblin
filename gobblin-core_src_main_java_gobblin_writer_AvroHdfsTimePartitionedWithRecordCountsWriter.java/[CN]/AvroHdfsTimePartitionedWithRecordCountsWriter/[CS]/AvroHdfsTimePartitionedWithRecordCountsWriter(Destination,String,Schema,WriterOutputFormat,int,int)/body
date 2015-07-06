@@ -1,8 +1,3 @@
 {
   super(destination,writerId,schema,writerOutputFormat,numBranches,branch);
-  this.writerId=writerId;
-  this.writerOutputFormat=writerOutputFormat;
-  this.numBranches=numBranches;
-  this.branch=branch;
-  this.properties=destination.getProperties();
 }
