@@ -1,0 +1,32 @@
+{
+  for (  Field field : target.getSchema().getFields()) {
+    if (field.schema().getType() == Schema.Type.UNION) {
+      Object fieldData=source.get(field.name());
+      Schema actualFieldSchema=GenericData.get().induce(fieldData);
+      if (actualFieldSchema.getType() == Schema.Type.RECORD) {
+        for (        Schema candidateType : field.schema().getTypes()) {
+          if (candidateType.getFullName().equals(actualFieldSchema.getFullName())) {
+            GenericRecord record=new GenericData.Record(candidateType);
+            target.put(field.name(),record);
+            populateComparableKeyRecord((GenericRecord)fieldData,record);
+            break;
+          }
+        }
+      }
+ else {
+        target.put(field.name(),source.get(field.name()));
+      }
+    }
+ else     if (field.schema().getType() == Schema.Type.RECORD) {
+      GenericRecord record=(GenericRecord)target.get(field.name());
+      if (record == null) {
+        record=new GenericData.Record(field.schema());
+        target.put(field.name(),record);
+      }
+      populateComparableKeyRecord((GenericRecord)source.get(field.name()),record);
+    }
+ else {
+      target.put(field.name(),source.get(field.name()));
+    }
+  }
+}

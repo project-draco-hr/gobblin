@@ -4,6 +4,7 @@
     return null;
   }
   Configuration conf=HadoopUtils.getConfFromState(this.jobProps);
+  addJars(conf);
   Job job=Job.getInstance(conf);
   this.configureJob(job);
   this.submit(job);

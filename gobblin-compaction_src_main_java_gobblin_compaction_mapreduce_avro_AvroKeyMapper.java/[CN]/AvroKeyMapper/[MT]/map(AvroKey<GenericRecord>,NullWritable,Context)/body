@@ -3,7 +3,7 @@
     context.write(key,NullWritable.get());
   }
  else {
-    outKey.datum(AvroUtils.convertRecordSchema(key.datum(),keySchema));
+    populateComparableKeyRecord(key.datum(),outKey.datum());
     outValue.datum(key.datum());
     context.write(outKey,outValue);
   }
