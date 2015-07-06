@@ -1,6 +1,6 @@
 {
   try {
-    return CACHED_INSTANCES.get(getMasterPassword(masterPwdLoc));
+    return CACHED_INSTANCES.get(new AbstractMap.SimpleEntry<Optional<String>,Boolean>(getMasterPassword(masterPwdLoc),shouldUseStrongEncryptor(new State())));
   }
  catch (  ExecutionException e) {
     throw new RuntimeException("Unable to get an instance of PasswordManager",e);

@@ -1,0 +1,4 @@
+State properties
+AuthType authType
+String authPath
+String uri

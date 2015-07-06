@@ -1,0 +1,11 @@
+{
+  try {
+    String expectedClusterIdentifier=InetAddress.getLocalHost().getHostName();
+    JobMetrics jobMetrics=buildTestJobMetrics();
+    Assert.assertNotNull(jobMetrics.getMetricContext());
+    Map<String,?> tagMap=jobMetrics.getMetricContext().getTagMap();
+    Assert.assertEquals(tagMap.get("clusterIdentifier"),expectedClusterIdentifier);
+  }
+ catch (  UnknownHostException e) {
+  }
+}

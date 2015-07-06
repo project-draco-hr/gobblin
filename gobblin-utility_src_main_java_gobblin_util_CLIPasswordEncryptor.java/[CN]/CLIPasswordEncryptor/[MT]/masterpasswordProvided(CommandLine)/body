@@ -1,0 +1,3 @@
+{
+  return cl.hasOption(MASTER_PWD_OPTION) || cl.hasOption(MASTER_PWD_FILE_OPTION);
+}

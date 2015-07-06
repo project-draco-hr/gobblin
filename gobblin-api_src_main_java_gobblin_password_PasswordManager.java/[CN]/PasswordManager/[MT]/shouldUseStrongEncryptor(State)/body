@@ -1,0 +1,3 @@
+{
+  return state.getPropAsBoolean(ConfigurationKeys.ENCRYPT_USE_STRONG_ENCRYPTOR,ConfigurationKeys.DEFAULT_ENCRYPT_USE_STRONG_ENCRYPTOR);
+}

@@ -1,0 +1,5 @@
+{
+  if (counters != null && counters.containsKey(e)) {
+    counters.get(e).inc(n);
+  }
+}

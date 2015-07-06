@@ -1,5 +1,5 @@
 {
-  if (GobblinMetrics.isEnabled(task.getTaskState().getWorkunit())) {
+  if (GobblinMetrics.isEnabled(task.getTaskState().getWorkunit()) && task.getTaskState().contains(ConfigurationKeys.FORK_BRANCHES_KEY)) {
     task.getTaskState().adjustJobMetricsOnRetry(task.getTaskState().getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY));
   }
   long interval=task.getRetryCount() * this.retryIntervalInSeconds;
