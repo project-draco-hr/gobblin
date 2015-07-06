@@ -1,8 +1,9 @@
 {
   if (this.metricContext.isPresent()) {
+    Map<String,String> finalMetadata=Maps.newHashMap(this.metadata);
     if (!additionalMetadata.isEmpty()) {
-      this.metadata.putAll(additionalMetadata);
+      finalMetadata.putAll(additionalMetadata);
     }
-    this.metricContext.get().sendEvent(new GobblinTrackingEvent(0l,this.namespace,name,this.metadata));
+    this.metricContext.get().sendEvent(new GobblinTrackingEvent(0l,this.namespace,name,finalMetadata));
   }
 }
