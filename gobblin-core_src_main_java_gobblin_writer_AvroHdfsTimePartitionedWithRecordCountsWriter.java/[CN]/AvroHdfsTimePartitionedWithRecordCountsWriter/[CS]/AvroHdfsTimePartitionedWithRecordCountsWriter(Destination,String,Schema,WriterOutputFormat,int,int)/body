@@ -1,0 +1,3 @@
+{
+  super(destination,writerId,schema,writerOutputFormat,numBranches,branch);
+}

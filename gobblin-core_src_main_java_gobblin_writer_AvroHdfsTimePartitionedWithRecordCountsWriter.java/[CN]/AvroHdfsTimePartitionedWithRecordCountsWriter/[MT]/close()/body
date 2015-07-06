@@ -1,0 +1,10 @@
+{
+  super.close();
+  String fileName=WriterUtils.getWriterFileName(this.properties,this.numBranches,this.branch,this.writerId,this.writerOutputFormat.getExtension());
+  Path writerOutputDir=new Path(this.properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,this.numBranches,this.branch)));
+  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+    String filePathOld=new Path(entry.getKey(),fileName).toString();
+    String filePathNew=filePathOld.substring(0,filePathOld.lastIndexOf(".")) + "." + entry.getValue().recordsWritten()+ filePathOld.substring(filePathOld.lastIndexOf("."));
+    HadoopUtils.renamePath(((AvroHdfsDataWriter)entry.getValue()).getFileSystem(),new Path(writerOutputDir,filePathOld),new Path(writerOutputDir,filePathNew));
+  }
+}
