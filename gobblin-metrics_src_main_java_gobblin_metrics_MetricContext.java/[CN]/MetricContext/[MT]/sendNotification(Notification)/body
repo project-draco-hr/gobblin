@@ -1,5 +1,5 @@
 {
-  for (  final Function<Notification,Void> target : this.notifyTargets) {
+  for (  final Function<Notification,Void> target : this.notificationTargets) {
     getExecutorService().submit(new Callable<Void>(){
       @Override public Void call() throws Exception {
         target.apply(notification);

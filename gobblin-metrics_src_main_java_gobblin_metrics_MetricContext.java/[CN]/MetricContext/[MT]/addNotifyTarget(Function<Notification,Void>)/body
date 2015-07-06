@@ -1,3 +1,0 @@
-{
-  this.notifyTargets.add(target);
-}

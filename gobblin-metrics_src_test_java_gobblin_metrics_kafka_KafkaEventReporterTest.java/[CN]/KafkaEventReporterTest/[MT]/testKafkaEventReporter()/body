@@ -7,7 +7,7 @@
   event.setName(eventName);
   event.setNamespace(namespace);
   event.setMetadata(Maps.<String,String>newHashMap());
-  context.sendEvent(event);
+  context.submitEvent(event);
   try {
     Thread.sleep(100);
   }
