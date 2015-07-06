@@ -1,3 +1,0 @@
-{
-  submit(name,Collections.<String,String>emptyMap());
-}

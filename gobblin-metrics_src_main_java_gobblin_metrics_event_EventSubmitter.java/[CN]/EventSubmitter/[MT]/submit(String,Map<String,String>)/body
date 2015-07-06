@@ -4,6 +4,6 @@
     if (!additionalMetadata.isEmpty()) {
       finalMetadata.putAll(additionalMetadata);
     }
-    this.metricContext.get().sendEvent(new GobblinTrackingEvent(0l,this.namespace,name,finalMetadata));
+    this.metricContext.get().submitEvent(new GobblinTrackingEvent(0l,this.namespace,name,finalMetadata));
   }
 }
