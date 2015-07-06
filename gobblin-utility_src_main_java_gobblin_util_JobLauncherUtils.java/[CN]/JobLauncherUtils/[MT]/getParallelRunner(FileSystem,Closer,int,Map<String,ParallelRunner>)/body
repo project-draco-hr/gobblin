@@ -1,0 +1,7 @@
+{
+  String uri=fs.getUri().toString();
+  if (!parallelRunners.containsKey(uri)) {
+    parallelRunners.put(uri,closer.register(new ParallelRunner(parallelRunnerThreads,fs)));
+  }
+  return parallelRunners.get(uri);
+}

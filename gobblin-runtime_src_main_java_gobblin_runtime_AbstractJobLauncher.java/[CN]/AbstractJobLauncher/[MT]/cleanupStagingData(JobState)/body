@@ -1,10 +1,22 @@
 {
-  for (  TaskState taskState : jobState.getTaskStates()) {
-    try {
-      JobLauncherUtils.cleanStagingData(taskState,LOG);
+  Closer closer=Closer.create();
+  Map<String,ParallelRunner> parallelRunners=Maps.newHashMap();
+  try {
+    for (    TaskState taskState : jobState.getTaskStates()) {
+      try {
+        JobLauncherUtils.cleanStagingData(taskState,LOG,closer,parallelRunners);
+      }
+ catch (      IOException e) {
+        LOG.error(String.format("Failed to clean staging data for task %s: %s",taskState.getTaskId(),e),e);
+      }
     }
- catch (    IOException ioe) {
-      LOG.error(String.format("Failed to clean staging data for task %s: %s",taskState.getTaskId(),ioe),ioe);
+  }
+  finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      LOG.error("Failed to clean staging data",e);
     }
   }
 }

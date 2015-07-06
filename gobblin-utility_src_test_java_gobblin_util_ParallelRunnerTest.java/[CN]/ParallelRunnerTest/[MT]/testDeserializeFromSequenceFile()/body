@@ -1,0 +1,20 @@
+{
+  List<WorkUnitState> workUnitStates=Lists.newArrayList();
+  Closer closer=Closer.create();
+  try {
+    ParallelRunner parallelRunner=closer.register(new ParallelRunner(2,this.fs));
+    parallelRunner.deserializeFromSequenceFile(Text.class,WorkUnitState.class,new Path(this.outputPath,"seq1"),workUnitStates);
+    parallelRunner.deserializeFromSequenceFile(Text.class,WorkUnitState.class,new Path(this.outputPath,"seq2"),workUnitStates);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  Assert.assertEquals(workUnitStates.size(),2);
+  for (  WorkUnitState workUnitState : workUnitStates) {
+    TestWatermark watermark=new Gson().fromJson(workUnitState.getActualHighWatermark(),TestWatermark.class);
+    Assert.assertTrue(watermark.getLongWatermark() == 10L || watermark.getLongWatermark() == 100L);
+  }
+}

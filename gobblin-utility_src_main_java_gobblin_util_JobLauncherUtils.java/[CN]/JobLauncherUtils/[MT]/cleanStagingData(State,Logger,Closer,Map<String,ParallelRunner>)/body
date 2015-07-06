@@ -1,0 +1,19 @@
+{
+  int numBranches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  int parallelRunnerThreads=state.getPropAsInt(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS);
+  for (int branchId=0; branchId < numBranches; branchId++) {
+    String writerFsUri=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI);
+    FileSystem fs=FileSystem.get(URI.create(writerFsUri),new Configuration());
+    ParallelRunner parallelRunner=getParallelRunner(fs,closer,parallelRunnerThreads,parallelRunners);
+    Path stagingPath=WriterUtils.getWriterStagingDir(state,numBranches,branchId);
+    if (fs.exists(stagingPath)) {
+      logger.info("Cleaning up staging directory " + stagingPath.toUri().getPath());
+      parallelRunner.deletePath(stagingPath,true);
+    }
+    Path outputPath=WriterUtils.getWriterOutputDir(state,numBranches,branchId);
+    if (fs.exists(outputPath)) {
+      logger.info("Cleaning up output directory " + outputPath.toUri().getPath());
+      parallelRunner.deletePath(outputPath,true);
+    }
+  }
+}

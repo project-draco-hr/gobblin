@@ -1,0 +1,3 @@
+{
+  return WatermarkSerializerHelper.convertWatermarkToJson(this);
+}
