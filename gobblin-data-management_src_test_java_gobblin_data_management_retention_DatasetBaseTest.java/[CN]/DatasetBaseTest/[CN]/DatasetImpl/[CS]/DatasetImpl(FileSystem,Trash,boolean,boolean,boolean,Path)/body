@@ -1,0 +1,5 @@
+{
+  super(fs,trash,simulate,skipTrash,deleteEmptyDirectories);
+  when(versionFinder.versionClass()).thenReturn(StringDatasetVersion.class);
+  this.path=path;
+}

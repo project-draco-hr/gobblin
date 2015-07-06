@@ -1,0 +1,15 @@
+{
+  FileSystem fs=mock(FileSystem.class);
+  Trash trash=mock(Trash.class);
+  Path datasetRoot=new Path("/test/dataset");
+  DatasetVersion dataset1Version1=new StringDatasetVersion("version1",new Path(datasetRoot,"version1"));
+  DatasetVersion dataset1Version2=new StringDatasetVersion("version2",new Path(datasetRoot,"version2"));
+  when(fs.delete(any(Path.class),anyBoolean())).thenReturn(true);
+  when(trash.moveToTrash(any(Path.class))).thenReturn(true);
+  DatasetImpl dataset=new DatasetImpl(fs,trash,false,true,false,datasetRoot);
+  when(dataset.versionFinder.findDatasetVersions(dataset)).thenReturn(Lists.newArrayList(dataset1Version1,dataset1Version2));
+  dataset.clean();
+  verify(trash,never()).moveToTrash(any(Path.class));
+  verify(fs).delete(dataset1Version2.getPathsToDelete().iterator().next(),true);
+  verify(fs,times(1)).delete(any(Path.class),anyBoolean());
+}

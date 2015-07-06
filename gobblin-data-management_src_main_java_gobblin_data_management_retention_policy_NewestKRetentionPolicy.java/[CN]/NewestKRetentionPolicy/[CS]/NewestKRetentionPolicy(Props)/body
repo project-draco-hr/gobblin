@@ -1,0 +1,3 @@
+{
+  this.versionsRetained=props.getInt(VERSIONS_RETAINED_KEY,VERSIONS_RETAINED_DEFAULT);
+}

@@ -1,0 +1,8 @@
+{
+  Props props=new Props();
+  props.put(WatermarkDatasetVersionFinder.WATERMARK_REGEX_KEY,"watermark-([A-Za-z]*)-[a-z]*");
+  WatermarkDatasetVersionFinder parser=new WatermarkDatasetVersionFinder(null,props);
+  Assert.assertEquals(parser.versionClass(),StringDatasetVersion.class);
+  Assert.assertEquals(parser.globVersionPattern(),new Path("*"));
+  Assert.assertEquals(parser.getDatasetVersion(new Path("watermark-actualVersion-test"),new Path("fullPath")).getVersion(),"actualVersion");
+}

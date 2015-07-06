@@ -1,0 +1,36 @@
+{
+  FileStatus[] pathsInTrash=this.fs.listStatus(this.trashLocation,TRASH_NOT_SNAPSHOT_PATH_FILTER);
+  if (pathsInTrash.length <= 0) {
+    LOG.info("Nothing in trash. Will not create snapshot.");
+    return;
+  }
+  Path snapshotDir=new Path(this.trashLocation,new DateTime().toString(TRASH_SNAPSHOT_NAME_FORMATTER));
+  if (fs.exists(snapshotDir)) {
+    throw new IOException("New snapshot directory " + snapshotDir.toString() + " already exists.");
+  }
+  if (!fs.mkdirs(snapshotDir,PERM)) {
+    throw new IOException("Failed to create new snapshot directory at " + snapshotDir.toString());
+  }
+  LOG.info(String.format("Moving %d paths in Trash directory to newly created snapshot at %s.",pathsInTrash.length,snapshotDir.toString()));
+  int pathsFailedToMove=0;
+  for (  FileStatus fileStatus : pathsInTrash) {
+    Path pathRelativeToTrash=PathUtils.relativizePath(fileStatus.getPath(),this.trashLocation);
+    Path targetPath=new Path(snapshotDir,pathRelativeToTrash);
+    boolean movedThisPath=true;
+    try {
+      movedThisPath=fs.rename(fileStatus.getPath(),targetPath);
+    }
+ catch (    IOException exception) {
+      LOG.error("Failed to move path " + fileStatus.getPath().toString() + " to snapshot.",exception);
+      pathsFailedToMove+=1;
+      continue;
+    }
+    if (!movedThisPath) {
+      LOG.error("Failed to move path " + fileStatus.getPath().toString() + " to snapshot.");
+      pathsFailedToMove+=1;
+    }
+  }
+  if (pathsFailedToMove > 0) {
+    LOG.error(String.format("Failed to move %d paths to the snapshot at %s.",pathsFailedToMove,snapshotDir.toString()));
+  }
+}

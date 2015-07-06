@@ -1,0 +1,3 @@
+{
+  super(id,Logger.getLogger(TrashCollectorJob.class));
+}

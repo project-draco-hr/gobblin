@@ -1,0 +1,15 @@
+{
+  Props props=new Props();
+  TimeBasedRetentionPolicy policy=new TimeBasedRetentionPolicy(props);
+  DateTimeUtils.setCurrentMillisFixed(new DateTime(2015,6,2,18,0,0,0).getMillis());
+  TimestampedDatasetVersion datasetVersion1=new TimestampedDatasetVersion(new DateTime(2015,6,2,10,0,0,0),new Path("test"));
+  TimestampedDatasetVersion datasetVersion2=new TimestampedDatasetVersion(new DateTime(2015,6,1,10,0,0,0),new Path("test"));
+  Assert.assertEquals(policy.versionClass(),TimestampedDatasetVersion.class);
+  List<TimestampedDatasetVersion> versions=Lists.newArrayList();
+  versions.add(datasetVersion1);
+  versions.add(datasetVersion2);
+  List<TimestampedDatasetVersion> deletableVersions=policy.preserveDeletableVersions(versions);
+  Assert.assertEquals(deletableVersions.size(),1);
+  Assert.assertEquals(deletableVersions.get(0).getDateTime(),new DateTime(2015,6,1,10,0,0,0));
+  DateTimeUtils.setCurrentMillisSystem();
+}
