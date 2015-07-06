@@ -18,15 +18,14 @@
         continue;
       }
     }
-    MessageAndOffset nextValidMessage=null;
-    do {
+    while (!currentPartitionFinished()) {
       if (!this.messageIterator.hasNext()) {
         break;
       }
-      do {
-        nextValidMessage=this.messageIterator.next();
+      MessageAndOffset nextValidMessage=this.messageIterator.next();
+      if (nextValidMessage.offset() < this.nextWatermark.get(this.currentPartitionIdx)) {
+        continue;
       }
- while (nextValidMessage.offset() < this.nextWatermark.get(this.currentPartitionIdx));
       this.nextWatermark.set(this.currentPartitionIdx,nextValidMessage.nextOffset());
       try {
         D record=decodeRecord(nextValidMessage);
@@ -46,7 +45,6 @@ catch (      Exception e) {
         }
       }
     }
- while (!currentPartitionFinished());
   }
   return null;
 }
