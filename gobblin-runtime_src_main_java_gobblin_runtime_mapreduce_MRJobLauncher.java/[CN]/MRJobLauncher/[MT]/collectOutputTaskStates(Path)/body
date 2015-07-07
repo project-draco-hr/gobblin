@@ -11,9 +11,9 @@
   Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();
   Closer closer=Closer.create();
   try {
-    ParallelStateSerDeRunner stateSerDeRunner=closer.register(new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs));
+    ParallelRunner parallelRunner=closer.register(new ParallelRunner(this.parallelRunnerThreads,this.fs));
     for (    FileStatus status : fileStatuses) {
-      stateSerDeRunner.deserializeFromSequenceFile(Text.class,TaskState.class,status.getPath(),taskStateQueue);
+      parallelRunner.deserializeFromSequenceFile(Text.class,TaskState.class,status.getPath(),taskStateQueue);
     }
   }
  catch (  Throwable t) {
