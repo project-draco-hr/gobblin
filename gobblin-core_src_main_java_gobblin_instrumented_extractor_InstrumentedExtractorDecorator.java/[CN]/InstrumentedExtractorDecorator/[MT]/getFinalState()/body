@@ -1,0 +1,8 @@
+{
+  if (this.embeddedExtractor instanceof FinalState) {
+    return ((FinalState)this.embeddedExtractor).getFinalState();
+  }
+ else {
+    return super.getFinalState();
+  }
+}

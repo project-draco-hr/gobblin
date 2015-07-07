@@ -1,0 +1,7 @@
+{
+  State state=super.getFinalState();
+  for (  Converter<?,?,?,?> converter : this.converters) {
+    state.addAll(converter.getFinalState());
+  }
+  return state;
+}
