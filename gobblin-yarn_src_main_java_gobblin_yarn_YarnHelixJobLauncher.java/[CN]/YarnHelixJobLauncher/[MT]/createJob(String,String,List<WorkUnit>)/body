@@ -1,14 +1,24 @@
 {
   Map<String,TaskConfig> taskConfigMap=Maps.newHashMap();
-  for (  WorkUnit workUnit : workUnits) {
-    if (workUnit instanceof MultiWorkUnit) {
-      for (      WorkUnit innerWorkUnit : JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits())) {
-        addWorkUnit(innerWorkUnit,taskConfigMap,jobName,jobId);
+  Closer closer=Closer.create();
+  try {
+    ParallelStateSerDeRunner stateSerDeRunner=new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs);
+    for (    WorkUnit workUnit : workUnits) {
+      if (workUnit instanceof MultiWorkUnit) {
+        for (        WorkUnit innerWorkUnit : JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits())) {
+          addWorkUnit(innerWorkUnit,stateSerDeRunner,taskConfigMap,jobName,jobId);
+        }
+      }
+ else {
+        addWorkUnit(workUnit,stateSerDeRunner,taskConfigMap,jobName,jobId);
       }
     }
- else {
-      addWorkUnit(workUnit,taskConfigMap,jobName,jobId);
-    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
   }
   JobConfig.Builder jobConfigBuilder=new JobConfig.Builder();
   jobConfigBuilder.addTaskConfigMap(taskConfigMap).setCommand(GobblinYarnWorkUnitRunner.GOBBLIN_TASK_FACTORY_NAME);

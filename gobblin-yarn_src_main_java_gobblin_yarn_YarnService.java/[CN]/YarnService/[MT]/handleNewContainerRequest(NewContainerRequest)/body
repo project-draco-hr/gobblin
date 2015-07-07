@@ -4,6 +4,10 @@
     LOGGER.error("Invalid number of new containers requested: " + newContainersRequested);
     return;
   }
+  if (!this.maxResourceCapacity.isPresent()) {
+    LOGGER.error("Unable to handle new container request as maximum resource capacity is not available");
+    return;
+  }
   try {
     requestContainers(newContainersRequested);
   }

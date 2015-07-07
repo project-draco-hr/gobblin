@@ -1,5 +1,4 @@
 Config config
 String applicationName
 ApplicationId applicationId
-Resource maxResourceCapacity
 EventBus eventBus

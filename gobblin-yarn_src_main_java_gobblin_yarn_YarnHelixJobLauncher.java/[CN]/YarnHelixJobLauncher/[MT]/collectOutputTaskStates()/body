@@ -1,5 +1,4 @@
 {
-  List<TaskState> taskStates=Lists.newArrayList();
   Path outputTaskStateDir=new Path(this.appWorkDir,ConfigurationConstants.OUTPUT_TASK_STATE_DIR_NAME + Path.SEPARATOR + this.jobContext.getJobId());
   FileStatus[] fileStatuses=this.fs.listStatus(outputTaskStateDir,new PathFilter(){
     @Override public boolean accept(    Path path){
@@ -8,27 +7,23 @@
   }
 );
   if (fileStatuses == null || fileStatuses.length == 0) {
-    return taskStates;
+    return Lists.newArrayList();
   }
-  for (  FileStatus status : fileStatuses) {
-    LOGGER.info("Found output task state file " + status.getPath());
-    Closer closer=Closer.create();
-    try {
-      SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs.getConf(),SequenceFile.Reader.file(status.getPath())));
-      Text text=new Text();
-      TaskState taskState=new TaskState();
-      while (reader.next(text,taskState)) {
-        taskStates.add(taskState);
-        taskState=new TaskState();
-      }
+  Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();
+  Closer closer=Closer.create();
+  try {
+    ParallelStateSerDeRunner stateSerDeRunner=new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs);
+    for (    FileStatus status : fileStatuses) {
+      LOGGER.info("Found output task state file " + status.getPath());
+      stateSerDeRunner.deserializeFromSequenceFile(Text.class,TaskState.class,status.getPath(),taskStateQueue);
     }
- catch (    Throwable t) {
-      throw closer.rethrow(t);
-    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
  finally {
-      closer.close();
-    }
+    closer.close();
   }
-  LOGGER.info(String.format("Collected task state of %d completed tasks",taskStates.size()));
-  return taskStates;
+  LOGGER.info(String.format("Collected task state of %d completed tasks",taskStateQueue.size()));
+  return Lists.newArrayList(taskStateQueue);
 }

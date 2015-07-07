@@ -1,5 +1,5 @@
 {
-  String workUnitFilePath=persistWorkUnit(new Path(this.inputWorkUnitDir,jobId),workUnit);
+  String workUnitFilePath=persistWorkUnit(new Path(this.inputWorkUnitDir,jobId),workUnit,stateSerDeRunner);
   Map<String,String> rawConfigMap=Maps.newHashMap();
   rawConfigMap.put(ConfigurationConstants.WORK_UNIT_FILE_PATH,workUnitFilePath);
   rawConfigMap.put(ConfigurationKeys.JOB_NAME_KEY,jobName);

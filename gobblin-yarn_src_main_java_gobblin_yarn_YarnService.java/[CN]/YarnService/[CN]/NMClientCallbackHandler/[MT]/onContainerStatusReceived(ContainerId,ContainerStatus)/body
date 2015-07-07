@@ -1,3 +1,8 @@
 {
-  LOGGER.info("Received container status " + containerStatus);
+  LOGGER.info("Received container status for container " + containerId);
+  if (containerStatus.getState() == ContainerState.COMPLETE) {
+    LOGGER.info(String.format("Container %s completed",containerId));
+    containerMap.remove(containerId);
+    containerToParticipantMap.remove(containerId);
+  }
 }

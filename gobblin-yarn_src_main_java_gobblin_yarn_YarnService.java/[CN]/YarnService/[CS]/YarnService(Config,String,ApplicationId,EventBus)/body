@@ -11,10 +11,8 @@
   this.fs=FileSystem.get(new Configuration());
   this.eventBus=eventBus;
   this.initialContainers=config.hasPath(ConfigurationConstants.INITIAL_CONTAINERS_KEY) ? config.getInt(ConfigurationConstants.INITIAL_CONTAINERS_KEY) : ConfigurationConstants.DEFAULT_INITIAL_CONTAINERS;
-  int requestedMemoryMbs=config.hasPath(ConfigurationConstants.CONTAINER_MEMORY_MBS_KEY) ? config.getInt(ConfigurationConstants.CONTAINER_MEMORY_MBS_KEY) : ConfigurationConstants.DEFAULT_CONTAINER_MEMORY_MBS;
-  this.containerMemoryMbs=requestedMemoryMbs > maxResourceCapacity.getMemory() ? maxResourceCapacity.getMemory() : requestedMemoryMbs;
-  int requestedCores=config.hasPath(ConfigurationConstants.CONTAINER_CORES_KEY) ? config.getInt(ConfigurationConstants.CONTAINER_CORES_KEY) : ConfigurationConstants.DEFAULT_CONTAINER_CORES;
-  this.containerCores=requestedCores > maxResourceCapacity.getVirtualCores() ? maxResourceCapacity.getVirtualCores() : requestedCores;
+  this.requestedContainerMemoryMbs=config.hasPath(ConfigurationConstants.CONTAINER_MEMORY_MBS_KEY) ? config.getInt(ConfigurationConstants.CONTAINER_MEMORY_MBS_KEY) : ConfigurationConstants.DEFAULT_CONTAINER_MEMORY_MBS;
+  this.requestedContainerCores=config.hasPath(ConfigurationConstants.CONTAINER_CORES_KEY) ? config.getInt(ConfigurationConstants.CONTAINER_CORES_KEY) : ConfigurationConstants.DEFAULT_CONTAINER_CORES;
   this.tokens=getSecurityTokens();
   this.eventBus.register(this);
 }
