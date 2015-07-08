@@ -3,7 +3,7 @@
   int parallelRunnerThreads=state.getPropAsInt(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS);
   for (int branchId=0; branchId < numBranches; branchId++) {
     String writerFsUri=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI);
-    FileSystem fs=FileSystem.get(URI.create(writerFsUri),new Configuration());
+    FileSystem fs=getFsWithProxy(state,writerFsUri);
     ParallelRunner parallelRunner=getParallelRunner(fs,closer,parallelRunnerThreads,parallelRunners);
     Path stagingPath=WriterUtils.getWriterStagingDir(state,numBranches,branchId);
     if (fs.exists(stagingPath)) {
