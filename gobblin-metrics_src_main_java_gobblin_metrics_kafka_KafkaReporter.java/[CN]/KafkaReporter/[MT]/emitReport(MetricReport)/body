@@ -1,0 +1,3 @@
+{
+  this.kafkaPusher.pushMessages(Lists.newArrayList(this.serializer.serializeRecord(report)));
+}

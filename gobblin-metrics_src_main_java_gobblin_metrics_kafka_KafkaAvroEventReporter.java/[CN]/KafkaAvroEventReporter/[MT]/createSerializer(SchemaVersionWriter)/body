@@ -1,0 +1,3 @@
+{
+  return new AvroBinarySerializer<GobblinTrackingEvent>(GobblinTrackingEvent.SCHEMA$,schemaVersionWriter);
+}

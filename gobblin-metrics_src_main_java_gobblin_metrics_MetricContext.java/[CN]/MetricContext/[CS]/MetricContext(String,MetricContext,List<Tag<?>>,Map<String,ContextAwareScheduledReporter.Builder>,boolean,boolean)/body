@@ -5,6 +5,8 @@
   this.tagged=new Tagged(tags);
   this.tagged.addTag(new Tag<String>(METRIC_CONTEXT_ID_TAG_NAME,UUID.randomUUID().toString()));
   this.reportFullyQualifiedNames=reportFullyQualifiedNames;
+  this.notificationTargets=Sets.newConcurrentHashSet();
+  this.executorServiceOptional=Optional.absent();
   this.includeTagKeys=includeTagKeys;
   if (this.parent.isPresent()) {
     this.parent.get().addChildContext(name,this);

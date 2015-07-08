@@ -1,3 +1,0 @@
-{
-  this.output.printf(locale,"             count = %d%n",entry.getValue().getCount());
-}

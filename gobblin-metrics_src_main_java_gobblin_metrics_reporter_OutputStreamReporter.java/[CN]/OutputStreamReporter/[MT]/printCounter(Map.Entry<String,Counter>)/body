@@ -1,0 +1,3 @@
+{
+  this.outputBufferPrintStream.printf(locale,"             count = %d%n",entry.getValue().getCount());
+}

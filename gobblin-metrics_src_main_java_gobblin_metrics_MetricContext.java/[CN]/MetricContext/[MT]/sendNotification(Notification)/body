@@ -1,0 +1,14 @@
+{
+  for (  final Function<Notification,Void> target : this.notificationTargets) {
+    getExecutorService().submit(new Callable<Void>(){
+      @Override public Void call() throws Exception {
+        target.apply(notification);
+        return null;
+      }
+    }
+);
+  }
+  if (this.parent.isPresent()) {
+    this.parent.get().sendNotification(notification);
+  }
+}

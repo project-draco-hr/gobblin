@@ -1,0 +1,9 @@
+{
+  List<KeyedMessage<String,byte[]>> keyedMessages=Lists.transform(messages,new Function<byte[],KeyedMessage<String,byte[]>>(){
+    @Nullable @Override public KeyedMessage<String,byte[]> apply(    byte[] bytes){
+      return new KeyedMessage<String,byte[]>(topic,bytes);
+    }
+  }
+);
+  this.producer.send(keyedMessages);
+}

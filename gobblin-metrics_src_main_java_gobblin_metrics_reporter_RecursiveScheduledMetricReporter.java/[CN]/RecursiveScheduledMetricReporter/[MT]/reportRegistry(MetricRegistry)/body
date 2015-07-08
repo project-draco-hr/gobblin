@@ -1,0 +1,12 @@
+{
+  Map<String,String> tags=Maps.newHashMap();
+  if (registry instanceof MetricContext) {
+    tags=Maps.transformValues(((MetricContext)registry).getTagMap(),new Function<Object,String>(){
+      @Override public String apply(      Object input){
+        return input.toString();
+      }
+    }
+);
+  }
+  report(registry.getGauges(this.filter),registry.getCounters(this.filter),registry.getHistograms(this.filter),registry.getMeters(this.filter),registry.getTimers(this.filter),tags);
+}

@@ -1,8 +1,0 @@
-{
-  this.output.print(s);
-  this.output.print(' ');
-  for (int i=0; i < (CONSOLE_WIDTH - s.length() - 1); i++) {
-    this.output.print(c);
-  }
-  this.output.println();
-}

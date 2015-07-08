@@ -1,0 +1,13 @@
+{
+  super(builder.context,builder.name,builder.filter,builder.rateUnit,builder.durationUnit);
+  this.closer=Closer.create();
+  this.immediateReportExecutor=Executors.newSingleThreadExecutor();
+  builder.context.addNotificationTarget(new Function<Notification,Void>(){
+    @Nullable @Override public Void apply(    Notification notification){
+      notificationCallback(notification);
+      return null;
+    }
+  }
+);
+  this.reportingQueue=Queues.newLinkedBlockingQueue(QUEUE_CAPACITY);
+}

@@ -1,0 +1,5 @@
+{
+  for (  Converter<?,?,?,?> converter : this.converters) {
+    converter.close();
+  }
+}

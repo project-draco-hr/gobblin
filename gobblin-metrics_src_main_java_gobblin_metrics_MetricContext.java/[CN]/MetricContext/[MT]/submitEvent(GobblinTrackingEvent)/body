@@ -1,0 +1,13 @@
+{
+  nonReusableEvent.setTimestamp(System.currentTimeMillis());
+  Map<String,String> originalMetadata=nonReusableEvent.getMetadata();
+  Map<String,Object> tags=getTagMap();
+  Map<String,String> newMetadata=Maps.newHashMap();
+  for (  Map.Entry<String,Object> entry : tags.entrySet()) {
+    newMetadata.put(entry.getKey(),entry.getValue().toString());
+  }
+  newMetadata.putAll(originalMetadata);
+  nonReusableEvent.setMetadata(newMetadata);
+  EventNotification notification=new EventNotification(nonReusableEvent);
+  sendNotification(notification);
+}

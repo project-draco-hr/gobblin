@@ -1,0 +1,8 @@
+{
+  reportRegistry(registry);
+  if (registry instanceof MetricContext) {
+    for (    MetricContext context : ((MetricContext)registry).getChildContextsAsMap().values()) {
+      reportContextTree(context);
+    }
+  }
+}

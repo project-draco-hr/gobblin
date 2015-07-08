@@ -1,7 +1,0 @@
-{
-  if (this.producerOpt.isPresent()) {
-    List<KeyedMessage<String,byte[]>> messages=new ArrayList<KeyedMessage<String,byte[]>>();
-    messages.add(new KeyedMessage<String,byte[]>(this.topic,serializedReport));
-    this.producerOpt.get().send(messages);
-  }
-}
