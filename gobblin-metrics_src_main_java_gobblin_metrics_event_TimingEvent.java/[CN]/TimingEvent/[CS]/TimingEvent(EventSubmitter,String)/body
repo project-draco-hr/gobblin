@@ -1,0 +1,6 @@
+{
+  this.stopped=false;
+  this.name=name;
+  this.submitter=submitter;
+  this.startTime=System.currentTimeMillis();
+}

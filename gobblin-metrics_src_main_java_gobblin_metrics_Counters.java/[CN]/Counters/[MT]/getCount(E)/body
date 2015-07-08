@@ -1,0 +1,8 @@
+{
+  if (counters.containsKey(e)) {
+    return counters.get(e).getCount();
+  }
+ else {
+    return 0l;
+  }
+}

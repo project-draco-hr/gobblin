@@ -1,4 +1,5 @@
 {
+  super(workUnitState);
   this.workUnitState=workUnitState;
   this.workUnit=workUnitState.getWorkunit();
   this.filesToPull=Lists.newArrayList(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,""));
@@ -15,5 +16,5 @@
  catch (  FileBasedHelperException e) {
     Throwables.propagate(e);
   }
-  counters.initialize(Instrumented.getMetricContext(workUnitState,this.getClass()),CounterNames.class,this.getClass());
+  counters.initialize(getMetricContext(),CounterNames.class,this.getClass());
 }

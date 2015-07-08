@@ -12,6 +12,6 @@
     LOG.info(String.format("Submitting task %s to run",taskId));
     taskExecutor.submit(task);
   }
-  new EventSubmitter.Builder(JobMetrics.get(jobId).getMetricContext(),"gobblin.runtime").build().submit(EventNames.TASKS_SUBMITTED,"tasksCount",Integer.toString(workUnits.size()));
+  new EventSubmitter.Builder(JobMetrics.get(jobId).getMetricContext(),"gobblin.runtime").build().submit(gobblin.metrics.event.EventNames.TASKS_SUBMITTED,"tasksCount",Integer.toString(workUnits.size()));
   return tasks;
 }
