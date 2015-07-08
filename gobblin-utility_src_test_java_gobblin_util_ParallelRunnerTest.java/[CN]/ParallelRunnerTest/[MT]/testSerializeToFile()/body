@@ -1,0 +1,20 @@
+{
+  Closer closer=Closer.create();
+  try {
+    ParallelRunner parallelRunner=closer.register(new ParallelRunner(2,this.fs));
+    WorkUnit workUnit1=new WorkUnit();
+    workUnit1.setProp("foo","bar");
+    workUnit1.setProp("a",10);
+    parallelRunner.serializeToFile(workUnit1,new Path(this.outputPath,"wu1"));
+    WorkUnit workUnit2=new WorkUnit();
+    workUnit2.setProp("foo","baz");
+    workUnit2.setProp("b",20);
+    parallelRunner.serializeToFile(workUnit2,new Path(this.outputPath,"wu2"));
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

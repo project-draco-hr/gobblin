@@ -1,0 +1,4 @@
+FileSystem fs
+Closer closer
+int parallelRunnerThreads
+Map<String,ParallelRunner> parallelRunners

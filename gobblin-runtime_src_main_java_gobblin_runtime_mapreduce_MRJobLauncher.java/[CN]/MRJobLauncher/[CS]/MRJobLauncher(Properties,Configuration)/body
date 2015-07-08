@@ -15,5 +15,6 @@
   this.fs.mkdirs(this.mrJobDir);
   addDependencies();
   this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + this.jobContext.getJobName());
+  this.parallelRunnerThreads=Integer.parseInt(jobProps.getProperty(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,Integer.toString(ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS)));
   startCancellationExecutor();
 }
