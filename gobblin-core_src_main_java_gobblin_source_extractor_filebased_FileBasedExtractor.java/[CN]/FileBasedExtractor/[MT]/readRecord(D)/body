@@ -19,6 +19,7 @@
   while (!currentFileItr.hasNext() && !filesToPull.isEmpty()) {
     LOGGER.info("Finished downloading file: " + currentFile);
     closeCurrentFile();
+    incrementBytesReadCounter();
     currentFile=filesToPull.remove(0);
     currentFileItr=downloadFile(currentFile);
     LOGGER.info("Will start downloading file: " + currentFile);

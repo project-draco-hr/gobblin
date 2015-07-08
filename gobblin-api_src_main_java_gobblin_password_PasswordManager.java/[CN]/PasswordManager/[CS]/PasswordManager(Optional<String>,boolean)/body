@@ -1,0 +1,15 @@
+{
+  if (masterPassword.isPresent()) {
+    this.encryptor=useStrongEncryptor ? Optional.of((TextEncryptor)new StrongTextEncryptor()) : Optional.of((TextEncryptor)new BasicTextEncryptor());
+    try {
+      this.encryptor.get().getClass().getMethod("setPassword",String.class).invoke(this.encryptor.get(),masterPassword.get());
+    }
+ catch (    Exception e) {
+      LOG.error("Failed to set master password for encryptor",e);
+      this.encryptor=Optional.absent();
+    }
+  }
+ else {
+    this.encryptor=Optional.absent();
+  }
+}

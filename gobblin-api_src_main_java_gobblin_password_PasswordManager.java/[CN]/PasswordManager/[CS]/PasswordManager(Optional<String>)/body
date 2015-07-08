@@ -1,9 +1,0 @@
-{
-  if (masterPassword.isPresent()) {
-    this.encryptor=Optional.of(new StrongTextEncryptor());
-    this.encryptor.get().setPassword(masterPassword.get());
-  }
- else {
-    this.encryptor=Optional.absent();
-  }
-}

@@ -1,0 +1,4 @@
+State state
+Logger logger
+Closer closer
+Map<String,ParallelRunner> parallelRunners

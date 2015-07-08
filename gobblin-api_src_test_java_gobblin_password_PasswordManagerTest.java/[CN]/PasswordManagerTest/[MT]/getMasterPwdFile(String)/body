@@ -1,0 +1,5 @@
+{
+  File masterPwdFile=File.createTempFile("masterPassword",null);
+  Files.write(masterPwd,masterPwdFile,Charset.defaultCharset());
+  return masterPwdFile;
+}

@@ -1,0 +1,22 @@
+{
+  WorkUnit workUnit1=new WorkUnit();
+  WorkUnit workUnit2=new WorkUnit();
+  Closer closer=Closer.create();
+  try {
+    ParallelRunner parallelRunner=closer.register(new ParallelRunner(2,this.fs));
+    parallelRunner.deserializeFromFile(workUnit1,new Path(this.outputPath,"wu1"));
+    parallelRunner.deserializeFromFile(workUnit2,new Path(this.outputPath,"wu2"));
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  Assert.assertEquals(workUnit1.getPropertyNames().size(),2);
+  Assert.assertEquals(workUnit1.getProp("foo"),"bar");
+  Assert.assertEquals(workUnit1.getPropAsInt("a"),10);
+  Assert.assertEquals(workUnit2.getPropertyNames().size(),2);
+  Assert.assertEquals(workUnit2.getProp("foo"),"baz");
+  Assert.assertEquals(workUnit2.getPropAsInt("b"),20);
+}
