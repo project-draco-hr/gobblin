@@ -1,0 +1,15 @@
+{
+  super(gobblin.metrics.MetricReport.SCHEMA$);
+  if (isValidValue(fields()[0],other.tags)) {
+    this.tags=data().deepCopy(fields()[0].schema(),other.tags);
+    fieldSetFlags()[0]=true;
+  }
+  if (isValidValue(fields()[1],other.timestamp)) {
+    this.timestamp=data().deepCopy(fields()[1].schema(),other.timestamp);
+    fieldSetFlags()[1]=true;
+  }
+  if (isValidValue(fields()[2],other.metrics)) {
+    this.metrics=data().deepCopy(fields()[2].schema(),other.metrics);
+    fieldSetFlags()[2]=true;
+  }
+}
