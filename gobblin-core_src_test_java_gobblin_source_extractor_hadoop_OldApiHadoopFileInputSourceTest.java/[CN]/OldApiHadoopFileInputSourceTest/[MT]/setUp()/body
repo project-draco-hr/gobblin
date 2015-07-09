@@ -1,0 +1,16 @@
+{
+  File textFile=new File(OldApiHadoopFileInputSourceTest.class.getSimpleName(),"test.txt");
+  File dir=textFile.getParentFile();
+  if (!dir.exists() && !dir.mkdir()) {
+    throw new IOException("Failed to create directory: " + dir);
+  }
+  if (!textFile.createNewFile()) {
+    throw new IOException("Failed to create text file: " + textFile);
+  }
+  Files.write(TEXT,textFile,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
+  this.sourceState=new SourceState();
+  this.sourceState.setProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY,Extract.TableType.SNAPSHOT_ONLY.toString());
+  this.sourceState.setProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY,"test");
+  this.sourceState.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,"test");
+  this.sourceState.setProp(OldApiHadoopFileInputSource.FILE_INPUT_PATHS_KEY,textFile.getAbsolutePath());
+}

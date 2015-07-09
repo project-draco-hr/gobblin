@@ -1,0 +1,11 @@
+{
+  try {
+    if (this.recordReader.nextKeyValue()) {
+      return this.readKeys ? (D)this.recordReader.getCurrentKey() : (D)this.recordReader.getCurrentValue();
+    }
+  }
+ catch (  InterruptedException ie) {
+    throw new IOException(ie);
+  }
+  return null;
+}

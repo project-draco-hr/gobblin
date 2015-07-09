@@ -1,5 +1,5 @@
 {
-  List<WorkUnitState> workUnitStates=Lists.newArrayList();
+  Queue<WorkUnitState> workUnitStates=Queues.newConcurrentLinkedQueue();
   Closer closer=Closer.create();
   try {
     ParallelRunner parallelRunner=closer.register(new ParallelRunner(2,this.fs));

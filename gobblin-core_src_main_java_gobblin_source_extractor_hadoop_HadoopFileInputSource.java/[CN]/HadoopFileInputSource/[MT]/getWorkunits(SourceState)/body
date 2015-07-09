@@ -1,0 +1,30 @@
+{
+  try {
+    Job job=Job.getInstance(new Configuration());
+    if (state.contains(FILE_INPUT_PATHS_KEY)) {
+      for (      String inputPath : state.getPropAsList(FILE_INPUT_PATHS_KEY)) {
+        FileInputFormat.addInputPath(job,new Path(inputPath));
+      }
+    }
+    FileInputFormat<K,V> fileInputFormat=getFileInputFormat(state,job.getConfiguration());
+    List<InputSplit> fileSplits=fileInputFormat.getSplits(job);
+    if (fileSplits == null || fileSplits.isEmpty()) {
+      return ImmutableList.of();
+    }
+    Extract.TableType tableType=Extract.TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
+    String tableNamespace=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
+    String tableName=state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY);
+    List<WorkUnit> workUnits=Lists.newArrayListWithCapacity(fileSplits.size());
+    for (    InputSplit inputSplit : fileSplits) {
+      FileSplit fileSplit=(FileSplit)inputSplit;
+      Extract extract=state.createExtract(tableType,tableNamespace,tableName);
+      WorkUnit workUnit=state.createWorkUnit(extract);
+      workUnit.setProp(FILE_SPLIT_BYTES_STRING_KEY,serializeFileSplit(fileSplit));
+      workUnits.add(workUnit);
+    }
+    return workUnits;
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException("Failed to get workunits",ioe);
+  }
+}
