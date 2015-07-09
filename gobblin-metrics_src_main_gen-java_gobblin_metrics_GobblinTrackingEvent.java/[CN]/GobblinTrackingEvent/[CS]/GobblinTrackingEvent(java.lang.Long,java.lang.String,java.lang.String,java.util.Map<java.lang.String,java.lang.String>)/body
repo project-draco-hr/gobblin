@@ -1,0 +1,6 @@
+{
+  this.timestamp=timestamp;
+  this.namespace=namespace;
+  this.name=name;
+  this.metadata=metadata;
+}

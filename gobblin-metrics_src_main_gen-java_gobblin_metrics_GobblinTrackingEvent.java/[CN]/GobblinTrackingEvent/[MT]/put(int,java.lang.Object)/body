@@ -1,0 +1,18 @@
+{
+switch (field$) {
+case 0:
+    timestamp=(java.lang.Long)value$;
+  break;
+case 1:
+namespace=(java.lang.String)value$;
+break;
+case 2:
+name=(java.lang.String)value$;
+break;
+case 3:
+metadata=(java.util.Map<java.lang.String,java.lang.String>)value$;
+break;
+default :
+throw new org.apache.avro.AvroRuntimeException("Bad index");
+}
+}
