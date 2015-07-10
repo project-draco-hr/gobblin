@@ -5,7 +5,7 @@
   this.forks.clear();
   Closer closer=Closer.create();
   try {
-    Extractor extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,this.taskContext.getExtractor()));
+    InstrumentedExtractorBase extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,this.taskContext.getExtractor()));
     Converter converter=closer.register(new MultiConverter(this.taskContext.getConverters()));
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);
@@ -71,6 +71,7 @@
       LOG.error(String.format("Not all forks of task %s succeeded",this.taskId));
       this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
     }
+    addConstructsFinalStateToTaskState(extractor,converter);
   }
  catch (  Throwable t) {
     LOG.error(String.format("Task %s failed",this.taskId),t);

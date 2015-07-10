@@ -1,0 +1,7 @@
+{
+  State state=new State();
+  for (  RowLevelPolicy policy : this.list) {
+    state.addAll(policy.getFinalState());
+  }
+  return state;
+}

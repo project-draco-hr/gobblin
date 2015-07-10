@@ -1,0 +1,9 @@
+{
+  State constructState=new State();
+  for (  String property : getPropertyNames()) {
+    if (property.startsWith(FINAL_CONSTRUCT_STATE_PREFIX)) {
+      constructState.setProp(property.substring(FINAL_CONSTRUCT_STATE_PREFIX.length()),getProp(property));
+    }
+  }
+  return constructState;
+}

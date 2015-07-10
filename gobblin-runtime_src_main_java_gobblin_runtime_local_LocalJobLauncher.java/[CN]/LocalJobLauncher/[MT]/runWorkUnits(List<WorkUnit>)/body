@@ -1,14 +1,14 @@
 {
-  Optional<Timer.Context> workUnitsPreparationTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.WORK_UNITS_PREPARATION);
+  TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_PREPARATION);
   List<WorkUnit> workUnitsToRun=JobLauncherUtils.flattenWorkUnits(workUnits);
-  Instrumented.endTimer(workUnitsPreparationTimer);
+  workUnitsPreparationTimer.stop();
   if (workUnitsToRun.isEmpty()) {
     LOG.warn("No work units to run");
     return;
   }
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
-  Optional<Timer.Context> workUnitsRunTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.WORK_UNITS_RUN);
+  TimingEvent workUnitsRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_RUN);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
   List<Task> tasks=AbstractJobLauncher.submitWorkUnits(this.jobContext.getJobId(),workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
   LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
@@ -16,7 +16,7 @@
     LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnitsToRun.size(),jobId));
     this.countDownLatch.await(1,TimeUnit.MINUTES);
   }
-  Instrumented.endTimer(workUnitsRunTimer);
+  workUnitsRunTimer.stop();
   if (this.cancellationRequested) {
 synchronized (this.cancellationExecution) {
       if (this.cancellationExecuted) {
@@ -31,7 +31,7 @@ synchronized (this.cancellationExecution) {
   for (  Task task : tasks) {
     jobState.addTaskState(task.getTaskState());
     if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
-      this.eventSubmitter.submit(EventNames.TASK_FAILED,"taskId",task.getTaskId());
+      this.eventSubmitter.submit(gobblin.metrics.event.EventNames.TASK_FAILED,"taskId",task.getTaskId());
       jobState.setState(JobState.RunningState.FAILED);
     }
   }
