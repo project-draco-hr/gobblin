@@ -8,12 +8,14 @@
     Writer bw=closer.register(new BufferedWriter(osw));
     int multiTaskIdSequence=0;
     for (    WorkUnit workUnit : workUnits) {
+      Path workUnitFileExt;
       if (workUnit instanceof MultiWorkUnit) {
-        String multiTaskId=JobLauncherUtils.newMultiTaskId(jobContext.getJobId(),multiTaskIdSequence++);
-        workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
-        workUnit.setId(multiTaskId);
+        workUnitFileExt=new Path(JobLauncherUtils.newMultiTaskId(this.jobContext.getJobId(),multiTaskIdSequence++) + MULTI_WORK_UNIT_FILE_EXTENSION);
       }
-      Path workUnitFile=new Path(jobInputPath,workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + ((workUnit instanceof MultiWorkUnit) ? MULTI_WORK_UNIT_FILE_EXTENSION : WORK_UNIT_FILE_EXTENSION));
+ else {
+        workUnitFileExt=new Path(workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + WORK_UNIT_FILE_EXTENSION);
+      }
+      Path workUnitFile=new Path(jobInputPath,workUnitFileExt);
       parallelRunner.serializeToFile(workUnit,workUnitFile);
       bw.write(workUnitFile.toUri().getPath() + "\n");
     }

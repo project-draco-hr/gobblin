@@ -3,4 +3,5 @@
   for (  WorkUnit workUnit : this.workUnits) {
     workUnit.write(out);
   }
+  super.write(out);
 }
