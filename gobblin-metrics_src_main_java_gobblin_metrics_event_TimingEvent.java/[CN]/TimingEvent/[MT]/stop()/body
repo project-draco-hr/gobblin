@@ -1,9 +1,9 @@
 {
   if (this.stopped) {
-    throw new RuntimeException("Timer has already been stopped.");
+    return;
   }
   this.stopped=true;
   long endTime=System.currentTimeMillis();
   long duration=endTime - this.startTime;
-  submitter.submit(this.name,EventSubmitter.EVENT_TYPE,TIMING_EVENT,START_TIME,Long.toString(this.startTime),END_TIME,Long.toString(endTime),DURATION,Long.toString(duration));
+  this.submitter.submit(this.name,EventSubmitter.EVENT_TYPE,TIMING_EVENT,START_TIME,Long.toString(this.startTime),END_TIME,Long.toString(endTime),DURATION,Long.toString(duration));
 }

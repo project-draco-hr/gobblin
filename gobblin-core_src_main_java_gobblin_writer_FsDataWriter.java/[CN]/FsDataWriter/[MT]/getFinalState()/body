@@ -4,7 +4,7 @@
   try {
     state.setProp("BytesWritten",bytesWritten());
   }
- catch (  IOException ioe) {
+ catch (  Exception exception) {
   }
   return state;
 }
