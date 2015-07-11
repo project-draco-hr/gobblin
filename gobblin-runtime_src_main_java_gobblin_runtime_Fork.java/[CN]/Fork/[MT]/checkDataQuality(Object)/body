@@ -3,7 +3,12 @@
   if (this.branches > 1) {
     taskStateForFork=new TaskState(this.taskState);
   }
-  taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.recordsWritten());
+  if (this.writer.isPresent()) {
+    taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.get().recordsWritten());
+  }
+ else {
+    taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
+  }
   taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.toString());
   try {
     TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(taskStateForFork,this.branches > 1 ? this.index : -1).executePolicies();

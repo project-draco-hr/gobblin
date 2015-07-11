@@ -1,3 +1,5 @@
 {
-  this.taskState.updateByteMetrics(this.writer.bytesWritten(),this.index);
+  if (this.writer.isPresent()) {
+    this.taskState.updateByteMetrics(this.writer.get().bytesWritten(),this.index);
+  }
 }
