@@ -3,7 +3,7 @@
   try {
     ByteArrayOutputStream byteArrayOutputStream=closer.register(new ByteArrayOutputStream());
     DataOutputStream dataOutputStream=closer.register(new DataOutputStream(byteArrayOutputStream));
-    fileSplit.write(dataOutputStream);
+    writable.write(dataOutputStream);
     return BaseEncoding.base64().encode(byteArrayOutputStream.toByteArray());
   }
  catch (  Throwable t) {

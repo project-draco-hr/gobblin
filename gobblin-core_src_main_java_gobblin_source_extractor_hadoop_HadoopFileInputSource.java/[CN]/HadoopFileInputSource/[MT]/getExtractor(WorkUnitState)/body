@@ -5,7 +5,7 @@
   Configuration configuration=new Configuration();
   FileInputFormat<K,V> fileInputFormat=getFileInputFormat(workUnitState,configuration);
   String fileSplitBytesStr=workUnitState.getProp(FILE_SPLIT_BYTES_STRING_KEY);
-  FileSplit fileSplit=deserializeFileSplit(fileSplitBytesStr);
+  FileSplit fileSplit=(FileSplit)HadoopUtils.deserializeFromString(FileSplit.class,fileSplitBytesStr);
   TaskAttemptContext taskAttemptContext=getTaskAttemptContext(configuration,DummyTaskAttemptIDFactory.newTaskAttemptID());
   try {
     RecordReader<K,V> recordReader=fileInputFormat.createRecordReader(fileSplit,taskAttemptContext);

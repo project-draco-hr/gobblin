@@ -1,0 +1,3 @@
+{
+  return deserializeFromString(writableClass,serializedWritableStr,new Configuration());
+}
