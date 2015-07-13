@@ -1,0 +1,16 @@
+{
+  Preconditions.checkNotNull(context.getConfiguration().get(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY),ConfigurationKeys.JOB_STATE_FILE_PATH_KEY + " not found in Hadoop job conf");
+  Path jobStateFile=new Path(context.getConfiguration().get(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY));
+  Closer closer=Closer.create();
+  try {
+    InputStream is=closer.register(this.fs.open(jobStateFile));
+    DataInputStream dis=closer.register((new DataInputStream(is)));
+    this.jobState.readFields(dis);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

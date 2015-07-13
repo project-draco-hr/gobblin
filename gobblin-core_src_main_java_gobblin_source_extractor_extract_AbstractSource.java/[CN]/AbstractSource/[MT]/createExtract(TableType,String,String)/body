@@ -1,0 +1,3 @@
+{
+  return this.extractFactory.getUniqueExtract(type,namespace,table);
+}

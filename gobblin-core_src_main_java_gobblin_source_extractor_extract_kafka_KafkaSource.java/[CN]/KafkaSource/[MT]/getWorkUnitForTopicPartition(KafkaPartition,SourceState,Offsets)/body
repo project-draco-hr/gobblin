@@ -1,6 +1,0 @@
-{
-  SourceState partitionState=createAndPopulatePartitionState(partition,state,offsets);
-  Extract extract=createExtract(partitionState,partition.getTopicName());
-  LOG.info(String.format("Creating workunit for partition %s: lowWatermark=%d, highWatermark=%d",partition,offsets.getStartOffset(),offsets.getLatestOffset()));
-  return partitionState.createWorkUnit(extract);
-}

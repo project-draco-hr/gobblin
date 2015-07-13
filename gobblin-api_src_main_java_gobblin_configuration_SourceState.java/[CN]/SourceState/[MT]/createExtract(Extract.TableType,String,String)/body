@@ -1,6 +1,6 @@
 {
   Extract extract=new Extract(this,type,namespace,table);
-  while (extractSet.contains(extract)) {
+  while (EXTRACT_SET.contains(extract)) {
     if (Strings.isNullOrEmpty(extract.getExtractId())) {
       extract.setExtractId(DTF.print(new DateTime()));
     }
@@ -9,6 +9,6 @@
       extract.setExtractId(DTF.print(extractDateTime.plusSeconds(1)));
     }
   }
-  extractSet.add(extract);
+  EXTRACT_SET.add(extract);
   return extract;
 }

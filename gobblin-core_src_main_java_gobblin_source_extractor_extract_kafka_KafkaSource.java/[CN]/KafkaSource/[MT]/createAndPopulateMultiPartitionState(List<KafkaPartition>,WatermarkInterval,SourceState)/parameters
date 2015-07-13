@@ -1,3 +1,0 @@
-List<KafkaPartition> partitions
-WatermarkInterval interval
-SourceState state

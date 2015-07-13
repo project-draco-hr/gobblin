@@ -1,0 +1,7 @@
+{
+  for (  String key : properties.stringPropertyNames()) {
+    if (this.properties.containsKey(key)) {
+      this.properties.setProperty(key,properties.getProperty(key));
+    }
+  }
+}

@@ -18,7 +18,7 @@
   }
   if (failedToGetKafkaOffsets) {
     LOG.warn(String.format("Failed to retrieve earliest and/or latest offset for partition %s. This partition will be skipped.",partition));
-    return previousOffsetNotFound ? null : getEmptyWorkunit(partition,state,previousOffset);
+    return previousOffsetNotFound ? null : getEmptyWorkunit(partition,previousOffset);
   }
   if (shouldMoveToLatestOffset(partition,state)) {
     offsets.startAtLatestOffset();
@@ -56,9 +56,9 @@
       }
  else {
         LOG.warn(offsetOutOfRangeMsg + "This partition will be skipped.");
-        return getEmptyWorkunit(partition,state,previousOffset);
+        return getEmptyWorkunit(partition,previousOffset);
       }
     }
   }
-  return getWorkUnitForTopicPartition(partition,state,offsets);
+  return getWorkUnitForTopicPartition(partition,offsets);
 }
