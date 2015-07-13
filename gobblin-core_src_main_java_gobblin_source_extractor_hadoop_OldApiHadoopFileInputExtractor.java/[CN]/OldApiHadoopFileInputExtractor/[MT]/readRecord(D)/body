@@ -1,0 +1,8 @@
+{
+  K key=this.recordReader.createKey();
+  V value=this.recordReader.createValue();
+  if (this.recordReader.next(key,value)) {
+    return this.readKeys ? (D)key : (D)value;
+  }
+  return null;
+}

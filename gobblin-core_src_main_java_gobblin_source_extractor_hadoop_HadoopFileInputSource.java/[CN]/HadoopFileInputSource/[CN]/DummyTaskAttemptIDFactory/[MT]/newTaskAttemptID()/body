@@ -1,0 +1,3 @@
+{
+  return TaskAttemptID.forName(ATTEMPT + SEPARATOR + Long.toString(System.currentTimeMillis())+ SEPARATOR+ 0+ SEPARATOR+ 'm'+ SEPARATOR+ 0+ SEPARATOR+ 0);
+}

@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(state.contains(HadoopFileInputSource.FILE_INPUT_FORMAT_CLASS_KEY));
+  try {
+    return (FileInputFormat<K,V>)ReflectionUtils.newInstance(Class.forName(state.getProp(HadoopFileInputSource.FILE_INPUT_FORMAT_CLASS_KEY)),new Configuration());
+  }
+ catch (  ClassNotFoundException cnfe) {
+    throw new RuntimeException(cnfe);
+  }
+}

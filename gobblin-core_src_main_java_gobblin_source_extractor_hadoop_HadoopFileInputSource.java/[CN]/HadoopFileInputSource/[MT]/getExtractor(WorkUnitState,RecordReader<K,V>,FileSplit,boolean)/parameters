@@ -1,0 +1,4 @@
+WorkUnitState workUnitState
+RecordReader<K,V> recordReader
+FileSplit fileSplit
+boolean readKeys
