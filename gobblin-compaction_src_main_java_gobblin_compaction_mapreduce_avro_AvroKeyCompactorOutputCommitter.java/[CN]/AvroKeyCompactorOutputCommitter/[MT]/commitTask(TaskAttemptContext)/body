@@ -1,0 +1,19 @@
+{
+  Path workPath=getWorkPath();
+  FileSystem fs=workPath.getFileSystem(context.getConfiguration());
+  if (fs.exists(workPath)) {
+    long recordCount=getRecordCountCounter(context);
+    String fileName="part-r-" + recordCount + "."+ System.currentTimeMillis()+ "."+ RANDOM.nextInt(Integer.MAX_VALUE)+ ".avro";
+    for (    FileStatus status : fs.listStatus(workPath,new PathFilter(){
+      @Override public boolean accept(      Path path){
+        return FilenameUtils.isExtension(path.getName(),"avro");
+      }
+    }
+)) {
+      Path newPath=new Path(status.getPath().getParent(),fileName);
+      LOG.info(String.format("Renaming %s to %s",status.getPath(),newPath));
+      fs.rename(status.getPath(),newPath);
+    }
+  }
+  super.commitTask(context);
+}
