@@ -1,0 +1,6 @@
+{
+  super.setProp(key,value);
+  for (  WorkUnit workUnit : this.workUnits) {
+    workUnit.setProp(key,value);
+  }
+}
