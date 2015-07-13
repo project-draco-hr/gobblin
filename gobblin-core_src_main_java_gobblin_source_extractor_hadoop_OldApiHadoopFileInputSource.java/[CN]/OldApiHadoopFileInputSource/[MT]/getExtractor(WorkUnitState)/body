@@ -11,5 +11,5 @@
   FileInputFormat<K,V> fileInputFormat=getFileInputFormat(workUnitState,jobConf);
   RecordReader<K,V> recordReader=fileInputFormat.getRecordReader(fileSplit,jobConf,Reporter.NULL);
   boolean readKeys=workUnitState.getPropAsBoolean(HadoopFileInputSource.FILE_INPUT_READ_KEYS_KEY,HadoopFileInputSource.DEFAULT_FILE_INPUT_READ_KEYS);
-  return getExtractor(recordReader,readKeys);
+  return getExtractor(workUnitState,recordReader,fileSplit,readKeys);
 }

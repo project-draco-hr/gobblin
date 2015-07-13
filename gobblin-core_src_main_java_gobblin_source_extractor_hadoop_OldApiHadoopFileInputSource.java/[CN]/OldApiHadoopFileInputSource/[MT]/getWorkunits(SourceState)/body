@@ -23,6 +23,7 @@
       Extract extract=state.createExtract(tableType,tableNamespace,tableName);
       WorkUnit workUnit=state.createWorkUnit(extract);
       workUnit.setProp(HadoopFileInputSource.FILE_SPLIT_BYTES_STRING_KEY,serializeFileSplit(fileSplit));
+      workUnit.setProp(HadoopFileInputSource.FILE_SPLIT_PATH_KEY,fileSplit.getPath().toString());
       workUnits.add(workUnit);
     }
     return workUnits;

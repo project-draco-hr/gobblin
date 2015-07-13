@@ -1,2 +1,4 @@
+WorkUnitState workUnitState
 RecordReader<LongWritable,Text> recordReader
+FileSplit fileSplit
 boolean readKeys
