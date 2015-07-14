@@ -16,7 +16,7 @@
     }
     readRecordStart=true;
   }
-  while (!currentFileItr.hasNext() && !filesToPull.isEmpty()) {
+  while ((currentFileItr == null || !currentFileItr.hasNext()) && !filesToPull.isEmpty()) {
     LOGGER.info("Finished downloading file: " + currentFile);
     closeCurrentFile();
     incrementBytesReadCounter();
@@ -24,7 +24,7 @@
     currentFileItr=downloadFile(currentFile);
     LOGGER.info("Will start downloading file: " + currentFile);
   }
-  if (currentFileItr.hasNext()) {
+  if (currentFileItr != null && currentFileItr.hasNext()) {
     return currentFileItr.next();
   }
  else {
