@@ -1,6 +1,3 @@
 {
-  super(fs,props);
-  this.datasetRoot=datasetRoot;
-  this.versionFinder=new WatermarkDatasetVersionFinder(fs,props);
-  this.retentionPolicy=new NewestKRetentionPolicy(props);
+  this(fs,props,datasetRoot,LoggerFactory.getLogger(SnapshotDataset.class));
 }

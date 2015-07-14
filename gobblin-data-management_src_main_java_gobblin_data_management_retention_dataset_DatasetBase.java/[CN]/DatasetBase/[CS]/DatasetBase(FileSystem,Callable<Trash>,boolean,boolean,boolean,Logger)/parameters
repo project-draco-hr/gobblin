@@ -1,5 +1,6 @@
 FileSystem fs
-Trash trash
+Callable<Trash> trashGenerator
 boolean simulate
 boolean skipTrash
 boolean deleteEmptyDirectories
+Logger log

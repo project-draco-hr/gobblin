@@ -1,0 +1,20 @@
+{
+  super(fs,props,log);
+  this.datasetRoot=datasetRoot;
+  try {
+    this.versionFinder=(VersionFinder)props.getClass(VERSION_FINDER_CLASS_KEY).getConstructor(FileSystem.class,Props.class).newInstance(this.fs,props);
+    this.retentionPolicy=(RetentionPolicy)props.getClass(RETENTION_POLICY_CLASS_KEY).getConstructor(Props.class).newInstance(props);
+  }
+ catch (  NoSuchMethodException exception) {
+    throw new IOException(exception);
+  }
+catch (  InstantiationException exception) {
+    throw new IOException(exception);
+  }
+catch (  IllegalAccessException exception) {
+    throw new IOException(exception);
+  }
+catch (  InvocationTargetException exception) {
+    throw new IOException(exception);
+  }
+}

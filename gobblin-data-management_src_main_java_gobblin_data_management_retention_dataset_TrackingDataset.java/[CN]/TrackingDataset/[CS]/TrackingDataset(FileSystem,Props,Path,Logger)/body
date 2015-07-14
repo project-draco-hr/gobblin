@@ -1,0 +1,6 @@
+{
+  super(fs,props,log);
+  this.datasetRoot=datasetRoot;
+  this.versionFinder=new DateTimeDatasetVersionFinder(fs,props);
+  this.retentionPolicy=new TimeBasedRetentionPolicy(props);
+}

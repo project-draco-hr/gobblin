@@ -1,6 +1,3 @@
 {
-  super(fs,props);
-  this.datasetRoot=datasetRoot;
-  this.versionFinder=new DateTimeDatasetVersionFinder(fs,props);
-  this.retentionPolicy=new TimeBasedRetentionPolicy(props);
+  this(fs,props,datasetRoot,LoggerFactory.getLogger(TrackingDataset.class));
 }

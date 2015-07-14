@@ -9,7 +9,7 @@
   Path datasetVersion2=new Path(datasetPathStr + "/" + dataset2);
   when(fs.globStatus(globbedPath)).thenReturn(new FileStatus[]{new FileStatus(0,true,0,0,0,datasetVersion1),new FileStatus(0,true,0,0,0,datasetVersion2)});
   DatasetVersionFinder<StringDatasetVersion> versionFinder=new MockDatasetVersionFinder(fs,new Props());
-  List<StringDatasetVersion> datasetVersions=versionFinder.findDatasetVersions(new MockDataset(datasetPath));
+  List<StringDatasetVersion> datasetVersions=Lists.newArrayList(versionFinder.findDatasetVersions(new MockDataset(datasetPath)));
   Assert.assertEquals(datasetVersions.size(),2);
   Assert.assertEquals(datasetVersions.get(0).getVersion(),dataset1);
   Assert.assertEquals(datasetVersions.get(0).getPathsToDelete().iterator().next(),datasetVersion1);

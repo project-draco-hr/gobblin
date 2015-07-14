@@ -1,5 +1,4 @@
 {
-  Preconditions.checkArgument(props.containsKey(TRASH_LOCATION_KEY),"Trash location not provided.");
   Path trashLocation;
   if (props.containsKey(TRASH_LOCATION_KEY)) {
     trashLocation=new Path(props.get(TRASH_LOCATION_KEY));

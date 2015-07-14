@@ -1,7 +1,0 @@
-{
-  this.fs=fs;
-  this.trash=trash;
-  this.simulate=simulate;
-  this.skipTrash=skipTrash;
-  this.deleteEmptyDirectories=deleteEmptyDirectories;
-}
