@@ -1,0 +1,5 @@
+{
+  TextInputFormat textInputFormat=ReflectionUtils.newInstance(TextInputFormat.class,jobConf);
+  textInputFormat.configure(jobConf);
+  return textInputFormat;
+}

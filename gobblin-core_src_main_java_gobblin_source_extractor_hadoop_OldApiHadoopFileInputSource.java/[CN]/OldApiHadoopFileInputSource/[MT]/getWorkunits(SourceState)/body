@@ -1,0 +1,34 @@
+{
+  JobConf jobConf=new JobConf(new Configuration());
+  for (  String key : state.getPropertyNames()) {
+    jobConf.set(key,state.getProp(key));
+  }
+  if (state.contains(HadoopFileInputSource.FILE_INPUT_PATHS_KEY)) {
+    for (    String inputPath : state.getPropAsList(HadoopFileInputSource.FILE_INPUT_PATHS_KEY)) {
+      FileInputFormat.addInputPath(jobConf,new Path(inputPath));
+    }
+  }
+  try {
+    FileInputFormat<K,V> fileInputFormat=getFileInputFormat(state,jobConf);
+    InputSplit[] fileSplits=fileInputFormat.getSplits(jobConf,state.getPropAsInt(HadoopFileInputSource.FILE_SPLITS_DESIRED_KEY,HadoopFileInputSource.DEFAULT_FILE_SPLITS_DESIRED));
+    if (fileSplits == null || fileSplits.length == 0) {
+      return ImmutableList.of();
+    }
+    Extract.TableType tableType=state.contains(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY) ? Extract.TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase()) : null;
+    String tableNamespace=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
+    String tableName=state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY);
+    List<WorkUnit> workUnits=Lists.newArrayListWithCapacity(fileSplits.length);
+    for (    InputSplit inputSplit : fileSplits) {
+      FileSplit fileSplit=(FileSplit)inputSplit;
+      Extract extract=state.createExtract(tableType,tableNamespace,tableName);
+      WorkUnit workUnit=state.createWorkUnit(extract);
+      workUnit.setProp(HadoopFileInputSource.FILE_SPLIT_BYTES_STRING_KEY,HadoopUtils.serializeToString(fileSplit));
+      workUnit.setProp(HadoopFileInputSource.FILE_SPLIT_PATH_KEY,fileSplit.getPath().toString());
+      workUnits.add(workUnit);
+    }
+    return workUnits;
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException("Failed to get workunits",ioe);
+  }
+}

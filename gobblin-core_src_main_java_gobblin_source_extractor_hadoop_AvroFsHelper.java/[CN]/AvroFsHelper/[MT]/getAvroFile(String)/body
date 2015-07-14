@@ -1,5 +1,9 @@
 {
   try {
+    if (!fs.exists(new Path(file))) {
+      LOGGER.warn(file + " does not exist.");
+      return null;
+    }
     return new DataFileReader<GenericRecord>(new FsInput(new Path(file),fs.getConf()),new GenericDatumReader<GenericRecord>());
   }
  catch (  IOException e) {
