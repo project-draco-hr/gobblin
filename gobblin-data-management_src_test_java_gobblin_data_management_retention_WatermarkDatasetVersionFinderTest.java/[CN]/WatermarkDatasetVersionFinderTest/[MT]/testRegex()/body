@@ -1,5 +1,5 @@
 {
-  Props props=new Props();
+  Properties props=new Properties();
   props.put(WatermarkDatasetVersionFinder.WATERMARK_REGEX_KEY,"watermark-([A-Za-z]*)-[a-z]*");
   WatermarkDatasetVersionFinder parser=new WatermarkDatasetVersionFinder(null,props);
   Assert.assertEquals(parser.versionClass(),StringDatasetVersion.class);

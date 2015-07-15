@@ -1,0 +1,27 @@
+{
+  super(fs,props,log);
+  this.datasetRoot=datasetRoot;
+  Preconditions.checkArgument(props.containsKey(VERSION_FINDER_CLASS_KEY),"Missing property " + VERSION_FINDER_CLASS_KEY);
+  Preconditions.checkArgument(props.containsKey(RETENTION_POLICY_CLASS_KEY),"Missing property " + RETENTION_POLICY_CLASS_KEY);
+  try {
+    Class<?> versionFinderClass=Class.forName(props.getProperty(VERSION_FINDER_CLASS_KEY));
+    Class<?> retentionPolicyClass=Class.forName(props.getProperty(RETENTION_POLICY_CLASS_KEY));
+    this.versionFinder=(VersionFinder)versionFinderClass.getConstructor(FileSystem.class,Properties.class).newInstance(this.fs,props);
+    this.retentionPolicy=(RetentionPolicy)retentionPolicyClass.getConstructor(Properties.class).newInstance(props);
+  }
+ catch (  ClassNotFoundException exception) {
+    throw new IOException(exception);
+  }
+catch (  NoSuchMethodException exception) {
+    throw new IOException(exception);
+  }
+catch (  InstantiationException exception) {
+    throw new IOException(exception);
+  }
+catch (  IllegalAccessException exception) {
+    throw new IOException(exception);
+  }
+catch (  InvocationTargetException exception) {
+    throw new IOException(exception);
+  }
+}

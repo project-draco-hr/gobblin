@@ -1,0 +1,22 @@
+{
+  Preconditions.checkArgument(props.containsKey(DATASET_PROFILE_CLASS_KEY));
+  try {
+    Class<?> datasetFinderClass=Class.forName(props.getProperty(DATASET_PROFILE_CLASS_KEY));
+    this.datasetFinder=(DatasetFinder)datasetFinderClass.getConstructor(FileSystem.class,Properties.class).newInstance(fs,props);
+  }
+ catch (  ClassNotFoundException exception) {
+    throw new IOException(exception);
+  }
+catch (  NoSuchMethodException exception) {
+    throw new IOException(exception);
+  }
+catch (  InstantiationException exception) {
+    throw new IOException(exception);
+  }
+catch (  IllegalAccessException exception) {
+    throw new IOException(exception);
+  }
+catch (  InvocationTargetException exception) {
+    throw new IOException(exception);
+  }
+}
