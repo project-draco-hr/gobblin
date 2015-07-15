@@ -1,0 +1,5 @@
+{
+  super(id,Logger.getLogger(TrashCollectorJob.class));
+  this.conf=new Configuration();
+  this.trash=new Trash(FileSystem.get(getConf()),props);
+}

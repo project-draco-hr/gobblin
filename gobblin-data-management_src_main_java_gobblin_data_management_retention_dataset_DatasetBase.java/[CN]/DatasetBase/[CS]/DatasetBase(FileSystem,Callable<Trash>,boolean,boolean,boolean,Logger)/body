@@ -1,0 +1,18 @@
+{
+  this.log=log;
+  this.fs=fs;
+  this.simulate=simulate;
+  this.skipTrash=skipTrash;
+  this.deleteEmptyDirectories=deleteEmptyDirectories;
+  if (this.simulate || this.skipTrash) {
+    this.trash=null;
+  }
+ else {
+    try {
+      this.trash=trashGenerator.call();
+    }
+ catch (    Exception exception) {
+      throw new IOException(exception);
+    }
+  }
+}

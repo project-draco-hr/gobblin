@@ -1,0 +1,16 @@
+{
+  Path trashLocation;
+  if (props.containsKey(TRASH_LOCATION_KEY)) {
+    trashLocation=new Path(props.get(TRASH_LOCATION_KEY));
+  }
+ else {
+    trashLocation=new Path(fs.getHomeDirectory(),DEFAULT_TRASH_DIRECTORY);
+    LOG.info("Using default trash location at " + trashLocation);
+  }
+  if (!trashLocation.isAbsolute()) {
+    throw new IllegalArgumentException("Trash location must be absolute. Found " + trashLocation.toString());
+  }
+  Path qualifiedTrashLocation=fs.makeQualified(trashLocation);
+  ensureTrashLocationExists(fs,qualifiedTrashLocation);
+  return qualifiedTrashLocation;
+}

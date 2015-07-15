@@ -1,0 +1,8 @@
+{
+  this(fs,new Callable<Trash>(){
+    @Override public Trash call(){
+      return trash;
+    }
+  }
+,simulate,skipTrash,deleteEmptyDirectories,log);
+}

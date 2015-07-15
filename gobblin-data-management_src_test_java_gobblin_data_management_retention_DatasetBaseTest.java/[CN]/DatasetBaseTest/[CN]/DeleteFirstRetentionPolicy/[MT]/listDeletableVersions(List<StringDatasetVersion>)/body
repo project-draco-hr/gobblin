@@ -1,0 +1,3 @@
+{
+  return Lists.newArrayList(allVersions.get(0));
+}

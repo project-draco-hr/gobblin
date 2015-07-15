@@ -1,0 +1,13 @@
+{
+  if (this.pattern.isPresent()) {
+    Matcher matcher=this.pattern.get().matcher(pathRelativeToDatasetRoot.getName());
+    if (!matcher.find() || matcher.groupCount() < 1) {
+      LOGGER.warn("Candidate dataset version at " + pathRelativeToDatasetRoot + " does not match expected pattern. Ignoring.");
+      return null;
+    }
+    return new StringDatasetVersion(matcher.group(1),fullPath);
+  }
+ else {
+    return new StringDatasetVersion(pathRelativeToDatasetRoot.getName(),fullPath);
+  }
+}

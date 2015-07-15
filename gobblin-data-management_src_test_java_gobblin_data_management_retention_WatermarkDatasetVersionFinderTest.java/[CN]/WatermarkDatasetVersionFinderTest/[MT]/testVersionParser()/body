@@ -1,0 +1,8 @@
+{
+  Props props=new Props();
+  WatermarkDatasetVersionFinder parser=new WatermarkDatasetVersionFinder(null,props);
+  Assert.assertEquals(parser.versionClass(),StringDatasetVersion.class);
+  Assert.assertEquals(parser.globVersionPattern(),new Path("*"));
+  Assert.assertEquals(parser.getDatasetVersion(new Path("datasetVersion"),new Path("fullPath")).getVersion(),"datasetVersion");
+  Assert.assertEquals(parser.getDatasetVersion(new Path("datasetVersion"),new Path("fullPath")).getPathsToDelete().iterator().next(),new Path("fullPath"));
+}

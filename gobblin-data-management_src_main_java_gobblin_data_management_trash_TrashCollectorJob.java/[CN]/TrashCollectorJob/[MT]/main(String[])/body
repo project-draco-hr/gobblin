@@ -1,0 +1,3 @@
+{
+  ToolRunner.run(new TrashCollectorJob(TrashCollectorJob.class.getName()),args);
+}

@@ -1,0 +1,9 @@
+{
+  if (args.length < 1) {
+    System.out.println("Must provide properties file as first argument.");
+    return 1;
+  }
+  Props props=new Props(null,args[0]);
+  new DatasetCleanerJob(DatasetCleanerJob.class.getName(),props).run();
+  return 0;
+}

@@ -1,0 +1,4 @@
+{
+  TimestampedDatasetVersion otherAsDateTime=(TimestampedDatasetVersion)other;
+  return this.version.compareTo(otherAsDateTime.version);
+}

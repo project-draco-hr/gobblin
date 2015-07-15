@@ -1,0 +1,8 @@
+{
+  return Lists.newArrayList(Collections2.filter(allVersions,new Predicate<DatasetVersion>(){
+    @Override public boolean apply(    DatasetVersion version){
+      return ((TimestampedDatasetVersion)version).getDateTime().plus(retention).isBeforeNow();
+    }
+  }
+));
+}

@@ -1,0 +1,6 @@
+{
+  List<Dataset> dataSets=this.datasetFinder.findDatasets();
+  for (  Dataset dataset : dataSets) {
+    dataset.clean();
+  }
+}

@@ -1,0 +1,6 @@
+{
+  if (!parent.equals(datasetRoot) && this.fs.listStatus(parent).length == 0) {
+    this.fs.delete(parent,false);
+    deleteEmptyParentDirectories(datasetRoot,parent.getParent());
+  }
+}
