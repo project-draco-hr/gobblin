@@ -9,7 +9,9 @@
  else {
     taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
   }
-  taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.toString());
+  if (schema.isPresent()) {
+    taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.get().toString());
+  }
   try {
     TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(taskStateForFork,this.branches > 1 ? this.index : -1).executePolicies();
     TaskPublisher publisher=this.taskContext.getTaskPublisher(taskStateForFork,taskResults,this.branches > 1 ? this.index : -1);
