@@ -1,0 +1,3 @@
+{
+  return obj instanceof TimestampedDatasetVersion && compareTo((TimestampedDatasetVersion)obj) == 0;
+}
