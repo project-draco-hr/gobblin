@@ -1,4 +1,4 @@
 {
   StringDatasetVersion otherAsString=(StringDatasetVersion)other;
-  return this.version.compareTo(otherAsString.version);
+  return this.version.equals(otherAsString.version) ? this.path.compareTo(otherAsString.path) : this.version.compareTo(otherAsString.version);
 }
