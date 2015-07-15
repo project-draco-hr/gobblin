@@ -1,4 +1,4 @@
 {
   TimestampedDatasetVersion otherAsDateTime=(TimestampedDatasetVersion)other;
-  return this.version.compareTo(otherAsDateTime.version);
+  return this.version.equals(otherAsDateTime.version) ? this.path.compareTo(otherAsDateTime.path) : this.version.compareTo(otherAsDateTime.version);
 }
