@@ -1,7 +1,12 @@
 {
   DataFileReader<GenericRecord> dfr=null;
   try {
-    dfr=new DataFileReader<GenericRecord>(new FsInput(new Path(file),fs.getConf()),new GenericDatumReader<GenericRecord>());
+    if (state.getPropAsBoolean(ConfigurationKeys.SHOULD_FS_PROXY_AS_USER,ConfigurationKeys.DEFAULT_SHOULD_FS_PROXY_AS_USER)) {
+      dfr=new DataFileReader<GenericRecord>(new ProxyFsInput(new Path(file),this.fs),new GenericDatumReader<GenericRecord>());
+    }
+ else {
+      dfr=new DataFileReader<GenericRecord>(new FsInput(new Path(file),fs.getConf()),new GenericDatumReader<GenericRecord>());
+    }
     return dfr.getSchema();
   }
  catch (  IOException e) {
