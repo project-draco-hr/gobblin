@@ -1,5 +1,5 @@
 {
   addAll(properties);
-  this.previousSourceState=EMPTY_SOURCE_STATE;
+  this.previousSourceState=previousSourceState;
   this.previousWorkUnitStates.addAll(previousWorkUnitStates);
 }
