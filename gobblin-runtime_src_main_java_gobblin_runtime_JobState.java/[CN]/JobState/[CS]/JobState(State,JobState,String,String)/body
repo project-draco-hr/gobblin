@@ -1,0 +1,6 @@
+{
+  super(properties,previousJobState,previousJobState.getTaskStatesAsWorkUnitStates());
+  this.jobName=jobName;
+  this.jobId=jobId;
+  this.setId(jobId);
+}

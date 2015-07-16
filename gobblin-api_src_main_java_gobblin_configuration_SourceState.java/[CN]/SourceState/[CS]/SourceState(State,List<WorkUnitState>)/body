@@ -1,4 +1,7 @@
 {
   addAll(properties);
-  this.previousTaskStates.addAll(previousTaskStates);
+  this.previousSourceState=EMPTY_SOURCE_STATE;
+  for (  WorkUnitState workUnitState : previousWorkUnitStates) {
+    this.previousWorkUnitStates.add(new ImmutableWorkUnitState(workUnitState));
+  }
 }

@@ -1,0 +1,7 @@
+{
+  if (!(object instanceof WorkUnitState)) {
+    return false;
+  }
+  WorkUnitState other=(WorkUnitState)object;
+  return ((this.workunit == null && other.workunit == null) || (this.workunit != null && this.workunit.equals(other.workunit))) && super.equals(other);
+}

@@ -1,2 +1,2 @@
 State properties
-List<WorkUnitState> previousTaskStates
+List<WorkUnitState> previousWorkUnitStates

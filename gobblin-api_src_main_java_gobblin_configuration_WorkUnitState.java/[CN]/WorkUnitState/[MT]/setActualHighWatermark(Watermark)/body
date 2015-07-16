@@ -1,4 +1,3 @@
 {
-  this.actualHighWatermark=watermark;
-  setProp(ConfigurationKeys.WORK_UNIT_STATE_ACTUAL_HIGH_WATER_MARK_KEY,this.actualHighWatermark.toJson().toString());
+  setProp(ConfigurationKeys.WORK_UNIT_STATE_ACTUAL_HIGH_WATER_MARK_KEY,watermark.toJson().toString());
 }
