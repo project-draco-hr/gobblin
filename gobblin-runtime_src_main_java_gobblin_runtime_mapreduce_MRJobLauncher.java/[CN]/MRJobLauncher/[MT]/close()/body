@@ -6,6 +6,11 @@
     }
   }
   finally {
-    super.close();
+    try {
+      cleanUpWorkingDirectory();
+    }
+  finally {
+      super.close();
+    }
   }
 }
