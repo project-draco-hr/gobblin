@@ -1,5 +1,5 @@
 {
-  File textFile=new File(OldApiHadoopFileInputSourceTest.class.getSimpleName(),"test.txt");
+  File textFile=new File(getFileDir(),"test.txt");
   File dir=textFile.getParentFile();
   if (!dir.exists() && !dir.mkdir()) {
     throw new IOException("Failed to create directory: " + dir);
