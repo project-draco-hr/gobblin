@@ -1,0 +1,4 @@
+{
+  this.len=fs.getFileStatus(path).getLen();
+  this.stream=fs.open(path);
+}
