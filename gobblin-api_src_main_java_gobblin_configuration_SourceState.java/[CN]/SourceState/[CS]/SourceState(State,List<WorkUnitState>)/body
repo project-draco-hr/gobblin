@@ -1,6 +1,6 @@
 {
   addAll(properties);
-  this.previousSourceState=EMPTY_SOURCE_STATE;
+  this.previousSourceState=Optional.absent();
   for (  WorkUnitState workUnitState : previousWorkUnitStates) {
     this.previousWorkUnitStates.add(new ImmutableWorkUnitState(workUnitState));
   }

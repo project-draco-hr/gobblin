@@ -1,4 +1,4 @@
 {
-  File dir=new File(OldApiHadoopFileInputSourceTest.class.getSimpleName());
+  File dir=new File(getFileDir());
   FileUtils.deleteDirectory(dir);
 }
