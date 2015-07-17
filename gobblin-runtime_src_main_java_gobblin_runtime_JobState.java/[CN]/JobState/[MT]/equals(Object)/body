@@ -3,5 +3,5 @@
     return false;
   }
   JobState other=(JobState)object;
-  return super.equals(other) && this.jobName.equals(other.jobName) && this.jobId.equals(other.jobId)&& this.startTime == other.startTime && this.endTime == other.endTime && this.duration == other.duration && this.state == other.state && this.tasks == other.tasks && this.taskStates.equals(other.taskStates);
+  return super.equals(other) && this.jobName.equals(other.jobName) && this.jobId.equals(other.jobId);
 }
