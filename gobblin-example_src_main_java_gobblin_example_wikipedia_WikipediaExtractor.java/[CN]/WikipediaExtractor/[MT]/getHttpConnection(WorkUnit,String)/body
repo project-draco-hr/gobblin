@@ -1,0 +1,11 @@
+{
+  URL url=new URL(urlStr);
+  Proxy proxy=Proxy.NO_PROXY;
+  if (workUnit.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && workUnit.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT)) {
+    LOG.info("Use proxy host: " + workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL));
+    LOG.info("Use proxy port: " + workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
+    InetSocketAddress proxyAddress=new InetSocketAddress(workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),Integer.parseInt(workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT)));
+    proxy=new Proxy(Proxy.Type.HTTP,proxyAddress);
+  }
+  return (HttpURLConnection)url.openConnection(proxy);
+}
