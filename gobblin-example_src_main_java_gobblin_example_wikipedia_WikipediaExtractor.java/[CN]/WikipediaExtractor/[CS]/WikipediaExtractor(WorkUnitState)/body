@@ -1,16 +1,16 @@
 {
-  WorkUnit workUnit=workUnitState.getWorkunit();
-  rootUrl=workUnit.getProp(WIKIPEDIA_API_ROOTURL);
-  schema=workUnit.getProp(WIKIPEDIA_AVRO_SCHEMA);
-  requestedTitles=new LinkedList<String>(SPLITTER.splitToList(workUnit.getProp(SOURCE_PAGE_TITLES)));
-  revisionsCnt=Integer.parseInt(workUnit.getProp(SOURCE_REVISIONS_CNT));
-  numRequestedTitles=requestedTitles.size();
-  if (requestedTitles.isEmpty()) {
-    recordsOfCurrentTitle=new LinkedList<JsonElement>();
+  this.workUnit=workUnitState.getWorkunit();
+  this.rootUrl=this.workUnit.getProp(WIKIPEDIA_API_ROOTURL);
+  this.schema=this.workUnit.getProp(WIKIPEDIA_AVRO_SCHEMA);
+  this.requestedTitles=new LinkedList<String>(SPLITTER.splitToList(this.workUnit.getProp(SOURCE_PAGE_TITLES)));
+  this.revisionsCnt=Integer.parseInt(this.workUnit.getProp(SOURCE_REVISIONS_CNT));
+  this.numRequestedTitles=this.requestedTitles.size();
+  if (this.requestedTitles.isEmpty()) {
+    this.recordsOfCurrentTitle=new LinkedList<JsonElement>();
   }
  else {
-    String firstTitle=requestedTitles.poll();
-    recordsOfCurrentTitle=retrievePageRevisions(firstTitle);
+    String firstTitle=this.requestedTitles.poll();
+    this.recordsOfCurrentTitle=retrievePageRevisions(firstTitle);
   }
   this.reader=new WikiResponseReader();
 }
