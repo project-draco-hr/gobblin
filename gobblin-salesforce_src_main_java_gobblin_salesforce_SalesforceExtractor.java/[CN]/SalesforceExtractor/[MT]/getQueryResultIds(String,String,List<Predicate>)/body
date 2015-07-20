@@ -16,7 +16,7 @@
       Iterator<Predicate> i=predicateList.listIterator();
       while (i.hasNext()) {
         Predicate predicate=i.next();
-        query=this.addPredicate(query,predicate.getCondition());
+        query=SqlQueryHelper.addPredicate(query,predicate.getCondition());
       }
       query=query + limitString;
     }
