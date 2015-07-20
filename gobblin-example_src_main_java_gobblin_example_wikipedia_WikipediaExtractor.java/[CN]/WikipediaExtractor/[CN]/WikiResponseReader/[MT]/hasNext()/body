@@ -9,7 +9,7 @@
     while (!requestedTitles.isEmpty()) {
       String currentTitle=requestedTitles.poll();
       try {
-        recordsOfCurrentTitle=retrievePageRevisions(workUnit,currentTitle);
+        recordsOfCurrentTitle=retrievePageRevisions(currentTitle);
       }
  catch (      IOException e) {
         LOG.error("IOException while retrieving revisions for title '" + currentTitle + "'");

@@ -5,7 +5,7 @@
   StringBuilder sb=new StringBuilder();
   String urlStr=this.rootUrl + "&titles=" + pageTitle+ "&rvlimit="+ this.revisionsCnt;
   try {
-    conn=getHttpConnection(workUnit,urlStr);
+    conn=getHttpConnection(urlStr);
     conn.connect();
     BufferedReader br=closer.register(new BufferedReader(new InputStreamReader(conn.getInputStream(),ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     String line;

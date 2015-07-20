@@ -10,7 +10,7 @@
   }
  else {
     String firstTitle=this.requestedTitles.poll();
-    this.recordsOfCurrentTitle=retrievePageRevisions(this.workUnit,firstTitle);
+    this.recordsOfCurrentTitle=retrievePageRevisions(firstTitle);
   }
   this.reader=new WikiResponseReader();
 }
