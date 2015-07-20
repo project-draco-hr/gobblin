@@ -4,15 +4,14 @@
     for (int branchId=0; branchId < this.numBranches; branchId++) {
       ParallelRunner parallelRunner=this.getParallelRunner(this.fss.get(branchId));
       Path writerOutputDir=WriterUtils.getWriterOutputDir(workUnitState,this.numBranches,branchId);
-      if (!this.fss.get(branchId).exists(writerOutputDir)) {
-        LOG.warn("WorkUnit " + workUnitState.getId() + " produced no data");
-        workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-        break;
-      }
-      Path publisherOutputDir=WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,branchId);
       if (writerOutputPathsMoved.contains(writerOutputDir)) {
         continue;
       }
+      if (!this.fss.get(branchId).exists(writerOutputDir)) {
+        LOG.warn(String.format("Branch %d of WorkUnit %s produced no data",branchId,workUnitState.getId()));
+        continue;
+      }
+      Path publisherOutputDir=WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,branchId);
       if (this.fss.get(branchId).exists(publisherOutputDir)) {
         boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,this.numBranches,branchId));
         if (!replaceFinalOutputDir) {
