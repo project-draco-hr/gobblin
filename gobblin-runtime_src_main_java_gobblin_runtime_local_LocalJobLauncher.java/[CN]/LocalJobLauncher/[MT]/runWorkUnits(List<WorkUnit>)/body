@@ -8,6 +8,9 @@
   }
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
+  for (  WorkUnit workUnit : workUnitsToRun) {
+    workUnit.addAllIfNotExist(jobState);
+  }
   TimingEvent workUnitsRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_RUN);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
   List<Task> tasks=AbstractJobLauncher.submitWorkUnits(this.jobContext.getJobId(),workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);

@@ -19,7 +19,7 @@
       if (state.getPropAsBoolean(ConfigurationKeys.OVERWRITE_CONFIGS_IN_STATESTORE,ConfigurationKeys.DEFAULT_OVERWRITE_CONFIGS_IN_STATESTORE)) {
         WorkUnitState workUnitStateCopy=new WorkUnitState(workUnitState.getWorkunit());
         workUnitStateCopy.addAll(workUnitState);
-        workUnitStateCopy.addAll(state);
+        workUnitStateCopy.overrideWith(state);
         previousWorkUnitStates.add(workUnitStateCopy);
       }
  else {

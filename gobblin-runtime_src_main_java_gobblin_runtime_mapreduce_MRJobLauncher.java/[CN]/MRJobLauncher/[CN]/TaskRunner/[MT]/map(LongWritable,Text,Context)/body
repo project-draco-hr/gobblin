@@ -1,5 +1,5 @@
 {
-  WorkUnit workUnit=(value.toString().endsWith(MULTI_WORK_UNIT_FILE_EXTENSION) ? new MultiWorkUnit() : new WorkUnit());
+  WorkUnit workUnit=(value.toString().endsWith(MULTI_WORK_UNIT_FILE_EXTENSION) ? new MultiWorkUnit() : WorkUnit.createEmpty());
   Closer closer=Closer.create();
   try {
     InputStream is=closer.register(this.fs.open(new Path(value.toString())));
@@ -13,9 +13,14 @@
     closer.close();
   }
   if (workUnit instanceof MultiWorkUnit) {
-    this.workUnits.addAll(JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits()));
+    List<WorkUnit> flattenedWorkUnits=JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits());
+    for (    WorkUnit flattenedWorkUnit : flattenedWorkUnits) {
+      flattenedWorkUnit.addAllIfNotExist(this.jobState);
+    }
+    this.workUnits.addAll(flattenedWorkUnits);
   }
  else {
+    workUnit.addAllIfNotExist(this.jobState);
     this.workUnits.add(workUnit);
   }
 }

@@ -1,0 +1,7 @@
+{
+  Offsets offsets=new Offsets();
+  offsets.setEarliestOffset(previousOffset);
+  offsets.setLatestOffset(previousOffset);
+  offsets.startAtEarliestOffset();
+  return getWorkUnitForTopicPartition(partition,offsets);
+}

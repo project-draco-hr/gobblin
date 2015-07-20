@@ -13,6 +13,9 @@
   NLineInputFormat.addInputPath(this.job,jobInputFile);
   Path jobOutputPath=new Path(this.mrJobDir,"output");
   SequenceFileOutputFormat.setOutputPath(this.job,jobOutputPath);
+  Path jobStateFile=new Path(this.mrJobDir,JOB_STATE_FILE_NAME);
+  serializeJobState(jobStateFile,this.jobContext.getJobState());
+  job.getConfiguration().set(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY,jobStateFile.toString());
   if (this.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
     int maxMappers=Integer.parseInt(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY));
     if (workUnits.size() > maxMappers) {

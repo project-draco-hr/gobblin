@@ -1,0 +1,9 @@
+{
+  ExtractFactory extractFactory=new ExtractFactory("yyyyMMddHHmmss");
+  Set<String> extractIDs=Sets.newHashSet();
+  int numOfExtracts=100;
+  for (int i=0; i < numOfExtracts; i++) {
+    extractIDs.add(extractFactory.getUniqueExtract(Extract.TableType.APPEND_ONLY,"namespace","table").getExtractId());
+  }
+  Assert.assertEquals(extractIDs.size(),numOfExtracts);
+}
