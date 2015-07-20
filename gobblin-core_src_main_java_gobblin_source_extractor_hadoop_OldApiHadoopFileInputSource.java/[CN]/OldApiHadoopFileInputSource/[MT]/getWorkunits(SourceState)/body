@@ -20,8 +20,8 @@
     List<WorkUnit> workUnits=Lists.newArrayListWithCapacity(fileSplits.length);
     for (    InputSplit inputSplit : fileSplits) {
       FileSplit fileSplit=(FileSplit)inputSplit;
-      Extract extract=state.createExtract(tableType,tableNamespace,tableName);
-      WorkUnit workUnit=state.createWorkUnit(extract);
+      Extract extract=createExtract(tableType,tableNamespace,tableName);
+      WorkUnit workUnit=WorkUnit.create(extract);
       workUnit.setProp(HadoopFileInputSource.FILE_SPLIT_BYTES_STRING_KEY,HadoopUtils.serializeToString(fileSplit));
       workUnit.setProp(HadoopFileInputSource.FILE_SPLIT_PATH_KEY,fileSplit.getPath().toString());
       workUnits.add(workUnit);
