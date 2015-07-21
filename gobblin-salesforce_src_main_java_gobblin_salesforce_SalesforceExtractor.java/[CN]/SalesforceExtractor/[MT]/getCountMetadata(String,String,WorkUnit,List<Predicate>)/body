@@ -20,7 +20,7 @@
       Iterator<Predicate> i=predicateList.listIterator();
       while (i.hasNext()) {
         Predicate predicate=i.next();
-        query=SqlQueryHelper.addPredicate(query,predicate.getCondition());
+        query=SqlQueryUtils.addPredicate(query,predicate.getCondition());
       }
       query=query + this.getLimitFromInputQuery(this.updatedQuery);
       this.log.info("QUERY: " + query);

@@ -16,10 +16,10 @@
       Iterator<Predicate> i=predicateList.listIterator();
       while (i.hasNext()) {
         Predicate predicate=i.next();
-        query=SqlQueryHelper.addPredicate(query,predicate.getCondition());
+        query=SqlQueryUtils.addPredicate(query,predicate.getCondition());
       }
       if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_SPECIFIC_API_ACTIVE))) {
-        query=SqlQueryHelper.addPredicate(query,"IsDeleted = true");
+        query=SqlQueryUtils.addPredicate(query,"IsDeleted = true");
       }
       query=query + limitString;
       this.log.info("QUERY: " + query);
