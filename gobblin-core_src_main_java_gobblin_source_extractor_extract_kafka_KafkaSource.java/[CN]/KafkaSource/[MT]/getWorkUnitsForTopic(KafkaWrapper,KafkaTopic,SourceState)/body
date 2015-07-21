@@ -2,6 +2,7 @@
   List<WorkUnit> workUnits=Lists.newArrayList();
   for (  KafkaPartition partition : topic.getPartitions()) {
     WorkUnit workUnit=getWorkUnitForTopicPartition(kafkaWrapper,partition,state);
+    this.partitionsToBeProcessed.add(partition);
     if (workUnit != null) {
       workUnits.add(workUnit);
     }

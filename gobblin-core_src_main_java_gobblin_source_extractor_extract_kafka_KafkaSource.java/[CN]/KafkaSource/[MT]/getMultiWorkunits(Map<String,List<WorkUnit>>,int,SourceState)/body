@@ -1,7 +1,7 @@
 {
   Preconditions.checkArgument(numOfMultiWorkunits >= 1);
   long totalEstDataSize=0;
-  for (  List<WorkUnit> workUnitsForTopic : workUnits) {
+  for (  List<WorkUnit> workUnitsForTopic : workUnits.values()) {
     for (    WorkUnit workUnit : workUnitsForTopic) {
       setWorkUnitEstSize(workUnit);
       totalEstDataSize+=getWorkUnitEstSize(workUnit);
@@ -9,7 +9,7 @@
   }
   long avgGroupSize=(long)((double)totalEstDataSize / (double)numOfMultiWorkunits / 3.0);
   List<MultiWorkUnit> mwuGroups=Lists.newArrayList();
-  for (  List<WorkUnit> workUnitsForTopic : workUnits) {
+  for (  List<WorkUnit> workUnitsForTopic : workUnits.values()) {
     long estimatedDataSizeForTopic=calcTotalEstSizeForTopic(workUnitsForTopic);
     if (estimatedDataSizeForTopic < avgGroupSize) {
       MultiWorkUnit mwuGroup=new MultiWorkUnit();
