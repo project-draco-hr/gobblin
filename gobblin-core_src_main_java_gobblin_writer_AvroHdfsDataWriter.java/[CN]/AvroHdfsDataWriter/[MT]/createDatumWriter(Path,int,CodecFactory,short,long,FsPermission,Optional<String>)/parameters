@@ -4,3 +4,4 @@ CodecFactory codecFactory
 short replication
 long blockSize
 FsPermission permissions
+Optional<String> group
