@@ -1,0 +1,6 @@
+{
+  SourceState sourceState=new SourceState();
+  sourceState.setProp("testKey","true");
+  WorkUnitState workUnitState=new WorkUnitState(new WorkUnit(sourceState,null));
+  Assert.assertEquals(workUnitState,workUnitState);
+}
