@@ -1,5 +1,5 @@
 {
-  Preconditions.checkArgument(properties.containsKey(KAFKA_SCHEMA_REGISTRY_URL),"Schema registry URL not provided.");
+  Preconditions.checkArgument(properties.containsKey(KAFKA_SCHEMA_REGISTRY_URL),String.format("Property %s not provided.",KAFKA_SCHEMA_REGISTRY_URL));
   this.url=properties.getProperty(KAFKA_SCHEMA_REGISTRY_URL);
   int maxCacheSize=Integer.parseInt(properties.getProperty(KAFKA_SCHEMA_REGISTRY_MAX_CACHE_SIZE,DEFAULT_KAFKA_SCHEMA_REGISTRY_MAX_CACHE_SIZE));
   int expireAfterWriteMin=Integer.parseInt(properties.getProperty(KAFKA_SCHEMA_REGISTRY_CACHE_EXPIRE_AFTER_WRITE_MIN,DEFAULT_KAFKA_SCHEMA_REGISTRY_CACHE_EXPIRE_AFTER_WRITE_MIN));

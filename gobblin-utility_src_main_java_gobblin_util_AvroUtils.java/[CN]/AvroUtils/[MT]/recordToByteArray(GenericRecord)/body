@@ -1,0 +1,17 @@
+{
+  Closer closer=Closer.create();
+  try {
+    ByteArrayOutputStream out=closer.register(new ByteArrayOutputStream());
+    Encoder encoder=EncoderFactory.get().directBinaryEncoder(out,null);
+    DatumWriter<GenericRecord> writer=new GenericDatumWriter<GenericRecord>(record.getSchema());
+    writer.write(record,encoder);
+    byte[] byteArray=out.toByteArray();
+    return byteArray;
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}
