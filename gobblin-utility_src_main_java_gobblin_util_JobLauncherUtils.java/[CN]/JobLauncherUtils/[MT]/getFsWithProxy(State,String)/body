@@ -1,16 +1,25 @@
 {
-  if (state.getPropAsBoolean(ConfigurationKeys.SHOULD_FS_PROXY_AS_USER,ConfigurationKeys.DEFAULT_SHOULD_FS_PROXY_AS_USER)) {
-    try {
-      return new ProxiedFileSystemWrapper().getProxiedFileSystem(state,ProxiedFileSystemWrapper.AuthType.KEYTAB,state.getProp(ConfigurationKeys.SUPER_USER_KEY_TAB_LOCATION),writerFsUri);
-    }
- catch (    InterruptedException e) {
-      throw new IOException(e);
-    }
-catch (    URISyntaxException e) {
-      throw new IOException(e);
-    }
+  if (!state.getPropAsBoolean(ConfigurationKeys.SHOULD_FS_PROXY_AS_USER,ConfigurationKeys.DEFAULT_SHOULD_FS_PROXY_AS_USER)) {
+    return FileSystem.get(URI.create(writerFsUri),new Configuration());
   }
  else {
-    return FileSystem.get(URI.create(writerFsUri),new Configuration());
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(state.getProp(ConfigurationKeys.FS_PROXY_AS_USER_NAME)),"State does not contain a proper proxy user name");
+    String owner=state.getProp(ConfigurationKeys.FS_PROXY_AS_USER_NAME);
+    if (ownerAndFs.containsKey(owner)) {
+      return ownerAndFs.get(owner);
+    }
+ else {
+      try {
+        FileSystem proxiedFs=new ProxiedFileSystemWrapper().getProxiedFileSystem(state,ProxiedFileSystemWrapper.AuthType.KEYTAB,state.getProp(ConfigurationKeys.SUPER_USER_KEY_TAB_LOCATION),writerFsUri);
+        ownerAndFs.put(owner,proxiedFs);
+        return proxiedFs;
+      }
+ catch (      InterruptedException e) {
+        throw new IOException(e);
+      }
+catch (      URISyntaxException e) {
+        throw new IOException(e);
+      }
+    }
   }
 }
