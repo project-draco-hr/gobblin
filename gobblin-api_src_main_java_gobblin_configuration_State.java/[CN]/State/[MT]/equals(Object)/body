@@ -3,5 +3,5 @@
     return false;
   }
   State other=(State)object;
-  return ((this.id == null && other.id == null) || (this.id != null && this.id.equals(other.id))) && this.properties.equals(other.getProperties());
+  return ((this.id == null && other.id == null) || (this.id != null && this.id.equals(other.id))) && this.properties.equals(other.properties);
 }
