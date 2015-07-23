@@ -2,7 +2,11 @@
   if (this.closed) {
     return;
   }
-  this.writer.flush();
-  this.writer.close();
-  this.closed=true;
+  try {
+    this.writer.flush();
+  }
+  finally {
+    this.writer.close();
+    this.closed=true;
+  }
 }

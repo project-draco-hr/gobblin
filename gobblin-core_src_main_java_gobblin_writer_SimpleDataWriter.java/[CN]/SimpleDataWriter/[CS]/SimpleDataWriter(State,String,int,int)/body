@@ -11,5 +11,4 @@
   this.prependSize=properties.getPropAsBoolean(ConfigurationKeys.SIMPLE_WRITER_PREPEND_SIZE,true);
   this.recordsWritten=0;
   this.bytesWritten=0;
-  this.closed=false;
 }

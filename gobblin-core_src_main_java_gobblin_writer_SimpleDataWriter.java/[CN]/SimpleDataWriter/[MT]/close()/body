@@ -1,10 +1,10 @@
 {
-  if (stagingFileOutputStream != null && !this.closed) {
+  if (this.stagingFileOutputStream != null && !this.closed) {
     try {
-      stagingFileOutputStream.flush();
+      this.stagingFileOutputStream.flush();
     }
   finally {
-      stagingFileOutputStream.close();
+      this.stagingFileOutputStream.close();
       this.closed=true;
     }
   }

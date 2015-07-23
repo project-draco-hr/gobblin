@@ -2,10 +2,7 @@
   if (this.fs.exists(avroFile)) {
     throw new IOException(String.format("File %s already exists",avroFile));
   }
-  FSDataOutputStream outputStream=this.fs.create(avroFile,permissions,true,bufferSize,replication,blockSize,null);
-  if (group.isPresent()) {
-    this.fs.setOwner(avroFile,this.fs.getFileStatus(avroFile).getOwner(),group.get());
-  }
+  FSDataOutputStream outputStream=this.fs.create(avroFile,this.permission,true,this.bufferSize,this.replicationFactor,this.blockSize,null);
   DataFileWriter<GenericRecord> writer=new DataFileWriter<GenericRecord>(this.datumWriter);
   writer.setCodec(codecFactory);
   return writer.create(this.schema,outputStream);
