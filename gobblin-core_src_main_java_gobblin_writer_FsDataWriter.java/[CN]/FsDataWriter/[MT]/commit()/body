@@ -3,6 +3,9 @@
   if (!this.fs.exists(this.stagingFile)) {
     throw new IOException(String.format("File %s does not exist",this.stagingFile));
   }
+  if (this.group.isPresent()) {
+    this.fs.setOwner(this.stagingFile,this.fs.getFileStatus(this.stagingFile).getOwner(),this.group.get());
+  }
   LOG.info(String.format("Moving data from %s to %s",this.stagingFile,this.outputFile));
   if (this.fs.exists(this.outputFile)) {
     LOG.warn(String.format("Task output file %s already exists",this.outputFile));
