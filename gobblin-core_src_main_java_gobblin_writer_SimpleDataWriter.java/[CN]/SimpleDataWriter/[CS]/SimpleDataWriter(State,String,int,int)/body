@@ -7,7 +7,6 @@
  else {
     this.recordDelimiter=Optional.of(delim.getBytes()[0]);
   }
-  this.stagingFileOutputStream=this.fs.create(this.stagingFile,true);
   this.prependSize=properties.getPropAsBoolean(ConfigurationKeys.SIMPLE_WRITER_PREPEND_SIZE,true);
   this.recordsWritten=0;
   this.bytesWritten=0;

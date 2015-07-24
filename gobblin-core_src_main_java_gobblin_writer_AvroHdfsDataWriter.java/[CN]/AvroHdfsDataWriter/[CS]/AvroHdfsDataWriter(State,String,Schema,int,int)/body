@@ -3,5 +3,5 @@
   CodecFactory codecFactory=WriterUtils.getCodecFactory(Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_CODEC_TYPE,numBranches,branchId))),Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DEFLATE_LEVEL,numBranches,branchId))));
   this.schema=schema;
   this.datumWriter=new GenericDatumWriter<GenericRecord>();
-  this.writer=createDatumWriter(this.stagingFile,codecFactory);
+  this.writer=this.closer.register(createDataFileWriter(codecFactory));
 }

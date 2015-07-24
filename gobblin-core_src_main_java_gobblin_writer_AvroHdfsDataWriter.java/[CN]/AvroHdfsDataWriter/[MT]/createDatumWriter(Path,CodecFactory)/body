@@ -1,9 +1,0 @@
-{
-  if (this.fs.exists(avroFile)) {
-    throw new IOException(String.format("File %s already exists",avroFile));
-  }
-  FSDataOutputStream outputStream=this.fs.create(avroFile,this.permission,true,this.bufferSize,this.replicationFactor,this.blockSize,null);
-  DataFileWriter<GenericRecord> writer=new DataFileWriter<GenericRecord>(this.datumWriter);
-  writer.setCodec(codecFactory);
-  return writer.create(this.schema,outputStream);
-}
