@@ -27,4 +27,13 @@ catch (    URISyntaxException e) {
   if (!this.fs.exists(this.outputFile.getParent())) {
     this.fs.mkdirs(this.outputFile.getParent());
   }
+  this.bufferSize=Integer.parseInt(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUFFER_SIZE,numBranches,branchId),ConfigurationKeys.DEFAULT_BUFFER_SIZE));
+  this.replicationFactor=properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_REPLICATION_FACTOR,numBranches,branchId),this.fs.getDefaultReplication(this.outputFile));
+  this.blockSize=properties.getPropAsLong(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_BLOCK_SIZE,numBranches,branchId),this.fs.getDefaultBlockSize(this.outputFile));
+  this.permission=new FsPermission(properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PERMISSIONS,numBranches,branchId),FsPermission.getDefault().toShort()));
+  this.stagingFileOutputStream=this.closer.register(this.fs.create(this.stagingFile,this.permission,true,this.bufferSize,this.replicationFactor,this.blockSize,null));
+  this.group=Optional.fromNullable(properties.getProp(ConfigurationKeys.WRITER_GROUP_NAME));
+  if (this.group.isPresent()) {
+    this.fs.setOwner(this.stagingFile,this.fs.getFileStatus(this.stagingFile).getOwner(),this.group.get());
+  }
 }
