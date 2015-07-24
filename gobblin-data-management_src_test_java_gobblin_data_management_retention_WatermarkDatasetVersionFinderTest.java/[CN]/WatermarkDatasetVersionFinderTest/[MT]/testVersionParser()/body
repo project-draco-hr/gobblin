@@ -1,5 +1,5 @@
 {
-  Props props=new Props();
+  Properties props=new Properties();
   WatermarkDatasetVersionFinder parser=new WatermarkDatasetVersionFinder(null,props);
   Assert.assertEquals(parser.versionClass(),StringDatasetVersion.class);
   Assert.assertEquals(parser.globVersionPattern(),new Path("*"));

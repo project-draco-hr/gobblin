@@ -1,5 +1,5 @@
 {
-  Props props=new Props();
+  Properties props=new Properties();
   NewestKRetentionPolicy policy=new NewestKRetentionPolicy(props);
   StringDatasetVersion datasetVersion1=new StringDatasetVersion("000_newest",new Path("test"));
   StringDatasetVersion datasetVersion2=new StringDatasetVersion("001_mid",new Path("test"));

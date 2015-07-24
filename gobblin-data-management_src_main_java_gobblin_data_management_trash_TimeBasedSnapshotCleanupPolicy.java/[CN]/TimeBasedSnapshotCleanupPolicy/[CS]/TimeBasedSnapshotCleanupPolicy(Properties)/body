@@ -1,0 +1,3 @@
+{
+  this.retentionMinutes=Integer.parseInt(props.getProperty(SNAPSHOT_RETENTION_POLICY_MINUTES_KEY,Integer.toString(SNAPSHOT_RETENTION_POLICY_MINUTES_DEFAULT)));
+}

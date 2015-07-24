@@ -1,0 +1,8 @@
+{
+  this(fs,new Callable<Trash>(){
+    @Override public Trash call() throws Exception {
+      return new Trash(fs,props);
+    }
+  }
+,Boolean.valueOf(props.getProperty(SIMULATE_KEY,SIMULATE_DEFAULT)),Boolean.valueOf(props.getProperty(SKIP_TRASH_KEY,SKIP_TRASH_DEFAULT)),Boolean.valueOf(props.getProperty(DELETE_EMPTY_DIRECTORIES_KEY,DELETE_EMPTY_DIRECTORIES_DEFAULT)),log);
+}
