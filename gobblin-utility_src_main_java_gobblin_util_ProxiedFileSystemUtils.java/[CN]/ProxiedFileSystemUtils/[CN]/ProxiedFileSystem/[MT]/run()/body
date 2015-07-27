@@ -1,0 +1,4 @@
+{
+  log.info("Creating a filesystem for user: " + UserGroupInformation.getCurrentUser());
+  return FileSystem.get(fsURI,conf);
+}

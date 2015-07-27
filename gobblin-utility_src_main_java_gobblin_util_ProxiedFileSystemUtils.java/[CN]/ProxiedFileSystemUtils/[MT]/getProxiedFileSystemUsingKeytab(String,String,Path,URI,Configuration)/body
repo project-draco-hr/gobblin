@@ -1,0 +1,3 @@
+{
+  return loginAndProxyAsUser(userNameToProxyAs,superUserName,superUserKeytabLocation).doAs(new ProxiedFileSystem(fsURI,conf));
+}

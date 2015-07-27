@@ -1,0 +1,29 @@
+{
+  log.info("Reading tokens from sequence file " + tokenFilePath);
+  Closer closer=Closer.create();
+  try {
+    FileSystem localFs=FileSystem.getLocal(new Configuration());
+    SequenceFile.Reader tokenReader=closer.register(new SequenceFile.Reader(localFs,tokenFilePath,localFs.getConf()));
+    Text key=new Text();
+    Token<?> value=new Token();
+    while (tokenReader.next(key,value)) {
+      log.debug("Found token for user: " + key);
+      if (key.toString().equals(userNameKey)) {
+        return Optional.<Token<?>>of(value);
+      }
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      log.warn("Unable to close sequence file reader for path: " + tokenFilePath);
+    }
+  }
+  log.warn("Did not find any tokens for user " + userNameKey);
+  return Optional.absent();
+}

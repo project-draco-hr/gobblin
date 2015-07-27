@@ -1,0 +1,3 @@
+{
+  return Lists.newArrayList(Iterables.filter(allVersions,Predicates.not(this.predicate)));
+}
