@@ -40,15 +40,8 @@
       return;
     }
     TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_COMMIT);
-    setFinalJobState(jobState);
-    if (canCommit(this.jobContext.getJobCommitPolicy(),jobState)) {
-      try {
-        commitJob(jobState);
-      }
-  finally {
-        persistJobState(jobState);
-      }
-    }
+    this.jobContext.setFinalJobState();
+    this.jobContext.commit();
     jobCommitTimer.stop();
   }
  catch (  Throwable t) {

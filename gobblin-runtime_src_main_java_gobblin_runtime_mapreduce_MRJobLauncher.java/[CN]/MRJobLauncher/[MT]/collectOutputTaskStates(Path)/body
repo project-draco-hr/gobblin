@@ -1,4 +1,7 @@
 {
+  if (!this.fs.exists(taskStatePath)) {
+    return ImmutableList.of();
+  }
   FileStatus[] fileStatuses=this.fs.listStatus(taskStatePath,new PathFilter(){
     @Override public boolean accept(    Path path){
       return path.getName().endsWith(TASK_STATE_STORE_TABLE_SUFFIX);
@@ -6,7 +9,7 @@
   }
 );
   if (fileStatuses == null || fileStatuses.length == 0) {
-    return Lists.newArrayList();
+    return ImmutableList.of();
   }
   Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();
   Closer closer=Closer.create();
@@ -23,5 +26,5 @@
     closer.close();
   }
   LOG.info(String.format("Collected task state of %d completed tasks",taskStateQueue.size()));
-  return Lists.newArrayList(taskStateQueue);
+  return ImmutableList.copyOf(taskStateQueue);
 }

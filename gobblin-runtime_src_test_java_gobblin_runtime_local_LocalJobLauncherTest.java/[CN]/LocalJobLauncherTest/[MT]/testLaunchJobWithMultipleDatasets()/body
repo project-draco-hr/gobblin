@@ -1,0 +1,10 @@
+{
+  Properties jobProps=loadJobProps();
+  jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithMultipleDatasets");
+  try {
+    this.jobLauncherTestHelper.runTestWithMultipleDatasets(jobProps);
+  }
+  finally {
+    this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
+  }
+}

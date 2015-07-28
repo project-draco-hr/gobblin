@@ -3,5 +3,5 @@
     return false;
   }
   SourceState other=(SourceState)object;
-  return super.equals(other) && this.previousSourceState.equals(other.previousSourceState) && this.previousWorkUnitStates.equals(other.previousWorkUnitStates);
+  return super.equals(other) && this.previousDatasetStatesByUrns.equals(other.previousDatasetStatesByUrns) && this.previousWorkUnitStates.equals(other.previousWorkUnitStates);
 }

@@ -1,0 +1,6 @@
+{
+  JobState copy=JobState.copyOf(this.jobState,false);
+  doAsserts(copy,false);
+  copy=JobState.copyOf(this.jobState,true);
+  doAsserts(copy,true);
+}

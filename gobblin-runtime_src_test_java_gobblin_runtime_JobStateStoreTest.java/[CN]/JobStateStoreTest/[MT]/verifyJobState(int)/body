@@ -5,6 +5,7 @@
   Assert.assertEquals(jobState.getState(),JobState.RunningState.COMMITTED);
   Assert.assertEquals(jobState.getTaskStates().size(),DummySource.NUM_WORK_UNITS);
   Assert.assertEquals(jobState.getProp(FOO),BAR);
+  Assert.assertEquals(jobState.getPropAsInt(CURRENT_RUN_KEY),run);
   for (  TaskState taskState : jobState.getTaskStates()) {
     Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
     Assert.assertEquals(taskState.getProp(FOO),BAR);

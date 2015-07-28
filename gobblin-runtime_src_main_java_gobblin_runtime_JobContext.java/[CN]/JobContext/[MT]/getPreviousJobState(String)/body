@@ -1,9 +1,0 @@
-{
-  if (this.jobStateStore.exists(jobName,"current" + AbstractJobLauncher.JOB_STATE_STORE_TABLE_SUFFIX)) {
-    List<JobState> previousJobStateList=this.jobStateStore.getAll(jobName,"current" + AbstractJobLauncher.JOB_STATE_STORE_TABLE_SUFFIX);
-    if (!previousJobStateList.isEmpty()) {
-      return previousJobStateList.get(0);
-    }
-  }
-  return new JobState();
-}

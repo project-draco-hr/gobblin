@@ -1,0 +1,7 @@
+{
+  List<WorkUnit> workUnits=super.getWorkunits(state);
+  for (int i=0; i < workUnits.size(); i++) {
+    workUnits.get(i).setProp(ConfigurationKeys.DATASET_URN_KEY,"Dataset" + i);
+  }
+  return workUnits;
+}

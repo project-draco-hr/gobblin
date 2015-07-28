@@ -19,7 +19,11 @@
     this.fss.get(branchId).delete(publisherOutputDir,true);
   }
  else {
-    this.fss.get(branchId).mkdirs(publisherOutputDir.getParent());
+    Path parentDir=publisherOutputDir.getParent();
+    this.fss.get(branchId).mkdirs(parentDir);
+    if (this.groups.get(branchId).isPresent()) {
+      HadoopUtils.setGroup(this.fss.get(branchId),parentDir,this.groups.get(branchId).get());
+    }
   }
   LOG.info(String.format("Moving %s to %s",writerOutputDir,publisherOutputDir));
   parallelRunner.renamePath(writerOutputDir,publisherOutputDir);

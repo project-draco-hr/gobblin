@@ -1,0 +1,7 @@
+{
+  ImmutableList.Builder<WorkUnitState> taskStateBuilder=ImmutableList.builder();
+  for (  JobState datasetState : datasetStates) {
+    taskStateBuilder.addAll(datasetState.getTaskStatesAsWorkUnitStates());
+  }
+  return taskStateBuilder.build();
+}

@@ -1,0 +1,18 @@
+{
+  for (  TaskState taskState : datasetState.getTaskStates()) {
+    if (taskState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
+      taskState.backoffActualHighWatermark();
+      if (this.jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
+        datasetState.setState(JobState.RunningState.FAILED);
+        this.jobState.setState(JobState.RunningState.FAILED);
+      }
+    }
+  }
+  String jobName=datasetState.getJobName();
+  String jobId=datasetState.getJobId();
+  String tableName=Strings.isNullOrEmpty(datasetUrn) ? jobId + JOB_STATE_STORE_TABLE_SUFFIX : datasetUrn + "-" + jobId+ JOB_STATE_STORE_TABLE_SUFFIX;
+  String alias=Strings.isNullOrEmpty(datasetUrn) ? "current" + JOB_STATE_STORE_TABLE_SUFFIX : datasetUrn + "-current" + JOB_STATE_STORE_TABLE_SUFFIX;
+  this.logger.info("Persisting " + tableName + " to the job state store");
+  this.jobStateStore.put(jobName,tableName,datasetState);
+  this.jobStateStore.createAlias(jobName,tableName,alias);
+}

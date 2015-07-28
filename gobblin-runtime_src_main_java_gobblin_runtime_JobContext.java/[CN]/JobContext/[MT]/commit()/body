@@ -1,0 +1,14 @@
+{
+  Map<String,JobState> datasetStatesByUrns=this.jobState.getDatasetStatesByUrns();
+  for (  Map.Entry<String,JobState> entry : datasetStatesByUrns.entrySet()) {
+    setFinalDatasetState(entry.getValue());
+    if (canCommitDataset(this.jobCommitPolicy,entry.getValue())) {
+      try {
+        commitDataset(entry.getValue());
+      }
+  finally {
+        persistDatasetState(entry.getKey(),entry.getValue());
+      }
+    }
+  }
+}
