@@ -1,0 +1,3 @@
+{
+  super(storeUrl,JobState.DatasetState.class);
+}

@@ -1,4 +1,0 @@
-State properties
-Map<String,JobState> previousDatasetStates
-String jobName
-String jobId

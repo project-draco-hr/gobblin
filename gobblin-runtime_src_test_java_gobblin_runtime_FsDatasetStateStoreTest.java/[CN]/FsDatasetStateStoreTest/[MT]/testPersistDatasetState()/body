@@ -1,0 +1,16 @@
+{
+  JobState.DatasetState datasetState=new JobState.DatasetState(TEST_JOB_NAME,TEST_JOB_ID);
+  datasetState.setDatasetUrn(TEST_DATASET_URN);
+  datasetState.setProp("foo","bar");
+  datasetState.setState(JobState.RunningState.COMMITTED);
+  datasetState.setId(TEST_DATASET_URN);
+  for (int i=0; i < 3; i++) {
+    TaskState taskState=new TaskState();
+    taskState.setJobId(TEST_JOB_ID);
+    taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
+    taskState.setId(TEST_TASK_ID_PREFIX + i);
+    taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    datasetState.addTaskState(taskState);
+  }
+  this.fsDatasetStateStore.persistDatasetState(TEST_DATASET_URN,datasetState);
+}

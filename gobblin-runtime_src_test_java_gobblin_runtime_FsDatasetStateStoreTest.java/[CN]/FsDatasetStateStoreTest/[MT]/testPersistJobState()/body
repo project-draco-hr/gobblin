@@ -1,0 +1,15 @@
+{
+  JobState jobState=new JobState(TEST_JOB_NAME,TEST_JOB_ID);
+  jobState.setId(TEST_JOB_ID);
+  jobState.setProp("foo","bar");
+  jobState.setState(JobState.RunningState.COMMITTED);
+  for (int i=0; i < 3; i++) {
+    TaskState taskState=new TaskState();
+    taskState.setJobId(TEST_JOB_ID);
+    taskState.setTaskId(TEST_TASK_ID_PREFIX + i);
+    taskState.setId(TEST_TASK_ID_PREFIX + i);
+    taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    jobState.addTaskState(taskState);
+  }
+  this.fsJobStateStore.put(TEST_JOB_NAME,FsDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + FsDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX,jobState);
+}

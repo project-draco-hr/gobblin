@@ -1,0 +1,4 @@
+State properties
+Map<String,JobState.DatasetState> previousDatasetStates
+String jobName
+String jobId

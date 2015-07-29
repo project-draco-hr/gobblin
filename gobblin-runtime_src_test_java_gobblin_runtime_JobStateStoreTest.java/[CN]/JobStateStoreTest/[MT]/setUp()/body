@@ -1,9 +1,0 @@
-{
-  Properties properties=new Properties();
-  properties.load(new FileReader("gobblin-test/resource/gobblin.test.properties"));
-  this.jobStateStore=new FsStateStore<JobState>(properties.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),properties.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
-  this.jobConfig.putAll(properties);
-  this.jobConfig.setProperty(ConfigurationKeys.JOB_NAME_KEY,JOB_NAME);
-  this.jobConfig.setProperty(ConfigurationKeys.SOURCE_CLASS_KEY,DummySource.class.getName());
-  this.jobConfig.setProperty(ConfigurationKeys.WRITER_BUILDER_CLASS,DummyDataWriterBuilder.class.getName());
-}
