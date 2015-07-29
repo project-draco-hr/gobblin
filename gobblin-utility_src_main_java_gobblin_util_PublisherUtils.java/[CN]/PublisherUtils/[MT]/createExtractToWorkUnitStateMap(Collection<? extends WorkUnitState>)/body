@@ -1,0 +1,7 @@
+{
+  Multimap<Extract,WorkUnitState> extractToWorkUnitStateMap=ArrayListMultimap.create();
+  for (  WorkUnitState workUnitState : workUnitStates) {
+    extractToWorkUnitStateMap.put(workUnitState.getExtract(),workUnitState);
+  }
+  return extractToWorkUnitStateMap;
+}
