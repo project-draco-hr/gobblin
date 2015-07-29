@@ -44,12 +44,12 @@
     if (canCommit(this.jobContext.getJobCommitPolicy(),jobState)) {
       try {
         commitJob(jobState);
-        processTaskStates(jobState.getTaskStates());
       }
   finally {
         persistJobState(jobState);
       }
     }
+    postProcessTaskStates(jobState.getTaskStates());
     jobCommitTimer.stop();
   }
  catch (  Throwable t) {
