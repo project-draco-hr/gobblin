@@ -1,4 +1,6 @@
 {
+  this.properties.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN,recordsWritten());
+  this.properties.setProp(ConfigurationKeys.WRITER_BYTES_WRITTEN,bytesWritten());
   boolean closeFailed=false;
   for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
     try {
