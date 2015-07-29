@@ -1,14 +1,3 @@
 {
-  executorService.shutdown();
-  try {
-    if (!executorService.awaitTermination(60,TimeUnit.SECONDS)) {
-      executorService.shutdownNow();
-      executorService.awaitTermination(60,TimeUnit.SECONDS);
-    }
-  }
- catch (  InterruptedException ie) {
-    executorService.shutdownNow();
-    Thread.currentThread().interrupt();
-    throw ie;
-  }
+  MoreExecutors.shutdownAndAwaitTermination(executorService,EXECUTOR_SERVICE_SHUTDOWN_TIMEOUT,EXECUTOR_SERVICE_SHUTDOWN_TIMEOUT_TIMEUNIT);
 }

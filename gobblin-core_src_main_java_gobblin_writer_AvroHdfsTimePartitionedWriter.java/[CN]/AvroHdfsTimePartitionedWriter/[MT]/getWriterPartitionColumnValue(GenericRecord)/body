@@ -1,0 +1,8 @@
+{
+  if (this.partitionColumnName.isPresent()) {
+    return AvroUtils.getFieldValue(record,this.partitionColumnName.get());
+  }
+ else {
+    return Optional.absent();
+  }
+}

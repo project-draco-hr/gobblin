@@ -1,3 +1,3 @@
 {
-  this(fs,new Props());
+  this(fs,new Properties());
 }

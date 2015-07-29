@@ -1,0 +1,4 @@
+{
+  this.versionsRetained=Integer.valueOf(props.getProperty(VERSIONS_RETAINED_KEY,VERSIONS_RETAINED_DEFAULT));
+  LOGGER.info(String.format("%s will retain %d versions of each dataset.",NewestKRetentionPolicy.class.getCanonicalName(),this.versionsRetained));
+}

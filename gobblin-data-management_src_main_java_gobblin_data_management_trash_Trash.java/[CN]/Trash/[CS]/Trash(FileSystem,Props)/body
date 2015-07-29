@@ -1,11 +1,3 @@
 {
-  this.fs=fs;
-  this.trashLocation=getTrashLocation(fs,props);
-  Class<?> snapshotCleanupPolicyClass=props.getClass(SNAPSHOT_CLEANUP_POLICY_CLASS_KEY,TimeBasedSnapshotCleanupPolicy.class);
-  try {
-    this.snapshotCleanupPolicy=(SnapshotCleanupPolicy)snapshotCleanupPolicyClass.getConstructor(Props.class).newInstance(props);
-  }
- catch (  Exception exception) {
-    throw new IllegalArgumentException("Could not create snapshot cleanup policy with class " + snapshotCleanupPolicyClass.getCanonicalName(),exception);
-  }
+  this(fs,props.toProperties());
 }

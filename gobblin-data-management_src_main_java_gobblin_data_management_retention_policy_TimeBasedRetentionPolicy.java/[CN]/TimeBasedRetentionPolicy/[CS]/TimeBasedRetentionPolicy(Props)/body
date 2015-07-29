@@ -1,3 +1,0 @@
-{
-  this.retention=Duration.standardMinutes(props.getLong(RETENTION_MINUTES_KEY,RETENTION_MINUTES_DEFAULT));
-}
