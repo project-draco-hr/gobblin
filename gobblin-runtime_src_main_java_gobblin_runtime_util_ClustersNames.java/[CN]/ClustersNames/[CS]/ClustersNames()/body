@@ -1,0 +1,12 @@
+{
+  InputStream propsInput=this.getClass().getResourceAsStream(URL_TO_NAME_MAP_RESOURCE_NAME);
+  if (null != propsInput) {
+    try {
+      _urlToNameMap.load(propsInput);
+      LOG.info("Loaded cluster names map:" + _urlToNameMap);
+    }
+ catch (    IOException e) {
+      LOG.warn("Unable to load cluster names map: " + e,e);
+    }
+  }
+}

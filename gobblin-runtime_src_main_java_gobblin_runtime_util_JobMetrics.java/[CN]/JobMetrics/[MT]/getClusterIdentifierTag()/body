@@ -3,7 +3,7 @@
   if (clusterIdentifier == null) {
     clusterIdentifier=HADOOP_CONFIGURATION.get("mapreduce.jobtracker.address");
   }
-  clusterIdentifier=stripPort(clusterIdentifier);
+  clusterIdentifier=ClustersNames.getInstance().getClusterName(clusterIdentifier);
   if (clusterIdentifier == null || StringUtils.startsWithIgnoreCase(clusterIdentifier,"localhost") || StringUtils.startsWithIgnoreCase(clusterIdentifier,"0.0.0.0")) {
     try {
       clusterIdentifier=InetAddress.getLocalHost().getHostName();

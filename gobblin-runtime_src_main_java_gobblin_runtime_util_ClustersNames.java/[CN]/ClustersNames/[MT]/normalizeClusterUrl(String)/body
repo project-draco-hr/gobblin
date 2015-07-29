@@ -1,0 +1,12 @@
+{
+  try {
+    URI uri=new URI(clusterIdentifier.trim());
+    if (!uri.isOpaque() && null != uri.getHost()) {
+      clusterIdentifier=uri.getHost();
+    }
+  }
+ catch (  URISyntaxException e) {
+    LOG.warn("Unable to parse cluster URL: " + e,e);
+  }
+  return clusterIdentifier;
+}
