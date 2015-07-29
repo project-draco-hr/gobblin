@@ -1,0 +1,7 @@
+{
+  State state=new State();
+  state.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,recordsRead);
+  state.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,recordsWritten);
+  state.setProp(ConfigurationKeys.ROW_COUNT_RANGE,range);
+  return state;
+}

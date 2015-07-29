@@ -1,0 +1,6 @@
+{
+  RowCountRangePolicy rangePolicy=new RowCountRangePolicy(getTestState(4,1,0.5),TaskLevelPolicy.Type.FAIL);
+  Assert.assertEquals(rangePolicy.executePolicy(),Result.FAILED);
+  rangePolicy=new RowCountRangePolicy(getTestState(20,8,0.2),TaskLevelPolicy.Type.FAIL);
+  Assert.assertEquals(rangePolicy.executePolicy(),Result.FAILED);
+}
