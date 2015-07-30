@@ -30,7 +30,7 @@
     TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_PREPARATION);
     prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
     workUnitsPreparationTimer.stop();
-    storeJobExecutionInfo();
+    this.jobContext.storeJobExecutionInfo();
     TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_RUN);
     runWorkUnits(workUnits.get());
     jobRunTimer.stop();
@@ -58,7 +58,7 @@
     TimingEvent jobCleanupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_CLEANUP);
     cleanupStagingData(jobState);
     jobCleanupTimer.stop();
-    storeJobExecutionInfo();
+    this.jobContext.storeJobExecutionInfo();
     launchJobTimer.stop();
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
       this.jobContext.getJobMetricsOptional().get().triggerMetricReporting();
