@@ -1,0 +1,9 @@
+{
+  try {
+    loginAndProxyAsUser(userNameToProxyAs,superUserName,superUserKeytabLocation);
+  }
+ catch (  IOException e) {
+    return false;
+  }
+  return true;
+}

@@ -1,0 +1,3 @@
+{
+  this.predicate=(Predicate<DatasetVersion>)Class.forName(props.getProperty(RETENTION_POLICY_PREDICATE_CLASS)).getConstructor(Properties.class).newInstance(props);
+}

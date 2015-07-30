@@ -1,4 +1,8 @@
 {
+  this.properties.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN,recordsWritten());
+  this.properties.setProp(ConfigurationKeys.WRITER_BYTES_WRITTEN,bytesWritten());
+  this.properties.setProp(ConfigurationKeys.WRITER_EARLIEST_TIMESTAMP,this.earliestTimestampWritten);
+  this.properties.setProp(ConfigurationKeys.WRITER_AVERAGE_TIMESTAMP,(long)(this.totalTimestampWritten / recordsWritten()));
   boolean closeFailed=false;
   for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
     try {

@@ -6,4 +6,6 @@
     this.pathToWriterMap.put(writerOutputPath,avroHdfsDataWriter);
   }
   this.pathToWriterMap.get(writerOutputPath).write(record);
+  this.earliestTimestampWritten=Math.min(this.earliestTimestampWritten,recordTimestamp);
+  this.totalTimestampWritten+=recordTimestamp;
 }

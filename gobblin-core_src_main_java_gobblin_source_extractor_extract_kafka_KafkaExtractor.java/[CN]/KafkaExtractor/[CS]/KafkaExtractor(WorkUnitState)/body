@@ -12,8 +12,7 @@
   this.totalEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
   this.eventCounts=Maps.newHashMapWithExpectedSize(this.partitions.size());
   this.avgEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
-  this.messageIterator=null;
-  this.currentPartitionIdx=0;
+  this.errorPartitions=Sets.newHashSet();
   switchMetricContextToCurrentPartition();
   this.workUnitState.setActualHighWatermark(this.lowWatermark);
 }

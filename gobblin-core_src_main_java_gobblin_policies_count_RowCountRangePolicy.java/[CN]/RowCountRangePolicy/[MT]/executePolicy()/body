@@ -1,5 +1,5 @@
 {
-  if (Math.abs((this.rowsWritten - this.rowsRead) / this.rowsRead) <= this.range) {
+  if (Math.abs((this.rowsWritten - this.rowsRead) / (double)this.rowsRead) <= this.range) {
     return Result.PASSED;
   }
  else {

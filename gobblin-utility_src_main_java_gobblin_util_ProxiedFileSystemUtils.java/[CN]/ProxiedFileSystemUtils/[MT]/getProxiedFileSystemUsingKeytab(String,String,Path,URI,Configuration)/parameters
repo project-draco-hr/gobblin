@@ -1,0 +1,5 @@
+String userNameToProxyAs
+String superUserName
+Path superUserKeytabLocation
+URI fsURI
+Configuration conf
