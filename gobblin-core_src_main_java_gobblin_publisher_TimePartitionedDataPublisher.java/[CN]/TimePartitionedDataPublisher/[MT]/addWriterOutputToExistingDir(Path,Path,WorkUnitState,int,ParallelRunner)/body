@@ -7,6 +7,6 @@
       this.fss.get(branchId).mkdirs(outputPath.getParent());
     }
     LOG.info(String.format("Moving %s to %s",status.getPath(),outputPath));
-    parallelRunner.renamePath(status.getPath(),outputPath);
+    parallelRunner.renamePath(status.getPath(),outputPath,Optional.<String>absent());
   }
 }
