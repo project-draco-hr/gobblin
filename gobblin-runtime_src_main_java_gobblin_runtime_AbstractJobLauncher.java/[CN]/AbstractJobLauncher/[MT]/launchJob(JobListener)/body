@@ -49,6 +49,7 @@
         persistJobState(jobState);
       }
     }
+    postProcessTaskStates(jobState.getTaskStates());
     jobCommitTimer.stop();
   }
  catch (  Throwable t) {
