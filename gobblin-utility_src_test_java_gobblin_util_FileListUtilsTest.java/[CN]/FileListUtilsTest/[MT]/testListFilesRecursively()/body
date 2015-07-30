@@ -1,0 +1,24 @@
+{
+  FileSystem localFs=FileSystem.getLocal(new Configuration());
+  Path baseDir=new Path(FILE_UTILS_TEST_DIR,"fileListTestDir1");
+  try {
+    if (localFs.exists(baseDir)) {
+      localFs.delete(baseDir,true);
+    }
+    localFs.mkdirs(baseDir);
+    localFs.create(new Path(baseDir,TEST_FILE_NAME1));
+    Path subDir=new Path(baseDir,"subDir");
+    localFs.mkdirs(subDir);
+    localFs.create(new Path(subDir,TEST_FILE_NAME2));
+    List<FileStatus> testFiles=FileListUtils.listFilesRecursively(localFs,baseDir);
+    Assert.assertEquals(2,testFiles.size());
+    Set<String> fileNames=Sets.newHashSet();
+    for (    FileStatus testFileStatus : testFiles) {
+      fileNames.add(testFileStatus.getPath().getName());
+    }
+    Assert.assertTrue(fileNames.contains(TEST_FILE_NAME1) && fileNames.contains(TEST_FILE_NAME2));
+  }
+  finally {
+    localFs.delete(baseDir,true);
+  }
+}
