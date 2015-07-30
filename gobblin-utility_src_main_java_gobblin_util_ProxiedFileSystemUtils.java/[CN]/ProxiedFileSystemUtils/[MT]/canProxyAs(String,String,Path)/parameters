@@ -1,0 +1,3 @@
+String userNameToProxyAs
+String superUserName
+Path superUserKeytabLocation

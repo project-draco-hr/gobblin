@@ -1,0 +1,7 @@
+{
+  if (!UserGroupInformation.getLoginUser().getUserName().equals(superUserName)) {
+    Preconditions.checkNotNull(superUserKeytabLocation);
+    UserGroupInformation.loginUserFromKeytab(superUserName,superUserKeytabLocation.toString());
+  }
+  return UserGroupInformation.createProxyUser(userNameToProxyAs,UserGroupInformation.getLoginUser());
+}
