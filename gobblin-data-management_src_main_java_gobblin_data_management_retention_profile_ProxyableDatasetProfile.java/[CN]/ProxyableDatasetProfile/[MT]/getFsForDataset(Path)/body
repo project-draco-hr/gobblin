@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(this.props.containsKey(ConfigurationKeys.SUPER_USER_NAME_TO_PROXY_AS_OTHERS));
+  Preconditions.checkArgument(this.props.containsKey(ConfigurationKeys.SUPER_USER_KEY_TAB_LOCATION));
+  try {
+    return ProxiedFileSystemCache.getProxiedFileSystemUsingKeytab(this.fs.getFileStatus(path).getOwner(),this.props.getProperty(ConfigurationKeys.SUPER_USER_NAME_TO_PROXY_AS_OTHERS),new Path(this.props.getProperty(ConfigurationKeys.SUPER_USER_KEY_TAB_LOCATION)),this.fs.getUri(),this.fs.getConf());
+  }
+ catch (  ExecutionException e) {
+    throw new IOException("Cannot get proxied filesystem at Path: " + path);
+  }
+}
