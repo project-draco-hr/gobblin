@@ -1,11 +1,11 @@
 {
-  Map<String,List<WorkUnitState>> previousWorkUnitStatesByDatasetUrns=Maps.newHashMap();
+  Map<String,Iterable<WorkUnitState>> previousWorkUnitStatesByDatasetUrns=Maps.newHashMap();
   for (  WorkUnitState workUnitState : this.previousWorkUnitStates) {
     String datasetUrn=workUnitState.getProp(ConfigurationKeys.DATASET_URN_KEY,ConfigurationKeys.DEFAULT_DATASET_URN);
     if (!previousWorkUnitStatesByDatasetUrns.containsKey(datasetUrn)) {
       previousWorkUnitStatesByDatasetUrns.put(datasetUrn,Lists.<WorkUnitState>newArrayList());
     }
-    previousWorkUnitStatesByDatasetUrns.get(datasetUrn).add(workUnitState);
+    ((List<WorkUnitState>)previousWorkUnitStatesByDatasetUrns.get(datasetUrn)).add(workUnitState);
   }
   return ImmutableMap.copyOf(previousWorkUnitStatesByDatasetUrns);
 }

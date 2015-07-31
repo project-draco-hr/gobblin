@@ -1,0 +1,3 @@
+{
+  return Strings.isNullOrEmpty(datasetUrn) ? CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX : CharMatcher.is(':').replaceFrom(datasetUrn,'.') + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX+ DATASET_STATE_STORE_TABLE_SUFFIX;
+}

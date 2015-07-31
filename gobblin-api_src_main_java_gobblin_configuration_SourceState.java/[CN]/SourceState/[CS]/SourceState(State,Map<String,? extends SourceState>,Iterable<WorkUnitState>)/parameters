@@ -1,3 +1,3 @@
 State properties
 Map<String,? extends SourceState> previousDatasetStatesByUrns
-List<WorkUnitState> previousWorkUnitStates
+Iterable<WorkUnitState> previousWorkUnitStates

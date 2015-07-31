@@ -1,5 +1,5 @@
 {
-  if (state.getPreviousWorkUnitStates().isEmpty()) {
+  if (Iterables.isEmpty(state.getPreviousWorkUnitStates())) {
     return ImmutableList.of();
   }
   WorkUnitRetryPolicy workUnitRetryPolicy;
