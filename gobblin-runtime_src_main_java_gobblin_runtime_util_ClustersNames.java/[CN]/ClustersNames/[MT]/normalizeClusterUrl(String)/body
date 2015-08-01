@@ -6,7 +6,6 @@
     }
   }
  catch (  URISyntaxException e) {
-    LOG.warn("Unable to parse cluster URL: " + e,e);
   }
   return clusterIdentifier;
 }
