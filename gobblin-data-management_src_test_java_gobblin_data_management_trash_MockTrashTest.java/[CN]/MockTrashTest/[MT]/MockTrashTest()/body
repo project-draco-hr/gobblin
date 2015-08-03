@@ -1,0 +1,16 @@
+{
+  FileSystem fs=mock(FileSystem.class);
+  Path homeDirectory=new Path("/home/directory");
+  when(fs.getHomeDirectory()).thenReturn(homeDirectory);
+  when(fs.makeQualified(any(Path.class))).thenAnswer(new Answer<Path>(){
+    @Override public Path answer(    InvocationOnMock invocation) throws Throwable {
+      return (Path)invocation.getArguments()[0];
+    }
+  }
+);
+  Trash trash=new MockTrash(fs,new Properties(),"user");
+  Assert.assertTrue(trash.moveToTrash(new Path("/some/path")));
+  verify(fs).getHomeDirectory();
+  verify(fs).makeQualified(any(Path.class));
+  verifyNoMoreInteractions(fs);
+}

@@ -15,21 +15,13 @@
     this.log.info("Deleting paths: " + Arrays.toString(pathsToDelete.toArray()));
     boolean deletedAllPaths=true;
     for (    Path path : pathsToDelete) {
-      if (!this.simulate) {
-        boolean successfullyDeleted;
-        if (this.skipTrash) {
-          successfullyDeleted=this.fs.delete(path,true);
-        }
+      boolean successfullyDeleted=this.deleteAsOwner ? this.trash.moveToTrashAsOwner(path) : this.trash.moveToTrash(path);
+      if (successfullyDeleted) {
+        possiblyEmptyDirectories.add(path.getParent());
+      }
  else {
-          successfullyDeleted=this.trash.moveToTrash(path);
-        }
-        if (successfullyDeleted) {
-          possiblyEmptyDirectories.add(path.getParent());
-        }
- else {
-          this.log.error("Failed to delete path " + path + " in dataset version "+ versionToDelete);
-          deletedAllPaths=false;
-        }
+        this.log.error("Failed to delete path " + path + " in dataset version "+ versionToDelete);
+        deletedAllPaths=false;
       }
     }
     if (!deletedAllPaths) {

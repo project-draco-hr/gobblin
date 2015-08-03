@@ -1,0 +1,5 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(TrashFactory.TRASH_TEST,Boolean.toString(true));
+  return properties;
+}

@@ -1,0 +1,12 @@
+{
+  if (props.containsKey(TRASH_TEST) && Boolean.parseBoolean(props.getProperty(TRASH_TEST))) {
+    return new TestTrash(fs,props,user);
+  }
+  if (props.containsKey(SIMULATE) && Boolean.parseBoolean(props.getProperty(SIMULATE))) {
+    return new MockTrash(fs,props,user);
+  }
+  if (props.containsKey(SKIP_TRASH) && Boolean.parseBoolean(props.getProperty(SKIP_TRASH))) {
+    return new ImmediateDeletionTrash(fs,props,user);
+  }
+  return new ProxiedTrash(fs,props,user);
+}

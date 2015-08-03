@@ -1,0 +1,7 @@
+{
+  super(fs,propertiesForConstruction(props),user);
+  this.user=user;
+  this.deleteOperations=Lists.newArrayList();
+  this.simulate=props.containsKey(TrashFactory.SIMULATE) && Boolean.parseBoolean(props.getProperty(TrashFactory.SIMULATE));
+  this.skipTrash=props.containsKey(TrashFactory.SKIP_TRASH) && Boolean.parseBoolean(props.getProperty(TrashFactory.SKIP_TRASH));
+}

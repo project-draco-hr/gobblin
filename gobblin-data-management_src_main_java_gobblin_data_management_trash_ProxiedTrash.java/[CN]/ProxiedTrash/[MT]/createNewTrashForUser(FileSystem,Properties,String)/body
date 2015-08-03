@@ -1,0 +1,3 @@
+{
+  return new Trash(ProxiedFileSystemCache.getProxiedFileSystem(user,properties,fs.getUri()),properties,user);
+}

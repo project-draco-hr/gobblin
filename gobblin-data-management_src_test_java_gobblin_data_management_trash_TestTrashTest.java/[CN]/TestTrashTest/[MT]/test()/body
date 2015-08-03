@@ -1,0 +1,14 @@
+{
+  FileSystem fs=mock(FileSystem.class);
+  TestTrash trash=new TestTrash(fs,new Properties(),"user");
+  Path path1=new Path("/some/path");
+  Path path2=new Path("/some/other/path");
+  Assert.assertTrue(trash.moveToTrash(path1));
+  Assert.assertTrue(trash.moveToTrashAsOwner(path2));
+  System.out.println(Arrays.toString(trash.getDeleteOperations().toArray()));
+  Assert.assertEquals(trash.getDeleteOperations().size(),2);
+  Assert.assertTrue(trash.getDeleteOperations().get(0).getPath().equals(path1));
+  Assert.assertNull(trash.getDeleteOperations().get(0).getUser());
+  Assert.assertTrue(trash.getDeleteOperations().get(1).getPath().equals(path2));
+  Assert.assertTrue(trash.getDeleteOperations().get(1).getUser().equals("user"));
+}

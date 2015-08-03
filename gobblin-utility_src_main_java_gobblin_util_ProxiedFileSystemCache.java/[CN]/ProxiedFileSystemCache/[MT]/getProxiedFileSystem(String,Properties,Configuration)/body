@@ -1,0 +1,3 @@
+{
+  return getProxiedFileSystem(userNameToProxyAs,properties,FileSystem.getDefaultUri(conf),conf);
+}

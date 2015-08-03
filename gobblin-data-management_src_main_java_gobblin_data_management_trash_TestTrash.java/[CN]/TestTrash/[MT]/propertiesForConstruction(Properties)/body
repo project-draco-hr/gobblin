@@ -1,0 +1,7 @@
+{
+  Properties newProperties=new Properties();
+  newProperties.putAll(properties);
+  newProperties.setProperty(Trash.SNAPSHOT_CLEANUP_POLICY_CLASS_KEY,NoopSnapshotCleanupPolicy.class.getCanonicalName());
+  newProperties.setProperty(Trash.TRASH_LOCATION_KEY,"/test/path");
+  return newProperties;
+}
