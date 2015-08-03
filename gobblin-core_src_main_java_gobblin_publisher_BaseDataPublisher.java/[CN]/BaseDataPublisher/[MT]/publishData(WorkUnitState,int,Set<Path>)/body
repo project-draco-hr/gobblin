@@ -8,7 +8,7 @@
     LOG.warn(String.format("Branch %d of WorkUnit %s produced no data",branchId,workUnitState.getId()));
     return;
   }
-  Path publisherOutputDir=WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,branchId);
+  Path publisherOutputDir=getPublisherOutputDir(workUnitState,branchId);
   if (this.fileSystemByBranches.get(branchId).exists(publisherOutputDir)) {
     boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,this.numBranches,branchId));
     if (!replaceFinalOutputDir) {
