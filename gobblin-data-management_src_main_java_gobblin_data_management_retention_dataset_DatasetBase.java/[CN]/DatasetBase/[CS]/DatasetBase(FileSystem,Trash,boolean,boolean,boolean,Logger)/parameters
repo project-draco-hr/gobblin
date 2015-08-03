@@ -1,6 +1,0 @@
-FileSystem fs
-Trash trash
-boolean simulate
-boolean skipTrash
-boolean deleteEmptyDirectories
-Logger log

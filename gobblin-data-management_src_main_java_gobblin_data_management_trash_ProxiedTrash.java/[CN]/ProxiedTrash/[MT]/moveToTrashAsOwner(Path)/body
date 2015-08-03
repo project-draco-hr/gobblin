@@ -1,0 +1,4 @@
+{
+  String owner=this.fs.getFileStatus(path).getOwner();
+  return moveToTrashAsUser(path,owner);
+}

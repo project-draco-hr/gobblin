@@ -1,0 +1,3 @@
+{
+  return createProxiedTrash(fs,new Properties());
+}

@@ -11,7 +11,7 @@ proxyUser=UserGroupInformation.createProxyUser(proxyUserName,UserGroupInformatio
 break;
 case TOKEN:
 proxyUser=UserGroupInformation.createProxyUser(proxyUserName,UserGroupInformation.getLoginUser());
-Optional<Token> proxyToken=this.getTokenFromSeqFile(authPath,proxyUserName);
+Optional<Token> proxyToken=getTokenFromSeqFile(authPath,proxyUserName);
 if (proxyToken.isPresent()) {
 proxyUser.addToken(proxyToken.get());
 }
