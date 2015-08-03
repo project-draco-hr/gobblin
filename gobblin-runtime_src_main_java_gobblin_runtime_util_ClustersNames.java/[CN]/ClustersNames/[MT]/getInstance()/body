@@ -1,0 +1,8 @@
+{
+synchronized (ClustersNames.class) {
+    if (null == THE_INSTANCE) {
+      THE_INSTANCE=new ClustersNames();
+    }
+    return THE_INSTANCE;
+  }
+}

@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(clusterUrl,"cluster URL expected");
+  Preconditions.checkNotNull(clusterName,"cluster name expected");
+  _urlToNameMap.put(clusterUrl.toString(),clusterName);
+}
