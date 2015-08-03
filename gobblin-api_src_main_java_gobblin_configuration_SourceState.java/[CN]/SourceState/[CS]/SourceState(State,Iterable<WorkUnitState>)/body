@@ -1,0 +1,7 @@
+{
+  super.addAll(properties);
+  this.previousDatasetStatesByUrns=ImmutableMap.of();
+  for (  WorkUnitState workUnitState : previousWorkUnitStates) {
+    this.previousWorkUnitStates.add(new ImmutableWorkUnitState(workUnitState));
+  }
+}

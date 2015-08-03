@@ -8,7 +8,7 @@
   List<Converter<?,?,?,?>> converters=Lists.newArrayList();
   for (  String converterClass : Splitter.on(",").omitEmptyStrings().trimResults().split(this.workUnit.getProp(converterClassKey))) {
     try {
-      Converter<?,?,?,?> converter=(Converter<?,?,?,?>)Class.forName(converterClass).newInstance();
+      Converter<?,?,?,?> converter=Converter.class.cast(Class.forName(converterClass).newInstance());
       InstrumentedConverterDecorator instrumentedConverter=new InstrumentedConverterDecorator(converter);
       instrumentedConverter.init(converterTaskState);
       converters.add(instrumentedConverter);

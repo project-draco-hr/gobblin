@@ -1,0 +1,6 @@
+{
+  if (!this.previousDatasetStatesByUrns.containsKey(datasetUrn)) {
+    return null;
+  }
+  return new ImmutableSourceState(this.previousDatasetStatesByUrns.get(datasetUrn));
+}

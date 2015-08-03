@@ -1,3 +1,0 @@
-{
-  return new RowLevelPolicyCheckerBuilderFactory().newPolicyCheckerBuilder(taskState,index).build();
-}

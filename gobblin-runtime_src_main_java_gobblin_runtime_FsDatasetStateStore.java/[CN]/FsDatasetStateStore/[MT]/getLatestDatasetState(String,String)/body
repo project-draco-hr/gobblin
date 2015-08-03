@@ -1,0 +1,4 @@
+{
+  String alias=Strings.isNullOrEmpty(datasetUrn) ? CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX : datasetUrn + "-" + CURRENT_DATASET_STATE_FILE_SUFFIX+ DATASET_STATE_STORE_TABLE_SUFFIX;
+  return get(storeName,alias,datasetUrn);
+}

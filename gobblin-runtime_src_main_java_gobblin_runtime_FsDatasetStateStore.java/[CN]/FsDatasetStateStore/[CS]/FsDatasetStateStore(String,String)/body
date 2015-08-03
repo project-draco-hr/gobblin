@@ -1,0 +1,3 @@
+{
+  super(fsUri,storeRootDir,JobState.DatasetState.class);
+}

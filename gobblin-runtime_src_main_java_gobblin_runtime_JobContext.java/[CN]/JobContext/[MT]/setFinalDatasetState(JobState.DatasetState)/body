@@ -1,0 +1,9 @@
+{
+  for (  TaskState taskState : datasetState.getTaskStates()) {
+    if (taskState.getWorkingState() != WorkUnitState.WorkingState.SUCCESSFUL) {
+      datasetState.setState(JobState.RunningState.FAILED);
+      return;
+    }
+  }
+  datasetState.setState(JobState.RunningState.SUCCESSFUL);
+}

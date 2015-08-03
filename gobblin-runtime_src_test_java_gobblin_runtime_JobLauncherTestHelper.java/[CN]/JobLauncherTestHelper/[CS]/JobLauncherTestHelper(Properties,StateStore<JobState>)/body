@@ -1,4 +1,0 @@
-{
-  this.launcherProps=launcherProps;
-  this.jobStateStore=jobStateStore;
-}

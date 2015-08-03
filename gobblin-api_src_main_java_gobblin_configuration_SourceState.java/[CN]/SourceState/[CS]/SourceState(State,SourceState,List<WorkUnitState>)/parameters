@@ -1,3 +1,0 @@
-State properties
-SourceState previousSourceState
-List<WorkUnitState> previousWorkUnitStates

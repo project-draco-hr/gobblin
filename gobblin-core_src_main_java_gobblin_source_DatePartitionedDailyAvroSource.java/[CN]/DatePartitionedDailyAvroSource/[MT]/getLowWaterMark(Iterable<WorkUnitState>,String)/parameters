@@ -1,0 +1,2 @@
+Iterable<WorkUnitState> previousStates
+String lowWaterMark

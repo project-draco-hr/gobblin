@@ -1,0 +1,18 @@
+{
+  this.logger.info(String.format("Publishing data of job %s with commit policy %s",this.jobId,this.jobCommitPolicy.name()));
+  Closer closer=Closer.create();
+  try {
+    Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+    Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(State.class);
+    DataPublisher publisher=closer.register(dataPublisherConstructor.newInstance(datasetState));
+    publisher.initialize();
+    publisher.publish(datasetState.getTaskStates());
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  datasetState.setState(JobState.RunningState.COMMITTED);
+}

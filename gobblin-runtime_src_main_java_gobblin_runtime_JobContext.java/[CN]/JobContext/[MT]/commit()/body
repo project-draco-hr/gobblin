@@ -1,0 +1,28 @@
+{
+  Map<String,JobState.DatasetState> datasetStatesByUrns=this.jobState.getDatasetStatesByUrns();
+  for (  Map.Entry<String,JobState.DatasetState> entry : datasetStatesByUrns.entrySet()) {
+    setFinalDatasetState(entry.getValue());
+    if (canCommitDataset(this.jobCommitPolicy,entry.getValue())) {
+      boolean allDatasetsCommit=true;
+      try {
+        commitDataset(entry.getValue());
+      }
+ catch (      IOException ioe) {
+        this.logger.error("Failed to commit dataset state for dataset " + entry.getKey(),ioe);
+        allDatasetsCommit=false;
+      }
+ finally {
+        try {
+          persistDatasetState(entry.getKey(),entry.getValue());
+        }
+ catch (        IOException ioe) {
+          this.logger.error("Failed to persist dataset state for dataset " + entry.getKey(),ioe);
+          allDatasetsCommit=false;
+        }
+      }
+      if (!allDatasetsCommit) {
+        throw new IOException("Failed to commit dataset state for some dataset(s)");
+      }
+    }
+  }
+}

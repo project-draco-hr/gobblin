@@ -1,7 +1,0 @@
-{
-  super.addAll(properties);
-  this.previousSourceState=Optional.of(previousSourceState);
-  for (  WorkUnitState workUnitState : previousWorkUnitStates) {
-    this.previousWorkUnitStates.add(new ImmutableWorkUnitState(workUnitState));
-  }
-}
