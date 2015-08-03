@@ -1,0 +1,7 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(Trash.TRASH_LOCATION_KEY,"/trash/$USER/dir");
+  Path expectedTrashPath=new Path("/trash/" + UserGroupInformation.getCurrentUser().getUserName() + "/dir");
+  TrashTestBase trash=new TrashTestBase(properties);
+  Assert.assertTrue(trash.trash.getTrashLocation().equals(expectedTrashPath));
+}

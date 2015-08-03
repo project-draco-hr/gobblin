@@ -1,0 +1,18 @@
+{
+  if (UserGroupInformation.getCurrentUser().getUserName().equals(user)) {
+    return this;
+  }
+ else {
+    try {
+      return this.trashCache.get(user,new Callable<Trash>(){
+        @Override public Trash call() throws Exception {
+          return createNewTrashForUser(fs,properties,user);
+        }
+      }
+);
+    }
+ catch (    ExecutionException ee) {
+      throw new IOException("Failed to get trash for user " + user);
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  TrashTestBase trash=new TrashTestBase(new Properties());
+  Path pathToDelete=new Path("/path/to/delete");
+  final List<Pair<Path,Path>> movedPaths=Lists.newArrayList();
+  when(trash.fs.exists(any(Path.class))).thenReturn(false);
+  when(trash.fs.rename(any(Path.class),any(Path.class))).thenAnswer(new Answer<Boolean>(){
+    @Override public Boolean answer(    InvocationOnMock invocation) throws Throwable {
+      Object[] args=invocation.getArguments();
+      movedPaths.add(new Pair<Path,Path>((Path)args[0],(Path)args[1]));
+      return true;
+    }
+  }
+);
+  trash.trash.moveToTrash(pathToDelete);
+  verify(trash.fs,times(1)).mkdirs(any(Path.class));
+  Assert.assertEquals(movedPaths.size(),1);
+  Assert.assertTrue(movedPaths.get(0).first().equals(pathToDelete));
+  Assert.assertTrue(movedPaths.get(0).second().toString().endsWith(pathToDelete.toString()));
+  Assert.assertTrue(movedPaths.get(0).second().getParent().getParent().getParent().equals(trash.trash.getTrashLocation()));
+}

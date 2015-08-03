@@ -1,5 +1,0 @@
-{
-  super(fs,trash,simulate,skipTrash,deleteEmptyDirectories,LoggerFactory.getLogger(DatasetImpl.class));
-  when(versionFinder.versionClass()).thenReturn(StringDatasetVersion.class);
-  this.path=path;
-}

@@ -1,0 +1,29 @@
+{
+  this.fs=mock(FileSystem.class);
+  Path homeDirectory=new Path("/home/directory");
+  Path trashDirectory=new Path(homeDirectory,Trash.DEFAULT_TRASH_DIRECTORY);
+  if (properties.containsKey(TEST_TRASH_LOCATION)) {
+    trashDirectory=new Path(properties.getProperty(TEST_TRASH_LOCATION));
+  }
+  Path trashIdentifierFile=new Path(trashDirectory,Trash.TRASH_IDENTIFIER_FILE);
+  when(fs.getHomeDirectory()).thenReturn(homeDirectory);
+  when(fs.exists(trashDirectory)).thenReturn(trashExists);
+  when(fs.exists(trashIdentifierFile)).thenReturn(trashIdentifierExists);
+  if (trashEmpty) {
+    when(fs.listStatus(trashDirectory)).thenReturn(new FileStatus[]{});
+  }
+ else {
+    when(fs.listStatus(trashDirectory)).thenReturn(new FileStatus[]{new FileStatus(0,true,0,0,0,new Path("file"))});
+  }
+  when(fs.isDirectory(trashDirectory)).thenReturn(true);
+  when(fs.mkdirs(any(Path.class))).thenReturn(true);
+  when(fs.mkdirs(any(Path.class),any(FsPermission.class))).thenReturn(true);
+  when(fs.createNewFile(any(Path.class))).thenReturn(true);
+  when(fs.makeQualified(any(Path.class))).thenAnswer(new Answer<Path>(){
+    @Override public Path answer(    InvocationOnMock invocation) throws Throwable {
+      return (Path)invocation.getArguments()[0];
+    }
+  }
+);
+  this.trash=new Trash(fs,properties);
+}
