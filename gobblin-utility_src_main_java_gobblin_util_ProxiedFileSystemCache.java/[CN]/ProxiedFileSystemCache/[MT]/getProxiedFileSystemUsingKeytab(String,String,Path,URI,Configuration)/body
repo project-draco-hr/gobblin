@@ -1,7 +1,7 @@
 {
   return USER_NAME_TO_FILESYSTEM_CACHE.get(userNameToProxyAs,new Callable<FileSystem>(){
     @Override public FileSystem call() throws Exception {
-      return ProxiedFileSystemUtils.getProxiedFileSystemUsingKeytab(userNameToProxyAs,superUserName,superUserKeytabLocation,fsURI,conf);
+      return ProxiedFileSystemUtils.createProxiedFileSystemUsingKeytab(userNameToProxyAs,superUserName,superUserKeytabLocation,fsURI,conf);
     }
   }
 );

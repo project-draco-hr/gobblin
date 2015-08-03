@@ -1,0 +1,30 @@
+{
+  Preconditions.checkArgument(properties.containsKey(AUTH_TYPE_KEY) && properties.containsKey(AUTH_PATH));
+  Path authPath=new Path(properties.getProperty(AUTH_PATH));
+switch (AuthType.valueOf(properties.getProperty(AUTH_TYPE_KEY))) {
+case TOKEN:
+    Optional<Token<?>> proxyToken=getTokenFromSeqFile(userNameToProxyAs,authPath);
+  if (proxyToken.isPresent()) {
+    try {
+      return ProxiedFileSystemCache.getProxiedFileSystemUsingToken(userNameToProxyAs,proxyToken.get(),fsURI,conf);
+    }
+ catch (    ExecutionException ee) {
+      throw new IOException("Failed to proxy as user " + userNameToProxyAs,ee);
+    }
+  }
+ else {
+    throw new IOException("No delegation token found for proxy user " + userNameToProxyAs);
+  }
+case KEYTAB:
+Preconditions.checkArgument(properties.containsKey(SUPERUSER_NAME));
+String superUserName=properties.getProperty(SUPERUSER_NAME);
+try {
+return ProxiedFileSystemCache.getProxiedFileSystemUsingKeytab(userNameToProxyAs,superUserName,authPath,fsURI,conf);
+}
+ catch (ExecutionException ee) {
+throw new IOException("Failed to proxy as user " + userNameToProxyAs,ee);
+}
+default :
+throw new IOException("User proxy auth type " + properties.getProperty(AUTH_TYPE_KEY) + " not recognized.");
+}
+}

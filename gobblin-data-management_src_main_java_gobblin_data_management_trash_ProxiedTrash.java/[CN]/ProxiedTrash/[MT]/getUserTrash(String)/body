@@ -1,5 +1,5 @@
 {
-  if (UserGroupInformation.getCurrentUser().getUserName().equals(user)) {
+  if (UserGroupInformation.getCurrentUser().getShortUserName().equals(user)) {
     return this;
   }
  else {
