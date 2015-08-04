@@ -11,9 +11,7 @@
     LOG.info(String.format("Folder time for %s is %s, later than the latest allowed folder time, %s. Skipping",inputFolder,folderTime,latestAllowedFolderTime));
     return false;
   }
- else   if (folderAlreadyCompacted(outputFolder)) {
-    LOG.info(String.format("Folder %s already compacted. Skipping",outputFolder));
-    return false;
+ else {
+    return true;
   }
-  return true;
 }
