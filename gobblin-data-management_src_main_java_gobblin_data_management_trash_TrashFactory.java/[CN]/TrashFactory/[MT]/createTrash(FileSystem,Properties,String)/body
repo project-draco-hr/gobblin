@@ -1,11 +1,14 @@
 {
   if (props.containsKey(TRASH_TEST) && Boolean.parseBoolean(props.getProperty(TRASH_TEST))) {
+    LOG.info("Creating a test trash. Nothing will actually be deleted.");
     return new TestTrash(fs,props,user);
   }
   if (props.containsKey(SIMULATE) && Boolean.parseBoolean(props.getProperty(SIMULATE))) {
+    LOG.info("Creating a simulate trash. Nothing will actually be deleted.");
     return new MockTrash(fs,props,user);
   }
   if (props.containsKey(SKIP_TRASH) && Boolean.parseBoolean(props.getProperty(SKIP_TRASH))) {
+    LOG.info("Creating an immediate deletion trash. Files will be deleted immediately instead of moved to trash.");
     return new ImmediateDeletionTrash(fs,props,user);
   }
   return new Trash(fs,props,user);

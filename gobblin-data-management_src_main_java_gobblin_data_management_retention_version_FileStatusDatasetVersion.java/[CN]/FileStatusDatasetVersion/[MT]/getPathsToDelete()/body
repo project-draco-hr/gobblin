@@ -1,0 +1,3 @@
+{
+  return Sets.newHashSet(this.fileStatus.getPath());
+}
