@@ -5,6 +5,4 @@
   if (!this.fs.rename(this.tmpPath,this.outputPath)) {
     throw new IOException(String.format("Unable to move %s to %s",this.tmpPath,this.outputPath));
   }
-  Path completionFilePath=new Path(this.outputPath,ConfigurationKeys.COMPACTION_COMPLETE_FILE_NAME);
-  this.fs.createNewFile(completionFilePath);
 }
