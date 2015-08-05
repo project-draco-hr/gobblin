@@ -1,12 +1,13 @@
 {
-  List<List<WorkUnit>> workUnits=Lists.newArrayList();
+  Map<String,List<WorkUnit>> workUnits=Maps.newHashMap();
   Closer closer=Closer.create();
   try {
     KafkaWrapper kafkaWrapper=closer.register(KafkaWrapper.create(state));
     List<KafkaTopic> topics=getFilteredTopics(kafkaWrapper,state);
     for (    KafkaTopic topic : topics) {
-      workUnits.add(getWorkUnitsForTopic(kafkaWrapper,topic,state));
+      workUnits.put(topic.getName(),getWorkUnitsForTopic(kafkaWrapper,topic,state));
     }
+    createEmptyWorkUnitsForSkippedPartitions(workUnits,state);
     int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
     this.getAllPreviousAvgSizes(state);
     return ImmutableList.copyOf(getMultiWorkunits(workUnits,numOfMultiWorkunits,state));

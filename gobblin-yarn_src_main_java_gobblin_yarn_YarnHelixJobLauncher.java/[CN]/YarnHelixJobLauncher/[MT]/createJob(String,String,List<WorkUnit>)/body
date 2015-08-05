@@ -2,7 +2,7 @@
   Map<String,TaskConfig> taskConfigMap=Maps.newHashMap();
   Closer closer=Closer.create();
   try {
-    ParallelStateSerDeRunner stateSerDeRunner=new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs);
+    ParallelRunner stateSerDeRunner=new ParallelRunner(this.stateSerDeRunnerThreads,this.fs);
     for (    WorkUnit workUnit : workUnits) {
       if (workUnit instanceof MultiWorkUnit) {
         for (        WorkUnit innerWorkUnit : JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits())) {

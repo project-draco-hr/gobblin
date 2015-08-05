@@ -1,0 +1,9 @@
+{
+  if (this.stopped) {
+    return;
+  }
+  this.stopped=true;
+  long endTime=System.currentTimeMillis();
+  long duration=endTime - this.startTime;
+  this.submitter.submit(this.name,EventSubmitter.EVENT_TYPE,TIMING_EVENT,START_TIME,Long.toString(this.startTime),END_TIME,Long.toString(endTime),DURATION,Long.toString(duration));
+}

@@ -1,3 +1,17 @@
 {
   super(state);
+  this.closer=Closer.create();
+  Configuration conf=new Configuration();
+  for (  String key : this.getState().getPropertyNames()) {
+    conf.set(key,this.getState().getProp(key));
+  }
+  this.numBranches=this.getState().getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  this.fileSystemByBranches=Lists.newArrayListWithCapacity(this.numBranches);
+  this.publisherFinalDirOwnerGroupsByBranches=Lists.newArrayListWithCapacity(this.numBranches);
+  for (int i=0; i < this.numBranches; i++) {
+    URI uri=URI.create(this.getState().getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,this.numBranches,i),ConfigurationKeys.LOCAL_FS_URI));
+    this.fileSystemByBranches.add(FileSystem.get(uri,conf));
+    this.publisherFinalDirOwnerGroupsByBranches.add(Optional.fromNullable(this.getState().getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR_GROUP,this.numBranches,i))));
+  }
+  this.parallelRunnerThreads=state.getPropAsInt(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS);
 }

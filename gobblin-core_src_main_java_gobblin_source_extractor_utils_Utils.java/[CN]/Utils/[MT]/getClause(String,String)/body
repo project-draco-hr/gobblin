@@ -1,7 +1,0 @@
-{
-  String retStr="";
-  if (!Strings.isNullOrEmpty(datePredicate)) {
-    retStr=" " + clause + " ("+ datePredicate+ ")";
-  }
-  return retStr;
-}

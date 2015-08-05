@@ -1,0 +1,7 @@
+{
+  if (!(object instanceof TaskState)) {
+    return false;
+  }
+  TaskState other=(TaskState)object;
+  return super.equals(other) && this.jobId.equals(other.jobId) && this.taskId.equals(other.taskId);
+}

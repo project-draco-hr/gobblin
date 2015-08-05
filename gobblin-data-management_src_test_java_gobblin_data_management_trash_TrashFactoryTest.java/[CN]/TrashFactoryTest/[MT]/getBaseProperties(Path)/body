@@ -1,0 +1,5 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(Trash.TRASH_LOCATION_KEY,trashLocation.toString());
+  return properties;
+}

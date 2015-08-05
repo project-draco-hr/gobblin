@@ -1,0 +1,6 @@
+{
+  super(properties,previousDatasetStates,workUnitStatesFromDatasetStates(previousDatasetStates.values()));
+  this.jobName=jobName;
+  this.jobId=jobId;
+  this.setId(jobId);
+}

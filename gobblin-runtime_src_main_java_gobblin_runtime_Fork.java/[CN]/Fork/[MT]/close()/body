@@ -5,6 +5,8 @@
     this.closer.close();
   }
   finally {
-    this.writer.cleanup();
+    if (this.writer.isPresent()) {
+      this.writer.get().cleanup();
+    }
   }
 }

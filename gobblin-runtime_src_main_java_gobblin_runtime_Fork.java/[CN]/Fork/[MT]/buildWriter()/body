@@ -1,4 +1,4 @@
 {
-  DataWriter<Object> writer=this.taskContext.getDataWriterBuilder(this.branches,this.index).writeTo(Destination.of(this.taskContext.getDestinationType(this.branches,this.index),this.taskState)).writeInFormat(this.taskContext.getWriterOutputFormat(this.branches,this.index)).withWriterId(this.taskId).withSchema(this.convertedSchema).withBranches(this.branches).forBranch(this.index).build();
+  DataWriter<Object> writer=this.taskContext.getDataWriterBuilder(this.branches,this.index).writeTo(Destination.of(this.taskContext.getDestinationType(this.branches,this.index),this.taskState)).writeInFormat(this.taskContext.getWriterOutputFormat(this.branches,this.index)).withWriterId(this.taskId).withSchema(this.convertedSchema.orNull()).withBranches(this.branches).forBranch(this.index).build();
   return new InstrumentedDataWriterDecorator<Object>(writer,this.taskState);
 }

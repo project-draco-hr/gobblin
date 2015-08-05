@@ -1,0 +1,3 @@
+{
+  return moveToTrashAsUser(path,this.user);
+}

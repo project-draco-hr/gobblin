@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(state.contains(FILE_INPUT_FORMAT_CLASS_KEY));
+  try {
+    return (FileInputFormat<K,V>)ReflectionUtils.newInstance(Class.forName(state.getProp(FILE_INPUT_FORMAT_CLASS_KEY)),configuration);
+  }
+ catch (  ClassNotFoundException cnfe) {
+    throw new RuntimeException(cnfe);
+  }
+}

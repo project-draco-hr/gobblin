@@ -1,0 +1,14 @@
+{
+switch (field$) {
+case 0:
+    return timestamp;
+case 1:
+  return namespace;
+case 2:
+return name;
+case 3:
+return metadata;
+default :
+throw new org.apache.avro.AvroRuntimeException("Bad index");
+}
+}

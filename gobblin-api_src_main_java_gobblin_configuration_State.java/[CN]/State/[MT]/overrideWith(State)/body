@@ -1,0 +1,3 @@
+{
+  overrideWith(otherState.properties);
+}

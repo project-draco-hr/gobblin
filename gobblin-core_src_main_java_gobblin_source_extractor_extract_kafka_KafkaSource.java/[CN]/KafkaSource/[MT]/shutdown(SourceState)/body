@@ -1,0 +1,5 @@
+{
+  state.setProp(ConfigurationKeys.OFFSET_TOO_EARLY_COUNT,this.offsetTooEarlyCount);
+  state.setProp(ConfigurationKeys.OFFSET_TOO_LATE_COUNT,this.offsetTooLateCount);
+  state.setProp(ConfigurationKeys.FAIL_TO_GET_OFFSET_COUNT,this.failToGetOffsetCount);
+}

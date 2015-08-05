@@ -1,0 +1,7 @@
+{
+  FileSystem fs=FileSystem.getLocal(new Configuration(false));
+  Path rootDir=new Path(FsDatasetStateStoreTest.class.getSimpleName());
+  if (fs.exists(rootDir)) {
+    fs.delete(rootDir,true);
+  }
+}

@@ -1,0 +1,4 @@
+{
+  this.createdInstances=Sets.newHashSet();
+  this.dtf=DateTimeFormat.forPattern(dateTimeFormat).withLocale(Locale.US).withZone(DateTimeZone.UTC);
+}

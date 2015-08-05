@@ -6,6 +6,9 @@
   }
  catch (  Exception e) {
   }
+ finally {
+    this.jobLauncherTestHelper.deleteStateStore(props.getProperty(ConfigurationKeys.JOB_NAME_KEY));
+  }
   Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_STAGING_DIR));
   Assert.assertTrue(props.containsKey(ConfigurationKeys.WRITER_OUTPUT_DIR));
   File stagingDir=new File(props.getProperty(ConfigurationKeys.WRITER_STAGING_DIR));

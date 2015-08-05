@@ -1,4 +1,0 @@
-{
-  this.fs=FileSystem.getLocal(new Configuration());
-  this.outputPath=new Path(ParallelStateSerDeRunnerTest.class.getSimpleName());
-}

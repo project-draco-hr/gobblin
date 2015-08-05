@@ -33,12 +33,16 @@
         return record;
       }
  catch (      SchemaNotFoundException e) {
+        this.errorPartitions.add(this.currentPartitionIdx);
+        this.invalidSchemaIdCount++;
         if (shouldLogError()) {
           LOG.error(String.format("An event from partition %s has a schema ID that doesn't exist in the schema registry.",getCurrentPartition()),e);
           incrementErrorCount();
         }
       }
 catch (      Exception e) {
+        this.errorPartitions.add(this.currentPartitionIdx);
+        this.undecodableMessageCount++;
         if (shouldLogError()) {
           LOG.error(String.format("An event from partition %s cannot be decoded.",getCurrentPartition()),e);
           incrementErrorCount();

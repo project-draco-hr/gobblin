@@ -1,7 +1,7 @@
 {
-  LOG.debug("Get latest watermark from the previou run");
+  LOG.debug("Get latest watermark from the previous run");
   long latestWaterMark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
-  List<WorkUnitState> previousWorkUnitStates=state.getPreviousWorkUnitStates();
+  List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList(state.getPreviousWorkUnitStates());
   List<Long> previousWorkUnitStateHighWatermarks=Lists.newArrayList();
   List<Long> previousWorkUnitLowWatermarks=Lists.newArrayList();
   if (previousWorkUnitStates.isEmpty()) {

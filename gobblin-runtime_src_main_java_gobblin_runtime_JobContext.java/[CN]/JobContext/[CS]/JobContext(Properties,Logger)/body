@@ -5,7 +5,10 @@
   jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,this.jobId);
   this.jobCommitPolicy=JobCommitPolicy.getCommitPolicy(jobProps);
   this.jobLockEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,Boolean.TRUE.toString()));
-  this.jobStateStore=new FsStateStore<JobState>(jobProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI),jobProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.class);
+  String stateStoreFsUri=jobProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI);
+  FileSystem stateStoreFs=FileSystem.get(URI.create(stateStoreFsUri),new Configuration());
+  String stateStoreRootDir=jobProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY);
+  this.datasetStateStore=new FsDatasetStateStore(stateStoreFs,stateStoreRootDir);
   boolean jobHistoryStoreEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()));
   if (jobHistoryStoreEnabled) {
     Injector injector=Guice.createInjector(new MetaStoreModule(jobProps));
@@ -16,9 +19,7 @@
   }
   State jobPropsState=new State();
   jobPropsState.addAll(jobProps);
-  JobState previousJobState=getPreviousJobState(this.jobName);
-  this.jobState=new JobState(jobPropsState,previousJobState.getTaskStatesAsWorkUnitStates(),this.jobName,this.jobId);
-  this.jobState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,previousJobState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0));
+  this.jobState=new JobState(jobPropsState,this.datasetStateStore.getLatestDatasetStatesByUrns(this.jobName),this.jobName,this.jobId);
   if (GobblinMetrics.isEnabled(jobProps)) {
     this.jobMetricsOptional=Optional.of(JobMetrics.get(this.jobState));
     this.jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,this.jobMetricsOptional.get().getName());
@@ -26,5 +27,6 @@
  else {
     this.jobMetricsOptional=Optional.absent();
   }
-  this.source=new SourceDecorator((Source<?,?>)Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance(),this.jobId,logger);
+  this.source=new SourceDecorator(Source.class.cast(Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance()),this.jobId,logger);
+  this.logger=logger;
 }

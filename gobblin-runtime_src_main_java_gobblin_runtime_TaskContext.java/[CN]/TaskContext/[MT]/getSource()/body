@@ -1,6 +1,6 @@
 {
   try {
-    return (Source)Class.forName(this.workUnit.getProp(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance();
+    return Source.class.cast(Class.forName(this.workUnit.getProp(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance());
   }
  catch (  ClassNotFoundException cnfe) {
     throw new RuntimeException(cnfe);

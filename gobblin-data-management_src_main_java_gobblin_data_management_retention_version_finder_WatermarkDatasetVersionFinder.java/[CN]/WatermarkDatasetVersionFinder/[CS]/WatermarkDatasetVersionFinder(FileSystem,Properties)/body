@@ -1,0 +1,14 @@
+{
+  super(fs,props);
+  if (props.containsKey(WATERMARK_REGEX_KEY)) {
+    this.pattern=Optional.of(props.getProperty(WATERMARK_REGEX_KEY)).transform(new Function<String,Pattern>(){
+      @Nullable @Override public Pattern apply(      String input){
+        return Pattern.compile(input);
+      }
+    }
+);
+  }
+ else {
+    this.pattern=Optional.absent();
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return deserialize(serialized,clazz,DEFAULT_ENCODING);
+}

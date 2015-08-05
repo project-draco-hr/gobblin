@@ -1,0 +1,4 @@
+java.lang.Long timestamp
+java.lang.String namespace
+java.lang.String name
+java.util.Map<java.lang.String,java.lang.String> metadata

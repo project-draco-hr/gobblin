@@ -1,0 +1,3 @@
+{
+  this.datasetStateStore.delete(JOB_NAME);
+}

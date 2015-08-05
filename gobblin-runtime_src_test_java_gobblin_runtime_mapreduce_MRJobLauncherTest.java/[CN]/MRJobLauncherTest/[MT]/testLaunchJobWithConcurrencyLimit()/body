@@ -1,9 +1,15 @@
 {
   Properties jobProps=loadJobProps();
+  jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY) + "-testLaunchJobWithConcurrencyLimit");
   jobProps.setProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,"2");
   this.jobLauncherTestHelper.runTest(jobProps);
   jobProps.setProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,"3");
   this.jobLauncherTestHelper.runTest(jobProps);
   jobProps.setProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,"5");
-  this.jobLauncherTestHelper.runTest(jobProps);
+  try {
+    this.jobLauncherTestHelper.runTest(jobProps);
+  }
+  finally {
+    this.jobLauncherTestHelper.deleteStateStore(jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
+  }
 }

@@ -1,0 +1,10 @@
+{
+  State state=new State();
+  state.setProp("RecordsWritten",recordsWritten());
+  try {
+    state.setProp("BytesWritten",bytesWritten());
+  }
+ catch (  Exception exception) {
+  }
+  return state;
+}

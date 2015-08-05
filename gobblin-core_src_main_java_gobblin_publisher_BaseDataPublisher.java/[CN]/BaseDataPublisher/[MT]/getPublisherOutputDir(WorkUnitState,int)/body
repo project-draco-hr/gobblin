@@ -1,0 +1,3 @@
+{
+  return WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,branchId);
+}

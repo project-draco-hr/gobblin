@@ -1,0 +1,5 @@
+{
+  if (this.state.contains(ConfigurationKeys.COMPACTION_JARS)) {
+    this.fs.delete(new Path(this.state.getProp(ConfigurationKeys.COMPACTION_JARS)),true);
+  }
+}

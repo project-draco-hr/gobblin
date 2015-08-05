@@ -1,0 +1,13 @@
+{
+  super(builder.context,builder.name,builder.filter,builder.rateUnit,builder.durationUnit);
+  this.closer=Closer.create();
+  this.immediateReportExecutor=MoreExecutors.getExitingExecutorService((ThreadPoolExecutor)Executors.newFixedThreadPool(1,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("EventReporter-" + builder.name + "-%d"))),5,TimeUnit.MINUTES);
+  builder.context.addNotificationTarget(new Function<Notification,Void>(){
+    @Nullable @Override public Void apply(    Notification notification){
+      notificationCallback(notification);
+      return null;
+    }
+  }
+);
+  this.reportingQueue=Queues.newLinkedBlockingQueue(QUEUE_CAPACITY);
+}

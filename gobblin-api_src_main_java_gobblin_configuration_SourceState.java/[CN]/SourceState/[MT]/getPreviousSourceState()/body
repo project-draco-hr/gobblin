@@ -1,0 +1,3 @@
+{
+  return getPreviousDatasetState(ConfigurationKeys.DEFAULT_DATASET_URN);
+}

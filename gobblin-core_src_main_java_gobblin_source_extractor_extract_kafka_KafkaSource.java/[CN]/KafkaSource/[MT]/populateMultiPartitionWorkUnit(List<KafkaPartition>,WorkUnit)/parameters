@@ -1,0 +1,2 @@
+List<KafkaPartition> partitions
+WorkUnit workUnit

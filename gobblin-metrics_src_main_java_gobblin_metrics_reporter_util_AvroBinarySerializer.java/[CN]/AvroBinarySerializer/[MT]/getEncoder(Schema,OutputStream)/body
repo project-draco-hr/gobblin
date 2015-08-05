@@ -1,0 +1,3 @@
+{
+  return EncoderFactory.get().binaryEncoder(outputStream,null);
+}

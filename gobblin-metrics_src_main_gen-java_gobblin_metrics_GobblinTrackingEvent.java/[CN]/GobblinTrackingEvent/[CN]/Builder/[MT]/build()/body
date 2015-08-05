@@ -1,0 +1,13 @@
+{
+  try {
+    GobblinTrackingEvent record=new GobblinTrackingEvent();
+    record.timestamp=fieldSetFlags()[0] ? this.timestamp : (java.lang.Long)defaultValue(fields()[0]);
+    record.namespace=fieldSetFlags()[1] ? this.namespace : (java.lang.String)defaultValue(fields()[1]);
+    record.name=fieldSetFlags()[2] ? this.name : (java.lang.String)defaultValue(fields()[2]);
+    record.metadata=fieldSetFlags()[3] ? this.metadata : (java.util.Map<java.lang.String,java.lang.String>)defaultValue(fields()[3]);
+    return record;
+  }
+ catch (  Exception e) {
+    throw new org.apache.avro.AvroRuntimeException(e);
+  }
+}

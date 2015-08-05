@@ -1,0 +1,5 @@
+{
+  this.metricContext=metricContext;
+  this.namespace=namespace;
+  this.metadata=Maps.newHashMap();
+}

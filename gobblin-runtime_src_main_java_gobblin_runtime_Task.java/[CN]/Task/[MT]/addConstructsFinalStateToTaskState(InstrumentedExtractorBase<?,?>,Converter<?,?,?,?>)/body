@@ -1,0 +1,11 @@
+{
+  this.taskState.addFinalConstructState(Constructs.EXTRACTOR.toString().toLowerCase(),extractor.getFinalState());
+  this.taskState.addFinalConstructState(Constructs.CONVERTER.toString().toLowerCase(),converter.getFinalState());
+  int forkIdx=0;
+  for (  Optional<Fork> fork : this.forks) {
+    if (fork.isPresent()) {
+      this.taskState.addFinalConstructState(RuntimeConstructs.FORK.toString().toLowerCase() + "." + forkIdx,fork.get().getFinalState());
+    }
+    forkIdx++;
+  }
+}

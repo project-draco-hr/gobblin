@@ -1,0 +1,4 @@
+{
+  this.deleteOperations.add(new DeleteOperation(path,user));
+  return true;
+}

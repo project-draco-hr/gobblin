@@ -1,0 +1,3 @@
+{
+  return TrashFactory.createTrash(fs,props.toProperties()).moveToTrash(path);
+}

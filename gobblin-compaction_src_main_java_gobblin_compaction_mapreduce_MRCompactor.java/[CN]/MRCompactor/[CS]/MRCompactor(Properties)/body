@@ -1,6 +1,7 @@
 {
   this.state=new State();
   state.addAll(props);
+  this.conf=HadoopUtils.getConfFromState(state);
   this.inputDir=getInputDir();
   this.inputSubDir=getInputSubDir();
   this.destDir=getDestDir();

@@ -1,0 +1,7 @@
+{
+  if (!(object instanceof WorkUnit)) {
+    return false;
+  }
+  WorkUnit other=(WorkUnit)object;
+  return ((this.extract == null && other.extract == null) || (this.extract != null && this.extract.equals(other.extract))) && super.equals(other);
+}

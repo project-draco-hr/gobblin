@@ -1,0 +1,7 @@
+{
+  Extractor<String,String> extractor=super.getExtractor(workUnitState);
+  if (workUnitState.getProp(ConfigurationKeys.DATASET_URN_KEY).endsWith("0")) {
+    return new FaultyExtractor(workUnitState);
+  }
+  return extractor;
+}

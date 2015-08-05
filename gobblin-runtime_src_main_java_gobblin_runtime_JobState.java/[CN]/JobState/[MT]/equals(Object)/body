@@ -1,0 +1,7 @@
+{
+  if (!(object instanceof JobState)) {
+    return false;
+  }
+  JobState other=(JobState)object;
+  return super.equals(other) && this.jobName.equals(other.jobName) && this.jobId.equals(other.jobId);
+}

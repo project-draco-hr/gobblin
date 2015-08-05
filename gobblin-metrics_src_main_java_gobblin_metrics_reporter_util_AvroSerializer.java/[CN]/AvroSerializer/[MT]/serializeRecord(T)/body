@@ -1,0 +1,13 @@
+{
+  try {
+    this.byteArrayOutputStream.reset();
+    this.schemaVersionWriter.writeSchemaVersioningInformation(record.getSchema(),this.out);
+    this.writer.write(record,this.encoder);
+    this.encoder.flush();
+    return this.byteArrayOutputStream.toByteArray();
+  }
+ catch (  IOException exception) {
+    LOGGER.warn("Could not serialize Avro record for Kafka Metrics.",exception);
+    return null;
+  }
+}

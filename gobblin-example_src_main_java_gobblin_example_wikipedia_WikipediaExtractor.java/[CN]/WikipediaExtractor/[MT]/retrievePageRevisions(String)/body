@@ -3,10 +3,10 @@
   Closer closer=Closer.create();
   HttpURLConnection conn=null;
   StringBuilder sb=new StringBuilder();
-  String urlStr=rootUrl + "&titles=" + pageTitle+ "&rvlimit="+ revisionsCnt;
+  String urlStr=this.rootUrl + "&titles=" + pageTitle+ "&rvlimit="+ this.revisionsCnt;
   try {
-    URL url=new URL(urlStr);
-    conn=(HttpURLConnection)url.openConnection();
+    conn=getHttpConnection(urlStr);
+    conn.connect();
     BufferedReader br=closer.register(new BufferedReader(new InputStreamReader(conn.getInputStream(),ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     String line;
     while ((line=br.readLine()) != null) {

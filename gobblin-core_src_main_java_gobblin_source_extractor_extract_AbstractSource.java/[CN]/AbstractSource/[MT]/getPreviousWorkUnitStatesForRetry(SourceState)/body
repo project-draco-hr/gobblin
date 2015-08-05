@@ -1,6 +1,6 @@
 {
-  if (state.getPreviousWorkUnitStates().isEmpty()) {
-    return Collections.emptyList();
+  if (Iterables.isEmpty(state.getPreviousWorkUnitStates())) {
+    return ImmutableList.of();
   }
   WorkUnitRetryPolicy workUnitRetryPolicy;
   if (state.contains(ConfigurationKeys.WORK_UNIT_RETRY_POLICY_KEY)) {
@@ -11,15 +11,20 @@
     workUnitRetryPolicy=retryFailedWorkUnits ? WorkUnitRetryPolicy.ALWAYS : WorkUnitRetryPolicy.NEVER;
   }
   if (workUnitRetryPolicy == WorkUnitRetryPolicy.NEVER) {
-    return Collections.emptyList();
+    return ImmutableList.of();
   }
   List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList();
   for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
     if (workUnitState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
       if (state.getPropAsBoolean(ConfigurationKeys.OVERWRITE_CONFIGS_IN_STATESTORE,ConfigurationKeys.DEFAULT_OVERWRITE_CONFIGS_IN_STATESTORE)) {
-        workUnitState.addAll(state);
+        WorkUnitState workUnitStateCopy=new WorkUnitState(workUnitState.getWorkunit());
+        workUnitStateCopy.addAll(workUnitState);
+        workUnitStateCopy.overrideWith(state);
+        previousWorkUnitStates.add(workUnitStateCopy);
       }
-      previousWorkUnitStates.add(workUnitState);
+ else {
+        previousWorkUnitStates.add(workUnitState);
+      }
     }
   }
   if (workUnitRetryPolicy == WorkUnitRetryPolicy.ALWAYS) {
@@ -30,6 +35,6 @@
     return previousWorkUnitStates;
   }
  else {
-    return Collections.emptyList();
+    return ImmutableList.of();
   }
 }

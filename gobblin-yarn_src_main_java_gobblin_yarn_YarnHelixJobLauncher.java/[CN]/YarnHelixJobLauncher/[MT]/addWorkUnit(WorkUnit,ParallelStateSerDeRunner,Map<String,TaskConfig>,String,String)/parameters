@@ -1,5 +1,0 @@
-WorkUnit workUnit
-ParallelStateSerDeRunner stateSerDeRunner
-Map<String,TaskConfig> taskConfigMap
-String jobName
-String jobId

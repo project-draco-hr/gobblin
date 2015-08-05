@@ -8,7 +8,7 @@
     DataInputStream dis=closer.register((new DataInputStream(bais)));
     JobState newJobState=new JobState();
     newJobState.readFields(dis);
-    doAsserts();
+    doAsserts(this.jobState,true);
   }
  catch (  Throwable t) {
     throw closer.rethrow(t);

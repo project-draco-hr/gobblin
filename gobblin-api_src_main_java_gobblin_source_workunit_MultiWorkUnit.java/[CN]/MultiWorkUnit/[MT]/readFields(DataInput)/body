@@ -5,4 +5,5 @@
     workUnit.readFields(in);
     this.workUnits.add(workUnit);
   }
+  super.readFields(in);
 }

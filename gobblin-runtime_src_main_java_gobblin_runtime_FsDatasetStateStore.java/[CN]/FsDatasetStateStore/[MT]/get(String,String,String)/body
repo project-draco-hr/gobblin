@@ -1,0 +1,34 @@
+{
+  Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
+  if (!this.fs.exists(tablePath)) {
+    return null;
+  }
+  Closer closer=Closer.create();
+  try {
+    SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
+    Writable writable=reader.getValueClass() == JobState.class ? new JobState() : new JobState.DatasetState();
+    try {
+      Text key=new Text();
+      while (reader.next(key,writable)) {
+        if (key.toString().equals(stateId)) {
+          if (writable instanceof JobState.DatasetState) {
+            return (JobState.DatasetState)writable;
+          }
+ else {
+            return ((JobState)writable).newDatasetState(true);
+          }
+        }
+      }
+    }
+ catch (    Exception e) {
+      throw new IOException(e);
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  return null;
+}

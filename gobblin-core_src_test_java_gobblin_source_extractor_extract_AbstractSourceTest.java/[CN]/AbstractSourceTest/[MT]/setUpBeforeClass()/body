@@ -1,5 +1,5 @@
 {
-  this.testSource=new TestSource();
+  this.testSource=new TestSource<String,String>();
   WorkUnitState committedWorkUnitState=new WorkUnitState();
   committedWorkUnitState.setWorkingState(WorkingState.COMMITTED);
   WorkUnitState successfulWorkUnitState=new WorkUnitState();

@@ -1,0 +1,7 @@
+{
+  if (!(object instanceof SourceState)) {
+    return false;
+  }
+  SourceState other=(SourceState)object;
+  return super.equals(other) && this.previousDatasetStatesByUrns.equals(other.previousDatasetStatesByUrns) && this.previousWorkUnitStates.equals(other.previousWorkUnitStates);
+}

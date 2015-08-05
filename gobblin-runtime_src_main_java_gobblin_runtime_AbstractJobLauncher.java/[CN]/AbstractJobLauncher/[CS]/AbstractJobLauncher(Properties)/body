@@ -10,4 +10,5 @@
     }
   }
 );
+  this.eventSubmitter=new EventSubmitter.Builder(this.runtimeMetricContext,"gobblin.runtime").build();
 }

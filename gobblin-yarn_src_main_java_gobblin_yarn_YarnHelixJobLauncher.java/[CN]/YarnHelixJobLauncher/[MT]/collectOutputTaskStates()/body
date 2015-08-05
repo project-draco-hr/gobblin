@@ -12,7 +12,7 @@
   Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();
   Closer closer=Closer.create();
   try {
-    ParallelStateSerDeRunner stateSerDeRunner=new ParallelStateSerDeRunner(this.stateSerDeRunnerThreads,this.fs);
+    ParallelRunner stateSerDeRunner=new ParallelRunner(this.stateSerDeRunnerThreads,this.fs);
     for (    FileStatus status : fileStatuses) {
       LOGGER.info("Found output task state file " + status.getPath());
       stateSerDeRunner.deserializeFromSequenceFile(Text.class,TaskState.class,status.getPath(),taskStateQueue);

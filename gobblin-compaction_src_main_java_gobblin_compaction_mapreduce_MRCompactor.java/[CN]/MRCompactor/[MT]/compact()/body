@@ -1,5 +1,6 @@
 {
   try {
+    copyDependencyJarsToHdfs();
     Set<String> topics=findAllTopics();
     processTopics(topics);
   }
@@ -7,6 +8,7 @@
     this.executorService.shutdown();
     try {
       executorService.awaitTermination(getMRJobTimeoutValue(),TimeUnit.MINUTES);
+      deleteDependencyJars();
       for (      Future<?> future : this.futures) {
         future.get();
       }

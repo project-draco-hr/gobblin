@@ -1,7 +1,7 @@
 {
   List<WorkUnit> workUnits=Lists.newArrayList();
   for (  WorkUnitState workUnitState : getPreviousWorkUnitStatesForRetry(state)) {
-    workUnits.add(new WorkUnit(workUnitState.getWorkunit()));
+    workUnits.add(WorkUnit.copyOf(workUnitState.getWorkunit()));
   }
   return workUnits;
 }

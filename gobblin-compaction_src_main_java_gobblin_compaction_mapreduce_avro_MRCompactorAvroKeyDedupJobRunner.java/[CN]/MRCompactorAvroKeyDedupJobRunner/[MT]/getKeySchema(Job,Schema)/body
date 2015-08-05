@@ -2,7 +2,7 @@
   Schema keySchema=null;
   if (useAllAttributesForCompaction()) {
     LOG.info("Using all attributes in the schema (except Map fields) for compaction");
-    keySchema=getAllFieldsExceptMap(newestSchema);
+    keySchema=AvroUtils.removeUncomparableFields(newestSchema).get();
   }
  else   if (keySchemaFileSpecified()) {
     Path keySchemaFile=getKeySchemaFile();
@@ -12,16 +12,16 @@
     }
  catch (    IOException e) {
       LOG.error("Failed to parse avro schema from " + keySchemaFile + ", using all attributes in the schema (except Map fields) for compaction");
-      keySchema=getAllFieldsExceptMap(newestSchema);
+      keySchema=AvroUtils.removeUncomparableFields(newestSchema).get();
     }
     if (!isKeySchemaValid(keySchema,newestSchema)) {
       LOG.warn(String.format("Key schema %s is not compatible with record schema %s.",keySchema,newestSchema) + "Using all attributes in the schema (except Map fields) for compaction");
-      keySchema=getAllFieldsExceptMap(newestSchema);
+      keySchema=AvroUtils.removeUncomparableFields(newestSchema).get();
     }
   }
  else {
     LOG.info("Property " + ConfigurationKeys.COMPACTION_AVRO_KEY_SCHEMA_LOC + " not provided. Using all attributes in the schema (except Map fields) for compaction");
-    keySchema=getAllFieldsExceptMap(newestSchema);
+    keySchema=AvroUtils.removeUncomparableFields(newestSchema).get();
   }
   return keySchema;
 }

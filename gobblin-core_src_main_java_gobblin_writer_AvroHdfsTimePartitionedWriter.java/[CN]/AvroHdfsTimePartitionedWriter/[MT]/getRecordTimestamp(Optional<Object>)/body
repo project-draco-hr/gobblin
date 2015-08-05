@@ -1,0 +1,3 @@
+{
+  return writerPartitionColumnValue.orNull() instanceof Long ? (Long)writerPartitionColumnValue.get() : System.currentTimeMillis();
+}

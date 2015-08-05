@@ -1,0 +1,2 @@
+Class<? extends Writable> writableClass
+String serializedWritableStr

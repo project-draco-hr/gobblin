@@ -1,7 +1,7 @@
 {
   String dataWriterBuilderClassName=this.workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS,branches,index),ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS);
   try {
-    return (DataWriterBuilder)Class.forName(dataWriterBuilderClassName).newInstance();
+    return DataWriterBuilder.class.cast(Class.forName(dataWriterBuilderClassName).newInstance());
   }
  catch (  ClassNotFoundException cnfe) {
     throw new RuntimeException(cnfe);
