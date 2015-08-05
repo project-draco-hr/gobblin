@@ -4,7 +4,6 @@
       taskState.backoffActualHighWatermark();
       if (this.jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
         datasetState.setState(JobState.RunningState.FAILED);
-        this.jobState.setState(JobState.RunningState.FAILED);
       }
     }
   }
