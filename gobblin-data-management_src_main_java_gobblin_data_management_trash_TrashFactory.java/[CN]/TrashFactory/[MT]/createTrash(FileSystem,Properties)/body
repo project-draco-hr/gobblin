@@ -1,3 +1,3 @@
 {
-  return createTrash(fs,props,UserGroupInformation.getCurrentUser().getUserName());
+  return createTrash(fs,props,UserGroupInformation.getCurrentUser().getShortUserName());
 }
