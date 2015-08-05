@@ -3,7 +3,8 @@
   Counter counter=registry.counter("com.linkedin.example.counter");
   Meter meter=registry.meter("com.linkedin.example.meter");
   Histogram histogram=registry.histogram("com.linkedin.example.histogram");
-  KafkaReporter kafkaReporter=getBuilder(registry).build("localhost:" + kafkaPort,topic);
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaReporter kafkaReporter=getBuilder(registry,pusher).build("localhost:0000","topic");
   counter.inc();
   meter.mark(2);
   histogram.update(1);
@@ -20,7 +21,7 @@
   expected.put("com.linkedin.example.counter." + Measurements.COUNT,1.0);
   expected.put("com.linkedin.example.meter." + Measurements.COUNT,2.0);
   expected.put("com.linkedin.example.histogram." + Measurements.COUNT,3.0);
-  MetricReport nextReport=nextReport(iterator);
+  MetricReport nextReport=nextReport(pusher.messageIterator());
   expectMetricsWithValues(nextReport,expected);
   kafkaReporter.report();
   try {
@@ -45,7 +46,7 @@
   expectedSet.add("com.linkedin.example.histogram." + Measurements.PERCENTILE_99TH);
   expectedSet.add("com.linkedin.example.histogram." + Measurements.PERCENTILE_999TH);
   expectedSet.add("com.linkedin.example.histogram." + Measurements.COUNT);
-  nextReport=nextReport(iterator);
+  nextReport=nextReport(pusher.messageIterator());
   expectMetrics(nextReport,expectedSet,true);
   kafkaReporter.close();
 }
