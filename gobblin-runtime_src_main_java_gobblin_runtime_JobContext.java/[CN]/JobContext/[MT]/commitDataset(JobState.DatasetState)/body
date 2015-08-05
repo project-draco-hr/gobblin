@@ -1,6 +1,6 @@
 {
   String datasetUrn=datasetState.getDatasetUrn();
-  this.logger.info(String.format("Publishing data of dataset %s with commit policy %s",!Strings.isNullOrEmpty(datasetUrn) ? datasetUrn : this.jobId,this.jobCommitPolicy.name()));
+  this.logger.info(String.format("Publishing dataset %s of job %s with commit policy %s",datasetUrn,this.jobId,this.jobCommitPolicy.name()));
   Closer closer=Closer.create();
   try {
     Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));

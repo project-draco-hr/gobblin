@@ -1,3 +1,0 @@
-{
-  return commitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS || (commitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS && datasetState.getState() == JobState.RunningState.SUCCESSFUL);
-}
