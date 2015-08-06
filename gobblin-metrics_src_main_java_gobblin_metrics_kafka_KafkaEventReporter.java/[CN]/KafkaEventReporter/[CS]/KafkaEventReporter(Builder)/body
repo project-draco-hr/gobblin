@@ -1,5 +1,0 @@
-{
-  super(builder);
-  this.serializer=this.closer.register(createSerializer(new FixedSchemaVersionWriter()));
-  this.kafkaPusher=this.closer.register(new KafkaPusher(builder.brokers,builder.topic));
-}

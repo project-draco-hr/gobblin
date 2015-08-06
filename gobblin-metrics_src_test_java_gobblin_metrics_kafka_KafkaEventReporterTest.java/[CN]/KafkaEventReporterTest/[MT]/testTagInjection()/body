@@ -5,7 +5,8 @@
   String tag2="tag2";
   String value2="value2";
   MetricContext context=MetricContext.builder("context").addTag(new Tag<String>(tag1,value1)).addTag(new Tag<String>(tag2,value2)).build();
-  KafkaEventReporter kafkaReporter=getBuilder(context).build("localhost:" + kafkaPort,topic);
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaEventReporter kafkaReporter=getBuilder(context,pusher).build("localhost:0000","topic");
   String namespace="gobblin.metrics.test";
   String eventName="testEvent";
   GobblinTrackingEvent event=new GobblinTrackingEvent();
@@ -28,7 +29,7 @@
  catch (  InterruptedException ex) {
     Thread.currentThread().interrupt();
   }
-  GobblinTrackingEvent retrievedEvent=nextEvent(this.iterator);
+  GobblinTrackingEvent retrievedEvent=nextEvent(pusher.messageIterator());
   Assert.assertEquals(retrievedEvent.getNamespace(),namespace);
   Assert.assertEquals(retrievedEvent.getName(),eventName);
   Assert.assertEquals(retrievedEvent.getMetadata().size(),3);

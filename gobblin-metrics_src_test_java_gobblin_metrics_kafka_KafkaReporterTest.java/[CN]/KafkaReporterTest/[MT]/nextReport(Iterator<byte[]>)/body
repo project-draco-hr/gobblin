@@ -1,0 +1,4 @@
+{
+  Assert.assertTrue(it.hasNext());
+  return MetricReportUtils.deserializeReportFromJson(new MetricReport(),it.next());
+}
