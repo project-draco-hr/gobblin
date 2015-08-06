@@ -1,0 +1,4 @@
+{
+  FileStatusDatasetVersion otherAsFileStatus=(FileStatusDatasetVersion)other;
+  return this.fileStatus.getPath().compareTo(otherAsFileStatus.getFileStatus().getPath());
+}

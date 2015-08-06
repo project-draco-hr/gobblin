@@ -1,3 +1,4 @@
 {
+  LOG.info("Simulating move to trash: " + path);
   return true;
 }

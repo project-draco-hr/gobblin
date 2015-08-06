@@ -1,27 +1,29 @@
 {
-  Map<String,JobState.DatasetState> datasetStatesByUrns=this.jobState.getDatasetStatesByUrns();
-  for (  Map.Entry<String,JobState.DatasetState> entry : datasetStatesByUrns.entrySet()) {
-    setFinalDatasetState(entry.getValue());
-    if (canCommitDataset(this.jobCommitPolicy,entry.getValue())) {
+  this.datasetStatesByUrns=Optional.of(this.jobState.createDatasetStatesByUrns());
+  for (  Map.Entry<String,JobState.DatasetState> entry : this.datasetStatesByUrns.get().entrySet()) {
+    String datasetUrn=entry.getKey();
+    JobState.DatasetState datasetState=entry.getValue();
+    finalizeDatasetStateBeforeCommit(datasetState);
+    if (canCommitDataset(datasetState)) {
       boolean allDatasetsCommit=true;
       try {
-        commitDataset(entry.getValue());
+        commitDataset(datasetState);
       }
  catch (      IOException ioe) {
-        this.logger.error("Failed to commit dataset state for dataset " + entry.getKey(),ioe);
+        this.logger.error(String.format("Failed to commit dataset state for dataset %s of job %s",datasetUrn,this.jobId),ioe);
         allDatasetsCommit=false;
       }
  finally {
         try {
-          persistDatasetState(entry.getKey(),entry.getValue());
+          persistDatasetState(datasetUrn,datasetState);
         }
  catch (        IOException ioe) {
-          this.logger.error("Failed to persist dataset state for dataset " + entry.getKey(),ioe);
+          this.logger.error(String.format("Failed to persist dataset state for dataset %s of job %s",datasetUrn,this.jobId),ioe);
           allDatasetsCommit=false;
         }
       }
       if (!allDatasetsCommit) {
-        throw new IOException("Failed to commit dataset state for some dataset(s)");
+        throw new IOException("Failed to commit dataset state for some dataset(s) of job " + this.jobId);
       }
     }
   }
