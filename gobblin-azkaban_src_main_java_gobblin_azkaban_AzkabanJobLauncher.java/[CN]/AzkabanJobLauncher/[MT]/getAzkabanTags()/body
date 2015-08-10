@@ -1,0 +1,13 @@
+{
+  Configuration conf=new Configuration();
+  List<Tag<?>> tags=Lists.newArrayList();
+  for (  Map.Entry<String,String> entry : PROPERTIES_TO_TAGS_MAP.entrySet()) {
+    if (StringUtils.isNotBlank(conf.get(entry.getKey()))) {
+      tags.add(new Tag<String>(entry.getValue(),conf.get(entry.getKey())));
+    }
+ else {
+      LOG.warn(String.format("No config value found for azkaban config %s. Metics will not have tag %s",entry.getKey(),entry.getValue()));
+    }
+  }
+  return tags;
+}
