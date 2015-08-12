@@ -1,8 +1,0 @@
-{
-  for (  String filePath : this.jobProps.getPropAsList(ConfigurationKeys.COMPACTION_JOB_LATE_DATA_FILES)) {
-    Path outPath=new Path(outputDirectory,StringUtils.removeStart(StringUtils.removeStart(filePath,this.inputPath.toString()),"/"));
-    if (!FileUtil.copy(this.fs,new Path(filePath),this.fs,outPath,false,conf)) {
-      LOG.warn(String.format("Failed to copy %s to %s.",filePath,outPath));
-    }
-  }
-}
