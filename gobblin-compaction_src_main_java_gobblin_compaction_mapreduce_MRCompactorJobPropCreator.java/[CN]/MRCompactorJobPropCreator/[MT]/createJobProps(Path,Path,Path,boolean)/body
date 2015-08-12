@@ -6,6 +6,7 @@
   jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_DEST_DIR,jobOutputDir);
   jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_TMP_DIR,jobTmpDir);
   jobProps.setProp(ConfigurationKeys.COMPACTION_ENABLE_SUCCESS_FILE,false);
+  jobProps.setProp(ConfigurationKeys.COMPACTION_DEDUPLICATE,deduplicate);
   LOG.info(String.format("Created MR job properties for input %s and output %s.",jobInputDir,jobOutputDir));
   return jobProps;
 }
