@@ -1,1 +1,2 @@
 KafkaAvroSchemaRegistry registry
+String topic
