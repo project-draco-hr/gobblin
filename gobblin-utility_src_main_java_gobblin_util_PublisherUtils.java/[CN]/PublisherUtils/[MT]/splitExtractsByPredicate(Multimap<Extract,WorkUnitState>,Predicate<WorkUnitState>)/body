@@ -1,13 +1,13 @@
 {
-  Multimap<Extract,WorkUnitState> successfulExtracts=ArrayListMultimap.create();
-  Multimap<Extract,WorkUnitState> failedExtracts=ArrayListMultimap.create();
+  Multimap<Extract,WorkUnitState> retained=ArrayListMultimap.create();
+  Multimap<Extract,WorkUnitState> filtered=ArrayListMultimap.create();
   for (  Map.Entry<Extract,Collection<WorkUnitState>> entry : extractToWorkUnitStateMap.asMap().entrySet()) {
     if (Iterables.all(entry.getValue(),predicate)) {
-      successfulExtracts.putAll(entry.getKey(),entry.getValue());
+      retained.putAll(entry.getKey(),entry.getValue());
     }
  else {
-      failedExtracts.putAll(entry.getKey(),entry.getValue());
+      filtered.putAll(entry.getKey(),entry.getValue());
     }
   }
-  return new SplitExtractsResult(successfulExtracts,failedExtracts);
+  return new SplitExtractsResult(retained,filtered);
 }
