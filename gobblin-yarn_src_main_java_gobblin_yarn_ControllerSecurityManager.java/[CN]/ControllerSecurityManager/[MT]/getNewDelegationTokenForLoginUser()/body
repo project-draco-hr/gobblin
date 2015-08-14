@@ -1,0 +1,3 @@
+{
+  this.token=this.fs.getDelegationToken(this.currentUser.getShortUserName());
+}

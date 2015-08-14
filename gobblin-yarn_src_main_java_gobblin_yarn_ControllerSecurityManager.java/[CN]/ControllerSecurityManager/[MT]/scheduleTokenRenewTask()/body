@@ -1,0 +1,17 @@
+{
+  LOGGER.info("Scheduling the token renew task");
+  this.scheduledTokenRenewTask=this.tokenRenewExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        renewDelegationToken();
+      }
+ catch (      IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+catch (      InterruptedException ie) {
+        throw new RuntimeException(ie);
+      }
+    }
+  }
+,this.tokenRenewIntervalInHours,this.tokenRenewIntervalInHours,TimeUnit.HOURS);
+}

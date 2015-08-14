@@ -1,0 +1,4 @@
+{
+  this.token.renew(this.fs.getConf());
+  writeDelegationTokenToFile();
+}

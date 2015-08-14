@@ -1,0 +1,3 @@
+Token<? extends TokenIdentifier> token
+Path tokenFilePath
+Configuration configuration

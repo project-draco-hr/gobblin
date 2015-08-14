@@ -1,0 +1,4 @@
+{
+  ExecutorsUtils.shutdownExecutorService(this.loginExecutor);
+  ExecutorsUtils.shutdownExecutorService(this.tokenRenewExecutor);
+}

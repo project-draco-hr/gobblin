@@ -1,0 +1,18 @@
+{
+  LOGGER.info("Scheduling the Kerberos keytab login task");
+  this.loginExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        if (scheduledTokenRenewTask.cancel(true)) {
+          LOGGER.info("Cancelled the token renew task");
+        }
+        reLogin();
+        scheduleTokenRenewTask();
+      }
+ catch (      IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+    }
+  }
+,this.loginIntervalInHours,this.loginIntervalInHours,TimeUnit.HOURS);
+}

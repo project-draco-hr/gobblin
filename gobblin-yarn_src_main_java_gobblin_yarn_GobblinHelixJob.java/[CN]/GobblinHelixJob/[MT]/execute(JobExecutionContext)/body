@@ -6,7 +6,7 @@
   HelixManager helixManager=(HelixManager)dataMap.get(GobblinHelixJobScheduler.HELIX_MANAGER_KEY);
   Path appWorkDir=(Path)dataMap.get(GobblinHelixJobScheduler.APPLICATION_WORK_DIR_KEY);
   try {
-    JobLauncher jobLauncher=new YarnHelixJobLauncher(jobProps,helixManager,appWorkDir);
+    JobLauncher jobLauncher=new GobblinHelixJobLauncher(jobProps,helixManager,appWorkDir);
     jobScheduler.runJob(jobProps,jobListener,jobLauncher);
   }
  catch (  Throwable t) {

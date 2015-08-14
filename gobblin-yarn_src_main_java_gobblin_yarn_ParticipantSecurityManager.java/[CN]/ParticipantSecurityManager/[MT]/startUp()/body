@@ -1,0 +1,22 @@
+{
+  if (!this.fs.exists(this.tokenFilePath)) {
+    throw new IOException(String.format("Token file %s does not exist",this.tokenFilePath));
+  }
+  readAndAddDelegationTokens();
+  this.tokenFileMonitorExecutor.scheduleAtFixedRate(new Runnable(){
+    private long tokenFileModificationTime=-1l;
+    @Override public void run(){
+      try {
+        long currentTokenFileModificationTime=getTokenFileModificationTime();
+        if (currentTokenFileModificationTime != this.tokenFileModificationTime) {
+          readAndAddDelegationTokens();
+          this.tokenFileModificationTime=currentTokenFileModificationTime;
+        }
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to ",ioe);
+      }
+    }
+  }
+,this.tokenFileMonitorIntervalInMinutes,this.tokenFileMonitorIntervalInMinutes,TimeUnit.MINUTES);
+}

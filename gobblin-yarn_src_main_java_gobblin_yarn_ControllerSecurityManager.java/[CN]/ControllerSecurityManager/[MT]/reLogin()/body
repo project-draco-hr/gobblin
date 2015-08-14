@@ -1,0 +1,9 @@
+{
+  if (this.currentUser.isFromKeytab()) {
+    reLoginFromKeytab();
+  }
+ else {
+    getNewDelegationTokenForLoginUser();
+  }
+  writeDelegationTokenToFile();
+}

@@ -1,0 +1,17 @@
+{
+  Options options=buildOptions();
+  try {
+    CommandLine cmd=new DefaultParser().parse(options,args);
+    if (!cmd.hasOption(ConfigurationConstants.APPLICATION_NAME_OPTION_NAME)) {
+      printUsage(options);
+      System.exit(1);
+    }
+    Log4jConfigurationHelper.updateLog4jConfiguration(GobblinWorkUnitRunner.class,Log4jConfigurationHelper.LOG4J_CONFIGURATION_FILE_NAME);
+    GobblinWorkUnitRunner gobblinWorkUnitRunner=new GobblinWorkUnitRunner(cmd.getOptionValue(ConfigurationConstants.APPLICATION_NAME_OPTION_NAME),ConfigFactory.load());
+    gobblinWorkUnitRunner.start();
+  }
+ catch (  ParseException pe) {
+    printUsage(options);
+    System.exit(1);
+  }
+}

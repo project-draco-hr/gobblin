@@ -1,0 +1,14 @@
+{
+  LOGGER.info(String.format("Starting %s in container %s",GobblinWorkUnitRunner.class.getSimpleName(),this.containerId));
+  addShutdownHook();
+  try {
+    this.helixManager.connect();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("The HelixManager failed to connect",e);
+  }
+  registerJvmMetrics();
+  this.jmxReporter.start();
+  this.serviceManager.startAsync();
+  this.serviceManager.awaitStopped();
+}

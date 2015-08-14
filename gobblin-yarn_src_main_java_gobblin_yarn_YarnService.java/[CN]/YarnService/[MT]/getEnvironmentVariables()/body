@@ -8,5 +8,8 @@
       Apps.addToEnvironment(environmentVariableMap,ApplicationConstants.Environment.CLASSPATH.key(),classpath.trim());
     }
   }
+  if (UserGroupInformation.isSecurityEnabled()) {
+    Apps.addToEnvironment(environmentVariableMap,"HADOOP_TOKEN_FILE_LOCATION",this.config.getString(ConfigurationConstants.TOKEN_FILE_PATH));
+  }
   return environmentVariableMap;
 }
