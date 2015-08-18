@@ -1,0 +1,3 @@
+{
+  return this.closer.register(new ProducerCloseable<String,byte[]>(config));
+}

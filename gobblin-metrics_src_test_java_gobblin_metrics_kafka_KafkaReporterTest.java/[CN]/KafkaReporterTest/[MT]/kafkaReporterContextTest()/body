@@ -2,7 +2,8 @@
   Tag<?> tag1=new Tag<String>("tag1","value1");
   MetricContext context=MetricContext.builder("context").addTag(tag1).build();
   Counter counter=context.counter("com.linkedin.example.counter");
-  KafkaReporter kafkaReporter=getBuilderFromContext(context).build("localhost:" + kafkaPort,topic);
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaReporter kafkaReporter=getBuilderFromContext(context,pusher).build("localhost:0000","topic");
   counter.inc();
   kafkaReporter.report();
   try {
@@ -11,7 +12,7 @@
  catch (  InterruptedException ex) {
     Thread.currentThread().interrupt();
   }
-  MetricReport metricReport=nextReport(iterator);
+  MetricReport metricReport=nextReport(pusher.messageIterator());
   Assert.assertEquals(2,metricReport.getTags().size());
   Assert.assertTrue(metricReport.getTags().containsKey(tag1.getKey()));
   Assert.assertEquals(metricReport.getTags().get(tag1.getKey()),tag1.getValue().toString());

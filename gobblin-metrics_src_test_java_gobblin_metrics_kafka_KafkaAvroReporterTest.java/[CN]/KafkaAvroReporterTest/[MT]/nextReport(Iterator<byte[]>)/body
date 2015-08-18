@@ -1,0 +1,4 @@
+{
+  Assert.assertTrue(it.hasNext());
+  return MetricReportUtils.deserializeReportFromAvroSerialization(new MetricReport(),it.next());
+}

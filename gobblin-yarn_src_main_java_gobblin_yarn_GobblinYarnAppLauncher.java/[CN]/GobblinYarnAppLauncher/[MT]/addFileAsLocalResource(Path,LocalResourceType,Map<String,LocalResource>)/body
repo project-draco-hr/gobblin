@@ -1,11 +1,11 @@
 {
   LocalResource fileResource=Records.newRecord(LocalResource.class);
-  FileStatus fileStatus=destFilePath.getFileSystem(this.yarnConfiguration).getFileStatus(destFilePath);
+  FileStatus fileStatus=this.fs.getFileStatus(destFilePath);
   fileResource.setResource(ConverterUtils.getYarnUrlFromPath(destFilePath));
   fileResource.setSize(fileStatus.getLen());
   fileResource.setTimestamp(fileStatus.getModificationTime());
   fileResource.setType(resourceType);
   fileResource.setVisibility(LocalResourceVisibility.APPLICATION);
-  LOGGER.info("Created a LocalResource for file: " + fileResource.getResource());
+  LOGGER.info(String.format("Created a LocalResource for file %s of type %s",fileResource.getResource(),resourceType));
   resourceMap.put(destFilePath.getName(),fileResource);
 }

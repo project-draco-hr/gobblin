@@ -1,6 +1,5 @@
 {
   try {
-    close();
   }
  catch (  Exception e) {
   }

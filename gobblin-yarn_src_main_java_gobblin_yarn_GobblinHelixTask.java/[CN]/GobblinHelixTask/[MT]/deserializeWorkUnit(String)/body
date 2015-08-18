@@ -1,5 +1,5 @@
 {
-  WorkUnit workUnit=new WorkUnit();
+  WorkUnit workUnit=WorkUnit.createEmpty();
   Closer closer=Closer.create();
   try {
     Path workUnitFilePath=new Path(workUnitFile);

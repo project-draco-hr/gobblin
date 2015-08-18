@@ -16,9 +16,9 @@
   if (System.getenv(HADOOP_TOKEN_FILE_LOCATION) != null) {
     properties.setProperty(MAPREDUCE_JOB_CREDENTIALS_BINARY,System.getenv(HADOOP_TOKEN_FILE_LOCATION));
   }
-  String flowId=conf.get(AZKABAN_FLOW_ID_CONFIG_KEY_NAME);
-  if (StringUtils.isNotBlank(flowId)) {
-    JobMetrics.addCustomTagToProperties(properties,new Tag<String>(FLOW_ID_TAG_NAME,flowId));
+  JobMetrics.addCustomTagsToProperties(properties,getAzkabanTags());
+  if (!properties.containsKey(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY)) {
+    properties.setProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.MAPREDUCE.toString());
   }
   this.jobLauncher=this.closer.register(JobLauncherFactory.newJobLauncher(properties,properties));
 }

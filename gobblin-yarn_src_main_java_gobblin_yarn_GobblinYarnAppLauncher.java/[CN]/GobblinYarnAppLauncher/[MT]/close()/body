@@ -1,11 +1,5 @@
 {
-  try {
-    ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor);
-  }
- catch (  InterruptedException ie) {
-    LOGGER.error("Interrupted while waiting for the application status monitor to shutdown",ie);
-    Thread.currentThread().interrupt();
-  }
+  ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor);
   try {
     if (this.applicationId != null && this.yarnClient.getApplicationReport(this.applicationId).getYarnApplicationState() == YarnApplicationState.RUNNING) {
       this.yarnClient.killApplication(this.applicationId);
