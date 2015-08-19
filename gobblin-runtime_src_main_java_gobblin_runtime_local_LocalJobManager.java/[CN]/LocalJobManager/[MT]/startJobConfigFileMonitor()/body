@@ -47,12 +47,22 @@
       }
     }
     private void loadJobConfig(    Properties jobProps,    File file){
+      Closer closer=Closer.create();
       try {
-        jobProps.load(new InputStreamReader(new FileInputStream(file),ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
+        Reader propsReader=closer.register(new InputStreamReader(new FileInputStream(file),ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
+        jobProps.load(propsReader);
         jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,file.getAbsolutePath());
       }
  catch (      Exception e) {
         LOG.error("Failed to load job configuration from file " + file.getAbsolutePath(),e);
+      }
+ finally {
+        try {
+          closer.close();
+        }
+ catch (        IOException e) {
+          LOG.error("unable to close properties file:" + e,e);
+        }
       }
     }
   }
