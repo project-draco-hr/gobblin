@@ -1,0 +1,3 @@
+{
+  return state.getProp(ConfigurationKeys.FORK_BRANCH_NAME_KEY + "." + index,ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + index);
+}
