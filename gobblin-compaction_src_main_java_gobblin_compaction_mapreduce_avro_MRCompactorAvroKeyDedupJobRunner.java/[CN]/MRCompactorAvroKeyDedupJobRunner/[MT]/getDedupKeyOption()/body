@@ -1,0 +1,7 @@
+{
+  if (!this.jobProps.contains(ConfigurationKeys.COMPACTION_DEDUP_KEY)) {
+    return DEFAULT_DEDUP_KEY_OPTION;
+  }
+  Optional<DedupKeyOption> option=Enums.getIfPresent(DedupKeyOption.class,this.jobProps.getProp(ConfigurationKeys.COMPACTION_DEDUP_KEY).toUpperCase());
+  return option.isPresent() ? option.get() : DEFAULT_DEDUP_KEY_OPTION;
+}

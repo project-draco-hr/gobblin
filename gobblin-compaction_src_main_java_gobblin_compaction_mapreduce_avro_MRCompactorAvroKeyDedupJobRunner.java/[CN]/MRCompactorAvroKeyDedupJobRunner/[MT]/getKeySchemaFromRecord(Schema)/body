@@ -2,12 +2,17 @@
   Preconditions.checkArgument(record.getType() == Schema.Type.RECORD);
   List<Field> fields=Lists.newArrayList();
   for (  Field field : record.getFields()) {
-    Optional<Schema> newFieldSchema=removeUncomparableFields(field.schema());
+    Optional<Schema> newFieldSchema=getKeySchema(field);
     if (newFieldSchema.isPresent()) {
       fields.add(new Field(field.name(),newFieldSchema.get(),field.doc(),field.defaultValue()));
     }
   }
-  Schema newSchema=Schema.createRecord(record.getName(),record.getDoc(),record.getName(),false);
-  newSchema.setFields(fields);
-  return Optional.of(newSchema);
+  if (!fields.isEmpty()) {
+    Schema newSchema=Schema.createRecord(record.getName(),record.getDoc(),record.getName(),false);
+    newSchema.setFields(fields);
+    return Optional.of(newSchema);
+  }
+ else {
+    return Optional.absent();
+  }
 }
