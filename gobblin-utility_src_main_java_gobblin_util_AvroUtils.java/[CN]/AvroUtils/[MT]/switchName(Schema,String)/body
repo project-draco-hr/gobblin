@@ -6,6 +6,9 @@
   List<Field> fields=schema.getFields();
   Iterable<Field> fieldsNew=Iterables.transform(fields,new Function<Field,Field>(){
     @Override public Schema.Field apply(    Field input){
+      if (null == input) {
+        return null;
+      }
       Field field=new Field(input.name(),input.schema(),input.doc(),input.defaultValue(),input.order());
       return field;
     }

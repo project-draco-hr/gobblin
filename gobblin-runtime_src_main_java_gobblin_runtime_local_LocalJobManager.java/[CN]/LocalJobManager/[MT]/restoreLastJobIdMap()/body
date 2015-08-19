@@ -27,7 +27,7 @@
         String taskId2=fileName2.substring(0,fileName2.indexOf('.'));
         Long ts1=Long.parseLong(taskId1.substring(taskId1.lastIndexOf('_') + 1));
         Long ts2=Long.parseLong(taskId2.substring(taskId2.lastIndexOf('_') + 1));
-        return -ts1.compareTo(ts2);
+        return -Integer.signum(ts1.compareTo(ts2));
       }
     }
 );
