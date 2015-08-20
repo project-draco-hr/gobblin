@@ -6,6 +6,7 @@
     workUnitState.setId(taskId);
     workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
     workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
+    LOG.info("WORKUNIT PREP: " + taskId + " owner: "+ workUnitState.getProp(ConfigurationKeys.FS_PROXY_AS_USER_NAME));
     Task task=new Task(new TaskContext(workUnitState),stateTracker,taskExecutor,Optional.of(countDownLatch));
     stateTracker.registerNewTask(task);
     tasks.add(task);
