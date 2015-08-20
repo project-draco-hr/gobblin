@@ -1,0 +1,19 @@
+{
+  if (schema.getName().equals(newName)) {
+    return schema;
+  }
+  Schema newSchema=Schema.createRecord(newName,schema.getDoc(),schema.getNamespace(),schema.isError());
+  List<Field> fields=schema.getFields();
+  Iterable<Field> fieldsNew=Iterables.transform(fields,new Function<Field,Field>(){
+    @Override public Schema.Field apply(    Field input){
+      if (null == input) {
+        return null;
+      }
+      Field field=new Field(input.name(),input.schema(),input.doc(),input.defaultValue(),input.order());
+      return field;
+    }
+  }
+);
+  newSchema.setFields(Lists.newArrayList(fieldsNew));
+  return newSchema;
+}

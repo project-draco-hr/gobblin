@@ -1,0 +1,42 @@
+{
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  String jobId=JobLauncherUtils.newJobId(jobName);
+  jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,jobId);
+  jobProps.setProperty(ConfigurationKeys.SOURCE_CLASS_KEY,MultiDatasetTestSourceWithFaultyExtractor.class.getName());
+  jobProps.setProperty(ConfigurationKeys.MAX_TASK_RETRIES_KEY,"0");
+  if (usePartialCommitPolicy) {
+    jobProps.setProperty(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
+  }
+  Closer closer=Closer.create();
+  try {
+    JobLauncher jobLauncher=closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps,jobProps));
+    jobLauncher.launchJob(null);
+  }
+ catch (  JobException je) {
+  }
+ finally {
+    closer.close();
+  }
+  if (usePartialCommitPolicy) {
+    List<JobState.DatasetState> datasetStateList=this.datasetStateStore.getAll(jobName,"Dataset0-current.jst");
+    JobState.DatasetState datasetState=datasetStateList.get(0);
+    Assert.assertEquals(datasetState.getState(),JobState.RunningState.COMMITTED);
+    Assert.assertEquals(datasetState.getTasks(),1);
+    TaskState taskState=datasetState.getTaskStates().get(0);
+    Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
+  }
+ else {
+    Assert.assertTrue(this.datasetStateStore.getAll(jobName,"Dataset0-current.jst").isEmpty());
+  }
+  for (int i=1; i < 4; i++) {
+    List<JobState.DatasetState> datasetStateList=this.datasetStateStore.getAll(jobName,"Dataset" + i + "-current.jst");
+    JobState.DatasetState datasetState=datasetStateList.get(0);
+    Assert.assertEquals(datasetState.getProp(ConfigurationKeys.DATASET_URN_KEY),"Dataset" + i);
+    Assert.assertEquals(datasetState.getState(),JobState.RunningState.COMMITTED);
+    Assert.assertEquals(datasetState.getCompletedTasks(),1);
+    for (    TaskState taskState : datasetState.getTaskStates()) {
+      Assert.assertEquals(taskState.getProp(ConfigurationKeys.DATASET_URN_KEY),"Dataset" + i);
+      Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
+    }
+  }
+}

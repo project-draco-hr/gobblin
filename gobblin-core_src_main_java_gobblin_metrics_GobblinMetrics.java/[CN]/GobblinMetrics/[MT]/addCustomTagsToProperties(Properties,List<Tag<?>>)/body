@@ -1,0 +1,5 @@
+{
+  for (  Tag<?> tag : tags) {
+    addCustomTagToProperties(properties,tag);
+  }
+}

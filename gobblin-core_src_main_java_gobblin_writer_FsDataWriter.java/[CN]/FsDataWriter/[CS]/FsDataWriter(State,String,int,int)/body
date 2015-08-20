@@ -24,16 +24,15 @@ catch (    URISyntaxException e) {
     LOG.warn(String.format("Task staging file %s already exists, deleting it",this.stagingFile));
     HadoopUtils.deletePath(this.fs,this.stagingFile,false);
   }
-  if (!this.fs.exists(this.outputFile.getParent())) {
-    this.fs.mkdirs(this.outputFile.getParent());
-  }
   this.bufferSize=Integer.parseInt(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUFFER_SIZE,numBranches,branchId),ConfigurationKeys.DEFAULT_BUFFER_SIZE));
   this.replicationFactor=properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_REPLICATION_FACTOR,numBranches,branchId),this.fs.getDefaultReplication(this.outputFile));
   this.blockSize=properties.getPropAsLong(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_BLOCK_SIZE,numBranches,branchId),this.fs.getDefaultBlockSize(this.outputFile));
-  this.permission=new FsPermission(properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PERMISSIONS,numBranches,branchId),FsPermission.getDefault().toShort()));
-  this.stagingFileOutputStream=this.closer.register(this.fs.create(this.stagingFile,this.permission,true,this.bufferSize,this.replicationFactor,this.blockSize,null));
+  this.filePermission=new FsPermission(properties.getPropAsShortWithRadix(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PERMISSIONS,numBranches,branchId),FsPermission.getDefault().toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX));
+  this.dirPermission=new FsPermission(properties.getPropAsShortWithRadix(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DIR_PERMISSIONS,numBranches,branchId),FsPermission.getDefault().toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX));
+  this.stagingFileOutputStream=this.closer.register(this.fs.create(this.stagingFile,this.filePermission,true,this.bufferSize,this.replicationFactor,this.blockSize,null));
   this.group=Optional.fromNullable(properties.getProp(ConfigurationKeys.WRITER_GROUP_NAME));
   if (this.group.isPresent()) {
     HadoopUtils.setGroup(this.fs,this.stagingFile,this.group.get());
   }
+  WriterUtils.mkdirsWithRecursivePermission(this.fs,this.outputFile.getParent(),this.dirPermission);
 }

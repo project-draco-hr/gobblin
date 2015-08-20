@@ -1,0 +1,10 @@
+{
+  State state=new State();
+  state.setProp(ConfigurationKeys.COMPACTION_TOPIC,"TestTopic");
+  state.setProp(ConfigurationKeys.COMPACTION_JOB_INPUT_DIR,"TestInputDir");
+  state.setProp(ConfigurationKeys.COMPACTION_JOB_DEST_DIR,"TestDestDir");
+  state.setProp(ConfigurationKeys.COMPACTION_JOB_TMP_DIR,"TestTmpDir");
+  state.setProp(ConfigurationKeys.COMPACTION_DEDUP_KEY,"key");
+  this.runner=new MRCompactorAvroKeyDedupJobRunner(state,FileSystem.get(new Configuration()));
+  this.job=Job.getInstance();
+}

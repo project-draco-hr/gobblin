@@ -1,0 +1,6 @@
+{
+  Schema topicSchema=new Schema.Parser().parse(new File("gobblin-test/resource/dedup-schema/dedup-schema-with-pkey.avsc"));
+  Schema actualKeySchema=this.runner.getKeySchema(this.job,topicSchema);
+  Schema expectedKeySchema=new Schema.Parser().parse(new File("gobblin-test/resource/dedup-schema/dedup-schema.avsc"));
+  Assert.assertEquals(actualKeySchema,expectedKeySchema);
+}

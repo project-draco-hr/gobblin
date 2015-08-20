@@ -1,0 +1,14 @@
+{
+  if (fs.exists(path)) {
+    return;
+  }
+  if (!fs.exists(path.getParent())) {
+    mkdirsWithRecursivePermission(fs,path.getParent(),perm);
+  }
+  if (!fs.mkdirs(path,perm)) {
+    throw new IOException(String.format("Unable to mkdir %s with permission %s",path,perm));
+  }
+  if (!fs.getFileStatus(path).getPermission().equals(perm)) {
+    fs.setPermission(path,perm);
+  }
+}

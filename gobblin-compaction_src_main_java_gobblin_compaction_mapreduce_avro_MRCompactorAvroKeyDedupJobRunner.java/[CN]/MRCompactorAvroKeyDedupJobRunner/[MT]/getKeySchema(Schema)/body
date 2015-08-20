@@ -1,0 +1,11 @@
+{
+  Preconditions.checkArgument(topicSchema.getType() == Schema.Type.RECORD);
+  Optional<Schema> newSchema=getKeySchemaFromRecord(topicSchema);
+  if (newSchema.isPresent()) {
+    return newSchema.get();
+  }
+ else {
+    LOG.warn(String.format("No field in the schema of %s is annotated as primarykey. Using all fields for deduping",topicSchema.getName()));
+    return topicSchema;
+  }
+}

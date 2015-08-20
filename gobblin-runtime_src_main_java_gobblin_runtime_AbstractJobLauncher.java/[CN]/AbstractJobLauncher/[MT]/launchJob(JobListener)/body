@@ -40,7 +40,7 @@
       return;
     }
     TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_COMMIT);
-    this.jobContext.setFinalJobState();
+    this.jobContext.finalizeJobStateBeforeCommit();
     this.jobContext.commit();
     postProcessTaskStates(jobState.getTaskStates());
     jobCommitTimer.stop();
@@ -70,7 +70,10 @@
   if (jobListener != null) {
     jobListener.onJobCompletion(jobState);
   }
-  if (jobState.getState() == JobState.RunningState.FAILED) {
-    throw new JobException(String.format("Job %s failed",jobId));
+  for (  JobState.DatasetState datasetState : this.jobContext.getDatasetStatesByUrns().values()) {
+    if (datasetState.getState() == JobState.RunningState.FAILED) {
+      jobState.setState(JobState.RunningState.FAILED);
+      throw new JobException(String.format("Job %s failed",jobId));
+    }
   }
 }
