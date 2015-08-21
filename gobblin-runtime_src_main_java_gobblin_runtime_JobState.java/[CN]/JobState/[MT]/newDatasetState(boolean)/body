@@ -3,7 +3,7 @@
   datasetState.addAll(this);
   if (fullCopy) {
     datasetState.setState(this.state);
-    datasetState.setTasks(this.tasks);
+    datasetState.setTaskCount(this.taskCount);
     datasetState.addTaskStates(this.taskStates.values());
   }
   return datasetState;

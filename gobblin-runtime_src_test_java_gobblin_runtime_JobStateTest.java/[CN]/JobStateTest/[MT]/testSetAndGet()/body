@@ -5,7 +5,7 @@
   this.jobState.setEndTime(this.startTime + 1000);
   this.jobState.setDuration(1000);
   this.jobState.setState(JobState.RunningState.COMMITTED);
-  this.jobState.setTasks(3);
+  this.jobState.setTaskCount(3);
   this.jobState.setProp("foo","bar");
   for (int i=0; i < 3; i++) {
     WorkUnitState workUnitState=new WorkUnitState();
