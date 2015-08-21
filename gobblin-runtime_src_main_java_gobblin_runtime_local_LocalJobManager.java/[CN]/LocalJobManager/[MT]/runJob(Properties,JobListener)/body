@@ -33,7 +33,7 @@
       callJobListener(jobName,jobState,runOnce);
       return;
     }
-    jobState.setTasks(workUnits.get().size());
+    jobState.setTaskCount(workUnits.get().size());
     jobState.setStartTime(System.currentTimeMillis());
     jobState.setState(JobState.RunningState.RUNNING);
     this.jobStateMap.put(jobId,jobState);

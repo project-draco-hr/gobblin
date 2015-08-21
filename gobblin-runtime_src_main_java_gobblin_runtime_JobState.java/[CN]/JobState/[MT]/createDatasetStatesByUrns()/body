@@ -7,7 +7,7 @@
       datasetState.setProp(ConfigurationKeys.DATASET_URN_KEY,datasetUrn);
       datasetStatesByUrns.put(datasetUrn,datasetState);
     }
-    datasetStatesByUrns.get(datasetUrn).addTask();
+    datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
     datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
   }
   return ImmutableMap.copyOf(datasetStatesByUrns);
