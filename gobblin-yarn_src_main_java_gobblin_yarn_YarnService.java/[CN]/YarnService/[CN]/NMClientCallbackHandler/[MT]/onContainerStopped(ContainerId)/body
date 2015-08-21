@@ -2,4 +2,9 @@
   LOGGER.info(String.format("Container %s has been stopped",containerId));
   containerMap.remove(containerId);
   containerToParticipantMap.remove(containerId);
+  if (containerMap.isEmpty()) {
+synchronized (allContainersStopped) {
+      allContainersStopped.notify();
+    }
+  }
 }

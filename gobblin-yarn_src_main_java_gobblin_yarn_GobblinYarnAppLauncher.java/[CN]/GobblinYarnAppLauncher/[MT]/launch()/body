@@ -1,5 +1,11 @@
 {
   createGobblinYarnHelixCluster();
+  try {
+    this.helixManager.connect();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("The HelixManager failed to connect",e);
+  }
   this.yarnClient.start();
   this.applicationId=setupAndSubmitApplication();
   Future<ApplicationReport> result=this.applicationStatusMonitor.submit(new Callable<ApplicationReport>(){
@@ -15,7 +21,12 @@
           return appReport;
         }
         LOGGER.info("Gobblin Yarn application state: " + appState.toString());
-        Thread.sleep(TimeUnit.SECONDS.toMillis(60));
+        try {
+          Thread.sleep(TimeUnit.SECONDS.toMillis(60));
+        }
+ catch (        InterruptedException ie) {
+          Thread.currentThread().interrupt();
+        }
       }
     }
   }

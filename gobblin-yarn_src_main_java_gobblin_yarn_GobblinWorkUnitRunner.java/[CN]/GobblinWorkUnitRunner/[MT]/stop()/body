@@ -1,5 +1,5 @@
 {
-  LOGGER.info("Shutting down the Gobblin Yarn ApplicationMaster");
+  LOGGER.info("Shutting down the Gobblin Yarn WorkUnit runner");
   try {
     this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.MINUTES);
   }

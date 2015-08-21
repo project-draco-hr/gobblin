@@ -1,14 +1,18 @@
 {
-  ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor);
   try {
-    if (this.applicationId != null && this.yarnClient.getApplicationReport(this.applicationId).getYarnApplicationState() == YarnApplicationState.RUNNING) {
-      this.yarnClient.killApplication(this.applicationId);
-    }
-  }
- catch (  YarnException ye) {
-    LOGGER.error("Failed to kill the Yarn application " + this.applicationId);
-  }
- finally {
+    ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor);
+    sendShutdownRequest();
     this.yarnClient.stop();
+    this.helixManager.disconnect();
+  }
+  finally {
+    try {
+      if (this.applicationId != null) {
+        cleanUpAppWorkDirectory(this.applicationId);
+      }
+    }
+  finally {
+      this.fs.close();
+    }
   }
 }

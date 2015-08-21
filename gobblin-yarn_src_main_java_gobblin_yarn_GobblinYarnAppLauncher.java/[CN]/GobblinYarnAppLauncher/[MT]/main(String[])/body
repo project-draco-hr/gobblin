@@ -1,11 +1,11 @@
 {
-  Closer closer=Closer.create();
+  final Closer closer=Closer.create();
   try {
     final GobblinYarnAppLauncher gobblinYarnAppLauncher=closer.register(new GobblinYarnAppLauncher(ConfigFactory.load()));
     Runtime.getRuntime().addShutdownHook(new Thread(){
       @Override public void run(){
         try {
-          gobblinYarnAppLauncher.close();
+          closer.close();
         }
  catch (        IOException ioe) {
           LOGGER.error("Failed to shutdown the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);

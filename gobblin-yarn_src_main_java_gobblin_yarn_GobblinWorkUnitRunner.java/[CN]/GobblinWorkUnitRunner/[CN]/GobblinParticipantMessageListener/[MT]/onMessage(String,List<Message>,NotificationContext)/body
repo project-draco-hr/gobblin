@@ -1,0 +1,12 @@
+{
+  for (  Message message : messages) {
+    if (message.getMsgType().equalsIgnoreCase(Message.MessageType.USER_DEFINE_MSG.toString())) {
+      if (message.getMsgSubType().equalsIgnoreCase(HelixMessageSubTypes.CONTAINER_SHUTDOWN.toString())) {
+        LOGGER.info("Received SHUTDOWN message, stopping the WorkUnitRunner");
+        GobblinWorkUnitRunner.this.stop();
+        message.setMsgState(Message.MessageState.READ);
+        break;
+      }
+    }
+  }
+}

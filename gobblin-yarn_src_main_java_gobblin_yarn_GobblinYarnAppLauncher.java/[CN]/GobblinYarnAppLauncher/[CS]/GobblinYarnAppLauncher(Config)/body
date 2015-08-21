@@ -2,7 +2,10 @@
   this.appName=config.hasPath(ConfigurationConstants.APPLICATION_NAME_KEY) ? config.getString(ConfigurationConstants.APPLICATION_NAME_KEY) : ConfigurationConstants.DEFAULT_APPLICATION_NAME;
   this.appQueueName=config.hasPath(ConfigurationConstants.APP_QUEUE_KEY) ? config.getString(ConfigurationConstants.APP_QUEUE_KEY) : ConfigurationConstants.DEFAULT_APP_QUEUE;
   this.config=config;
+  String zkConnectionString=config.hasPath(ConfigurationConstants.ZK_CONNECTION_STRING_KEY) ? config.getString(ConfigurationConstants.ZK_CONNECTION_STRING_KEY) : ConfigurationConstants.DEFAULT_ZK_CONNECTION_STRING;
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getHostname(),InstanceType.SPECTATOR,zkConnectionString);
   this.yarnConfiguration=new YarnConfiguration();
+  this.yarnConfiguration.set("fs.automatic.close","false");
   this.yarnClient=YarnClient.createYarnClient();
   this.yarnClient.init(this.yarnConfiguration);
   this.fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),this.yarnConfiguration) : FileSystem.get(this.yarnConfiguration);

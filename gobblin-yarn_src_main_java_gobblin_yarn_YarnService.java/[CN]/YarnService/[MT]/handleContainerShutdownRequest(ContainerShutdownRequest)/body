@@ -1,2 +1,6 @@
 {
+  for (  Container container : containerShutdownRequest.getContainers()) {
+    LOGGER.info(String.format("Stopping container %s running on %s",container.getId(),container.getNodeId()));
+    this.nmClientAsync.stopContainerAsync(container.getId(),container.getNodeId());
+  }
 }

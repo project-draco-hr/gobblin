@@ -1,17 +1,7 @@
 {
   Runtime.getRuntime().addShutdownHook(new Thread(){
     @Override public void run(){
-      LOGGER.info("Shutting down the Gobblin Yarn ApplicationMaster");
-      try {
-        serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
-      }
- catch (      TimeoutException te) {
-        LOGGER.error("Timeout in stopping the service manager",te);
-      }
- finally {
-        jmxReporter.stop();
-        helixManager.disconnect();
-      }
+      GobblinWorkUnitRunner.this.stop();
     }
   }
 );

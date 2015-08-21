@@ -4,6 +4,7 @@
   String zkConnectionString=config.hasPath(ConfigurationConstants.ZK_CONNECTION_STRING_KEY) ? config.getString(ConfigurationConstants.ZK_CONNECTION_STRING_KEY) : ConfigurationConstants.DEFAULT_ZK_CONNECTION_STRING;
   this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getParticipantIdStr(YarnHelixUtils.getHostname(),containerId),InstanceType.CONTROLLER,zkConnectionString);
   this.helixManager.addLiveInstanceChangeListener(new GobblinLiveInstanceChangeListener());
+  this.helixManager.addControllerMessageListener(new GobblinControllerMessageListener());
   EventBus eventBus=new EventBus(GobblinApplicationMaster.class.getSimpleName());
   eventBus.register(this);
   FileSystem fs=FileSystem.get(new Configuration());

@@ -3,9 +3,9 @@
   this.applicationId=applicationId;
   this.config=config;
   this.yarnConfiguration=new YarnConfiguration();
-  this.amrmClientAsync=AMRMClientAsync.createAMRMClientAsync(1000,new AMRMClientCallbackHandler());
+  this.amrmClientAsync=closer.register(AMRMClientAsync.createAMRMClientAsync(1000,new AMRMClientCallbackHandler()));
   this.amrmClientAsync.init(this.yarnConfiguration);
-  this.nmClientAsync=NMClientAsync.createNMClientAsync(new NMClientCallbackHandler());
+  this.nmClientAsync=closer.register(NMClientAsync.createNMClientAsync(new NMClientCallbackHandler()));
   this.nmClientAsync.init(this.yarnConfiguration);
   this.containerLaunchExecutor=Executors.newFixedThreadPool(10,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("ContainerLaunchExecutor")));
   this.fs=FileSystem.get(new Configuration());
