@@ -1,0 +1,13 @@
+{
+  String propName=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_PARTITION_COLUMNS,this.numBranches,this.branch);
+  if (this.properties.contains(propName)) {
+    return Optional.of(this.properties.getPropAsList(propName));
+  }
+ else {
+    @SuppressWarnings("deprecation") String deprecatedPropName=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_PARTITION_COLUMN_NAME,this.numBranches,this.branch);
+    if (this.properties.contains(deprecatedPropName)) {
+      return Optional.of((List<String>)ImmutableList.of(this.properties.getProp(deprecatedPropName)));
+    }
+  }
+  return Optional.absent();
+}
