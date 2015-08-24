@@ -5,7 +5,7 @@
     String taskId=JobLauncherUtils.newTaskId(this.jobContext.getJobId(),taskIdSequence++);
     workUnit.setId(taskId);
     workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
-    jobState.addTask();
+    jobState.incrementTaskCount();
     jobState.addTaskState(new TaskState(new WorkUnitState(workUnit)));
   }
 }

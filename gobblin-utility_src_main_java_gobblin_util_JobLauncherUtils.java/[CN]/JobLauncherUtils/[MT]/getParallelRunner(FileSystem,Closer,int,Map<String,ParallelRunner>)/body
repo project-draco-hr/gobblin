@@ -1,7 +1,7 @@
 {
-  String uri=fs.getUri().toString();
-  if (!parallelRunners.containsKey(uri)) {
-    parallelRunners.put(uri,closer.register(new ParallelRunner(parallelRunnerThreads,fs)));
+  String uriAndHomeDir=fs.getUri().toString() + fs.getHomeDirectory();
+  if (!parallelRunners.containsKey(uriAndHomeDir)) {
+    parallelRunners.put(uriAndHomeDir,closer.register(new ParallelRunner(parallelRunnerThreads,fs)));
   }
-  return parallelRunners.get(uri);
+  return parallelRunners.get(uriAndHomeDir);
 }

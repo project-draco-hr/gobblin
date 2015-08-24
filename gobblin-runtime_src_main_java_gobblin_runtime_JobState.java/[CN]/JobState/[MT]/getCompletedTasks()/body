@@ -1,3 +1,9 @@
 {
-  return this.taskStates.size();
+  int completedTasks=0;
+  for (  TaskState taskState : this.taskStates.values()) {
+    if (taskState.isCompleted()) {
+      completedTasks++;
+    }
+  }
+  return completedTasks;
 }
