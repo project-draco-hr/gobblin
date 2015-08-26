@@ -49,7 +49,6 @@
     jobState.setState(JobState.RunningState.FAILED);
     String errMsg="Failed to launch and run job " + jobId;
     LOG.error(errMsg + ": " + t,t);
-    throw new JobException(errMsg,t);
   }
  finally {
     long endTime=System.currentTimeMillis();
