@@ -2,8 +2,10 @@
   for (  TaskState taskState : datasetState.getTaskStates()) {
     if (taskState.getWorkingState() != WorkUnitState.WorkingState.SUCCESSFUL && this.jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
       datasetState.setState(JobState.RunningState.FAILED);
+      datasetState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,datasetState.getPropAsInt(ConfigurationKeys.JOB_FAILURES_KEY,0) + 1);
       return;
     }
   }
   datasetState.setState(JobState.RunningState.SUCCESSFUL);
+  datasetState.setProp(ConfigurationKeys.JOB_FAILURES_KEY,0);
 }
