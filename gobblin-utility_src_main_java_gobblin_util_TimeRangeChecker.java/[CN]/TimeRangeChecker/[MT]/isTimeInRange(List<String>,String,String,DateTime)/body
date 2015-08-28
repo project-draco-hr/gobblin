@@ -1,0 +1,23 @@
+{
+  if (!Iterables.any(days,new AreDaysEqual(DAYS_OF_WEEK.get(currentTime.getDayOfWeek())))) {
+    return false;
+  }
+  DateTime startTime=null;
+  DateTime endTime=null;
+  try {
+    startTime=HOUR_MINUTE_FORMATTER.withZone(DATE_TIME_ZONE).parseDateTime(startTimeStr);
+  }
+ catch (  IllegalArgumentException e) {
+    throw new IllegalArgumentException("startTimeStr format is invalid, must be of format " + HOUR_MINUTE_FORMAT,e);
+  }
+  try {
+    endTime=HOUR_MINUTE_FORMATTER.withZone(DATE_TIME_ZONE).parseDateTime(endTimeStr);
+  }
+ catch (  IllegalArgumentException e) {
+    throw new IllegalArgumentException("endTimeStr format is invalid, must be of format " + HOUR_MINUTE_FORMAT,e);
+  }
+  startTime=startTime.withDate(currentTime.getYear(),currentTime.getMonthOfYear(),currentTime.getDayOfMonth());
+  endTime=endTime.withDate(currentTime.getYear(),currentTime.getMonthOfYear(),currentTime.getDayOfMonth());
+  Interval interval=new Interval(startTime.getMillis(),endTime.getMillis(),DATE_TIME_ZONE);
+  return interval.contains(currentTime.getMillis());
+}
