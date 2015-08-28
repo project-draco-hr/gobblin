@@ -1,3 +1,3 @@
 {
-  return SchemaCompatibility.checkReaderWriterCompatibility(keySchema,newestSchema).getType().equals(SchemaCompatibilityType.COMPATIBLE);
+  return SchemaCompatibility.checkReaderWriterCompatibility(keySchema,topicSchema).getType().equals(SchemaCompatibilityType.COMPATIBLE);
 }

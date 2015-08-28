@@ -22,7 +22,7 @@
   this.jobState=new JobState(jobPropsState,this.datasetStateStore.getLatestDatasetStatesByUrns(this.jobName),this.jobName,this.jobId);
   if (GobblinMetrics.isEnabled(jobProps)) {
     this.jobMetricsOptional=Optional.of(JobMetrics.get(this.jobState));
-    this.jobState.setProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY,this.jobMetricsOptional.get().getName());
+    this.jobState.setProp(Instrumented.METRIC_CONTEXT_NAME_KEY,this.jobMetricsOptional.get().getName());
   }
  else {
     this.jobMetricsOptional=Optional.absent();

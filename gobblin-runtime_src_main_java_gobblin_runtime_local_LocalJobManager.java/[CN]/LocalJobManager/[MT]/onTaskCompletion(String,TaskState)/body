@@ -5,7 +5,7 @@
   }
   JobState jobState=this.jobStateMap.get(jobId);
   jobState.addTaskState(taskState);
-  if (jobState.getCompletedTasks() == jobState.getTasks()) {
+  if (jobState.getCompletedTasks() == jobState.getTaskCount()) {
     LOG.info(String.format("All tasks of job the metrics will be generated regardless of activation, but they will not be reported unless %s have completed, committing it",jobId));
     String jobName=taskState.getWorkunit().getProp(ConfigurationKeys.JOB_NAME_KEY);
     try {

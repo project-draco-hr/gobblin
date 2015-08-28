@@ -1,0 +1,4 @@
+{
+  WorkingState state=getWorkingState();
+  return state == WorkingState.SUCCESSFUL || state == WorkingState.COMMITTED || state == WorkingState.FAILED;
+}

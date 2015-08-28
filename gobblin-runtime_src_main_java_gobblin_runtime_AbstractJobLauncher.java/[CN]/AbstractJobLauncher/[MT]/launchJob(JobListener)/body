@@ -47,7 +47,8 @@
   }
  catch (  Throwable t) {
     jobState.setState(JobState.RunningState.FAILED);
-    throw new JobException("Failed to launch and run job " + jobId,t);
+    String errMsg="Failed to launch and run job " + jobId;
+    LOG.error(errMsg + ": " + t,t);
   }
  finally {
     long endTime=System.currentTimeMillis();
@@ -65,13 +66,16 @@
     }
     unlockJob();
   }
-  if (jobListener != null) {
-    jobListener.onJobCompletion(jobState);
-  }
   for (  JobState.DatasetState datasetState : this.jobContext.getDatasetStatesByUrns().values()) {
     if (datasetState.getState() == JobState.RunningState.FAILED) {
       jobState.setState(JobState.RunningState.FAILED);
-      throw new JobException(String.format("Job %s failed",jobId));
+      break;
     }
+  }
+  if (jobListener != null) {
+    jobListener.onJobCompletion(jobState);
+  }
+  if (jobState.getState() == JobState.RunningState.FAILED) {
+    throw new JobException(String.format("Job %s failed",jobId));
   }
 }

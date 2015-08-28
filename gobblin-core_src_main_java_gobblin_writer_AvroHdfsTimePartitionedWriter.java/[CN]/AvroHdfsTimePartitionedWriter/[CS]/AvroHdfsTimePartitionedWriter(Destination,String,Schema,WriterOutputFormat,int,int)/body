@@ -16,5 +16,5 @@
   this.datasetName=WriterUtils.getWriterFilePath(this.properties,numBranches,branch);
   this.partitionLevel=this.properties.getProp(getWriterPartitionLevel(),ConfigurationKeys.DEFAULT_WRITER_PARTITION_LEVEL);
   this.timestampToPathFormatter=DateTimeFormat.forPattern(this.properties.getProp(getWriterPartitionPattern(),ConfigurationKeys.DEFAULT_WRITER_PARTITION_PATTERN)).withZone(DateTimeZone.forID(this.properties.getProp(ConfigurationKeys.WRITER_PARTITION_TIMEZONE,ConfigurationKeys.DEFAULT_WRITER_PARTITION_TIMEZONE)));
-  this.partitionColumnName=Optional.fromNullable(this.properties.getProp(getWriterPartitionColumnName()));
+  this.partitionColumns=getWriterPartitionColumns();
 }

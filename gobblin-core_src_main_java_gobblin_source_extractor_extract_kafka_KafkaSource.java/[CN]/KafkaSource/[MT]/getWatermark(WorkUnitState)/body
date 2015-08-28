@@ -1,0 +1,9 @@
+{
+  if (workUnitState.getActualHighWatermark() != null) {
+    return GSON.fromJson(workUnitState.getActualHighWatermark(),MultiLongWatermark.class);
+  }
+ else   if (workUnitState.getWorkunit().getLowWatermark() != null) {
+    return GSON.fromJson(workUnitState.getWorkunit().getLowWatermark(),MultiLongWatermark.class);
+  }
+  throw new IllegalArgumentException(String.format("workUnitState %s doesn't have either actual high watermark or low watermark",workUnitState));
+}

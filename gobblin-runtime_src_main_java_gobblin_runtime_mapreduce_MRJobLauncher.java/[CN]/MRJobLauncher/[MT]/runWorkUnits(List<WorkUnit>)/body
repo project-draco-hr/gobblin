@@ -27,10 +27,9 @@ synchronized (this.cancellationExecution) {
         }
       }
     }
-    jobState.setState(this.job.isSuccessful() ? JobState.RunningState.SUCCESSFUL : JobState.RunningState.FAILED);
     List<TaskState> outputTaskStates=collectOutputTaskStates(new Path(jobOutputPath,jobState.getJobId()));
-    if (outputTaskStates.size() < jobState.getTasks()) {
-      LOG.error(String.format("Collected %d task states while expecting %d task states",outputTaskStates.size(),jobState.getTasks()));
+    if (outputTaskStates.size() < jobState.getTaskCount()) {
+      LOG.error(String.format("Collected %d task states while expecting %d task states",outputTaskStates.size(),jobState.getTaskCount()));
       jobState.setState(JobState.RunningState.FAILED);
     }
     jobState.addTaskStates(outputTaskStates);
