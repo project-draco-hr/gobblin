@@ -3,6 +3,7 @@
   addShutdownHook();
   try {
     this.helixManager.connect();
+    this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new ParticipantShutdownMessageHandlerFactory());
   }
  catch (  Exception e) {
     throw new RuntimeException("The HelixManager failed to connect",e);

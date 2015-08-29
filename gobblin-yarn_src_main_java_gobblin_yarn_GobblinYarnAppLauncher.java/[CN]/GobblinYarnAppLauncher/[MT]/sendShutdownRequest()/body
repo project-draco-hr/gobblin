@@ -5,10 +5,11 @@
   criteria.setPartition("%");
   criteria.setPartitionState("%");
   criteria.setRecipientInstanceType(InstanceType.CONTROLLER);
-  criteria.setSessionSpecific(false);
-  Message shutdownRequest=new Message(Message.MessageType.USER_DEFINE_MSG,UUID.randomUUID().toString());
+  criteria.setSessionSpecific(true);
+  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,UUID.randomUUID().toString());
   shutdownRequest.setMsgSubType(HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString());
   shutdownRequest.setMsgState(Message.MessageState.NEW);
+  shutdownRequest.setTgtSessionId("*");
   int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest);
   if (messagesSent == 0) {
     LOGGER.error(String.format("Failed to send the %s message to the controller",shutdownRequest.getMsgSubType()));

@@ -1,0 +1,21 @@
+{
+  String messageSubType=this._message.getMsgSubType();
+  if (messageSubType.equalsIgnoreCase(HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString())) {
+    LOGGER.info("Handling message " + HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString());
+    this.shutdownMessageHandlingCompletionWatcher.scheduleAtFixedRate(new Runnable(){
+      @Override public void run(){
+        HelixManager helixManager=_notificationContext.getManager();
+        HelixDataAccessor helixDataAccessor=helixManager.getHelixDataAccessor();
+        HelixProperty helixProperty=helixDataAccessor.getProperty(_message.getKey(helixDataAccessor.keyBuilder(),helixManager.getInstanceName()));
+        if (helixProperty == null) {
+          GobblinWorkUnitRunner.this.stop();
+        }
+      }
+    }
+,0,1,TimeUnit.SECONDS);
+    HelixTaskResult result=new HelixTaskResult();
+    result.setSuccess(true);
+    return result;
+  }
+  throw new RuntimeException(String.format("Unknown %s message subtype: %s",Message.MessageType.SHUTDOWN.toString(),messageSubType));
+}

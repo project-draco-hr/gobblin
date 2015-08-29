@@ -3,6 +3,8 @@
   addShutdownHook();
   try {
     this.helixManager.connect();
+    this.helixManager.addLiveInstanceChangeListener(new GobblinLiveInstanceChangeListener());
+    this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new ControllerShutdownMessageHandlerFactory());
   }
  catch (  Exception e) {
     throw new RuntimeException("The HelixManager failed to connect",e);

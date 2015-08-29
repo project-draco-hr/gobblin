@@ -9,5 +9,5 @@
   this.yarnClient=YarnClient.createYarnClient();
   this.yarnClient.init(this.yarnConfiguration);
   this.fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),this.yarnConfiguration) : FileSystem.get(this.yarnConfiguration);
-  this.applicationStatusMonitor=Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinYarnAppStatusMonitor")));
+  this.applicationStatusMonitor=MoreExecutors.listeningDecorator(Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinYarnAppStatusMonitor"))));
 }

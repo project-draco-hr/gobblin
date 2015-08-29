@@ -1,5 +1,9 @@
 {
+  if (this.isStopped) {
+    return;
+  }
   LOGGER.info("Shutting down the Gobblin Yarn ApplicationMaster");
+  sendShutdownRequest();
   try {
     this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.MINUTES);
   }
@@ -12,4 +16,5 @@
       this.helixManager.disconnect();
     }
   }
+  this.isStopped=true;
 }

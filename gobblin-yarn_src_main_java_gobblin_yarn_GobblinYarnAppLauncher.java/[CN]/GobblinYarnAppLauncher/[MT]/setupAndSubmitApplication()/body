@@ -4,9 +4,9 @@
   ApplicationId applicationId=appSubmissionContext.getApplicationId();
   GetNewApplicationResponse newApplicationResponse=gobblinYarnApp.getNewApplicationResponse();
   Resource resource=prepareContainerResource(newApplicationResponse);
-  ContainerLaunchContext amContainerLaunchContext=Records.newRecord(ContainerLaunchContext.class);
   Map<String,LocalResource> appMasterLocalResources=Maps.newHashMap();
   addAppMasterLocalResources(applicationId,appMasterLocalResources);
+  ContainerLaunchContext amContainerLaunchContext=Records.newRecord(ContainerLaunchContext.class);
   amContainerLaunchContext.setLocalResources(appMasterLocalResources);
   amContainerLaunchContext.setEnvironment(getEnvironmentVariables());
   amContainerLaunchContext.setCommands(Lists.newArrayList(buildApplicationMasterCommand(resource.getMemory())));
