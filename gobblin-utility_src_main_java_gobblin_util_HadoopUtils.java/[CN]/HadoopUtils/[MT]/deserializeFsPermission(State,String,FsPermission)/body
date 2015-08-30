@@ -1,0 +1,4 @@
+{
+  short mode=props.getPropAsShortWithRadix(propName,defaultPermission.toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX);
+  return new FsPermission(mode);
+}
