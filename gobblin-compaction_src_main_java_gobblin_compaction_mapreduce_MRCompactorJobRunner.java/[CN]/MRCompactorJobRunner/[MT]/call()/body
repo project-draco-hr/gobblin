@@ -1,7 +1,6 @@
 {
   Configuration conf=HadoopUtils.getConfFromState(this.jobProps);
   DateTime jobStartTime=new DateTime(DateTimeZone.forID(this.jobProps.getProp(ConfigurationKeys.COMPACTION_TIMEZONE,ConfigurationKeys.DEFAULT_COMPACTION_TIMEZONE)));
-  boolean deduplicate=this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_DEDUPLICATE,ConfigurationKeys.DEFAULT_COMPACTION_DEDUPLICATE);
   if (this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,false)) {
     List<Path> lateFilePaths=Lists.newArrayList();
     for (    String filePathString : this.jobProps.getPropAsList(ConfigurationKeys.COMPACTION_JOB_LATE_DATA_FILES)) {
@@ -9,7 +8,7 @@
         lateFilePaths.add(new Path(filePathString));
       }
     }
-    Path lateDataOutputPath=deduplicate ? this.outputPath : new Path(this.outputPath,ConfigurationKeys.COMPACTION_LATE_FILES_DIRECTORY);
+    Path lateDataOutputPath=this.deduplicate ? this.outputPath : new Path(this.outputPath,ConfigurationKeys.COMPACTION_LATE_FILES_DIRECTORY);
     this.copyDataFiles(lateDataOutputPath,lateFilePaths,conf);
   }
  else {
@@ -17,22 +16,10 @@
       LOG.warn(String.format("Output path %s exists. Will not compact %s.",this.outputPath,this.inputPath));
       return null;
     }
-    if (deduplicate) {
-      addJars(conf);
-      Job job=Job.getInstance(conf);
-      this.configureJob(job);
-      this.submit(job);
-    }
- else {
-      this.fs.mkdirs(this.tmpPath);
-      List<Path> filePaths=Lists.newArrayList();
-      for (      FileStatus status : HadoopUtils.listStatusRecursive(this.fs,this.inputPath)) {
-        if (FilenameUtils.isExtension(status.getPath().getName(),getApplicableFileExtensions())) {
-          filePaths.add(status.getPath());
-        }
-      }
-      this.copyDataFiles(this.tmpPath,filePaths,conf);
-    }
+    addJars(conf);
+    Job job=Job.getInstance(conf);
+    this.configureJob(job);
+    this.submitAndWait(job);
     this.moveTmpPathToOutputPath();
   }
   this.markOutputDirAsCompleted(jobStartTime);
