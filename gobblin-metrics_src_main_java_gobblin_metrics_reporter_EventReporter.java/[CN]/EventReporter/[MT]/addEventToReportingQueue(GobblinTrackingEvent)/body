@@ -2,5 +2,5 @@
   if (this.reportingQueue.size() > QUEUE_CAPACITY * 2 / 3) {
     immediatelyScheduleReport();
   }
-  this.reportingQueue.add(event);
+  this.reportingQueue.add(sanitizeEvent(event));
 }

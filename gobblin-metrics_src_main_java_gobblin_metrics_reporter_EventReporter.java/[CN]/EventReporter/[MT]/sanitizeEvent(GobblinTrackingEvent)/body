@@ -1,0 +1,8 @@
+{
+  Map<String,String> newMetadata=Maps.newHashMap();
+  for (  Map.Entry<String,String> metadata : event.getMetadata().entrySet()) {
+    newMetadata.put(metadata.getKey() == null ? NULL_STRING : metadata.getKey(),metadata.getValue() == null ? NULL_STRING : metadata.getValue());
+  }
+  event.setMetadata(newMetadata);
+  return event;
+}

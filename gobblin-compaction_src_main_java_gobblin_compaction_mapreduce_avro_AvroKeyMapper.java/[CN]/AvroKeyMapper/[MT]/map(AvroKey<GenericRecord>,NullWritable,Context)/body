@@ -7,4 +7,5 @@
     outValue.datum(key.datum());
     context.write(outKey,outValue);
   }
+  context.getCounter(EVENT_COUNTER.RECORD_COUNT).increment(1);
 }
