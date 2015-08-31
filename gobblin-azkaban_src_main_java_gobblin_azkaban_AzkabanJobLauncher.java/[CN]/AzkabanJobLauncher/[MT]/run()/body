@@ -1,6 +1,8 @@
 {
   try {
-    this.jobLauncher.launchJob(this.jobListener);
+    if (isCurrentTimeInRange()) {
+      this.jobLauncher.launchJob(this.jobListener);
+    }
   }
   finally {
     this.closer.close();
