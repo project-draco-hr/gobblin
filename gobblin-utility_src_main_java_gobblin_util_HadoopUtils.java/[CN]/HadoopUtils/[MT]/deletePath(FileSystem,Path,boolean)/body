@@ -1,5 +1,5 @@
 {
-  if (!fs.delete(f,recursive)) {
+  if (fs.exists(f) && !fs.delete(f,recursive)) {
     throw new IOException("Failed to delete: " + f);
   }
 }
