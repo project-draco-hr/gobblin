@@ -1,0 +1,3 @@
+{
+  state.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DIR_PERMISSIONS,numBranches,branchId),octalPermissions);
+}

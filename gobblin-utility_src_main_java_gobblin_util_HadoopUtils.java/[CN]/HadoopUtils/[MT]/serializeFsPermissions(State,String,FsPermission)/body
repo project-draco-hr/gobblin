@@ -1,0 +1,3 @@
+{
+  state.setProp(key,String.format("%04o",fsPermissions.toShort()));
+}
