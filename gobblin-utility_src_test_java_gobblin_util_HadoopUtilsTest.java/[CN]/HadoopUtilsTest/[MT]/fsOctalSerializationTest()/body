@@ -1,0 +1,7 @@
+{
+  State state=new State();
+  String mode="0755";
+  HadoopUtils.setWriterFileOctalPermissions(state,0,0,mode);
+  FsPermission deserializedPerms=HadoopUtils.deserializeWriterFilePermissions(state,0,0);
+  Assert.assertEquals(Integer.parseInt(mode,8),deserializedPerms.toShort());
+}

@@ -1,5 +1,5 @@
 {
-  DateTime dateTime=new DateTime(2015,1,1,0,0,0);
+  DateTime dateTime=new DateTime(2015,1,1,0,0,0,DateTimeZone.forID("America/Los_Angeles"));
   Assert.assertTrue(TimeRangeChecker.isTimeInRange(Lists.newArrayList("THURSDAY"),"00-00","06-00",dateTime));
   Assert.assertTrue(TimeRangeChecker.isTimeInRange(Lists.newArrayList("THURSDAY"),"00-00","00-01",dateTime));
   Assert.assertTrue(TimeRangeChecker.isTimeInRange(Lists.newArrayList("MONDAY","THURSDAY"),"00-00","06-00",dateTime));
