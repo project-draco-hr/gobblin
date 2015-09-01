@@ -5,5 +5,6 @@
   this.outputPath=new Path(jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_DEST_DIR));
   this.tmpPath=new Path(jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_TMP_DIR));
   this.fs=fs;
-  this.perm=getOutputPermission();
+  this.perm=HadoopUtils.deserializeFsPermission(this.jobProps,ConfigurationKeys.COMPACTION_OUTPUT_DIR_PERMISSION,FsPermission.getDefault());
+  this.deduplicate=this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_DEDUPLICATE,ConfigurationKeys.DEFAULT_COMPACTION_DEDUPLICATE);
 }
