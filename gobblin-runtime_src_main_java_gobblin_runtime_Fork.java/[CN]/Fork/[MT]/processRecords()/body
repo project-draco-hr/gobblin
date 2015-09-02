@@ -1,4 +1,12 @@
 {
+  if (!this.writer.isPresent()) {
+    try {
+      this.writer=Optional.of(this.closer.register(buildWriter()));
+    }
+ catch (    SchemaConversionException sce) {
+      throw new IOException("Failed to build writer for fork " + this.index,sce);
+    }
+  }
   while (true) {
     try {
       Object record=this.recordQueue.get();
@@ -8,14 +16,6 @@
         }
       }
  else {
-        if (!this.writer.isPresent()) {
-          try {
-            this.writer=Optional.of(this.closer.register(buildWriter()));
-          }
- catch (          SchemaConversionException sce) {
-            throw new IOException("Failed to build writer for fork " + this.index,sce);
-          }
-        }
         for (        Object convertedRecord : this.converter.convertRecord(this.convertedSchema,record,this.taskState)) {
           if (this.rowLevelPolicyChecker.executePolicies(convertedRecord,this.rowLevelPolicyCheckingResult)) {
             this.writer.get().write(convertedRecord);
