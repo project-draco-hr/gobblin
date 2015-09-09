@@ -1,0 +1,10 @@
+{
+  if (this.retentionPolicies.size() == 1) {
+    return this.retentionPolicies.get(0).versionClass();
+  }
+  Class<? extends DatasetVersion> klazz=this.retentionPolicies.get(0).versionClass();
+  for (  RetentionPolicy<? extends DatasetVersion> policy : retentionPolicies) {
+    klazz=commonSuperclass(klazz,policy.versionClass());
+  }
+  return klazz;
+}
