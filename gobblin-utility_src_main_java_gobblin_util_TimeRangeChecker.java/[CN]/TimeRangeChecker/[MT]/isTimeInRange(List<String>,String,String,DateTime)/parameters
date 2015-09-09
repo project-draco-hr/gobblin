@@ -1,0 +1,4 @@
+List<String> days
+String startTimeStr
+String endTimeStr
+DateTime currentTime

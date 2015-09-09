@@ -1,11 +1,20 @@
 {
   this.futures.add(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
-      HadoopUtils.renamePath(fs,src,dst);
-      if (group.isPresent()) {
-        HadoopUtils.setGroup(fs,dst,group.get());
+      Lock lock=locks.get(src.toString());
+      lock.lock();
+      try {
+        if (fs.exists(src)) {
+          HadoopUtils.renamePath(fs,src,dst);
+          if (group.isPresent()) {
+            HadoopUtils.setGroup(fs,dst,group.get());
+          }
+        }
+        return null;
       }
-      return null;
+  finally {
+        lock.unlock();
+      }
     }
   }
 ));

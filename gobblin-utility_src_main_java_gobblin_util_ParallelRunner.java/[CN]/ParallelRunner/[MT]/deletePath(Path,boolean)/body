@@ -1,8 +1,15 @@
 {
   this.futures.add(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
-      HadoopUtils.deletePath(fs,path,recursive);
-      return null;
+      Lock lock=locks.get(path.toString());
+      lock.lock();
+      try {
+        HadoopUtils.deletePath(fs,path,recursive);
+        return null;
+      }
+  finally {
+        lock.unlock();
+      }
     }
   }
 ));
