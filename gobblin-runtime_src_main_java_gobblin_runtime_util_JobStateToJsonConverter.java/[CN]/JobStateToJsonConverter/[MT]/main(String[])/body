@@ -4,7 +4,7 @@
   Option jobIdOption=OptionBuilder.withArgName("gobblin job id").withDescription("Gobblin job id").withLongOpt("id").hasArgs().create('i');
   Option convertAllOption=OptionBuilder.withDescription("Whether to convert all past job states of the given job").withLongOpt("all").create('a');
   Option keepConfigOption=OptionBuilder.withDescription("Whether to keep all configuration properties").withLongOpt("keepConfig").create("kc");
-  Option outputToFile=OptionBuilder.withArgName("Output file name").withDescription("Whether to write the output to a file").withLongOpt("toFile").hasArgs().create("t");
+  Option outputToFile=OptionBuilder.withArgName("output file name").withDescription("Output file name").withLongOpt("toFile").hasArgs().create("t");
   Options options=new Options();
   options.addOption(storeUrlOption);
   options.addOption(jobNameOption);
@@ -36,9 +36,14 @@
     }
   }
   if (cmd.hasOption('t')) {
-    FileWriter fw=new FileWriter(cmd.getOptionValue('t'));
-    fw.write(stringWriter.toString());
-    fw.close();
+    Closer closer=Closer.create();
+    try {
+      FileWriter fw=closer.register(new FileWriter(cmd.getOptionValue('t')));
+      fw.write(stringWriter.toString());
+    }
+  finally {
+      closer.close();
+    }
   }
  else {
     System.out.println(stringWriter.toString());
