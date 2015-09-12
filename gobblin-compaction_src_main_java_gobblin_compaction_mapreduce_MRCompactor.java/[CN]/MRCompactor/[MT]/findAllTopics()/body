@@ -1,5 +1,5 @@
 {
-  Set<String> topics=Sets.newHashSet();
+  List<String> topics=Lists.newArrayList();
   List<Pattern> blacklist=getBlacklist();
   List<Pattern> whitelist=getWhitelist();
   for (  FileStatus status : this.fs.listStatus(new Path(this.inputDir))) {

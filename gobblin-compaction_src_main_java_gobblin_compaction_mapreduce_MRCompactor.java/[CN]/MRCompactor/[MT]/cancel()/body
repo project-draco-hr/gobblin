@@ -1,8 +1,19 @@
 {
-  this.executorService.shutdownNow();
-  for (  Job hadoopJob : MRCompactor.RUNNING_MR_JOBS) {
-    if (!hadoopJob.isComplete()) {
-      hadoopJob.killJob();
+  try {
+    for (    Map.Entry<Dataset,Job> entry : MRCompactor.RUNNING_MR_JOBS.entrySet()) {
+      Job hadoopJob=entry.getValue();
+      if (!hadoopJob.isComplete()) {
+        LOG.info(String.format("Killing hadoop job %s for dataset %s",hadoopJob.getJobID(),entry.getKey()));
+        hadoopJob.killJob();
+      }
+    }
+  }
+  finally {
+    try {
+      ExecutorsUtils.shutdownExecutorService(this.jobExecutor,Optional.of(LOG),0,TimeUnit.NANOSECONDS);
+    }
+  finally {
+      this.verifier.closeNow();
     }
   }
 }

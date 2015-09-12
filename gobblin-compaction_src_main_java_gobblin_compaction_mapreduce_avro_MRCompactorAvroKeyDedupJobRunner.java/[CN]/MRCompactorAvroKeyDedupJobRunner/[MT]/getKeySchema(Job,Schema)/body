@@ -25,7 +25,7 @@
     }
   }
  else {
-    LOG.info("Property " + ConfigurationKeys.COMPACTION_AVRO_KEY_SCHEMA_LOC + " not provided. Using key attributes in the schema for compaction");
+    LOG.info("Property " + COMPACTION_JOB_AVRO_KEY_SCHEMA_LOC + " not provided. Using key attributes in the schema for compaction");
     keySchema=AvroUtils.removeUncomparableFields(getKeySchema(topicSchema)).get();
   }
   return keySchema;

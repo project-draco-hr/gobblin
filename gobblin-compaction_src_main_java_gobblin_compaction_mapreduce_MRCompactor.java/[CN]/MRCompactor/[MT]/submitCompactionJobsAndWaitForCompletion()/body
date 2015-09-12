@@ -1,0 +1,55 @@
+{
+  LOG.info("Submitting compaction jobs. Number of datasets: " + this.datasets.size());
+  boolean allDatasetsCompleted=false;
+  while (!allDatasetsCompleted) {
+    allDatasetsCompleted=true;
+    for (    Dataset dataset : this.datasets) {
+      MRCompactorJobRunner jobRunner=MRCompactor.this.jobRunnables.get(dataset);
+      if (dataset.state() == VERIFIED || dataset.state() == UNVERIFIED) {
+        allDatasetsCompleted=false;
+        if (jobRunner == null || jobRunner.status() == ABORTED) {
+          runCompactionForDataset(dataset,dataset.state() == VERIFIED ? true : false);
+        }
+      }
+ else       if (dataset.state() == GIVEN_UP) {
+        if (this.shouldPublishDataIfCannotVerifyCompl) {
+          allDatasetsCompleted=false;
+          if (jobRunner == null || jobRunner.status() == ABORTED) {
+            runCompactionForDataset(dataset,true);
+          }
+ else {
+            jobRunner.proceed();
+          }
+        }
+ else {
+          if (jobRunner != null) {
+            jobRunner.abort();
+          }
+        }
+      }
+    }
+    if (shouldGiveUpVerification()) {
+      this.verifier.close();
+      for (      Dataset dataset : this.datasets) {
+        if (dataset.state() == UNVERIFIED) {
+          submitSlaEvent(dataset,"CompletenessCannotBeVerified");
+          dataset.setState(GIVEN_UP);
+        }
+      }
+    }
+    if (this.stopwatch.elapsed(TimeUnit.MINUTES) >= this.compactionTimeoutMinutes) {
+      LOG.error("Compaction timed-out. Killing all running jobs");
+      for (      MRCompactorJobRunner jobRunner : MRCompactor.this.jobRunnables.values()) {
+        jobRunner.abort();
+      }
+      break;
+    }
+    try {
+      Thread.sleep(TimeUnit.SECONDS.toMillis(COMPACTION_JOB_WAIT_INTERVAL_SECONDS));
+    }
+ catch (    InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new RuntimeException("Interrupted while waiting",e);
+    }
+  }
+}

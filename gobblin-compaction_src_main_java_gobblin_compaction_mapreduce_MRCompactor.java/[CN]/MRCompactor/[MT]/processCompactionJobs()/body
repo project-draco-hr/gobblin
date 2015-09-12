@@ -1,0 +1,9 @@
+{
+  if (this.shouldVerifDataCompl) {
+    verifyDataCompleteness();
+  }
+ else {
+    setAllDatasetStatesToVerified();
+  }
+  this.submitCompactionJobsAndWaitForCompletion();
+}

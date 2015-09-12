@@ -1,5 +1,5 @@
 {
-  String maxTimeAgoStr=this.state.getProp(ConfigurationKeys.COMPACTION_TIMEBASED_MAX_TIME_AGO,ConfigurationKeys.DEFAULT_COMPACTION_TIMEBASED_MAX_TIME_AGO);
+  String maxTimeAgoStr=this.state.getProp(COMPACTION_TIMEBASED_MAX_TIME_AGO,DEFAULT_COMPACTION_TIMEBASED_MAX_TIME_AGO);
   Period maxTimeAgo=periodFormatter.parsePeriod(maxTimeAgoStr);
   return currentTime.minus(maxTimeAgo);
 }
