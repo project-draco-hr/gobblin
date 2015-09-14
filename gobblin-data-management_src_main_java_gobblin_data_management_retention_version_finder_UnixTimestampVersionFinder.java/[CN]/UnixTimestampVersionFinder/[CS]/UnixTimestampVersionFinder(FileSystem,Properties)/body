@@ -1,0 +1,4 @@
+{
+  super(fs,props);
+  this.embeddedFinder=new WatermarkDatasetVersionFinder(fs,props);
+}

@@ -1,0 +1,9 @@
+{
+  Properties props=new Properties();
+  props.put(WatermarkDatasetVersionFinder.WATERMARK_REGEX_KEY,"watermark-([0-9]*)-[a-z]*");
+  UnixTimestampVersionFinder parser=new UnixTimestampVersionFinder(null,props);
+  DateTime time=new DateTime(2015,1,2,10,15);
+  Assert.assertEquals(parser.versionClass(),TimestampedDatasetVersion.class);
+  Assert.assertEquals(parser.globVersionPattern(),new Path("*"));
+  Assert.assertEquals(parser.getDatasetVersion(new Path("watermark-" + time.getMillis() + "-test"),new Path("fullPath")).getDateTime(),time);
+}

@@ -1,0 +1,14 @@
+{
+  Preconditions.checkArgument(props.containsKey(DELETE_SETS_COMBINE_OPERATION),"Combine operation not specified.");
+  ImmutableList.Builder<RetentionPolicy<DatasetVersion>> builder=ImmutableList.builder();
+  for (  String property : props.stringPropertyNames()) {
+    if (property.startsWith(RETENTION_POLICIES_PREFIX)) {
+      builder.add(instantiateRetentionPolicy(props.getProperty(property),props));
+    }
+  }
+  this.retentionPolicies=builder.build();
+  if (this.retentionPolicies.size() == 0) {
+    throw new IOException("No retention policies specified for " + CombineRetentionPolicy.class.getCanonicalName());
+  }
+  this.combineOperation=DeletableCombineOperation.valueOf(props.getProperty(DELETE_SETS_COMBINE_OPERATION).toUpperCase());
+}

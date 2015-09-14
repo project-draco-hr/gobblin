@@ -1,0 +1,11 @@
+{
+  Properties props=new Properties();
+  props.setProperty(CombineRetentionPolicy.RETENTION_POLICIES_PREFIX + "1",ContainsARetentionPolicy.class.getCanonicalName());
+  props.setProperty(CombineRetentionPolicy.DELETE_SETS_COMBINE_OPERATION,CombineRetentionPolicy.DeletableCombineOperation.INTERSECT.name());
+  CombineRetentionPolicy policy=new CombineRetentionPolicy(props);
+  Assert.assertEquals(policy.commonSuperclass(StringDatasetVersion.class,StringDatasetVersion.class),StringDatasetVersion.class);
+  Assert.assertEquals(policy.commonSuperclass(StringDatasetVersion.class,TimestampedDatasetVersion.class),DatasetVersion.class);
+  Assert.assertEquals(policy.commonSuperclass(StringDatasetVersion.class,FileStatusDatasetVersion.class),StringDatasetVersion.class);
+  Assert.assertEquals(policy.commonSuperclass(FileStatusDatasetVersion.class,StringDatasetVersion.class),StringDatasetVersion.class);
+  Assert.assertEquals(policy.commonSuperclass(DatasetVersion.class,StringDatasetVersion.class),DatasetVersion.class);
+}
