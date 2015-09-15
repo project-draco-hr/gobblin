@@ -1,3 +1,4 @@
 ExecutorService executorService
+Optional<Logger> logger
 long timeout
 TimeUnit unit
