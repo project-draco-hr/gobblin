@@ -1,1 +1,2 @@
 ExecutorService executorService
+Optional<Logger> logger
