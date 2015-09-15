@@ -1,4 +1,4 @@
 {
   LOG.info("Stopping the local task state tracker");
-  ExecutorsUtils.shutdownExecutorService(this.reporterExecutor);
+  ExecutorsUtils.shutdownExecutorService(this.reporterExecutor,Optional.of(LOG));
 }
