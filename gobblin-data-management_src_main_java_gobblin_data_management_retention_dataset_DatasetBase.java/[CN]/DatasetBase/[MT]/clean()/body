@@ -12,6 +12,10 @@
   }
   Collections.sort(versions,Collections.reverseOrder());
   Collection<T> deletableVersions=getRetentionPolicy().listDeletableVersions(versions);
+  if (deletableVersions.isEmpty()) {
+    this.log.warn("No deletable dataset version can be found. Ignoring.");
+    return;
+  }
   Set<Path> possiblyEmptyDirectories=new HashSet<Path>();
   for (  DatasetVersion versionToDelete : deletableVersions) {
     this.log.info("Deleting dataset version " + versionToDelete);
@@ -19,6 +23,10 @@
     this.log.info("Deleting paths: " + Arrays.toString(pathsToDelete.toArray()));
     boolean deletedAllPaths=true;
     for (    Path path : pathsToDelete) {
+      if (path.equals(datasetRoot())) {
+        this.log.info("Not deleting dataset root path: " + path);
+        continue;
+      }
       boolean successfullyDeleted=this.deleteAsOwner ? this.trash.moveToTrashAsOwner(path) : this.trash.moveToTrash(path);
       if (successfullyDeleted) {
         possiblyEmptyDirectories.add(path.getParent());

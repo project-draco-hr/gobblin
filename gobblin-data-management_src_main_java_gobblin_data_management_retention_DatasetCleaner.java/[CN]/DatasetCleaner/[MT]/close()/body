@@ -1,0 +1,15 @@
+{
+  try {
+    if (this.finishCleanSignal.isPresent()) {
+      finishCleanSignal.get().await();
+    }
+  }
+ catch (  InterruptedException e) {
+    Thread.currentThread().interrupt();
+    throw new IOException("Not all datasets finish cleanning",e);
+  }
+ finally {
+    ExecutorsUtils.shutdownExecutorService(this.service,Optional.of(LOG));
+    this.closer.close();
+  }
+}

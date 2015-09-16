@@ -1,0 +1,4 @@
+{
+  this.metricContext=this.closer.register(Instrumented.newContextFromReferenceContext(this.metricContext,tags,Optional.<String>absent()));
+  this.regenerateMetrics();
+}

@@ -1,7 +1,7 @@
 {
   try {
     List<TimestampedDatasetVersion> timestampedVersions=Lists.newArrayList();
-    for (    FileStatus fileStatus : FileListUtils.listFilesRecursively(this.fs,dataset.datasetRoot())) {
+    for (    FileStatus fileStatus : FileListUtils.listMostNestedPathRecursively(this.fs,dataset.datasetRoot())) {
       timestampedVersions.add(new TimestampedDatasetVersion(new DateTime(fileStatus.getModificationTime()),fileStatus.getPath()));
     }
     return timestampedVersions;

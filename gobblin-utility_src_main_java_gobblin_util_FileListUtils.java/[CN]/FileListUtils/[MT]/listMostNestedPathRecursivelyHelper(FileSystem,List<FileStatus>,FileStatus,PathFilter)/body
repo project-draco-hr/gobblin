@@ -1,0 +1,17 @@
+{
+  if (fileStatus.isDir()) {
+    FileStatus[] curFileStatus=fs.listStatus(fileStatus.getPath());
+    if (ArrayUtils.isEmpty(curFileStatus)) {
+      files.add(fileStatus);
+    }
+ else {
+      for (      FileStatus status : curFileStatus) {
+        listMostNestedPathRecursivelyHelper(fs,files,status,fileFilter);
+      }
+    }
+  }
+ else   if (fileFilter.accept(fileStatus.getPath())) {
+    files.add(fileStatus);
+  }
+  return files;
+}
