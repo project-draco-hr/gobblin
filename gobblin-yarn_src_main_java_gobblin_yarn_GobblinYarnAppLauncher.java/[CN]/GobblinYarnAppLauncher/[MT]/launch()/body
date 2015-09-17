@@ -4,7 +4,8 @@
     this.helixManager.connect();
   }
  catch (  Exception e) {
-    throw new RuntimeException("The HelixManager failed to connect",e);
+    LOGGER.error("HelixManager failed to connect",e);
+    throw Throwables.propagate(e);
   }
   this.yarnClient.start();
   this.applicationId=Optional.of(setupAndSubmitApplication());

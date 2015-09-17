@@ -10,7 +10,7 @@
         scheduleTokenRenewTask();
       }
  catch (      IOException ioe) {
-        throw new RuntimeException(ioe);
+        throw Throwables.propagate(ioe);
       }
     }
   }

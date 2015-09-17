@@ -6,6 +6,6 @@
   fileResource.setTimestamp(fileStatus.getModificationTime());
   fileResource.setType(resourceType);
   fileResource.setVisibility(LocalResourceVisibility.APPLICATION);
-  LOGGER.info(String.format("Created a LocalResource for file %s of type %s",fileResource.getResource(),resourceType));
+  LOGGER.debug(String.format("Created a LocalResource for file %s of type %s",fileResource.getResource(),resourceType));
   resourceMap.put(destFilePath.getName(),fileResource);
 }

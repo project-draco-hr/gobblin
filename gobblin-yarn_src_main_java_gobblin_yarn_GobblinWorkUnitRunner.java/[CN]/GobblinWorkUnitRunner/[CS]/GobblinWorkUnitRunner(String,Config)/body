@@ -4,11 +4,12 @@
   String zkConnectionString=config.getString(ConfigurationConstants.ZK_CONNECTION_STRING_KEY);
   this.helixManager=HelixManagerFactory.getZKHelixManager(config.hasPath(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY) ? config.getString(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY) : applicationName,YarnHelixUtils.getParticipantIdStr(YarnHelixUtils.getHostname(),this.containerId),InstanceType.PARTICIPANT,zkConnectionString);
   Properties properties=YarnHelixUtils.configToProperties(config);
+  this.eventBus=new EventBus();
   TaskExecutor taskExecutor=new TaskExecutor(properties);
   TaskStateTracker taskStateTracker=new GobblinHelixTaskStateTracker(properties,this.helixManager);
   List<Service> services=Lists.newArrayList();
   if (UserGroupInformation.isSecurityEnabled()) {
-    services.add(new ParticipantSecurityManager(config,fs));
+    services.add(new ParticipantSecurityManager(fs,this.eventBus));
   }
   services.add(taskExecutor);
   services.add(taskStateTracker);

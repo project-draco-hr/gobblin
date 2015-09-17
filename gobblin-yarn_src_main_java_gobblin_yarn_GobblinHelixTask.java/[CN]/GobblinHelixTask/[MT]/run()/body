@@ -21,13 +21,15 @@ throw new IllegalStateException("Unexpected result WorkUnit state: " + workingSt
 }
 }
  catch (IOException ioe) {
-LOGGER.error("Failed to deserialize WorkUnit",ioe);
-throw new RuntimeException("Failed to run WorkUnit " + this.taskId,ioe);
+LOGGER.error("Failed to deserialize WorkUnit " + this.taskId,ioe);
+throw Throwables.propagate(ioe);
 }
 catch (ExecutionException ee) {
-throw new RuntimeException("Failed to run WorkUnit " + this.taskId,ee);
+LOGGER.error("Failed to run WorkUnit " + this.taskId,ee);
+throw Throwables.propagate(ee);
 }
 catch (InterruptedException ie) {
-throw new RuntimeException("Failed to run WorkUnit " + this.taskId,ie);
+LOGGER.error("Failed to run WorkUnit " + this.taskId,ie);
+throw Throwables.propagate(ie);
 }
 }

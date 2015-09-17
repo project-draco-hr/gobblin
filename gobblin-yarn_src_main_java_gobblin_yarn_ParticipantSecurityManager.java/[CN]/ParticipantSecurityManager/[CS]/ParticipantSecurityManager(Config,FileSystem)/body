@@ -1,7 +1,0 @@
-{
-  this.fs=fs;
-  this.tokenFilePath=new Path(config.getString(ConfigurationConstants.TOKEN_FILE_PATH));
-  this.fs.makeQualified(tokenFilePath);
-  this.tokenFileMonitorIntervalInMinutes=config.getLong(ConfigurationConstants.TOKEN_FILE_MONITOR_INTERVAL_IN_MINUTES);
-  this.tokenFileMonitorExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("KeytabReLoginExecutor")));
-}

@@ -10,7 +10,7 @@
   List<Service> services=Lists.newArrayList();
   if (UserGroupInformation.isSecurityEnabled()) {
     LOGGER.info("Adding YarnAMSecurityManager since security is enabled");
-    services.add(new ControllerSecurityManager(config,fs));
+    services.add(new ControllerSecurityManager(config,this.helixManager,fs));
   }
   services.add(new YarnService(config,applicationName,applicationAttemptIdId.getApplicationId(),this.eventBus));
   services.add(new GobblinHelixJobScheduler(YarnHelixUtils.configToProperties(config),this.helixManager,this.eventBus,appWorkDir));

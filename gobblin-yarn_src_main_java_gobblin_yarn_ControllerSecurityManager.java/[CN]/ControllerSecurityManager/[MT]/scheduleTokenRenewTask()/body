@@ -6,10 +6,11 @@
         renewDelegationToken();
       }
  catch (      IOException ioe) {
-        throw new RuntimeException(ioe);
+        throw Throwables.propagate(ioe);
       }
 catch (      InterruptedException ie) {
-        throw new RuntimeException(ie);
+        LOGGER.error("Token renew task has been interrupted");
+        Thread.currentThread().interrupt();
       }
     }
   }

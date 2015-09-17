@@ -1,0 +1,13 @@
+{
+  this.config=config;
+  this.helixManager=helixManager;
+  this.fs=fs;
+  this.tokenFilePath=new Path(config.getString(ConfigurationConstants.TOKEN_FILE_PATH));
+  this.fs.makeQualified(tokenFilePath);
+  this.loginIntervalInHours=config.getLong(ConfigurationConstants.LOGIN_INTERVAL_IN_HOURS);
+  this.tokenRenewIntervalInHours=config.getLong(ConfigurationConstants.TOKEN_RENEW_INTERVAL_IN_HOURS);
+  this.loginExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("KeytabReLoginExecutor")));
+  this.tokenRenewExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("TokenRenewExecutor")));
+  login();
+  scheduleTokenRenewTask();
+}

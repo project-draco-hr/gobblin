@@ -1,5 +1,6 @@
 {
   if (!this.fs.exists(destDir)) {
+    LOGGER.warn(String.format("Path %s does not exist so no container LocalResource to add",destDir));
     return;
   }
   FileStatus[] statuses=this.fs.listStatus(destDir);

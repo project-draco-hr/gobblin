@@ -1,0 +1,8 @@
+{
+  try {
+    readAndAddDelegationTokens(new Path(delegationTokenUpdatedEvent.getTokenFilePath()));
+  }
+ catch (  IOException ioe) {
+    throw Throwables.propagate(ioe);
+  }
+}
