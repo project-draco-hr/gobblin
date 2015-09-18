@@ -1,7 +1,7 @@
 {
   LOGGER.info("Stopping the " + GobblinYarnAppLauncher.class.getSimpleName());
   try {
-    ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor,Optional.of(LOGGER));
+    ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor,Optional.of(LOGGER),5,TimeUnit.MINUTES);
     if (this.applicationId.isPresent()) {
       sendShutdownRequest();
     }

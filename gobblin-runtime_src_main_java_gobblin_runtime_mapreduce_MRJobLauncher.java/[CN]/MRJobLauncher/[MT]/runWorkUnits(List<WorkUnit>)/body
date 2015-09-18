@@ -19,7 +19,7 @@
     TimingEvent mrJobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_JOB_RUN);
     LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
     this.job.waitForCompletion(true);
-    mrJobRunTimer.stop();
+    mrJobRunTimer.stop(ImmutableMap.of("hadoopMRJobId",this.job.getJobID().toString()));
     if (this.cancellationRequested) {
 synchronized (this.cancellationExecution) {
         if (this.cancellationExecuted) {

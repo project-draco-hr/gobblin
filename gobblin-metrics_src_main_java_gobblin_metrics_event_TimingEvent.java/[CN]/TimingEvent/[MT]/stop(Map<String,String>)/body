@@ -1,0 +1,15 @@
+{
+  if (this.stopped) {
+    return;
+  }
+  this.stopped=true;
+  long endTime=System.currentTimeMillis();
+  long duration=endTime - this.startTime;
+  Map<String,String> finalMetadata=Maps.newHashMap();
+  finalMetadata.putAll(additionalMetadata);
+  finalMetadata.put(EventSubmitter.EVENT_TYPE,TIMING_EVENT);
+  finalMetadata.put(START_TIME,Long.toString(this.startTime));
+  finalMetadata.put(END_TIME,Long.toString(endTime));
+  finalMetadata.put(DURATION,Long.toString(duration));
+  this.submitter.submit(this.name,finalMetadata);
+}

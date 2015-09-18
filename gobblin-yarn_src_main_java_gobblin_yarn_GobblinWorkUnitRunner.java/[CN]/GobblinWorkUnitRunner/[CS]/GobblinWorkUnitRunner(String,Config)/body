@@ -1,6 +1,6 @@
 {
   this.containerId=ConverterUtils.toContainerId(System.getenv().get(ApplicationConstants.Environment.CONTAINER_ID.key()));
-  FileSystem fs=FileSystem.get(new Configuration());
+  FileSystem fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),new Configuration()) : FileSystem.get(new Configuration());
   String zkConnectionString=config.getString(ConfigurationConstants.ZK_CONNECTION_STRING_KEY);
   this.helixManager=HelixManagerFactory.getZKHelixManager(config.hasPath(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY) ? config.getString(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY) : applicationName,YarnHelixUtils.getParticipantIdStr(YarnHelixUtils.getHostname(),this.containerId),InstanceType.PARTICIPANT,zkConnectionString);
   Properties properties=YarnHelixUtils.configToProperties(config);
