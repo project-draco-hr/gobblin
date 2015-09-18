@@ -1,0 +1,18 @@
+{
+  Properties props=new Properties();
+  props.setProperty(CombineRetentionPolicy.RETENTION_POLICIES_PREFIX + "1",ContainsARetentionPolicy.class.getCanonicalName());
+  props.setProperty(CombineRetentionPolicy.RETENTION_POLICIES_PREFIX + "2",ContainsBRetentionPolicy.class.getCanonicalName());
+  props.setProperty(CombineRetentionPolicy.RETENTION_POLICIES_PREFIX + "3",ContainsCRetentionPolicy.class.getCanonicalName());
+  props.setProperty(CombineRetentionPolicy.DELETE_SETS_COMBINE_OPERATION,CombineRetentionPolicy.DeletableCombineOperation.INTERSECT.name());
+  CombineRetentionPolicy policy=new CombineRetentionPolicy(props);
+  Collection<DatasetVersion> deletableVersions=policy.listDeletableVersions(Lists.<DatasetVersion>newArrayList(new StringDatasetVersion("a",new Path("/")),new StringDatasetVersion("abc",new Path("/")),new StringDatasetVersion("abcd",new Path("/")),new StringDatasetVersion("bc",new Path("/")),new StringDatasetVersion("d",new Path("/"))));
+  Set<String> actualDeletableVersions=Sets.newHashSet(Iterables.transform(deletableVersions,new Function<DatasetVersion,String>(){
+    @Nullable @Override public String apply(    DatasetVersion input){
+      return ((StringDatasetVersion)input).getVersion();
+    }
+  }
+));
+  Assert.assertEquals(policy.versionClass(),StringDatasetVersion.class);
+  Assert.assertEquals(deletableVersions.size(),2);
+  Assert.assertEquals(actualDeletableVersions,Sets.newHashSet("abcd","abc"));
+}

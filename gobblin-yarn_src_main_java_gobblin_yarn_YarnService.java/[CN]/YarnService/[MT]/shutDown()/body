@@ -1,7 +1,7 @@
 {
   LOGGER.info("Stopping the YarnService");
   try {
-    ExecutorsUtils.shutdownExecutorService(this.containerLaunchExecutor);
+    ExecutorsUtils.shutdownExecutorService(this.containerLaunchExecutor,Optional.of(LOGGER));
     for (    Container container : this.containerMap.values()) {
       LOGGER.info("Stopping container " + container.getId());
       this.nmClientAsync.stopContainerAsync(container.getId(),container.getNodeId());

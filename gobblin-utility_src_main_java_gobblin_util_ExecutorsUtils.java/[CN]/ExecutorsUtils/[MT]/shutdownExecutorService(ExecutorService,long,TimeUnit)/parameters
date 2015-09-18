@@ -1,3 +1,0 @@
-ExecutorService executorService
-long timeout
-TimeUnit unit

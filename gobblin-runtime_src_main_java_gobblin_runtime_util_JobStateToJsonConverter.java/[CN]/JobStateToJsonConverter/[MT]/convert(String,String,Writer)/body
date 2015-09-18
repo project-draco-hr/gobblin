@@ -1,5 +1,5 @@
 {
-  List<JobState> jobStates=(List<JobState>)this.jobStateStore.getAll(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX);
+  List<? extends JobState> jobStates=(List<? extends JobState>)this.jobStateStore.getAll(jobName,jobId + JOB_STATE_STORE_TABLE_SUFFIX);
   if (jobStates.isEmpty()) {
     LOGGER.warn(String.format("No job state found for job with name %s and id %s",jobName,jobId));
     return;
