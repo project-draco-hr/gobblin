@@ -1,0 +1,16 @@
+{
+  Preconditions.checkArgument(workUnitState.contains(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS),"Missing property " + ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS + ", which is needed for publishing data of a single task");
+  Iterable<String> taskOutputFiles=workUnitState.getPropAsList(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS);
+  for (  String taskOutputFile : taskOutputFiles) {
+    Path taskOutputPath=new Path(taskOutputFile);
+    if (!this.fileSystemByBranches.get(branchId).exists(taskOutputPath)) {
+      LOG.warn("Task output file " + taskOutputFile + " doesn't exist.");
+      continue;
+    }
+    String pathSuffix=taskOutputFile.substring(taskOutputFile.indexOf(writerOutputDir.toString()) + writerOutputDir.toString().length() + 1);
+    Path publisherOutputPath=new Path(publisherOutputDir,pathSuffix);
+    WriterUtils.mkdirsWithRecursivePermission(this.fileSystemByBranches.get(branchId),publisherOutputPath.getParent(),this.permissions.get(branchId));
+    LOG.info(String.format("Moving %s to %s",taskOutputFile,publisherOutputPath));
+    parallelRunner.renamePath(taskOutputPath,publisherOutputPath,Optional.<String>absent());
+  }
+}

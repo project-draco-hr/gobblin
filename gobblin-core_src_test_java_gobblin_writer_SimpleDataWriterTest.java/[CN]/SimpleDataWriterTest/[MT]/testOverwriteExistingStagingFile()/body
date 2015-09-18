@@ -17,7 +17,7 @@
   writer.commit();
   Assert.assertEquals(writer.recordsWritten(),1);
   Assert.assertEquals(writer.bytesWritten(),randomBytesWrite.length + 1);
-  String pathKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FINAL_OUTPUT_PATH,0);
+  String pathKey=ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS;
   Assert.assertTrue(properties.contains(pathKey));
   File writeFile=new File(properties.getProp(pathKey));
   int c, i=0;

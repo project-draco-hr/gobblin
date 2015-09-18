@@ -2,7 +2,7 @@
   Path writerOutputPath=getPathForColumnValue(recordTimestamp);
   if (!this.pathToWriterMap.containsKey(writerOutputPath)) {
     LOG.info("Creating a new DataWriter for path: " + writerOutputPath);
-    DataWriter<GenericRecord> avroHdfsDataWriter=createAvroHdfsDataWriterForPath(writerOutputPath);
+    FsDataWriter<GenericRecord> avroHdfsDataWriter=createAvroHdfsDataWriterForPath(writerOutputPath);
     this.pathToWriterMap.put(writerOutputPath,avroHdfsDataWriter);
   }
   this.pathToWriterMap.get(writerOutputPath).write(record);

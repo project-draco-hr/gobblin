@@ -19,7 +19,8 @@ catch (    URISyntaxException e) {
   }
   this.stagingFile=new Path(WriterUtils.getWriterStagingDir(properties,numBranches,branchId),fileName);
   this.outputFile=new Path(WriterUtils.getWriterOutputDir(properties,numBranches,branchId),fileName);
-  this.properties.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FINAL_OUTPUT_PATH,branchId),this.outputFile.toString());
+  this.outputFilePropName=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS,numBranches,branchId);
+  this.properties.setProp(this.outputFilePropName,this.outputFile.toString());
   if (this.fs.exists(this.stagingFile)) {
     LOG.warn(String.format("Task staging file %s already exists, deleting it",this.stagingFile));
     HadoopUtils.deletePath(this.fs,this.stagingFile,false);

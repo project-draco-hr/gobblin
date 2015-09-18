@@ -1,0 +1,4 @@
+{
+  Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(State.class);
+  return dataPublisherConstructor.newInstance(state);
+}

@@ -2,7 +2,7 @@
   Set<Path> writerOutputPathsMoved=Sets.newHashSet();
   for (  WorkUnitState workUnitState : states) {
     for (int branchId=0; branchId < this.numBranches; branchId++) {
-      publishData(workUnitState,branchId,writerOutputPathsMoved);
+      publishMultiTaskData(workUnitState,branchId,writerOutputPathsMoved);
     }
     workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   }
