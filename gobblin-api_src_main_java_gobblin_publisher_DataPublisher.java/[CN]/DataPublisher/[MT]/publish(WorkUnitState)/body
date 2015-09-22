@@ -1,0 +1,4 @@
+{
+  publishMetadata(state);
+  publishData(state);
+}

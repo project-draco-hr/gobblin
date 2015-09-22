@@ -1,1 +1,1 @@
-Collection<? extends WorkUnitState> tasks
+Collection<? extends WorkUnitState> states

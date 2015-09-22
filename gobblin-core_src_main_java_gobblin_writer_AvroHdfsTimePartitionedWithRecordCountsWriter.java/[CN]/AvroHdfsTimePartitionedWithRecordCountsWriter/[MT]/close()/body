@@ -1,10 +1,11 @@
 {
   super.close();
-  String fileName=WriterUtils.getWriterFileName(this.properties,this.numBranches,this.branch,this.writerId,this.writerOutputFormat.getExtension());
-  Path writerOutputDir=new Path(this.properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,this.numBranches,this.branch)));
-  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
-    String filePathOld=new Path(entry.getKey(),fileName).toString();
-    String filePathNew=filePathOld.substring(0,filePathOld.lastIndexOf(".")) + "." + entry.getValue().recordsWritten()+ filePathOld.substring(filePathOld.lastIndexOf("."));
-    HadoopUtils.renamePath(((AvroHdfsDataWriter)entry.getValue()).getFileSystem(),new Path(writerOutputDir,filePathOld),new Path(writerOutputDir,filePathNew));
+  this.properties.removeProp(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS);
+  for (  Entry<Path,FsDataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+    String filePathOld=entry.getValue().getOutputFilePath();
+    String filePathNew=new Path(new Path(filePathOld).getParent(),Files.getNameWithoutExtension(filePathOld)).toString() + "." + entry.getValue().recordsWritten()+ "."+ Files.getFileExtension(filePathOld);
+    this.properties.appendToListProp(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS,filePathNew);
+    LOG.info("Renaming " + filePathOld + " to "+ filePathNew);
+    HadoopUtils.renamePath(((AvroHdfsDataWriter)entry.getValue()).getFileSystem(),new Path(filePathOld),new Path(filePathNew));
   }
 }

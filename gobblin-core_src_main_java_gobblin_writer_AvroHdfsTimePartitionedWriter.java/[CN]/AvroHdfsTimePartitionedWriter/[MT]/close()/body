@@ -4,8 +4,9 @@
   this.properties.setProp(ConfigurationKeys.WRITER_EARLIEST_TIMESTAMP,this.earliestTimestampWritten);
   this.properties.setProp(ConfigurationKeys.WRITER_AVERAGE_TIMESTAMP,(long)(this.totalTimestampWritten / recordsWritten()));
   boolean closeFailed=false;
-  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+  for (  Entry<Path,FsDataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
     try {
+      this.properties.appendToListProp(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS,entry.getValue().getOutputFilePath());
       entry.getValue().close();
     }
  catch (    IOException e) {

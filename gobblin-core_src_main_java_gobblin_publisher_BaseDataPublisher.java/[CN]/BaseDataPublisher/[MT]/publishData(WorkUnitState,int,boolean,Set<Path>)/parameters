@@ -1,0 +1,4 @@
+WorkUnitState state
+int branchId
+boolean publishSingleTaskData
+Set<Path> writerOutputPathsMoved
