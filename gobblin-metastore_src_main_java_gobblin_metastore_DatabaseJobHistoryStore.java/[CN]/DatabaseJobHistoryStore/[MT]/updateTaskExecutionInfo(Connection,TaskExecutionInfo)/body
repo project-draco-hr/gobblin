@@ -2,8 +2,8 @@
   Preconditions.checkArgument(info.hasTaskId());
   PreparedStatement updateStatement=connection.prepareStatement(TASK_EXECUTION_UPDATE_STATEMENT_TEMPLATE);
   int index=0;
-  updateStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : Timestamp.valueOf(DEFAULT_TIMESTAMP));
-  updateStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : Timestamp.valueOf(DEFAULT_TIMESTAMP));
+  updateStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
+  updateStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
   updateStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
   updateStatement.setString(++index,info.hasState() ? info.getState().name() : null);
   updateStatement.setString(++index,info.hasFailureException() ? info.getFailureException() : null);
