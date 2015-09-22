@@ -1,0 +1,4 @@
+{
+  updateCounters(task,MetricGroupFilter.JOB);
+  updateCounters(task,MetricGroupFilter.TASK);
+}
