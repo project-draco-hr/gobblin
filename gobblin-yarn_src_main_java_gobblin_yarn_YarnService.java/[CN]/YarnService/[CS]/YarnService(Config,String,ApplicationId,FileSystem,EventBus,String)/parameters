@@ -1,4 +1,6 @@
 Config config
 String applicationName
 ApplicationId applicationId
+FileSystem fs
 EventBus eventBus
+String containerJvmArgs

@@ -14,4 +14,5 @@
   LOGGER.info(String.format("Logged in from keytab file %s using principal %s",keyTabFilePath,principal));
   this.currentUser=UserGroupInformation.getCurrentUser();
   getNewDelegationTokenForLoginUser();
+  writeDelegationTokenToFile();
 }

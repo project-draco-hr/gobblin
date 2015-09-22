@@ -1,4 +1,4 @@
 {
   String containerProcessName=GobblinWorkUnitRunner.class.getSimpleName();
-  return String.format("%s/bin/java -Xmx%dM %s" + " --%s %s" + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + File.separator+ "%s.%s"+ " 2>"+ ApplicationConstants.LOG_DIR_EXPANSION_VAR+ File.separator+ "%s.%s",ApplicationConstants.Environment.JAVA_HOME.$(),container.getResource().getMemory(),GobblinWorkUnitRunner.class.getName(),ConfigurationConstants.APPLICATION_NAME_OPTION_NAME,this.applicationName,containerProcessName,ApplicationConstants.STDOUT,containerProcessName,ApplicationConstants.STDERR);
+  return String.format("%s/bin/java -Xmx%dM %s %s" + " --%s %s" + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + File.separator+ "%s.%s"+ " 2>"+ ApplicationConstants.LOG_DIR_EXPANSION_VAR+ File.separator+ "%s.%s",ApplicationConstants.Environment.JAVA_HOME.$(),container.getResource().getMemory(),this.containerJvmArgs,GobblinWorkUnitRunner.class.getName(),ConfigurationConstants.APPLICATION_NAME_OPTION_NAME,this.applicationName,containerProcessName,ApplicationConstants.STDOUT,containerProcessName,ApplicationConstants.STDERR);
 }

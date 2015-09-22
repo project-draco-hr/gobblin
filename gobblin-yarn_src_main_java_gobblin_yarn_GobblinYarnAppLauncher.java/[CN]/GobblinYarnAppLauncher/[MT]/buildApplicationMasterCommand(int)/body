@@ -1,4 +1,4 @@
 {
   String appMasterClassName=GobblinApplicationMaster.class.getSimpleName();
-  return String.format("%s/bin/java -Xmx%dM %s" + " --%s %s" + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + File.separator+ "%s.%s"+ " 2>"+ ApplicationConstants.LOG_DIR_EXPANSION_VAR+ File.separator+ "%s.%s",ApplicationConstants.Environment.JAVA_HOME.$(),memoryMbs,GobblinApplicationMaster.class.getName(),ConfigurationConstants.APPLICATION_NAME_OPTION_NAME,this.appName,appMasterClassName,ApplicationConstants.STDOUT,appMasterClassName,ApplicationConstants.STDERR);
+  return String.format("%s/bin/java -Xmx%dM %s %s" + " --%s %s" + " 1>" + ApplicationConstants.LOG_DIR_EXPANSION_VAR + File.separator+ "%s.%s"+ " 2>"+ ApplicationConstants.LOG_DIR_EXPANSION_VAR+ File.separator+ "%s.%s",ApplicationConstants.Environment.JAVA_HOME.$(),memoryMbs,this.appMasterJvmArgs,GobblinApplicationMaster.class.getName(),ConfigurationConstants.APPLICATION_NAME_OPTION_NAME,this.appName,appMasterClassName,ApplicationConstants.STDOUT,appMasterClassName,ApplicationConstants.STDERR);
 }

@@ -34,17 +34,13 @@
       if (applicationReport.getFinalApplicationStatus() == FinalApplicationStatus.FAILED) {
         LOGGER.error("Gobblin Yarn application failed for the following reason: " + applicationReport.getDiagnostics());
       }
-      if (applicationId.isPresent()) {
-        try {
-          cleanUpAppWorkDirectory(applicationId.get());
-        }
- catch (        IOException ioe) {
-          LOGGER.error("Failed to cleanup working directory for application " + applicationId.get());
-        }
-      }
+      cleanupAndExit(0);
     }
     @Override public void onFailure(    @Nonnull Throwable t){
       LOGGER.error("Failed to get ApplicationReport due to: " + t);
+      cleanupAndExit(1);
+    }
+    private void cleanupAndExit(    int exitCode){
       if (applicationId.isPresent()) {
         try {
           cleanUpAppWorkDirectory(applicationId.get());
@@ -53,6 +49,8 @@
           LOGGER.error("Failed to cleanup working directory for application " + applicationId.get());
         }
       }
+      applicationId=Optional.absent();
+      System.exit(exitCode);
     }
   }
 );

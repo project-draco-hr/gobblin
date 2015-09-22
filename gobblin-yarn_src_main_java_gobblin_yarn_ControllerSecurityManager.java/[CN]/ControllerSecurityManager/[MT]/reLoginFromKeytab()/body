@@ -1,4 +1,5 @@
 {
   this.currentUser.reloginFromKeytab();
   getNewDelegationTokenForLoginUser();
+  writeDelegationTokenToFile();
 }

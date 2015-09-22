@@ -6,9 +6,11 @@
       LOGGER.info("Stopping container " + container.getId());
       this.nmClientAsync.stopContainerAsync(container.getId(),container.getNodeId());
     }
+    if (!this.containerMap.isEmpty()) {
 synchronized (this.allContainersStopped) {
-      this.allContainersStopped.wait();
-      LOGGER.info("All of the containers have been stopped");
+        this.allContainersStopped.wait(5 * 60 * 1000);
+        LOGGER.info("All of the containers have been stopped");
+      }
     }
     this.amrmClientAsync.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED,null,null);
   }
