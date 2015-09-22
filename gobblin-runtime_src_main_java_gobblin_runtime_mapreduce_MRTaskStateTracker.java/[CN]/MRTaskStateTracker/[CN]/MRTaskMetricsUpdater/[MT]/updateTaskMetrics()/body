@@ -3,10 +3,7 @@
   WorkUnit workUnit=this.task.getTaskState().getWorkunit();
   if (GobblinMetrics.isEnabled(workUnit)) {
     if (workUnit.getPropAsBoolean(ConfigurationKeys.MR_REPORT_METRICS_AS_COUNTERS_KEY,ConfigurationKeys.DEFAULT_MR_REPORT_METRICS_AS_COUNTERS)) {
-      Map<String,Counter> counters=JobMetrics.get(null,task.getJobId()).getMetricContext().getCounters();
-      for (      Map.Entry<String,Counter> entry : counters.entrySet()) {
-        this.context.getCounter(MetricGroup.JOB.name(),entry.getKey()).setValue(entry.getValue().getCount());
-      }
+      updateCounters(this.task);
     }
   }
   this.context.progress();
