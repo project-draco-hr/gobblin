@@ -1,0 +1,3 @@
+{
+  state.setProp(SlaEventKeys.DATASET_URN_KEY,new Path(state.getProp(ConfigurationKeys.COMPACTION_DEST_DIR),state.getProp(ConfigurationKeys.COMPACTION_TOPIC)).toString());
+}

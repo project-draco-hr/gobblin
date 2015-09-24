@@ -1,0 +1,10 @@
+{
+  String inputDirectory=state.getProp(ConfigurationKeys.COMPACTION_JOB_INPUT_DIR);
+  try {
+    FileStatus fileStatus=fs.getFileStatus(new Path(inputDirectory));
+    state.setProp(SlaEventKeys.UPSTREAM_TS_IN_MILLI_SECS_KEY,Long.toString(fileStatus.getModificationTime()));
+  }
+ catch (  IOException e) {
+    LOG.debug("Failed to get upstream time.",e);
+  }
+}

@@ -7,4 +7,5 @@
   this.fs=fs;
   this.perm=HadoopUtils.deserializeFsPermission(this.jobProps,ConfigurationKeys.COMPACTION_OUTPUT_DIR_PERMISSION,FsPermission.getDefault());
   this.deduplicate=this.jobProps.getPropAsBoolean(ConfigurationKeys.COMPACTION_DEDUPLICATE,ConfigurationKeys.DEFAULT_COMPACTION_DEDUPLICATE);
+  this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.jobProps.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),ConfigurationKeys.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
 }

@@ -1,0 +1,8 @@
+{
+  if (state.getPropAsBoolean(ConfigurationKeys.COMPACTION_DEDUPLICATE,ConfigurationKeys.DEFAULT_COMPACTION_DEDUPLICATE)) {
+    state.setProp(SlaEventKeys.DEDUPE_STATUS_KEY,DedupeStatus.DEDUPED);
+  }
+ else {
+    state.setProp(SlaEventKeys.DEDUPE_STATUS_KEY,DedupeStatus.NOT_DEDUPED);
+  }
+}
