@@ -1,2 +1,2 @@
-String baseName
-int idx
+String topicName
+int partitionId

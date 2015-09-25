@@ -1,0 +1,8 @@
+{
+  Preconditions.checkArgument(!numbers.isEmpty());
+  double[] numberArray=new double[numbers.size()];
+  for (int i=0; i < numbers.size(); i++) {
+    numberArray[i]=Math.max(numbers.get(i),EPS);
+  }
+  return GEOMETRIC_MEAN.evaluate(numberArray,0,numberArray.length);
+}

@@ -1,0 +1,10 @@
+{
+  if (workUnit instanceof MultiWorkUnit) {
+    return getWatermarkIntervalFromMultiWorkUnit((MultiWorkUnit)workUnit);
+  }
+ else {
+    List<Long> lowWatermarkValues=Lists.newArrayList(workUnit.getLowWaterMark());
+    List<Long> expectedHighWatermarkValues=Lists.newArrayList(workUnit.getHighWaterMark());
+    return new WatermarkInterval(new MultiLongWatermark(lowWatermarkValues),new MultiLongWatermark(expectedHighWatermarkValues));
+  }
+}

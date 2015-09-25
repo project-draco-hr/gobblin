@@ -1,0 +1,34 @@
+{
+  Map<String,List<Double>> prevAvgMillis=Maps.newHashMap();
+  for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
+    List<KafkaPartition> partitions=KafkaUtils.getPartitions(workUnitState);
+    for (    KafkaPartition partition : partitions) {
+      if (KafkaUtils.containsPartitionAvgRecordMillis(workUnitState,partition)) {
+        double prevAvgMillisForPartition=KafkaUtils.getPartitionAvgRecordMillis(workUnitState,partition);
+        if (prevAvgMillis.containsKey(partition.getTopicName())) {
+          prevAvgMillis.get(partition.getTopicName()).add(prevAvgMillisForPartition);
+        }
+ else {
+          prevAvgMillis.put(partition.getTopicName(),Lists.newArrayList(prevAvgMillisForPartition));
+        }
+      }
+    }
+  }
+  this.estAvgMillis.clear();
+  if (prevAvgMillis.isEmpty()) {
+    this.avgEstAvgMillis=1.0;
+  }
+ else {
+    List<Double> allEstAvgMillis=Lists.newArrayList();
+    for (    Map.Entry<String,List<Double>> entry : prevAvgMillis.entrySet()) {
+      String topic=entry.getKey();
+      List<Double> prevAvgMillisForPartitions=entry.getValue();
+      double estAvgMillisForTopic=geometricMean(prevAvgMillisForPartitions);
+      this.estAvgMillis.put(topic,estAvgMillisForTopic);
+      LOG.info(String.format("Estimated avg time to pull a record for topic %s is %f milliseconds",topic,estAvgMillisForTopic));
+      allEstAvgMillis.add(estAvgMillisForTopic);
+    }
+    this.avgEstAvgMillis=geometricMean(allEstAvgMillis);
+  }
+  LOG.info("For all topics not pulled in the previous run, estimated avg time to pull a record is " + this.avgEstAvgMillis + " milliseconds");
+}

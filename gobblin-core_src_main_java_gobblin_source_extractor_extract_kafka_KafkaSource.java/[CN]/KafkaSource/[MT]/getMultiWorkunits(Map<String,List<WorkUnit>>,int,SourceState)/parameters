@@ -1,3 +1,0 @@
-Map<String,List<WorkUnit>> workUnits
-int numOfMultiWorkunits
-SourceState state

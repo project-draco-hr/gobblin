@@ -8,6 +8,6 @@
   workUnit.setProp(LEADER_HOSTANDPORT,partition.getLeader().getHostAndPort().toString());
   workUnit.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,offsets.getStartOffset());
   workUnit.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,offsets.getLatestOffset());
-  LOG.info(String.format("Created workunit for partition %s: lowWatermark=%d, highWatermark=%d",partition,offsets.getStartOffset(),offsets.getLatestOffset()));
+  LOG.info(String.format("Created workunit for partition %s: lowWatermark=%d, highWatermark=%d, range=%d",partition,offsets.getStartOffset(),offsets.getLatestOffset(),offsets.getLatestOffset() - offsets.getStartOffset()));
   return workUnit;
 }

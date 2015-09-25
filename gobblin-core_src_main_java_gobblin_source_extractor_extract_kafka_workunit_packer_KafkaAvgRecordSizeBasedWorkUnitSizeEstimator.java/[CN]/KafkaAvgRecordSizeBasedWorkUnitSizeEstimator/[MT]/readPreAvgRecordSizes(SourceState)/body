@@ -1,0 +1,12 @@
+{
+  this.estAvgSizes.clear();
+  for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
+    List<KafkaPartition> partitions=KafkaUtils.getPartitions(workUnitState);
+    for (    KafkaPartition partition : partitions) {
+      if (KafkaUtils.containsPartitionAvgRecordSize(workUnitState,partition)) {
+        long previousAvgSize=KafkaUtils.getPartitionAvgRecordSize(workUnitState,partition);
+        this.estAvgSizes.put(partition,previousAvgSize);
+      }
+    }
+  }
+}
