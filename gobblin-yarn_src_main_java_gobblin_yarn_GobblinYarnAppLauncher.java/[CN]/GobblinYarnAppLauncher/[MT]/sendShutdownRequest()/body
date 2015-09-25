@@ -6,7 +6,7 @@
   criteria.setPartitionState("%");
   criteria.setRecipientInstanceType(InstanceType.CONTROLLER);
   criteria.setSessionSpecific(true);
-  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,UUID.randomUUID().toString());
+  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString().toLowerCase() + UUID.randomUUID().toString());
   shutdownRequest.setMsgSubType(HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString());
   shutdownRequest.setMsgState(Message.MessageState.NEW);
   shutdownRequest.setTgtSessionId("*");

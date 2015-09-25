@@ -7,6 +7,7 @@
     LOGGER.error("HelixManager failed to connect",e);
     throw Throwables.propagate(e);
   }
+  this.serviceManager.startAsync();
   this.yarnClient.start();
   this.applicationId=Optional.of(setupAndSubmitApplication());
   ListenableFuture<ApplicationReport> appReportFuture=this.applicationStatusMonitor.submit(new Callable<ApplicationReport>(){
@@ -16,6 +17,7 @@
           ApplicationReport appReport=yarnClient.getApplicationReport(applicationId.get());
           YarnApplicationState appState=appReport.getYarnApplicationState();
           if (appState == YarnApplicationState.FINISHED || appState == YarnApplicationState.FAILED || appState == YarnApplicationState.KILLED) {
+            applicationCompleted=true;
             return appReport;
           }
           LOGGER.info("Gobblin Yarn application state: " + appState.toString());
@@ -34,23 +36,21 @@
       if (applicationReport.getFinalApplicationStatus() == FinalApplicationStatus.FAILED) {
         LOGGER.error("Gobblin Yarn application failed for the following reason: " + applicationReport.getDiagnostics());
       }
-      cleanupAndExit(0);
+      try {
+        GobblinYarnAppLauncher.this.stop();
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to close the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
+      }
     }
     @Override public void onFailure(    @Nonnull Throwable t){
       LOGGER.error("Failed to get ApplicationReport due to: " + t);
-      cleanupAndExit(1);
-    }
-    private void cleanupAndExit(    int exitCode){
-      if (applicationId.isPresent()) {
-        try {
-          cleanUpAppWorkDirectory(applicationId.get());
-        }
- catch (        IOException ioe) {
-          LOGGER.error("Failed to cleanup working directory for application " + applicationId.get());
-        }
+      try {
+        GobblinYarnAppLauncher.this.stop();
       }
-      applicationId=Optional.absent();
-      System.exit(exitCode);
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to close the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
+      }
     }
   }
 );

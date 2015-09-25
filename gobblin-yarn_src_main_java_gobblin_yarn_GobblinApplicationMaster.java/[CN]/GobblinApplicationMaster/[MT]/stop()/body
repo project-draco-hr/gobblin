@@ -1,8 +1,9 @@
 {
-  if (this.isStopped) {
+  if (this.isStopped || this.stopInProgress) {
     return;
   }
-  LOGGER.info("Shutting down the Gobblin Yarn ApplicationMaster");
+  this.stopInProgress=true;
+  LOGGER.info("Stopping the Gobblin Yarn ApplicationMaster");
   sendShutdownRequest();
   try {
     this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.MINUTES);

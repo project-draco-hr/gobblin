@@ -10,8 +10,8 @@
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationAttemptIdId.getApplicationId());
   List<Service> services=Lists.newArrayList();
   if (UserGroupInformation.isSecurityEnabled()) {
-    LOGGER.info("Adding YarnAMSecurityManager since security is enabled");
-    services.add(new ControllerSecurityManager(config,this.helixManager,appWorkDir,fs));
+    LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");
+    services.add(new YarnContainerSecurityManager(fs,this.eventBus));
   }
   services.add(new YarnService(config,applicationName,applicationAttemptIdId.getApplicationId(),fs,this.eventBus,Strings.nullToEmpty(config.getString(ConfigurationConstants.CONTAINER_JVM_ARGS_KEY))));
   services.add(new GobblinHelixJobScheduler(YarnHelixUtils.configToProperties(config),this.helixManager,this.eventBus,appWorkDir));

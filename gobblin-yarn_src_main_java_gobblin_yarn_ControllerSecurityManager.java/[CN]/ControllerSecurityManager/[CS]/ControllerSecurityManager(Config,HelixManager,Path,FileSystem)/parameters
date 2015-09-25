@@ -1,4 +1,0 @@
-Config config
-HelixManager helixManager
-Path appWorkDir
-FileSystem fs

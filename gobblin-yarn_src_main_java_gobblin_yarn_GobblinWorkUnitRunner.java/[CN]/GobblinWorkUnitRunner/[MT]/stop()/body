@@ -1,8 +1,9 @@
 {
-  if (this.isStopped) {
+  if (this.isStopped || this.stopInProgress) {
     return;
   }
-  LOGGER.info("Shutting down the Gobblin Yarn WorkUnit runner");
+  this.stopInProgress=true;
+  LOGGER.info("Stopping the Gobblin Yarn WorkUnit runner");
   try {
     this.jmxReporter.stop();
     this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.MINUTES);

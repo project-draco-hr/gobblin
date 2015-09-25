@@ -7,7 +7,7 @@
   criteria.setRecipientInstanceType(InstanceType.PARTICIPANT);
   criteria.setDataSource(Criteria.DataSource.LIVEINSTANCES);
   criteria.setSessionSpecific(true);
-  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,UUID.randomUUID().toString());
+  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString().toLowerCase() + UUID.randomUUID().toString());
   shutdownRequest.setMsgSubType(HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString());
   shutdownRequest.setMsgState(Message.MessageState.NEW);
   int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest);

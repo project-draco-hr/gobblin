@@ -1,0 +1,24 @@
+{
+  LOGGER.info("Scheduling the login task");
+  this.loginExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        if (scheduledTokenRenewTask.cancel(true)) {
+          LOGGER.info("Cancelled the token renew task");
+        }
+        if (firstLogin) {
+          login();
+          firstLogin=false;
+        }
+ else {
+          reLogin();
+        }
+        scheduleTokenRenewTask();
+      }
+ catch (      IOException ioe) {
+        throw Throwables.propagate(ioe);
+      }
+    }
+  }
+,this.loginIntervalInHours,this.loginIntervalInHours,TimeUnit.HOURS);
+}
