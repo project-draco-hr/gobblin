@@ -1,0 +1,7 @@
+{
+  int numRecords=0;
+  while (extractor.readRecord(null) != null) {
+    numRecords++;
+  }
+  return numRecords;
+}

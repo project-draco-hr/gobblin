@@ -4,6 +4,7 @@
   this.workUnit=workUnitState.getWorkunit();
   this.filesToPull=Lists.newArrayList(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,""));
   this.statusCount=this.workUnit.getPropAsInt(ConfigurationKeys.FILEBASED_REPORT_STATUS_ON_COUNT,ConfigurationKeys.DEFAULT_FILEBASED_REPORT_STATUS_ON_COUNT);
+  this.shouldSkipFirstRecord=this.workUnitState.getPropAsBoolean(ConfigurationKeys.SOURCE_SKIP_FIRST_RECORD,false);
   if (fsHelper instanceof SizeAwareFileBasedHelper) {
     this.fsHelper=(SizeAwareFileBasedHelper)fsHelper;
   }
@@ -14,7 +15,7 @@
     this.fsHelper.connect();
   }
  catch (  FileBasedHelperException e) {
-    Throwables.propagate(e);
+    throw new RuntimeException(e);
   }
-  counters.initialize(getMetricContext(),CounterNames.class,this.getClass());
+  this.counters.initialize(getMetricContext(),CounterNames.class,this.getClass());
 }
