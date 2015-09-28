@@ -1,3 +1,24 @@
 {
-  this.deleteOperations.add(dop);
+  long executeAt=this.clockState + this.delay;
+  boolean firstLoop=true;
+  this.lock.lock();
+  try {
+    while (this.clockState < executeAt) {
+      if (!firstLoop) {
+        this.callsReceivedSignal++;
+        this.signalReceived.signal();
+      }
+      firstLoop=false;
+      this.callsAwaitingSignal++;
+      this.clockStateUpdated.await();
+    }
+    this.deleteOperations.add(dop);
+    this.callsReceivedSignal++;
+    this.signalReceived.signal();
+  }
+ catch (  InterruptedException ie) {
+  }
+ finally {
+    this.lock.unlock();
+  }
 }

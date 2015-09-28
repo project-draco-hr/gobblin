@@ -1,4 +1,3 @@
 {
-  waitForMillis(this.delay);
   return moveToTrashAsUser(path,this.user);
 }

@@ -1,0 +1,18 @@
+{
+  this.clockState++;
+  this.lock.lock();
+  long callsAwaitingSignalOld=this.callsAwaitingSignal;
+  this.callsReceivedSignal=0;
+  this.callsAwaitingSignal=0;
+  this.clockStateUpdated.signalAll();
+  try {
+    while (this.callsReceivedSignal < callsAwaitingSignalOld) {
+      this.signalReceived.await();
+    }
+  }
+ catch (  InterruptedException ie) {
+  }
+ finally {
+    this.lock.unlock();
+  }
+}

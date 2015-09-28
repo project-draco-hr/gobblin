@@ -1,5 +1,4 @@
 {
-  waitForMillis(this.delay);
   addDeleteOperation(new DeleteOperation(path,user));
   return true;
 }
