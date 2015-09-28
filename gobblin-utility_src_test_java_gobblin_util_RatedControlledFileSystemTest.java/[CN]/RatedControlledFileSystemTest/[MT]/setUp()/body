@@ -1,0 +1,4 @@
+{
+  this.rateControlledFs=new RateControlledFileSystem(FileSystem.getLocal(new Configuration()),20);
+  this.rateControlledFs.startRateControl();
+}

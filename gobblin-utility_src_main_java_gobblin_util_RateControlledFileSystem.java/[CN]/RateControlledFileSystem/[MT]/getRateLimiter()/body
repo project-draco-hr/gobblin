@@ -1,0 +1,3 @@
+{
+  return FS_URI_TO_RATE_LIMITER_CACHE.get(this.fs.getUri().toString(),this.callableLimiter);
+}

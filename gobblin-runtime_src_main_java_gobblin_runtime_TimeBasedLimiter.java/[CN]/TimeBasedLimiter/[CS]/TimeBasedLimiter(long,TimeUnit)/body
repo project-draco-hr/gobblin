@@ -1,5 +1,3 @@
 {
-  this.timeLimit=timeLimit;
-  this.timeUnit=timeUnit;
-  this.flagFlippingExecutor=new ScheduledThreadPoolExecutor(1,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("TimeBasedThrottler")));
+  super(timeLimit,timeUnit);
 }

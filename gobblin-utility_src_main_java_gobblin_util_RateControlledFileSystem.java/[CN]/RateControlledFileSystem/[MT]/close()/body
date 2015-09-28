@@ -1,0 +1,8 @@
+{
+  try {
+    getRateLimiter().stop();
+  }
+ catch (  ExecutionException e) {
+    throw new IOException("Failed to stop rate limiter",e);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  this.fs=fs;
+  this.callableLimiter=new Callable<Limiter>(){
+    @Override public Limiter call() throws Exception {
+      return new RateBasedLimiter(limitPerSecond);
+    }
+  }
+;
+}
