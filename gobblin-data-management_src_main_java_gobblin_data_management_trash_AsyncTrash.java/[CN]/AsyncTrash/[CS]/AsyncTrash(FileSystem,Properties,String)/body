@@ -1,0 +1,8 @@
+{
+  int maxDeletingThreads=DEFAULT_MAX_DELETING_THREADS;
+  if (properties.containsKey(MAX_DELETING_THREADS_KEY)) {
+    maxDeletingThreads=Integer.parseInt(properties.getProperty(MAX_DELETING_THREADS_KEY));
+  }
+  this.innerTrash=TrashFactory.createProxiedTrash(fs,properties,user);
+  this.executor=MoreExecutors.getExitingExecutorService((ThreadPoolExecutor)Executors.newFixedThreadPool(maxDeletingThreads,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("Async-trash-delete-pool-%d"))));
+}

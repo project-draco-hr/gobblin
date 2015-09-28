@@ -1,0 +1,3 @@
+{
+  properties.setProperty(DELAY_MILLIS_KEY,Long.toString(delay));
+}

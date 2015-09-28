@@ -1,0 +1,4 @@
+{
+  moveToTrashAsUserFuture(path,user);
+  return true;
+}

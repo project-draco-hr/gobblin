@@ -1,0 +1,3 @@
+{
+  this.deleteOperations.add(dop);
+}

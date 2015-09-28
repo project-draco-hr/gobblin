@@ -4,4 +4,10 @@
   this.deleteOperations=Lists.newArrayList();
   this.simulate=props.containsKey(TrashFactory.SIMULATE) && Boolean.parseBoolean(props.getProperty(TrashFactory.SIMULATE));
   this.skipTrash=props.containsKey(TrashFactory.SKIP_TRASH) && Boolean.parseBoolean(props.getProperty(TrashFactory.SKIP_TRASH));
+  if (props.containsKey(DELAY_MILLIS_KEY)) {
+    this.delay=Long.parseLong(props.getProperty(DELAY_MILLIS_KEY));
+  }
+ else {
+    this.delay=0;
+  }
 }
