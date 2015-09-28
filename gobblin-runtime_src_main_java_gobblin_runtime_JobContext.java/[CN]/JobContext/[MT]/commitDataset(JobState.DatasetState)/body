@@ -2,9 +2,7 @@
   Closer closer=Closer.create();
   try {
     Class<? extends DataPublisher> dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
-    Constructor<? extends DataPublisher> dataPublisherConstructor=dataPublisherClass.getConstructor(State.class);
-    DataPublisher publisher=closer.register(dataPublisherConstructor.newInstance(datasetState));
-    publisher.initialize();
+    DataPublisher publisher=closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
     publisher.publish(datasetState.getTaskStates());
   }
  catch (  Throwable t) {

@@ -1,6 +1,6 @@
 {
   boolean commitFailed=false;
-  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+  for (  Entry<Path,FsDataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
     try {
       entry.getValue().commit();
     }

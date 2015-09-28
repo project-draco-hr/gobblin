@@ -1,0 +1,3 @@
+{
+  publishData(state,branchId,false,writerOutputPathsMoved);
+}

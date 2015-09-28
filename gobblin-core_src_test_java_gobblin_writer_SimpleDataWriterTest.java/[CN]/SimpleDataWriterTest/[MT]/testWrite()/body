@@ -11,7 +11,7 @@
   writer.commit();
   Assert.assertEquals(writer.recordsWritten(),3);
   Assert.assertEquals(writer.bytesWritten(),totalBytes);
-  String pathKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FINAL_OUTPUT_PATH,0);
+  String pathKey=ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS;
   Assert.assertTrue(properties.contains(pathKey));
   File outputFile=new File(properties.getProp(pathKey));
   BufferedReader br=new BufferedReader(new FileReader(outputFile));
