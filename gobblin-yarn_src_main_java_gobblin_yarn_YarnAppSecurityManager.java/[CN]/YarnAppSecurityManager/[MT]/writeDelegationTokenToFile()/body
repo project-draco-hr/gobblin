@@ -6,6 +6,4 @@
   LOGGER.info("Writing new or renewed token to token file " + this.tokenFilePath);
   YarnHelixUtils.writeTokenToFile(this.token,this.tokenFilePath,this.fs.getConf());
   this.fs.setPermission(this.tokenFilePath,new FsPermission(FsAction.READ_WRITE,FsAction.NONE,FsAction.NONE));
-  sendTokenFileUpdatedMessage(InstanceType.CONTROLLER);
-  sendTokenFileUpdatedMessage(InstanceType.PARTICIPANT);
 }

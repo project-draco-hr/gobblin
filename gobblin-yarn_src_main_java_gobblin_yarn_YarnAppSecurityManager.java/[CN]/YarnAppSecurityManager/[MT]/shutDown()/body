@@ -1,4 +1,8 @@
 {
+  LOGGER.info("Stopping the " + YarnAppSecurityManager.class.getSimpleName());
+  if (this.scheduledTokenRenewTask.isPresent()) {
+    this.scheduledTokenRenewTask.get().cancel(true);
+  }
   ExecutorsUtils.shutdownExecutorService(this.loginExecutor,Optional.of(LOGGER));
   ExecutorsUtils.shutdownExecutorService(this.tokenRenewExecutor,Optional.of(LOGGER));
 }

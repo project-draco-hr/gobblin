@@ -1,24 +1,23 @@
 {
-  LOGGER.info("Scheduling the login task");
+  LOGGER.info("Starting the " + YarnAppSecurityManager.class.getSimpleName());
+  LOGGER.info(String.format("Scheduling the login task with an interval of %d minute(s)",this.loginIntervalInMinutes));
   this.loginExecutor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       try {
-        if (scheduledTokenRenewTask.cancel(true)) {
+        if (scheduledTokenRenewTask.isPresent() && scheduledTokenRenewTask.get().cancel(true)) {
           LOGGER.info("Cancelled the token renew task");
         }
+        loginFromKeytab();
         if (firstLogin) {
-          login();
           firstLogin=false;
-        }
- else {
-          reLogin();
         }
         scheduleTokenRenewTask();
       }
  catch (      IOException ioe) {
+        LOGGER.error("Failed to login from keytab",ioe);
         throw Throwables.propagate(ioe);
       }
     }
   }
-,this.loginIntervalInHours,this.loginIntervalInHours,TimeUnit.HOURS);
+,0,this.loginIntervalInMinutes,TimeUnit.MINUTES);
 }

@@ -1,5 +1,0 @@
-{
-  if (this.config.hasPath(ConfigurationConstants.KEYTAB_FILE_PATH)) {
-    loginFromKeytab();
-  }
-}

@@ -2,11 +2,11 @@
   this.config=config;
   this.helixManager=helixManager;
   this.fs=fs;
-  this.tokenFilePath=new Path(config.getString(ConfigurationConstants.TOKEN_FILE_PATH));
+  this.tokenFilePath=new Path(config.getString(GobblinYarnConfigurationKeys.TOKEN_FILE_PATH));
   this.fs.makeQualified(tokenFilePath);
-  this.currentUser=UserGroupInformation.getCurrentUser();
-  this.loginIntervalInHours=config.getLong(ConfigurationConstants.LOGIN_INTERVAL_IN_HOURS);
-  this.tokenRenewIntervalInHours=config.getLong(ConfigurationConstants.TOKEN_RENEW_INTERVAL_IN_HOURS);
+  this.loginUser=UserGroupInformation.getLoginUser();
+  this.loginIntervalInMinutes=config.getLong(GobblinYarnConfigurationKeys.LOGIN_INTERVAL_IN_MINUTES);
+  this.tokenRenewIntervalInMinutes=config.getLong(GobblinYarnConfigurationKeys.TOKEN_RENEW_INTERVAL_IN_MINUTES);
   this.loginExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("KeytabReLoginExecutor")));
   this.tokenRenewExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("TokenRenewExecutor")));
 }

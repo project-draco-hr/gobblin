@@ -1,6 +1,6 @@
 {
   try {
-    readAndAddDelegationTokens(new Path(delegationTokenUpdatedEvent.getTokenFilePath()));
+    readAndAddDelegationTokens(this.tokenFilePath);
   }
  catch (  IOException ioe) {
     throw Throwables.propagate(ioe);

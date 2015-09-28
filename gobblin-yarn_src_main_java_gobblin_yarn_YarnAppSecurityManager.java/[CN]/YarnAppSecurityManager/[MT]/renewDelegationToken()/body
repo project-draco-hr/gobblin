@@ -1,4 +1,8 @@
 {
   this.token.renew(this.fs.getConf());
   writeDelegationTokenToFile();
+  if (!this.firstLogin) {
+    sendTokenFileUpdatedMessage(InstanceType.CONTROLLER);
+    sendTokenFileUpdatedMessage(InstanceType.PARTICIPANT);
+  }
 }

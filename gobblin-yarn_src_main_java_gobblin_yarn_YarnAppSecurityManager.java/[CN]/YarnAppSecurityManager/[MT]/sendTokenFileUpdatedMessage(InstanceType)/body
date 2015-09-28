@@ -5,12 +5,16 @@
   criteria.setPartition("%");
   criteria.setPartitionState("%");
   criteria.setRecipientInstanceType(instanceType);
-  criteria.setDataSource(Criteria.DataSource.LIVEINSTANCES);
+  if (instanceType == InstanceType.PARTICIPANT) {
+    criteria.setDataSource(Criteria.DataSource.LIVEINSTANCES);
+  }
   criteria.setSessionSpecific(true);
   Message tokenFileUpdatedMessage=new Message(Message.MessageType.USER_DEFINE_MSG,HelixMessageSubTypes.TOKEN_FILE_UPDATED.toString().toLowerCase() + UUID.randomUUID().toString());
   tokenFileUpdatedMessage.setMsgSubType(HelixMessageSubTypes.TOKEN_FILE_UPDATED.toString());
   tokenFileUpdatedMessage.setMsgState(Message.MessageState.NEW);
-  tokenFileUpdatedMessage.setResourceId(ResourceId.from(this.tokenFilePath.toString()));
+  if (instanceType == InstanceType.CONTROLLER) {
+    tokenFileUpdatedMessage.setTgtSessionId("*");
+  }
   int messagesSent=this.helixManager.getMessagingService().send(criteria,tokenFileUpdatedMessage);
   LOGGER.info(String.format("Sent %d token file updated message(s) to the %s",messagesSent,instanceType));
 }
