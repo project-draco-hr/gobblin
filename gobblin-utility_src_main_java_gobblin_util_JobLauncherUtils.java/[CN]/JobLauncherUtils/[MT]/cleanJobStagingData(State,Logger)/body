@@ -1,0 +1,20 @@
+{
+  Preconditions.checkArgument(state.contains(ConfigurationKeys.WRITER_STAGING_DIR),"Missing required property " + ConfigurationKeys.WRITER_STAGING_DIR);
+  Preconditions.checkArgument(state.contains(ConfigurationKeys.WRITER_OUTPUT_DIR),"Missing required property " + ConfigurationKeys.WRITER_OUTPUT_DIR);
+  String writerFsUri=state.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,ConfigurationKeys.LOCAL_FS_URI);
+  FileSystem fs=getFsWithProxy(state,writerFsUri);
+  Path jobStagingPath=new Path(state.getProp(ConfigurationKeys.WRITER_STAGING_DIR));
+  logger.info("Cleaning up staging directory " + jobStagingPath);
+  HadoopUtils.deletePath(fs,jobStagingPath,true);
+  if (fs.exists(jobStagingPath.getParent()) && fs.listStatus(jobStagingPath.getParent()).length == 0) {
+    logger.info("Deleting directory " + jobStagingPath.getParent());
+    HadoopUtils.deletePath(fs,jobStagingPath.getParent(),true);
+  }
+  Path jobOutputPath=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  logger.info("Cleaning up output directory " + jobOutputPath);
+  HadoopUtils.deletePath(fs,jobOutputPath,true);
+  if (fs.exists(jobOutputPath.getParent()) && fs.listStatus(jobOutputPath.getParent()).length == 0) {
+    logger.info("Deleting directory " + jobOutputPath.getParent());
+    HadoopUtils.deletePath(fs,jobOutputPath.getParent(),true);
+  }
+}
