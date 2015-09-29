@@ -1,0 +1,13 @@
+{
+  String file1="file1.txt";
+  String file2="file2.txt";
+  String file3="file3.txt";
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,Joiner.on(",").join(file1,file2,file3));
+  FileBasedHelper fsHelper=Mockito.mock(FileBasedHelper.class);
+  Mockito.when(fsHelper.getFileStream(file1)).thenReturn(IOUtils.toInputStream("record1 \n record2"));
+  Mockito.when(fsHelper.getFileStream(file2)).thenReturn(IOUtils.toInputStream("record3 \n record4"));
+  Mockito.when(fsHelper.getFileStream(file3)).thenReturn(IOUtils.toInputStream("record5 \n record6 \n record7"));
+  FileBasedExtractor<String,String> extractor=new DummyFileBasedExtractor<String,String>(state,fsHelper);
+  Assert.assertEquals(getNumRecords(extractor),7);
+}

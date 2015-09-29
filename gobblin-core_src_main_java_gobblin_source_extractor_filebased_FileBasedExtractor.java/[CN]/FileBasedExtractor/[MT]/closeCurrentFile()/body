@@ -4,7 +4,7 @@
   }
  catch (  IOException e) {
     if (this.currentFile != null) {
-      LOGGER.error("Failed to close file: " + this.currentFile,e);
+      LOG.error("Failed to close file: " + this.currentFile,e);
     }
   }
 }

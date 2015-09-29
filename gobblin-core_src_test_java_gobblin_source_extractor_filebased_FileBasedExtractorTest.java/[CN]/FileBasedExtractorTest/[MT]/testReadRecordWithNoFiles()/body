@@ -1,0 +1,7 @@
+{
+  WorkUnitState state=new WorkUnitState();
+  state.setProp(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,"");
+  FileBasedHelper fsHelper=Mockito.mock(FileBasedHelper.class);
+  FileBasedExtractor<String,String> extractor=new DummyFileBasedExtractor<String,String>(state,fsHelper);
+  Assert.assertEquals(getNumRecords(extractor),0);
+}
