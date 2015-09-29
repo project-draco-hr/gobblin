@@ -11,6 +11,8 @@
     }
   }
 );
+  while (trash.getOperationsReceived() < 1) {
+  }
   Assert.assertFalse(future1.isDone());
   Assert.assertEquals(trash.getDeleteOperations().size(),0);
   trash.tick();
@@ -20,8 +22,6 @@
   Assert.assertFalse(future1.isDone());
   Assert.assertEquals(trash.getDeleteOperations().size(),0);
   trash.tick();
-  Thread.sleep(100);
-  Assert.assertTrue(future1.isDone());
   Assert.assertEquals(trash.getDeleteOperations().size(),1);
   Assert.assertTrue(future1.get());
   Assert.assertNull(trash.getDeleteOperations().get(0).getUser());

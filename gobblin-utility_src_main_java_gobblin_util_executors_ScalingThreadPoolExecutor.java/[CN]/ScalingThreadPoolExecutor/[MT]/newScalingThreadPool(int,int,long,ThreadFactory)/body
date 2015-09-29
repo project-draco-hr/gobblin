@@ -1,0 +1,7 @@
+{
+  ScalingQueue queue=new ScalingQueue();
+  ScalingThreadPoolExecutor executor=new ScalingThreadPoolExecutor(min,max,keepAliveTime,TimeUnit.MILLISECONDS,queue,threadFactory);
+  executor.setRejectedExecutionHandler(new ForceQueuePolicy());
+  queue.setThreadPoolExecutor(executor);
+  return executor;
+}
