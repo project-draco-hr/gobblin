@@ -1,0 +1,5 @@
+{
+  GobblinMetrics gobblinMetrics=GobblinMetrics.get(state.getProp(ConfigurationKeys.JOB_NAME_KEY));
+  gobblinMetrics.startMetricReporting(state.getProperties());
+  return gobblinMetrics;
+}

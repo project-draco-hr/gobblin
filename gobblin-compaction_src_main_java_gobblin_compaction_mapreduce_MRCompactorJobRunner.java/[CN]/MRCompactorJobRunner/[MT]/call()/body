@@ -21,6 +21,7 @@
     this.configureJob(job);
     this.submitAndWait(job);
     this.moveTmpPathToOutputPath();
+    this.submitSlaEvent(job);
   }
   this.markOutputDirAsCompleted(jobStartTime);
   return null;

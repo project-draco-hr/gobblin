@@ -1,0 +1,12 @@
+{
+  this.eventName=name;
+  this.eventSubmitter=submitter;
+  this.datasetUrn=props.getProperty(SlaEventKeys.DATASET_URN_KEY);
+  this.partition=props.getProperty(SlaEventKeys.PARTITION_KEY);
+  this.originTimestamp=props.getProperty(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY);
+  this.upstreamTimestamp=props.getProperty(SlaEventKeys.UPSTREAM_TS_IN_MILLI_SECS_KEY);
+  this.completenessPercentage=props.getProperty(SlaEventKeys.COMPLETENESS_PERCENTAGE_KEY);
+  this.recordCount=props.getProperty(SlaEventKeys.RECORD_COUNT_KEY);
+  this.previousPublishTimestamp=props.getProperty(SlaEventKeys.PREVIOUS_PUBLISH_TS_IN_MILLI_SECS_KEY);
+  this.dedupeStatus=props.getProperty(SlaEventKeys.DEDUPE_STATUS_KEY);
+}

@@ -12,6 +12,7 @@
       for (      Future<?> future : this.futures) {
         future.get();
       }
+      gobblinMetrics.stopMetricReporting();
     }
  catch (    InterruptedException e) {
       LOG.warn("Interrupted while waiting for Hadoop jobs to complete",e);
