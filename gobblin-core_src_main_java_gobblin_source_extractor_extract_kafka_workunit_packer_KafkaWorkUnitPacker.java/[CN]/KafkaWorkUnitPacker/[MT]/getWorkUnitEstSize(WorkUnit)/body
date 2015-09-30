@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(workUnit.contains(ESTIMATED_WORKUNIT_SIZE));
+  return workUnit.getPropAsDouble(ESTIMATED_WORKUNIT_SIZE);
+}

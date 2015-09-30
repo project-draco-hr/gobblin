@@ -1,0 +1,15 @@
+{
+  if (this.state.contains(KAFKA_WORKUNIT_SIZE_ESTIMATOR_TYPE)) {
+    String sizeEstimatorTypeString=this.state.getProp(KAFKA_WORKUNIT_SIZE_ESTIMATOR_TYPE);
+    Optional<SizeEstimatorType> sizeEstimatorType=Enums.getIfPresent(SizeEstimatorType.class,sizeEstimatorTypeString);
+    if (sizeEstimatorType.isPresent()) {
+      return getWorkUnitSizeEstimator(sizeEstimatorType.get());
+    }
+ else {
+      throw new IllegalArgumentException("WorkUnit size estimator type " + sizeEstimatorType + " not found");
+    }
+  }
+ else {
+    return getWorkUnitSizeEstimator(DEFAULT_SIZE_ESTIMATOR_TYPE);
+  }
+}

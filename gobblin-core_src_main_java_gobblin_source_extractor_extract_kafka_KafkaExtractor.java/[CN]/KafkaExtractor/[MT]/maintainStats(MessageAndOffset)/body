@@ -1,5 +1,0 @@
-{
-  increaseTotalEventSize(getCurrentPartition(),messageJustPulled.message().payloadSize());
-  incrementEventCount(getCurrentPartition());
-  this.avgEventSizes.put(getCurrentPartition(),this.totalEventSizes.get(getCurrentPartition()) / this.eventCounts.get(getCurrentPartition()));
-}

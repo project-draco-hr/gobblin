@@ -1,0 +1,9 @@
+{
+  if (workUnit instanceof MultiWorkUnit) {
+    MultiWorkUnit mwu=(MultiWorkUnit)workUnit;
+    return Math.max(getWorkUnitEstSize(workUnit),EPS) * Math.log10((double)Math.max(mwu.getWorkUnits().size(),2));
+  }
+ else {
+    return Math.max(getWorkUnitEstSize(workUnit),EPS) * Math.log10(2.0);
+  }
+}

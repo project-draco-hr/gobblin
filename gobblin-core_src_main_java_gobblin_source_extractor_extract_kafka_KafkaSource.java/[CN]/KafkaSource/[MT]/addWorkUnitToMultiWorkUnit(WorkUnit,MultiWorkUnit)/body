@@ -1,5 +1,0 @@
-{
-  multiWorkUnit.addWorkUnit(workUnit);
-  long size=multiWorkUnit.getPropAsLong(ESTIMATED_DATA_SIZE,0);
-  multiWorkUnit.setProp(ESTIMATED_DATA_SIZE,size + getWorkUnitEstSize(workUnit));
-}

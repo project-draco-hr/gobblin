@@ -1,3 +1,0 @@
-{
-  return state.getPropAsLong(KafkaSource.TOPIC_NAME + "." + KafkaSource.PARTITION_ID+ "."+ KafkaSource.AVG_EVENT_SIZE,defaultSize);
-}
