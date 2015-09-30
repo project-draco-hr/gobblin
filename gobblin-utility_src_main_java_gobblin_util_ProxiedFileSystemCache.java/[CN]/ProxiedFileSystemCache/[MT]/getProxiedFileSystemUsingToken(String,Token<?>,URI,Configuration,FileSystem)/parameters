@@ -1,0 +1,5 @@
+String userNameToProxyAs
+Token<?> userNameToken
+URI fsURI
+Configuration conf
+FileSystem referenceFS

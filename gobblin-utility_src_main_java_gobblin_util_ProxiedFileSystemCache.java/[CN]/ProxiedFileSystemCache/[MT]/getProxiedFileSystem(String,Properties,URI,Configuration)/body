@@ -1,13 +1,3 @@
 {
-  try {
-    return USER_NAME_TO_FILESYSTEM_CACHE.get(userNameToProxyAs,new Callable<FileSystem>(){
-      @Override public FileSystem call() throws Exception {
-        return ProxiedFileSystemUtils.createProxiedFileSystem(userNameToProxyAs,properties,fsURI,configuration);
-      }
-    }
-);
-  }
- catch (  ExecutionException ee) {
-    throw new IOException("Failed to get proxied file system for user " + userNameToProxyAs,ee);
-  }
+  return getProxiedFileSystem(userNameToProxyAs,properties,fsURI,configuration,null);
 }

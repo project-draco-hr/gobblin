@@ -1,0 +1,8 @@
+{
+  Preconditions.checkNotNull(userNameToProxyAs,"Must provide a user name to proxy as.");
+  Preconditions.checkNotNull(superUserName,"Must provide a super user name.");
+  Preconditions.checkNotNull(superUserKeytabLocation,"Must provide a keytab location.");
+  URI actualURI=resolveUri(fsURI,conf,referenceFS);
+  Configuration actualConfiguration=resolveConfiguration(conf,referenceFS);
+  return USER_NAME_TO_FILESYSTEM_CACHE.get(getFileSystemKey(actualURI,userNameToProxyAs,referenceFS),new CreateProxiedFileSystemFromKeytab(userNameToProxyAs,superUserName,superUserKeytabLocation,actualURI,actualConfiguration,referenceFS));
+}

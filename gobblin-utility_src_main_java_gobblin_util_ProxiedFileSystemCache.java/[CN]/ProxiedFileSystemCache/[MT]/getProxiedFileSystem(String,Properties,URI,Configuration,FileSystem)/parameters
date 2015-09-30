@@ -1,0 +1,5 @@
+String userNameToProxyAs
+Properties properties
+URI fsURI
+Configuration configuration
+FileSystem referenceFS
