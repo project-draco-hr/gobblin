@@ -1,8 +1,8 @@
 {
-  HelixConnection helixConnection=new ZkHelixConnection(this.config.getString(ConfigurationConstants.ZK_CONNECTION_STRING_KEY));
+  HelixConnection helixConnection=new ZkHelixConnection(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY));
   helixConnection.connect();
   try {
-    ClusterId clusterId=ClusterId.from(this.config.getString(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY));
+    ClusterId clusterId=ClusterId.from(this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
     ClusterConfig clusterConfig=new ClusterConfig.Builder(clusterId).addStateModelDefinition(new StateModelDefinition(StateModelConfigGenerator.generateConfigForTaskStateModel())).autoJoin(true).build();
     boolean clusterCreated=helixConnection.createClusterAccessor(clusterId).createCluster(clusterConfig);
     if (clusterCreated) {

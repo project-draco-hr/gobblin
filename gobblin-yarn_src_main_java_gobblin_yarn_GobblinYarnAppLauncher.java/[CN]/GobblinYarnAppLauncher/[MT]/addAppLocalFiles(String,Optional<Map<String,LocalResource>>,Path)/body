@@ -4,7 +4,7 @@
     Path destFilePath=new Path(destDir,srcFilePath.getName());
     this.fs.copyFromLocalFile(srcFilePath,destFilePath);
     if (resourceMap.isPresent()) {
-      addFileAsLocalResource(destFilePath,LocalResourceType.FILE,resourceMap.get());
+      YarnHelixUtils.addFileAsLocalResource(this.fs,destFilePath,LocalResourceType.FILE,resourceMap.get());
     }
   }
 }

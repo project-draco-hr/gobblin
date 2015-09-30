@@ -6,7 +6,7 @@
   FileStatus[] statuses=this.fs.listStatus(destDir);
   if (statuses != null) {
     for (    FileStatus status : statuses) {
-      addFileAsLocalResource(status,resourceMap);
+      YarnHelixUtils.addFileAsLocalResource(this.fs,status.getPath(),LocalResourceType.FILE,resourceMap);
     }
   }
 }

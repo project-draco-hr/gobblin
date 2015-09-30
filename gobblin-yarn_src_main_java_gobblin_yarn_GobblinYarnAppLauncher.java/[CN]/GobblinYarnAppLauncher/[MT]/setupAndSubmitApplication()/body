@@ -4,16 +4,15 @@
   ApplicationId applicationId=appSubmissionContext.getApplicationId();
   GetNewApplicationResponse newApplicationResponse=gobblinYarnApp.getNewApplicationResponse();
   Resource resource=prepareContainerResource(newApplicationResponse);
-  Map<String,LocalResource> appMasterLocalResources=Maps.newHashMap();
-  addAppMasterLocalResources(applicationId,appMasterLocalResources);
+  Map<String,LocalResource> appMasterLocalResources=addAppMasterLocalResources(applicationId);
   ContainerLaunchContext amContainerLaunchContext=Records.newRecord(ContainerLaunchContext.class);
   amContainerLaunchContext.setLocalResources(appMasterLocalResources);
-  amContainerLaunchContext.setEnvironment(getEnvironmentVariables());
+  amContainerLaunchContext.setEnvironment(YarnHelixUtils.getEnvironmentVariables(this.yarnConfiguration,this.config));
   amContainerLaunchContext.setCommands(Lists.newArrayList(buildApplicationMasterCommand(resource.getMemory())));
   if (UserGroupInformation.isSecurityEnabled()) {
     setupSecurityTokens(amContainerLaunchContext);
   }
-  appSubmissionContext.setApplicationName(this.appName);
+  appSubmissionContext.setApplicationName(this.applicationName);
   appSubmissionContext.setResource(resource);
   appSubmissionContext.setQueue(this.appQueueName);
   appSubmissionContext.setPriority(Priority.newInstance(0));

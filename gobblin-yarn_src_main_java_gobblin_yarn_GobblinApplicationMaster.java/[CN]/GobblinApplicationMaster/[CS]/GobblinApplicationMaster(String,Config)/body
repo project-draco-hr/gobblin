@@ -2,19 +2,19 @@
   this.eventBus=new EventBus(GobblinApplicationMaster.class.getSimpleName());
   this.eventBus.register(this);
   ContainerId containerId=ConverterUtils.toContainerId(System.getenv().get(ApplicationConstants.Environment.CONTAINER_ID.key()));
-  ApplicationAttemptId applicationAttemptIdId=containerId.getApplicationAttemptId();
-  String zkConnectionString=config.getString(ConfigurationConstants.ZK_CONNECTION_STRING_KEY);
+  ApplicationAttemptId applicationAttemptId=containerId.getApplicationAttemptId();
+  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
-  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(ConfigurationConstants.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getParticipantIdStr(YarnHelixUtils.getHostname(),containerId),InstanceType.CONTROLLER,zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getParticipantIdStr(YarnHelixUtils.getHostname(),containerId),InstanceType.CONTROLLER,zkConnectionString);
   FileSystem fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),new Configuration()) : FileSystem.get(new Configuration());
-  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationAttemptIdId.getApplicationId());
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationAttemptId.getApplicationId());
   List<Service> services=Lists.newArrayList();
   if (UserGroupInformation.isSecurityEnabled()) {
     LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");
     services.add(new YarnContainerSecurityManager(config,fs,this.eventBus));
   }
-  services.add(new YarnService(config,applicationName,applicationAttemptIdId.getApplicationId(),fs,this.eventBus,Strings.nullToEmpty(config.getString(ConfigurationConstants.CONTAINER_JVM_ARGS_KEY))));
+  services.add(new YarnService(config,applicationName,applicationAttemptId.getApplicationId(),fs,this.eventBus,Strings.nullToEmpty(config.getString(GobblinYarnConfigurationKeys.CONTAINER_JVM_ARGS_KEY))));
   services.add(new GobblinHelixJobScheduler(YarnHelixUtils.configToProperties(config),this.helixManager,this.eventBus,appWorkDir));
-  services.add(new JobConfigurationManager(this.eventBus,config.hasPath(ConfigurationConstants.JOB_CONF_PACKAGE_PATH_KEY) ? Optional.of(config.getString(ConfigurationConstants.JOB_CONF_PACKAGE_PATH_KEY)) : Optional.<String>absent()));
+  services.add(new JobConfigurationManager(this.eventBus,config.hasPath(GobblinYarnConfigurationKeys.JOB_CONF_PACKAGE_PATH_KEY) ? Optional.of(config.getString(GobblinYarnConfigurationKeys.JOB_CONF_PACKAGE_PATH_KEY)) : Optional.<String>absent()));
   this.serviceManager=new ServiceManager(services);
 }

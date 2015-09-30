@@ -4,7 +4,7 @@
   this.helixTaskDriver=new TaskDriver(this.helixManager);
   this.fs=FileSystem.get(new Configuration());
   this.appWorkDir=appWorkDir;
-  this.inputWorkUnitDir=new Path(appWorkDir,ConfigurationConstants.INPUT_WORK_UNIT_DIR_NAME);
+  this.inputWorkUnitDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.INPUT_WORK_UNIT_DIR_NAME);
   this.helixQueueName=this.jobContext.getJobName();
   this.jobResourceName=TaskUtil.getNamespacedJobName(this.helixQueueName,this.jobContext.getJobId());
   this.stateSerDeRunnerThreads=Integer.parseInt(jobProps.getProperty(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,Integer.toString(ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS)));

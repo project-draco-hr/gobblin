@@ -1,5 +1,5 @@
 {
-  Path outputTaskStateDir=new Path(this.appWorkDir,ConfigurationConstants.OUTPUT_TASK_STATE_DIR_NAME + Path.SEPARATOR + this.jobContext.getJobId());
+  Path outputTaskStateDir=new Path(this.appWorkDir,GobblinYarnConfigurationKeys.OUTPUT_TASK_STATE_DIR_NAME + Path.SEPARATOR + this.jobContext.getJobId());
   FileStatus[] fileStatuses=this.fs.listStatus(outputTaskStateDir,new PathFilter(){
     @Override public boolean accept(    Path path){
       return path.getName().endsWith(TASK_STATE_STORE_TABLE_SUFFIX);

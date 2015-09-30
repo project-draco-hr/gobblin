@@ -5,6 +5,6 @@
   this.jobId=this.taskConfig.getConfigMap().get(ConfigurationKeys.JOB_ID_KEY);
   this.taskId=this.taskConfig.getConfigMap().get(ConfigurationKeys.TASK_ID_KEY);
   this.fs=fs;
-  Path taskStateOutputDir=new Path(appWorkDir,ConfigurationConstants.OUTPUT_TASK_STATE_DIR_NAME);
+  Path taskStateOutputDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.OUTPUT_TASK_STATE_DIR_NAME);
   this.taskStateStore=new FsStateStore<TaskState>(this.fs,taskStateOutputDir.toString(),TaskState.class);
 }

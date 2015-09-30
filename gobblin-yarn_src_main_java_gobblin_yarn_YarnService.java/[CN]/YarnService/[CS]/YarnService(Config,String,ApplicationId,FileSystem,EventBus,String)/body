@@ -10,9 +10,9 @@
   this.containerLaunchExecutor=Executors.newFixedThreadPool(10,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("ContainerLaunchExecutor")));
   this.fs=fs;
   this.eventBus=eventBus;
-  this.initialContainers=config.getInt(ConfigurationConstants.INITIAL_CONTAINERS_KEY);
-  this.requestedContainerMemoryMbs=config.getInt(ConfigurationConstants.CONTAINER_MEMORY_MBS_KEY);
-  this.requestedContainerCores=config.getInt(ConfigurationConstants.CONTAINER_CORES_KEY);
+  this.initialContainers=config.getInt(GobblinYarnConfigurationKeys.INITIAL_CONTAINERS_KEY);
+  this.requestedContainerMemoryMbs=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_MEMORY_MBS_KEY);
+  this.requestedContainerCores=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_CORES_KEY);
   this.containerJvmArgs=containerJvmArgs;
   this.tokens=getSecurityTokens();
   this.eventBus.register(this);

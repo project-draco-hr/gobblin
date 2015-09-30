@@ -8,7 +8,7 @@
     Path destFilePath=new Path(destDir,libJarFile.getPath().getName());
     this.fs.copyFromLocalFile(libJarFile.getPath(),destFilePath);
     if (resourceMap.isPresent()) {
-      addFileAsLocalResource(destFilePath,LocalResourceType.FILE,resourceMap.get());
+      YarnHelixUtils.addFileAsLocalResource(this.fs,destFilePath,LocalResourceType.FILE,resourceMap.get());
     }
   }
 }

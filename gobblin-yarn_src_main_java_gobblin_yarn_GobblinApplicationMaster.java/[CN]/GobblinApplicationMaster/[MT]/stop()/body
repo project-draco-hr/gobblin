@@ -1,5 +1,5 @@
 {
-  if (this.isStopped || this.stopInProgress) {
+  if (this.stopInProgress) {
     return;
   }
   this.stopInProgress=true;
@@ -17,5 +17,4 @@
       this.helixManager.disconnect();
     }
   }
-  this.isStopped=true;
 }
