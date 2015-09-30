@@ -1,4 +1,5 @@
 {
-  this.deleteOperations.add(new DeleteOperation(path,null));
+  this.operationsReceived.incrementAndGet();
+  addDeleteOperation(new DeleteOperation(path,null));
   return true;
 }

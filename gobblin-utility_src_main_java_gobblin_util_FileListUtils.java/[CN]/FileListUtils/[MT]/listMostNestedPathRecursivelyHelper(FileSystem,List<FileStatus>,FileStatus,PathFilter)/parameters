@@ -1,0 +1,4 @@
+FileSystem fs
+List<FileStatus> files
+FileStatus fileStatus
+PathFilter fileFilter

@@ -1,0 +1,3 @@
+{
+  properties.setProperty(DELAY_TICKS_KEY,Long.toString(delay));
+}

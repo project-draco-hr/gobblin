@@ -1,0 +1,6 @@
+{
+  if (isInstrumentationEnabled()) {
+    this.datasetsCleanFailureMeter=Optional.of(this.metricContext.meter(DatasetCleanerMetrics.DATASETS_CLEAN_FAILURE));
+    this.datasetsCleanSuccessMeter=Optional.of(this.metricContext.meter(DatasetCleanerMetrics.DATASETS_CLEAN_SUCCESS));
+  }
+}

@@ -1,7 +1,0 @@
-{
-  long totalSize=0;
-  for (  WorkUnit w : workUnitsForTopic) {
-    totalSize+=getWorkUnitEstSize(w);
-  }
-  return totalSize;
-}

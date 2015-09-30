@@ -1,0 +1,12 @@
+{
+  if (this.currentFile != null && this.currentFileItr != null) {
+    closeCurrentFile();
+    incrementBytesReadCounter();
+  }
+  while (!this.hasNext && !this.filesToPull.isEmpty()) {
+    this.currentFile=this.filesToPull.remove(0);
+    this.currentFileItr=downloadFile(this.currentFile);
+    this.hasNext=this.currentFileItr == null ? false : this.currentFileItr.hasNext();
+    LOG.info("Will start downloading file: " + this.currentFile);
+  }
+}

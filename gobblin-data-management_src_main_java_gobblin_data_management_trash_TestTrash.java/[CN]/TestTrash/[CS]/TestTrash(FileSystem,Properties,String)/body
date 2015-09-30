@@ -4,4 +4,17 @@
   this.deleteOperations=Lists.newArrayList();
   this.simulate=props.containsKey(TrashFactory.SIMULATE) && Boolean.parseBoolean(props.getProperty(TrashFactory.SIMULATE));
   this.skipTrash=props.containsKey(TrashFactory.SKIP_TRASH) && Boolean.parseBoolean(props.getProperty(TrashFactory.SKIP_TRASH));
+  this.operationsReceived=new AtomicLong();
+  this.lock=new ReentrantLock();
+  this.clockStateUpdated=lock.newCondition();
+  this.signalReceived=lock.newCondition();
+  this.clockState=0;
+  this.operationsWaiting=new AtomicLong();
+  this.callsReceivedSignal=new AtomicLong();
+  if (props.containsKey(DELAY_TICKS_KEY)) {
+    this.delay=Long.parseLong(props.getProperty(DELAY_TICKS_KEY));
+  }
+ else {
+    this.delay=0;
+  }
 }

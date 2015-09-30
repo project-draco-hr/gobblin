@@ -8,5 +8,8 @@
     KafkaPartition partition=new KafkaPartition.Builder().withTopicName(topicName).withId(state.getPropAsInt(KafkaUtils.getPartitionPropName(KafkaSource.PARTITION_ID,i))).withLeaderId(state.getPropAsInt(KafkaUtils.getPartitionPropName(KafkaSource.LEADER_ID,i))).withLeaderHostAndPort(state.getProp(KafkaUtils.getPartitionPropName(KafkaSource.LEADER_HOSTANDPORT,i))).build();
     partitions.add(partition);
   }
+  if (partitions.isEmpty()) {
+    partitions.add(getPartition(state));
+  }
   return partitions;
 }

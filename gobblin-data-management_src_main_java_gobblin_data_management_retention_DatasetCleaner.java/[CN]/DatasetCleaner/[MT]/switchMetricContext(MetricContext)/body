@@ -1,0 +1,4 @@
+{
+  this.metricContext=context;
+  this.regenerateMetrics();
+}

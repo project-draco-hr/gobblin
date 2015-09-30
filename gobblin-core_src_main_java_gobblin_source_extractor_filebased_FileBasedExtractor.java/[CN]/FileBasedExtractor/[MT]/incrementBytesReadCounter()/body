@@ -1,13 +1,13 @@
 {
   try {
-    counters.inc(CounterNames.FileBytesRead,fsHelper.getFileSize(currentFile));
+    this.counters.inc(CounterNames.FileBytesRead,fsHelper.getFileSize(currentFile));
   }
  catch (  FileBasedHelperException e) {
-    LOGGER.info("Unable to get file size. Will skip increment to bytes counter " + e.getMessage());
-    LOGGER.debug(e.getMessage(),e);
+    LOG.info("Unable to get file size. Will skip increment to bytes counter " + e.getMessage());
+    LOG.debug(e.getMessage(),e);
   }
 catch (  UnsupportedOperationException e) {
-    LOGGER.info("Unable to get file size. Will skip increment to bytes counter " + e.getMessage());
-    LOGGER.debug(e.getMessage(),e);
+    LOG.info("Unable to get file size. Will skip increment to bytes counter " + e.getMessage());
+    LOG.debug(e.getMessage(),e);
   }
 }

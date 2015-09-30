@@ -1,0 +1,3 @@
+{
+  return this.jobState.getPropAsBoolean(ConfigurationKeys.CLEANUP_STAGING_DATA_PER_TASK,ConfigurationKeys.DEFAULT_CLEANUP_STAGING_DATA_PER_TASK);
+}

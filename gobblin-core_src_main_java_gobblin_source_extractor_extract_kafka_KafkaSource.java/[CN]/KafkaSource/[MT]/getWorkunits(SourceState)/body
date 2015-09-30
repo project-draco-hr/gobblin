@@ -9,8 +9,7 @@
     }
     createEmptyWorkUnitsForSkippedPartitions(workUnits,state);
     int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
-    this.getAllPreviousAvgSizes(state);
-    return ImmutableList.copyOf(getMultiWorkunits(workUnits,numOfMultiWorkunits,state));
+    return KafkaWorkUnitPacker.getInstance(this,state).pack(workUnits,numOfMultiWorkunits);
   }
   finally {
     try {

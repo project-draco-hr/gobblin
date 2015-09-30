@@ -1,0 +1,3 @@
+{
+  return StringUtils.removeStart(key,SlaEventKeys.EVENT_GOBBLIN_STATE_PREFIX);
+}

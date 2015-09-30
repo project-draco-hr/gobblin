@@ -1,0 +1,10 @@
+{
+  double totalEstDataSize=0;
+  for (  List<WorkUnit> workUnitsForTopic : workUnitsByTopic.values()) {
+    for (    WorkUnit workUnit : workUnitsForTopic) {
+      setWorkUnitEstSize(workUnit);
+      totalEstDataSize+=getWorkUnitEstSize(workUnit);
+    }
+  }
+  return totalEstDataSize;
+}

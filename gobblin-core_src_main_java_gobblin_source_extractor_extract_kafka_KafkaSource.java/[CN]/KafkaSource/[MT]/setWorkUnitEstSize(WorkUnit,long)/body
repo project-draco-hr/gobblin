@@ -1,3 +1,0 @@
-{
-  workUnit.setProp(ESTIMATED_DATA_SIZE,estSize);
-}

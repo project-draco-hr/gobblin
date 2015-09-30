@@ -1,0 +1,20 @@
+{
+  setWorkUnitEstSizes(workUnitsByTopic);
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (  List<WorkUnit> workUnitsForTopic : workUnitsByTopic.values()) {
+    MultiWorkUnit zeroSizeWorkUnit=new MultiWorkUnit();
+    for (    WorkUnit workUnit : workUnitsForTopic) {
+      if (DoubleMath.fuzzyEquals(getWorkUnitEstSize(workUnit),0.0,EPS)) {
+        addWorkUnitToMultiWorkUnit(workUnit,zeroSizeWorkUnit);
+      }
+ else {
+        workUnit.setWatermarkInterval(getWatermarkIntervalFromWorkUnit(workUnit));
+        workUnits.add(workUnit);
+      }
+    }
+    if (!zeroSizeWorkUnit.getWorkUnits().isEmpty()) {
+      workUnits.add(squeezeMultiWorkUnit(zeroSizeWorkUnit,state));
+    }
+  }
+  return worstFitDecreasingBinPacking(workUnits,numContainers);
+}

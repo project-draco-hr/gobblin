@@ -1,0 +1,4 @@
+{
+  this.acquirePermit();
+  return this.fs.rename(path0,path1);
+}

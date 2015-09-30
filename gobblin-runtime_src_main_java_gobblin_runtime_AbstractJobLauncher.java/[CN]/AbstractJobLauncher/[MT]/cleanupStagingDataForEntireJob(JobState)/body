@@ -1,0 +1,8 @@
+{
+  try {
+    JobLauncherUtils.cleanJobStagingData(jobState,LOG);
+  }
+ catch (  IOException e) {
+    LOG.error("Failed to clean staging data for job " + jobState.getJobId(),e);
+  }
+}

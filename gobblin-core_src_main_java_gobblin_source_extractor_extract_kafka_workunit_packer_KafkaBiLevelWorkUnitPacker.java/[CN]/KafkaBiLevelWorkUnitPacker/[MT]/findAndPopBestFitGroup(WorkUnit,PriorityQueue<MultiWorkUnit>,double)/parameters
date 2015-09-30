@@ -1,0 +1,3 @@
+WorkUnit workUnit
+PriorityQueue<MultiWorkUnit> pQueue
+double avgGroupSize

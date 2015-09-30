@@ -3,10 +3,15 @@
   JobState jobState=this.jobContext.getJobState();
   try {
     TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_STAGING_DATA_CLEAN);
-    for (    WorkUnit workUnit : JobLauncherUtils.flattenWorkUnits(workUnits)) {
-      WorkUnit fatWorkUnit=WorkUnit.copyOf(workUnit);
-      fatWorkUnit.addAllIfNotExist(jobState);
-      JobLauncherUtils.cleanStagingData(fatWorkUnit,LOG);
+    if (this.jobContext.shouldCleanupStagingDataPerTask()) {
+      for (      WorkUnit workUnit : JobLauncherUtils.flattenWorkUnits(workUnits)) {
+        WorkUnit fatWorkUnit=WorkUnit.copyOf(workUnit);
+        fatWorkUnit.addAllIfNotExist(jobState);
+        JobLauncherUtils.cleanStagingData(fatWorkUnit,LOG);
+      }
+    }
+ else {
+      JobLauncherUtils.cleanJobStagingData(jobState,LOG);
     }
     stagingDataCleanTimer.stop();
     Path jobOutputPath=prepareHadoopJob(workUnits);

@@ -8,11 +8,10 @@
   this.nextWatermark=new MultiLongWatermark(this.lowWatermark);
   this.closer=Closer.create();
   this.kafkaWrapper=closer.register(KafkaWrapper.create(state));
+  this.stopwatch=Stopwatch.createUnstarted();
   this.decodingErrorCount=Maps.newHashMap();
-  this.totalEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
-  this.eventCounts=Maps.newHashMapWithExpectedSize(this.partitions.size());
-  this.avgEventSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
+  this.avgMillisPerRecord=Maps.newHashMapWithExpectedSize(this.partitions.size());
+  this.avgRecordSizes=Maps.newHashMapWithExpectedSize(this.partitions.size());
   this.errorPartitions=Sets.newHashSet();
-  switchMetricContextToCurrentPartition();
   this.workUnitState.setActualHighWatermark(this.lowWatermark);
 }

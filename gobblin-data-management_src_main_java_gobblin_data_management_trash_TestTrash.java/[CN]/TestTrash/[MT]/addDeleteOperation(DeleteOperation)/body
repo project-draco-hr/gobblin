@@ -1,0 +1,24 @@
+{
+  this.lock.lock();
+  long executeAt=this.clockState + this.delay;
+  boolean firstLoop=true;
+  try {
+    while (this.clockState < executeAt) {
+      if (!firstLoop) {
+        this.callsReceivedSignal.incrementAndGet();
+        this.signalReceived.signalAll();
+      }
+      firstLoop=false;
+      this.operationsWaiting.incrementAndGet();
+      this.clockStateUpdated.await();
+    }
+    this.deleteOperations.add(dop);
+    this.callsReceivedSignal.incrementAndGet();
+    this.signalReceived.signal();
+  }
+ catch (  InterruptedException ie) {
+  }
+ finally {
+    this.lock.unlock();
+  }
+}

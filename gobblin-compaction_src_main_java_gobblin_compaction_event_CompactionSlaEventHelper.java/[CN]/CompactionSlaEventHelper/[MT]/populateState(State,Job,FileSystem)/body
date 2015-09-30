@@ -1,0 +1,8 @@
+{
+  setDatasetUrn(state);
+  setPartition(state);
+  setDedupeStatus(state);
+  setPreviousPublishTime(state,fs);
+  setRecordCount(state,job);
+  setUpstreamTimeStamp(state,fs);
+}
