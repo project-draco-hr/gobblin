@@ -1,0 +1,4 @@
+{
+  moveToTrashAsOwnerFuture(path);
+  return true;
+}
