@@ -1,0 +1,12 @@
+{
+  if (uri != null) {
+    return uri;
+  }
+  if (fileSystem != null) {
+    return fileSystem.getUri();
+  }
+  if (configuration != null) {
+    return FileSystem.getDefaultUri(configuration);
+  }
+  throw new IOException("FileSystem URI could not be determined from available inputs.");
+}
