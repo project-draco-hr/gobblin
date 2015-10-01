@@ -1,0 +1,13 @@
+{
+  try {
+    return this.metricsMap.get(id,new Callable<GobblinMetrics>(){
+      @Override public GobblinMetrics call() throws Exception {
+        return defaultValue;
+      }
+    }
+);
+  }
+ catch (  ExecutionException ee) {
+    throw Throwables.propagate(ee);
+  }
+}
