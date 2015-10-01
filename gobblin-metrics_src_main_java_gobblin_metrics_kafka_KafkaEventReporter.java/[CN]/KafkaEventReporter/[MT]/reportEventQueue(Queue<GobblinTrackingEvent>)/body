@@ -4,5 +4,7 @@
   while (null != (nextEvent=queue.poll())) {
     events.add(this.serializer.serializeRecord(nextEvent));
   }
-  this.kafkaPusher.pushMessages(events);
+  if (!events.isEmpty()) {
+    this.kafkaPusher.pushMessages(events);
+  }
 }

@@ -1,5 +1,6 @@
 {
   try {
+    this.report();
     this.closer.close();
   }
  catch (  Exception e) {
