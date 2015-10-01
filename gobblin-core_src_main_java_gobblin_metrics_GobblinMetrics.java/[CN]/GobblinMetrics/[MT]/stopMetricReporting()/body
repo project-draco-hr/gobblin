@@ -6,9 +6,6 @@
   if (this.jmxReporter.isPresent()) {
     this.jmxReporter.get().stop();
   }
-  for (  ScheduledReporter reporter : this.scheduledReporters) {
-    reporter.close();
-  }
   try {
     this.closer.close();
   }
