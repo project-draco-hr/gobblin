@@ -1,5 +1,10 @@
 {
-  GobblinMetrics gobblinMetrics=GobblinMetrics.get(state.getProp(ConfigurationKeys.JOB_NAME_KEY));
+  List<Tag<?>> tags=Lists.newArrayList();
+  String clusterIdentifierTag=ClustersNames.getInstance().getClusterName();
+  if (StringUtils.isNotBlank(clusterIdentifierTag)) {
+    tags.add(new Tag<String>("clusterIdentifier",clusterIdentifierTag));
+  }
+  GobblinMetrics gobblinMetrics=GobblinMetrics.get(state.getProp(ConfigurationKeys.JOB_NAME_KEY),null,tags);
   gobblinMetrics.startMetricReporting(state.getProperties());
   return gobblinMetrics;
 }

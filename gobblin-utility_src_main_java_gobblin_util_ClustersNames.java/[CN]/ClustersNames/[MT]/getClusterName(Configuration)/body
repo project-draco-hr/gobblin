@@ -1,0 +1,15 @@
+{
+  String clusterIdentifier=conf.get("yarn.resourcemanager.address");
+  if (clusterIdentifier == null) {
+    clusterIdentifier=conf.get("mapreduce.jobtracker.address");
+  }
+  clusterIdentifier=getClusterName(clusterIdentifier);
+  if (clusterIdentifier == null || StringUtils.startsWithIgnoreCase(clusterIdentifier,"localhost") || StringUtils.startsWithIgnoreCase(clusterIdentifier,"0.0.0.0")) {
+    try {
+      clusterIdentifier=InetAddress.getLocalHost().getHostName();
+    }
+ catch (    UnknownHostException e) {
+    }
+  }
+  return clusterIdentifier;
+}
