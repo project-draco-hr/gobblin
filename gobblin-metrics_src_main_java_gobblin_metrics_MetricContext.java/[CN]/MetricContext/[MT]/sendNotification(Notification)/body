@@ -1,14 +1,12 @@
 {
-  for (  final Function<Notification,Void> target : this.notificationTargets) {
-    getExecutorService().submit(new Callable<Void>(){
-      @Override public Void call() throws Exception {
-        target.apply(notification);
-        return null;
-      }
+  ContextAwareTimer.Context timer=this.notificationTimer.time();
+  if (!this.notificationTargets.isEmpty()) {
+    for (    final Map.Entry<UUID,Function<Notification,Void>> entry : this.notificationTargets.entrySet()) {
+      entry.getValue().apply(notification);
     }
-);
   }
   if (this.parent.isPresent()) {
     this.parent.get().sendNotification(notification);
   }
+  timer.stop();
 }

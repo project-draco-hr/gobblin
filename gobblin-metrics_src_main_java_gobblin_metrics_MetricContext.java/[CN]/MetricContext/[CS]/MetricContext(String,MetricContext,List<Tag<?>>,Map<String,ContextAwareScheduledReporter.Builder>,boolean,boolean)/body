@@ -5,7 +5,7 @@
   this.tagged=new Tagged(tags);
   this.tagged.addTag(new Tag<String>(METRIC_CONTEXT_ID_TAG_NAME,UUID.randomUUID().toString()));
   this.reportFullyQualifiedNames=reportFullyQualifiedNames;
-  this.notificationTargets=Sets.newConcurrentHashSet();
+  this.notificationTargets=Maps.newConcurrentMap();
   this.executorServiceOptional=Optional.absent();
   this.includeTagKeys=includeTagKeys;
   if (this.parent.isPresent()) {
@@ -14,4 +14,5 @@
   for (  Map.Entry<String,ContextAwareScheduledReporter.Builder> entry : builders.entrySet()) {
     this.contextAwareScheduledReporters.put(entry.getKey(),entry.getValue().build(this));
   }
+  this.notificationTimer=this.contextAwareTimer(GOBBLIN_METRICS_NOTIFICATIONS_TIMER_NAME);
 }
