@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(SingleTaskDataPublisher.class.isAssignableFrom(dataPublisherClass),String.format("Cannot instantiate %s since it does not extend %s",dataPublisherClass.getSimpleName(),SingleTaskDataPublisher.class.getSimpleName()));
+  return (SingleTaskDataPublisher)DataPublisher.getInstance(dataPublisherClass,state);
+}
