@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(userNameToProxyAs,"Must provide a user name to proxy as.");
+  Preconditions.checkNotNull(userNameToken,"Must provide token for user to proxy.");
+  URI actualURI=resolveUri(fsURI,conf,referenceFS);
+  Configuration actualConfiguration=resolveConfiguration(conf,referenceFS);
+  return USER_NAME_TO_FILESYSTEM_CACHE.get(getFileSystemKey(actualURI,userNameToProxyAs,referenceFS),new CreateProxiedFileSystemFromToken(userNameToProxyAs,userNameToken,actualURI,actualConfiguration,referenceFS));
+}

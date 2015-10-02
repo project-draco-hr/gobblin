@@ -1,11 +1,11 @@
 {
   this.lock.lock();
-  this.clockState++;
-  long callsAwaitingSignalOld=this.operationsWaiting.get();
-  this.callsReceivedSignal.set(0);
-  this.operationsWaiting.set(0);
-  this.clockStateUpdated.signalAll();
   try {
+    this.clockState++;
+    long callsAwaitingSignalOld=this.operationsWaiting.get();
+    this.callsReceivedSignal.set(0);
+    this.operationsWaiting.set(0);
+    this.clockStateUpdated.signalAll();
     while (this.callsReceivedSignal.get() < callsAwaitingSignalOld) {
       this.signalReceived.await();
     }

@@ -1,0 +1,11 @@
+{
+  StringBuilder keyBuilder=new StringBuilder();
+  keyBuilder.append(uri.toString());
+  keyBuilder.append(KEY_SEPARATOR);
+  keyBuilder.append(user);
+  if (referenceFS != null && RateControlledFileSystem.getRateIfRateControlled(referenceFS).isPresent()) {
+    keyBuilder.append(KEY_SEPARATOR);
+    keyBuilder.append(RATE_CONTROLLED_TOKEN);
+  }
+  return keyBuilder.toString();
+}

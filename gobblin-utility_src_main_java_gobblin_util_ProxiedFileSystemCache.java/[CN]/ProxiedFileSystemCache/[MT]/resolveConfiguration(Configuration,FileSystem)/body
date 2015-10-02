@@ -1,0 +1,9 @@
+{
+  if (configuration != null) {
+    return configuration;
+  }
+  if (fileSystem != null) {
+    return fileSystem.getConf();
+  }
+  throw new IOException("FileSystem configuration could not be determined from available inputs.");
+}
