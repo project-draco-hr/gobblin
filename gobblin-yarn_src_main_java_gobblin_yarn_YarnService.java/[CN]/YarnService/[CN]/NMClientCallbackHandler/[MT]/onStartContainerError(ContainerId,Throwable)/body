@@ -1,5 +1,4 @@
 {
   LOGGER.error(String.format("Failed to start container %s due to error %s",containerId,t));
   containerMap.remove(containerId);
-  containerToParticipantMap.remove(containerId);
 }

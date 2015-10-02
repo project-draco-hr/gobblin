@@ -1,0 +1,4 @@
+{
+  Preconditions.checkNotNull(applicationReport);
+  this.applicationReport=applicationReport;
+}

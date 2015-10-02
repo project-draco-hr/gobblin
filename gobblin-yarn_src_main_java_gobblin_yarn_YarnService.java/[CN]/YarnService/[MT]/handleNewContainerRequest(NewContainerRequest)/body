@@ -1,11 +1,11 @@
 {
   int newContainersRequested=newContainerRequest.getNewContainersRequested();
   if (newContainersRequested <= 0) {
-    LOGGER.error("Invalid number of new containers requested: " + newContainersRequested);
+    LOGGER.error("Number of containers requested me be positive");
     return;
   }
   if (!this.maxResourceCapacity.isPresent()) {
-    LOGGER.error("Unable to handle new container request as maximum resource capacity is not available");
+    LOGGER.error(String.format("Unable to handle new container request as maximum resource capacity is not available: " + "[containers requested = %d, memory (MBs) requested = %d, vcores requested = %d]",newContainersRequested,this.requestedContainerMemoryMbs,this.requestedContainerCores));
     return;
   }
   try {

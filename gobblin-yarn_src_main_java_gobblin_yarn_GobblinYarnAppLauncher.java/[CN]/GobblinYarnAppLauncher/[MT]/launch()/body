@@ -10,48 +10,18 @@
   this.serviceManager.startAsync();
   this.yarnClient.start();
   this.applicationId=Optional.of(setupAndSubmitApplication());
-  ListenableFuture<ApplicationReport> appReportFuture=this.applicationStatusMonitor.submit(new Callable<ApplicationReport>(){
-    @Override public ApplicationReport call() throws IOException, YarnException {
-      while (true) {
-        try {
-          ApplicationReport appReport=yarnClient.getApplicationReport(applicationId.get());
-          YarnApplicationState appState=appReport.getYarnApplicationState();
-          if (appState == YarnApplicationState.FINISHED || appState == YarnApplicationState.FAILED || appState == YarnApplicationState.KILLED) {
-            applicationCompleted=true;
-            return appReport;
-          }
-          LOGGER.info("Gobblin Yarn application state: " + appState.toString());
-          Thread.sleep(TimeUnit.SECONDS.toMillis(60));
-        }
- catch (        InterruptedException ie) {
-          Thread.currentThread().interrupt();
-        }
+  this.applicationStatusMonitor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        eventBus.post(new ApplicationReportArrivalEvent(yarnClient.getApplicationReport(applicationId.get())));
+      }
+ catch (      YarnException ye) {
+        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),ye);
+      }
+catch (      IOException ioe) {
+        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),ioe);
       }
     }
   }
-);
-  Futures.addCallback(appReportFuture,new FutureCallback<ApplicationReport>(){
-    @Override public void onSuccess(    ApplicationReport applicationReport){
-      LOGGER.info("Gobblin Yarn application finished with final status: " + applicationReport.getFinalApplicationStatus().toString());
-      if (applicationReport.getFinalApplicationStatus() == FinalApplicationStatus.FAILED) {
-        LOGGER.error("Gobblin Yarn application failed for the following reason: " + applicationReport.getDiagnostics());
-      }
-      try {
-        GobblinYarnAppLauncher.this.stop();
-      }
- catch (      IOException ioe) {
-        LOGGER.error("Failed to close the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
-      }
-    }
-    @Override public void onFailure(    @Nonnull Throwable t){
-      LOGGER.error("Failed to get ApplicationReport due to: " + t);
-      try {
-        GobblinYarnAppLauncher.this.stop();
-      }
- catch (      IOException ioe) {
-        LOGGER.error("Failed to close the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
-      }
-    }
-  }
-);
+,0,this.appReportIntervalMinutes,TimeUnit.MINUTES);
 }

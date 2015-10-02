@@ -1,8 +1,8 @@
 {
   for (  final Container container : containers) {
     LOGGER.info(String.format("Container %s has been allocated",container.getId()));
-    containerMap.put(container.getId(),container);
-    containerToParticipantMap.put(container.getId(),YarnHelixUtils.getParticipantId(container.getNodeId().getHost(),container.getId()));
+    Map.Entry<Container,ParticipantId> containerParticipantPair=new AbstractMap.SimpleImmutableEntry<Container,ParticipantId>(container,YarnHelixUtils.getParticipantId(container.getNodeId().getHost(),container.getId()));
+    containerMap.put(container.getId(),containerParticipantPair);
     containerLaunchExecutor.submit(new Runnable(){
       @Override public void run(){
         try {

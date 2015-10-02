@@ -7,5 +7,5 @@
     helixTaskResult.setSuccess(true);
     return helixTaskResult;
   }
-  throw new RuntimeException(String.format("Unknown %s message subtype: %s",Message.MessageType.USER_DEFINE_MSG.toString(),messageSubType));
+  throw new IllegalArgumentException(String.format("Unknown %s message subtype: %s",Message.MessageType.USER_DEFINE_MSG.toString(),messageSubType));
 }

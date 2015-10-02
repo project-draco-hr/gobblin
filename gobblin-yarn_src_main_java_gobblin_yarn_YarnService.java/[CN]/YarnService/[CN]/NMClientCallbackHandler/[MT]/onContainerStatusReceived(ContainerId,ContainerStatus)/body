@@ -3,7 +3,6 @@
   if (containerStatus.getState() == ContainerState.COMPLETE) {
     LOGGER.info(String.format("Container %s completed",containerId));
     containerMap.remove(containerId);
-    containerToParticipantMap.remove(containerId);
     if (containerMap.isEmpty()) {
 synchronized (allContainersStopped) {
         allContainersStopped.notify();
