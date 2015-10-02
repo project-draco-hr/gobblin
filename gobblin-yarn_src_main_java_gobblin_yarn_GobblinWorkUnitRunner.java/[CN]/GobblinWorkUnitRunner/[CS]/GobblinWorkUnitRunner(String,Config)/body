@@ -3,7 +3,8 @@
   FileSystem fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),new Configuration()) : FileSystem.get(new Configuration());
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
-  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getParticipantIdStr(YarnHelixUtils.getHostname(),this.containerId),InstanceType.PARTICIPANT,zkConnectionString);
+  String helixInstanceName=YarnHelixUtils.getHelixInstanceName(YarnHelixUtils.getHostname(),this.containerId);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.PARTICIPANT,zkConnectionString);
   Properties properties=YarnHelixUtils.configToProperties(config);
   this.eventBus=new EventBus();
   TaskExecutor taskExecutor=new TaskExecutor(properties);
@@ -21,4 +22,7 @@
   taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(taskExecutor,taskStateTracker,fs,appWorkDir));
   this.taskStateModelFactory=new TaskStateModelFactory(this.helixManager,taskFactoryMap);
   this.helixManager.getStateMachineEngine().registerStateModelFactory(StateModelDefId.from("Task"),this.taskStateModelFactory);
+  List<Tag<?>> tags=ImmutableList.<Tag<?>>builder().add(new Tag<String>(GobblinYarnMetricTagNames.YARN_APPLICATION_NAME,applicationName)).add(new Tag<String>(GobblinYarnMetricTagNames.YARN_APPLICATION_ID,containerId.getApplicationAttemptId().getApplicationId().toString())).add(new Tag<String>(GobblinYarnMetricTagNames.CONTAINER_ID,containerId.toString())).add(new Tag<String>(GobblinYarnMetricTagNames.HELIX_INSTANCE_NAME,helixInstanceName)).build();
+  this.metricContext=MetricContext.builder(GobblinApplicationMaster.class.getSimpleName()).addTags(tags).build();
+  this.jmxReporter=JmxReporter.forRegistry(this.metricContext).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
 }
