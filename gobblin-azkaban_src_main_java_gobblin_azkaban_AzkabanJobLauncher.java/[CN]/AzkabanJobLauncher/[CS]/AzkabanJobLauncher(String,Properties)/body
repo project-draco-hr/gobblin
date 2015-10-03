@@ -16,7 +16,9 @@
   if (System.getenv(HADOOP_TOKEN_FILE_LOCATION) != null) {
     this.props.setProperty(MAPREDUCE_JOB_CREDENTIALS_BINARY,System.getenv(HADOOP_TOKEN_FILE_LOCATION));
   }
-  JobMetrics.addCustomTagsToProperties(this.props,getAzkabanTags());
+  List<Tag<?>> tags=Lists.newArrayList();
+  tags.addAll(Tag.fromMap(TagUtils.getRuntimeTags()));
+  JobMetrics.addCustomTagsToProperties(this.props,tags);
   if (!this.props.containsKey(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY)) {
     this.props.setProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.MAPREDUCE.toString());
   }
