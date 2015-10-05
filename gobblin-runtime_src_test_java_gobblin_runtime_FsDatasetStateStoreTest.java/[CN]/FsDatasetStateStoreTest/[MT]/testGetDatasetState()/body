@@ -5,6 +5,9 @@
   Assert.assertEquals(datasetState.getJobId(),TEST_JOB_ID);
   Assert.assertEquals(datasetState.getState(),JobState.RunningState.COMMITTED);
   Assert.assertEquals(datasetState.getProp("foo"),"bar");
+  Assert.assertEquals(datasetState.getStartTime(),this.startTime);
+  Assert.assertEquals(datasetState.getEndTime(),this.startTime + 1000);
+  Assert.assertEquals(datasetState.getDuration(),1000);
   Assert.assertEquals(datasetState.getCompletedTasks(),3);
   for (int i=0; i < datasetState.getCompletedTasks(); i++) {
     TaskState taskState=datasetState.getTaskStates().get(i);
