@@ -1,8 +1,12 @@
 {
-  if (args.length != 1) {
-    System.err.println("Usage: SchedulerDaemon <configuration properties file>");
+  if (args.length < 1 || args.length > 2) {
+    System.err.println("Usage: SchedulerDaemon <default configuration properties file> [custom configuration properties file]");
     System.exit(1);
   }
-  Configuration config=new PropertiesConfiguration(args[0]);
-  new SchedulerDaemon(ConfigurationConverter.getProperties(config)).start();
+  Properties defaultProperties=ConfigurationConverter.getProperties(new PropertiesConfiguration(args[0]));
+  Properties customProperties=new Properties();
+  if (args.length == 2) {
+    customProperties.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(args[1])));
+  }
+  new SchedulerDaemon(defaultProperties,customProperties).start();
 }

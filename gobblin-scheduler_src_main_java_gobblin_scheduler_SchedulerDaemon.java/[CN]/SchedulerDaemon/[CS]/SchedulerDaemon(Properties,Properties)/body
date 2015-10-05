@@ -1,0 +1,11 @@
+{
+  Properties properties=new Properties();
+  properties.putAll(defaultProperties);
+  properties.putAll(customProperties);
+  List<Service> services=Lists.<Service>newArrayList(new JobScheduler(properties));
+  boolean jobExecInfoServerEnabled=Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_EXECINFO_SERVER_ENABLED_KEY,Boolean.FALSE.toString()));
+  if (jobExecInfoServerEnabled) {
+    services.add(new JobExecutionInfoServer(properties));
+  }
+  this.serviceManager=new ServiceManager(services);
+}
