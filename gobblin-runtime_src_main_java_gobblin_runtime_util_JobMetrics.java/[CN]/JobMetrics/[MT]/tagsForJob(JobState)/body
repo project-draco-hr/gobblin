@@ -2,10 +2,6 @@
   List<Tag<?>> tags=Lists.newArrayList();
   tags.add(new Tag<String>("jobName",jobState.getJobName() == null ? "" : jobState.getJobName()));
   tags.add(new Tag<String>("jobId",jobState.getJobId()));
-  String clusterIdentifierTag=getClusterIdentifierTag();
-  if (StringUtils.isNotBlank(clusterIdentifierTag)) {
-    tags.add(new Tag<String>("clusterIdentifier",clusterIdentifierTag));
-  }
   tags.addAll(getCustomTagsFromState(jobState));
   return tags;
 }
