@@ -1,0 +1,4 @@
+{
+  bind(Properties.class).annotatedWith(Names.named("dataSourceProperties")).toInstance(this.properties);
+  bind(DataSource.class).toProvider(DataSourceProvider.class);
+}

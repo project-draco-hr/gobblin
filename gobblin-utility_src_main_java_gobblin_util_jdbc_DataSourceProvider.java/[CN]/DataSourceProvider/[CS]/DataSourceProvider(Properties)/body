@@ -1,0 +1,15 @@
+{
+  this.basicDataSource=new BasicDataSource();
+  basicDataSource.setDriverClassName(properties.getProperty(CONN_DRIVER,DEFAULT_CONN_DRIVER));
+  basicDataSource.setUrl(properties.getProperty(CONN_URL));
+  if (properties.containsKey(USERNAME) && properties.containsKey(PASSWORD)) {
+    basicDataSource.setUsername(properties.getProperty(USERNAME));
+    basicDataSource.setPassword(PasswordManager.getInstance(properties).readPassword(properties.getProperty(PASSWORD)));
+  }
+  if (properties.containsKey(MAX_IDLE_CONNS)) {
+    basicDataSource.setMaxIdle(Integer.parseInt(properties.getProperty(MAX_IDLE_CONNS)));
+  }
+  if (properties.containsKey(MAX_ACTIVE_CONNS)) {
+    basicDataSource.setMaxActive(Integer.parseInt(properties.getProperty(MAX_ACTIVE_CONNS)));
+  }
+}
