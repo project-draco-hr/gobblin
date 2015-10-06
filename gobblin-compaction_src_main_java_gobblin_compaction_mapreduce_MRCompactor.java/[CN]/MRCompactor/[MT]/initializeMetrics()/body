@@ -1,5 +1,7 @@
 {
-  GobblinMetrics gobblinMetrics=GobblinMetrics.get(state.getProp(ConfigurationKeys.JOB_NAME_KEY));
+  List<Tag<?>> tags=Lists.newArrayList();
+  tags.addAll(Tag.fromMap(TagUtils.getRuntimeTags()));
+  GobblinMetrics gobblinMetrics=GobblinMetrics.get(state.getProp(ConfigurationKeys.JOB_NAME_KEY),null,tags);
   gobblinMetrics.startMetricReporting(state.getProperties());
   return gobblinMetrics;
 }

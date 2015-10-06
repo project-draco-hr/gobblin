@@ -1,5 +1,5 @@
 {
   bind(Properties.class).annotatedWith(Names.named("dataSourceProperties")).toInstance(this.properties);
-  bind(DataSource.class).toProvider(DataSourceProvider.class);
+  bind(DataSource.class).toProvider(JobHistoryDataSourceProvider.class);
   bind(JobHistoryStore.class).to(DatabaseJobHistoryStore.class);
 }

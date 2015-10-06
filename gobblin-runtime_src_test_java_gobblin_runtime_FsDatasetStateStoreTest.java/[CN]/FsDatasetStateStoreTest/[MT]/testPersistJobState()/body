@@ -3,6 +3,9 @@
   jobState.setId(TEST_JOB_ID);
   jobState.setProp("foo","bar");
   jobState.setState(JobState.RunningState.COMMITTED);
+  jobState.setStartTime(this.startTime);
+  jobState.setEndTime(this.startTime + 1000);
+  jobState.setDuration(1000);
   for (int i=0; i < 3; i++) {
     TaskState taskState=new TaskState();
     taskState.setJobId(TEST_JOB_ID);

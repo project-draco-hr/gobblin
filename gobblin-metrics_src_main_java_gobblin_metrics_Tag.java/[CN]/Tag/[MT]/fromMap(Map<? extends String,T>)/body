@@ -1,0 +1,7 @@
+{
+  List<Tag<T>> tags=Lists.newArrayList();
+  for (  Map.Entry<? extends String,T> entry : tagsMap.entrySet()) {
+    tags.add(new Tag<T>(entry));
+  }
+  return tags;
+}
