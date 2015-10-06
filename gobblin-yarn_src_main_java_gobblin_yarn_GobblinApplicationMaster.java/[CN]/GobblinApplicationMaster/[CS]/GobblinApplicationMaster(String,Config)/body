@@ -1,6 +1,4 @@
 {
-  this.eventBus=new EventBus(GobblinApplicationMaster.class.getSimpleName());
-  this.eventBus.register(this);
   ContainerId containerId=ConverterUtils.toContainerId(System.getenv().get(ApplicationConstants.Environment.CONTAINER_ID.key()));
   ApplicationAttemptId applicationAttemptId=containerId.getApplicationAttemptId();
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);

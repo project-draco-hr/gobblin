@@ -1,5 +1,6 @@
 {
   LOGGER.info("Starting the YarnService");
+  this.eventBus.register(this);
   this.amrmClientAsync.start();
   this.nmClientAsync.start();
   RegisterApplicationMasterResponse response=this.amrmClientAsync.registerApplicationMaster(YarnHelixUtils.getHostname(),-1,"");

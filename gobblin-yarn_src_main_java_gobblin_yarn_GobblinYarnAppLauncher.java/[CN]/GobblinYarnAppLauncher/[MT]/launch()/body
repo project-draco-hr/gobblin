@@ -1,4 +1,5 @@
 {
+  this.eventBus.register(this);
   createGobblinYarnHelixCluster();
   try {
     this.helixManager.connect();

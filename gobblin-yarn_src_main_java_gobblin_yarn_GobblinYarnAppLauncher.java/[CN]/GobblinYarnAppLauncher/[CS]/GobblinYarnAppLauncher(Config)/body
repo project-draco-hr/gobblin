@@ -16,7 +16,6 @@
     services.add(new YarnAppSecurityManager(config,this.helixManager,this.fs));
   }
   this.serviceManager=new ServiceManager(services);
-  this.eventBus.register(this);
   this.applicationStatusMonitor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinYarnAppStatusMonitor")));
   this.appReportIntervalMinutes=config.getLong(GobblinYarnConfigurationKeys.APP_REPORT_INTERVAL_MINUTES_KEY);
   this.appMasterJvmArgs=Strings.nullToEmpty(config.getString(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY));
