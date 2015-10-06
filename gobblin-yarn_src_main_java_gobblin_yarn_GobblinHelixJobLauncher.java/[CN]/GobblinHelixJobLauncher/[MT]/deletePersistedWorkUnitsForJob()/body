@@ -1,0 +1,7 @@
+{
+  Path workUnitDir=new Path(this.inputWorkUnitDir,this.jobContext.getJobId());
+  if (this.fs.exists(workUnitDir)) {
+    LOGGER.info("Deleting persisted work units under " + workUnitDir);
+    this.fs.delete(workUnitDir,true);
+  }
+}

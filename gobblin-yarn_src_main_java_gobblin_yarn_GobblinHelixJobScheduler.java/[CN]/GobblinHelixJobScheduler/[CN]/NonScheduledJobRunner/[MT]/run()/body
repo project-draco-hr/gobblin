@@ -1,0 +1,8 @@
+{
+  try {
+    GobblinHelixJobScheduler.this.runJob(this.jobConfig,this.jobListener);
+  }
+ catch (  JobException je) {
+    LOGGER.error("Failed to run job " + this.jobConfig.getProperty(ConfigurationKeys.JOB_NAME_KEY),je);
+  }
+}

@@ -1,0 +1,19 @@
+{
+  LOGGER.info(String.format("Scheduling the token renew task with an interval of %d minute(s)",this.tokenRenewIntervalInMinutes));
+  this.scheduledTokenRenewTask=Optional.<ScheduledFuture<?>>of(this.tokenRenewExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        renewDelegationToken();
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to renew delegation token",ioe);
+        throw Throwables.propagate(ioe);
+      }
+catch (      InterruptedException ie) {
+        LOGGER.error("Token renew task has been interrupted");
+        Thread.currentThread().interrupt();
+      }
+    }
+  }
+,this.tokenRenewIntervalInMinutes,this.tokenRenewIntervalInMinutes,TimeUnit.MINUTES));
+}

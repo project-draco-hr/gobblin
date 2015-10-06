@@ -1,0 +1,17 @@
+{
+  Options options=buildOptions();
+  try {
+    CommandLine cmd=new DefaultParser().parse(options,args);
+    if (!cmd.hasOption(GobblinYarnConfigurationKeys.APPLICATION_NAME_OPTION_NAME)) {
+      printUsage(options);
+      System.exit(1);
+    }
+    Log4jConfigurationHelper.updateLog4jConfiguration(GobblinApplicationMaster.class,Log4jConfigurationHelper.LOG4J_CONFIGURATION_FILE_NAME);
+    GobblinApplicationMaster applicationMaster=new GobblinApplicationMaster(cmd.getOptionValue(GobblinYarnConfigurationKeys.APPLICATION_NAME_OPTION_NAME),ConfigFactory.load());
+    applicationMaster.start();
+  }
+ catch (  ParseException pe) {
+    printUsage(options);
+    System.exit(1);
+  }
+}

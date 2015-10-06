@@ -1,0 +1,3 @@
+HelixManager helixManager
+Map<String,TaskFactory> taskFactoryRegistry
+TaskExecutor taskExecutor

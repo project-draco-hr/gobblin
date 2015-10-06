@@ -1,0 +1,11 @@
+{
+  try {
+    submitJobToHelix(createJob(workUnits));
+    waitForJobCompletion();
+    this.jobContext.getJobState().setState(JobState.RunningState.SUCCESSFUL);
+    this.jobContext.getJobState().addTaskStates(collectOutputTaskStates());
+  }
+  finally {
+    deletePersistedWorkUnitsForJob();
+  }
+}

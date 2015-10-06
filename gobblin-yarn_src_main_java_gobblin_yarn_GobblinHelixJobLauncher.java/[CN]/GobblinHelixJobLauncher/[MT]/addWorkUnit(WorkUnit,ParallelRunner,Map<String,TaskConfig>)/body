@@ -1,0 +1,11 @@
+{
+  String workUnitFilePath=persistWorkUnit(new Path(this.inputWorkUnitDir,this.jobContext.getJobId()),workUnit,stateSerDeRunner);
+  Map<String,String> rawConfigMap=Maps.newHashMap();
+  rawConfigMap.put(GobblinYarnConfigurationKeys.WORK_UNIT_FILE_PATH,workUnitFilePath);
+  rawConfigMap.put(ConfigurationKeys.JOB_NAME_KEY,this.jobContext.getJobName());
+  rawConfigMap.put(ConfigurationKeys.JOB_ID_KEY,this.jobContext.getJobId());
+  rawConfigMap.put(ConfigurationKeys.TASK_ID_KEY,workUnit.getId());
+  rawConfigMap.put(GobblinYarnConfigurationKeys.TASK_SUCCESS_OPTIONAL_KEY,"true");
+  LOGGER.info("Adding WorkUnit " + workUnit.getId());
+  taskConfigMap.put(workUnit.getId(),TaskConfig.from(rawConfigMap));
+}

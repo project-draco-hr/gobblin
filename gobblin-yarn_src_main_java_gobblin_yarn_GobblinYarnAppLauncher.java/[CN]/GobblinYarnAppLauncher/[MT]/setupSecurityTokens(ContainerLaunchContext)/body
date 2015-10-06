@@ -1,0 +1,26 @@
+{
+  Credentials credentials=UserGroupInformation.getCurrentUser().getCredentials();
+  String tokenRenewer=this.yarnConfiguration.get(YarnConfiguration.RM_PRINCIPAL);
+  if (tokenRenewer == null || tokenRenewer.length() == 0) {
+    throw new IOException("Failed to get master Kerberos principal for the RM to use as renewer");
+  }
+  Token<?> tokens[]=this.fs.addDelegationTokens(tokenRenewer,credentials);
+  if (tokens != null) {
+    for (    Token<?> token : tokens) {
+      LOGGER.info("Got delegation token for " + this.fs.getUri() + "; "+ token);
+    }
+  }
+  Closer closer=Closer.create();
+  try {
+    DataOutputBuffer dataOutputBuffer=closer.register(new DataOutputBuffer());
+    credentials.writeTokenStorageToStream(dataOutputBuffer);
+    ByteBuffer fsTokens=ByteBuffer.wrap(dataOutputBuffer.getData(),0,dataOutputBuffer.getLength());
+    containerLaunchContext.setTokens(fsTokens);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

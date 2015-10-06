@@ -1,0 +1,35 @@
+{
+  LOGGER.info(String.format("Running WorkUnit %s of job %s",taskId,jobId));
+  try {
+    gobblin.runtime.Task task=buildTask();
+    this.taskStateTracker.registerNewTask(task);
+    LOGGER.info(String.format("Submitting WorkUnit %s to run",this.taskId));
+    this.futureOptional=Optional.<Future<?>>of(this.taskExecutor.submit(task));
+    this.futureOptional.get().get();
+    persistTaskState(task.getTaskState());
+    WorkUnitState.WorkingState workingState=task.getTaskState().getWorkingState();
+    LOGGER.info(String.format("WorkUnit %s completed with state %s",this.taskId,workingState));
+switch (workingState) {
+case SUCCESSFUL:
+      return new TaskResult(TaskResult.Status.COMPLETED,"task id: " + this.taskId);
+case FAILED:
+    return new TaskResult(TaskResult.Status.ERROR,"task id: " + this.taskId);
+case CANCELLED:
+  return new TaskResult(TaskResult.Status.CANCELED,"task id: " + this.taskId);
+default :
+throw new IllegalStateException("Unexpected result WorkUnit state: " + workingState);
+}
+}
+ catch (IOException ioe) {
+LOGGER.error("Failed to deserialize WorkUnit " + this.taskId,ioe);
+throw Throwables.propagate(ioe);
+}
+catch (ExecutionException ee) {
+LOGGER.error("Failed to run WorkUnit " + this.taskId,ee);
+throw Throwables.propagate(ee);
+}
+catch (InterruptedException ie) {
+LOGGER.error("Failed to run WorkUnit " + this.taskId,ie);
+throw Throwables.propagate(ie);
+}
+}
