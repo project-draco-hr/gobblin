@@ -1,5 +1,0 @@
-{
-  List<Pattern> blacklist=getBlacklist(state);
-  List<Pattern> whitelist=getWhitelist(state);
-  return kafkaWrapper.getFilteredTopics(blacklist,whitelist);
-}

@@ -1,0 +1,16 @@
+{
+  for (  Map.Entry<KafkaPartition,Long> entry : this.previousOffsets.entrySet()) {
+    KafkaPartition partition=entry.getKey();
+    if (!this.partitionsToBeProcessed.contains(partition)) {
+      long previousOffset=entry.getValue();
+      WorkUnit emptyWorkUnit=createEmptyWorkUnit(partition,previousOffset,Optional.fromNullable(topicSpecificStateMap.get(partition.getTopicName())));
+      String topicName=partition.getTopicName();
+      if (workUnits.containsKey(topicName)) {
+        workUnits.get(topicName).add(emptyWorkUnit);
+      }
+ else {
+        workUnits.put(topicName,Lists.newArrayList(emptyWorkUnit));
+      }
+    }
+  }
+}

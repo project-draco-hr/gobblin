@@ -5,7 +5,9 @@
     MultiLongWatermark watermark=getWatermark(workUnitState);
     Preconditions.checkArgument(partitions.size() == watermark.size(),String.format("Num of partitions doesn't match number of watermarks: partitions=%s, watermarks=%s",partitions,watermark));
     for (int i=0; i < partitions.size(); i++) {
-      if (watermark.get(i) != ConfigurationKeys.DEFAULT_WATERMARK_VALUE)       this.previousOffsets.put(partitions.get(i),watermark.get(i));
+      if (watermark.get(i) != ConfigurationKeys.DEFAULT_WATERMARK_VALUE) {
+        this.previousOffsets.put(partitions.get(i),watermark.get(i));
+      }
     }
   }
 }
