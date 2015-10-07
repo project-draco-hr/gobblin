@@ -15,5 +15,4 @@
   this.requestedContainerCores=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_CORES_KEY);
   this.containerJvmArgs=containerJvmArgs;
   this.tokens=getSecurityTokens();
-  this.eventBus.register(this);
 }

@@ -6,7 +6,6 @@
   String helixInstanceName=YarnHelixUtils.getHelixInstanceName(YarnHelixUtils.getHostname(),this.containerId);
   this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.PARTICIPANT,zkConnectionString);
   Properties properties=YarnHelixUtils.configToProperties(config);
-  this.eventBus=new EventBus();
   TaskExecutor taskExecutor=new TaskExecutor(properties);
   TaskStateTracker taskStateTracker=new GobblinHelixTaskStateTracker(properties,this.helixManager);
   List<Service> services=Lists.newArrayList();

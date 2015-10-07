@@ -1,5 +1,5 @@
 {
-  if (this.taskState.getPropAsBoolean(ConfigurationKeys.WRITER_EAGER_INITIALIZATION_KEY,ConfigurationKeys.DEFAULT_EAGER_WRITER_INITIALIZATION)) {
+  if (this.useEagerWriterInitialization) {
     buildWriterIfNotPresent();
   }
   while (true) {

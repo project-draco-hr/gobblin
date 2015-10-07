@@ -1,6 +1,7 @@
 {
   LOGGER.info("Starting the Gobblin Yarn ApplicationMaster");
   addShutdownHook();
+  this.eventBus.register(this);
   try {
     this.helixManager.connect();
     this.helixManager.addLiveInstanceChangeListener(new GobblinLiveInstanceChangeListener());
