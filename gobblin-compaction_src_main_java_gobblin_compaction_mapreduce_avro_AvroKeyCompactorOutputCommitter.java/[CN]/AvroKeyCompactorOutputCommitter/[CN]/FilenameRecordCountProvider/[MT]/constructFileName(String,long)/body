@@ -1,0 +1,12 @@
+{
+  Preconditions.checkArgument(filenamePrefix.equals(M_OUTPUT_FILE_PREFIX) || filenamePrefix.equals(MR_OUTPUT_FILE_PREFIX),String.format("%s is not a supported prefix, which should be %s, or %s.",filenamePrefix,M_OUTPUT_FILE_PREFIX,MR_OUTPUT_FILE_PREFIX));
+  StringBuilder sb=new StringBuilder();
+  sb.append(filenamePrefix);
+  sb.append(Long.toString(recordCount));
+  sb.append(SEPARATOR);
+  sb.append(Long.toString(System.currentTimeMillis()));
+  sb.append(SEPARATOR);
+  sb.append(Integer.toString(RANDOM.nextInt(Integer.MAX_VALUE)));
+  sb.append(SUFFIX);
+  return sb.toString();
+}

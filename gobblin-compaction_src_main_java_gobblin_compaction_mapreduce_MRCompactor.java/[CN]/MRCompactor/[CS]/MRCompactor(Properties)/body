@@ -6,6 +6,7 @@
   this.inputSubDir=getInputSubDir();
   this.destDir=getDestDir();
   this.destSubDir=getDestSubDir();
+  this.destLateSubDir=getDestLateSubDir();
   this.tmpDir=getTmpDir();
   this.fs=getFileSystem();
   this.datasets=Sets.newHashSet();

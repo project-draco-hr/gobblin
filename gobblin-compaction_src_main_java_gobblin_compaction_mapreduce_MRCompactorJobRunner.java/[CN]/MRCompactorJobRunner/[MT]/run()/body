@@ -3,22 +3,26 @@
   DateTime jobStartTime=new DateTime(DateTimeZone.forID(this.jobProps.getProp(MRCompactor.COMPACTION_TIMEZONE,MRCompactor.DEFAULT_COMPACTION_TIMEZONE)));
   try {
     if (this.jobProps.getPropAsBoolean(MRCompactor.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,false)) {
-      List<Path> lateFilePaths=Lists.newArrayList();
+      List<Path> newLateFilePaths=Lists.newArrayList();
       for (      String filePathString : this.jobProps.getPropAsList(MRCompactor.COMPACTION_JOB_LATE_DATA_FILES)) {
         if (FilenameUtils.isExtension(filePathString,getApplicableFileExtensions())) {
-          lateFilePaths.add(new Path(filePathString));
+          newLateFilePaths.add(new Path(filePathString));
         }
       }
       Path lateDataOutputPath=this.outputPath;
+      Path lateDataDir=new Path(this.jobProps.getProp(MRCompactor.COMPACTION_JOB_DEST_LATE_DIR));
       if (this.deduplicate) {
-        lateDataOutputPath=new Path(this.jobProps.getProp(MRCompactor.COMPACTION_JOB_DEST_LATE_DIR));
+        lateDataOutputPath=lateDataDir;
         LOG.info(String.format("Will copy to late path %s since deduplication has been done. ",lateDataOutputPath));
         if (!fs.exists(lateDataOutputPath)) {
-          fs.mkdirs(lateDataOutputPath);
+          if (!fs.mkdirs(lateDataOutputPath)) {
+            throw new RuntimeException(String.format("Failed to create late data output directory: %s.",lateDataOutputPath.toString()));
+          }
         }
-        this.submitLateEvent(lateFilePaths,lateDataOutputPath);
       }
-      this.copyDataFiles(lateDataOutputPath,lateFilePaths,conf);
+      this.submitLateRecordCountsEvent(newLateFilePaths,lateDataDir);
+      this.copyDataFiles(lateDataOutputPath,newLateFilePaths,conf);
+      this.status=Status.COMMITTED;
     }
  else {
       if (this.fs.exists(this.outputPath) && !canOverwriteOutputDir()) {

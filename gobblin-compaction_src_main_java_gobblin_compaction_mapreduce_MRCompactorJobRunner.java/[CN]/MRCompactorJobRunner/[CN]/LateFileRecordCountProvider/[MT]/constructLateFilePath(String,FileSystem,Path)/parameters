@@ -1,0 +1,3 @@
+String originalFilename
+FileSystem fs
+Path outputDir

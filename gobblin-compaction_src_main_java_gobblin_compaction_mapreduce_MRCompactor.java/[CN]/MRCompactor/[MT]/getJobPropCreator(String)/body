@@ -2,7 +2,7 @@
   String builderClassName=this.state.getProp(COMPACTION_JOBPROPS_CREATOR_CLASS,DEFAULT_COMPACTION_JOBPROPS_CREATOR_CLASS) + "$Builder";
   boolean deduplicate=this.state.getPropAsBoolean(COMPACTION_DEDUPLICATE,DEFAULT_COMPACTION_DEDUPLICATE);
   try {
-    return ((MRCompactorJobPropCreator.Builder<?>)Class.forName(builderClassName).newInstance()).withTopic(topic).withTopicInputDir(new Path(this.inputDir,new Path(topic,this.inputSubDir))).withTopicOutputDir(new Path(this.destDir,new Path(topic,this.destSubDir))).withTopicOutputBaseDir(new Path(this.destDir,topic)).withTopicTmpDir(new Path(this.tmpDir,new Path(topic,this.destSubDir))).withFileSystem(this.fs).withDeduplicate(deduplicate).withState(this.state).build();
+    return ((MRCompactorJobPropCreator.Builder<?>)Class.forName(builderClassName).newInstance()).withTopic(topic).withTopicInputDir(new Path(this.inputDir,new Path(topic,this.inputSubDir))).withTopicOutputDir(new Path(this.destDir,new Path(topic,this.destSubDir))).withTopicOutputLateDir(new Path(this.destDir,new Path(topic,this.destLateSubDir))).withTopicTmpDir(new Path(this.tmpDir,new Path(topic,this.destSubDir))).withFileSystem(this.fs).withDeduplicate(deduplicate).withState(this.state).build();
   }
  catch (  Exception e) {
     throw new RuntimeException(e);

@@ -10,4 +10,10 @@
   this.deduplicate=this.jobProps.getPropAsBoolean(MRCompactor.COMPACTION_DEDUPLICATE,MRCompactor.DEFAULT_COMPACTION_DEDUPLICATE);
   this.priority=priority;
   this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.jobProps.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  try {
+    this.recordCountProvider=new LateFileRecordCountProvider((RecordCountProvider)Class.forName(this.jobProps.getProp(MRCompactor.COMPACTION_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_RECORD_COUNT_PROVIDER)).newInstance());
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to instantiate record count provider: " + e,e);
+  }
 }

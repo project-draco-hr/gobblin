@@ -2,9 +2,8 @@
   for (  Path filePath : inputFilePaths) {
     String fileName=filePath.getName();
     Path outPath;
-    int fileSuffix=0;
     do {
-      outPath=new Path(outputDirectory,String.format("%s.%d.%s",FilenameUtils.getBaseName(fileName),fileSuffix++,FilenameUtils.getExtension(fileName)));
+      outPath=this.recordCountProvider.constructLateFilePath(fileName,this.fs,outputDirectory);
     }
  while (this.fs.exists(outPath));
     if (FileUtil.copy(this.fs,filePath,this.fs,outPath,false,conf)) {

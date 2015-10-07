@@ -26,7 +26,7 @@
           LOG.info(String.format("Folder %s already compacted. Skipping",jobOutputDir));
         }
  else {
-          Path jobOutputLateDir=new Path(this.topicOutputBaseDir,new Path(this.state.getProp(MRCompactor.COMPACTION_DEST_LATE_SUBDIR,MRCompactor.DEFAULT_COMPACTION_DEST_LATE_SUBDIR),folderTime.toString(this.timeFormatter)));
+          Path jobOutputLateDir=new Path(this.topicOutputLateDir,folderTime.toString(this.timeFormatter));
           allJobProps.add(createJobPropsForLateData(status.getPath(),jobOutputDir,jobOutputLateDir,jobTmpDir,newDataFiles));
         }
       }
