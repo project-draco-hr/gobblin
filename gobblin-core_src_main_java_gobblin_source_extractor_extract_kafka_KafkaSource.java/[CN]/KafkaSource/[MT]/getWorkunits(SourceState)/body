@@ -1,22 +1,12 @@
 {
   Map<String,List<WorkUnit>> workUnits=Maps.newHashMap();
-  Closer closer=Closer.create();
-  try {
-    KafkaWrapper kafkaWrapper=closer.register(KafkaWrapper.create(state));
-    List<KafkaTopic> topics=getFilteredTopics(kafkaWrapper,state);
-    for (    KafkaTopic topic : topics) {
-      workUnits.put(topic.getName(),getWorkUnitsForTopic(kafkaWrapper,topic,state));
-    }
-    createEmptyWorkUnitsForSkippedPartitions(workUnits,state);
-    int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
-    return KafkaWorkUnitPacker.getInstance(this,state).pack(workUnits,numOfMultiWorkunits);
+  this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
+  List<KafkaTopic> topics=getFilteredTopics(state);
+  Map<KafkaTopic,State> topicSpecificStateMap=getTopicSpecificState(topics,state);
+  for (  KafkaTopic topic : topics) {
+    workUnits.put(topic.getName(),getWorkUnitsForTopic(topic,state,Optional.fromNullable(topicSpecificStateMap.get(topic))));
   }
-  finally {
-    try {
-      closer.close();
-    }
- catch (    IOException e) {
-      LOG.error("Failed to close kafkaWrapper",e);
-    }
-  }
+  createEmptyWorkUnitsForSkippedPartitions(workUnits,topicSpecificStateMap);
+  int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
+  return KafkaWorkUnitPacker.getInstance(this,state).pack(workUnits,numOfMultiWorkunits);
 }

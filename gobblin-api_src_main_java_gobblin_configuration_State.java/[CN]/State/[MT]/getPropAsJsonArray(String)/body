@@ -1,0 +1,5 @@
+{
+  JsonElement jsonElement=this.jsonParser.parse(getProp(key));
+  Preconditions.checkArgument(jsonElement.isJsonArray(),"Value for key " + key + " is malformed, it must be a JsonArray: "+ jsonElement);
+  return jsonElement.getAsJsonArray();
+}
