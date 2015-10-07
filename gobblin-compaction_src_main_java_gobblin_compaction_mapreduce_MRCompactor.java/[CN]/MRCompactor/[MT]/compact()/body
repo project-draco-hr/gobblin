@@ -1,26 +1,22 @@
 {
   try {
     copyDependencyJarsToHdfs();
-    Set<String> topics=findAllTopics();
+    List<String> topics=findAllTopics();
     processTopics(topics);
+    throwExceptionsIfAnyDatasetCompactionFailed();
   }
-  finally {
-    this.executorService.shutdown();
+ catch (  Throwable t) {
+    LOG.error("Caught throwable during compaction",t);
+    throw Throwables.propagate(t);
+  }
+ finally {
     try {
-      executorService.awaitTermination(getMRJobTimeoutValue(),TimeUnit.MINUTES);
+      shutdownExecutors();
+      this.closer.close();
+    }
+  finally {
       deleteDependencyJars();
-      for (      Future<?> future : this.futures) {
-        future.get();
-      }
       gobblinMetrics.stopMetricReporting();
-    }
- catch (    InterruptedException e) {
-      LOG.warn("Interrupted while waiting for Hadoop jobs to complete",e);
-      throw new RuntimeException(e);
-    }
-catch (    ExecutionException e) {
-      LOG.warn("Got an Exception while processing an input folder",e);
-      throw new RuntimeException(e);
     }
   }
 }

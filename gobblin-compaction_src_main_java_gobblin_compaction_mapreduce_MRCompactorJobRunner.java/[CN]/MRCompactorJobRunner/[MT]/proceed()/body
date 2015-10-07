@@ -1,0 +1,3 @@
+{
+  this.policy=Policy.DO_PUBLISH_DATA;
+}

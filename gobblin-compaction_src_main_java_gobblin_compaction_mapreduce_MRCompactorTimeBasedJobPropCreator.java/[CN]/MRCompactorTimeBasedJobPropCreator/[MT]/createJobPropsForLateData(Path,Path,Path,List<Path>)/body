@@ -1,13 +1,13 @@
 {
-  if (this.state.getPropAsBoolean(ConfigurationKeys.COMPACTION_RECOMPACT_FOR_LATE_DATA,ConfigurationKeys.DEFAULT_COMPACTION_RECOMPACT_FOR_LATE_DATA)) {
+  if (this.state.getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FOR_LATE_DATA,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FOR_LATE_DATA)) {
     LOG.info(String.format("Will recompact for %s.",jobOutputDir));
     return createJobProps(jobInputDir,jobOutputDir,jobTmpDir,this.deduplicate);
   }
  else {
     LOG.info(String.format("Will copy %d new data files to %s",newDataFiles.size(),jobOutputDir));
     State jobProps=createJobProps(jobInputDir,jobOutputDir,jobTmpDir,this.deduplicate);
-    jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,true);
-    jobProps.setProp(ConfigurationKeys.COMPACTION_JOB_LATE_DATA_FILES,Joiner.on(",").join(newDataFiles));
+    jobProps.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,true);
+    jobProps.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_FILES,Joiner.on(",").join(newDataFiles));
     return jobProps;
   }
 }

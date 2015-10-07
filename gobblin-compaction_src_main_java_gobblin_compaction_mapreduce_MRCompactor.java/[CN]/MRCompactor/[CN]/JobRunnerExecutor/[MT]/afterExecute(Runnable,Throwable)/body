@@ -1,0 +1,21 @@
+{
+  Preconditions.checkArgument(r instanceof MRCompactorJobRunner,String.format("Runnable expected to be instance of %s, actual %s",MRCompactorJobRunner.class.getSimpleName(),r.getClass().getSimpleName()));
+  MRCompactorJobRunner jobRunner=(MRCompactorJobRunner)r;
+  MRCompactor.this.jobRunnables.remove(jobRunner.getDataset());
+  if (t == null) {
+    if (jobRunner.status() == COMMITTED) {
+      LOG.info(String.format("Compacted data for %s successfully published",jobRunner.getDataset()));
+      jobRunner.getDataset().setState(COMPACTION_COMPLETE);
+    }
+ else     if (jobRunner.getDataset().state() == GIVEN_UP && !MRCompactor.this.shouldPublishDataIfCannotVerifyCompl) {
+      LOG.info(String.format("Dataset %s will not be compacted, since data completeness cannot be verified",jobRunner.getDataset()));
+      jobRunner.getDataset().setState(COMPACTION_COMPLETE);
+    }
+ else {
+      jobRunner.getDataset().reducePriority();
+    }
+  }
+ else {
+    afterExecuteWithThrowable(jobRunner,t);
+  }
+}

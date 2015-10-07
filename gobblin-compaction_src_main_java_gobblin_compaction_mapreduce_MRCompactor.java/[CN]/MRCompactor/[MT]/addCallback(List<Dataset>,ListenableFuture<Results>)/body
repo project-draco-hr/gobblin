@@ -1,0 +1,54 @@
+{
+  Futures.addCallback(future,new FutureCallback<Results>(){
+    /** 
+ * On success, resubmit verification for the {@link Dataset}s that should be resubmitted
+ * (i.e., verification didn't pass and it didn't timeout).
+ */
+    @Override public void onSuccess(    Results results){
+      List<Dataset> datasetsToBeVerifiedAgain=Lists.newArrayList();
+      for (      Results.Result result : results) {
+        Optional<MRCompactorJobRunner> jobRunner=Optional.fromNullable(MRCompactor.this.jobRunnables.get(result.dataset()));
+switch (result.status()) {
+case PASSED:
+          LOG.info("Completeness verification for dataset " + result.dataset() + " passed.");
+        submitSlaEvent(result.dataset(),"CompletenessVerified");
+      result.dataset().setState(VERIFIED);
+    if (jobRunner.isPresent()) {
+      jobRunner.get().proceed();
+    }
+  break;
+case FAILED:
+if (result.dataset().state() != GIVEN_UP) {
+  LOG.info("Completeness verification for dataset " + result.dataset() + " failed.");
+  datasetsToBeVerifiedAgain.add(result.dataset());
+}
+ else {
+  LOG.info("Completeness verification for dataset " + result.dataset() + " has given up.");
+}
+break;
+}
+}
+if (!datasetsToBeVerifiedAgain.isEmpty()) {
+ListenableFuture<Results> future2=MRCompactor.this.verifier.verify(datasetsToBeVerifiedAgain);
+addCallback(datasetsToBeVerifiedAgain,future2);
+}
+}
+/** 
+ * On failure, resubmit verification for all {@link Dataset}s, unless timed out.
+ */
+@Override public void onFailure(Throwable t){
+LOG.error("Failed to verify completeness for the following datasets: " + datasetsToBeVerified,t);
+if (shouldGiveUpVerification()) {
+for (Dataset dataset : datasetsToBeVerified) {
+submitSlaEvent(dataset,"CompletenessCannotBeVerified");
+dataset.setState(GIVEN_UP);
+}
+}
+ else {
+ListenableFuture<Results> future2=MRCompactor.this.verifier.verify(datasetsToBeVerified);
+addCallback(datasetsToBeVerified,future2);
+}
+}
+}
+);
+}

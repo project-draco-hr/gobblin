@@ -1,0 +1,14 @@
+{
+  Set<Dataset> datasetsWithThrowables=getDatasetsWithThrowables();
+  int numDatasetsWithThrowables=0;
+  for (  Dataset dataset : datasetsWithThrowables) {
+    numDatasetsWithThrowables++;
+    for (    Throwable t : dataset.throwables()) {
+      LOG.error("Error processing dataset " + dataset,t);
+      submitSlaEvent(dataset,"CompactionFailed");
+    }
+  }
+  if (numDatasetsWithThrowables > 0) {
+    throw new RuntimeException(String.format("Failed to process %d datasets.",numDatasetsWithThrowables));
+  }
+}

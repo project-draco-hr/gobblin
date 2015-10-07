@@ -1,0 +1,4 @@
+{
+  this.dataset=dataset;
+  this.status=status;
+}

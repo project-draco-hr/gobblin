@@ -1,3 +1,0 @@
-{
-  this.futures.add(this.executorService.submit(getMRCompactorJobRunner(jobProps)));
-}

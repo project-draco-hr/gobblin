@@ -1,0 +1,6 @@
+{
+  this.props=props;
+  this.threadPoolSize=getDataCompletenessVerificationThreadPoolSize();
+  this.exeSvc=getExecutorService();
+  this.runnerClass=getRunnerClass();
+}

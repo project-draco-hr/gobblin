@@ -8,7 +8,16 @@
   this.destSubDir=getDestSubDir();
   this.tmpDir=getTmpDir();
   this.fs=getFileSystem();
-  this.executorService=createExecutorService();
-  this.futures=Lists.newArrayList();
+  this.datasets=Sets.newHashSet();
+  this.jobExecutor=createJobExecutor();
+  this.jobRunnables=Maps.newConcurrentMap();
+  this.closer=Closer.create();
+  this.verifier=this.closer.register(new DataCompletenessVerifier(this.state));
+  this.stopwatch=Stopwatch.createStarted();
   this.gobblinMetrics=initializeMetrics();
+  this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.state.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  this.dataVerifTimeoutMinutes=getDataVerifTimeoutMinutes();
+  this.compactionTimeoutMinutes=getCompactionTimeoutMinutes();
+  this.shouldVerifDataCompl=shouldVerifyDataCompleteness();
+  this.shouldPublishDataIfCannotVerifyCompl=shouldPublishDataIfCannotVerifyCompl();
 }

@@ -1,0 +1,5 @@
+{
+  int threadPoolSize=getThreadPoolSize();
+  BlockingQueue<Runnable> queue=new PriorityBlockingQueue<Runnable>();
+  return new JobRunnerExecutor(threadPoolSize,threadPoolSize,Long.MAX_VALUE,TimeUnit.NANOSECONDS,queue);
+}

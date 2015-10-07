@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(this.props.contains(COMPACTION_COMPLETENESS_VERIFICATION_CLASS),"Missing required property " + COMPACTION_COMPLETENESS_VERIFICATION_CLASS);
+  try {
+    return (Class<? extends AbstractRunner>)Class.forName(this.props.getProp(COMPACTION_COMPLETENESS_VERIFICATION_CLASS));
+  }
+ catch (  Throwable t) {
+    LOG.error("Failed to get data completeness verification class",t);
+    throw Throwables.propagate(t);
+  }
+}

@@ -1,8 +1,15 @@
 {
   job.submit();
-  MRCompactor.addRunningHadoopJob(job);
+  MRCompactor.addRunningHadoopJob(this.dataset,job);
   LOG.info(String.format("MR job submitted for topic %s, input %s, url: %s",this.topic,this.inputPath,job.getTrackingURL()));
-  job.waitForCompletion(false);
+  while (!job.isComplete()) {
+    if (this.policy == Policy.ABORT_ASAP) {
+      LOG.info(String.format("MR job for topic %s, input %s killed due to input data incompleteness." + " Will try again later",this.topic,this.inputPath));
+      job.killJob();
+      return;
+    }
+    Thread.sleep(MR_JOB_CHECK_COMPLETE_INTERVAL_MS);
+  }
   if (!job.isSuccessful()) {
     throw new RuntimeException(String.format("MR job failed for topic %s, input %s, url: %s",this.topic,this.inputPath,job.getTrackingURL()));
   }

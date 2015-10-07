@@ -1,0 +1,9 @@
+{
+  try {
+    return this.runnerClass.getDeclaredConstructor(Iterable.class,State.class).newInstance(datasets,this.props);
+  }
+ catch (  Throwable t) {
+    LOG.error("Failed to instantiate data completeness verification class",t);
+    throw Throwables.propagate(t);
+  }
+}
