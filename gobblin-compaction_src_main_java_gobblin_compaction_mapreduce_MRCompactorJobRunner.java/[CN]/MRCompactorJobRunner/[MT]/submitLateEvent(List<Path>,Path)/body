@@ -1,0 +1,17 @@
+{
+  if (this.jobProps.contains(ConfigurationKeys.COMPACTION_HDFS_EVENT_COUNT_PROVIDER)) {
+    HdfsEventCountProvider eventCountProvider;
+    try {
+      eventCountProvider=(HdfsEventCountProvider)Class.forName(this.jobProps.getProp(ConfigurationKeys.COMPACTION_HDFS_EVENT_COUNT_PROVIDER)).newInstance();
+      Map<String,String> eventMetadataMap=Maps.newHashMap();
+      long newLateEventCount=eventCountProvider.getEventCount(fs,lateFilePaths);
+      eventMetadataMap.put("newLateEvent",Long.toString(newLateEventCount));
+      eventMetadataMap.put("cumulativeLateEvent",Long.toString(newLateEventCount + eventCountProvider.getEventCount(fs,this.getCurLateEventPath(lateDataPath))));
+      LOG.info("late event submitted: " + eventMetadataMap);
+      this.eventSubmitter.submit("LateEvent",eventMetadataMap);
+    }
+ catch (    Exception e) {
+      LOG.error("Failed to submit late event count:" + e,e);
+    }
+  }
+}

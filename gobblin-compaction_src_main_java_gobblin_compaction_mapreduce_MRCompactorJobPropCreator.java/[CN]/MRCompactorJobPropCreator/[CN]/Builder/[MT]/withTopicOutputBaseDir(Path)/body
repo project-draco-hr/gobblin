@@ -1,0 +1,4 @@
+{
+  this.topicOutputBaseDir=topicOutputBaseDir;
+  return (T)this;
+}

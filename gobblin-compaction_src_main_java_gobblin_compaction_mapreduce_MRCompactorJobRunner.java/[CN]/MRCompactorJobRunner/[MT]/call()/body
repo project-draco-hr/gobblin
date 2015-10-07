@@ -8,7 +8,15 @@
         lateFilePaths.add(new Path(filePathString));
       }
     }
-    Path lateDataOutputPath=this.deduplicate ? new Path(this.outputPath,ConfigurationKeys.COMPACTION_LATE_FILES_DIRECTORY) : this.outputPath;
+    Path lateDataOutputPath=this.outputPath;
+    if (this.deduplicate) {
+      lateDataOutputPath=new Path(this.jobProps.getProp(ConfigurationKeys.COMPACTION_JOB_DEST_LATE_DIR));
+      LOG.info(String.format("Will copy to late path %s since deduplication has been done. ",lateDataOutputPath));
+      if (!fs.exists(lateDataOutputPath)) {
+        fs.mkdirs(lateDataOutputPath);
+      }
+      this.submitLateEvent(lateFilePaths,lateDataOutputPath);
+    }
     this.copyDataFiles(lateDataOutputPath,lateFilePaths,conf);
   }
  else {

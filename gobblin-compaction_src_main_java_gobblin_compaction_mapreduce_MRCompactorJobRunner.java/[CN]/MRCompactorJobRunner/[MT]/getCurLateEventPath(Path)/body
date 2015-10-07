@@ -1,0 +1,17 @@
+{
+  List<Path> paths=Lists.newArrayList();
+  for (  FileStatus fileStatus : FileListUtils.listFilesRecursively(fs,lateDataPath,new PathFilter(){
+    @Override public boolean accept(    Path path){
+      for (      String validExtention : getApplicableFileExtensions()) {
+        if (path.getName().endsWith(validExtention)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
+)) {
+    paths.add(fileStatus.getPath());
+  }
+  return paths;
+}

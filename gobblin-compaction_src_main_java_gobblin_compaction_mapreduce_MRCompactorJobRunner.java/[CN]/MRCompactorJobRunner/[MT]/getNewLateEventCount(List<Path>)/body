@@ -1,0 +1,8 @@
+{
+  long fileSize=0;
+  for (  Path path : lateFilePaths) {
+    String[] parts=path.getName().split("\\.");
+    fileSize+=Long.parseLong(parts[parts.length - 2]);
+  }
+  return fileSize;
+}
