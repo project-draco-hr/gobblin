@@ -1,0 +1,11 @@
+{
+  String messageSubType=this._message.getMsgSubType();
+  if (messageSubType.equalsIgnoreCase(HelixMessageSubTypes.TOKEN_FILE_UPDATED.toString())) {
+    LOGGER.info("Handling message " + HelixMessageSubTypes.TOKEN_FILE_UPDATED.toString());
+    eventBus.post(new DelegationTokenUpdatedEvent());
+    HelixTaskResult helixTaskResult=new HelixTaskResult();
+    helixTaskResult.setSuccess(true);
+    return helixTaskResult;
+  }
+  throw new IllegalArgumentException(String.format("Unknown %s message subtype: %s",Message.MessageType.USER_DEFINE_MSG.toString(),messageSubType));
+}

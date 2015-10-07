@@ -1,0 +1,7 @@
+{
+  super(properties);
+  this.properties=properties;
+  this.helixManager=helixManager;
+  this.eventBus=eventBus;
+  this.appWorkDir=appWorkDir;
+}

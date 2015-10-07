@@ -1,0 +1,11 @@
+{
+  Map<String,Object> additionalJobDataMap=Maps.newHashMap();
+  additionalJobDataMap.put(HELIX_MANAGER_KEY,this.helixManager);
+  additionalJobDataMap.put(APPLICATION_WORK_DIR_KEY,this.appWorkDir);
+  try {
+    scheduleJob(jobProps,jobListener,additionalJobDataMap,GobblinHelixJob.class);
+  }
+ catch (  Exception e) {
+    throw new JobException("Failed to schedule job " + jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY),e);
+  }
+}

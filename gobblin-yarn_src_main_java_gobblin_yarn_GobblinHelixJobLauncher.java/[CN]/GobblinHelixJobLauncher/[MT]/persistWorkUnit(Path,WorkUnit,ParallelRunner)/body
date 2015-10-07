@@ -1,0 +1,5 @@
+{
+  Path workUnitFile=new Path(workUnitFileDir,workUnit.getId() + WORK_UNIT_FILE_EXTENSION);
+  stateSerDeRunner.serializeToFile(workUnit,workUnitFile);
+  return workUnitFile.toString();
+}

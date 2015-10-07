@@ -1,0 +1,8 @@
+{
+  try {
+    readAndAddDelegationTokens(this.tokenFilePath);
+  }
+ catch (  IOException ioe) {
+    throw Throwables.propagate(ioe);
+  }
+}

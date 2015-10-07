@@ -1,5 +1,5 @@
 {
-  Path filePath=new Path(outputFolder,ConfigurationKeys.COMPACTION_COMPLETE_FILE_NAME);
+  Path filePath=new Path(outputFolder,MRCompactor.COMPACTION_COMPLETE_FILE_NAME);
   try {
     return this.fs.exists(filePath);
   }

@@ -1,0 +1,17 @@
+{
+  Criteria criteria=new Criteria();
+  criteria.setInstanceName("%");
+  criteria.setResource("%");
+  criteria.setPartition("%");
+  criteria.setPartitionState("%");
+  criteria.setRecipientInstanceType(InstanceType.PARTICIPANT);
+  criteria.setDataSource(Criteria.DataSource.LIVEINSTANCES);
+  criteria.setSessionSpecific(true);
+  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString().toLowerCase() + UUID.randomUUID().toString());
+  shutdownRequest.setMsgSubType(HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString());
+  shutdownRequest.setMsgState(Message.MessageState.NEW);
+  int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest);
+  if (messagesSent == 0) {
+    LOGGER.error(String.format("Failed to send the %s message to the participants",shutdownRequest.getMsgSubType()));
+  }
+}

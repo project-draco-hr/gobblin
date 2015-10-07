@@ -1,0 +1,9 @@
+{
+  try {
+    JobLauncher jobLauncher=new GobblinHelixJobLauncher(jobProps,this.helixManager,this.appWorkDir);
+    runJob(jobProps,jobListener,jobLauncher);
+  }
+ catch (  Exception e) {
+    throw new JobException("Failed to run job " + jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY),e);
+  }
+}

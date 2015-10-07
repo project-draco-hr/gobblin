@@ -1,0 +1,28 @@
+{
+  this.eventBus.register(this);
+  createGobblinYarnHelixCluster();
+  try {
+    this.helixManager.connect();
+  }
+ catch (  Exception e) {
+    LOGGER.error("HelixManager failed to connect",e);
+    throw Throwables.propagate(e);
+  }
+  this.serviceManager.startAsync();
+  this.yarnClient.start();
+  this.applicationId=Optional.of(setupAndSubmitApplication());
+  this.applicationStatusMonitor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        eventBus.post(new ApplicationReportArrivalEvent(yarnClient.getApplicationReport(applicationId.get())));
+      }
+ catch (      YarnException ye) {
+        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),ye);
+      }
+catch (      IOException ioe) {
+        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),ioe);
+      }
+    }
+  }
+,0,this.appReportIntervalMinutes,TimeUnit.MINUTES);
+}

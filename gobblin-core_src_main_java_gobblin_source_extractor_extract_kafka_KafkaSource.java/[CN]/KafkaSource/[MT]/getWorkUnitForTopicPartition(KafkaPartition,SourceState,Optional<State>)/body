@@ -1,0 +1,71 @@
+{
+  Offsets offsets=new Offsets();
+  boolean failedToGetKafkaOffsets=false;
+  try {
+    offsets.setEarliestOffset(this.kafkaWrapper.getEarliestOffset(partition));
+    offsets.setLatestOffset(this.kafkaWrapper.getLatestOffset(partition));
+  }
+ catch (  KafkaOffsetRetrievalFailureException e) {
+    failedToGetKafkaOffsets=true;
+  }
+  long previousOffset=0;
+  boolean previousOffsetNotFound=false;
+  try {
+    previousOffset=getPreviousOffsetForPartition(partition,state);
+  }
+ catch (  PreviousOffsetNotFoundException e) {
+    previousOffsetNotFound=true;
+  }
+  if (failedToGetKafkaOffsets) {
+    this.failToGetOffsetCount++;
+    LOG.warn(String.format("Failed to retrieve earliest and/or latest offset for partition %s. This partition will be skipped.",partition));
+    return previousOffsetNotFound ? null : createEmptyWorkUnit(partition,previousOffset,topicSpecificState);
+  }
+  if (shouldMoveToLatestOffset(partition,state)) {
+    offsets.startAtLatestOffset();
+  }
+ else   if (previousOffsetNotFound) {
+    String offsetNotFoundMsg=String.format("Previous offset for partition %s does not exist. ",partition);
+    String offsetOption=state.getProp(BOOTSTRAP_WITH_OFFSET,DEFAULT_BOOTSTRAP_WITH_OFFSET).toLowerCase();
+    if (offsetOption.equals(LATEST_OFFSET)) {
+      LOG.warn(offsetNotFoundMsg + "This partition will start from the latest offset: " + offsets.getLatestOffset());
+      offsets.startAtLatestOffset();
+    }
+ else     if (offsetOption.equals(EARLIEST_OFFSET)) {
+      LOG.warn(offsetNotFoundMsg + "This partition will start from the earliest offset: " + offsets.getEarliestOffset());
+      offsets.startAtEarliestOffset();
+    }
+ else {
+      LOG.warn(offsetNotFoundMsg + "This partition will be skipped.");
+      return null;
+    }
+  }
+ else {
+    try {
+      offsets.startAt(previousOffset);
+    }
+ catch (    StartOffsetOutOfRangeException e) {
+      if (offsets.getStartOffset() <= offsets.getLatestOffset()) {
+        this.offsetTooEarlyCount++;
+      }
+ else {
+        this.offsetTooLateCount++;
+      }
+      String offsetOutOfRangeMsg=String.format("Start offset for partition %s is out of range. Start offset = %d, earliest offset = %d, latest offset = %d.",partition,offsets.getStartOffset(),offsets.getEarliestOffset(),offsets.getLatestOffset());
+      String offsetOption=state.getProp(RESET_ON_OFFSET_OUT_OF_RANGE,DEFAULT_RESET_ON_OFFSET_OUT_OF_RANGE).toLowerCase();
+      if (offsetOption.equals(LATEST_OFFSET) || (offsetOption.equals(NEAREST_OFFSET) && offsets.getStartOffset() >= offsets.getLatestOffset())) {
+        LOG.warn(offsetOutOfRangeMsg + "This partition will start from the latest offset: " + offsets.getLatestOffset());
+        offsets.startAtLatestOffset();
+      }
+ else       if (offsetOption.equals(EARLIEST_OFFSET) || offsetOption.equals(NEAREST_OFFSET)) {
+        LOG.warn(offsetOutOfRangeMsg + "This partition will start from the earliest offset: " + offsets.getEarliestOffset());
+        offsets.startAtEarliestOffset();
+      }
+ else {
+        LOG.warn(offsetOutOfRangeMsg + "This partition will be skipped.");
+        return createEmptyWorkUnit(partition,previousOffset,topicSpecificState);
+      }
+    }
+  }
+  return getWorkUnitForTopicPartition(partition,offsets,topicSpecificState);
+}

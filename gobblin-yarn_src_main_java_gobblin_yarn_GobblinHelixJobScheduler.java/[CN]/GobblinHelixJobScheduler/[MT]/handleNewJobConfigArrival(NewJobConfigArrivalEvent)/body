@@ -1,0 +1,18 @@
+{
+  LOGGER.info("Received new job configuration of job " + newJobArrival.getJobName());
+  try {
+    Properties jobConfig=new Properties();
+    jobConfig.putAll(this.properties);
+    jobConfig.putAll(newJobArrival.getJobConfig());
+    if (jobConfig.containsKey(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
+      LOGGER.info("Scheduling new job " + newJobArrival.getJobName());
+      scheduleJob(newJobArrival.getJobConfig(),null);
+    }
+ else {
+      this.jobExecutor.submit(new NonScheduledJobRunner(jobConfig,null));
+    }
+  }
+ catch (  JobException je) {
+    LOGGER.error("Failed to schedule job " + newJobArrival.getJobName());
+  }
+}

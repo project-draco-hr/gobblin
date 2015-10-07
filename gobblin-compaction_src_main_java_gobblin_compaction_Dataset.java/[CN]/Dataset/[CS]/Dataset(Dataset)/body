@@ -1,0 +1,7 @@
+{
+  this.path=other.path;
+  this.jobProps=other.jobProps;
+  this.throwables=other.throwables;
+  this.priority=other.priority;
+  this.state=other.state;
+}

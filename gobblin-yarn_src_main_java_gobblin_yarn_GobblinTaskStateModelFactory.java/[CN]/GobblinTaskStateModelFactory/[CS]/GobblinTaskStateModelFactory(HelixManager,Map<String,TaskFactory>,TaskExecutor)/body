@@ -1,0 +1,6 @@
+{
+  super(helixManager,taskFactoryRegistry);
+  this.taskExecutor=taskExecutor;
+  this.helixManager=helixManager;
+  this.taskFactoryRegistry=taskFactoryRegistry;
+}

@@ -1,3 +1,0 @@
-{
-  MRCompactor.RUNNING_MR_JOBS.add(job);
-}

@@ -1,0 +1,15 @@
+{
+  final GobblinYarnAppLauncher gobblinYarnAppLauncher=new GobblinYarnAppLauncher(ConfigFactory.load());
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      try {
+        gobblinYarnAppLauncher.stop();
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to shutdown the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
+      }
+    }
+  }
+);
+  gobblinYarnAppLauncher.launch();
+}

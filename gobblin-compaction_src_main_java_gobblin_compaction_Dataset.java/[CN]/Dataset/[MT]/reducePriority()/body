@@ -1,0 +1,3 @@
+{
+  return reducePriority(DEFAULT_PRIORITY_REDUCTION_FACTOR);
+}

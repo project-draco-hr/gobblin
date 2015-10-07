@@ -1,0 +1,29 @@
+{
+  LOGGER.info("Stopping the YarnService");
+  try {
+    ExecutorsUtils.shutdownExecutorService(this.containerLaunchExecutor,Optional.of(LOGGER));
+    for (    Map.Entry<Container,ParticipantId> entry : this.containerMap.values()) {
+      LOGGER.info(String.format("Stopping container %s running participant %s",entry.getKey().getId(),entry.getValue().stringify()));
+      this.nmClientAsync.stopContainerAsync(entry.getKey().getId(),entry.getKey().getNodeId());
+    }
+    if (!this.containerMap.isEmpty()) {
+synchronized (this.allContainersStopped) {
+        this.allContainersStopped.wait(5 * 60 * 1000);
+        LOGGER.info("All of the containers have been stopped");
+      }
+    }
+    this.amrmClientAsync.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED,null,null);
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to unregister the ApplicationMaster",ioe);
+  }
+catch (  YarnException ye) {
+    LOGGER.error("Failed to unregister the ApplicationMaster",ye);
+  }
+catch (  Exception e) {
+    LOGGER.error("Failed to unregister the ApplicationMaster",e);
+  }
+ finally {
+    this.closer.close();
+  }
+}

@@ -1,5 +1,5 @@
 {
-  Path compactionCompletePath=new Path(state.getProp(ConfigurationKeys.COMPACTION_JOB_DEST_DIR),ConfigurationKeys.COMPACTION_COMPLETE_FILE_NAME);
+  Path compactionCompletePath=new Path(state.getProp(MRCompactor.COMPACTION_JOB_DEST_DIR),MRCompactor.COMPACTION_COMPLETE_FILE_NAME);
   try {
     FileStatus fileStatus=fs.getFileStatus(compactionCompletePath);
     state.setProp(SlaEventKeys.PREVIOUS_PUBLISH_TS_IN_MILLI_SECS_KEY,Long.toString(fileStatus.getModificationTime()));

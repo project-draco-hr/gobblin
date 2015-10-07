@@ -1,8 +1,0 @@
-{
-  LOG.info("Creating MR jobs for topic " + topic);
-  MRCompactorJobPropCreator jobPropCreator=getJobPropCreator(topic);
-  List<State> allJobProps=jobPropCreator.createJobProps();
-  for (  State jobProps : allJobProps) {
-    processJob(jobProps);
-  }
-}

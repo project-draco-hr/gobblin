@@ -1,0 +1,10 @@
+{
+  State state=new State();
+  List<String> excludeKeysList=excludeKeys == null ? Lists.<String>newArrayList() : Arrays.asList(excludeKeys);
+  for (  Map.Entry<String,JsonElement> jsonObjectEntry : jsonObject.entrySet()) {
+    if (!excludeKeysList.contains(jsonObjectEntry.getKey())) {
+      state.setProp(jsonObjectEntry.getKey(),jsonObjectEntry.getValue().getAsString());
+    }
+  }
+  return state;
+}

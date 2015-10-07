@@ -1,0 +1,6 @@
+{
+  for (  ContainerStatus containerStatus : statuses) {
+    LOGGER.info(String.format("Container %s has completed with exit status %d",containerStatus.getContainerId(),containerStatus.getExitStatus()));
+    containerMap.remove(containerStatus.getContainerId());
+  }
+}

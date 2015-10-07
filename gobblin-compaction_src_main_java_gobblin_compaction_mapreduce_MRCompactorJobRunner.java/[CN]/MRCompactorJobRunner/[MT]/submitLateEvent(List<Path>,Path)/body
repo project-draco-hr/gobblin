@@ -1,8 +1,8 @@
 {
-  if (this.jobProps.contains(ConfigurationKeys.COMPACTION_HDFS_EVENT_COUNT_PROVIDER)) {
+  if (this.jobProps.contains(MRCompactor.COMPACTION_HDFS_EVENT_COUNT_PROVIDER)) {
     HdfsEventCountProvider eventCountProvider;
     try {
-      eventCountProvider=(HdfsEventCountProvider)Class.forName(this.jobProps.getProp(ConfigurationKeys.COMPACTION_HDFS_EVENT_COUNT_PROVIDER)).newInstance();
+      eventCountProvider=(HdfsEventCountProvider)Class.forName(this.jobProps.getProp(MRCompactor.COMPACTION_HDFS_EVENT_COUNT_PROVIDER)).newInstance();
       Map<String,String> eventMetadataMap=Maps.newHashMap();
       long newLateEventCount=eventCountProvider.getEventCount(fs,lateFilePaths);
       eventMetadataMap.put("newLateEvent",Long.toString(newLateEventCount));

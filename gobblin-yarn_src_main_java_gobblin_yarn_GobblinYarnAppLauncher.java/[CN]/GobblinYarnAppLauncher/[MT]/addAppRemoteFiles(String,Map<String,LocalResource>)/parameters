@@ -1,0 +1,2 @@
+String hdfsFileList
+Map<String,LocalResource> resourceMap

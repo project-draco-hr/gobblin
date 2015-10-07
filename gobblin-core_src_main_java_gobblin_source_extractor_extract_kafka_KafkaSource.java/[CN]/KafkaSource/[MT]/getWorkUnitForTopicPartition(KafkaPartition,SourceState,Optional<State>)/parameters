@@ -1,0 +1,3 @@
+KafkaPartition partition
+SourceState state
+Optional<State> topicSpecificState

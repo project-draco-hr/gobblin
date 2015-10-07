@@ -1,0 +1,4 @@
+FileSystem fs
+Path destFilePath
+LocalResourceType resourceType
+Map<String,LocalResource> resourceMap

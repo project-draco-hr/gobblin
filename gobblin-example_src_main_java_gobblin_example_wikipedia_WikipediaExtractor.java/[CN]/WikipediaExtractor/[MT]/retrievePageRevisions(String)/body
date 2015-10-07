@@ -27,8 +27,12 @@
       conn.disconnect();
     }
   }
+  if (Strings.isNullOrEmpty(sb.toString())) {
+    LOG.warn("Received empty response for query: " + urlStr);
+    return retrievedRevisions;
+  }
   JsonElement jsonElement=GSON.fromJson(sb.toString(),JsonElement.class);
-  if (!jsonElement.isJsonObject()) {
+  if (jsonElement == null || !jsonElement.isJsonObject()) {
     return retrievedRevisions;
   }
   JsonObject jsonObj=jsonElement.getAsJsonObject();

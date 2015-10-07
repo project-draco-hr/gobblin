@@ -1,0 +1,6 @@
+{
+  Path srcFilePath=new Path(jobConfPackagePath);
+  Path destFilePath=new Path(destDir,srcFilePath.getName());
+  this.fs.copyFromLocalFile(srcFilePath,destFilePath);
+  YarnHelixUtils.addFileAsLocalResource(this.fs,destFilePath,LocalResourceType.ARCHIVE,resourceMap);
+}

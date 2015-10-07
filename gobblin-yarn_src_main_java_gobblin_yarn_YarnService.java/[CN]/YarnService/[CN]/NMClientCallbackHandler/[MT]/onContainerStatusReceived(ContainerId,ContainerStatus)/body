@@ -1,0 +1,12 @@
+{
+  LOGGER.info(String.format("Received container status for container %s: %s",containerId,containerStatus));
+  if (containerStatus.getState() == ContainerState.COMPLETE) {
+    LOGGER.info(String.format("Container %s completed",containerId));
+    containerMap.remove(containerId);
+    if (containerMap.isEmpty()) {
+synchronized (allContainersStopped) {
+        allContainersStopped.notify();
+      }
+    }
+  }
+}

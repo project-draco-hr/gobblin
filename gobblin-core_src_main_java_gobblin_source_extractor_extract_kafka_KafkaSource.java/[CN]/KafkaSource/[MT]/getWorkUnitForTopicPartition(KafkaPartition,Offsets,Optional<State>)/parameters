@@ -1,0 +1,3 @@
+KafkaPartition partition
+Offsets offsets
+Optional<State> topicSpecificState

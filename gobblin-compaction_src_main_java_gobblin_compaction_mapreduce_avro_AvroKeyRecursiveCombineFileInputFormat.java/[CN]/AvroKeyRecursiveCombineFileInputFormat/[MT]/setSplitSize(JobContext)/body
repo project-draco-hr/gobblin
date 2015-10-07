@@ -1,4 +1,4 @@
 {
-  super.setMaxSplitSize(cx.getConfiguration().getLong(ConfigurationKeys.COMPACTION_MAPRED_MAX_SPLIT_SIZE,ConfigurationKeys.DEFAULT_COMPACTION_MAPRED_MAX_SPLIT_SIZE));
-  super.setMinSplitSizeNode(cx.getConfiguration().getLong(ConfigurationKeys.COMPACTION_MAPRED_MIN_SPLIT_SIZE,ConfigurationKeys.DEFAULT_COMPACTION_MAPRED_MIN_SPLIT_SIZE));
+  super.setMaxSplitSize(cx.getConfiguration().getLong(COMPACTION_JOB_MAPRED_MAX_SPLIT_SIZE,DEFAULT_COMPACTION_JOB_MAPRED_MAX_SPLIT_SIZE));
+  super.setMinSplitSizeNode(cx.getConfiguration().getLong(COMPACTION_JOB_MAPRED_MIN_SPLIT_SIZE,DEFAULT_COMPACTION_JOB_MAPRED_MIN_SPLIT_SIZE));
 }

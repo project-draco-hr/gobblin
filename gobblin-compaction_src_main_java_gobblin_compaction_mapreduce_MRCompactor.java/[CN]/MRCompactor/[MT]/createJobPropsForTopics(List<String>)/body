@@ -1,0 +1,15 @@
+{
+  List<Pattern> highPriorityTopicPatterns=getHighPriorityTopicPatterns();
+  List<Pattern> normalPriorityTopicPatterns=getNormalPriorityTopicPatterns();
+  for (  String topic : topics) {
+    if (DatasetFilterUtils.stringInPatterns(topic,highPriorityTopicPatterns)) {
+      createJobPropsForTopic(topic,HIGH_PRIORITY);
+    }
+ else     if (DatasetFilterUtils.stringInPatterns(topic,normalPriorityTopicPatterns)) {
+      createJobPropsForTopic(topic,NORMAL_PRIORITY);
+    }
+ else {
+      createJobPropsForTopic(topic,LOW_PRIORITY);
+    }
+  }
+}

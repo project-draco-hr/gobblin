@@ -23,7 +23,7 @@
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
         Fork fork=closer.register(new Fork(this.taskContext,this.taskState,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
-        this.taskExecutor.submit(fork);
+        this.taskExecutor.execute(fork);
         this.forks.add(Optional.of(fork));
       }
  else {

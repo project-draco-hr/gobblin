@@ -1,0 +1,3 @@
+WorkUnit workUnit
+ParallelRunner stateSerDeRunner
+Map<String,TaskConfig> taskConfigMap

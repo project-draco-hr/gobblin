@@ -1,0 +1,3 @@
+String jobConfPackagePath
+Path destDir
+Map<String,LocalResource> resourceMap

@@ -1,30 +1,3 @@
 {
-  Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
-  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-  boolean disabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_DISABLED_KEY,"false"));
-  if (disabled) {
-    LOG.info("Skipping disabled job " + jobName);
-    return;
-  }
-  if (!jobProps.containsKey(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
-    jobProps.setProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"true");
-    this.jobExecutor.submit(new NonScheduledJobRunner(jobProps,jobListener));
-    return;
-  }
-  if (jobListener != null) {
-    this.jobListenerMap.put(jobName,jobListener);
-  }
-  JobDataMap jobDataMap=new JobDataMap();
-  jobDataMap.put(JOB_SCHEDULER_KEY,this);
-  jobDataMap.put(PROPERTIES_KEY,jobProps);
-  jobDataMap.put(JOB_LISTENER_KEY,jobListener);
-  JobDetail job=JobBuilder.newJob(GobblinJob.class).withIdentity(jobName,Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
-  try {
-    this.scheduler.scheduleJob(job,getTrigger(job.getKey(),jobProps));
-  }
- catch (  SchedulerException se) {
-    LOG.error("Failed to schedule job " + jobName,se);
-    throw new JobException("Failed to schedule job " + jobName,se);
-  }
-  this.scheduledJobs.put(jobName,job.getKey());
+  scheduleJob(jobProps,jobListener,Maps.<String,Object>newHashMap(),GobblinJob.class);
 }

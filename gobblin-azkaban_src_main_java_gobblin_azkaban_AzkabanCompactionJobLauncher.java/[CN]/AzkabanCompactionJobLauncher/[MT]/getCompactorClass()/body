@@ -1,4 +1,4 @@
 {
-  String compactorClassName=this.properties.getProperty(ConfigurationKeys.COMPACTION_COMPACTOR_CLASS,ConfigurationKeys.DEFAULT_COMPACTION_COMPACTOR_CLASS);
+  String compactorClassName=this.properties.getProperty(COMPACTION_COMPACTOR_CLASS,DEFAULT_COMPACTION_COMPACTOR_CLASS);
   return (Class<? extends Compactor>)Class.forName(compactorClassName);
 }

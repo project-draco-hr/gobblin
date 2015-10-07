@@ -1,0 +1,5 @@
+{
+  LOGGER.error("Received error: " + t,t);
+  this.done=true;
+  eventBus.post(new ApplicationMasterShutdownRequest());
+}

@@ -1,0 +1,10 @@
+{
+  JobQueue jobQueue=new JobQueue.Builder(this.jobContext.getJobName()).build();
+  try {
+    this.helixTaskDriver.createQueue(jobQueue);
+  }
+ catch (  IllegalArgumentException iae) {
+    LOGGER.info(String.format("Job queue %s already exists",jobQueue.getName()));
+  }
+  this.helixTaskDriver.enqueueJob(this.jobContext.getJobName(),this.jobContext.getJobId(),jobConfigBuilder);
+}
