@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(regex);
+  this.filterRegexPattern=Pattern.compile(regex);
+  return this;
+}

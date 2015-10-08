@@ -1,0 +1,37 @@
+{
+  List<FileStatus> srcLogFiles=FileListUtils.listFilesRecursively(this.srcFs,this.srcLogDir,new PathFilter(){
+    @Override public boolean accept(    Path path){
+      return logFileExtensions.contains(Files.getFileExtension(path.getName()));
+    }
+  }
+);
+  if (srcLogFiles.isEmpty()) {
+    LOGGER.warn("No log file found under directory " + this.srcLogDir);
+    return;
+  }
+  Set<Path> currentSrcLogFiles=Sets.newHashSet();
+  for (  FileStatus srcLogFile : srcLogFiles) {
+    currentSrcLogFiles.add(srcLogFile.getPath());
+  }
+  Set<Path> newLogFiles=Sets.newHashSet(currentSrcLogFiles);
+synchronized (this.srcLogFiles) {
+    newLogFiles.removeAll(this.srcLogFiles);
+    this.srcLogFiles.addAll(newLogFiles);
+  }
+  for (  final Path srcLogFile : newLogFiles) {
+    String destLogFileName=this.logFileNamePrefix.isPresent() ? this.logFileNamePrefix.get() + "." + srcLogFile.getName() : srcLogFile.getName();
+    final Path destLogFile=new Path(this.destLogDir,destLogFileName);
+    this.logCopyExecutor.scheduleAtFixedRate(new Runnable(){
+      @Override public void run(){
+        try {
+          LOGGER.debug(String.format("Copying changes from %s to %s",srcLogFile,destLogFile));
+          copyChangesOfLogFile(srcFs.makeQualified(srcLogFile),destFs.makeQualified(destLogFile));
+        }
+ catch (        IOException ioe) {
+          LOGGER.error(String.format("Failed while copying logs from %s to %s",srcLogFile,destLogFile),ioe);
+        }
+      }
+    }
+,0,this.copyInterval,this.timeUnit);
+  }
+}

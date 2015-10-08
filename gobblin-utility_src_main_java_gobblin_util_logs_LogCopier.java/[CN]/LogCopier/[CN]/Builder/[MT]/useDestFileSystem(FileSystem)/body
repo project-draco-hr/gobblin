@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(destFs);
+  this.destFs=destFs;
+  return this;
+}

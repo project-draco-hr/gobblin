@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(logFileNamePrefix),"Invalid log file name prefix: " + logFileNamePrefix);
+  this.logFileNamePrefix=logFileNamePrefix;
+  return this;
+}

@@ -1,5 +1,6 @@
 {
   this.containerId=ConverterUtils.toContainerId(System.getenv().get(ApplicationConstants.Environment.CONTAINER_ID.key()));
+  ApplicationAttemptId applicationAttemptId=this.containerId.getApplicationAttemptId();
   FileSystem fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),new Configuration()) : FileSystem.get(new Configuration());
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
@@ -15,6 +16,7 @@
   }
   services.add(taskExecutor);
   services.add(taskStateTracker);
+  services.add(buildLogCopier(this.containerId,fs,YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationAttemptId.getApplicationId())));
   this.serviceManager=new ServiceManager(services);
   Map<String,TaskFactory> taskFactoryMap=Maps.newHashMap();
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,containerId.getApplicationAttemptId().getApplicationId());

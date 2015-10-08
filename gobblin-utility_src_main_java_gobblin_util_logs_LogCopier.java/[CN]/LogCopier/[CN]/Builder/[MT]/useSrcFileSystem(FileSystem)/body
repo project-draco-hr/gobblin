@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(srcFs);
+  this.srcFs=srcFs;
+  return this;
+}
