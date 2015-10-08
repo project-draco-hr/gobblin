@@ -6,5 +6,4 @@
   if (job.isPresent()) {
     setRecordCount(state,job.get());
   }
-  setUpstreamTimeStamp(state,fs);
 }
