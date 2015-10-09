@@ -1,0 +1,19 @@
+{
+  CommandLineParser parser=new BasicParser();
+  try {
+    this.parsedOpts=parser.parse(this.options,this.args);
+    if (this.parsedOpts.hasOption(HELP_OPT)) {
+      printHelpAndExit();
+    }
+    String[] remainingArgs=this.parsedOpts.getArgs();
+    if (remainingArgs.length != 1) {
+      printHelpAndExit("Command not specified!");
+    }
+    this.command=remainingArgs[0];
+    parseResultsLimit();
+    parseAndConnectToServer();
+  }
+ catch (  ParseException e) {
+    printHelpAndExit("Ran into an error parsing args.");
+  }
+}

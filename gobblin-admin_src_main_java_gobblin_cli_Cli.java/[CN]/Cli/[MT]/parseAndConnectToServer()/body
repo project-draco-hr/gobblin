@@ -1,0 +1,15 @@
+{
+  String host=this.parsedOpts.hasOption(HOST_OPT) ? this.parsedOpts.getOptionValue(HOST_OPT) : DEFAULT_REST_SERVER_HOST;
+  int port=DEFAULT_REST_SERVER_PORT;
+  try {
+    if (this.parsedOpts.hasOption(PORT_OPT)) {
+      port=Integer.parseInt(this.parsedOpts.getOptionValue(PORT_OPT));
+    }
+  }
+ catch (  NumberFormatException e) {
+    printHelpAndExit("The port must be a valid integer.");
+  }
+  URI serverUri=URI.create(String.format("http://%s:%d/",host,port));
+  client=new JobExecutionInfoClient(serverUri.toString());
+  closer.register(client);
+}

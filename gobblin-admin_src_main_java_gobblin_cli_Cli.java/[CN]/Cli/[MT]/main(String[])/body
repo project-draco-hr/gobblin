@@ -1,0 +1,6 @@
+{
+  Cli cli=new Cli(args);
+  cli.parse();
+  cli.execute();
+  cli.close();
+}

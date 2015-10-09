@@ -1,0 +1,13 @@
+{
+  if (jobExecutionInfo == null) {
+    System.err.println("Job not found.");
+    System.exit(1);
+  }
+  List<List<String>> data=new ArrayList<List<String>>();
+  List<String> flags=Arrays.asList("","-");
+  List<String> labels=Arrays.asList("Property Key","Property Value");
+  for (  Map.Entry<String,String> entry : jobExecutionInfo.getJobProperties().entrySet()) {
+    data.add(Arrays.asList(entry.getKey(),entry.getValue()));
+  }
+  new CliTablePrinter.Builder().labels(labels).data(data).flags(flags).delimiterWidth(2).build().printTable();
+}

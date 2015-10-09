@@ -1,0 +1,18 @@
+{
+  JobExecutionQuery query=new JobExecutionQuery();
+  query.setIdType(QueryIdTypeEnum.JOB_ID);
+  query.setId(JobExecutionQuery.Id.create(id));
+  query.setLimit(1);
+  try {
+    JobExecutionQueryResult result=this.client.get(query);
+    if (result != null && result.hasJobExecutions()) {
+      return result.getJobExecutions().get(0);
+    }
+  }
+ catch (  RemoteInvocationException e) {
+    System.err.println("Error executing query: " + query);
+    e.printStackTrace();
+    System.exit(1);
+  }
+  return null;
+}

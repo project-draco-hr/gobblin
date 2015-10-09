@@ -1,0 +1,6 @@
+{
+  HelpFormatter hf=new HelpFormatter();
+  hf.printHelp("gobblin-admin.sh <jobs|tasks> [options]",this.options);
+  close();
+  System.exit(exitCode);
+}

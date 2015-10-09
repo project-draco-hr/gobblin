@@ -1,0 +1,12 @@
+{
+  if (shouldExecuteCommand(Command.JOBS)) {
+    executeJobCommand();
+  }
+ else   if (shouldExecuteCommand(Command.TASKS)) {
+    executeTaskCommand();
+  }
+ else {
+    printHelpAndExit("Command" + this.command + " not found.");
+  }
+  System.out.println();
+}

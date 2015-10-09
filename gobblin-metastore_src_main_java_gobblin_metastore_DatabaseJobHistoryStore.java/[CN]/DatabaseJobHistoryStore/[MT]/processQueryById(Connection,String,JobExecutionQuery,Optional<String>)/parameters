@@ -1,3 +1,4 @@
 Connection connection
 String jobId
+JobExecutionQuery query
 Optional<String> tableFilter

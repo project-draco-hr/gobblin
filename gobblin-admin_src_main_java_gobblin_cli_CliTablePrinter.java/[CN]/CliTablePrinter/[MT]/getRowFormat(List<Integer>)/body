@@ -1,0 +1,12 @@
+{
+  String rowFormat=spaces(this.indentation);
+  for (int i=0; i < widths.size(); i++) {
+    rowFormat+="%";
+    rowFormat+=this.flags != null ? this.flags.get(i) : "";
+    rowFormat+=widths.get(i).toString();
+    rowFormat+="s";
+    rowFormat+=spaces(this.delimiterWidth);
+  }
+  rowFormat+="\n";
+  return rowFormat;
+}

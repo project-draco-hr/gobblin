@@ -1,0 +1,20 @@
+{
+  JobExecutionQuery query=new JobExecutionQuery();
+  query.setIdType(QueryIdTypeEnum.LIST_TYPE);
+  query.setId(JobExecutionQuery.Id.create(lookupType));
+  query.setJobProperties(ConfigurationKeys.JOB_RUN_ONCE_KEY + "," + ConfigurationKeys.JOB_SCHEDULE_KEY);
+  query.setIncludeTaskExecutions(false);
+  query.setLimit(this.resultsLimit);
+  try {
+    JobExecutionQueryResult result=this.client.get(query);
+    if (result != null && result.hasJobExecutions()) {
+      return result.getJobExecutions();
+    }
+  }
+ catch (  RemoteInvocationException e) {
+    System.err.println("Error executing query: " + query);
+    e.printStackTrace();
+    System.exit(1);
+  }
+  return null;
+}
