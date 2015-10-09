@@ -9,29 +9,20 @@
     LOGGER.warn("No log file found under directory " + this.srcLogDir);
     return;
   }
-  Set<Path> currentSrcLogFiles=Sets.newHashSet();
+  Set<Path> newLogFiles=Sets.newHashSet();
   for (  FileStatus srcLogFile : srcLogFiles) {
-    currentSrcLogFiles.add(srcLogFile.getPath());
+    newLogFiles.add(srcLogFile.getPath());
   }
-  Set<Path> newLogFiles=Sets.newHashSet(currentSrcLogFiles);
-synchronized (this.srcLogFiles) {
-    newLogFiles.removeAll(this.srcLogFiles);
-    this.srcLogFiles.addAll(newLogFiles);
-  }
+  Set<Path> deletedLogFiles=Sets.newHashSet(this.logCopyTaskMap.keySet());
+  deletedLogFiles.removeAll(newLogFiles);
+  newLogFiles.removeAll(this.logCopyTaskMap.keySet());
   for (  final Path srcLogFile : newLogFiles) {
     String destLogFileName=this.logFileNamePrefix.isPresent() ? this.logFileNamePrefix.get() + "." + srcLogFile.getName() : srcLogFile.getName();
     final Path destLogFile=new Path(this.destLogDir,destLogFileName);
-    this.logCopyExecutor.scheduleAtFixedRate(new Runnable(){
-      @Override public void run(){
-        try {
-          LOGGER.debug(String.format("Copying changes from %s to %s",srcLogFile,destLogFile));
-          copyChangesOfLogFile(srcFs.makeQualified(srcLogFile),destFs.makeQualified(destLogFile));
-        }
- catch (        IOException ioe) {
-          LOGGER.error(String.format("Failed while copying logs from %s to %s",srcLogFile,destLogFile),ioe);
-        }
-      }
-    }
-,0,this.copyInterval,this.timeUnit);
+    ScheduledFuture<?> copyFuture=this.logCopyExecutor.scheduleAtFixedRate(new LogCopyTask(srcLogFile,destLogFile),0,this.copyInterval,this.timeUnit);
+    this.logCopyTaskMap.put(srcLogFile,copyFuture);
+  }
+  for (  Path deletedLogFile : deletedLogFiles) {
+    this.logCopyTaskMap.remove(deletedLogFile).cancel(true);
   }
 }

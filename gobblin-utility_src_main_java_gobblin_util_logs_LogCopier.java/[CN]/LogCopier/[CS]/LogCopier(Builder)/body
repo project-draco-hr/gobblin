@@ -7,7 +7,8 @@
   this.copyInterval=builder.copyInterval;
   this.timeUnit=builder.timeUnit;
   this.logFileExtensions=builder.logFileExtensions;
-  this.filterRegexPattern=Optional.fromNullable(builder.filterRegexPattern);
+  this.includingRegexPatterns=Optional.fromNullable(builder.includingRegexPatterns);
+  this.excludingRegexPatterns=Optional.fromNullable(builder.excludingRegexPatterns);
   this.logFileNamePrefix=Optional.fromNullable(builder.logFileNamePrefix);
   this.linesWrittenBeforeFlush=builder.linesWrittenBeforeFlush;
   this.logCopyExecutor=Executors.newScheduledThreadPool(0,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("LogCopyExecutor")));
