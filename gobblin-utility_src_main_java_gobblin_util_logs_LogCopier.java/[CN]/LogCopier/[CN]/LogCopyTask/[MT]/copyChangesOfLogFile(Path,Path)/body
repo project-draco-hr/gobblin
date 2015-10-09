@@ -9,9 +9,9 @@
     fsDataInputStream=closer.register(srcFs.open(srcFile));
     LOGGER.debug(String.format("Reading log file %s from position %d",srcFile,this.currentPos));
     fsDataInputStream.seek(this.currentPos);
-    BufferedReader srcLogFileReader=closer.register(new BufferedReader(new InputStreamReader(fsDataInputStream)));
+    BufferedReader srcLogFileReader=closer.register(new BufferedReader(new InputStreamReader(fsDataInputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     FSDataOutputStream outputStream=destFs.exists(destFile) ? destFs.append(destFile) : destFs.create(destFile);
-    BufferedWriter destLogFileWriter=closer.register(new BufferedWriter(new OutputStreamWriter(outputStream)));
+    BufferedWriter destLogFileWriter=closer.register(new BufferedWriter(new OutputStreamWriter(outputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     String line;
     int linesProcessed=0;
     while (!Thread.currentThread().isInterrupted() && (line=srcLogFileReader.readLine()) != null) {
