@@ -1,0 +1,30 @@
+{
+  while (_serverRunning) {
+    try {
+      final Socket clientSocket=_server.accept();
+      numConnects++;
+      LOG.info("Accepted connection on " + getServerSocketPort());
+      _threads.add(new EasyThread(){
+        @Override void runQuietly() throws Exception {
+          try {
+            addSocket(clientSocket);
+            handleClientSocket(clientSocket);
+          }
+ catch (          IOException e) {
+            e.printStackTrace();
+            stopServer();
+          }
+        }
+      }
+.startThread());
+    }
+ catch (    IOException ignored) {
+    }
+  }
+  try {
+    _server.close();
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+}

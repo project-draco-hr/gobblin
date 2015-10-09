@@ -1,0 +1,20 @@
+{
+  try {
+switch (state) {
+case CONNECTING:
+      connect();
+    break;
+case WRITING:
+  write();
+break;
+case READING:
+read();
+break;
+}
+}
+ catch (IOException ioe) {
+LOG.warn("Failed to establish a proxy connection for {}",client.getRemoteAddress(),ioe);
+closeChannels();
+}
+return state;
+}

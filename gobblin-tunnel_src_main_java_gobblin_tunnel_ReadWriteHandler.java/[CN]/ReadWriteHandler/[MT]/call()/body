@@ -1,0 +1,17 @@
+{
+  try {
+switch (state) {
+case READING:
+      read();
+    break;
+case WRITING:
+  write();
+break;
+}
+}
+ catch (IOException ioe) {
+closeChannels();
+throw new IOException(String.format("Could not read/write between %s and %s",proxy,client),ioe);
+}
+return state;
+}

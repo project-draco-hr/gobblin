@@ -1,0 +1,35 @@
+{
+  mockExample();
+  Tunnel tunnel=Tunnel.build("example.org",80,"localhost",PORT);
+  int clients=5;
+  final CountDownLatch startSignal=new CountDownLatch(1);
+  final CountDownLatch doneSignal=new CountDownLatch(clients);
+  ExecutorService executor=Executors.newFixedThreadPool(clients);
+  try {
+    final int tunnelPort=tunnel.getPort();
+    List<Future<String>> results=new ArrayList<Future<String>>();
+    for (int i=0; i < clients; i++) {
+      Future<String> result=executor.submit(new Callable<String>(){
+        @Override public String call() throws Exception {
+          startSignal.await();
+          try {
+            return fetchContent(tunnelPort);
+          }
+  finally {
+            doneSignal.countDown();
+          }
+        }
+      }
+);
+      results.add(result);
+    }
+    startSignal.countDown();
+    doneSignal.await();
+    for (    Future<String> result : results) {
+      assertNotNull(result.get());
+    }
+  }
+  finally {
+    tunnel.close();
+  }
+}

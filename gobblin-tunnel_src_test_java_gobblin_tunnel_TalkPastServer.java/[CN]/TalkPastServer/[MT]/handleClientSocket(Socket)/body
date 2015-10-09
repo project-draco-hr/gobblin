@@ -1,0 +1,45 @@
+{
+  LOG.info("Writing to client");
+  try {
+    final BufferedOutputStream serverOut=new BufferedOutputStream(clientSocket.getOutputStream());
+    EasyThread clientWriterThread=new EasyThread(){
+      @Override void runQuietly() throws Exception {
+        long t=System.currentTimeMillis();
+        try {
+          for (int i=0; i < nMsgs; i++) {
+            serverOut.write(generateMsgFromServer(i).getBytes());
+            sleepQuietly(2);
+          }
+        }
+ catch (        IOException e) {
+          e.printStackTrace();
+        }
+        LOG.info("Server done writing in " + (System.currentTimeMillis() - t) + " ms");
+      }
+    }
+.startThread();
+    _threads.add(clientWriterThread);
+    BufferedReader serverIn=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    String line=serverIn.readLine();
+    while (line != null && !line.equals("Goodbye")) {
+      String[] tokens=line.split(":",2);
+      String client=tokens[0];
+      digestMsgsRecvdAtServer.get(client).update(line.getBytes());
+      digestMsgsRecvdAtServer.get(client).update("\n".getBytes());
+      line=serverIn.readLine();
+    }
+    LOG.info("Server done reading");
+    try {
+      clientWriterThread.join();
+    }
+ catch (    InterruptedException e) {
+    }
+    serverOut.write("Goodbye\n".getBytes());
+    serverOut.flush();
+    clientSocket.close();
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+    throw e;
+  }
+}

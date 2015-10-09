@@ -1,0 +1,21 @@
+{
+  MockServer proxyServer=startConnectProxyServer();
+  Tunnel tunnel=Tunnel.build("useastdb.ensembl.org",5306,"localhost",proxyServer.getServerSocketPort());
+  try {
+    int port=tunnel.getPort();
+    Connection connection=DriverManager.getConnection("jdbc:mysql://localhost:" + port + "/homo_sapiens_core_82_38?user=anonymous");
+    String query2="SELECT DISTINCT gene_id, biotype, source, description from gene LIMIT 1000";
+    ResultSet resultSet=connection.createStatement().executeQuery(query2);
+    int row=0;
+    while (resultSet.next()) {
+      row++;
+      LOG.info("%s|%s|%s|%s|%s%n",row,resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4));
+    }
+    assertEquals(row,1000);
+    assertTrue(proxyServer.getNumConnects() > 0);
+  }
+  finally {
+    proxyServer.stopServer();
+    tunnel.close();
+  }
+}

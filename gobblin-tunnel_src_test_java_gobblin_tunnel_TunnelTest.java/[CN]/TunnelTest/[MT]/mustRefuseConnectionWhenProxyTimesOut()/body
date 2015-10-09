@@ -1,0 +1,11 @@
+{
+  mockServer.when(HttpRequest.request().withMethod("CONNECT").withPath("www.us.apache.org:80")).respond(HttpResponse.response().withDelay(TimeUnit.SECONDS,2).withStatusCode(200));
+  Tunnel tunnel=Tunnel.build("example.org",80,"localhost",PORT);
+  try {
+    int tunnelPort=tunnel.getPort();
+    fetchContent(tunnelPort);
+  }
+  finally {
+    tunnel.close();
+  }
+}

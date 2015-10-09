@@ -1,0 +1,18 @@
+{
+  try {
+    thread.interrupt();
+    thread.join();
+  }
+ catch (  InterruptedException e) {
+    throw new RuntimeException(e);
+  }
+ finally {
+    try {
+      server.close();
+      LOG.info("Closed tunnel.");
+    }
+ catch (    IOException ioe) {
+      LOG.warn("Failed to shutdown tunnel",ioe);
+    }
+  }
+}

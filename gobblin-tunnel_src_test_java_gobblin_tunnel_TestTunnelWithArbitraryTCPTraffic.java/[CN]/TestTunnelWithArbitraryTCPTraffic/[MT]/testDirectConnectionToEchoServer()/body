@@ -1,0 +1,13 @@
+{
+  SocketChannel client=SocketChannel.open();
+  try {
+    client.connect(new InetSocketAddress("localhost",doubleEchoServer.getServerSocketPort()));
+    writeToSocket(client,"Knock\n".getBytes());
+    String response=readFromSocket(client);
+    client.close();
+    assertEquals(response,"Knock Knock\n");
+  }
+  finally {
+    client.close();
+  }
+}

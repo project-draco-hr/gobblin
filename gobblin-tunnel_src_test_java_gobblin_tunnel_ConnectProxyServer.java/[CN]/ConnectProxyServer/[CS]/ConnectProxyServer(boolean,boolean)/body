@@ -1,0 +1,5 @@
+{
+  this.mixServerAndProxyResponse=mixServerAndProxyResponse;
+  this.largeResponse=largeResponse;
+  hostPortPattern=Pattern.compile("Host: (.*):([0-9]+)");
+}

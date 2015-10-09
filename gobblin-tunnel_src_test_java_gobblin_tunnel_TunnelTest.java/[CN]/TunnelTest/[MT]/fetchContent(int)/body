@@ -1,0 +1,4 @@
+{
+  InputStream content=(InputStream)new URL(String.format("http://localhost:%s/",tunnelPort)).openConnection().getContent(new Class[]{InputStream.class});
+  return IOUtils.toString(content);
+}

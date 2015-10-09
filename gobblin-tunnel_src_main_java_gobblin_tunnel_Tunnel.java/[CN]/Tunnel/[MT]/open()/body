@@ -1,0 +1,11 @@
+{
+  try {
+    server=ServerSocketChannel.open().bind(null);
+    startTunnelThread();
+    return this;
+  }
+ catch (  IOException ioe) {
+    LOG.error("Failed to open the tunnel",ioe);
+    throw ioe;
+  }
+}
