@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(logFileExtensions);
+  this.logFileExtensions=ImmutableSet.copyOf(logFileExtensions);
+  return this;
+}

@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(srcLogDir);
+  this.srcLogDir=srcLogDir;
+  return this;
+}

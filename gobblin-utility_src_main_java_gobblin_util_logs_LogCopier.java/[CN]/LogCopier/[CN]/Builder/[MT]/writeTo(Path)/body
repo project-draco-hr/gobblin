@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(destLogDir);
+  this.destLogDir=destLogDir;
+  return this;
+}

@@ -12,7 +12,7 @@
   }
   if (!jobProps.containsKey(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
     jobProps.setProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"true");
-    this.jobExecutor.submit(new NonScheduledJobRunner(jobProps,jobListener));
+    this.jobExecutor.execute(new NonScheduledJobRunner(jobProps,jobListener));
     return;
   }
   if (jobListener != null) {

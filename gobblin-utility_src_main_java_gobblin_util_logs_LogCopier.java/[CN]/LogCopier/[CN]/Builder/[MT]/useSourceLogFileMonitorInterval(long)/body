@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(sourceLogFileMonitorInterval > 0,"Source log file monitor interval must be positive");
+  this.sourceLogFileMonitorInterval=sourceLogFileMonitorInterval;
+  return this;
+}

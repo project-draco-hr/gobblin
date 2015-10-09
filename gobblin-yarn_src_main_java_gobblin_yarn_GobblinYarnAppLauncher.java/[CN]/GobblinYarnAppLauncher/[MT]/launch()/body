@@ -8,7 +8,6 @@
     LOGGER.error("HelixManager failed to connect",e);
     throw Throwables.propagate(e);
   }
-  this.serviceManager.startAsync();
   this.yarnClient.start();
   this.applicationId=Optional.of(setupAndSubmitApplication());
   this.applicationStatusMonitor.scheduleAtFixedRate(new Runnable(){
@@ -25,4 +24,12 @@ catch (      IOException ioe) {
     }
   }
 ,0,this.appReportIntervalMinutes,TimeUnit.MINUTES);
+  List<Service> services=Lists.newArrayList();
+  if (config.hasPath(GobblinYarnConfigurationKeys.KEYTAB_FILE_PATH)) {
+    LOGGER.info("Adding YarnAppSecurityManager since login is keytab based");
+    services.add(new YarnAppSecurityManager(config,this.helixManager,this.fs));
+  }
+  services.add(buildLogCopier(new Path(this.sinkLogRootDir,this.applicationName + Path.SEPARATOR + this.applicationId.get().toString()),YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,this.applicationId.get())));
+  this.serviceManager=Optional.of(new ServiceManager(services));
+  this.serviceManager.get().startAsync();
 }

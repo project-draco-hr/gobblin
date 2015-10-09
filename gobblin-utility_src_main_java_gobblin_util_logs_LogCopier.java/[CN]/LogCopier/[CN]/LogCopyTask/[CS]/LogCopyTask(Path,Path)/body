@@ -1,0 +1,4 @@
+{
+  this.srcLogFile=srcLogFile;
+  this.destLogFile=destLogFile;
+}

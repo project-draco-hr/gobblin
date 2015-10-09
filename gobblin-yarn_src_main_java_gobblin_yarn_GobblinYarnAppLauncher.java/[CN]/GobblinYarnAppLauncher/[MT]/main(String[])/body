@@ -8,6 +8,9 @@
  catch (      IOException ioe) {
         LOGGER.error("Failed to shutdown the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
       }
+catch (      TimeoutException te) {
+        LOGGER.error("Timeout in stopping the service manager",te);
+      }
     }
   }
 );

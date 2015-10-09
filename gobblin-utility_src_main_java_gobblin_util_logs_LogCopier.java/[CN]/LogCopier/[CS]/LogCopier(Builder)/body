@@ -1,0 +1,15 @@
+{
+  this.srcFs=builder.srcFs;
+  this.destFs=builder.destFs;
+  this.srcLogDir=this.srcFs.makeQualified(builder.srcLogDir);
+  this.destLogDir=this.destFs.makeQualified(builder.destLogDir);
+  this.sourceLogFileMonitorInterval=builder.sourceLogFileMonitorInterval;
+  this.copyInterval=builder.copyInterval;
+  this.timeUnit=builder.timeUnit;
+  this.logFileExtensions=builder.logFileExtensions;
+  this.includingRegexPatterns=Optional.fromNullable(builder.includingRegexPatterns);
+  this.excludingRegexPatterns=Optional.fromNullable(builder.excludingRegexPatterns);
+  this.logFileNamePrefix=Optional.fromNullable(builder.logFileNamePrefix);
+  this.linesWrittenBeforeFlush=builder.linesWrittenBeforeFlush;
+  this.logCopyExecutor=Executors.newScheduledThreadPool(0,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("LogCopyExecutor")));
+}
