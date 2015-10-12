@@ -1,0 +1,5 @@
+{
+  String[] components=filepath.getName().split(Pattern.quote(SEPARATOR));
+  Preconditions.checkArgument(components.length >= 2 && StringUtils.isNumeric(components[components.length - 2]),String.format("Filename %s does not follow the pattern: FILENAME.RECORDCOUNT.EXTENSION",filepath));
+  return Long.parseLong(components[components.length - 2]);
+}

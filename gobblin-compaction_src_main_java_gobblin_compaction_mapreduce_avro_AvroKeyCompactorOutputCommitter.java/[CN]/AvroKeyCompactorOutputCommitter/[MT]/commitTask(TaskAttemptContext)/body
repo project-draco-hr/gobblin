@@ -11,7 +11,7 @@
  else {
       fileNamePrefix=MR_OUTPUT_FILE_PREFIX;
     }
-    String fileName=fileNamePrefix + recordCount + "."+ System.currentTimeMillis()+ "."+ RANDOM.nextInt(Integer.MAX_VALUE)+ ".avro";
+    String fileName=new FilenameRecordCountProvider().constructFileName(fileNamePrefix,recordCount);
     for (    FileStatus status : fs.listStatus(workPath,new PathFilter(){
       @Override public boolean accept(      Path path){
         return FilenameUtils.isExtension(path.getName(),"avro");

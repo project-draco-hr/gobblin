@@ -8,6 +8,7 @@
     State jobProps=createJobProps(jobInputDir,jobOutputDir,jobTmpDir,this.deduplicate);
     jobProps.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,true);
     jobProps.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_FILES,Joiner.on(",").join(newDataFiles));
+    jobProps.setProp(MRCompactor.COMPACTION_JOB_DEST_LATE_DIR,jobOutputLateDir);
     return jobProps;
   }
 }

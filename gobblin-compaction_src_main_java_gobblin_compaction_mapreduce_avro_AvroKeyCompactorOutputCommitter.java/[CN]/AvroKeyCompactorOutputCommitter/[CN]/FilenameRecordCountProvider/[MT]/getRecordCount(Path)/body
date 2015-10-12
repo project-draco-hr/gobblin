@@ -1,0 +1,11 @@
+{
+  String filename=filepath.getName();
+  Preconditions.checkArgument(filename.startsWith(M_OUTPUT_FILE_PREFIX) || filename.startsWith(MR_OUTPUT_FILE_PREFIX),String.format("%s is not a supported filename, which should start with %s, or %s.",filename,M_OUTPUT_FILE_PREFIX,MR_OUTPUT_FILE_PREFIX));
+  String prefixWithCounts=filename.split(Pattern.quote(SEPARATOR))[0];
+  if (filename.startsWith(M_OUTPUT_FILE_PREFIX)) {
+    return Long.parseLong(prefixWithCounts.substring(M_OUTPUT_FILE_PREFIX.length()));
+  }
+ else {
+    return Long.parseLong(prefixWithCounts.substring(MR_OUTPUT_FILE_PREFIX.length()));
+  }
+}
