@@ -1,0 +1,22 @@
+{
+  try {
+    copyDependencyJarsToHdfs();
+    List<String> topics=findAllTopics();
+    processTopics(topics);
+    throwExceptionsIfAnyDatasetCompactionFailed();
+  }
+ catch (  Throwable t) {
+    LOG.error("Caught throwable during compaction",t);
+    throw Throwables.propagate(t);
+  }
+ finally {
+    try {
+      shutdownExecutors();
+      this.closer.close();
+    }
+  finally {
+      deleteDependencyJars();
+      gobblinMetrics.stopMetricReporting();
+    }
+  }
+}

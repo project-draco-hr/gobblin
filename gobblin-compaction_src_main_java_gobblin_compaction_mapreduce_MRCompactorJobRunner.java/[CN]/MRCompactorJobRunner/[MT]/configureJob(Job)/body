@@ -1,0 +1,9 @@
+{
+  job.setJobName(HADOOP_JOB_NAME);
+  configureInputAndOutputPaths(job);
+  configureMapper(job);
+  configureReducer(job);
+  if (!this.deduplicate) {
+    job.setNumReduceTasks(0);
+  }
+}

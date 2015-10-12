@@ -1,0 +1,12 @@
+{
+  State jobProps=new State();
+  jobProps.addAll(this.state);
+  jobProps.setProp(MRCompactor.COMPACTION_TOPIC,this.topic);
+  jobProps.setProp(MRCompactor.COMPACTION_JOB_INPUT_DIR,jobInputDir);
+  jobProps.setProp(MRCompactor.COMPACTION_JOB_DEST_DIR,jobOutputDir);
+  jobProps.setProp(MRCompactor.COMPACTION_JOB_TMP_DIR,jobTmpDir);
+  jobProps.setProp(MRCompactor.COMPACTION_ENABLE_SUCCESS_FILE,false);
+  jobProps.setProp(MRCompactor.COMPACTION_DEDUPLICATE,deduplicate);
+  LOG.info(String.format("Created MR job properties for input %s and output %s.",jobInputDir,jobOutputDir));
+  return jobProps;
+}

@@ -1,0 +1,7 @@
+{
+  if (!(object instanceof MultiWorkUnit)) {
+    return false;
+  }
+  MultiWorkUnit other=(MultiWorkUnit)object;
+  return super.equals(other) && this.workUnits.equals(other.workUnits);
+}

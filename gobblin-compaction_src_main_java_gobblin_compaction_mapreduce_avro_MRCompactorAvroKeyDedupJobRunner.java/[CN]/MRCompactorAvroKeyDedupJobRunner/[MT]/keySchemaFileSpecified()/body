@@ -1,0 +1,3 @@
+{
+  return this.jobProps.contains(COMPACTION_JOB_AVRO_KEY_SCHEMA_LOC);
+}

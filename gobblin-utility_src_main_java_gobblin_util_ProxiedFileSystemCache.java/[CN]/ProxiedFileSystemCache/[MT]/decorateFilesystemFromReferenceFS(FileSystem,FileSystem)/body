@@ -1,0 +1,11 @@
+{
+  FileSystem decoratedFs=newFS;
+  Optional<Long> decoratedFSRateOpt=RateControlledFileSystem.getRateIfRateControlled(decoratedFs);
+  if (!decoratedFSRateOpt.isPresent()) {
+    Optional<Long> referenceRateOpt=RateControlledFileSystem.getRateIfRateControlled(referenceFS);
+    if (referenceRateOpt.isPresent()) {
+      decoratedFs=new RateControlledFileSystem(decoratedFs,referenceRateOpt.get());
+    }
+  }
+  return decoratedFs;
+}

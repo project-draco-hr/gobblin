@@ -1,0 +1,3 @@
+{
+  return new ConfigurableDataset<DatasetVersion>(this.getFsForDataset(path),this.props,path);
+}

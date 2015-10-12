@@ -1,0 +1,7 @@
+{
+  Path schemeAndAuthority=new Path("hdfs://example.hdfs:9000/");
+  Path path=new Path("/some/path");
+  Path fullPath=new Path(schemeAndAuthority,path);
+  Assert.assertTrue(fullPath.toString().startsWith("hdfs"));
+  Assert.assertEquals(PathUtils.getPathWithoutSchemeAndAuthority(fullPath),path);
+}

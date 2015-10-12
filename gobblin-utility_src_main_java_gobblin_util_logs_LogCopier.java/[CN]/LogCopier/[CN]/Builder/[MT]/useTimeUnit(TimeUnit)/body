@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(timeUnit);
+  this.timeUnit=timeUnit;
+  return this;
+}

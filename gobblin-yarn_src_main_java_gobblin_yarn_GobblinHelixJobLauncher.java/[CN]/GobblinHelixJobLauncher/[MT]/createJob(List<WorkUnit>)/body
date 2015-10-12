@@ -1,0 +1,26 @@
+{
+  Map<String,TaskConfig> taskConfigMap=Maps.newHashMap();
+  Closer closer=Closer.create();
+  try {
+    ParallelRunner stateSerDeRunner=closer.register(new ParallelRunner(this.stateSerDeRunnerThreads,this.fs));
+    for (    WorkUnit workUnit : workUnits) {
+      if (workUnit instanceof MultiWorkUnit) {
+        for (        WorkUnit innerWorkUnit : JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits())) {
+          addWorkUnit(innerWorkUnit,stateSerDeRunner,taskConfigMap);
+        }
+      }
+ else {
+        addWorkUnit(workUnit,stateSerDeRunner,taskConfigMap);
+      }
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  JobConfig.Builder jobConfigBuilder=new JobConfig.Builder();
+  jobConfigBuilder.addTaskConfigMap(taskConfigMap).setCommand(GobblinWorkUnitRunner.GOBBLIN_TASK_FACTORY_NAME);
+  return jobConfigBuilder;
+}

@@ -1,0 +1,7 @@
+{
+  long count=0;
+  for (  Path path : paths) {
+    count+=getRecordCount(path);
+  }
+  return count;
+}

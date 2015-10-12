@@ -1,0 +1,16 @@
+{
+  Counters counters=null;
+  try {
+    counters=job.getCounters();
+  }
+ catch (  IOException e) {
+    LOG.debug("Failed to get job counters. Record count will not be set. ",e);
+    return;
+  }
+  if (counters != null) {
+    Counter recordCounter=counters.findCounter(AvroKeyDedupReducer.EVENT_COUNTER.RECORD_COUNT);
+    if (recordCounter != null) {
+      state.setProp(SlaEventKeys.RECORD_COUNT_KEY,Long.toString(recordCounter.getValue()));
+    }
+  }
+}

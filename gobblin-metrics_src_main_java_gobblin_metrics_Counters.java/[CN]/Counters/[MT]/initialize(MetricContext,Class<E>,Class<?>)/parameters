@@ -1,0 +1,3 @@
+MetricContext metricContext
+Class<E> enumClass
+Class<?> instrumentedClass

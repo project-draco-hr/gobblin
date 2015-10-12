@@ -1,0 +1,6 @@
+{
+  if (!this.executorServiceOptional.isPresent()) {
+    this.executorServiceOptional=Optional.of(MoreExecutors.getExitingExecutorService((ThreadPoolExecutor)Executors.newCachedThreadPool(ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("MetricContext-" + this.name + "-%d"))),5,TimeUnit.MINUTES));
+  }
+  return this.executorServiceOptional.get();
+}

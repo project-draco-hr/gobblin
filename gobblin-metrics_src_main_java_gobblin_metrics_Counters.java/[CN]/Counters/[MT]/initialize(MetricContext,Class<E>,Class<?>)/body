@@ -1,0 +1,7 @@
+{
+  Builder<E,Counter> builder=ImmutableMap.builder();
+  for (  E e : Arrays.asList(enumClass.getEnumConstants())) {
+    builder.put(e,metricContext.counter(MetricRegistry.name(instrumentedClass,e.name())));
+  }
+  counters=builder.build();
+}

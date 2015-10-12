@@ -4,4 +4,15 @@
   }
  catch (  TimeoutException te) {
   }
+ finally {
+    if (this.jobMetrics.isPresent()) {
+      try {
+        this.jobMetrics.get().triggerMetricReporting();
+        this.jobMetrics.get().stopMetricReporting();
+      }
+  finally {
+        JobMetrics.remove(this.jobMetrics.get().getName());
+      }
+    }
+  }
 }

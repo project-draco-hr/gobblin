@@ -25,6 +25,6 @@
   finally {
     closer.close();
   }
-  List<JobState> jobStateList=this.jobStateStore.getAll(jobName,jobId + ".jst");
-  Assert.assertTrue(jobStateList.isEmpty());
+  List<JobState.DatasetState> datasetStateList=this.datasetStateStore.getAll(jobName,jobId + ".jst");
+  Assert.assertTrue(datasetStateList.isEmpty());
 }

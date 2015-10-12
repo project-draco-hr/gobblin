@@ -1,4 +1,4 @@
 {
-  addAll(other);
+  super.addAll(other);
   this.extract=other.getExtract();
 }

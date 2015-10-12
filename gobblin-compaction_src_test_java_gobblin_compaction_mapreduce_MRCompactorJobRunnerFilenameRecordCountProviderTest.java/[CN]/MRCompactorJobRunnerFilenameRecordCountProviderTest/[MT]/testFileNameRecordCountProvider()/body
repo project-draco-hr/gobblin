@@ -1,0 +1,32 @@
+{
+  String originalFilename="test.123.avro";
+  String suffixPattern=Pattern.quote(".late") + "[\\d]*";
+  Path testDir=new Path("gobblin-compaction/src/test/resources/compactorFilenameRecordCountProviderTest");
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  try {
+    if (fs.exists(testDir)) {
+      fs.delete(testDir,true);
+    }
+    fs.mkdirs(testDir);
+    RecordCountProvider originFileNameFormat=new AvroHdfsTimePartitionedWithRecordCountsWriter.FilenameRecordCountProvider();
+    MRCompactorJobRunner.LateFileRecordCountProvider lateFileRecordCountProvider=new MRCompactorJobRunner.LateFileRecordCountProvider(originFileNameFormat);
+    Path firstOutput=lateFileRecordCountProvider.constructLateFilePath(originalFilename,fs,testDir);
+    Assert.assertEquals(new Path(testDir,originalFilename),firstOutput);
+    Assert.assertEquals(123,lateFileRecordCountProvider.getRecordCount(firstOutput));
+    fs.create(firstOutput);
+    Pattern pattern1=Pattern.compile(Pattern.quote(Files.getNameWithoutExtension(originalFilename)) + suffixPattern + "\\.avro");
+    Path secondOutput=lateFileRecordCountProvider.constructLateFilePath(firstOutput.getName(),fs,testDir);
+    Assert.assertEquals(testDir,secondOutput.getParent());
+    Assert.assertTrue(pattern1.matcher(secondOutput.getName()).matches());
+    Assert.assertEquals(123,lateFileRecordCountProvider.getRecordCount(secondOutput));
+    fs.create(secondOutput);
+    Pattern pattern2=Pattern.compile(Files.getNameWithoutExtension(originalFilename) + suffixPattern + suffixPattern+ "\\.avro");
+    Path thirdOutput=lateFileRecordCountProvider.constructLateFilePath(secondOutput.getName(),fs,testDir);
+    Assert.assertEquals(testDir,thirdOutput.getParent());
+    Assert.assertTrue(pattern2.matcher(thirdOutput.getName()).matches());
+    Assert.assertEquals(123,lateFileRecordCountProvider.getRecordCount(thirdOutput));
+  }
+  finally {
+    fs.delete(testDir,true);
+  }
+}

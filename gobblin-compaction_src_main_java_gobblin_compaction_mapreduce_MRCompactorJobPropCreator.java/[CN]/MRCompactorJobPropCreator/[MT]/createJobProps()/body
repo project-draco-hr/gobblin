@@ -1,0 +1,8 @@
+{
+  List<State> emptyJobProps=Lists.newArrayList();
+  if (!this.fs.exists(this.topicInputDir)) {
+    LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ this.topic);
+    return emptyJobProps;
+  }
+  return Collections.singletonList(createJobProps(this.topicInputDir,this.topicOutputDir,this.topicTmpDir,this.deduplicate));
+}

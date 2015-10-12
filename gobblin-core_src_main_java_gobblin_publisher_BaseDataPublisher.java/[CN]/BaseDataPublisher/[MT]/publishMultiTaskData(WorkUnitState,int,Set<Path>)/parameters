@@ -1,0 +1,3 @@
+WorkUnitState state
+int branchId
+Set<Path> writerOutputPathsMoved

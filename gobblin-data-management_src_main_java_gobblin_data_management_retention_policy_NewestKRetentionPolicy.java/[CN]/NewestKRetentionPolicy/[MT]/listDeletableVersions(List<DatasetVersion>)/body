@@ -1,0 +1,11 @@
+{
+  int newerVersions=0;
+  List<DatasetVersion> deletableVersions=Lists.newArrayList();
+  for (  DatasetVersion datasetVersion : allVersions) {
+    if (newerVersions >= this.versionsRetained) {
+      deletableVersions.add(datasetVersion);
+    }
+    newerVersions++;
+  }
+  return deletableVersions;
+}

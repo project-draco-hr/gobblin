@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(regexList);
+  this.includingRegexPatterns=DatasetFilterUtils.getPatternsFromStrings(COMMA_SPLITTER.splitToList(regexList));
+  return this;
+}

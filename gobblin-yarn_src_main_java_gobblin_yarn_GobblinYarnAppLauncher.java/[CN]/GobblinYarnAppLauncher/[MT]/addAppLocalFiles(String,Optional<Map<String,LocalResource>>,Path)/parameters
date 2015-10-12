@@ -1,0 +1,3 @@
+String localFilePathList
+Optional<Map<String,LocalResource>> resourceMap
+Path destDir

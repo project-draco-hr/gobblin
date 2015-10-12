@@ -1,0 +1,19 @@
+{
+  if (!workUnitState.contains(FILE_SPLIT_BYTES_STRING_KEY)) {
+    throw new IOException("No serialized FileSplit found in WorkUnitState " + workUnitState.getId());
+  }
+  Configuration configuration=new Configuration();
+  FileInputFormat<K,V> fileInputFormat=getFileInputFormat(workUnitState,configuration);
+  String fileSplitBytesStr=workUnitState.getProp(FILE_SPLIT_BYTES_STRING_KEY);
+  FileSplit fileSplit=(FileSplit)HadoopUtils.deserializeFromString(FileSplit.class,fileSplitBytesStr);
+  TaskAttemptContext taskAttemptContext=getTaskAttemptContext(configuration,DummyTaskAttemptIDFactory.newTaskAttemptID());
+  try {
+    RecordReader<K,V> recordReader=fileInputFormat.createRecordReader(fileSplit,taskAttemptContext);
+    recordReader.initialize(fileSplit,taskAttemptContext);
+    boolean readKeys=workUnitState.getPropAsBoolean(FILE_INPUT_READ_KEYS_KEY,DEFAULT_FILE_INPUT_READ_KEYS);
+    return getExtractor(workUnitState,recordReader,fileSplit,readKeys);
+  }
+ catch (  InterruptedException ie) {
+    throw new IOException(ie);
+  }
+}

@@ -1,0 +1,28 @@
+{
+  List<FileStatus> snapshotsInTrash=Arrays.asList(this.fs.listStatus(this.trashLocation,TRASH_SNAPSHOT_PATH_FILTER));
+  Collections.sort(snapshotsInTrash,new Comparator<FileStatus>(){
+    @Override public int compare(    FileStatus o1,    FileStatus o2){
+      return TRASH_SNAPSHOT_NAME_FORMATTER.parseDateTime(o1.getPath().getName()).compareTo(TRASH_SNAPSHOT_NAME_FORMATTER.parseDateTime(o2.getPath().getName()));
+    }
+  }
+);
+  int totalSnapshots=snapshotsInTrash.size();
+  int snapshotsDeleted=0;
+  for (  FileStatus snapshot : snapshotsInTrash) {
+    if (this.snapshotCleanupPolicy.shouldDeleteSnapshot(snapshot,this)) {
+      try {
+        boolean successfullyDeleted=this.fs.delete(snapshot.getPath(),true);
+        if (successfullyDeleted) {
+          snapshotsDeleted++;
+        }
+ else {
+          LOG.error("Failed to delete snapshot " + snapshot.getPath());
+        }
+      }
+ catch (      IOException exception) {
+        LOG.error("Failed to delete snapshot " + snapshot.getPath(),exception);
+      }
+    }
+  }
+  LOG.info(String.format("Deleted %d out of %d existing snapshots.",snapshotsDeleted,totalSnapshots));
+}

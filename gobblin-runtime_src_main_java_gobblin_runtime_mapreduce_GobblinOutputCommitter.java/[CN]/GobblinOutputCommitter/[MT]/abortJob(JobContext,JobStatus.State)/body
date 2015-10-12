@@ -13,7 +13,7 @@
     for (    FileStatus status : fs.listStatus(jobInputDir,new WorkUnitFilter())) {
       Closer workUnitFileCloser=Closer.create();
       if (status.getPath().getName().endsWith(".wu")) {
-        WorkUnit wu=new WorkUnit();
+        WorkUnit wu=WorkUnit.createEmpty();
         try {
           wu.readFields(workUnitFileCloser.register(new DataInputStream(fs.open(status.getPath()))));
         }

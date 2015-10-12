@@ -1,6 +1,11 @@
 {
   super(state);
-  this.schemaRegistry=new KafkaAvroSchemaRegistry(state);
-  this.schema=getLatestSchemaByTopic();
-  this.reader=new GenericDatumReader<Record>(this.schema);
+  this.schemaRegistry=new KafkaAvroSchemaRegistry(state.getProperties());
+  this.schema=Optional.fromNullable(getLatestSchemaByTopic());
+  if (this.schema.isPresent()) {
+    this.reader=Optional.of(new GenericDatumReader<Record>(this.schema.get()));
+  }
+ else {
+    this.reader=Optional.absent();
+  }
 }

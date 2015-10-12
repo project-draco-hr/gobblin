@@ -1,7 +1,6 @@
 {
-  Preconditions.checkArgument(taskExecutorThreadPoolSize > 0,"Thread pool size should be positive");
-  Preconditions.checkArgument(coreRetryThreadPoolSize > 0,"Thread pool size should be positive");
-  Preconditions.checkArgument(retryIntervalInSeconds > 0,"Retry interval should be positive");
+  Preconditions.checkArgument(taskExecutorThreadPoolSize > 0,"Task executor thread pool size should be positive");
+  Preconditions.checkArgument(retryIntervalInSeconds > 0,"Task retry interval should be positive");
   this.taskExecutor=Executors.newFixedThreadPool(taskExecutorThreadPoolSize,ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("TaskExecutor-%d")));
   this.taskRetryExecutor=new ScheduledThreadPoolExecutor(coreRetryThreadPoolSize,ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("TaskRetryExecutor-%d")));
   this.retryIntervalInSeconds=retryIntervalInSeconds;

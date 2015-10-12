@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(copyInterval > 0,"Copy interval must be positive");
+  this.copyInterval=copyInterval;
+  return this;
+}

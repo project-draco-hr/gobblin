@@ -1,0 +1,6 @@
+{
+  for (  String hdfsFilePath : SPLITTER.split(hdfsFileList)) {
+    Path srcFilePath=new Path(hdfsFilePath);
+    YarnHelixUtils.addFileAsLocalResource(srcFilePath.getFileSystem(this.yarnConfiguration),srcFilePath,LocalResourceType.FILE,resourceMap);
+  }
+}

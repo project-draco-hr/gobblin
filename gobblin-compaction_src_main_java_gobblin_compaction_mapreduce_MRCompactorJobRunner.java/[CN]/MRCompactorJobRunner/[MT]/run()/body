@@ -1,0 +1,54 @@
+{
+  Configuration conf=HadoopUtils.getConfFromState(this.jobProps);
+  DateTime jobStartTime=new DateTime(DateTimeZone.forID(this.jobProps.getProp(MRCompactor.COMPACTION_TIMEZONE,MRCompactor.DEFAULT_COMPACTION_TIMEZONE)));
+  try {
+    if (this.jobProps.getPropAsBoolean(MRCompactor.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,false)) {
+      List<Path> newLateFilePaths=Lists.newArrayList();
+      for (      String filePathString : this.jobProps.getPropAsList(MRCompactor.COMPACTION_JOB_LATE_DATA_FILES)) {
+        if (FilenameUtils.isExtension(filePathString,getApplicableFileExtensions())) {
+          newLateFilePaths.add(new Path(filePathString));
+        }
+      }
+      Path lateDataOutputPath=this.outputPath;
+      Path lateDataDir=new Path(this.jobProps.getProp(MRCompactor.COMPACTION_JOB_DEST_LATE_DIR));
+      if (this.deduplicate) {
+        lateDataOutputPath=lateDataDir;
+        LOG.info(String.format("Will copy to late path %s since deduplication has been done. ",lateDataOutputPath));
+        if (!fs.exists(lateDataOutputPath)) {
+          if (!fs.mkdirs(lateDataOutputPath)) {
+            throw new RuntimeException(String.format("Failed to create late data output directory: %s.",lateDataOutputPath.toString()));
+          }
+        }
+      }
+      this.submitLateRecordCountsEvent(newLateFilePaths,lateDataDir);
+      this.copyDataFiles(lateDataOutputPath,newLateFilePaths,conf);
+      this.status=Status.COMMITTED;
+    }
+ else {
+      if (this.fs.exists(this.outputPath) && !canOverwriteOutputDir()) {
+        LOG.warn(String.format("Output path %s exists. Will not compact %s.",this.outputPath,this.inputPath));
+        this.status=Status.COMMITTED;
+        return;
+      }
+      addJars(conf);
+      Job job=Job.getInstance(conf);
+      this.configureJob(job);
+      this.submitAndWait(job);
+      if (shouldPublishData(jobStartTime)) {
+        this.moveTmpPathToOutputPath();
+        this.submitSlaEvent(job);
+        LOG.info("Successfully published data for input folder " + this.inputPath);
+        this.status=Status.COMMITTED;
+      }
+ else {
+        LOG.info("Data not published for input folder " + this.inputPath + " due to incompleteness");
+        this.status=Status.ABORTED;
+        return;
+      }
+    }
+    this.markOutputDirAsCompleted(jobStartTime);
+  }
+ catch (  Throwable t) {
+    throw Throwables.propagate(t);
+  }
+}

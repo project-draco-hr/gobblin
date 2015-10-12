@@ -1,0 +1,14 @@
+{
+  if (fs instanceof Decorator) {
+    List<Object> lineage=DecoratorUtils.getDecoratorLineage(fs);
+    for (    Object obj : lineage) {
+      if (obj instanceof RateControlledFileSystem) {
+        return Optional.of(((RateControlledFileSystem)obj).limitPerSecond);
+      }
+    }
+    return Optional.absent();
+  }
+ else {
+    return Optional.absent();
+  }
+}

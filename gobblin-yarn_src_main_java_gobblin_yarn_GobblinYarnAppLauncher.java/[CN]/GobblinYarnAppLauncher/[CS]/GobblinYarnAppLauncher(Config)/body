@@ -1,0 +1,18 @@
+{
+  this.config=config;
+  this.applicationName=config.getString(GobblinYarnConfigurationKeys.APPLICATION_NAME_KEY);
+  this.appQueueName=config.getString(GobblinYarnConfigurationKeys.APP_QUEUE_KEY);
+  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getHostname(),InstanceType.SPECTATOR,zkConnectionString);
+  this.yarnConfiguration=new YarnConfiguration();
+  this.yarnConfiguration.set("fs.automatic.close","false");
+  this.yarnClient=YarnClient.createYarnClient();
+  this.yarnClient.init(this.yarnConfiguration);
+  this.fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),this.yarnConfiguration) : FileSystem.get(this.yarnConfiguration);
+  this.fsCloser.register(this.fs);
+  this.applicationStatusMonitor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinYarnAppStatusMonitor")));
+  this.appReportIntervalMinutes=config.getLong(GobblinYarnConfigurationKeys.APP_REPORT_INTERVAL_MINUTES_KEY);
+  this.appMasterJvmArgs=Strings.nullToEmpty(config.getString(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY));
+  this.sinkLogRootDir=new Path(config.getString(GobblinYarnConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY));
+}

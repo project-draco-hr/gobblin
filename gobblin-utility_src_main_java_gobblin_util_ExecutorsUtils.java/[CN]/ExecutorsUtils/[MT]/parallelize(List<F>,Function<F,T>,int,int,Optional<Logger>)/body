@@ -1,0 +1,25 @@
+{
+  Preconditions.checkArgument(list != null,"Input list can not be null");
+  Preconditions.checkArgument(function != null,"Function can not be null");
+  final List<T> results=Lists.newArrayListWithCapacity(list.size());
+  List<Future<T>> futures=Lists.newArrayListWithCapacity(list.size());
+  ExecutorService executorService=MoreExecutors.getExitingExecutorService((ThreadPoolExecutor)Executors.newFixedThreadPool(threadCount,ExecutorsUtils.newThreadFactory(logger)),2,TimeUnit.MINUTES);
+  for (  final F l : list) {
+    futures.add(executorService.submit(new Callable<T>(){
+      @Override public T call() throws Exception {
+        return function.apply(l);
+      }
+    }
+));
+  }
+  ExecutorsUtils.shutdownExecutorService(executorService,logger,timeoutInSecs,TimeUnit.SECONDS);
+  for (  Future<T> future : futures) {
+    try {
+      results.add(future.get());
+    }
+ catch (    InterruptedException e) {
+      throw new ExecutionException("Thread interrupted",e);
+    }
+  }
+  return results;
+}

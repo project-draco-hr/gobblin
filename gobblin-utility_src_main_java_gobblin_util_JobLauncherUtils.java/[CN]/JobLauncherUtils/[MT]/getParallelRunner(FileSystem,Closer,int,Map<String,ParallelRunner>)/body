@@ -1,0 +1,7 @@
+{
+  String uriAndHomeDir=new Path(new Path(fs.getUri()),fs.getHomeDirectory()).toString();
+  if (!parallelRunners.containsKey(uriAndHomeDir)) {
+    parallelRunners.put(uriAndHomeDir,closer.register(new ParallelRunner(parallelRunnerThreads,fs)));
+  }
+  return parallelRunners.get(uriAndHomeDir);
+}

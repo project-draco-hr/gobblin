@@ -1,0 +1,10 @@
+{
+  try {
+    Class<? extends Compactor> compactorClass=getCompactorClass();
+    Compactor compactor=compactorClass.getDeclaredConstructor(Properties.class).newInstance(this.properties);
+    return compactor;
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to instantiate compactor",e);
+  }
+}

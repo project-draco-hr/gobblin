@@ -17,9 +17,9 @@
   Iterator<Predicate> i=predicateList.listIterator();
   while (i.hasNext()) {
     Predicate predicate=i.next();
-    query=this.addPredicate(query,predicate.getCondition());
+    query=SqlQueryUtils.addPredicate(query,predicate.getCondition());
   }
-  query=this.addPredicate(query,defaultPredicate);
+  query=SqlQueryUtils.addPredicate(query,defaultPredicate);
   query=query + defaultSortOrder;
   this.log.info("QUERY: " + query);
   try {

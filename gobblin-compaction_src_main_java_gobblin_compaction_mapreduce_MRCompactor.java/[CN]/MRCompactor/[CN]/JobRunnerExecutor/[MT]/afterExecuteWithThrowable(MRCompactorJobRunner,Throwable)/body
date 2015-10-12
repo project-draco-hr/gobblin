@@ -1,0 +1,4 @@
+{
+  jobRunner.getDataset().setState(COMPACTION_COMPLETE);
+  jobRunner.getDataset().addThrowable(t);
+}

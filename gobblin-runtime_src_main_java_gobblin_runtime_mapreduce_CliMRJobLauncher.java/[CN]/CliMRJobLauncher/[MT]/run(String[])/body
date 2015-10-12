@@ -1,10 +1,8 @@
 {
-  final Properties jobProps=new Properties();
-  jobProps.putAll(this.sysConfig);
-  jobProps.putAll(this.jobConfig);
+  final Properties jobProps=JobConfigurationUtils.combineSysAndJobProperties(this.sysConfig,this.jobConfig);
   Closer closer=Closer.create();
   try {
-    closer.register(new MRJobLauncher(this.sysConfig,jobProps,getConf())).launchJob(null);
+    closer.register(new MRJobLauncher(jobProps,getConf())).launchJob(null);
   }
  catch (  JobException je) {
     System.err.println("Failed to launch the job due to the following exception:");

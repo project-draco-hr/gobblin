@@ -1,0 +1,10 @@
+{
+  for (  String localFilePath : SPLITTER.split(localFilePathList)) {
+    Path srcFilePath=new Path(localFilePath);
+    Path destFilePath=new Path(destDir,srcFilePath.getName());
+    this.fs.copyFromLocalFile(srcFilePath,destFilePath);
+    if (resourceMap.isPresent()) {
+      YarnHelixUtils.addFileAsLocalResource(this.fs,destFilePath,LocalResourceType.FILE,resourceMap.get());
+    }
+  }
+}

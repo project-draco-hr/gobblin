@@ -1,0 +1,18 @@
+{
+  try {
+    FileStatus[] stateStoreFiles=this.fs.listStatus(this.stateStoreDir,new StateStoreFileFilter());
+    if (stateStoreFiles == null || stateStoreFiles.length == 0) {
+      LOGGER.warn("No state store files found in directory: " + this.stateStoreDir);
+      return;
+    }
+    LOGGER.info("Cleaning up state store directory: " + this.stateStoreDir);
+    for (    FileStatus file : stateStoreFiles) {
+      if (shouldCleanUp(file) && !this.fs.delete(file.getPath(),false)) {
+        LOGGER.error("Failed to delete state store file: " + file.getPath());
+      }
+    }
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to run state store cleaner for directory: " + this.stateStoreDir,ioe);
+  }
+}

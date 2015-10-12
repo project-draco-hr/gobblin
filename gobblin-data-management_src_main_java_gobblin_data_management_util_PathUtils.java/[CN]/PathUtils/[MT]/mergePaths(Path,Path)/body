@@ -1,0 +1,4 @@
+{
+  String path2Str=path2.toUri().getPath();
+  return new Path(path1.toUri().getScheme(),path1.toUri().getAuthority(),path1.toUri().getPath() + path2Str);
+}

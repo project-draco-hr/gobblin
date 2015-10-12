@@ -1,0 +1,9 @@
+{
+  Multimap<Extract,WorkUnitState> successfulExtracts=ArrayListMultimap.create();
+  for (  Map.Entry<Extract,Collection<WorkUnitState>> entry : extractToWorkUnitStateMap.asMap().entrySet()) {
+    if (Iterables.all(entry.getValue(),predicate)) {
+      successfulExtracts.putAll(entry.getKey(),entry.getValue());
+    }
+  }
+  return successfulExtracts;
+}

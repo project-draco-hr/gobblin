@@ -1,0 +1,29 @@
+{
+  Preconditions.checkNotNull(unit);
+  executorService.shutdown();
+  if (logger.isPresent()) {
+    logger.get().info("Attempting to shutdown ExecutorSerivce: " + executorService);
+  }
+  try {
+    long halfTimeoutNanos=TimeUnit.NANOSECONDS.convert(timeout,unit) / 2;
+    if (!executorService.awaitTermination(halfTimeoutNanos,TimeUnit.NANOSECONDS)) {
+      executorService.shutdownNow();
+      if (logger.isPresent()) {
+        logger.get().info("Shutdown un-successful, attempting shutdownNow of ExecutorService: " + executorService);
+      }
+      if (!executorService.awaitTermination(halfTimeoutNanos,TimeUnit.NANOSECONDS) && logger.isPresent()) {
+        logger.get().error("Could not shutdown all threads in ExecutorService: " + executorService);
+      }
+    }
+ else     if (logger.isPresent()) {
+      logger.get().info("Successfully shutdown ExecutorService: " + executorService);
+    }
+  }
+ catch (  InterruptedException ie) {
+    Thread.currentThread().interrupt();
+    executorService.shutdownNow();
+    if (logger.isPresent()) {
+      logger.get().info("Attempting to shutdownNow ExecutorSerivce: " + executorService);
+    }
+  }
+}

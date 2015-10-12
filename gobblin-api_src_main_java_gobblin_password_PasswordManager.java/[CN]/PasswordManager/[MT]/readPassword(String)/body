@@ -1,0 +1,12 @@
+{
+  if (!this.encryptor.isPresent()) {
+    return password;
+  }
+  Matcher matcher=PASSWORD_PATTERN.matcher(password);
+  if (matcher.find()) {
+    return this.decryptPassword(matcher.group(1));
+  }
+ else {
+    return password;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  super.close();
+  this.properties.removeProp(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS);
+  for (  Entry<Path,FsDataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+    String filePathOld=entry.getValue().getOutputFilePath();
+    String filePathNew=new FilenameRecordCountProvider().constructFilePath(filePathOld,entry.getValue().recordsWritten());
+    this.properties.appendToListProp(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS,filePathNew);
+    LOG.info("Renaming " + filePathOld + " to "+ filePathNew);
+    HadoopUtils.renamePath(((AvroHdfsDataWriter)entry.getValue()).getFileSystem(),new Path(filePathOld),new Path(filePathNew));
+  }
+}

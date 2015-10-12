@@ -1,0 +1,4 @@
+{
+  this.kafkaPusher=Optional.of(pusher);
+  return self();
+}

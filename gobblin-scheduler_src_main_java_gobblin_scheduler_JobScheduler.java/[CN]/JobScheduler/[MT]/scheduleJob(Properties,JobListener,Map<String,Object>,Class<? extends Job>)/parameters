@@ -1,0 +1,4 @@
+Properties jobProps
+JobListener jobListener
+Map<String,Object> additionalJobData
+Class<? extends Job> jobClass

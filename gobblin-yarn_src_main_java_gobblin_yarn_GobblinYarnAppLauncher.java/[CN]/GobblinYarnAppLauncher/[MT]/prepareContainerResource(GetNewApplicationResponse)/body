@@ -1,0 +1,15 @@
+{
+  int memoryMbs=this.config.getInt(GobblinYarnConfigurationKeys.APP_MASTER_MEMORY_MBS_KEY);
+  int maximumMemoryCapacity=newApplicationResponse.getMaximumResourceCapability().getMemory();
+  if (memoryMbs > maximumMemoryCapacity) {
+    LOGGER.info(String.format("Specified AM memory [%d] is above the maximum memory capacity [%d] of the " + "cluster, using the maximum memory capacity instead.",memoryMbs,maximumMemoryCapacity));
+    memoryMbs=maximumMemoryCapacity;
+  }
+  int vCores=this.config.getInt(GobblinYarnConfigurationKeys.APP_MASTER_CORES_KEY);
+  int maximumVirtualCoreCapacity=newApplicationResponse.getMaximumResourceCapability().getVirtualCores();
+  if (vCores > maximumVirtualCoreCapacity) {
+    LOGGER.info(String.format("Specified AM vcores [%d] is above the maximum vcore capacity [%d] of the " + "cluster, using the maximum vcore capacity instead.",memoryMbs,maximumMemoryCapacity));
+    vCores=maximumVirtualCoreCapacity;
+  }
+  return Resource.newInstance(memoryMbs,vCores);
+}

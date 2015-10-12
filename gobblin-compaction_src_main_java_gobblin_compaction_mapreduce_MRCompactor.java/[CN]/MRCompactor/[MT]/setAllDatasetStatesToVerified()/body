@@ -1,0 +1,5 @@
+{
+  for (  Dataset dataset : this.datasets) {
+    dataset.setState(VERIFIED);
+  }
+}

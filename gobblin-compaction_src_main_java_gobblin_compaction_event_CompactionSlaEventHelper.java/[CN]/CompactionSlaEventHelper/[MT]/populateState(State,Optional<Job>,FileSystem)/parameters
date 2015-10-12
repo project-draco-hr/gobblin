@@ -1,0 +1,3 @@
+State state
+Optional<Job> job
+FileSystem fs

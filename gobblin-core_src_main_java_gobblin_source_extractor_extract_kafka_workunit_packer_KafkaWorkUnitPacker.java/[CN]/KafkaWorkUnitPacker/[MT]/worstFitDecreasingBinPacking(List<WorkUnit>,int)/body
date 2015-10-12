@@ -1,0 +1,23 @@
+{
+  Collections.sort(groups,LOAD_DESC_COMPARATOR);
+  MinMaxPriorityQueue<MultiWorkUnit> pQueue=MinMaxPriorityQueue.orderedBy(LOAD_ASC_COMPARATOR).expectedSize(numOfMultiWorkUnits).create();
+  for (int i=0; i < numOfMultiWorkUnits; i++) {
+    MultiWorkUnit multiWorkUnit=new MultiWorkUnit();
+    setWorkUnitEstSize(multiWorkUnit,0);
+    pQueue.add(multiWorkUnit);
+  }
+  for (  WorkUnit group : groups) {
+    MultiWorkUnit lightestMultiWorkUnit=pQueue.poll();
+    addWorkUnitToMultiWorkUnit(group,lightestMultiWorkUnit);
+    pQueue.add(lightestMultiWorkUnit);
+  }
+  logMultiWorkUnitInfo(pQueue);
+  double minLoad=getWorkUnitEstLoad(pQueue.peekFirst());
+  double maxLoad=getWorkUnitEstLoad(pQueue.peekLast());
+  LOG.info(String.format("Min load of multiWorkUnit = %f; Max load of multiWorkUnit = %f; Diff = %f%%",minLoad,maxLoad,(maxLoad - minLoad) / maxLoad * 100.0));
+  this.state.setProp(MIN_MULTIWORKUNIT_LOAD,minLoad);
+  this.state.setProp(MAX_MULTIWORKUNIT_LOAD,maxLoad);
+  List<WorkUnit> multiWorkUnits=Lists.newArrayList();
+  multiWorkUnits.addAll(pQueue);
+  return multiWorkUnits;
+}

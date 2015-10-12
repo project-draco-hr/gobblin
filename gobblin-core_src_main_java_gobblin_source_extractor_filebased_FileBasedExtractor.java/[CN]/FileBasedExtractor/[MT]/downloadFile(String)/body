@@ -1,9 +1,9 @@
 {
-  LOGGER.info("Beginning to download file: " + file);
+  LOG.info("Beginning to download file: " + file);
   try {
     InputStream inputStream=this.closer.register(this.fsHelper.getFileStream(file));
     Iterator<D> fileItr=(Iterator<D>)IOUtils.lineIterator(inputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
-    if (workUnitState.getPropAsBoolean(ConfigurationKeys.SOURCE_SKIP_FIRST_RECORD,false) && fileItr.hasNext()) {
+    if (this.shouldSkipFirstRecord && fileItr.hasNext()) {
       fileItr.next();
     }
     return fileItr;

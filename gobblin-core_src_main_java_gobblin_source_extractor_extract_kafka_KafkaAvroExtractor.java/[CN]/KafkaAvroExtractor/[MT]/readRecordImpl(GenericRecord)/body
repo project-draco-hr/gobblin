@@ -1,0 +1,6 @@
+{
+  if (!this.schema.isPresent()) {
+    return null;
+  }
+  return super.readRecordImpl(reuse);
+}

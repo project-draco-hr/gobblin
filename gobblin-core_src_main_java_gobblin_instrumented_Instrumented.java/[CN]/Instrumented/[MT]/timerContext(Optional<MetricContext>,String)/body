@@ -1,6 +1,6 @@
 {
   return context.transform(new Function<MetricContext,Timer.Context>(){
-    @Override public Timer.Context apply(    MetricContext input){
+    @Override public Timer.Context apply(    @Nonnull MetricContext input){
       return input.timer(name).time();
     }
   }

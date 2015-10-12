@@ -1,3 +1,12 @@
 {
-  return this.nextWatermark.get(this.currentPartitionIdx) >= this.highWatermark.get(this.currentPartitionIdx);
+  if (this.currentPartitionIdx == INITIAL_PARTITION_IDX) {
+    return true;
+  }
+ else   if (this.nextWatermark.get(this.currentPartitionIdx) >= this.highWatermark.get(this.currentPartitionIdx)) {
+    LOG.info("Finished pulling partition " + this.getCurrentPartition());
+    return true;
+  }
+ else {
+    return false;
+  }
 }

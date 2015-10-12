@@ -1,0 +1,6 @@
+{
+  DateTime now=new DateTime();
+  DateTime modificationDateTime=new DateTime(file.getModificationTime());
+  long retentionInMills=this.retentionTimeUnit.toMillis(this.retention);
+  return modificationDateTime.plus(retentionInMills).isBefore(now);
+}

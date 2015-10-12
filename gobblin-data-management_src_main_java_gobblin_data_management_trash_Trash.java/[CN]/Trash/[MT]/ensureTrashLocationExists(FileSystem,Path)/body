@@ -1,0 +1,18 @@
+{
+  if (fs.exists(trashLocation)) {
+    if (!fs.isDirectory(trashLocation)) {
+      throw new IOException(String.format("Trash location %s is not a directory.",trashLocation));
+    }
+    if (!fs.exists(new Path(trashLocation,TRASH_IDENTIFIER_FILE))) {
+      if (fs.listStatus(trashLocation).length > 0) {
+        throw new IOException(String.format("Trash directory %s exists, but it does not look like a trash directory. " + "File: %s missing and directory is not empty.",trashLocation,TRASH_IDENTIFIER_FILE));
+      }
+ else       if (!fs.createNewFile(new Path(trashLocation,TRASH_IDENTIFIER_FILE))) {
+        throw new IOException(String.format("Failed to create file %s in existing trash directory %s.",TRASH_IDENTIFIER_FILE,trashLocation));
+      }
+    }
+  }
+ else   if (!(fs.mkdirs(trashLocation.getParent(),ALL_PERM) && fs.mkdirs(trashLocation,PERM) && fs.createNewFile(new Path(trashLocation,TRASH_IDENTIFIER_FILE)))) {
+    throw new IOException("Failed to create trash directory at " + trashLocation.toString());
+  }
+}

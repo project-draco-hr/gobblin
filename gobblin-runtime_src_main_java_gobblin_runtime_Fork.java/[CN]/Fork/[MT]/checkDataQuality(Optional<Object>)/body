@@ -1,0 +1,39 @@
+{
+  TaskState taskStateForFork=this.taskState;
+  if (this.branches > 1) {
+    taskStateForFork=new TaskState(this.taskState);
+  }
+  if (this.writer.isPresent()) {
+    taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.get().recordsWritten());
+  }
+ else {
+    taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
+  }
+  if (schema.isPresent()) {
+    taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.get().toString());
+  }
+  try {
+    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(taskStateForFork,this.branches > 1 ? this.index : -1).executePolicies();
+    TaskPublisher publisher=this.taskContext.getTaskPublisher(taskStateForFork,taskResults,this.branches > 1 ? this.index : -1);
+switch (publisher.canPublish()) {
+case SUCCESS:
+      return true;
+case CLEANUP_FAIL:
+    this.logger.error("Cleanup failed for task " + this.taskId);
+  break;
+case POLICY_TESTS_FAIL:
+this.logger.error("Not all quality checking passed for task " + this.taskId);
+break;
+case COMPONENTS_NOT_FINISHED:
+this.logger.error("Not all components completed for task " + this.taskId);
+break;
+default :
+break;
+}
+return false;
+}
+ catch (Throwable t) {
+this.logger.error("Failed to check task-level data quality",t);
+return false;
+}
+}

@@ -1,0 +1,4 @@
+{
+  String extension=Files.getFileExtension(path.getName());
+  return extension.equalsIgnoreCase("jst") || extension.equalsIgnoreCase("tst");
+}

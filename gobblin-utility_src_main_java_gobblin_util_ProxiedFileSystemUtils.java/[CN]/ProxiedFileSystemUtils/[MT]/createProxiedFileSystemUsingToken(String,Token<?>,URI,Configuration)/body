@@ -1,0 +1,5 @@
+{
+  UserGroupInformation ugi=UserGroupInformation.createProxyUser(userNameToProxyAs,UserGroupInformation.getLoginUser());
+  ugi.addToken(userNameToken);
+  return ugi.doAs(new ProxiedFileSystem(fsURI,conf));
+}

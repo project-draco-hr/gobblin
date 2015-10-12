@@ -1,0 +1,5 @@
+{
+  this.state=new State();
+  this.state.addAll(state);
+  return (T)this;
+}

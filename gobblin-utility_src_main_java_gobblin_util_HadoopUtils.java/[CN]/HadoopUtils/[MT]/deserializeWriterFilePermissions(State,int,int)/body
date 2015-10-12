@@ -1,0 +1,3 @@
+{
+  return new FsPermission(state.getPropAsShortWithRadix(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_PERMISSIONS,numBranches,branchId),FsPermission.getDefault().toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX));
+}

@@ -1,0 +1,12 @@
+{
+  try {
+    Preconditions.checkArgument(Predicates.notNull().apply(eventSubmitter),"EventSubmitter needs to be set");
+    Preconditions.checkArgument(NOT_NULL_OR_EMPTY_PREDICATE.apply(eventName),"Eventname is required");
+    Preconditions.checkArgument(NOT_NULL_OR_EMPTY_PREDICATE.apply(datasetUrn),"DatasetUrn is required");
+    Preconditions.checkArgument(NOT_NULL_OR_EMPTY_PREDICATE.apply(partition),"Partition is required");
+    eventSubmitter.submit(eventName,buildEventMap());
+  }
+ catch (  IllegalArgumentException e) {
+    log.info("Required arguments to submit an SLA event is not available. No Sla event will be submitted. " + e.toString());
+  }
+}

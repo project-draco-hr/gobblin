@@ -1,0 +1,30 @@
+{
+  if (this.stopped) {
+    return;
+  }
+  LOGGER.info("Stopping the " + GobblinYarnAppLauncher.class.getSimpleName());
+  try {
+    if (this.applicationId.isPresent() && !this.applicationCompleted) {
+      sendShutdownRequest();
+    }
+    if (this.serviceManager.isPresent()) {
+      this.serviceManager.get().stopAsync().awaitStopped(5,TimeUnit.MINUTES);
+    }
+    ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor,Optional.of(LOGGER),5,TimeUnit.MINUTES);
+    this.yarnClient.stop();
+    if (this.helixManager.isConnected()) {
+      this.helixManager.disconnect();
+    }
+  }
+  finally {
+    try {
+      if (this.applicationId.isPresent()) {
+        cleanUpAppWorkDirectory(this.applicationId.get());
+      }
+    }
+  finally {
+      this.fsCloser.close();
+    }
+  }
+  this.stopped=true;
+}

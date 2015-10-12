@@ -1,0 +1,9 @@
+{
+  if (cl.hasOption(HELP_OPTION)) {
+    return true;
+  }
+  if (!cl.hasOption(PLAIN_PWD_OPTION) || !masterpasswordProvided(cl)) {
+    return true;
+  }
+  return false;
+}

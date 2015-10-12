@@ -1,14 +1,15 @@
 {
-  if (currentPartitionFinished()) {
-    moveToNextPartition();
-  }
   while (!allPartitionsFinished()) {
+    if (currentPartitionFinished()) {
+      moveToNextPartition();
+      continue;
+    }
     if (this.messageIterator == null || !this.messageIterator.hasNext()) {
       try {
         this.messageIterator=fetchNextMessageBuffer();
       }
  catch (      Exception e) {
-        LOG.error(String.format("Failed to fetch next message buffer for partition %s. Will skip this partition.",getCurrentPartition()));
+        LOG.error(String.format("Failed to fetch next message buffer for partition %s. Will skip this partition.",getCurrentPartition()),e);
         moveToNextPartition();
         continue;
       }
@@ -17,33 +18,39 @@
         continue;
       }
     }
-    MessageAndOffset nextValidMessage=null;
-    do {
+    while (!currentPartitionFinished()) {
       if (!this.messageIterator.hasNext()) {
         break;
       }
-      do {
-        nextValidMessage=this.messageIterator.next();
+      MessageAndOffset nextValidMessage=this.messageIterator.next();
+      if (nextValidMessage.offset() < this.nextWatermark.get(this.currentPartitionIdx)) {
+        continue;
       }
- while (nextValidMessage.offset() < this.nextWatermark.get(this.currentPartitionIdx));
       this.nextWatermark.set(this.currentPartitionIdx,nextValidMessage.nextOffset());
       try {
         D record=decodeRecord(nextValidMessage);
-        this.maintainStats(nextValidMessage);
+        this.currentPartitionRecordCount++;
+        this.currentPartitionTotalSize+=nextValidMessage.message().payloadSize();
         return record;
       }
  catch (      SchemaNotFoundException e) {
+        this.errorPartitions.add(this.currentPartitionIdx);
+        this.invalidSchemaIdCount++;
         if (shouldLogError()) {
-          LOG.error(String.format("An event from partition %s has a schema ID that doesn't exist in the schema registry.",getCurrentPartition()));
+          LOG.error(String.format("A record from partition %s has a schema ID that doesn't exist in the schema registry.",getCurrentPartition()),e);
+          incrementErrorCount();
         }
       }
 catch (      Exception e) {
+        this.errorPartitions.add(this.currentPartitionIdx);
+        this.undecodableMessageCount++;
         if (shouldLogError()) {
-          LOG.error(String.format("An event from partition %s cannot be decoded.",getCurrentPartition()));
+          LOG.error(String.format("A record from partition %s cannot be decoded.",getCurrentPartition()),e);
+          incrementErrorCount();
         }
       }
     }
- while (!currentPartitionFinished());
   }
+  LOG.info("Finished pulling topic " + this.topicName);
   return null;
 }

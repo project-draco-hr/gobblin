@@ -1,0 +1,13 @@
+{
+  try {
+    this.metricContext.removeNotificationTarget(this.notificationTargetKey);
+    report();
+    this.closer.close();
+  }
+ catch (  Exception e) {
+    LOGGER.warn("Exception when closing EventReporter",e);
+  }
+ finally {
+    super.close();
+  }
+}

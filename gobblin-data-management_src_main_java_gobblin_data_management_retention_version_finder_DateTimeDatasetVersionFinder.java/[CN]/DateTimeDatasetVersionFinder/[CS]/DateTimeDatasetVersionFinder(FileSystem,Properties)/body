@@ -1,0 +1,6 @@
+{
+  super(fs,props);
+  String pattern=props.getProperty(DATE_TIME_PATTERN_KEY);
+  this.globPattern=new Path(pattern.replaceAll("[^/]+","*"));
+  this.formatter=DateTimeFormat.forPattern(pattern);
+}

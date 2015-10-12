@@ -1,0 +1,26 @@
+{
+  DataWriter<byte[]> writer=new SimpleDataWriterBuilder().writeTo(Destination.of(Destination.DestinationType.HDFS,properties)).writeInFormat(WriterOutputFormat.AVRO).withWriterId(TestConstants.TEST_WRITER_ID).withSchema(this.schema).forBranch(0).build();
+  int totalBytes=3;
+  for (  String record : TestConstants.JSON_RECORDS) {
+    byte[] toWrite=record.getBytes();
+    Assert.assertEquals(toWrite.length,record.length());
+    writer.write(toWrite);
+    totalBytes+=toWrite.length;
+  }
+  writer.close();
+  writer.commit();
+  Assert.assertEquals(writer.recordsWritten(),3);
+  Assert.assertEquals(writer.bytesWritten(),totalBytes);
+  String pathKey=ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS;
+  Assert.assertTrue(properties.contains(pathKey));
+  File outputFile=new File(properties.getProp(pathKey));
+  BufferedReader br=new BufferedReader(new FileReader(outputFile));
+  String line;
+  int lineNumber=0;
+  while ((line=br.readLine()) != null) {
+    Assert.assertEquals(line,TestConstants.JSON_RECORDS[lineNumber]);
+    lineNumber++;
+  }
+  br.close();
+  Assert.assertEquals(lineNumber,3);
+}

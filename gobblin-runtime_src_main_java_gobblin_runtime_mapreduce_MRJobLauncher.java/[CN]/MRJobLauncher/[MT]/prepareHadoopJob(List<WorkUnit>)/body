@@ -1,5 +1,5 @@
 {
-  Optional<Timer.Context> setupMRJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.MR_JOB_SETUP);
+  TimingEvent mrJobSetupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_JOB_SETUP);
   this.job.setJarByClass(MRJobLauncher.class);
   this.job.setMapperClass(TaskRunner.class);
   this.job.setNumReduceTasks(0);
@@ -13,6 +13,9 @@
   NLineInputFormat.addInputPath(this.job,jobInputFile);
   Path jobOutputPath=new Path(this.mrJobDir,"output");
   SequenceFileOutputFormat.setOutputPath(this.job,jobOutputPath);
+  Path jobStateFile=new Path(this.mrJobDir,JOB_STATE_FILE_NAME);
+  serializeJobState(jobStateFile,this.jobContext.getJobState());
+  job.getConfiguration().set(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY,jobStateFile.toString());
   if (this.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
     int maxMappers=Integer.parseInt(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY));
     if (workUnits.size() > maxMappers) {
@@ -20,6 +23,6 @@
       NLineInputFormat.setNumLinesPerSplit(this.job,numTasksPerMapper);
     }
   }
-  Instrumented.endTimer(setupMRJobTimer);
+  mrJobSetupTimer.stop();
   return jobOutputPath;
 }

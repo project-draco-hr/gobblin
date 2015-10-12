@@ -1,0 +1,7 @@
+{
+  this.jobState.setEndTime(System.currentTimeMillis());
+  this.jobState.setDuration(this.jobState.getEndTime() - this.jobState.getStartTime());
+  for (  TaskState taskState : this.jobState.getTaskStates()) {
+    this.jobState.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,taskState.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1));
+  }
+}

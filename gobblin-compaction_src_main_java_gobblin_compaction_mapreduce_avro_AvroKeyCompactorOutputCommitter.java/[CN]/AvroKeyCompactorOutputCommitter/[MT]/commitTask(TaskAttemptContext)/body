@@ -1,0 +1,27 @@
+{
+  Path workPath=getWorkPath();
+  FileSystem fs=workPath.getFileSystem(context.getConfiguration());
+  if (fs.exists(workPath)) {
+    long recordCount=getRecordCountFromCounter(context,AvroKeyDedupReducer.EVENT_COUNTER.RECORD_COUNT);
+    String fileNamePrefix;
+    if (recordCount == 0) {
+      fileNamePrefix=M_OUTPUT_FILE_PREFIX;
+      recordCount=getRecordCountFromCounter(context,AvroKeyMapper.EVENT_COUNTER.RECORD_COUNT);
+    }
+ else {
+      fileNamePrefix=MR_OUTPUT_FILE_PREFIX;
+    }
+    String fileName=new FilenameRecordCountProvider().constructFileName(fileNamePrefix,recordCount);
+    for (    FileStatus status : fs.listStatus(workPath,new PathFilter(){
+      @Override public boolean accept(      Path path){
+        return FilenameUtils.isExtension(path.getName(),"avro");
+      }
+    }
+)) {
+      Path newPath=new Path(status.getPath().getParent(),fileName);
+      LOG.info(String.format("Renaming %s to %s",status.getPath(),newPath));
+      fs.rename(status.getPath(),newPath);
+    }
+  }
+  super.commitTask(context);
+}

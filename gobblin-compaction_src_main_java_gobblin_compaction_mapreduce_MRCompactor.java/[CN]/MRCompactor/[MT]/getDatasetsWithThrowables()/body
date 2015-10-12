@@ -1,0 +1,9 @@
+{
+  Set<Dataset> datasetsWithThrowables=Sets.newHashSet();
+  for (  Dataset dataset : this.datasets) {
+    if (!dataset.throwables().isEmpty()) {
+      datasetsWithThrowables.add(dataset);
+    }
+  }
+  return datasetsWithThrowables;
+}

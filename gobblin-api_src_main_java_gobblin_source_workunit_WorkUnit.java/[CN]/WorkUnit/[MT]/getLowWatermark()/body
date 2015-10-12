@@ -1,3 +1,6 @@
 {
+  if (!contains(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY)) {
+    return null;
+  }
   return JSON_PARSER.parse(getProp(ConfigurationKeys.WATERMARK_INTERVAL_VALUE_KEY)).getAsJsonObject().get(WatermarkInterval.LOW_WATERMARK_TO_JSON_KEY);
 }

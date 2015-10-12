@@ -1,0 +1,25 @@
+{
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId);
+  Path appMasterWorkDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.APP_MASTER_WORK_DIR_NAME);
+  Map<String,LocalResource> appMasterResources=Maps.newHashMap();
+  if (this.config.hasPath(GobblinYarnConfigurationKeys.LIB_JARS_DIR_KEY)) {
+    Path libJarsDestDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.LIB_JARS_DIR_NAME);
+    addLibJars(new Path(this.config.getString(GobblinYarnConfigurationKeys.LIB_JARS_DIR_KEY)),Optional.of(appMasterResources),libJarsDestDir);
+  }
+  if (this.config.hasPath(GobblinYarnConfigurationKeys.APP_MASTER_JARS_KEY)) {
+    Path appJarsDestDir=new Path(appMasterWorkDir,GobblinYarnConfigurationKeys.APP_JARS_DIR_NAME);
+    addAppJars(this.config.getString(GobblinYarnConfigurationKeys.APP_MASTER_JARS_KEY),Optional.of(appMasterResources),appJarsDestDir);
+  }
+  if (this.config.hasPath(GobblinYarnConfigurationKeys.APP_MASTER_FILES_LOCAL_KEY)) {
+    Path appFilesDestDir=new Path(appMasterWorkDir,GobblinYarnConfigurationKeys.APP_FILES_DIR_NAME);
+    addAppLocalFiles(this.config.getString(GobblinYarnConfigurationKeys.APP_MASTER_FILES_LOCAL_KEY),Optional.of(appMasterResources),appFilesDestDir);
+  }
+  if (this.config.hasPath(GobblinYarnConfigurationKeys.APP_MASTER_FILES_REMOTE_KEY)) {
+    addAppRemoteFiles(this.config.getString(GobblinYarnConfigurationKeys.APP_MASTER_FILES_REMOTE_KEY),appMasterResources);
+  }
+  if (this.config.hasPath(GobblinYarnConfigurationKeys.JOB_CONF_PACKAGE_PATH_KEY)) {
+    Path appFilesDestDir=new Path(appMasterWorkDir,GobblinYarnConfigurationKeys.APP_FILES_DIR_NAME);
+    addJobConfPackage(this.config.getString(GobblinYarnConfigurationKeys.JOB_CONF_PACKAGE_PATH_KEY),appFilesDestDir,appMasterResources);
+  }
+  return appMasterResources;
+}

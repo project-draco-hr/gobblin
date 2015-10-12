@@ -1,0 +1,11 @@
+{
+  Preconditions.checkState(this.schemaRegistry.isPresent(),"Schema registry not found. Unable to verify topic schema");
+  try {
+    this.schemaRegistry.get().getLatestSchemaByTopic(topic.getName());
+    return true;
+  }
+ catch (  SchemaNotFoundException e) {
+    LOG.error(String.format("Cannot find latest schema for topic %s. This topic will be skipped",topic.getName()));
+    return false;
+  }
+}

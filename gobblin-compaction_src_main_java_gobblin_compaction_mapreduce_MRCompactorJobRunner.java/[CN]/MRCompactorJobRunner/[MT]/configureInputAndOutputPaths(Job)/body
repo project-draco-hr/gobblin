@@ -1,0 +1,5 @@
+{
+  FileInputFormat.addInputPath(job,getInputPath());
+  this.fs.delete(getTmpPath(),true);
+  FileOutputFormat.setOutputPath(job,getTmpPath());
+}

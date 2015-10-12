@@ -1,0 +1,6 @@
+{
+  if (inputStream.readByte() != KafkaAvroSchemaRegistry.MAGIC_BYTE) {
+    throw new IOException("MAGIC_BYTE not found in Avro message.");
+  }
+  throw new UnsupportedOperationException("readSchemaVersioningInformation not implemented for schema registry.");
+}

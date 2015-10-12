@@ -1,0 +1,7 @@
+{
+  Schema newestSchema=getNewestSchemaFromSource(job);
+  AvroJob.setInputKeySchema(job,newestSchema);
+  AvroJob.setMapOutputKeySchema(job,this.deduplicate ? getKeySchema(job,newestSchema) : newestSchema);
+  AvroJob.setMapOutputValueSchema(job,newestSchema);
+  AvroJob.setOutputKeySchema(job,newestSchema);
+}

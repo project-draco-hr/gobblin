@@ -1,0 +1,4 @@
+{
+  commandLineOptions=getOptions();
+  return new DefaultParser().parse(commandLineOptions,args);
+}

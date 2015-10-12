@@ -1,4 +1,4 @@
 {
-  this.jobStateStore=new FsStateStore<JobState>(storeUrl,JobState.class);
+  this.jobStateStore=new FsDatasetStateStore(storeUrl);
   this.keepConfig=keepConfig;
 }

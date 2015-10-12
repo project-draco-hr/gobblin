@@ -1,0 +1,25 @@
+{
+  String keyTabFilePath=this.config.getString(GobblinYarnConfigurationKeys.KEYTAB_FILE_PATH);
+  if (Strings.isNullOrEmpty(keyTabFilePath)) {
+    throw new IOException("Keytab file path is not defined for Kerberos login");
+  }
+  if (!new File(keyTabFilePath).exists()) {
+    throw new IOException("Keytab file not found at: " + keyTabFilePath);
+  }
+  String principal=this.config.getString(GobblinYarnConfigurationKeys.KEYTAB_PRINCIPAL_NAME);
+  if (Strings.isNullOrEmpty(principal)) {
+    principal=this.loginUser.getShortUserName() + "/localhost@LOCALHOST";
+  }
+  Configuration conf=new Configuration();
+  conf.set("hadoop.security.authentication",UserGroupInformation.AuthenticationMethod.KERBEROS.toString().toLowerCase());
+  UserGroupInformation.setConfiguration(conf);
+  UserGroupInformation.loginUserFromKeytab(principal,keyTabFilePath);
+  LOGGER.info(String.format("Logged in from keytab file %s using principal %s",keyTabFilePath,principal));
+  this.loginUser=UserGroupInformation.getLoginUser();
+  getNewDelegationTokenForLoginUser();
+  writeDelegationTokenToFile();
+  if (!this.firstLogin) {
+    sendTokenFileUpdatedMessage(InstanceType.CONTROLLER);
+    sendTokenFileUpdatedMessage(InstanceType.PARTICIPANT);
+  }
+}

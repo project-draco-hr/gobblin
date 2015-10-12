@@ -1,0 +1,13 @@
+{
+switch (field.schema().getType()) {
+case RECORD:
+    return getKeySchemaFromRecord(field.schema());
+default :
+  if (field.doc() != null && field.doc().toLowerCase().endsWith(SCHEMA_DEDUP_FIELD_ANNOTATOR)) {
+    return Optional.of(field.schema());
+  }
+ else {
+    return Optional.absent();
+  }
+}
+}

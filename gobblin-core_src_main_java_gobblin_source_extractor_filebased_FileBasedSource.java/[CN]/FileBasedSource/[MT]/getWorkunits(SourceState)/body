@@ -14,7 +14,7 @@
     extractTableName=entityName;
   }
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
-  List<WorkUnitState> previousWorkunits=state.getPreviousWorkUnitStates();
+  List<WorkUnitState> previousWorkunits=Lists.newArrayList(state.getPreviousWorkUnitStates());
   List<String> prevFsSnapshot=Lists.newArrayList();
   if (!previousWorkunits.isEmpty() && previousWorkunits.get(0).getWorkunit().contains(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT)) {
     prevFsSnapshot=previousWorkunits.get(0).getWorkunit().getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT);
@@ -33,8 +33,7 @@
   }
   int filesPerPartition=filesToPull.size() % numPartitions == 0 ? filesToPull.size() / numPartitions : filesToPull.size() / numPartitions + 1;
   int workUnitCount=0;
-  int fileOffset=0;
-  for (int i=0; i < numPartitions; i++) {
+  for (int fileOffset=0; fileOffset < filesToPull.size(); fileOffset+=filesPerPartition) {
     SourceState partitionState=new SourceState();
     partitionState.addAll(state);
     partitionState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT,StringUtils.join(currentFsSnapshot,","));
@@ -49,7 +48,6 @@
     Extract extract=partitionState.createExtract(tableType,nameSpaceName,extractTableName);
     workUnits.add(partitionState.createWorkUnit(extract));
     workUnitCount++;
-    fileOffset+=filesPerPartition;
   }
   log.info("Total number of work units for the current run: " + workUnitCount);
   List<WorkUnit> previousWorkUnits=this.getPreviousWorkUnitsForRetry(state);

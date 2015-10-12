@@ -1,0 +1,12 @@
+{
+  if (!this.partitionColumns.isPresent()) {
+    return Optional.absent();
+  }
+  for (  String partitionColumn : this.partitionColumns.get()) {
+    Optional<Object> fieldValue=AvroUtils.getFieldValue(record,partitionColumn);
+    if (fieldValue.isPresent()) {
+      return fieldValue;
+    }
+  }
+  return Optional.absent();
+}

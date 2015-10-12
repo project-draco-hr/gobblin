@@ -1,0 +1,3 @@
+{
+  return createProxiedTrash(fs,props,UserGroupInformation.getCurrentUser().getShortUserName());
+}

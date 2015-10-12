@@ -1,20 +1,26 @@
 {
   super(jobId,LOG);
-  Properties properties=new Properties();
-  properties.putAll(props);
+  this.props=new Properties();
+  this.props.putAll(props);
   Configuration conf=new Configuration();
   String fsUri=conf.get(HADOOP_FS_DEFAULT_NAME);
   if (!Strings.isNullOrEmpty(fsUri)) {
-    if (!properties.containsKey(ConfigurationKeys.FS_URI_KEY)) {
-      properties.setProperty(ConfigurationKeys.FS_URI_KEY,fsUri);
+    if (!this.props.containsKey(ConfigurationKeys.FS_URI_KEY)) {
+      this.props.setProperty(ConfigurationKeys.FS_URI_KEY,fsUri);
     }
-    if (!properties.containsKey(ConfigurationKeys.STATE_STORE_FS_URI_KEY)) {
-      properties.setProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,fsUri);
+    if (!this.props.containsKey(ConfigurationKeys.STATE_STORE_FS_URI_KEY)) {
+      this.props.setProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,fsUri);
     }
   }
-  properties.setProperty(ConfigurationKeys.JOB_TRACKING_URL_KEY,Strings.nullToEmpty(conf.get(AZKABAN_LINK_JOBEXEC_URL)));
+  this.props.setProperty(ConfigurationKeys.JOB_TRACKING_URL_KEY,Strings.nullToEmpty(conf.get(AZKABAN_LINK_JOBEXEC_URL)));
   if (System.getenv(HADOOP_TOKEN_FILE_LOCATION) != null) {
-    properties.setProperty(MAPREDUCE_JOB_CREDENTIALS_BINARY,System.getenv(HADOOP_TOKEN_FILE_LOCATION));
+    this.props.setProperty(MAPREDUCE_JOB_CREDENTIALS_BINARY,System.getenv(HADOOP_TOKEN_FILE_LOCATION));
   }
-  this.jobLauncher=this.closer.register(JobLauncherFactory.newJobLauncher(properties,properties));
+  List<Tag<?>> tags=Lists.newArrayList();
+  tags.addAll(Tag.fromMap(TagUtils.getRuntimeTags()));
+  JobMetrics.addCustomTagsToProperties(this.props,tags);
+  if (!this.props.containsKey(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY)) {
+    this.props.setProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.MAPREDUCE.toString());
+  }
+  this.jobLauncher=this.closer.register(JobLauncherFactory.newJobLauncher(this.props,this.props));
 }

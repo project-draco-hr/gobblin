@@ -1,0 +1,13 @@
+{
+  Map<String,JobState.DatasetState> datasetStatesByUrns=this.fsDatasetStateStore.getLatestDatasetStatesByUrns(TEST_JOB_NAME);
+  Assert.assertEquals(datasetStatesByUrns.size(),1);
+  JobState.DatasetState datasetState=datasetStatesByUrns.get(TEST_DATASET_URN);
+  Assert.assertEquals(datasetState.getDatasetUrn(),TEST_DATASET_URN);
+  Assert.assertEquals(datasetState.getJobName(),TEST_JOB_NAME);
+  Assert.assertEquals(datasetState.getJobId(),TEST_JOB_ID);
+  Assert.assertEquals(datasetState.getState(),JobState.RunningState.COMMITTED);
+  Assert.assertEquals(datasetState.getProp("foo"),"bar");
+  Assert.assertEquals(datasetState.getStartTime(),this.startTime);
+  Assert.assertEquals(datasetState.getEndTime(),this.startTime + 1000);
+  Assert.assertEquals(datasetState.getDuration(),1000);
+}

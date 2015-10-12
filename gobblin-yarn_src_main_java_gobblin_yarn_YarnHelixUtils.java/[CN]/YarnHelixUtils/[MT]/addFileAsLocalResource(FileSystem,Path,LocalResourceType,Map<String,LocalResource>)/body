@@ -1,0 +1,10 @@
+{
+  LocalResource fileResource=Records.newRecord(LocalResource.class);
+  FileStatus fileStatus=fs.getFileStatus(destFilePath);
+  fileResource.setResource(ConverterUtils.getYarnUrlFromPath(destFilePath));
+  fileResource.setSize(fileStatus.getLen());
+  fileResource.setTimestamp(fileStatus.getModificationTime());
+  fileResource.setType(resourceType);
+  fileResource.setVisibility(LocalResourceVisibility.APPLICATION);
+  resourceMap.put(destFilePath.getName(),fileResource);
+}

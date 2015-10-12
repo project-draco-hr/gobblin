@@ -1,0 +1,13 @@
+{
+  try {
+    List<TimestampedDatasetVersion> timestampedVersions=Lists.newArrayList();
+    for (    FileStatus fileStatus : FileListUtils.listMostNestedPathRecursively(this.fs,dataset.datasetRoot())) {
+      timestampedVersions.add(new TimestampedDatasetVersion(new DateTime(fileStatus.getModificationTime()),fileStatus.getPath()));
+    }
+    return timestampedVersions;
+  }
+ catch (  IOException e) {
+    LOGGER.warn("Failed to get ModifiedTimeStamp for candidate dataset version at " + dataset.datasetRoot() + ". Ignoring.");
+    return Lists.newArrayList();
+  }
+}

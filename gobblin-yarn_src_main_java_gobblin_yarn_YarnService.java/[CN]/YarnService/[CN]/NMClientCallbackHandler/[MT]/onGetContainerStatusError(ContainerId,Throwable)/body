@@ -1,0 +1,3 @@
+{
+  LOGGER.error(String.format("Failed to get status for container %s due to error %s",containerId,t));
+}

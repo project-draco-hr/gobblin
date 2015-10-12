@@ -1,0 +1,9 @@
+{
+  String password=UUID.randomUUID().toString();
+  String masterPassword=UUID.randomUUID().toString();
+  File masterPwdFile=getMasterPwdFile(masterPassword);
+  State state=new State();
+  state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC,masterPwdFile.toString());
+  Assert.assertEquals(PasswordManager.getInstance(state).readPassword(password),password);
+  masterPwdFile.delete();
+}

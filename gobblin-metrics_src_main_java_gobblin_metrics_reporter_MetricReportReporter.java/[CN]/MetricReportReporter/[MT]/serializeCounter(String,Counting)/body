@@ -1,0 +1,3 @@
+{
+  return Lists.newArrayList(serializeValue(name,counter.getCount(),Measurements.COUNT.name()));
+}

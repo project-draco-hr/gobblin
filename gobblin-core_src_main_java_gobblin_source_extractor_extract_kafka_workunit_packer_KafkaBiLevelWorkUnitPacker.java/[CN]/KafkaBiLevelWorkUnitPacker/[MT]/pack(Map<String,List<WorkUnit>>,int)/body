@@ -1,0 +1,18 @@
+{
+  double totalEstDataSize=setWorkUnitEstSizes(workUnitsByTopic);
+  double avgGroupSize=totalEstDataSize / (double)numContainers / getPreGroupingSizeFactor(this.state);
+  List<MultiWorkUnit> mwuGroups=Lists.newArrayList();
+  for (  List<WorkUnit> workUnitsForTopic : workUnitsByTopic.values()) {
+    double estimatedDataSizeForTopic=calcTotalEstSizeForTopic(workUnitsForTopic);
+    if (estimatedDataSizeForTopic < avgGroupSize) {
+      MultiWorkUnit mwuGroup=new MultiWorkUnit();
+      addWorkUnitsToMultiWorkUnit(workUnitsForTopic,mwuGroup);
+      mwuGroups.add(mwuGroup);
+    }
+ else {
+      mwuGroups.addAll(bestFitDecreasingBinPacking(workUnitsForTopic,avgGroupSize));
+    }
+  }
+  List<WorkUnit> groups=squeezeMultiWorkUnits(mwuGroups,state);
+  return worstFitDecreasingBinPacking(groups,numContainers);
+}

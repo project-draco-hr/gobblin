@@ -1,0 +1,5 @@
+{
+  long avgSize=this.getEstAvgSizeForPartition(KafkaUtils.getPartition(workUnit));
+  long numOfRecords=workUnit.getPropAsLong(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY) - workUnit.getPropAsLong(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY);
+  return (double)avgSize * numOfRecords;
+}

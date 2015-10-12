@@ -1,0 +1,7 @@
+{
+  if (this.deletedOne) {
+    return false;
+  }
+  this.deletedOne=true;
+  return true;
+}

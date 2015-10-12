@@ -1,4 +1,7 @@
 {
+  if (this.useEagerWriterInitialization) {
+    buildWriterIfNotPresent();
+  }
   while (true) {
     try {
       Object record=this.recordQueue.get();
@@ -8,9 +11,10 @@
         }
       }
  else {
+        buildWriterIfNotPresent();
         for (        Object convertedRecord : this.converter.convertRecord(this.convertedSchema,record,this.taskState)) {
           if (this.rowLevelPolicyChecker.executePolicies(convertedRecord,this.rowLevelPolicyCheckingResult)) {
-            this.writer.write(convertedRecord);
+            this.writer.get().write(convertedRecord);
           }
         }
       }

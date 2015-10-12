@@ -1,0 +1,3 @@
+{
+  return KafkaAvroReporter.Factory.forContext(context).withKafkaPusher(pusher);
+}

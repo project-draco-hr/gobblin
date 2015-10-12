@@ -1,0 +1,3 @@
+{
+  return new Path(new Path(oldFilePath).getParent(),Files.getNameWithoutExtension(oldFilePath).toString() + SEPARATOR + recordCounts+ SEPARATOR+ Files.getFileExtension(oldFilePath)).toString();
+}

@@ -1,0 +1,5 @@
+{
+  for (  String user : getAllUsersWithTrash()) {
+    purgeTrashSnapshotsAsUser(user);
+  }
+}

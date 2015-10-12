@@ -1,11 +1,16 @@
 {
   try {
-    if (!this.job.isComplete()) {
+    if (this.hadoopJobSubmitted && !this.job.isComplete()) {
       LOG.info("Killing the Hadoop MR job for job " + this.jobContext.getJobId());
       this.job.killJob();
     }
   }
   finally {
-    super.close();
+    try {
+      cleanUpWorkingDirectory();
+    }
+  finally {
+      super.close();
+    }
   }
 }

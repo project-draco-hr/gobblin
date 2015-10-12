@@ -1,0 +1,4 @@
+{
+  this.eventBus.register(this);
+  super.startUp();
+}

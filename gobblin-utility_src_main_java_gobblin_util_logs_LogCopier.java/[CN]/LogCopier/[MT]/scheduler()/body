@@ -1,0 +1,3 @@
+{
+  return Scheduler.newFixedRateSchedule(0,this.sourceLogFileMonitorInterval,this.timeUnit);
+}

@@ -1,3 +1,5 @@
 {
-  this.taskState.updateRecordMetrics(this.writer.recordsWritten(),this.index);
+  if (this.writer.isPresent()) {
+    this.taskState.updateRecordMetrics(this.writer.get().recordsWritten(),this.index);
+  }
 }

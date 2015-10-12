@@ -1,0 +1,32 @@
+{
+  Schema keySchema=null;
+  DedupKeyOption dedupKeyOption=getDedupKeyOption();
+  if (dedupKeyOption == DedupKeyOption.ALL) {
+    LOG.info("Using all attributes in the schema (except Map, Arrar and Enum fields) for compaction");
+    keySchema=AvroUtils.removeUncomparableFields(topicSchema).get();
+  }
+ else   if (dedupKeyOption == DedupKeyOption.KEY) {
+    LOG.info("Using key attributes in the schema for compaction");
+    keySchema=AvroUtils.removeUncomparableFields(getKeySchema(topicSchema)).get();
+  }
+ else   if (keySchemaFileSpecified()) {
+    Path keySchemaFile=getKeySchemaFile();
+    LOG.info("Using attributes specified in schema file " + keySchemaFile + " for compaction");
+    try {
+      keySchema=AvroUtils.parseSchemaFromFile(keySchemaFile,this.fs);
+    }
+ catch (    IOException e) {
+      LOG.error("Failed to parse avro schema from " + keySchemaFile + ", using key attributes in the schema for compaction");
+      keySchema=AvroUtils.removeUncomparableFields(getKeySchema(topicSchema)).get();
+    }
+    if (!isKeySchemaValid(keySchema,topicSchema)) {
+      LOG.warn(String.format("Key schema %s is not compatible with record schema %s.",keySchema,topicSchema) + "Using key attributes in the schema for compaction");
+      keySchema=AvroUtils.removeUncomparableFields(getKeySchema(topicSchema)).get();
+    }
+  }
+ else {
+    LOG.info("Property " + COMPACTION_JOB_AVRO_KEY_SCHEMA_LOC + " not provided. Using key attributes in the schema for compaction");
+    keySchema=AvroUtils.removeUncomparableFields(getKeySchema(topicSchema)).get();
+  }
+  return keySchema;
+}

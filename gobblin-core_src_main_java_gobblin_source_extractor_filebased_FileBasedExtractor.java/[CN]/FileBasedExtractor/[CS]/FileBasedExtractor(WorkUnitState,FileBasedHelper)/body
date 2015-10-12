@@ -1,13 +1,21 @@
 {
+  super(workUnitState);
   this.workUnitState=workUnitState;
   this.workUnit=workUnitState.getWorkunit();
   this.filesToPull=Lists.newArrayList(workUnitState.getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,""));
   this.statusCount=this.workUnit.getPropAsInt(ConfigurationKeys.FILEBASED_REPORT_STATUS_ON_COUNT,ConfigurationKeys.DEFAULT_FILEBASED_REPORT_STATUS_ON_COUNT);
-  this.fsHelper=fsHelper;
+  this.shouldSkipFirstRecord=this.workUnitState.getPropAsBoolean(ConfigurationKeys.SOURCE_SKIP_FIRST_RECORD,false);
+  if (fsHelper instanceof SizeAwareFileBasedHelper) {
+    this.fsHelper=(SizeAwareFileBasedHelper)fsHelper;
+  }
+ else {
+    this.fsHelper=new SizeAwareFileBasedHelperDecorator(fsHelper);
+  }
   try {
     this.fsHelper.connect();
   }
  catch (  FileBasedHelperException e) {
-    Throwables.propagate(e);
+    throw new RuntimeException(e);
   }
+  this.counters.initialize(getMetricContext(),CounterNames.class,this.getClass());
 }

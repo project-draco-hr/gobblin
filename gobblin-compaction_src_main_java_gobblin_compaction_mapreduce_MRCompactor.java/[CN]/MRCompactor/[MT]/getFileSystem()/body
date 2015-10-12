@@ -1,0 +1,9 @@
+{
+  if (this.state.contains(COMPACTION_FILE_SYSTEM_URI)) {
+    URI uri=URI.create(this.state.getProp(COMPACTION_FILE_SYSTEM_URI));
+    return FileSystem.get(uri,this.conf);
+  }
+ else {
+    return FileSystem.get(this.conf);
+  }
+}

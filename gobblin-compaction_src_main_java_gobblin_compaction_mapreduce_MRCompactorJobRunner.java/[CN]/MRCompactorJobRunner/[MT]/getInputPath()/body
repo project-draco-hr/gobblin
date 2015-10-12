@@ -1,0 +1,3 @@
+{
+  return new Path(this.jobProps.getProp(MRCompactor.COMPACTION_JOB_INPUT_DIR));
+}

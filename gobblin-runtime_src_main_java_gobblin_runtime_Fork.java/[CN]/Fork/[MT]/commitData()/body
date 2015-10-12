@@ -1,6 +1,7 @@
 {
-  this.logger.info(String.format("Committing data of fork %d of task %s",this.index,this.taskId));
-  this.writer.commit();
+  if (this.writer.isPresent()) {
+    this.writer.get().commit();
+  }
   try {
     if (GobblinMetrics.isEnabled(this.taskState.getWorkunit())) {
       updateByteMetrics();

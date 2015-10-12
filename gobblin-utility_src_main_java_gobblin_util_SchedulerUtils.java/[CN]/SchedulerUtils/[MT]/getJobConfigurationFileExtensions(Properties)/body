@@ -1,11 +1,8 @@
 {
   Iterable<String> jobConfigFileExtensionsIterable=Splitter.on(",").omitEmptyStrings().trimResults().split(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_EXTENSIONS_KEY,ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_EXTENSIONS));
-  return Sets.newHashSet(Iterables.transform(jobConfigFileExtensionsIterable,new Function<String,String>(){
+  return ImmutableSet.copyOf(Iterables.transform(jobConfigFileExtensionsIterable,new Function<String,String>(){
     @Override public String apply(    String input){
-      if (input == null) {
-        throw new NullPointerException("Given input is null: " + input);
-      }
-      return input.toLowerCase();
+      return null != input ? input.toLowerCase() : "";
     }
   }
 ));

@@ -1,0 +1,45 @@
+{
+  if (!Boolean.valueOf(properties.getProperty(ConfigurationKeys.METRICS_REPORTING_KAFKA_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_KAFKA_ENABLED))) {
+    LOGGER.info("Not reporting metrics to Kafka");
+    return;
+  }
+  Optional<String> defaultTopic=Optional.fromNullable(properties.getProperty(ConfigurationKeys.METRICS_KAFKA_TOPIC));
+  Optional<String> metricsTopic=Optional.fromNullable(properties.getProperty(ConfigurationKeys.METRICS_KAFKA_TOPIC_METRICS));
+  Optional<String> eventsTopic=Optional.fromNullable(properties.getProperty(ConfigurationKeys.METRICS_KAFKA_TOPIC_EVENTS));
+  try {
+    Preconditions.checkArgument(properties.containsKey(ConfigurationKeys.METRICS_KAFKA_BROKERS),"Kafka metrics brokers missing.");
+    Preconditions.checkArgument(metricsTopic.or(eventsTopic).or(defaultTopic).isPresent(),"Kafka topic missing.");
+  }
+ catch (  IllegalArgumentException exception) {
+    LOGGER.error("Not reporting metrics to Kafka due to missing Kafka configuration(s).",exception);
+    return;
+  }
+  String brokers=properties.getProperty(ConfigurationKeys.METRICS_KAFKA_BROKERS);
+  String reportingFormat=properties.getProperty(ConfigurationKeys.METRICS_REPORTING_KAFKA_FORMAT,ConfigurationKeys.DEFAULT_METRICS_REPORTING_KAFKA_FORMAT);
+  KafkaReportingFormats formatEnum;
+  try {
+    formatEnum=KafkaReportingFormats.valueOf(reportingFormat.toUpperCase());
+  }
+ catch (  IllegalArgumentException exception) {
+    LOGGER.warn("Kafka metrics reporting format " + reportingFormat + " not recognized. Will report in json format.",exception);
+    formatEnum=KafkaReportingFormats.JSON;
+  }
+  if (metricsTopic.or(defaultTopic).isPresent()) {
+    try {
+      KafkaReporter.Builder<?> builder=formatEnum.metricReporterBuilder(this.metricContext,properties);
+      this.scheduledReporters.add(this.closer.register(builder.build(brokers,metricsTopic.or(defaultTopic).get())));
+    }
+ catch (    IOException exception) {
+      LOGGER.error("Failed to create Kafka metrics reporter. Will not report metrics to Kafka.",exception);
+    }
+  }
+  if (eventsTopic.or(defaultTopic).isPresent()) {
+    try {
+      KafkaEventReporter.Builder<?> builder=formatEnum.eventReporterBuilder(this.metricContext,properties);
+      this.scheduledReporters.add(this.closer.register(builder.build(brokers,eventsTopic.or(defaultTopic).get())));
+    }
+ catch (    IOException exception) {
+      LOGGER.error("Failed to create Kafka events reporter. Will not report events to Kafka.",exception);
+    }
+  }
+}

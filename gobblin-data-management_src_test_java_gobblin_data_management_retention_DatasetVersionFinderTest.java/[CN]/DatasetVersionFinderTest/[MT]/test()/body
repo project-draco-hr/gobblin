@@ -1,0 +1,18 @@
+{
+  FileSystem fs=mock(FileSystem.class);
+  String datasetPathStr="/path/to/dataset";
+  String dataset1="datasetVersion1";
+  String dataset2="datasetVersion2";
+  Path datasetPath=new Path(datasetPathStr);
+  Path globbedPath=new Path(datasetPathStr + "/*");
+  Path datasetVersion1=new Path(datasetPathStr + "/" + dataset1);
+  Path datasetVersion2=new Path(datasetPathStr + "/" + dataset2);
+  when(fs.globStatus(globbedPath)).thenReturn(new FileStatus[]{new FileStatus(0,true,0,0,0,datasetVersion1),new FileStatus(0,true,0,0,0,datasetVersion2)});
+  DatasetVersionFinder<StringDatasetVersion> versionFinder=new MockDatasetVersionFinder(fs,new Properties());
+  List<StringDatasetVersion> datasetVersions=Lists.newArrayList(versionFinder.findDatasetVersions(new MockDataset(datasetPath)));
+  Assert.assertEquals(datasetVersions.size(),2);
+  Assert.assertEquals(datasetVersions.get(0).getVersion(),dataset1);
+  Assert.assertEquals(datasetVersions.get(0).getPathsToDelete().iterator().next(),datasetVersion1);
+  Assert.assertEquals(datasetVersions.get(1).getVersion(),dataset2);
+  Assert.assertEquals(datasetVersions.get(1).getPathsToDelete().iterator().next(),datasetVersion2);
+}

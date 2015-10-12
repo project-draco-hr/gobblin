@@ -1,0 +1,8 @@
+{
+  LOG.info("Creating compaction jobs for topic " + topic + " with priority "+ priority);
+  MRCompactorJobPropCreator jobPropCreator=getJobPropCreator(topic);
+  List<State> allJobProps=jobPropCreator.createJobProps();
+  for (  State jobProps : allJobProps) {
+    this.datasets.add(new Dataset(new Path(getJobInputPath(jobProps)),jobProps,priority));
+  }
+}

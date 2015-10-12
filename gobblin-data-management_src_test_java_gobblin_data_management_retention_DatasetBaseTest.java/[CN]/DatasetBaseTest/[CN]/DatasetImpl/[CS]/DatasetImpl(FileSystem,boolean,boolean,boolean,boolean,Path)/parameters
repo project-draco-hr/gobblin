@@ -1,0 +1,6 @@
+FileSystem fs
+boolean simulate
+boolean skipTrash
+boolean deleteEmptyDirectories
+boolean deleteAsOwner
+Path path

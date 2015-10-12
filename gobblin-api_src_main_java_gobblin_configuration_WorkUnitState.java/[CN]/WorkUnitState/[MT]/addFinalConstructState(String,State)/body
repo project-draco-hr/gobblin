@@ -1,0 +1,10 @@
+{
+  for (  String property : finalConstructState.getPropertyNames()) {
+    if (Strings.isNullOrEmpty(infix)) {
+      setProp(FINAL_CONSTRUCT_STATE_PREFIX + property,finalConstructState.getProp(property));
+    }
+ else {
+      setProp(FINAL_CONSTRUCT_STATE_PREFIX + infix + "."+ property,finalConstructState.getProp(property));
+    }
+  }
+}

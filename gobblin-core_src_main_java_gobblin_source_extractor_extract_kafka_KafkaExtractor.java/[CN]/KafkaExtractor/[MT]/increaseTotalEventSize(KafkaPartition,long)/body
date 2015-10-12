@@ -1,8 +1,0 @@
-{
-  if (this.totalEventSizes.containsKey(partition)) {
-    this.totalEventSizes.put(partition,this.totalEventSizes.get(partition) + size);
-  }
- else {
-    this.totalEventSizes.put(partition,size);
-  }
-}

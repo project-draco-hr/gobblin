@@ -1,0 +1,16 @@
+{
+  if (cl.hasOption(MASTER_PWD_OPTION)) {
+    if (cl.hasOption(MASTER_PWD_FILE_OPTION)) {
+      System.out.println(String.format("both -%s and -%s are provided. Using -%s",MASTER_PWD_OPTION,MASTER_PWD_FILE_OPTION,MASTER_PWD_OPTION));
+    }
+    return cl.getOptionValue(MASTER_PWD_OPTION);
+  }
+ else {
+    Path masterPwdLoc=new Path(cl.getOptionValue(MASTER_PWD_FILE_OPTION));
+    Optional<String> masterPwd=PasswordManager.getMasterPassword(masterPwdLoc);
+    if (masterPwd.isPresent()) {
+      return masterPwd.get();
+    }
+    throw new RuntimeException("Failed to get master password from " + masterPwdLoc);
+  }
+}

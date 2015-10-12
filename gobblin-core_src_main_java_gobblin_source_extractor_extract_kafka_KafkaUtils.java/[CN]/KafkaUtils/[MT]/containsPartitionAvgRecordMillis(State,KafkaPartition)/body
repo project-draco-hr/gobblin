@@ -1,0 +1,3 @@
+{
+  return state.contains(getPartitionPropName(partition.getTopicName(),partition.getId()) + "." + KafkaSource.AVG_RECORD_MILLIS);
+}

@@ -1,0 +1,4 @@
+{
+  File dir=new File(getFileDir());
+  FileUtils.deleteDirectory(dir);
+}

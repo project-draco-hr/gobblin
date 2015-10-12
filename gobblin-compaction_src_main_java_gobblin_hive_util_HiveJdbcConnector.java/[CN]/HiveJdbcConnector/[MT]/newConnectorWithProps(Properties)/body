@@ -8,7 +8,7 @@
     hiveJdbcConnector.withHiveConnectionFromUrl(compactRunProps.getProperty(HIVESERVER_CONNECTION_STRING));
   }
  else   if (compactRunProps.containsKey(HIVESERVER_URL)) {
-    hiveJdbcConnector.withHiveConnectionFromUrlUserPassword(compactRunProps.getProperty(HIVESERVER_URL),compactRunProps.getProperty(HIVESERVER_USER),compactRunProps.getProperty(HIVESERVER_PASSWORD));
+    hiveJdbcConnector.withHiveConnectionFromUrlUserPassword(compactRunProps.getProperty(HIVESERVER_URL),compactRunProps.getProperty(HIVESERVER_USER),PasswordManager.getInstance(compactRunProps).readPassword(compactRunProps.getProperty(HIVESERVER_PASSWORD)));
   }
  else {
     hiveJdbcConnector.withHiveEmbeddedConnection();

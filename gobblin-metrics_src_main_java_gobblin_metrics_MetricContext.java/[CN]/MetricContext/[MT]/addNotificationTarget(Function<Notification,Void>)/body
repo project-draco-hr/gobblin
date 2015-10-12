@@ -1,0 +1,8 @@
+{
+  UUID uuid=UUID.randomUUID();
+  if (this.notificationTargets.containsKey(uuid)) {
+    throw new RuntimeException("Failed to create notification target.");
+  }
+  this.notificationTargets.put(uuid,target);
+  return uuid;
+}

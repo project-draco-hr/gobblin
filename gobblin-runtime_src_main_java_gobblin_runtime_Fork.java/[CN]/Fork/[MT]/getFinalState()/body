@@ -1,0 +1,8 @@
+{
+  State state=this.converter.getFinalState();
+  state.addAll(this.rowLevelPolicyChecker.getFinalState());
+  if (this.writer.isPresent()) {
+    state.addAll(this.writer.get().getFinalState());
+  }
+  return state;
+}

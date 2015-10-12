@@ -1,0 +1,17 @@
+{
+  KafkaPusher pusher=new KafkaPusher("localhost:" + kafkaPort,TOPIC);
+  String msg1="msg1";
+  String msg2="msg2";
+  pusher.pushMessages(Lists.newArrayList(msg1.getBytes(),msg2.getBytes()));
+  try {
+    Thread.sleep(1000);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  assert(iterator.hasNext());
+  Assert.assertEquals(new String(iterator.next().message()),msg1);
+  assert(iterator.hasNext());
+  Assert.assertEquals(new String(iterator.next().message()),msg2);
+  pusher.close();
+}

@@ -1,5 +1,0 @@
-{
-  List<Metric> metrics=new ArrayList<Metric>();
-  metrics.add(serializeValue(name,counter.getCount()));
-  return metrics;
-}

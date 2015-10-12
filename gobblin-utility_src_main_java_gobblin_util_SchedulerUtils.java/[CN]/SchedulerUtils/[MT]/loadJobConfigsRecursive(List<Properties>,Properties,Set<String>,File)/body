@@ -6,7 +6,7 @@
     }
     rootProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(new File(jobConfigDir,propertiesFiles[0]))));
   }
-  String[] names=jobConfigDir.list();
+  String[] names=jobConfigDir.list(NON_PROPERTIES_FILE_FILTER);
   if (names == null || names.length == 0) {
     return;
   }

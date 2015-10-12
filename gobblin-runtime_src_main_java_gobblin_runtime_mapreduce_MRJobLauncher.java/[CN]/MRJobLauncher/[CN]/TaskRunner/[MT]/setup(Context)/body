@@ -2,6 +2,7 @@
   try {
     this.fs=FileSystem.get(context.getConfiguration());
     this.taskStateStore=new FsStateStore<TaskState>(this.fs,SequenceFileOutputFormat.getOutputPath(context).toUri().getPath(),TaskState.class);
+    readJobState(context);
   }
  catch (  IOException ioe) {
     throw new RuntimeException("Failed to setup the mapper task",ioe);
@@ -15,5 +16,18 @@
  catch (  TimeoutException te) {
     LOG.error("Timed out while waiting for the service manager to start up",te);
     throw new RuntimeException(te);
+  }
+  Configuration configuration=context.getConfiguration();
+  if (Boolean.valueOf(configuration.get(ConfigurationKeys.METRICS_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_ENABLED))) {
+    this.jobMetrics=Optional.of(JobMetrics.get(this.jobState));
+    String metricFileSuffix=configuration.get(ConfigurationKeys.METRICS_FILE_SUFFIX,ConfigurationKeys.DEFAULT_METRICS_FILE_SUFFIX);
+    if (Strings.isNullOrEmpty(metricFileSuffix)) {
+      metricFileSuffix=context.getTaskAttemptID().getTaskID().toString();
+    }
+ else {
+      metricFileSuffix+="." + context.getTaskAttemptID().getTaskID().toString();
+    }
+    configuration.set(ConfigurationKeys.METRICS_FILE_SUFFIX,metricFileSuffix);
+    this.jobMetrics.get().startMetricReporting(configuration);
   }
 }

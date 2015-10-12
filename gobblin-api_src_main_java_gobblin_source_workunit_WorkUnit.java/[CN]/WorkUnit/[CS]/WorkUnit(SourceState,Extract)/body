@@ -1,6 +1,6 @@
 {
   if (state != null) {
-    this.addAll(state);
+    super.addAll(state);
   }
   if (extract != null) {
     this.extract=extract;

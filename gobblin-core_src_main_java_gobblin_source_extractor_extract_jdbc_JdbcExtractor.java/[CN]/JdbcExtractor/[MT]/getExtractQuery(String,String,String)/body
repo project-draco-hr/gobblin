@@ -12,7 +12,7 @@
   }
   String watermarkPredicateSymbol=ConfigurationKeys.DEFAULT_SOURCE_QUERYBASED_WATERMARK_PREDICATE_SYMBOL;
   if (!query.contains(watermarkPredicateSymbol)) {
-    query=this.addPredicate(query,watermarkPredicateSymbol);
+    query=SqlQueryUtils.addPredicate(query,watermarkPredicateSymbol);
   }
   return query;
 }

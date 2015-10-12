@@ -1,0 +1,6 @@
+{
+  this.fs=fs;
+  this.stateStoreDir=stateStoreDir;
+  this.retention=retention;
+  this.retentionTimeUnit=retentionTimeUnit;
+}

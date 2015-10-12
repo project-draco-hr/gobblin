@@ -1,0 +1,3 @@
+{
+  return this.topicNamePattern.matcher(input.getName()).matches();
+}

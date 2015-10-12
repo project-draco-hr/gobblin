@@ -1,0 +1,4 @@
+{
+  CompactionSlaEventHelper.populateState(jobProps,Optional.of(job),fs);
+  new SlaEventSubmitter(this.eventSubmitter,"CompactionCompleted",jobProps.getProperties()).submit();
+}

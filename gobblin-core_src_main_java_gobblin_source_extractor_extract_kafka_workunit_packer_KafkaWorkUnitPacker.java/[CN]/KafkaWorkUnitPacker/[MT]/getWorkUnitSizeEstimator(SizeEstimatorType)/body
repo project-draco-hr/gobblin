@@ -1,0 +1,10 @@
+{
+switch (sizeEstimatorType) {
+case AVG_RECORD_TIME:
+    return new KafkaAvgRecordTimeBasedWorkUnitSizeEstimator(this.state);
+case AVG_RECORD_SIZE:
+  return new KafkaAvgRecordSizeBasedWorkUnitSizeEstimator(this.state);
+default :
+throw new IllegalArgumentException("WorkUnit size estimator type " + sizeEstimatorType + " not found");
+}
+}

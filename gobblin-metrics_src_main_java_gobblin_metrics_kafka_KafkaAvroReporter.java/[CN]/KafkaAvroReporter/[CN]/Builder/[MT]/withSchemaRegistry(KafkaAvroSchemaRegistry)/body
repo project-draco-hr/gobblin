@@ -1,0 +1,4 @@
+{
+  this.registry=Optional.of(registry);
+  return self();
+}

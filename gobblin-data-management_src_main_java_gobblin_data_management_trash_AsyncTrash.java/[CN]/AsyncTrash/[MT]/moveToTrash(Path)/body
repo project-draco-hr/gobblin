@@ -1,0 +1,4 @@
+{
+  moveToTrashFuture(path);
+  return true;
+}

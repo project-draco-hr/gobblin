@@ -1,0 +1,19 @@
+{
+  OldApiHadoopFileInputSource<String,Text,LongWritable,Text> fileInputSource=new TestHadoopFileInputSource();
+  List<WorkUnit> workUnitList=fileInputSource.getWorkunits(this.sourceState);
+  Assert.assertEquals(workUnitList.size(),1);
+  WorkUnitState workUnitState=new WorkUnitState(workUnitList.get(0));
+  Closer closer=Closer.create();
+  try {
+    OldApiHadoopFileInputExtractor<String,Text,LongWritable,Text> extractor=(OldApiHadoopFileInputExtractor<String,Text,LongWritable,Text>)fileInputSource.getExtractor(workUnitState);
+    Text text=extractor.readRecord(null);
+    Assert.assertEquals(text.toString(),TEXT);
+    Assert.assertNull(extractor.readRecord(null));
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

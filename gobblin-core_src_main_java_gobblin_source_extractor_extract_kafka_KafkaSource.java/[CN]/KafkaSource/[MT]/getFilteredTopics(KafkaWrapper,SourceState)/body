@@ -1,5 +1,0 @@
-{
-  Set<String> blacklist=state.contains(TOPIC_BLACKLIST) ? state.getPropAsCaseInsensitiveSet(TOPIC_BLACKLIST) : new HashSet<String>();
-  Set<String> whitelist=state.contains(TOPIC_WHITELIST) ? state.getPropAsCaseInsensitiveSet(TOPIC_WHITELIST) : new HashSet<String>();
-  return kafkaWrapper.getFilteredTopics(blacklist,whitelist);
-}

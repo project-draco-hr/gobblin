@@ -3,7 +3,8 @@
   Counter counter=registry.counter("com.linkedin.example.counter");
   Meter meter=registry.meter("com.linkedin.example.meter");
   Histogram histogram=registry.histogram("com.linkedin.example.histogram");
-  KafkaReporter kafkaReporter=getBuilder(registry).build("localhost:" + kafkaPort,topic);
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaReporter kafkaReporter=getBuilder(registry,pusher).build("localhost:0000","topic");
   counter.inc();
   meter.mark(2);
   histogram.update(1);
@@ -17,10 +18,10 @@
     Thread.currentThread().interrupt();
   }
   Map<String,Double> expected=new HashMap<String,Double>();
-  expected.put("com.linkedin.example.counter",1.0);
-  expected.put("com.linkedin.example.meter.count",2.0);
-  expected.put("com.linkedin.example.histogram.count",3.0);
-  MetricReport nextReport=nextReport(iterator);
+  expected.put("com.linkedin.example.counter." + Measurements.COUNT,1.0);
+  expected.put("com.linkedin.example.meter." + Measurements.COUNT,2.0);
+  expected.put("com.linkedin.example.histogram." + Measurements.COUNT,3.0);
+  MetricReport nextReport=nextReport(pusher.messageIterator());
   expectMetricsWithValues(nextReport,expected);
   kafkaReporter.report();
   try {
@@ -30,22 +31,22 @@
     Thread.currentThread().interrupt();
   }
   Set<String> expectedSet=new HashSet<String>();
-  expectedSet.add("com.linkedin.example.counter");
-  expectedSet.add("com.linkedin.example.meter.count");
-  expectedSet.add("com.linkedin.example.meter.rate.mean");
-  expectedSet.add("com.linkedin.example.meter.rate.1m");
-  expectedSet.add("com.linkedin.example.meter.rate.5m");
-  expectedSet.add("com.linkedin.example.meter.rate.15m");
-  expectedSet.add("com.linkedin.example.histogram.mean");
-  expectedSet.add("com.linkedin.example.histogram.min");
-  expectedSet.add("com.linkedin.example.histogram.max");
-  expectedSet.add("com.linkedin.example.histogram.median");
-  expectedSet.add("com.linkedin.example.histogram.75percentile");
-  expectedSet.add("com.linkedin.example.histogram.95percentile");
-  expectedSet.add("com.linkedin.example.histogram.99percentile");
-  expectedSet.add("com.linkedin.example.histogram.999percentile");
-  expectedSet.add("com.linkedin.example.histogram.count");
-  nextReport=nextReport(iterator);
+  expectedSet.add("com.linkedin.example.counter." + Measurements.COUNT);
+  expectedSet.add("com.linkedin.example.meter." + Measurements.COUNT);
+  expectedSet.add("com.linkedin.example.meter." + Measurements.MEAN_RATE);
+  expectedSet.add("com.linkedin.example.meter." + Measurements.RATE_1MIN);
+  expectedSet.add("com.linkedin.example.meter." + Measurements.RATE_5MIN);
+  expectedSet.add("com.linkedin.example.meter." + Measurements.RATE_15MIN);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.MEAN);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.MIN);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.MAX);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.MEDIAN);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.PERCENTILE_75TH);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.PERCENTILE_95TH);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.PERCENTILE_99TH);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.PERCENTILE_999TH);
+  expectedSet.add("com.linkedin.example.histogram." + Measurements.COUNT);
+  nextReport=nextReport(pusher.messageIterator());
   expectMetrics(nextReport,expectedSet,true);
   kafkaReporter.close();
 }

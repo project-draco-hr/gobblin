@@ -1,7 +1,7 @@
 {
   long bytesWritten=0;
   boolean getBytesWritten=false;
-  for (  Entry<Path,DataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
+  for (  Entry<Path,FsDataWriter<GenericRecord>> entry : this.pathToWriterMap.entrySet()) {
     try {
       bytesWritten+=entry.getValue().bytesWritten();
     }

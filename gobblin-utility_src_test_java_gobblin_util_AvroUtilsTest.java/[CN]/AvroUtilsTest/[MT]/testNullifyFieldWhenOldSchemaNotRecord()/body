@@ -1,0 +1,6 @@
+{
+  Schema oldSchema=new Schema.Parser().parse("{\"type\": \"array\", \"items\": \"string\"}");
+  Schema newSchema=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}"+ "]}");
+  Schema expectedOutputSchema=newSchema;
+  Assert.assertEquals(expectedOutputSchema,AvroUtils.nullifyFieldsForSchemaMerge(oldSchema,newSchema));
+}

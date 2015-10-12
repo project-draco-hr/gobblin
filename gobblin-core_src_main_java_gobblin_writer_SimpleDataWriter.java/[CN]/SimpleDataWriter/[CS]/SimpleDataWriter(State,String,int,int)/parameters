@@ -1,0 +1,4 @@
+State properties
+String fileName
+int numBranches
+int branchId

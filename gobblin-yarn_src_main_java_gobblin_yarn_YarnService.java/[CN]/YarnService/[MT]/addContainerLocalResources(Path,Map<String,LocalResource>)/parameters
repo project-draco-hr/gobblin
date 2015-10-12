@@ -1,0 +1,2 @@
+Path destDir
+Map<String,LocalResource> resourceMap

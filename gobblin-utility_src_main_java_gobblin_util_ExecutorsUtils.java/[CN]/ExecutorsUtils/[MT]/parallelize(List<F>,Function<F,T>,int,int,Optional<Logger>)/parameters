@@ -1,0 +1,5 @@
+List<F> list
+Function<F,T> function
+int threadCount
+int timeoutInSecs
+Optional<Logger> logger

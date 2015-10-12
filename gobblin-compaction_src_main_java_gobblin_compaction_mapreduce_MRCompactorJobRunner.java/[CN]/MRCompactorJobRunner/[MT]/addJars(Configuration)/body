@@ -1,0 +1,9 @@
+{
+  if (!this.jobProps.contains(MRCompactor.COMPACTION_JARS)) {
+    return;
+  }
+  Path jarFileDir=new Path(this.jobProps.getProp(MRCompactor.COMPACTION_JARS));
+  for (  FileStatus status : this.fs.listStatus(jarFileDir)) {
+    DistributedCache.addFileToClassPath(status.getPath(),conf,this.fs);
+  }
+}

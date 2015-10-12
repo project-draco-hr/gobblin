@@ -1,0 +1,5 @@
+{
+  boolean including=!includingRegexPatterns.isPresent() || DatasetFilterUtils.stringInPatterns(line,includingRegexPatterns.get());
+  boolean excluding=excludingRegexPatterns.isPresent() && DatasetFilterUtils.stringInPatterns(line,excludingRegexPatterns.get());
+  return !excluding && including;
+}

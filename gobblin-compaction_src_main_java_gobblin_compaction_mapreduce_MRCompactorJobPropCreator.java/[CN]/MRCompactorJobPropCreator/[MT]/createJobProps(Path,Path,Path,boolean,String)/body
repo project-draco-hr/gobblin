@@ -1,0 +1,5 @@
+{
+  State jobProps=createJobProps(jobInputDir,jobOutputDir,jobTmpDir,deduplicate);
+  jobProps.setProp(MRCompactor.COMPACTION_JOB_DEST_PARTITION,partition);
+  return jobProps;
+}

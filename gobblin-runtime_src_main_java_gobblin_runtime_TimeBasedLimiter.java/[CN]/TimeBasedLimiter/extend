@@ -1,1 +1,1 @@
-NonRefillableLimiter
+gobblin.util.limiter.TimeBasedLimiter

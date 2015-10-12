@@ -1,0 +1,24 @@
+{
+  this.state=new State();
+  state.addAll(props);
+  this.conf=HadoopUtils.getConfFromState(state);
+  this.inputDir=getInputDir();
+  this.inputSubDir=getInputSubDir();
+  this.destDir=getDestDir();
+  this.destSubDir=getDestSubDir();
+  this.destLateSubDir=getDestLateSubDir();
+  this.tmpDir=getTmpDir();
+  this.fs=getFileSystem();
+  this.datasets=Sets.newHashSet();
+  this.jobExecutor=createJobExecutor();
+  this.jobRunnables=Maps.newConcurrentMap();
+  this.closer=Closer.create();
+  this.verifier=this.closer.register(new DataCompletenessVerifier(this.state));
+  this.stopwatch=Stopwatch.createStarted();
+  this.gobblinMetrics=initializeMetrics();
+  this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.state.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  this.dataVerifTimeoutMinutes=getDataVerifTimeoutMinutes();
+  this.compactionTimeoutMinutes=getCompactionTimeoutMinutes();
+  this.shouldVerifDataCompl=shouldVerifyDataCompleteness();
+  this.shouldPublishDataIfCannotVerifyCompl=shouldPublishDataIfCannotVerifyCompl();
+}

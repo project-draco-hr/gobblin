@@ -1,0 +1,3 @@
+KafkaTopic topic
+SourceState state
+Optional<State> topicSpecificState

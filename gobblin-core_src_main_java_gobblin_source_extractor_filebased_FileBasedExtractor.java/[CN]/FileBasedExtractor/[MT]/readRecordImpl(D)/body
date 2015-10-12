@@ -1,0 +1,20 @@
+{
+  this.totalRecordCount++;
+  if (this.statusCount > 0 && this.totalRecordCount % this.statusCount == 0) {
+    LOG.info("Total number of records processed so far: " + this.totalRecordCount);
+  }
+  if (this.currentFile != null && this.currentFileItr != null) {
+    this.hasNext=this.currentFileItr.hasNext();
+    if (!this.hasNext) {
+      getNextFileToRead();
+    }
+  }
+ else {
+    getNextFileToRead();
+  }
+  if (this.hasNext) {
+    return this.currentFileItr.next();
+  }
+  LOG.info("Finished reading records from all files");
+  return null;
+}

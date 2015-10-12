@@ -3,10 +3,10 @@
   Closer closer=Closer.create();
   HttpURLConnection conn=null;
   StringBuilder sb=new StringBuilder();
-  String urlStr=rootUrl + "&titles=" + pageTitle+ "&rvlimit="+ revisionsCnt;
+  String urlStr=this.rootUrl + "&titles=" + pageTitle+ "&rvlimit="+ this.revisionsCnt;
   try {
-    URL url=new URL(urlStr);
-    conn=(HttpURLConnection)url.openConnection();
+    conn=getHttpConnection(urlStr);
+    conn.connect();
     BufferedReader br=closer.register(new BufferedReader(new InputStreamReader(conn.getInputStream(),ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     String line;
     while ((line=br.readLine()) != null) {
@@ -27,8 +27,12 @@
       conn.disconnect();
     }
   }
+  if (Strings.isNullOrEmpty(sb.toString())) {
+    LOG.warn("Received empty response for query: " + urlStr);
+    return retrievedRevisions;
+  }
   JsonElement jsonElement=GSON.fromJson(sb.toString(),JsonElement.class);
-  if (!jsonElement.isJsonObject()) {
+  if (jsonElement == null || !jsonElement.isJsonObject()) {
     return retrievedRevisions;
   }
   JsonObject jsonObj=jsonElement.getAsJsonObject();
@@ -56,7 +60,7 @@
     if (pageIdObj.has(JSON_MEMBER_TITLE)) {
       revObj.add(JSON_MEMBER_TITLE,pageIdObj.get(JSON_MEMBER_TITLE));
     }
-    retrievedRevisions.add((JsonElement)revObj);
+    retrievedRevisions.add(revObj);
   }
   LOG.info(retrievedRevisions.size() + " record(s) retrieved for title " + pageTitle);
   return retrievedRevisions;

@@ -1,3 +1,0 @@
-{
-  return getRowLevelPolicyChecker(taskState,-1);
-}

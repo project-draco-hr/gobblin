@@ -1,0 +1,6 @@
+{
+  int idx=0;
+  for (  MultiWorkUnit mwu : mwus) {
+    LOG.info(String.format("MultiWorkUnit %d: estimated load=%f, partitions=%s",idx++,getWorkUnitEstLoad(mwu),getMultiWorkUnitPartitions(mwu)));
+  }
+}

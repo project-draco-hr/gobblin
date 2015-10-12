@@ -1,0 +1,6 @@
+{
+  Schema oldSchema=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}, "+ "{\"name\": \"color\", \"type\": \"string\"}, "+ "{\"name\": \"number\", \"type\": [{\"type\": \"string\"}, {\"type\": \"array\", \"items\": \"string\"}]}"+ "]}");
+  Schema newSchema=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}"+ "]}");
+  Schema expectedOutputSchema=new Schema.Parser().parse("{\"type\":\"record\", \"name\":\"test\", " + "\"fields\":[" + "{\"name\": \"name\", \"type\": \"string\"}, "+ "{\"name\": \"color\", \"type\": [\"null\", \"string\"]}, "+ "{\"name\": \"number\", \"type\": [\"null\", {\"type\": \"string\"}, {\"type\": \"array\", \"items\": \"string\"}]}"+ "]}");
+  Assert.assertEquals(expectedOutputSchema,AvroUtils.nullifyFieldsForSchemaMerge(oldSchema,newSchema));
+}

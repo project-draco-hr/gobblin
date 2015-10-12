@@ -1,0 +1,3 @@
+{
+  readPrevAvgRecordMillis(state);
+}

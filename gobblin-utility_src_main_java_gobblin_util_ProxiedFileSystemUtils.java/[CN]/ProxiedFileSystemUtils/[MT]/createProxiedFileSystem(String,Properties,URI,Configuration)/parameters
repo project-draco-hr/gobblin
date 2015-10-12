@@ -1,0 +1,4 @@
+String userNameToProxyAs
+Properties properties
+URI fsURI
+Configuration conf

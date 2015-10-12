@@ -5,5 +5,5 @@
   Assert.assertTrue(this.childContext.getMeters().isEmpty());
   Assert.assertTrue(this.childContext.remove(RECORD_SIZE_DISTRIBUTION));
   Assert.assertTrue(this.childContext.getHistograms().isEmpty());
-  Assert.assertTrue(this.childContext.getNames().isEmpty());
+  Assert.assertEquals(this.childContext.getNames().size(),1);
 }

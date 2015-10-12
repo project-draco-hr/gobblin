@@ -1,0 +1,10 @@
+{
+  this.topic=builder.topic;
+  this.topicInputDir=builder.topicInputDir;
+  this.topicOutputDir=builder.topicOutputDir;
+  this.topicOutputLateDir=builder.topicOutputLateDir;
+  this.topicTmpDir=builder.topicTmpDir;
+  this.fs=builder.fs;
+  this.deduplicate=builder.deduplicate;
+  this.state=builder.state;
+}

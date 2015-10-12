@@ -1,30 +1,25 @@
 {
-  Optional<Timer.Context> scheduleWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.WORK_UNITS_SCHEDULE);
-  List<WorkUnit> workUnitsToRun=Lists.newArrayList();
-  for (  WorkUnit workUnit : workUnits) {
-    if (workUnit instanceof MultiWorkUnit) {
-      workUnitsToRun.addAll(((MultiWorkUnit)workUnit).getWorkUnits());
-    }
- else {
-      workUnitsToRun.add(workUnit);
-    }
-  }
-  Instrumented.endTimer(scheduleWorkUnitsTimer);
+  TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_PREPARATION);
+  List<WorkUnit> workUnitsToRun=JobLauncherUtils.flattenWorkUnits(workUnits);
+  workUnitsPreparationTimer.stop();
   if (workUnitsToRun.isEmpty()) {
     LOG.warn("No work units to run");
     return;
   }
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
-  Optional<Timer.Context> runWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.RunJobTimings.WORK_UNITS_RUN);
+  for (  WorkUnit workUnit : workUnitsToRun) {
+    workUnit.addAllIfNotExist(jobState);
+  }
+  TimingEvent workUnitsRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_RUN);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
   List<Task> tasks=AbstractJobLauncher.submitWorkUnits(this.jobContext.getJobId(),workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
   LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));
   while (this.countDownLatch.getCount() > 0) {
-    LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnits.size(),jobId));
+    LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnitsToRun.size(),jobId));
     this.countDownLatch.await(1,TimeUnit.MINUTES);
   }
-  Instrumented.endTimer(runWorkUnitsTimer);
+  workUnitsRunTimer.stop();
   if (this.cancellationRequested) {
 synchronized (this.cancellationExecution) {
       if (this.cancellationExecuted) {
@@ -39,7 +34,7 @@ synchronized (this.cancellationExecution) {
   for (  Task task : tasks) {
     jobState.addTaskState(task.getTaskState());
     if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
-      jobState.setState(JobState.RunningState.FAILED);
+      this.eventSubmitter.submit(gobblin.metrics.event.EventNames.TASK_FAILED,"taskId",task.getTaskId());
     }
   }
 }

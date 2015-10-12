@@ -1,6 +1,6 @@
 {
   timer.transform(new Function<Timer,Timer>(){
-    @Override public Timer apply(    Timer input){
+    @Override public Timer apply(    @Nonnull Timer input){
       input.update(duration,unit);
       return input;
     }

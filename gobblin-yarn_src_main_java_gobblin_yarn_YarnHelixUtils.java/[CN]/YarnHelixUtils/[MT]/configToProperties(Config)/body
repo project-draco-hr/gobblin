@@ -1,0 +1,7 @@
+{
+  Properties properties=new Properties();
+  for (  Map.Entry<String,ConfigValue> entry : config.entrySet()) {
+    properties.setProperty(entry.getKey(),config.getString(entry.getKey()));
+  }
+  return properties;
+}

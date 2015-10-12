@@ -1,0 +1,9 @@
+{
+  Options options=new Options();
+  options.addOption(new Option(StringUtils.EMPTY + HELP_OPTION,"print this message"));
+  options.addOption(Option.builder(StringUtils.EMPTY + PLAIN_PWD_OPTION).argName("plain password").hasArg().desc("plain password to be encrypted").build());
+  options.addOption(Option.builder(StringUtils.EMPTY + MASTER_PWD_OPTION).argName("master password").hasArg().desc("master password used to encrypt the plain password").build());
+  options.addOption(Option.builder(StringUtils.EMPTY + MASTER_PWD_FILE_OPTION).argName("master password file").hasArg().desc("file that contains the master password used to encrypt the plain password").build());
+  options.addOption(new Option(StringUtils.EMPTY + STRONG_ENCRYPTOR_OPTION,"use strong encryptor"));
+  return options;
+}

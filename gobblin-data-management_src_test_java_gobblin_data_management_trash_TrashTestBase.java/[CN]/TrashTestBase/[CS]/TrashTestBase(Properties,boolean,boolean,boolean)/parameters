@@ -1,0 +1,4 @@
+Properties properties
+boolean trashExists
+boolean trashIdentifierExists
+boolean trashEmpty

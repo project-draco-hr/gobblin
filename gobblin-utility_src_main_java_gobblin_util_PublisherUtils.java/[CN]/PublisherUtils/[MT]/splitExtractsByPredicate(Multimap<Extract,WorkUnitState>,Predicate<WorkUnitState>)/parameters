@@ -1,0 +1,2 @@
+Multimap<Extract,WorkUnitState> extractToWorkUnitStateMap
+Predicate<WorkUnitState> predicate

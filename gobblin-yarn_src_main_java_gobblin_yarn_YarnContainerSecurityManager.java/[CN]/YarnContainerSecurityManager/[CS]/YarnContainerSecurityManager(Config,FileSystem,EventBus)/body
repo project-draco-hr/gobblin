@@ -1,0 +1,5 @@
+{
+  this.fs=fs;
+  this.tokenFilePath=new Path(this.fs.getHomeDirectory(),config.getString(GobblinYarnConfigurationKeys.APPLICATION_NAME_KEY) + Path.SEPARATOR + GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
+  this.eventBus=eventBus;
+}

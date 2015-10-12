@@ -1,0 +1,16 @@
+{
+  if (Strings.isNullOrEmpty(predicateCond)) {
+    return query;
+  }
+  String normalizedQuery=query.toLowerCase().trim();
+  checkArgument(normalizedQuery.contains(" from "),"query does not contain 'from': " + query);
+  checkArgument(!normalizedQuery.contains(" by "),"query contains 'order by' or 'group by': " + query);
+  checkArgument(!normalizedQuery.contains(" having "),"query contains 'having': " + query);
+  checkArgument(!normalizedQuery.contains(" limit "),"query contains 'limit': " + query);
+  String keyword=" where ";
+  if (normalizedQuery.contains(keyword)) {
+    keyword=" and ";
+  }
+  query=query + keyword + "("+ predicateCond+ ")";
+  return query;
+}

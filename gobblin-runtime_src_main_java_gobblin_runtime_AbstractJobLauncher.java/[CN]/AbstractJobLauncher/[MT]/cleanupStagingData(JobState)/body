@@ -1,10 +1,8 @@
 {
-  for (  TaskState taskState : jobState.getTaskStates()) {
-    try {
-      JobLauncherUtils.cleanStagingData(taskState,LOG);
-    }
- catch (    IOException ioe) {
-      LOG.error(String.format("Failed to clean staging data for task %s: %s",taskState.getTaskId(),ioe),ioe);
-    }
+  if (this.jobContext.shouldCleanupStagingDataPerTask()) {
+    cleanupStagingDataPerTask(jobState);
+  }
+ else {
+    cleanupStagingDataForEntireJob(jobState);
   }
 }

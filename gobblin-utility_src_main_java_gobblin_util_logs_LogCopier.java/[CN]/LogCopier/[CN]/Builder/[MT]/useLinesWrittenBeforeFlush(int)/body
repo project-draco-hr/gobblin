@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(linesWrittenBeforeFlush > 0,"The value specifying the lines to write before flush must be positive");
+  this.linesWrittenBeforeFlush=linesWrittenBeforeFlush;
+  return this;
+}

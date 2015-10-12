@@ -1,0 +1,3 @@
+{
+  state.setProp(SlaEventKeys.PARTITION_KEY,state.getProp(MRCompactor.COMPACTION_JOB_DEST_PARTITION));
+}

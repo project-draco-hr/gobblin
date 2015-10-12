@@ -1,0 +1,5 @@
+{
+  setSplitSize(cx);
+  List<InputSplit> splits=getSplits(cx,Arrays.asList(getInputPaths(cx)));
+  return cleanSplits(splits);
+}

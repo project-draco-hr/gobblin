@@ -8,6 +8,6 @@
   Assert.assertTrue(histograms.containsKey(MetricRegistry.name(context.metricNamePrefix(false),RECORD_SIZE_DISTRIBUTION)));
   Assert.assertEquals(meters.size(),1);
   Assert.assertTrue(meters.containsKey(MetricRegistry.name(context.metricNamePrefix(false),RECORD_PROCESS_RATE)));
-  Assert.assertEquals(timers.size(),1);
+  Assert.assertEquals(timers.size(),2);
   Assert.assertTrue(timers.containsKey(MetricRegistry.name(context.metricNamePrefix(false),TOTAL_DURATION)));
 }

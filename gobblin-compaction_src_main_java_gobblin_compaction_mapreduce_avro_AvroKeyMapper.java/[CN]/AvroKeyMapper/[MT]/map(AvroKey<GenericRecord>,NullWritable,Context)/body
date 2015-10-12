@@ -1,0 +1,11 @@
+{
+  if (context.getNumReduceTasks() == 0) {
+    context.write(key,NullWritable.get());
+  }
+ else {
+    populateComparableKeyRecord(key.datum(),outKey.datum());
+    outValue.datum(key.datum());
+    context.write(outKey,outValue);
+  }
+  context.getCounter(EVENT_COUNTER.RECORD_COUNT).increment(1);
+}

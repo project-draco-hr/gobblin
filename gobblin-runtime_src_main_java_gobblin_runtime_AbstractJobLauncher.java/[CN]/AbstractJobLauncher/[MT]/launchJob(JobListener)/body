@@ -1,18 +1,25 @@
 {
+  if (this.jobContext.getJobMetricsOptional().isPresent()) {
+    this.jobContext.getJobMetricsOptional().get().startMetricReporting(this.jobProps);
+  }
+  TimingEvent launchJobTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.FULL_JOB_EXECUTION);
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
   try {
     if (!tryLockJob()) {
+      this.eventSubmitter.submit(gobblin.metrics.event.EventNames.LOCK_IN_USE);
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
     }
-    Optional<Timer.Context> createWorkyunitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_CREATE);
+    TimingEvent workUnitsCreationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_CREATION);
     Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
+    workUnitsCreationTimer.stop();
     if (!workUnits.isPresent()) {
+      this.eventSubmitter.submit(gobblin.metrics.event.EventNames.WORK_UNITS_MISSING);
       jobState.setState(JobState.RunningState.FAILED);
       throw new JobException("Failed to get work units for job " + jobId);
     }
-    Instrumented.endTimer(createWorkyunitsTimer);
     if (workUnits.get().isEmpty()) {
+      this.eventSubmitter.submit(gobblin.metrics.event.EventNames.WORK_UNITS_EMPTY);
       LOG.warn("No work units have been created for job " + jobId);
       return;
     }
@@ -20,68 +27,50 @@
     jobState.setStartTime(startTime);
     jobState.setState(JobState.RunningState.RUNNING);
     LOG.info("Starting job " + jobId);
-    Optional<Timer.Context> addWorkUnitsTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.WORK_UNITS_ADD);
-    int taskIdSequence=0;
-    int multiTaskIdSequence=0;
-    for (    WorkUnit workUnit : workUnits.get()) {
-      if (workUnit instanceof MultiWorkUnit) {
-        String multiTaskId=JobLauncherUtils.newMultiTaskId(jobId,multiTaskIdSequence++);
-        workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,multiTaskId);
-        workUnit.setId(multiTaskId);
-        for (        WorkUnit innerWorkUnit : ((MultiWorkUnit)workUnit).getWorkUnits()) {
-          addWorkUnit(innerWorkUnit,taskIdSequence++,jobState);
-        }
-      }
- else {
-        addWorkUnit(workUnit,taskIdSequence++,jobState);
-      }
-    }
-    Instrumented.endTimer(addWorkUnitsTimer);
-    if (this.jobContext.getJobMetricsOptional().isPresent()) {
-      this.jobContext.getJobMetricsOptional().get().startMetricReporting(this.jobProps);
-    }
-    Optional<Timer.Context> writeJobHistoryTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_HISTORY_WRITE);
-    storeJobExecutionInfo();
-    Instrumented.endTimer(writeJobHistoryTimer);
-    Optional<Timer.Context> runJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_RUN);
+    TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_PREPARATION);
+    prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
+    workUnitsPreparationTimer.stop();
+    this.jobContext.storeJobExecutionInfo();
+    TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_RUN);
     runWorkUnits(workUnits.get());
-    Instrumented.endTimer(runJobTimer);
+    jobRunTimer.stop();
+    this.eventSubmitter.submit(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,"JOB_" + jobState.getState()));
     if (jobState.getState() == JobState.RunningState.CANCELLED) {
       LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
       return;
     }
-    Optional<Timer.Context> commitJobTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_COMMIT);
-    setFinalJobState(jobState);
-    commitJob(jobState);
-    Instrumented.endTimer(commitJobTimer);
+    TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_COMMIT);
+    this.jobContext.finalizeJobStateBeforeCommit();
+    this.jobContext.commit();
+    postProcessTaskStates(jobState.getTaskStates());
+    jobCommitTimer.stop();
   }
  catch (  Throwable t) {
     jobState.setState(JobState.RunningState.FAILED);
     String errMsg="Failed to launch and run job " + jobId;
     LOG.error(errMsg + ": " + t,t);
-    throw new JobException(errMsg,t);
   }
  finally {
-    Optional<Timer.Context> jobCleanupTimer=Instrumented.timerContext(this.runtimeMetricContext,MetricNames.LauncherTimings.JOB_CLEANUP);
     long endTime=System.currentTimeMillis();
     jobState.setEndTime(endTime);
     jobState.setDuration(endTime - jobState.getStartTime());
-    try {
-      persistJobState(jobState);
-    }
- catch (    Throwable t) {
-      LOG.error(String.format("Failed to persist job state of job %s: %s",jobId,t),t);
-      jobState.setState(JobState.RunningState.FAILED);
-    }
+    TimingEvent jobCleanupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_CLEANUP);
     cleanupStagingData(jobState);
-    storeJobExecutionInfo();
-    Instrumented.endTimer(jobCleanupTimer);
+    jobCleanupTimer.stop();
+    this.jobContext.storeJobExecutionInfo();
+    launchJobTimer.stop();
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
       this.jobContext.getJobMetricsOptional().get().triggerMetricReporting();
       this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
       JobMetrics.remove(jobState);
     }
     unlockJob();
+  }
+  for (  JobState.DatasetState datasetState : this.jobContext.getDatasetStatesByUrns().values()) {
+    if (datasetState.getState() == JobState.RunningState.FAILED) {
+      jobState.setState(JobState.RunningState.FAILED);
+      break;
+    }
   }
   if (jobListener != null) {
     jobListener.onJobCompletion(jobState);

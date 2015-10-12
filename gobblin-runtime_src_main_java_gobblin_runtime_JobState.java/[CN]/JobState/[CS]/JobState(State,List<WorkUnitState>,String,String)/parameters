@@ -1,4 +1,0 @@
-State properties
-List<WorkUnitState> previousTaskStates
-String jobName
-String jobId

@@ -2,35 +2,7 @@
   Set<Path> writerOutputPathsMoved=Sets.newHashSet();
   for (  WorkUnitState workUnitState : states) {
     for (int branchId=0; branchId < this.numBranches; branchId++) {
-      Path writerOutputDir=WriterUtils.getWriterOutputDir(workUnitState,this.numBranches,branchId);
-      Path publisherOutputDir=WriterUtils.getDataPublisherFinalDir(workUnitState,this.numBranches,branchId);
-      if (writerOutputPathsMoved.contains(writerOutputDir)) {
-        continue;
-      }
-      if (this.fss.get(branchId).exists(publisherOutputDir)) {
-        boolean replaceFinalOutputDir=this.getState().getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_REPLACE_FINAL_DIR,this.numBranches,branchId));
-        if (!replaceFinalOutputDir) {
-          addWriterOutputToExistingDir(writerOutputDir,publisherOutputDir,workUnitState,branchId);
-          writerOutputPathsMoved.add(writerOutputDir);
-          continue;
-        }
-        this.fss.get(branchId).delete(publisherOutputDir,true);
-      }
- else {
-        this.fss.get(branchId).mkdirs(publisherOutputDir.getParent());
-      }
-      if (this.fss.get(branchId).exists(writerOutputDir)) {
-        if (this.fss.get(branchId).rename(writerOutputDir,publisherOutputDir)) {
-          LOG.info(String.format("Moved %s to %s",writerOutputDir,publisherOutputDir));
-          writerOutputPathsMoved.add(writerOutputDir);
-        }
- else {
-          throw new IOException("Failed to move from " + writerOutputDir + " to "+ publisherOutputDir);
-        }
-      }
- else {
-        LOG.warn("WorkUnit " + workUnitState.getId() + " produced no data");
-      }
+      publishMultiTaskData(workUnitState,branchId,writerOutputPathsMoved);
     }
     workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   }

@@ -1,0 +1,14 @@
+{
+  Map<String,DatasetState> datasetStatesByUrns=Maps.newHashMap();
+  for (  TaskState taskState : this.taskStates.values()) {
+    String datasetUrn=taskState.getProp(ConfigurationKeys.DATASET_URN_KEY,ConfigurationKeys.DEFAULT_DATASET_URN);
+    if (!datasetStatesByUrns.containsKey(datasetUrn)) {
+      DatasetState datasetState=newDatasetState(false);
+      datasetState.setProp(ConfigurationKeys.DATASET_URN_KEY,datasetUrn);
+      datasetStatesByUrns.put(datasetUrn,datasetState);
+    }
+    datasetStatesByUrns.get(datasetUrn).incrementTaskCount();
+    datasetStatesByUrns.get(datasetUrn).addTaskState(taskState);
+  }
+  return ImmutableMap.copyOf(datasetStatesByUrns);
+}

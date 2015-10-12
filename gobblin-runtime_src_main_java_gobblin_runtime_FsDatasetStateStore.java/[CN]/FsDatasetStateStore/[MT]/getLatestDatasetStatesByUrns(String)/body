@@ -1,0 +1,27 @@
+{
+  Path stateStorePath=new Path(this.storeRootDir,jobName);
+  if (!this.fs.exists(stateStorePath)) {
+    return ImmutableMap.of();
+  }
+  FileStatus[] stateStoreFileStatuses=this.fs.listStatus(stateStorePath,new PathFilter(){
+    @Override public boolean accept(    Path path){
+      return path.getName().endsWith(CURRENT_DATASET_STATE_FILE_SUFFIX + DATASET_STATE_STORE_TABLE_SUFFIX);
+    }
+  }
+);
+  if (stateStoreFileStatuses == null || stateStoreFileStatuses.length == 0) {
+    return ImmutableMap.of();
+  }
+  Map<String,JobState.DatasetState> datasetStatesByUrns=Maps.newHashMap();
+  for (  FileStatus stateStoreFileStatus : stateStoreFileStatuses) {
+    List<JobState.DatasetState> previousDatasetStates=getAll(jobName,stateStoreFileStatus.getPath().getName());
+    if (!previousDatasetStates.isEmpty()) {
+      JobState.DatasetState previousDatasetState=previousDatasetStates.get(0);
+      datasetStatesByUrns.put(previousDatasetState.getProp(ConfigurationKeys.DATASET_URN_KEY,ConfigurationKeys.DEFAULT_DATASET_URN),previousDatasetState);
+    }
+  }
+  if (datasetStatesByUrns.size() > 1) {
+    datasetStatesByUrns.remove(ConfigurationKeys.DEFAULT_DATASET_URN);
+  }
+  return datasetStatesByUrns;
+}

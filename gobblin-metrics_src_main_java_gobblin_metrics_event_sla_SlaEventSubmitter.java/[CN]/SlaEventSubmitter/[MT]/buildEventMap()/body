@@ -1,0 +1,15 @@
+{
+  Map<String,String> eventMetadataMap=Maps.newHashMap();
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.DATASET_URN_KEY),datasetUrn);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.PARTITION_KEY),partition);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY),originTimestamp);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.UPSTREAM_TS_IN_MILLI_SECS_KEY),upstreamTimestamp);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.COMPLETENESS_PERCENTAGE_KEY),completenessPercentage);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.RECORD_COUNT_KEY),recordCount);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.PREVIOUS_PUBLISH_TS_IN_MILLI_SECS_KEY),previousPublishTimestamp);
+  eventMetadataMap.put(withoutPropertiesPrefix(SlaEventKeys.DEDUPE_STATUS_KEY),dedupeStatus);
+  if (additionalMetadata != null) {
+    eventMetadataMap.putAll(additionalMetadata);
+  }
+  return Maps.newHashMap(Maps.filterValues(eventMetadataMap,NOT_NULL_OR_EMPTY_PREDICATE));
+}

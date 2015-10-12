@@ -1,0 +1,11 @@
+{
+  try {
+    getRateLimiter().acquirePermits(1);
+  }
+ catch (  InterruptedException e) {
+    throw new IOException("Failed to acquire rate limit.",e);
+  }
+catch (  ExecutionException e) {
+    throw new IOException("Failed to acquire rate limit.",e);
+  }
+}

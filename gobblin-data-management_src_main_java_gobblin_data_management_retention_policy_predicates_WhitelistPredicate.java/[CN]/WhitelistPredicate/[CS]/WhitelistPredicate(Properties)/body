@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(properties.containsKey(WHITELIST_PATTERN_KEY));
+  this.whitelist=Pattern.compile(properties.getProperty(WHITELIST_PATTERN_KEY));
+}

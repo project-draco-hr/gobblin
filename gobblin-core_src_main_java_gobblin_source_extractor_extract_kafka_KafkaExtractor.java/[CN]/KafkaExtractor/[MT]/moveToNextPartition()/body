@@ -1,5 +1,25 @@
 {
-  this.currentPartitionIdx++;
+  if (this.currentPartitionIdx == INITIAL_PARTITION_IDX) {
+    LOG.info("Pulling topic " + this.topicName);
+    this.currentPartitionIdx=0;
+  }
+ else {
+    this.stopwatch.stop();
+    if (this.currentPartitionRecordCount != 0) {
+      double avgMillisForCurrentPartition=(double)this.stopwatch.elapsed(TimeUnit.MILLISECONDS) / (double)this.currentPartitionRecordCount;
+      this.avgMillisPerRecord.put(this.getCurrentPartition(),avgMillisForCurrentPartition);
+      long avgRecordSize=this.currentPartitionTotalSize / this.currentPartitionRecordCount;
+      this.avgRecordSizes.put(this.getCurrentPartition(),avgRecordSize);
+    }
+    this.currentPartitionIdx++;
+    this.currentPartitionRecordCount=0;
+    this.currentPartitionTotalSize=0;
+    this.stopwatch.reset();
+  }
   this.messageIterator=null;
-  switchMetricContextToCurrentPartition();
+  if (this.currentPartitionIdx < this.partitions.size()) {
+    LOG.info(String.format("Pulling partition %s from offset %d to %d, range=%d",this.getCurrentPartition(),this.nextWatermark.get(this.currentPartitionIdx),this.highWatermark.get(this.currentPartitionIdx),this.highWatermark.get(this.currentPartitionIdx) - this.nextWatermark.get(this.currentPartitionIdx)));
+    switchMetricContextToCurrentPartition();
+  }
+  this.stopwatch.start();
 }

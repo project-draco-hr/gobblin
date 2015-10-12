@@ -1,0 +1,5 @@
+{
+  if (this.datasetCleaner != null) {
+    this.datasetCleaner.clean();
+  }
+}

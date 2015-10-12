@@ -3,7 +3,7 @@
   String clientId=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_CLIENT_ID);
   String clientSecret=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_CLIENT_SECRET);
   String userName=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME);
-  String password=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD);
+  String password=PasswordManager.getInstance(this.workUnit).readPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
   String securityToken=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_SECURITY_TOKEN);
   String host=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
   List<NameValuePair> formParams=new ArrayList<NameValuePair>();

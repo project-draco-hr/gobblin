@@ -1,0 +1,12 @@
+{
+  ContextAwareTimer.Context timer=this.notificationTimer.time();
+  if (!this.notificationTargets.isEmpty()) {
+    for (    final Map.Entry<UUID,Function<Notification,Void>> entry : this.notificationTargets.entrySet()) {
+      entry.getValue().apply(notification);
+    }
+  }
+  if (this.parent.isPresent()) {
+    this.parent.get().sendNotification(notification);
+  }
+  timer.stop();
+}

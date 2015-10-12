@@ -1,3 +1,0 @@
-{
-  return this.metricsMap.containsKey(id);
-}

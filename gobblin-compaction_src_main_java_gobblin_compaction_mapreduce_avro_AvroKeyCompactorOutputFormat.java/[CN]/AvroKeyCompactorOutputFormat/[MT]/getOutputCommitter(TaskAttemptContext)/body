@@ -1,0 +1,6 @@
+{
+  if (this.committer == null) {
+    this.committer=new AvroKeyCompactorOutputCommitter(FileOutputFormat.getOutputPath(context),context);
+  }
+  return this.committer;
+}

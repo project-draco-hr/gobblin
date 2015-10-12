@@ -1,0 +1,19 @@
+{
+  List<Pattern> blacklist=getDataComplVerifBlacklist();
+  List<Pattern> whitelist=getDataComplVerifWhitelist();
+  int numDatasetsVerifiedTogether=getNumDatasetsVerifiedTogether();
+  List<Dataset> datasetsToBeVerified=Lists.newArrayList();
+  for (  Dataset dataset : this.datasets) {
+    if (DatasetFilterUtils.survived(getTopic(dataset.jobProps()),blacklist,whitelist)) {
+      datasetsToBeVerified.add(dataset);
+      if (datasetsToBeVerified.size() >= numDatasetsVerifiedTogether) {
+        ListenableFuture<Results> future=this.verifier.verify(datasetsToBeVerified);
+        addCallback(datasetsToBeVerified,future);
+        datasetsToBeVerified=Lists.newArrayList();
+      }
+    }
+ else {
+      dataset.setState(VERIFIED);
+    }
+  }
+}

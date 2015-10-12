@@ -1,0 +1,10 @@
+{
+switch (packerType) {
+case SINGLE_LEVEL:
+    return new KafkaSingleLevelWorkUnitPacker(source,state);
+case BI_LEVEL:
+  return new KafkaBiLevelWorkUnitPacker(source,state);
+default :
+throw new IllegalArgumentException("WorkUnit packer type " + packerType + " not found");
+}
+}
