@@ -1,0 +1,19 @@
+{
+  List<Integer> nums=ImmutableList.of(3,5);
+  final int factor=5;
+  Function<Integer,String> sleepAndMultiply=new Function<Integer,String>(){
+    @Override public String apply(    Integer input){
+      try {
+        if (input == 5) {
+          TimeUnit.SECONDS.sleep(2);
+        }
+      }
+ catch (      InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+      return Integer.toString(input * factor);
+    }
+  }
+;
+  ExecutorsUtils.parallelize(nums,sleepAndMultiply,2,1,Optional.<Logger>absent());
+}

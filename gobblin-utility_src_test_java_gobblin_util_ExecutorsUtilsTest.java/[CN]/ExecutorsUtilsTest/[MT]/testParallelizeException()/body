@@ -1,0 +1,14 @@
+{
+  List<Integer> nums=ImmutableList.of(3,5);
+  final int factor=5;
+  Function<Integer,String> exceptionFunction=new Function<Integer,String>(){
+    @Override public String apply(    Integer input){
+      if (input == 3) {
+        throw new RuntimeException("testParallelizeException thrown for testing");
+      }
+      return Integer.toString(input * factor);
+    }
+  }
+;
+  ExecutorsUtils.parallelize(nums,exceptionFunction,2,1,Optional.<Logger>absent());
+}

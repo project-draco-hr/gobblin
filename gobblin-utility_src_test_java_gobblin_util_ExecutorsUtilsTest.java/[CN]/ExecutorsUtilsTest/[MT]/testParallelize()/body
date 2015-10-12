@@ -1,0 +1,12 @@
+{
+  List<Integer> nums=ImmutableList.of(3,5,10,5,20);
+  final int factor=5;
+  Function<Integer,String> multiply=new Function<Integer,String>(){
+    @Override public String apply(    Integer input){
+      return Integer.toString(input * factor);
+    }
+  }
+;
+  List<String> result=ExecutorsUtils.parallelize(nums,multiply,2,60,Optional.<Logger>absent());
+  Assert.assertEquals(Arrays.asList("15","25","50","25","100"),result);
+}
