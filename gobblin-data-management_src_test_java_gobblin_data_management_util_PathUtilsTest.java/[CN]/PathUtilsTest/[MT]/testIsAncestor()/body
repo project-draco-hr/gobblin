@@ -1,0 +1,14 @@
+{
+  Path ancestor=new Path("/some/path");
+  Assert.assertTrue(PathUtils.isAncestor(ancestor,new Path(ancestor,"more/elements")));
+  Assert.assertTrue(PathUtils.isAncestor(ancestor,ancestor));
+  Assert.assertFalse(PathUtils.isAncestor(ancestor,new Path("/unrelated/path")));
+  Assert.assertFalse(PathUtils.isAncestor(ancestor,new Path("relative/path")));
+  Assert.assertFalse(PathUtils.isAncestor(ancestor,ancestor.getParent()));
+  Path relativeAncestor=new Path("relative/ancestor");
+  Assert.assertTrue(PathUtils.isAncestor(relativeAncestor,new Path(relativeAncestor,"more/elements")));
+  Assert.assertTrue(PathUtils.isAncestor(relativeAncestor,relativeAncestor));
+  Assert.assertFalse(PathUtils.isAncestor(relativeAncestor,new Path("/unrelated/path")));
+  Assert.assertFalse(PathUtils.isAncestor(relativeAncestor,new Path("relative/path")));
+  Assert.assertFalse(PathUtils.isAncestor(relativeAncestor,relativeAncestor.getParent()));
+}

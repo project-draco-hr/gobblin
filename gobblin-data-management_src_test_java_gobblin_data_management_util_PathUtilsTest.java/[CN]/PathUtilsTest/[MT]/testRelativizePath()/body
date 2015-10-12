@@ -1,0 +1,8 @@
+{
+  Path prefix=new Path("/prefix/path");
+  Path suffix=new Path("suffix/elements");
+  Path path1=new Path(prefix,suffix);
+  Assert.assertEquals(PathUtils.relativizePath(path1,prefix),suffix);
+  Path path2=new Path("/unrelated/path/with/more/elements");
+  Assert.assertEquals(PathUtils.relativizePath(path2,prefix),path2);
+}
