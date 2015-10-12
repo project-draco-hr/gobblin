@@ -1,0 +1,5 @@
+{
+  Path path1=new Path("/some/path");
+  Path path2=new Path("/path2/file");
+  Assert.assertEquals(PathUtils.mergePaths(path1,path2).toString(),"/some/path/path2/file");
+}
