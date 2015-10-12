@@ -1,0 +1,3 @@
+{
+  return !datasetAlreadyCompacted(this.fs,dataset) && DatasetFilterUtils.survived(dataset.topic(),blacklist,whitelist);
+}

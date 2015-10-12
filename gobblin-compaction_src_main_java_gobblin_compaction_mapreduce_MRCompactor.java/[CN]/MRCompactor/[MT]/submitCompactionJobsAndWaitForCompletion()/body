@@ -28,8 +28,8 @@
         }
       }
     }
-    if (shouldGiveUpVerification()) {
-      this.verifier.close();
+    if (this.verifier.isPresent() && shouldGiveUpVerification()) {
+      this.verifier.get().close();
       for (      Dataset dataset : this.datasets) {
         if (dataset.state() == UNVERIFIED) {
           submitSlaEvent(dataset,"CompletenessCannotBeVerified");

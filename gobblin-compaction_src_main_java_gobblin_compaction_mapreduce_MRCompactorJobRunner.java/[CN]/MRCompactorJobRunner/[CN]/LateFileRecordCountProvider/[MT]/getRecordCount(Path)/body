@@ -1,3 +1,0 @@
-{
-  return this.recordCountProviderWithoutSuffix.getRecordCount(new Path(filepath.getName().replaceAll(Pattern.quote(LATE_COMPONENT) + "[\\d]*",EMPTY_STRING)));
-}

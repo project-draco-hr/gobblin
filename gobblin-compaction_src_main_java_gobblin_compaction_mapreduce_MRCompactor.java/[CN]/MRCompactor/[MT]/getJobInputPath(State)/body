@@ -1,4 +1,0 @@
-{
-  Preconditions.checkArgument(jobProps.contains(COMPACTION_JOB_INPUT_DIR),"missing required property " + COMPACTION_JOB_INPUT_DIR + " in jobProps");
-  return jobProps.getProp(COMPACTION_JOB_INPUT_DIR);
-}

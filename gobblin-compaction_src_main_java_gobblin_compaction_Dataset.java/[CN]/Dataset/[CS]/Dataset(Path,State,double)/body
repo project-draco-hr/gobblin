@@ -1,7 +1,0 @@
-{
-  this.path=path;
-  this.jobProps=jobProps;
-  this.throwables=Lists.newArrayList();
-  this.priority=priority;
-  this.state=UNVERIFIED;
-}

@@ -1,0 +1,4 @@
+{
+  this.outputTmpPath=outputTmpPath;
+  return this;
+}

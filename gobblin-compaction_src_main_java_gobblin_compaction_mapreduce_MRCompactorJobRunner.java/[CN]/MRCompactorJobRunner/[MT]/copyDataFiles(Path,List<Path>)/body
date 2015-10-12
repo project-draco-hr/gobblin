@@ -1,0 +1,9 @@
+{
+  for (  Path filePath : inputFilePaths) {
+    Path convertedFilePath=this.outputRecordCountProvider.convertPath(this.lateInputRecordCountProvider.restoreFilePath(filePath),this.inputRecordCountProvider);
+    String targetFileName=convertedFilePath.getName();
+    Path outPath=this.lateOutputRecordCountProvider.constructLateFilePath(targetFileName,this.fs,outputDirectory);
+    HadoopUtils.copyPath(this.fs,filePath,outPath);
+    LOG.info(String.format("Copied %s to %s.",filePath,outPath));
+  }
+}
