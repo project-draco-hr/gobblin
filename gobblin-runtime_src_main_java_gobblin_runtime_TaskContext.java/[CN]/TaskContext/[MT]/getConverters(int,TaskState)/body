@@ -3,14 +3,15 @@
   if (!this.workUnit.contains(converterClassKey)) {
     return Collections.emptyList();
   }
-  TaskState converterTaskState=new TaskState(this.taskState);
-  converterTaskState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,index);
+  if (index >= 0) {
+    forkTaskState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,index);
+  }
   List<Converter<?,?,?,?>> converters=Lists.newArrayList();
   for (  String converterClass : Splitter.on(",").omitEmptyStrings().trimResults().split(this.workUnit.getProp(converterClassKey))) {
     try {
       Converter<?,?,?,?> converter=Converter.class.cast(Class.forName(converterClass).newInstance());
       InstrumentedConverterDecorator instrumentedConverter=new InstrumentedConverterDecorator(converter);
-      instrumentedConverter.init(converterTaskState);
+      instrumentedConverter.init(forkTaskState);
       converters.add(instrumentedConverter);
     }
  catch (    ClassNotFoundException cnfe) {

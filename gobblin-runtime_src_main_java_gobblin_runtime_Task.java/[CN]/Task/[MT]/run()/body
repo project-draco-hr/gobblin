@@ -22,7 +22,7 @@
     CountDownLatch forkCountDownLatch=new CountDownLatch(branches);
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
-        Fork fork=closer.register(new Fork(this.taskContext,this.taskState,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
+        Fork fork=closer.register(new Fork(this.taskContext,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
         this.taskExecutor.execute(fork);
         this.forks.add(Optional.of(fork));
       }
