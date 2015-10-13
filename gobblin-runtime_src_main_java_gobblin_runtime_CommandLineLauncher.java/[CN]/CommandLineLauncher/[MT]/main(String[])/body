@@ -1,0 +1,21 @@
+{
+  if (args.length < 1) {
+    throw new RuntimeException("Missing argument. Expected path to configuration file.");
+  }
+  try {
+    PropertiesConfiguration configT=new PropertiesConfiguration();
+    configT.load(args[0]);
+    Configuration config=configT.interpolatedConfiguration();
+    Properties properties=ConfigurationConverter.getProperties(config);
+    LOG.info(properties.toString());
+    for (    Properties jobProps : SchedulerUtils.loadJobConfigs(properties)) {
+      LOG.info("Running job.");
+      new LocalJobLauncher(jobProps).launchJob(null);
+    }
+  }
+ catch (  Exception ioe) {
+    throw new RuntimeException(ioe);
+  }
+ finally {
+  }
+}

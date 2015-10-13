@@ -1,0 +1,5 @@
+{
+  actions.add(new Action(Actions.WRITE,this.partition,record));
+  this.recordsWritten++;
+  this.bytesWritten++;
+}

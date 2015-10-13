@@ -1,0 +1,3 @@
+DataWriter<D> writer
+State state
+GenericRecord partition

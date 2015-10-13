@@ -1,0 +1,6 @@
+{
+  if (!this.builder.isPresent()) {
+    throw new IOException("Writer builder not found. This is an error in the code.");
+  }
+  return this.builder.get().forPartition(partition).build();
+}

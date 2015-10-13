@@ -1,0 +1,5 @@
+{
+  for (  Map.Entry<GenericRecord,DataWriter<D>> entry : this.partitionWriters.asMap().entrySet()) {
+    entry.getValue().cleanup();
+  }
+}
