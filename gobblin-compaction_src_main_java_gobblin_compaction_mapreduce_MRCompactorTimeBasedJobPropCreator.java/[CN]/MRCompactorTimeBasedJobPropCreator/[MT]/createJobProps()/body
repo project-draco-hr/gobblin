@@ -19,7 +19,7 @@
     if (folderWithinAllowedPeriod(status.getPath(),folderTime)) {
       if (!folderAlreadyCompacted(jobOutputDir)) {
         State state=createJobProps(status.getPath(),jobOutputDir,jobTmpDir,this.deduplicate,folderTime.toString(this.timeFormatter));
-        CompactionSlaEventHelper.setUpstreamTimeStamp(state,folderTime.getMillis());
+        CompactionSlaEventHelper.setUpstreamTimeStamp(state,folderTime.plusDays(1).getMillis());
         allJobProps.add(state);
       }
  else {
