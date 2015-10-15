@@ -1,8 +1,14 @@
 {
-  List<State> emptyJobProps=Lists.newArrayList();
   if (!this.fs.exists(this.topicInputDir)) {
     LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ this.topic);
-    return emptyJobProps;
+    return ImmutableList.<Dataset>of();
   }
-  return Collections.singletonList(createJobProps(this.topicInputDir,this.topicOutputDir,this.topicTmpDir,this.deduplicate));
+  Dataset dataset=new Dataset.Builder().withTopic(this.topic).withPriority(this.priority).withInputPath(this.recompactFromOutputPaths ? this.topicOutputDir : this.topicInputDir).withInputLatePath(this.recompactFromOutputPaths ? this.topicOutputLateDir : this.topicInputLateDir).withOutputPath(this.topicOutputDir).withOutputLatePath(this.topicOutputLateDir).withOutputTmpPath(this.topicTmpOutputDir).build();
+  Optional<Dataset> datasetWithJobProps=createJobProps(dataset);
+  if (datasetWithJobProps.isPresent()) {
+    return ImmutableList.<Dataset>of(datasetWithJobProps.get());
+  }
+ else {
+    return ImmutableList.<Dataset>of();
+  }
 }

@@ -1,5 +1,5 @@
 {
   if (!fs.rename(oldName,newName)) {
-    throw new IOException(String.format("Failed to rename %s to %s",oldName.toString(),newName.toString()));
+    throw new IOException(String.format("Failed to rename %s to %s",oldName,newName));
   }
 }

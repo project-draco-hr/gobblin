@@ -1,0 +1,3 @@
+{
+  return new NotImplementedException(String.format("converting from %s to %s is not implemented",src.getClass().getName(),this.getClass().getName()));
+}

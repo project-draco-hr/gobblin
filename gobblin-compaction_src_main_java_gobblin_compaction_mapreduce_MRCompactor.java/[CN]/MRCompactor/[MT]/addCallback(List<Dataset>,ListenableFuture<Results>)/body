@@ -29,7 +29,7 @@ break;
 }
 }
 if (!datasetsToBeVerifiedAgain.isEmpty()) {
-ListenableFuture<Results> future2=MRCompactor.this.verifier.verify(datasetsToBeVerifiedAgain);
+ListenableFuture<Results> future2=MRCompactor.this.verifier.get().verify(datasetsToBeVerifiedAgain);
 addCallback(datasetsToBeVerifiedAgain,future2);
 }
 }
@@ -45,7 +45,7 @@ dataset.setState(GIVEN_UP);
 }
 }
  else {
-ListenableFuture<Results> future2=MRCompactor.this.verifier.verify(datasetsToBeVerified);
+ListenableFuture<Results> future2=MRCompactor.this.verifier.get().verify(datasetsToBeVerified);
 addCallback(datasetsToBeVerified,future2);
 }
 }

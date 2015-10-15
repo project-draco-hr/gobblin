@@ -1,0 +1,15 @@
+{
+  DateTimeZone timeZone=DateTimeZone.forID(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_TIMEZONE,MRCompactor.DEFAULT_COMPACTION_TIMEZONE));
+  if (!this.recompactFromDestPaths) {
+    return new DateTime(timeZone);
+  }
+ else {
+    List<Path> inputPaths=Lists.newArrayList(this.dataset.inputPath());
+    inputPaths.addAll(this.dataset.additionalInputPaths());
+    long maxTimestamp=Long.MIN_VALUE;
+    for (    FileStatus status : FileListUtils.listFilesRecursively(this.fs,inputPaths)) {
+      maxTimestamp=Math.max(maxTimestamp,status.getModificationTime());
+    }
+    return maxTimestamp == Long.MIN_VALUE ? new DateTime(timeZone) : new DateTime(maxTimestamp,timeZone);
+  }
+}

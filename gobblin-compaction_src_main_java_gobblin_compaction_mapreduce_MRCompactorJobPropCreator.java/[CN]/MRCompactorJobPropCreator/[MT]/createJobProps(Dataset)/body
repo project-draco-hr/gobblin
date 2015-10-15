@@ -1,0 +1,24 @@
+{
+  if (this.recompactFromOutputPaths && (!this.fs.exists(dataset.inputLatePath()) || this.fs.listStatus(dataset.inputLatePath()).length == 0)) {
+    LOG.info(String.format("Skipping recompaction for %s since there is no late data in %s",dataset.inputPath(),dataset.inputLatePath()));
+    return Optional.<Dataset>absent();
+  }
+  State jobProps=new State();
+  jobProps.addAll(this.state);
+  jobProps.setProp(MRCompactor.COMPACTION_ENABLE_SUCCESS_FILE,false);
+  jobProps.setProp(MRCompactor.COMPACTION_DEDUPLICATE,this.deduplicate);
+  if (this.recompactFromOutputPaths || !MRCompactor.datasetAlreadyCompacted(this.fs,dataset)) {
+    addInputLateFilesForFirstTimeCompaction(jobProps,dataset);
+  }
+ else {
+    List<Path> newDataFiles=getNewDataInFolder(dataset.inputPath(),dataset.outputPath());
+    newDataFiles.addAll(getNewDataInFolder(dataset.inputLatePath(),dataset.outputPath()));
+    if (newDataFiles.isEmpty()) {
+      return Optional.<Dataset>absent();
+    }
+    addJobPropsForCompactedFolder(jobProps,dataset);
+  }
+  LOG.info(String.format("Created MR job properties for input %s and output %s.",dataset.inputPath(),dataset.outputPath()));
+  dataset.setJobProps(jobProps);
+  return Optional.of(dataset);
+}

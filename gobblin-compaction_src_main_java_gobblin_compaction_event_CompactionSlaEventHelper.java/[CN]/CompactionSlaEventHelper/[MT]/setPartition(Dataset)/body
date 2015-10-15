@@ -1,0 +1,3 @@
+{
+  dataset.jobProps().setProp(SlaEventKeys.PARTITION_KEY,dataset.jobProps().getProp(MRCompactor.COMPACTION_JOB_DEST_PARTITION,""));
+}

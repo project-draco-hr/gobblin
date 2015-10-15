@@ -1,3 +1,0 @@
-Path outputDirectory
-List<Path> inputFilePaths
-Configuration conf

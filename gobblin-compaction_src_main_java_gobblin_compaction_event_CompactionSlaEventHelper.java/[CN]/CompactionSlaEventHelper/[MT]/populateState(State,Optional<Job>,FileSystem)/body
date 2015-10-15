@@ -1,9 +1,0 @@
-{
-  setDatasetUrn(state);
-  setPartition(state);
-  setDedupeStatus(state);
-  setPreviousPublishTime(state,fs);
-  if (job.isPresent()) {
-    setRecordCount(state,job.get());
-  }
-}

@@ -1,5 +1,0 @@
-Path jobInputDir
-Path jobOutputDir
-Path jobTmpDir
-boolean deduplicate
-String partition

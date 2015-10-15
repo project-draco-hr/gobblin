@@ -1,0 +1,4 @@
+{
+  this.topicInputLateDir=topicInputLateDir;
+  return (T)this;
+}

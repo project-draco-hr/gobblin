@@ -1,4 +1,4 @@
 {
-  CompactionSlaEventHelper.populateState(dataset.jobProps(),Optional.<Job>absent(),this.fs);
+  CompactionSlaEventHelper.populateState(dataset,Optional.<Job>absent(),this.fs);
   new SlaEventSubmitter(this.eventSubmitter,eventName,dataset.jobProps().getProperties()).submit();
 }
