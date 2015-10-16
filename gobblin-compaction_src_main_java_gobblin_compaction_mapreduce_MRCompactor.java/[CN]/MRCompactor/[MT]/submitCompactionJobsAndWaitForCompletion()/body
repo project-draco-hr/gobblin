@@ -28,15 +28,6 @@
         }
       }
     }
-    if (this.verifier.isPresent() && shouldGiveUpVerification()) {
-      this.verifier.get().close();
-      for (      Dataset dataset : this.datasets) {
-        if (dataset.state() == UNVERIFIED) {
-          submitSlaEvent(dataset,"CompletenessCannotBeVerified");
-          dataset.setState(GIVEN_UP);
-        }
-      }
-    }
     if (this.stopwatch.elapsed(TimeUnit.MINUTES) >= this.compactionTimeoutMinutes) {
       LOG.error("Compaction timed-out. Killing all running jobs");
       for (      MRCompactorJobRunner jobRunner : MRCompactor.this.jobRunnables.values()) {

@@ -7,7 +7,7 @@
       fields.add(new Field(field.name(),newFieldSchema.get(),field.doc(),field.defaultValue()));
     }
   }
-  Schema newSchema=Schema.createRecord(record.getName(),record.getDoc(),record.getName(),false);
+  Schema newSchema=Schema.createRecord(record.getName(),record.getDoc(),record.getNamespace(),false);
   newSchema.setFields(fields);
   return Optional.of(newSchema);
 }

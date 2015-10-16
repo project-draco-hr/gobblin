@@ -6,7 +6,9 @@
   State jobProps=new State();
   jobProps.addAll(this.state);
   jobProps.setProp(MRCompactor.COMPACTION_ENABLE_SUCCESS_FILE,false);
-  jobProps.setProp(MRCompactor.COMPACTION_DEDUPLICATE,this.deduplicate);
+  jobProps.setProp(MRCompactor.COMPACTION_INPUT_DEDUPLICATED,this.inputDeduplicated);
+  jobProps.setProp(MRCompactor.COMPACTION_OUTPUT_DEDUPLICATED,this.outputDeduplicated);
+  jobProps.setProp(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE,!this.inputDeduplicated && this.outputDeduplicated);
   if (this.recompactFromOutputPaths || !MRCompactor.datasetAlreadyCompacted(this.fs,dataset)) {
     addInputLateFilesForFirstTimeCompaction(jobProps,dataset);
   }
