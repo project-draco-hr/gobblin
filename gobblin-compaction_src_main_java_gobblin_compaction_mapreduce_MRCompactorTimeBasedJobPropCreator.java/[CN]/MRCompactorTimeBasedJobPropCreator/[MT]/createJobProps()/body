@@ -23,6 +23,7 @@
       Dataset dataset=new Dataset.Builder().withTopic(this.topic).withPriority(this.priority).withInputPath(this.recompactFromOutputPaths ? jobOutputPath : jobInputPath).withInputLatePath(this.recompactFromOutputPaths ? jobOutputLatePath : jobInputLatePath).withOutputPath(jobOutputPath).withOutputLatePath(jobOutputLatePath).withOutputTmpPath(jobOutputTmpPath).build();
       Optional<Dataset> datasetWithJobProps=createJobProps(dataset,folderTime.toString(this.timeFormatter));
       if (datasetWithJobProps.isPresent()) {
+        datasetWithJobProps.get().jobProps().setProp(COMPACTION_TIMEBASED_INPUT_PATH_TIME,folderTime.getMillis());
         datasets.add(datasetWithJobProps.get());
         if (this.recompactFromOutputPaths || !MRCompactor.datasetAlreadyCompacted(this.fs,dataset)) {
           CompactionSlaEventHelper.setUpstreamTimeStamp(state,folderTime.plusDays(1).getMillis());
