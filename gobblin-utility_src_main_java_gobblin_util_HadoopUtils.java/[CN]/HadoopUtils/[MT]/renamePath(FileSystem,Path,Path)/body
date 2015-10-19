@@ -1,4 +1,10 @@
 {
+  if (!fs.exists(oldName)) {
+    throw new FileNotFoundException(String.format("Failed to rename %s to %s: src not found",oldName,newName));
+  }
+  if (fs.exists(newName)) {
+    throw new FileAlreadyExistsException(String.format("Failed to rename %s to %s: dst already exists",oldName,newName));
+  }
   if (!fs.rename(oldName,newName)) {
     throw new IOException(String.format("Failed to rename %s to %s",oldName,newName));
   }
