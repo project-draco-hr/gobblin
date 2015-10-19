@@ -1,0 +1,18 @@
+{
+  Config config=ConfigFactory.parseFile(configFile);
+  for (  Map.Entry<String,ConfigValue> entry : config.entrySet()) {
+    String parentId=ConfigNodeUtils.getParentId(entry.getKey());
+    String propertyName=ConfigNodeUtils.getPropertyName(entry.getKey());
+    Object value=entry.getValue().unwrapped();
+    if (parentId == null) {
+      parentId=ROOT;
+    }
+    Map<String,Object> submap=configMap.get(parentId);
+    if (submap == null) {
+      submap=new HashMap<String,Object>();
+      configMap.put(parentId,submap);
+    }
+    submap.put(propertyName,value);
+  }
+  initialized=true;
+}

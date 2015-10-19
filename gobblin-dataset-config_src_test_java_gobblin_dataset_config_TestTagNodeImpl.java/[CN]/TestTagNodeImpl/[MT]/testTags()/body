@@ -1,0 +1,9 @@
+{
+  Repository.getInstance(new File("/Users/mitu/github/gobblin-1/gobblin-dataset-config/src/test/resources/tags11.conf"));
+  TagNodeImpl tagNode=new TagNodeImpl(null,"nertz.tracking.big-event");
+  Config tagConf=tagNode.getConfig();
+  for (  Map.Entry<String,ConfigValue> entry : tagConf.entrySet()) {
+    System.out.println("key: " + entry.getKey() + " ,value:"+ entry.getValue());
+  }
+  System.out.println(String.format("value for %s is %s","retention",tagConf.getInt("retention")));
+}

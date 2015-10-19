@@ -1,0 +1,5 @@
+{
+  String parentId=ConfigNodeUtils.getParentId(this.tagId);
+  if (parentId == null)   return null;
+  return new TagNodeImpl(this.tagsConfig,parentId);
+}

@@ -1,0 +1,6 @@
+{
+  Map<String,Object> self=Repository.getInstance().getRawProperty(tagId);
+  Map<String,Object> parent=Repository.getInstance().getRawProperty(ConfigNodeUtils.getParentId(tagId));
+  ConfigNodeUtils.MergeTwoMaps(self,parent);
+  return ConfigFactory.parseMap(self);
+}
