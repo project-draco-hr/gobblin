@@ -42,7 +42,7 @@
     TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_COMMIT);
     this.jobContext.finalizeJobStateBeforeCommit();
     this.jobContext.commit();
-    postProcessTaskStates(jobState.getTaskStates());
+    postProcessJobState(jobState);
     jobCommitTimer.stop();
   }
  catch (  Throwable t) {
