@@ -1,6 +1,8 @@
 {
   if (this.fs.exists(dataset.inputLatePath()) && this.fs.listStatus(dataset.inputLatePath()).length > 0) {
     dataset.addAdditionalInputPath(dataset.inputLatePath());
-    jobProps.setProp(MRCompactor.COMPACTION_DEDUPLICATE,true);
+    if (this.outputDeduplicated) {
+      jobProps.setProp(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE,true);
+    }
   }
 }

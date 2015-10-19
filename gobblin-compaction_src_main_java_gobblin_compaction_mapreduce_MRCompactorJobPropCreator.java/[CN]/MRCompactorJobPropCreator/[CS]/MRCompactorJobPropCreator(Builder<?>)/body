@@ -8,7 +8,8 @@
   this.topicTmpOutputDir=builder.topicTmpOutputDir;
   this.fs=builder.fs;
   this.state=builder.state;
-  this.deduplicate=this.state.getPropAsBoolean(MRCompactor.COMPACTION_DEDUPLICATE,MRCompactor.DEFAULT_COMPACTION_DEDUPLICATE);
+  this.inputDeduplicated=this.state.getPropAsBoolean(MRCompactor.COMPACTION_INPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_INPUT_DEDUPLICATED);
+  this.outputDeduplicated=this.state.getPropAsBoolean(MRCompactor.COMPACTION_OUTPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_OUTPUT_DEDUPLICATED);
   this.recompactFromInputPaths=this.state.getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FROM_INPUT_FOR_LATE_DATA,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FROM_INPUT_FOR_LATE_DATA);
   this.recompactFromOutputPaths=this.state.getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FROM_DEST_PATHS,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FROM_DEST_PATHS);
 }

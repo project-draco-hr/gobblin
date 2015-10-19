@@ -16,4 +16,8 @@
       dataset.setState(VERIFIED);
     }
   }
+  if (!datasetsToBeVerified.isEmpty()) {
+    ListenableFuture<Results> future=this.verifier.get().verify(datasetsToBeVerified);
+    addCallback(datasetsToBeVerified,future);
+  }
 }
