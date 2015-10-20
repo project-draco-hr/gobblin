@@ -1,0 +1,4 @@
+{
+  this.allConfigs=allConfigs;
+  initialMapping();
+}

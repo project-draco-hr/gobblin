@@ -1,0 +1,18 @@
+{
+  for (  Map.Entry<String,ConfigValue> entry : allConfigs.entrySet()) {
+    if (DatasetUtils.isValidUrn(entry.getKey())) {
+      String parentId=DatasetUtils.getParentId(entry.getKey());
+      String propertyName=DatasetUtils.getPropertyName(entry.getKey());
+      Object value=entry.getValue().unwrapped();
+      Map<String,Object> submap=configMap.get(parentId);
+      if (submap == null) {
+        submap=new HashMap<String,Object>();
+        configMap.put(parentId,submap);
+      }
+      submap.put(propertyName,value);
+    }
+ else {
+      LOG.error("Invalid urn " + entry.getKey());
+    }
+  }
+}

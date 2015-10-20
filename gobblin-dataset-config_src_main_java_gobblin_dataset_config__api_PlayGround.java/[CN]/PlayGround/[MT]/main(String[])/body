@@ -1,0 +1,17 @@
+{
+  FileBasedConfigStore cs=new FileBasedConfigStore("/Users/mitu/AAA","test");
+  cs.loadConfigs();
+  Config c=cs.getConfig("config-ds.nertz.tracking.foo.bar.big-event");
+  for (  Map.Entry<String,ConfigValue> entry : c.entrySet()) {
+    System.out.println("app key: " + entry.getKey() + " ,value:"+ entry.getValue());
+  }
+  List<String> tags=cs.getAssociatedTags("config-ds.nertz.tracking");
+  if (tags != null) {
+    for (    String t : tags) {
+      System.out.println("tags is " + t);
+    }
+  }
+ else {
+    System.out.println("No associated tags");
+  }
+}

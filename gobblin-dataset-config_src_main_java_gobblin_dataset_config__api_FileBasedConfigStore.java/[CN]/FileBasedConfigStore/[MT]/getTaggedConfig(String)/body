@@ -1,0 +1,3 @@
+{
+  return this.getTaggedConfig(urn,this.loadedConfigVersion);
+}

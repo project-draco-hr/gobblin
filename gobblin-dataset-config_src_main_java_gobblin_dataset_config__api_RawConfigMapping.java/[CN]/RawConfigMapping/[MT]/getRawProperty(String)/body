@@ -1,0 +1,8 @@
+{
+  String adjustedUrn=this.getAdjustedUrn(urn);
+  Map<String,Object> res=configMap.get(adjustedUrn);
+  if (res == null) {
+    return new HashMap<String,Object>();
+  }
+  return new HashMap<String,Object>(res);
+}

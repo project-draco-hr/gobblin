@@ -1,0 +1,12 @@
+{
+  if (urn.equals(DatasetUtils.ROOT)) {
+    return urn;
+  }
+  if (!DatasetUtils.isValidUrn(urn)) {
+    throw new IllegalArgumentException("Invalid urn:" + urn);
+  }
+  if (configMap.containsKey(urn)) {
+    return urn;
+  }
+  return getAdjustedUrn(DatasetUtils.getParentId(urn));
+}

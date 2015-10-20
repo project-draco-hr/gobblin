@@ -1,0 +1,3 @@
+{
+  return this.getConfig(urn,this.loadedConfigVersion);
+}
