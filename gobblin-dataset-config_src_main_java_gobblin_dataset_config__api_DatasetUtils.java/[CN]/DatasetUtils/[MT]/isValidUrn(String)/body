@@ -1,8 +1,3 @@
 {
-  if (urn == null)   return false;
-  if (urn.equals(DATASETS_PREFIX) || urn.equals(TAGS_PREFIX))   return true;
-  if (urn.startsWith(DATASETS_PREFIX + ID_DELEMETER) || urn.startsWith(TAGS_PREFIX + ID_DELEMETER)) {
-    return true;
-  }
-  return false;
+  return isValidTag(urn) || isValidDataset(urn);
 }

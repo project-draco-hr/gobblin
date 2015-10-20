@@ -1,20 +1,20 @@
 {
   Map<String,Object> self=getRawProperty(urn);
   Object tags=self.get(DatasetUtils.IMPORTED_TAGS);
-  if (tags != null)   System.out.println(tags.getClass());
   List<String> res=new ArrayList<String>();
+  if (tags == null)   return res;
   if (tags instanceof String) {
     res.add((String)tags);
   }
  else {
-    res.addAll((List<String>)tags);
-  }
-  for (  String tag : res) {
-    if (!DatasetUtils.isValidUrn(tag)) {
-      throw new RuntimeException("Invalid urn: " + tag);
+    List<String> tmp=(List<String>)tags;
+    for (int i=tmp.size() - 1; i >= 0; i--) {
+      res.add(tmp.get(i));
     }
-    if (!tag.startsWith(DatasetUtils.TAGS_PREFIX)) {
-      throw new RuntimeException("Invalid tag: " + tag);
+  }
+  for (  String s : res) {
+    if (s.equals(urn)) {
+      throw new RuntimeException("Tag associated with self " + s);
     }
   }
   return res;

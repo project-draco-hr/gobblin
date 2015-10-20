@@ -1,0 +1,5 @@
+{
+  if (urn == null)   return false;
+  if (urn.equals(DATASETS_PREFIX) || urn.startsWith(DATASETS_PREFIX + ID_DELEMETER))   return true;
+  return false;
+}

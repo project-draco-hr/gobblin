@@ -1,0 +1,12 @@
+{
+  Set<String> processed=new HashSet<String>();
+  List<String> res=new ArrayList<String>();
+  for (  String s : input) {
+    if (processed.contains(s)) {
+      continue;
+    }
+    res.add(s);
+    processed.add(s);
+  }
+  return res;
+}

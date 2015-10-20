@@ -1,5 +1,9 @@
 {
   Map<String,Object> self=getRawProperty(urn);
+  List<String> tags=getAssociatedTags(urn);
+  for (  String t : tags) {
+    DatasetUtils.MergeTwoMaps(self,getResolvedProperty(t));
+  }
   String parentId=DatasetUtils.getParentId(getAdjustedUrn(urn));
   Map<String,Object> ancestor=null;
   if (parentId.equals(DatasetUtils.ROOT)) {
@@ -9,8 +13,5 @@
     ancestor=this.getResolvedProperty(parentId);
   }
   Map<String,Object> res=DatasetUtils.MergeTwoMaps(self,ancestor);
-  if (res != null) {
-    res.remove(DatasetUtils.IMPORTED_TAGS);
-  }
   return res;
 }

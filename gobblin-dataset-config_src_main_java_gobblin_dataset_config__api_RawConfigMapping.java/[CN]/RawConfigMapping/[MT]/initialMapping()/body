@@ -4,6 +4,7 @@
       String parentId=DatasetUtils.getParentId(entry.getKey());
       String propertyName=DatasetUtils.getPropertyName(entry.getKey());
       Object value=entry.getValue().unwrapped();
+      checkAssociatedTags(propertyName,value);
       Map<String,Object> submap=configMap.get(parentId);
       if (submap == null) {
         submap=new HashMap<String,Object>();
@@ -12,7 +13,7 @@
       submap.put(propertyName,value);
     }
  else {
-      LOG.error("Invalid urn " + entry.getKey());
+      throw new IllegalArgumentException("Invalid urn " + entry.getKey());
     }
   }
 }

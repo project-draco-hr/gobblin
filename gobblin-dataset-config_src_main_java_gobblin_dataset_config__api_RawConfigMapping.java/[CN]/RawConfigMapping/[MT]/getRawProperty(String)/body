@@ -2,7 +2,7 @@
   String adjustedUrn=this.getAdjustedUrn(urn);
   Map<String,Object> res=configMap.get(adjustedUrn);
   if (res == null) {
-    return new HashMap<String,Object>();
+    return Collections.emptyMap();
   }
   return new HashMap<String,Object>(res);
 }
