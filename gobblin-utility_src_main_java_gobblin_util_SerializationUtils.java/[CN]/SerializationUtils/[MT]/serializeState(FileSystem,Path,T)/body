@@ -1,9 +1,9 @@
 {
   Closer closer=Closer.create();
   try {
-    OutputStream os=closer.register(this.fs.create(jobStateFile));
+    OutputStream os=closer.register(fs.create(jobStateFilePath));
     DataOutputStream dataOutputStream=closer.register(new DataOutputStream(os));
-    jobState.write(dataOutputStream);
+    state.write(dataOutputStream);
   }
  catch (  Throwable t) {
     throw closer.rethrow(t);
