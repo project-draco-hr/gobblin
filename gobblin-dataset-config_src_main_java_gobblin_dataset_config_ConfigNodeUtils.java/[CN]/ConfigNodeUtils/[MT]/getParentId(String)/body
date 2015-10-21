@@ -1,6 +1,0 @@
-{
-  if (urn == null)   return null;
-  int index=urn.lastIndexOf(ID_DELEMETER);
-  if (index < 0)   return null;
-  return urn.substring(0,index);
-}

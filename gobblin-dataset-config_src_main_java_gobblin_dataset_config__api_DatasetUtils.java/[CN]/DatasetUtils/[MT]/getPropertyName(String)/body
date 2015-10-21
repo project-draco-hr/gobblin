@@ -1,9 +1,0 @@
-{
-  if (fullPropertyName == null)   return null;
-  int index=fullPropertyName.lastIndexOf(ID_DELEMETER);
-  if (index < 0)   return fullPropertyName;
-  if (index == fullPropertyName.length() - 1) {
-    throw new IllegalArgumentException("Wrong format: " + fullPropertyName);
-  }
-  return fullPropertyName.substring(index + 1);
-}

@@ -1,8 +1,0 @@
-{
-  if (nodeId == null || key == null)   return false;
-  if (!key.startsWith(nodeId + ID_DELEMETER)) {
-    return false;
-  }
-  int lastIndex=key.lastIndexOf(ID_DELEMETER);
-  return lastIndex == nodeId.length();
-}

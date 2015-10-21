@@ -1,4 +1,0 @@
-{
-  this.tagsConfig=tagsConfig;
-  this.tagId=tagId;
-}

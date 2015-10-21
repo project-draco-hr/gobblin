@@ -1,0 +1,16 @@
+{
+  List<String> self=getRawTags(urn);
+  List<String> res=new ArrayList<String>();
+  for (  String s : self) {
+    if (previousTags.contains(s)) {
+      throw new RuntimeException("Circular dependence for tag " + s);
+    }
+    res.add(s);
+    Set<String> combined=new HashSet<String>(previousTags);
+    combined.add(s);
+    res.addAll(getAssociatedTagsWithCheck(s,combined));
+  }
+  List<String> ancestorTags=getAssociatedTags(DatasetUtils.getParentId(getAdjustedUrn(urn)));
+  res.addAll(ancestorTags);
+  return dedup(res);
+}

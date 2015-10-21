@@ -1,8 +1,0 @@
-{
-  if (lowProp == null)   return;
-  for (  String key : lowProp.keySet()) {
-    if (!highProp.containsKey(key)) {
-      highProp.put(key,lowProp.get(key));
-    }
-  }
-}

@@ -1,5 +1,0 @@
-{
-  this.configLocation=location;
-  this.scheme=scheme;
-  this.latestVersion="v1.0";
-}

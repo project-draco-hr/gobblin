@@ -1,4 +1,0 @@
-{
-  _instance.initialRepository(configFile);
-  return _instance;
-}

@@ -1,6 +1,0 @@
-{
-  if (!initialized) {
-    throw new IllegalArgumentException("Repository not initialized, need to call getInstance(File configs)");
-  }
-  return _instance;
-}
