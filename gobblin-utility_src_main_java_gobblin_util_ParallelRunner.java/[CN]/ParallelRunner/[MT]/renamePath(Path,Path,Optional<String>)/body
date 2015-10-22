@@ -13,7 +13,7 @@
         return null;
       }
  catch (      FileAlreadyExistsException e) {
-        LOGGER.warn(String.format("Failed to rename %s to %s: dst already exists"),e);
+        LOGGER.warn(String.format("Failed to rename %s to %s: dst already exists",src,dst),e);
         return null;
       }
  finally {

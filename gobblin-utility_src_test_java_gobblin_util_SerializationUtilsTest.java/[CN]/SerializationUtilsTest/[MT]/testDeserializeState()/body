@@ -1,18 +1,8 @@
 {
   WorkUnit workUnit1=WorkUnit.createEmpty();
   WorkUnit workUnit2=WorkUnit.createEmpty();
-  Closer closer=Closer.create();
-  try {
-    ParallelRunner parallelRunner=closer.register(new ParallelRunner(2,this.fs));
-    parallelRunner.deserializeFromFile(workUnit1,new Path(this.outputPath,"wu1"));
-    parallelRunner.deserializeFromFile(workUnit2,new Path(this.outputPath,"wu2"));
-  }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
+  SerializationUtils.deserializeState(this.fs,new Path(this.outputPath,"wu1"),workUnit1);
+  SerializationUtils.deserializeState(this.fs,new Path(this.outputPath,"wu2"),workUnit2);
   Assert.assertEquals(workUnit1.getPropertyNames().size(),2);
   Assert.assertEquals(workUnit1.getProp("foo"),"bar");
   Assert.assertEquals(workUnit1.getPropAsInt("a"),10);
