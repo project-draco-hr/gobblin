@@ -1,0 +1,10 @@
+{
+  if (input == null)   return null;
+  List<String> valid=getValidVersions(input);
+  if (valid == null || valid.size() == 0)   return null;
+  String latest=valid.get(0);
+  for (int i=1; i < valid.size(); i++) {
+    latest=compare(latest,valid.get(i));
+  }
+  return latest;
+}

@@ -1,5 +1,15 @@
 {
   this.configLocation=location;
   this.scheme=scheme;
-  this.latestVersion="v2.0";
+  File[] subfiles=new File(this.configLocation).listFiles();
+  List<String> subdirs=new ArrayList<String>();
+  for (  File f : subfiles) {
+    if (f.isDirectory()) {
+      subdirs.add(f.getName());
+    }
+  }
+  latestVersion=VersionPattern.getLatestVersion(subdirs);
+  if (latestVersion == null) {
+    throw new RuntimeException("Can not find any valid version in " + this.configLocation);
+  }
 }

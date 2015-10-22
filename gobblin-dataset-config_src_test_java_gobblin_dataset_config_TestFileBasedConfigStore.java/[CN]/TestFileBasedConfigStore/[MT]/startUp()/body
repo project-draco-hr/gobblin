@@ -1,0 +1,5 @@
+{
+  URL url=getClass().getResource("/filebasedConfig/");
+  cs=new FileBasedConfigStore(new File(url.getFile()),"test");
+  cs.loadConfigs();
+}

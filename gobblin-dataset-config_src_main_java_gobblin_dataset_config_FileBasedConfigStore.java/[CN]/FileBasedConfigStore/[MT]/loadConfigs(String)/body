@@ -1,5 +1,5 @@
 {
-  Config config=ConfigFactory.parseFile(new File(this.configLocation + "/" + version+ "/"+ CONF_FILE));
+  Config config=ConfigFactory.parseFile(new File(this.configLocation + "/" + version+ "/"+ CONF_FILE)).resolve();
   rawConfigs=new RawConfigMapping(config);
   this.loadedConfigVersion=version;
   initialized=true;

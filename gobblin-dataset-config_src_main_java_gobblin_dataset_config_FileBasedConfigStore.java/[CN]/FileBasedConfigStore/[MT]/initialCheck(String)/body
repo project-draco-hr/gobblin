@@ -1,0 +1,8 @@
+{
+  if (!this.initialized) {
+    this.loadConfigs(version);
+  }
+  if (!this.loadedConfigVersion.equals(version)) {
+    throw new ConfigVersionMissMatchException(String.format("Version loaded is %s, version to query is %s",this.loadedConfigVersion,version));
+  }
+}
