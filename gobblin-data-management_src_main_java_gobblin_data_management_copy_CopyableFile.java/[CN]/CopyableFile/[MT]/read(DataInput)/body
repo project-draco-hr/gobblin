@@ -1,0 +1,5 @@
+{
+  CopyableFile copyableFile=new CopyableFile();
+  copyableFile.readFields(dataInput);
+  return copyableFile;
+}

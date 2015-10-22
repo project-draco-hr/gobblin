@@ -1,0 +1,3 @@
+Path writerOutputDir
+Path publisherOutputDir
+int branchId

@@ -1,0 +1,7 @@
+{
+  int val=in.read(b,off,len);
+  if (val > 0) {
+    this.pos+=val;
+  }
+  return val;
+}

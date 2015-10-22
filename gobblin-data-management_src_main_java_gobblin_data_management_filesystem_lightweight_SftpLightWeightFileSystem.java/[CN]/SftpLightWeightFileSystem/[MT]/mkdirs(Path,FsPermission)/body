@@ -1,0 +1,10 @@
+{
+  try {
+    fsHelper.getSftpConnection().mkdir(path.toString());
+    fsHelper.getSftpConnection().chmod((int)permission.toShort(),path.toString());
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+  return true;
+}

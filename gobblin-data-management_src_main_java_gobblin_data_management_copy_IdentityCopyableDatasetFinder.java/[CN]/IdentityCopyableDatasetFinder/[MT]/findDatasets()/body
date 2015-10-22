@@ -1,0 +1,4 @@
+{
+  CopyableDataset dataset=new RecursiveCopyableDataset(fs,datasetRootPath,properties);
+  return ImmutableList.of(dataset);
+}

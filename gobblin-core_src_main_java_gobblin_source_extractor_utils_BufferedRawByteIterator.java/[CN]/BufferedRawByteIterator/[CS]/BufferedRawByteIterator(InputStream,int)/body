@@ -1,0 +1,6 @@
+{
+  this.is=is;
+  this.bufferSize=bufferSize;
+  this.buffer=new byte[bufferSize];
+  this.nextElement=Optional.absent();
+}

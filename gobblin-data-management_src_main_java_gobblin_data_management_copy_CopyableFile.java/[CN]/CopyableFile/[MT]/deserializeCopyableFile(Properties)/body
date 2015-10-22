@@ -1,0 +1,13 @@
+{
+  try {
+    String string=props.getProperty(SERIALIZED_COPYABLE_FILE);
+    byte[] actualBytes=Hex.decodeHex(string.toCharArray());
+    ByteArrayInputStream is=new ByteArrayInputStream(actualBytes);
+    CopyableFile copyableFile=CopyableFile.read(new DataInputStream(is));
+    is.close();
+    return copyableFile;
+  }
+ catch (  DecoderException de) {
+    throw new IOException(de);
+  }
+}

@@ -1,0 +1,17 @@
+{
+  SourceState state=new SourceState();
+  state.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,"file:///");
+  state.setProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,"file:///");
+  state.setProp(DatasetUtils.DATASET_PROFILE_CLASS_KEY,TestCopyableDatasetFinder.class.getCanonicalName());
+  CopySource source=new CopySource();
+  List<WorkUnit> workunits=source.getWorkunits(state);
+  Assert.assertEquals(workunits.size(),TestCopyableDataset.FILE_COUNT);
+  Extract extract=workunits.get(0).getExtract();
+  for (  WorkUnit workUnit : workunits) {
+    WorkUnitState workUnitState=new WorkUnitState(workUnit);
+    Assert.assertTrue(CopySource.getOriginPath(workUnitState).toString().startsWith(TestCopyableDataset.ORIGIN_PREFIX));
+    Assert.assertTrue(workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,0,0)).startsWith(TestCopyableDataset.DESTINATION_PREFIX));
+    Assert.assertEquals(CopySource.getCopyableFile(workUnitState).getDestinationOwnerAndPermission(),TestCopyableDataset.OWNER_AND_PERMISSION);
+    Assert.assertEquals(workUnit.getExtract(),extract);
+  }
+}

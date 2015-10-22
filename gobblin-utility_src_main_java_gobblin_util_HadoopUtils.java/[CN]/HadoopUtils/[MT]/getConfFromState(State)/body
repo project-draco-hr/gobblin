@@ -1,5 +1,5 @@
 {
-  Configuration conf=new Configuration();
+  Configuration conf=newConfiguration();
   for (  String propName : state.getPropertyNames()) {
     conf.set(propName,state.getProp(propName));
   }

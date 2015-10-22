@@ -1,0 +1,8 @@
+{
+  this.state=state;
+  Configuration conf=new Configuration();
+  String uri=this.state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI);
+  this.fs=FileSystem.get(URI.create(uri),conf);
+  this.stagingDir=WriterUtils.getWriterStagingDir(state,numBranches,branchId);
+  this.outputDir=WriterUtils.getWriterOutputDir(state,numBranches,branchId);
+}

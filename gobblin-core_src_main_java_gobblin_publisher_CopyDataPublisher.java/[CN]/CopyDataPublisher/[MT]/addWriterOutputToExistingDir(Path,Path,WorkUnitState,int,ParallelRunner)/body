@@ -1,0 +1,3 @@
+{
+  this.rename(writerOutputDir,publisherOutputDir,branchId);
+}

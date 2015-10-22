@@ -1,0 +1,8 @@
+{
+  try {
+    return new Path(fsHelper.getSftpConnection().pwd());
+  }
+ catch (  SftpException e) {
+    return null;
+  }
+}

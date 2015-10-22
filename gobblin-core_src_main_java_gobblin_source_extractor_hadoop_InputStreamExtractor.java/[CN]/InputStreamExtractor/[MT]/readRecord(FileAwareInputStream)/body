@@ -1,0 +1,7 @@
+{
+  while (fileIterator.hasNext()) {
+    CopyableFile file=fileIterator.next();
+    return new FileAwareInputStream(file,fs.open(file.getFileStatus().getPath()));
+  }
+  return null;
+}

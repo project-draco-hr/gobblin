@@ -1,0 +1,14 @@
+{
+  try {
+    if (getFileStatus(path).isDir()) {
+      fsHelper.getSftpConnection().rmdir(path.toString());
+    }
+ else {
+      fsHelper.getSftpConnection().rm(path.toString());
+    }
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+  return true;
+}

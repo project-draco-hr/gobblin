@@ -1,0 +1,4 @@
+{
+  ParallelRunner parallelRunner=this.getParallelRunner(this.fileSystemByBranches.get(branchId));
+  parallelRunner.renamePath(writerOutputDir,publisherOutputDir,this.publisherFinalDirOwnerGroupsByBranches.get(branchId));
+}

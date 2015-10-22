@@ -28,7 +28,7 @@
       WriterUtils.mkdirsWithRecursivePermission(this.fileSystemByBranches.get(branchId),publisherOutputDir.getParent(),this.permissions.get(branchId));
     }
     LOG.info(String.format("Moving %s to %s",writerOutputDir,publisherOutputDir));
-    parallelRunner.renamePath(writerOutputDir,publisherOutputDir,this.publisherFinalDirOwnerGroupsByBranches.get(branchId));
+    rename(writerOutputDir,publisherOutputDir,branchId);
     writerOutputPathsMoved.add(writerOutputDir);
   }
 }

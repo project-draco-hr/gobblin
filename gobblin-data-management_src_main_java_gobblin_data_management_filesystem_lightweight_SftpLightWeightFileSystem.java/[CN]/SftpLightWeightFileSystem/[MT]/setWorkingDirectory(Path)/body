@@ -1,0 +1,8 @@
+{
+  try {
+    fsHelper.getSftpConnection().lcd(path.toString());
+  }
+ catch (  SftpException e) {
+    throw new RuntimeException("Failed to set working directory",e);
+  }
+}

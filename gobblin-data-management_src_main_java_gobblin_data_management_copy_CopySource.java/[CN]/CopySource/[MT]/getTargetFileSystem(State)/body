@@ -1,0 +1,5 @@
+{
+  Configuration conf=HadoopUtils.getConfFromState(state);
+  String uri=state.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,ConfigurationKeys.LOCAL_FS_URI);
+  return FileSystem.get(URI.create(uri),conf);
+}

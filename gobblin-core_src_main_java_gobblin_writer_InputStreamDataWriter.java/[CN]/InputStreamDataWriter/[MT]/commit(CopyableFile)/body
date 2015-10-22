@@ -1,0 +1,14 @@
+{
+  if (!this.fs.exists(file.getDestination())) {
+    throw new IOException(String.format("File %s does not exist",file.getDestination()));
+  }
+  Path stagingFile=new Path(this.stagingDir,file.getDestination().getName());
+  Path outputFile=new Path(this.outputDir,file.getDestination().getName());
+  log.info(String.format("Moving data from %s to %s",stagingFile,outputFile));
+  if (this.fs.exists(outputFile)) {
+    log.warn(String.format("Task output file %s already exists",outputFile));
+    HadoopUtils.deletePath(this.fs,outputFile,true);
+  }
+  HadoopUtils.renamePath(this.fs,stagingFile,outputFile);
+  log.info(String.format("Moved data from %s to %s",stagingFile,outputFile));
+}

@@ -1,0 +1,11 @@
+{
+  try {
+    SftpATTRS sftpAttrs=fsHelper.getSftpConnection().stat(path.toString());
+    FsPermission permission=new FsPermission((short)sftpAttrs.getPermissions());
+    FileStatus fs=new FileStatus(sftpAttrs.getSize(),sftpAttrs.isDir(),1,0l,(long)sftpAttrs.getMTime(),(long)sftpAttrs.getATime(),permission,Integer.toString(sftpAttrs.getUId()),Integer.toString(sftpAttrs.getGId()),path);
+    return fs;
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+}

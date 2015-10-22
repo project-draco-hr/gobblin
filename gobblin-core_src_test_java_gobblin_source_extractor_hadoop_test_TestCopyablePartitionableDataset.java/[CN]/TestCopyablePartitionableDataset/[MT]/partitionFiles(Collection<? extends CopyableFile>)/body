@@ -1,0 +1,13 @@
+{
+  Partition.Builder<CopyableFile> belowThreshold=new Partition.Builder<CopyableFile>(BELOW);
+  Partition.Builder<CopyableFile> aboveThreshold=new Partition.Builder<CopyableFile>(ABOVE);
+  for (  CopyableFile file : files) {
+    if (Integer.parseInt(file.getOrigin().getPath().getName()) < THRESHOLD) {
+      belowThreshold.add(file);
+    }
+ else {
+      aboveThreshold.add(file);
+    }
+  }
+  return Lists.newArrayList(belowThreshold.build(),aboveThreshold.build());
+}

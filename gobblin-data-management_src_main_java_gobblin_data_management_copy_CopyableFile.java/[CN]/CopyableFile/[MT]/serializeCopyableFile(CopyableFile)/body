@@ -1,0 +1,7 @@
+{
+  ByteArrayOutputStream os=new ByteArrayOutputStream();
+  copyableFile.write(new DataOutputStream(os));
+  String toReturn=Hex.encodeHexString(os.toByteArray());
+  os.close();
+  return toReturn;
+}

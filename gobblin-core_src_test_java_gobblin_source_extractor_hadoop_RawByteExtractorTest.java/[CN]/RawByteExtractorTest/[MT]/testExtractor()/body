@@ -1,0 +1,17 @@
+{
+  String plainTextPath=getClass().getClassLoader().getResource("plaintext").getFile();
+  InputStreamExtractor extractor=new InputStreamExtractor(FileSystem.getLocal(new Configuration()).open(new Path(plainTextPath,"shakespeare.txt")));
+  Assert.assertEquals(extractor.getExpectedRecordCount(),11);
+  String record=new String(extractor.readRecord(null),Charset.forName(Charsets.UTF_8.name()));
+  Assert.assertTrue(record.startsWith("THE TRAGEDY OF ROMEO AND JULIET"));
+  int records=1;
+  while (true) {
+    byte[] nextByteArray=extractor.readRecord(null);
+    if (nextByteArray == null) {
+      break;
+    }
+    records++;
+    record=new String(nextByteArray,Charset.forName(Charsets.UTF_8.name()));
+  }
+  Assert.assertTrue(record.contains("O, now be gone! More light and light it grows."));
+}
