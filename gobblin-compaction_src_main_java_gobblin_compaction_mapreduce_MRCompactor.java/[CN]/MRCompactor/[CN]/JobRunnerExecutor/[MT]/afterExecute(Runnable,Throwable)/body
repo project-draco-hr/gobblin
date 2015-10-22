@@ -4,7 +4,6 @@
   MRCompactor.this.jobRunnables.remove(jobRunner.getDataset());
   if (t == null) {
     if (jobRunner.status() == COMMITTED) {
-      LOG.info(String.format("Compacted data for %s successfully published",jobRunner.getDataset()));
       jobRunner.getDataset().setState(COMPACTION_COMPLETE);
     }
  else     if (jobRunner.getDataset().state() == GIVEN_UP && !MRCompactor.this.shouldPublishDataIfCannotVerifyCompl) {

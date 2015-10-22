@@ -1,4 +1,0 @@
-{
-  Preconditions.checkArgument(jobProps.contains(COMPACTION_TOPIC),"Missing required property " + COMPACTION_TOPIC);
-  return jobProps.getProp(COMPACTION_TOPIC);
-}

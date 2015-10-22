@@ -3,7 +3,7 @@
   configureInputAndOutputPaths(job);
   configureMapper(job);
   configureReducer(job);
-  if (!this.deduplicate) {
+  if (!this.shouldDeduplicate) {
     job.setNumReduceTasks(0);
   }
 }

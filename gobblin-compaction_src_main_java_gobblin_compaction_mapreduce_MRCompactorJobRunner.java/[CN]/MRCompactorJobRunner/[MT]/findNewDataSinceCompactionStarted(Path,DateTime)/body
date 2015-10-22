@@ -1,0 +1,10 @@
+{
+  for (  FileStatus fstat : FileListUtils.listFilesRecursively(this.fs,inputPath)) {
+    DateTime fileModificationTime=new DateTime(fstat.getModificationTime());
+    if (fileModificationTime.isAfter(jobStartTime)) {
+      LOG.info(String.format("Found new file %s in input folder %s after compaction started. Will abort compaction.",fstat.getPath(),inputPath));
+      return true;
+    }
+  }
+  return false;
+}

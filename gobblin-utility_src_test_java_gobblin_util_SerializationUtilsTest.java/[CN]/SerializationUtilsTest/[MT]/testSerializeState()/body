@@ -1,0 +1,10 @@
+{
+  WorkUnit workUnit1=WorkUnit.createEmpty();
+  workUnit1.setProp("foo","bar");
+  workUnit1.setProp("a",10);
+  SerializationUtils.serializeState(this.fs,new Path(this.outputPath,"wu1"),workUnit1);
+  WorkUnit workUnit2=WorkUnit.createEmpty();
+  workUnit2.setProp("foo","baz");
+  workUnit2.setProp("b",20);
+  SerializationUtils.serializeState(this.fs,new Path(this.outputPath,"wu2"),workUnit2);
+}

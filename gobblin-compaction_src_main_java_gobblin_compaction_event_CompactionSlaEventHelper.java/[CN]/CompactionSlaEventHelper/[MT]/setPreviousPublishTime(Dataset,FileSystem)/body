@@ -1,0 +1,10 @@
+{
+  Path compactionCompletePath=new Path(dataset.outputPath(),MRCompactor.COMPACTION_COMPLETE_FILE_NAME);
+  try {
+    FileStatus fileStatus=fs.getFileStatus(compactionCompletePath);
+    dataset.jobProps().setProp(SlaEventKeys.PREVIOUS_PUBLISH_TS_IN_MILLI_SECS_KEY,Long.toString(fileStatus.getModificationTime()));
+  }
+ catch (  IOException e) {
+    LOG.debug("Failed to get previous publish time.",e);
+  }
+}

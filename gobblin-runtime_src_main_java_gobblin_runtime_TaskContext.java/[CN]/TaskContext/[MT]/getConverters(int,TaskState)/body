@@ -1,0 +1,28 @@
+{
+  String converterClassKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.CONVERTER_CLASSES_KEY,index);
+  if (!this.workUnit.contains(converterClassKey)) {
+    return Collections.emptyList();
+  }
+  if (index >= 0) {
+    forkTaskState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,index);
+  }
+  List<Converter<?,?,?,?>> converters=Lists.newArrayList();
+  for (  String converterClass : Splitter.on(",").omitEmptyStrings().trimResults().split(this.workUnit.getProp(converterClassKey))) {
+    try {
+      Converter<?,?,?,?> converter=Converter.class.cast(Class.forName(converterClass).newInstance());
+      InstrumentedConverterDecorator instrumentedConverter=new InstrumentedConverterDecorator(converter);
+      instrumentedConverter.init(forkTaskState);
+      converters.add(instrumentedConverter);
+    }
+ catch (    ClassNotFoundException cnfe) {
+      throw new RuntimeException(cnfe);
+    }
+catch (    InstantiationException ie) {
+      throw new RuntimeException(ie);
+    }
+catch (    IllegalAccessException iae) {
+      throw new RuntimeException(iae);
+    }
+  }
+  return converters;
+}

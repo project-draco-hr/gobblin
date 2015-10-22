@@ -8,8 +8,8 @@
       fs.delete(testDir,true);
     }
     fs.mkdirs(testDir);
-    RecordCountProvider originFileNameFormat=new AvroHdfsTimePartitionedWithRecordCountsWriter.FilenameRecordCountProvider();
-    MRCompactorJobRunner.LateFileRecordCountProvider lateFileRecordCountProvider=new MRCompactorJobRunner.LateFileRecordCountProvider(originFileNameFormat);
+    RecordCountProvider originFileNameFormat=new IngestionRecordCountProvider();
+    LateFileRecordCountProvider lateFileRecordCountProvider=new LateFileRecordCountProvider(originFileNameFormat);
     Path firstOutput=lateFileRecordCountProvider.constructLateFilePath(originalFilename,fs,testDir);
     Assert.assertEquals(new Path(testDir,originalFilename),firstOutput);
     Assert.assertEquals(123,lateFileRecordCountProvider.getRecordCount(firstOutput));

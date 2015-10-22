@@ -5,13 +5,13 @@
     long recordCount=getRecordCountFromCounter(context,AvroKeyDedupReducer.EVENT_COUNTER.RECORD_COUNT);
     String fileNamePrefix;
     if (recordCount == 0) {
-      fileNamePrefix=M_OUTPUT_FILE_PREFIX;
+      fileNamePrefix=CompactionRecordCountProvider.M_OUTPUT_FILE_PREFIX;
       recordCount=getRecordCountFromCounter(context,AvroKeyMapper.EVENT_COUNTER.RECORD_COUNT);
     }
  else {
-      fileNamePrefix=MR_OUTPUT_FILE_PREFIX;
+      fileNamePrefix=CompactionRecordCountProvider.MR_OUTPUT_FILE_PREFIX;
     }
-    String fileName=new FilenameRecordCountProvider().constructFileName(fileNamePrefix,recordCount);
+    String fileName=new CompactionRecordCountProvider().constructFileName(fileNamePrefix,recordCount);
     for (    FileStatus status : fs.listStatus(workPath,new PathFilter(){
       @Override public boolean accept(      Path path){
         return FilenameUtils.isExtension(path.getName(),"avro");

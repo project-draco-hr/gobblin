@@ -1,0 +1,20 @@
+{
+  Preconditions.checkArgument(union.getType() == Schema.Type.UNION);
+  if (processed.contains(union)) {
+    return Optional.absent();
+  }
+  processed.add(union);
+  List<Schema> newUnion=Lists.newArrayList();
+  for (  Schema unionType : union.getTypes()) {
+    Optional<Schema> newType=removeUncomparableFields(unionType,processed);
+    if (newType.isPresent()) {
+      newUnion.add(newType.get());
+    }
+  }
+  if (newUnion.size() != union.getTypes().size()) {
+    return Optional.absent();
+  }
+ else {
+    return Optional.of(Schema.createUnion(newUnion));
+  }
+}

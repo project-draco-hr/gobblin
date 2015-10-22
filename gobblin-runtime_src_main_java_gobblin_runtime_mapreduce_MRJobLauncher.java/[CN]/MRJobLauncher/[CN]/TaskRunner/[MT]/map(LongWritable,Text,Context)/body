@@ -1,17 +1,6 @@
 {
   WorkUnit workUnit=(value.toString().endsWith(MULTI_WORK_UNIT_FILE_EXTENSION) ? new MultiWorkUnit() : WorkUnit.createEmpty());
-  Closer closer=Closer.create();
-  try {
-    InputStream is=closer.register(this.fs.open(new Path(value.toString())));
-    DataInputStream dis=closer.register((new DataInputStream(is)));
-    workUnit.readFields(dis);
-  }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
+  SerializationUtils.deserializeState(this.fs,new Path(value.toString()),workUnit);
   if (workUnit instanceof MultiWorkUnit) {
     List<WorkUnit> flattenedWorkUnits=JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits());
     for (    WorkUnit flattenedWorkUnit : flattenedWorkUnits) {

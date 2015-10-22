@@ -1,0 +1,4 @@
+{
+  this.inputLatePath=inputLatePath;
+  return this;
+}
