@@ -6,6 +6,10 @@
   Assert.assertTrue(c.getInt("retention") == 3);
   Assert.assertTrue(c.getString("keyInA1").equals("valueInA1"));
   Assert.assertTrue(c.getString("keyInA2").equals("valueInA2"));
+  Assert.assertTrue(c.getString("keyInT2").equals("valueInT2"));
+  Assert.assertTrue(c.getString("keyInT3").equals("valueInT3"));
+  Assert.assertTrue(c.getString("keyInL3").equals("valueInL3"));
+  Assert.assertTrue(c.getString("keyInTag1").equals("valueInTag1"));
   List<String> tags=cs.getAssociatedTags(urn);
   Assert.assertTrue(tags.size() == 3);
   Assert.assertTrue(tags.get(0).equals("config-tag.tag1.tag2.tag3"));
@@ -13,7 +17,8 @@
   Assert.assertTrue(tags.get(2).equals("config-tag.t1.t2.t3"));
   String inputTag="config-tag.l1.l2.l3";
   Map<String,Config> urnConfigMap=cs.getTaggedConfig(inputTag);
-  for (  String s : urnConfigMap.keySet()) {
-    System.out.println("AAA urn is " + s);
-  }
+  Assert.assertTrue(urnConfigMap.size() == 3);
+  Assert.assertTrue(urnConfigMap.containsKey("config-tag.tag1.tag2"));
+  Assert.assertTrue(urnConfigMap.containsKey("config-tag.t1.t2.t3"));
+  Assert.assertTrue(urnConfigMap.containsKey("config-ds.a1"));
 }

@@ -1,0 +1,5 @@
+{
+  URL url=getClass().getResource("/filebasedConfig/");
+  FileBasedConfigStore csbad=new FileBasedConfigStore(new File(url.getFile()),"test");
+  csbad.loadConfigs("v1.0.9");
+}
