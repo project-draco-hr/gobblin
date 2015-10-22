@@ -1,5 +1,11 @@
 {
-  if (fs2.getModificationTime() < fs1.getModificationTime())   return -1;
- else   if (fs2.getModificationTime() > fs1.getModificationTime())   return 1;
- else   return 0;
+  if (fs2.getModificationTime() < fs1.getModificationTime()) {
+    return -1;
+  }
+ else   if (fs2.getModificationTime() > fs1.getModificationTime()) {
+    return 1;
+  }
+ else {
+    return 0;
+  }
 }
