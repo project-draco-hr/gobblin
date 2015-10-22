@@ -1,0 +1,5 @@
+{
+  if (this.fs != null && this.outputPath != null) {
+    this.fs.delete(this.outputPath,true);
+  }
+}

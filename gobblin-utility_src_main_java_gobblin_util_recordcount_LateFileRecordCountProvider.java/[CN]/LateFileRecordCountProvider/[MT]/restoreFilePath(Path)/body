@@ -1,0 +1,3 @@
+{
+  return new Path(path.getName().replaceAll(Pattern.quote(LATE_COMPONENT) + "[\\d]*",EMPTY_STRING));
+}

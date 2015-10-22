@@ -1,10 +1,15 @@
 {
   this.topic=builder.topic;
+  this.priority=builder.priority;
   this.topicInputDir=builder.topicInputDir;
+  this.topicInputLateDir=builder.topicInputLateDir;
   this.topicOutputDir=builder.topicOutputDir;
   this.topicOutputLateDir=builder.topicOutputLateDir;
-  this.topicTmpDir=builder.topicTmpDir;
+  this.topicTmpOutputDir=builder.topicTmpOutputDir;
   this.fs=builder.fs;
-  this.deduplicate=builder.deduplicate;
   this.state=builder.state;
+  this.inputDeduplicated=this.state.getPropAsBoolean(MRCompactor.COMPACTION_INPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_INPUT_DEDUPLICATED);
+  this.outputDeduplicated=this.state.getPropAsBoolean(MRCompactor.COMPACTION_OUTPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_OUTPUT_DEDUPLICATED);
+  this.recompactFromInputPaths=this.state.getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FROM_INPUT_FOR_LATE_DATA,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FROM_INPUT_FOR_LATE_DATA);
+  this.recompactFromOutputPaths=this.state.getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FROM_DEST_PATHS,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FROM_DEST_PATHS);
 }

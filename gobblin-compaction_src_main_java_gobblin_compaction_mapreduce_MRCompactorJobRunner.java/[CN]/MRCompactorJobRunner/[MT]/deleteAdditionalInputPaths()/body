@@ -1,0 +1,5 @@
+{
+  for (  Path path : this.dataset.additionalInputPaths()) {
+    HadoopUtils.deletePathAndEmptyAncestors(this.fs,path,true);
+  }
+}

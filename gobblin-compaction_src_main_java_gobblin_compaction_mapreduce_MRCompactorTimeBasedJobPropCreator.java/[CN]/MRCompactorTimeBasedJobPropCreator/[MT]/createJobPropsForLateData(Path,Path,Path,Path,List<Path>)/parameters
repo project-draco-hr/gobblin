@@ -1,5 +1,0 @@
-Path jobInputDir
-Path jobOutputDir
-Path jobOutputLateDir
-Path jobTmpDir
-List<Path> newDataFiles

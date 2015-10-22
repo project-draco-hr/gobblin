@@ -1,5 +1,5 @@
 {
-  Path completionFilePath=new Path(this.outputPath,MRCompactor.COMPACTION_COMPLETE_FILE_NAME);
+  Path completionFilePath=new Path(this.dataset.outputPath(),MRCompactor.COMPACTION_COMPLETE_FILE_NAME);
   Closer closer=Closer.create();
   try {
     FSDataOutputStream completionFileStream=closer.register(this.fs.create(completionFilePath));

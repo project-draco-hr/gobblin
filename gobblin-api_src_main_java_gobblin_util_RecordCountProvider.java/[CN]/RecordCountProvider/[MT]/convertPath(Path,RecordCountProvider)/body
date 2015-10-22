@@ -1,0 +1,8 @@
+{
+  if (this.getClass().equals(src.getClass())) {
+    return path;
+  }
+ else {
+    throw getNotImplementedException(src);
+  }
+}

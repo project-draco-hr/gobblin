@@ -1,0 +1,12 @@
+{
+  if (this.getClass().equals(src.getClass())) {
+    return path;
+  }
+ else   if (src.getClass().equals(IngestionRecordCountProvider.class)) {
+    String newFileName=constructFileName(M_OUTPUT_FILE_PREFIX,src.getRecordCount(path));
+    return new Path(path.getParent(),newFileName);
+  }
+ else {
+    throw getNotImplementedException(src);
+  }
+}

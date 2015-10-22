@@ -1,5 +1,9 @@
 {
-  WorkUnitState workUnitState=new WorkUnitState(deserializeWorkUnit(this.taskConfig.getConfigMap().get(GobblinYarnConfigurationKeys.WORK_UNIT_FILE_PATH)));
+  WorkUnit workUnit=WorkUnit.createEmpty();
+  Path workUnitFilePath=new Path(this.taskConfig.getConfigMap().get(GobblinYarnConfigurationKeys.WORK_UNIT_FILE_PATH));
+  SerializationUtils.deserializeState(this.fs,workUnitFilePath,workUnit);
+  workUnit.addAllIfNotExist(this.jobState);
+  WorkUnitState workUnitState=new WorkUnitState(workUnit);
   workUnitState.setId(this.taskId);
   workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,this.jobId);
   workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,this.taskId);

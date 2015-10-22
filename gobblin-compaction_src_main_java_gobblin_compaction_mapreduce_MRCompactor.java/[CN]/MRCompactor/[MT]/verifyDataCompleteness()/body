@@ -4,10 +4,10 @@
   int numDatasetsVerifiedTogether=getNumDatasetsVerifiedTogether();
   List<Dataset> datasetsToBeVerified=Lists.newArrayList();
   for (  Dataset dataset : this.datasets) {
-    if (DatasetFilterUtils.survived(getTopic(dataset.jobProps()),blacklist,whitelist)) {
+    if (shouldVerifyCompletenessForDataset(dataset,blacklist,whitelist)) {
       datasetsToBeVerified.add(dataset);
       if (datasetsToBeVerified.size() >= numDatasetsVerifiedTogether) {
-        ListenableFuture<Results> future=this.verifier.verify(datasetsToBeVerified);
+        ListenableFuture<Results> future=this.verifier.get().verify(datasetsToBeVerified);
         addCallback(datasetsToBeVerified,future);
         datasetsToBeVerified=Lists.newArrayList();
       }
@@ -15,5 +15,9 @@
  else {
       dataset.setState(VERIFIED);
     }
+  }
+  if (!datasetsToBeVerified.isEmpty()) {
+    ListenableFuture<Results> future=this.verifier.get().verify(datasetsToBeVerified);
+    addCallback(datasetsToBeVerified,future);
   }
 }

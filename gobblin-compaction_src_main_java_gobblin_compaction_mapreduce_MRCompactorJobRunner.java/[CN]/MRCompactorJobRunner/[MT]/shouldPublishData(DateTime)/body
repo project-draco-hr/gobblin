@@ -2,8 +2,13 @@
   if (this.policy != Policy.DO_PUBLISH_DATA) {
     return false;
   }
-  if (!this.jobProps.getPropAsBoolean(COMPACTION_JOB_ABORT_UPON_NEW_DATA,DEFAULT_COMPACTION_JOB_ABORT_UPON_NEW_DATA)) {
+  if (!this.dataset.jobProps().getPropAsBoolean(COMPACTION_JOB_ABORT_UPON_NEW_DATA,DEFAULT_COMPACTION_JOB_ABORT_UPON_NEW_DATA)) {
     return true;
   }
-  return !findNewDataSinceCompactionStarted(jobStartTime);
+  for (  Path inputPath : getInputPaths()) {
+    if (findNewDataSinceCompactionStarted(inputPath,jobStartTime)) {
+      return false;
+    }
+  }
+  return true;
 }

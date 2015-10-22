@@ -1,9 +1,9 @@
 {
   try {
     Map<String,String> eventMetadataMap=Maps.newHashMap();
-    long newLateRecordCount=this.recordCountProvider.getRecordCount(newLateFilePaths);
+    long newLateRecordCount=this.lateInputRecordCountProvider.getRecordCount(newLateFilePaths);
     eventMetadataMap.put(NEW_LATE_RECORD_COUNTS,Long.toString(newLateRecordCount));
-    eventMetadataMap.put(CUMULATIVE_LATE_RECORD_COUNTS,Long.toString(newLateRecordCount + this.recordCountProvider.getRecordCount(this.getCumulativeLateFilePaths(lateDataDir))));
+    eventMetadataMap.put(CUMULATIVE_LATE_RECORD_COUNTS,Long.toString(newLateRecordCount + this.lateOutputRecordCountProvider.getRecordCount(this.getCumulativeLateFilePaths(lateDataDir))));
     LOG.info("Submitting late event counts: " + eventMetadataMap);
     this.eventSubmitter.submit(LATE_RECORD_COUNTS_EVENT,eventMetadataMap);
   }

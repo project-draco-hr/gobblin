@@ -1,3 +1,7 @@
 {
-  return this.fs.getContentSummary(this.inputPath).getLength();
+  long inputSize=0;
+  for (  Path inputPath : this.getInputPaths()) {
+    inputSize+=this.fs.getContentSummary(inputPath).getLength();
+  }
+  return inputSize;
 }

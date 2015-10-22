@@ -1,0 +1,3 @@
+{
+  dataset.jobProps().setProp(SlaEventKeys.DATASET_URN_KEY,new Path(dataset.jobProps().getProp(MRCompactor.COMPACTION_DEST_DIR),dataset.topic()).toString());
+}

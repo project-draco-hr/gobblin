@@ -1,19 +1,19 @@
 {
   this.dataset=dataset;
-  this.jobProps=dataset.jobProps();
-  this.topic=jobProps.getProp(MRCompactor.COMPACTION_TOPIC);
-  this.inputPath=new Path(jobProps.getProp(MRCompactor.COMPACTION_JOB_INPUT_DIR));
-  this.outputPath=new Path(jobProps.getProp(MRCompactor.COMPACTION_JOB_DEST_DIR));
-  this.tmpPath=new Path(jobProps.getProp(MRCompactor.COMPACTION_JOB_TMP_DIR));
   this.fs=fs;
-  this.perm=HadoopUtils.deserializeFsPermission(this.jobProps,COMPACTION_JOB_OUTPUT_DIR_PERMISSION,FsPermission.getDefault());
-  this.deduplicate=this.jobProps.getPropAsBoolean(MRCompactor.COMPACTION_DEDUPLICATE,MRCompactor.DEFAULT_COMPACTION_DEDUPLICATE);
-  this.priority=priority;
-  this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.jobProps.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  this.perm=HadoopUtils.deserializeFsPermission(this.dataset.jobProps(),COMPACTION_JOB_OUTPUT_DIR_PERMISSION,FsPermission.getDefault());
+  this.recompactFromDestPaths=this.dataset.jobProps().getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FROM_DEST_PATHS,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FROM_DEST_PATHS);
+  Preconditions.checkArgument(this.dataset.jobProps().contains(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE),String.format("Missing property %s for dataset %s",MRCompactor.COMPACTION_SHOULD_DEDUPLICATE,this.dataset));
+  this.shouldDeduplicate=this.dataset.jobProps().getPropAsBoolean(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE);
+  this.outputDeduplicated=this.dataset.jobProps().getPropAsBoolean(MRCompactor.COMPACTION_OUTPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_OUTPUT_DEDUPLICATED);
+  this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.dataset.jobProps().getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
   try {
-    this.recordCountProvider=new LateFileRecordCountProvider((RecordCountProvider)Class.forName(this.jobProps.getProp(MRCompactor.COMPACTION_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_RECORD_COUNT_PROVIDER)).newInstance());
+    this.inputRecordCountProvider=(RecordCountProvider)Class.forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_INPUT_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_INPUT_RECORD_COUNT_PROVIDER)).newInstance();
+    this.outputRecordCountProvider=(RecordCountProvider)Class.forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER)).newInstance();
+    this.lateInputRecordCountProvider=new LateFileRecordCountProvider(this.inputRecordCountProvider);
+    this.lateOutputRecordCountProvider=new LateFileRecordCountProvider(this.outputRecordCountProvider);
   }
  catch (  Exception e) {
-    throw new RuntimeException("Failed to instantiate record count provider: " + e,e);
+    throw new RuntimeException("Failed to instantiate RecordCountProvider",e);
   }
 }

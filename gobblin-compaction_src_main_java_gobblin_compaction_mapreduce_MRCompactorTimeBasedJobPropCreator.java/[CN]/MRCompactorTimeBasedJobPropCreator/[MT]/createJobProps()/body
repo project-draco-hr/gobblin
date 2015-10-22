@@ -1,38 +1,35 @@
 {
-  List<State> allJobProps=Lists.newArrayList();
+  List<Dataset> datasets=Lists.newArrayList();
   if (!fs.exists(this.topicInputDir)) {
     LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ topic);
-    return allJobProps;
+    return datasets;
   }
   String folderStructure=getFolderStructure();
   for (  FileStatus status : this.fs.globStatus(new Path(this.topicInputDir,folderStructure))) {
+    Path jobInputPath=status.getPath();
     DateTime folderTime=null;
     try {
-      folderTime=getFolderTime(status.getPath());
+      folderTime=getFolderTime(jobInputPath);
     }
  catch (    RuntimeException e) {
-      LOG.warn(status.getPath() + " is not a valid folder. Will be skipped.");
+      LOG.warn(jobInputPath + " is not a valid folder. Will be skipped.");
       continue;
     }
-    Path jobOutputDir=new Path(this.topicOutputDir,folderTime.toString(this.timeFormatter));
-    Path jobTmpDir=new Path(this.topicTmpDir,folderTime.toString(this.timeFormatter));
-    if (folderWithinAllowedPeriod(status.getPath(),folderTime)) {
-      if (!folderAlreadyCompacted(jobOutputDir)) {
-        State state=createJobProps(status.getPath(),jobOutputDir,jobTmpDir,this.deduplicate,folderTime.toString(this.timeFormatter));
-        CompactionSlaEventHelper.setUpstreamTimeStamp(state,folderTime.plusDays(1).getMillis());
-        allJobProps.add(state);
-      }
- else {
-        List<Path> newDataFiles=getNewDataInFolder(status.getPath(),jobOutputDir);
-        if (newDataFiles.isEmpty()) {
-          LOG.info(String.format("Folder %s already compacted. Skipping",jobOutputDir));
-        }
- else {
-          Path jobOutputLateDir=new Path(this.topicOutputLateDir,folderTime.toString(this.timeFormatter));
-          allJobProps.add(createJobPropsForLateData(status.getPath(),jobOutputDir,jobOutputLateDir,jobTmpDir,newDataFiles));
+    if (folderWithinAllowedPeriod(jobInputPath,folderTime)) {
+      Path jobInputLatePath=appendFolderTime(this.topicInputLateDir,folderTime);
+      Path jobOutputPath=appendFolderTime(this.topicOutputDir,folderTime);
+      Path jobOutputLatePath=appendFolderTime(this.topicOutputLateDir,folderTime);
+      Path jobOutputTmpPath=appendFolderTime(this.topicTmpOutputDir,folderTime);
+      Dataset dataset=new Dataset.Builder().withTopic(this.topic).withPriority(this.priority).withInputPath(this.recompactFromOutputPaths ? jobOutputPath : jobInputPath).withInputLatePath(this.recompactFromOutputPaths ? jobOutputLatePath : jobInputLatePath).withOutputPath(jobOutputPath).withOutputLatePath(jobOutputLatePath).withOutputTmpPath(jobOutputTmpPath).build();
+      Optional<Dataset> datasetWithJobProps=createJobProps(dataset,folderTime.toString(this.timeFormatter));
+      if (datasetWithJobProps.isPresent()) {
+        datasetWithJobProps.get().jobProps().setProp(COMPACTION_TIMEBASED_INPUT_PATH_TIME,folderTime.getMillis());
+        datasets.add(datasetWithJobProps.get());
+        if (this.recompactFromOutputPaths || !MRCompactor.datasetAlreadyCompacted(this.fs,dataset)) {
+          CompactionSlaEventHelper.setUpstreamTimeStamp(state,folderTime.plusDays(1).getMillis());
         }
       }
     }
   }
-  return allJobProps;
+  return datasets;
 }
