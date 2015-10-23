@@ -2,7 +2,6 @@
   List<String> self=getRawTags(urn);
   List<String> res=new ArrayList<String>();
   for (  String s : self) {
-    System.out.println("self tag is " + s);
     if (previousTags.contains(s)) {
       throw new TagCircularDependencyException("Circular dependence for tag " + s);
     }
@@ -10,11 +9,6 @@
     Set<String> combined=new HashSet<String>(previousTags);
     combined.add(s);
     res.addAll(getAssociatedTagsWithCheck(s,combined));
-  }
-  System.out.println("AAA " + DatasetUtils.getParentId(getAdjustedUrn(urn)));
-  System.out.println("AAA urn " + urn);
-  for (  String p : previousTags) {
-    System.out.println("previous tag is " + p + " size is "+ previousTags.size());
   }
   String parentId=DatasetUtils.getParentId(getAdjustedUrn(urn));
   if (!parentId.equals(DatasetUtils.ROOT)) {
