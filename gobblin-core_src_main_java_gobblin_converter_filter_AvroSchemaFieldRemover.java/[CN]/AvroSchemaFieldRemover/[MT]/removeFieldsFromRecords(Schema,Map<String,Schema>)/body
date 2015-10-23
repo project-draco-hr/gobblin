@@ -1,4 +1,6 @@
 {
+  Schema newRecord=Schema.createRecord(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.isError());
+  schemaMap.put(schema.getFullName(),newRecord);
   List<Field> newFields=Lists.newArrayList();
   for (  Field field : schema.getFields()) {
     if (!this.shouldRemove(field)) {
@@ -12,8 +14,6 @@
       newFields.add(newField);
     }
   }
-  Schema newRecord=Schema.createRecord(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.isError());
   newRecord.setFields(newFields);
-  schemaMap.put(schema.getFullName(),newRecord);
   return newRecord;
 }
