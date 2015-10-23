@@ -1,0 +1,10 @@
+{
+  List<String> res=new ArrayList<String>();
+  res.add(urn);
+  String parentId=DatasetUtils.getParentId(urn);
+  while (!parentId.equals(adjusted)) {
+    res.add(parentId);
+    parentId=DatasetUtils.getParentId(parentId);
+  }
+  return res;
+}

@@ -12,10 +12,5 @@
       res.add(tmp.get(i));
     }
   }
-  for (  String s : res) {
-    if (s.equals(urn)) {
-      throw new RuntimeException("Tag associated with self " + s);
-    }
-  }
   return res;
 }
