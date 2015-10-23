@@ -19,6 +19,11 @@
         this.logger.info(String.format("Committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
         commitDataset(datasetState);
       }
+ else {
+        if (datasetState.getState() == JobState.RunningState.SUCCESSFUL) {
+          datasetState.setState(JobState.RunningState.COMMITTED);
+        }
+      }
     }
  catch (    IOException ioe) {
       this.logger.error(String.format("Failed to commit dataset state for dataset %s of job %s",datasetUrn,this.jobId),ioe);

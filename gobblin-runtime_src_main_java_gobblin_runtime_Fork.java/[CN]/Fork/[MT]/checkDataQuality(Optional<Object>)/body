@@ -3,11 +3,14 @@
     this.forkTaskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,this.taskState.getProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED));
     this.forkTaskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXTRACTED,this.taskState.getProp(ConfigurationKeys.EXTRACTOR_ROWS_EXTRACTED));
   }
+  String writerRowsWrittenKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_RECORDS_WRITTEN,this.branches,this.index);
   if (this.writer.isPresent()) {
     this.forkTaskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.get().recordsWritten());
+    this.taskState.setProp(writerRowsWrittenKey,this.writer.get().recordsWritten());
   }
  else {
     this.forkTaskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
+    this.taskState.setProp(writerRowsWrittenKey,0l);
   }
   if (schema.isPresent()) {
     this.forkTaskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.get().toString());
