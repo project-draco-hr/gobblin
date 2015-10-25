@@ -1,0 +1,6 @@
+{
+  if (!this.fs.exists(this.outputFile)) {
+    return 0;
+  }
+  return this.fs.getFileStatus(this.outputFile).getLen();
+}

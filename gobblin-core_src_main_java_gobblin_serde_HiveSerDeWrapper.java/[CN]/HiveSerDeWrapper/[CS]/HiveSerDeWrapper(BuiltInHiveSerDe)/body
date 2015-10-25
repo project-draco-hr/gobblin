@@ -1,0 +1,3 @@
+{
+  this(hiveSerDe.serDeClassName,hiveSerDe.inputFormatClassName,hiveSerDe.outputFormatClassName,hiveSerDe.extension);
+}
