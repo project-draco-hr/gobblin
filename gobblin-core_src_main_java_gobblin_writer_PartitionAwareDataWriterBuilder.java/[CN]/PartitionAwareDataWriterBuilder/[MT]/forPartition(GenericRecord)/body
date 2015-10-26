@@ -1,4 +1,4 @@
 {
-  this.partition=partition;
+  this.partition=Optional.fromNullable(partition);
   return this;
 }

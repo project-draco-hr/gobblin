@@ -1,0 +1,7 @@
+{
+  Options options=new Options();
+  options.addOption(SYS_CONFIG_OPTION);
+  options.addOption(JOB_CONFIG_OPTION);
+  options.addOption(HELP_OPTION);
+  return options;
+}

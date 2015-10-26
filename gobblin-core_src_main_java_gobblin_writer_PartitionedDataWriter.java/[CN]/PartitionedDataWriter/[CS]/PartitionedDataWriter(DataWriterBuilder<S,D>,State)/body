@@ -1,7 +1,8 @@
 {
+  this.closer=Closer.create();
   this.partitionWriters=CacheBuilder.newBuilder().build(new CacheLoader<GenericRecord,DataWriter<D>>(){
     @Override public DataWriter<D> load(    final GenericRecord key) throws Exception {
-      return new InstrumentedPartitionedDataWriterDecorator<D>(createPartitionWriter(key),state,key);
+      return closer.register(new InstrumentedPartitionedDataWriterDecorator<D>(createPartitionWriter(key),state,key));
     }
   }
 );
@@ -11,7 +12,7 @@
       this.shouldPartition=true;
       this.builder=Optional.of(PartitionAwareDataWriterBuilder.class.cast(builder));
       this.partitioner=Optional.of(WriterPartitioner.class.cast(ConstructorUtils.invokeConstructor(Class.forName(state.getProp(ConfigurationKeys.WRITER_PARTITIONER_CLASS)),state)));
-      this.builder.get().validatePartitionSchema(this.partitioner.get().partitionSchema());
+      Preconditions.checkArgument(this.builder.get().validatePartitionSchema(this.partitioner.get().partitionSchema()),String.format("Writer %s does not support schema from partitioner %s",builder.getClass().getCanonicalName(),this.partitioner.getClass().getCanonicalName()));
     }
  catch (    ReflectiveOperationException roe) {
       throw new IOException(roe);
@@ -19,7 +20,8 @@
   }
  else {
     this.shouldPartition=false;
-    this.partitionWriters.put(NON_PARTITIONED_WRITER_KEY,new InstrumentedDataWriterDecorator<D>(builder.build(),state));
+    InstrumentedDataWriterDecorator<D> writer=this.closer.register(new InstrumentedDataWriterDecorator<D>(builder.build(),state));
+    this.partitionWriters.put(NON_PARTITIONED_WRITER_KEY,writer);
     this.partitioner=Optional.absent();
     this.builder=Optional.absent();
   }
