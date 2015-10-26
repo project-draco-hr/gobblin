@@ -1,0 +1,13 @@
+{
+  Closer closer=Closer.create();
+  try {
+    InputStream in=closer.register(getClass().getResourceAsStream(schemaFile));
+    return new Schema.Parser().parse(in);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

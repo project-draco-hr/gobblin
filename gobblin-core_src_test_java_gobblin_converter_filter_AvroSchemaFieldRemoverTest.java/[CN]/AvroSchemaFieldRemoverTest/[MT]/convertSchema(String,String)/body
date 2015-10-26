@@ -1,0 +1,4 @@
+{
+  Schema originalSchema=parseSchema(schemaFile);
+  return new AvroSchemaFieldRemover(fieldsToRemove).removeFields(originalSchema);
+}
