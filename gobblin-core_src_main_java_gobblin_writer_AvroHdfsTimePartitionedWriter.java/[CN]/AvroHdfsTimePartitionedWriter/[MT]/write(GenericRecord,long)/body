@@ -1,4 +1,7 @@
 {
+  if (recordTooOld(recordTimestamp)) {
+    return;
+  }
   Path writerOutputPath=getPathForColumnValue(recordTimestamp);
   if (!this.pathToWriterMap.containsKey(writerOutputPath)) {
     LOG.info("Creating a new DataWriter for path: " + writerOutputPath);

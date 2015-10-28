@@ -1,0 +1,3 @@
+{
+  return this.earliestAllowedTimestamp.isPresent() && recordTimestamp < this.earliestAllowedTimestamp.get();
+}
