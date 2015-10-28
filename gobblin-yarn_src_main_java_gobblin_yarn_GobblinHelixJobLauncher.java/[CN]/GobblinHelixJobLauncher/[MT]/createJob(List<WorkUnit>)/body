@@ -4,14 +4,7 @@
   try {
     ParallelRunner stateSerDeRunner=closer.register(new ParallelRunner(this.stateSerDeRunnerThreads,this.fs));
     for (    WorkUnit workUnit : workUnits) {
-      if (workUnit instanceof MultiWorkUnit) {
-        for (        WorkUnit innerWorkUnit : JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits())) {
-          addWorkUnit(innerWorkUnit,stateSerDeRunner,taskConfigMap);
-        }
-      }
- else {
-        addWorkUnit(workUnit,stateSerDeRunner,taskConfigMap);
-      }
+      addWorkUnit(workUnit,stateSerDeRunner,taskConfigMap);
     }
     Path jobStateFilePath=new Path(this.appWorkDir,this.jobContext.getJobId() + "." + JOB_STATE_FILE_NAME);
     SerializationUtils.serializeState(this.fs,jobStateFilePath,this.jobContext.getJobState());

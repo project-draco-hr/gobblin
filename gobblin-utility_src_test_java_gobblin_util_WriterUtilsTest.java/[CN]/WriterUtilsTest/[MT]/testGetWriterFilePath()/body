@@ -1,5 +1,5 @@
 {
-  WorkUnit state=new WorkUnit();
+  WorkUnit state=WorkUnit.createEmpty();
   state.setProp(ConfigurationKeys.WRITER_FILE_PATH,TEST_WRITER_FILE_PATH);
   Assert.assertEquals(WriterUtils.getWriterFilePath(state,0,0),TEST_WRITER_FILE_PATH);
   state.setProp(ConfigurationKeys.WRITER_FILE_PATH + ".0",TEST_WRITER_FILE_PATH);
