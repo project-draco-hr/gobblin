@@ -1,13 +1,16 @@
 {
-  boolean jobCommitPolicyIsPartial=JobCommitPolicy.getCommitPolicy(this.taskState.getProperties()) == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS;
   boolean publishDataAtJobLevel=this.taskState.getPropAsBoolean(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL);
   if (publishDataAtJobLevel) {
-    LOG.info(String.format("%s is true. Will publish data in driver.",ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL));
+    LOG.info(String.format("%s is true. Will publish data at the job level.",ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL));
     return false;
   }
- else   if (!jobCommitPolicyIsPartial) {
-    LOG.info(String.format("%s is set to full. Will publish data in driver.",ConfigurationKeys.JOB_COMMIT_POLICY_KEY));
-    return false;
+  JobCommitPolicy jobCommitPolicy=JobCommitPolicy.getCommitPolicy(this.taskState);
+  if (jobCommitPolicy == JobCommitPolicy.COMMIT_SUCCESSFUL_TASKS) {
+    return this.taskState.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL;
   }
-  return true;
+  if (jobCommitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS) {
+    return true;
+  }
+  LOG.info("Will publish data at the job level with job commit policy: " + jobCommitPolicy);
+  return false;
 }

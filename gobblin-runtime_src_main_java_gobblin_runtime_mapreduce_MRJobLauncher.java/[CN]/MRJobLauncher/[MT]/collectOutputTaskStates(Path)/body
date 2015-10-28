@@ -1,5 +1,6 @@
 {
   if (!this.fs.exists(taskStatePath)) {
+    LOG.warn(String.format("Task state output path %s does not exist",taskStatePath));
     return ImmutableList.of();
   }
   FileStatus[] fileStatuses=this.fs.listStatus(taskStatePath,new PathFilter(){
@@ -9,6 +10,7 @@
   }
 );
   if (fileStatuses == null || fileStatuses.length == 0) {
+    LOG.warn("No task state files found in " + taskStatePath);
     return ImmutableList.of();
   }
   Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();

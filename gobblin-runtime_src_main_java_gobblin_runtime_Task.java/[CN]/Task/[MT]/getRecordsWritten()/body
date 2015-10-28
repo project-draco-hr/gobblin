@@ -1,0 +1,9 @@
+{
+  long recordsWritten=0;
+  for (  Optional<Fork> fork : this.forks) {
+    if (fork.isPresent()) {
+      recordsWritten+=fork.get().getRecordsWritten();
+    }
+  }
+  return recordsWritten;
+}
