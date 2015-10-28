@@ -1,0 +1,7 @@
+{
+  Extractor<String,String> extractor=super.getExtractor(workUnitState);
+  if (((TaskState)workUnitState).getTaskId().endsWith("0")) {
+    return new FaultyExtractor(workUnitState);
+  }
+  return extractor;
+}

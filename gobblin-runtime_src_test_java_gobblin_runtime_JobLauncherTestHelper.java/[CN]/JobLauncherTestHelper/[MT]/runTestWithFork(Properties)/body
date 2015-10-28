@@ -21,8 +21,10 @@
     Path path=new Path(taskState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),new Path(taskState.getExtract().getOutputFilePath(),"fork_0"));
     Assert.assertTrue(lfs.exists(path));
     Assert.assertEquals(lfs.listStatus(path).length,2);
+    Assert.assertEquals(taskState.getPropAsLong(ConfigurationKeys.WRITER_RECORDS_WRITTEN + ".0"),TestExtractor.TOTAL_RECORDS);
     path=new Path(taskState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),new Path(taskState.getExtract().getOutputFilePath(),"fork_1"));
     Assert.assertTrue(lfs.exists(path));
     Assert.assertEquals(lfs.listStatus(path).length,2);
+    Assert.assertEquals(taskState.getPropAsLong(ConfigurationKeys.WRITER_RECORDS_WRITTEN + ".1"),TestExtractor.TOTAL_RECORDS);
   }
 }
