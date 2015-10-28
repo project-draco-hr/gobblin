@@ -1,0 +1,3 @@
+{
+  return getSimplyNamedMetrics(Meter.class,Optional.of(filter));
+}

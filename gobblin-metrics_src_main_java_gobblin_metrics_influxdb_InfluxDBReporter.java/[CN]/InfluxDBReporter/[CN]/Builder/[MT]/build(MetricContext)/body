@@ -1,3 +1,0 @@
-{
-  return new InfluxDBReporter(context,this.name,this.filter,this.rateUnit,this.durationUnit,this.url,this.user,this.password,this.database,this.timeUnit);
-}

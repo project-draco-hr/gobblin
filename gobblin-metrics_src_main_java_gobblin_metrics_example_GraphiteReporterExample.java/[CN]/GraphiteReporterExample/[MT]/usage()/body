@@ -1,3 +1,0 @@
-{
-  System.err.println("Usage: GraphiteReporterExample " + "<number of tasks to spawn> " + "<total number of records to process per task> "+ "<Graphite Carbon server host name>");
-}

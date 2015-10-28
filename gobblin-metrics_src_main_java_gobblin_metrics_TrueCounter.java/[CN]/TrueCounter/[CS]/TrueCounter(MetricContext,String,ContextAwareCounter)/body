@@ -1,0 +1,12 @@
+{
+  this.tagged=new Tagged();
+  this.name=name;
+  Optional<MetricContext> parentContext=context.getParent();
+  if (parentContext.isPresent()) {
+    this.parentCounter=Optional.fromNullable(parentContext.get().contextAwareCounter(name));
+  }
+ else {
+    this.parentCounter=Optional.absent();
+  }
+  this.contextAwareCounter=new WeakReference<ContextAwareCounter>(counter);
+}

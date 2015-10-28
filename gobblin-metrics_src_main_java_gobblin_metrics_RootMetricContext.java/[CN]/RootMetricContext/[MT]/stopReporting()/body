@@ -1,0 +1,6 @@
+{
+  this.reportingStarted=false;
+  for (  ContextAwareReporter reporter : this.reporters) {
+    reporter.stop();
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return config.withValue(REPORTING_INTERVAL_PERIOD,ConfigValueFactory.fromAnyRef(reportingInterval)).withValue(REPORTING_INTERVAL_UNIT,ConfigValueFactory.fromAnyRef(reportingIntervalUnit.toString()));
+}

@@ -1,0 +1,12 @@
+{
+  super(new ExponentiallyDecayingReservoir());
+  this.name=name;
+  Optional<MetricContext> parentContext=context.getParent();
+  if (parentContext.isPresent()) {
+    this.parentHistogram=Optional.fromNullable(parentContext.get().contextAwareHistogram(name));
+  }
+ else {
+    this.parentHistogram=Optional.absent();
+  }
+  this.contextAwareHistogram=new WeakReference<ContextAwareHistogram>(contextAwareHistogram);
+}

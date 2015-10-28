@@ -1,0 +1,6 @@
+{
+  this.contextsToReport.remove(context);
+  if (context.getParent().isPresent() && this.contextFilter.shouldReplaceByParent(context)) {
+    this.contextsToReport.add(context.getParent().get().getInnerMetricContext());
+  }
+}

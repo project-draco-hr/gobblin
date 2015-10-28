@@ -1,0 +1,3 @@
+{
+  return metricContext.getName().startsWith(this.prefix);
+}

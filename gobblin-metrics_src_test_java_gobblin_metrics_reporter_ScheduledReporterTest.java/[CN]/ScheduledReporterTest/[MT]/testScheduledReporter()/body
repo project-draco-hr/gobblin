@@ -1,0 +1,55 @@
+{
+  long reportingIntervalMillis=400;
+  String context1Name=ScheduledReporterTest.class.getSimpleName() + "_1";
+  String context2Name=ScheduledReporterTest.class.getSimpleName() + "_2";
+  String context3Name="SomeOtherName";
+  MetricContext context1=MetricContext.builder(context1Name).build();
+  Config config=ConfigFactory.empty();
+  config=ScheduledReporter.setReportingInterval(config,reportingIntervalMillis,TimeUnit.MILLISECONDS);
+  config=PrefixContextFilter.setPrefixString(config,ScheduledReporterTest.class.getSimpleName());
+  config=ContextFilterFactory.setContextFilterClass(config,PrefixContextFilter.class);
+  ContextStoreReporter reporter=new ContextStoreReporter("testContext",config);
+  Set<String> contextNames=getContextNames(reporter);
+  Assert.assertEquals(contextNames.size(),1);
+  Assert.assertTrue(contextNames.contains(context1Name));
+  MetricContext context2=context1.childBuilder(context2Name).build();
+  context1.childBuilder(context3Name).build();
+  contextNames=getContextNames(reporter);
+  Assert.assertEquals(contextNames.size(),2);
+  Assert.assertTrue(contextNames.contains(context1Name));
+  Assert.assertTrue(contextNames.contains(context2Name));
+  Assert.assertEquals(reporter.getReportedContexts().size(),0);
+  reporter.start();
+  long maxWaitMillis=10 * reportingIntervalMillis;
+  long totalWait=0;
+  while (reporter.getReportedContexts().size() < 6 && maxWaitMillis > 0) {
+    long wait=100;
+    Thread.sleep(wait);
+    maxWaitMillis-=wait;
+    totalWait+=wait;
+  }
+  reporter.stop();
+  Assert.assertTrue(totalWait > reportingIntervalMillis);
+  Assert.assertTrue(reporter.getReportedContexts().size() >= 6);
+  Assert.assertTrue(reporter.getReportedContexts().size() <= 10);
+  Set<String> firstReport=Sets.newHashSet(reporter.getReportedContexts().get(0).getName(),reporter.getReportedContexts().get(1).getName());
+  Assert.assertEquals(firstReport,Sets.newHashSet(context1Name,context2Name));
+  Set<String> secondReport=Sets.newHashSet(reporter.getReportedContexts().get(2).getName(),reporter.getReportedContexts().get(3).getName());
+  Assert.assertEquals(secondReport,Sets.newHashSet(context1Name,context2Name));
+  int totalReports=reporter.getReportedContexts().size();
+  Thread.sleep(2 * reportingIntervalMillis);
+  Assert.assertEquals(reporter.getReportedContexts().size(),totalReports);
+  reporter.getReportedContexts().clear();
+  context2=null;
+  maxWaitMillis=2000;
+  System.gc();
+  while (reporter.getReportedContexts().size() < 1 && maxWaitMillis > 0) {
+    System.gc();
+    long wait=100;
+    Thread.sleep(wait);
+    maxWaitMillis-=wait;
+  }
+  Assert.assertEquals(reporter.getReportedContexts().size(),1);
+  Assert.assertEquals(reporter.getReportedContexts().get(0).getName(),context2Name);
+  reporter.close();
+}

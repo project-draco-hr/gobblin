@@ -1,5 +1,0 @@
-List<Serie> series
-MetricContext context
-String name
-Gauge gauge
-long timeStamp

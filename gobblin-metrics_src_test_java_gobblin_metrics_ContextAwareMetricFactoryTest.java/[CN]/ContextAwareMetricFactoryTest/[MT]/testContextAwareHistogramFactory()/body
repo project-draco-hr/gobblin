@@ -3,5 +3,4 @@
   Assert.assertFalse(ContextAwareMetricFactory.DEFAULT_CONTEXT_AWARE_HISTOGRAM_FACTORY.isInstance(this.timer));
   Assert.assertEquals(this.histogram.getContext(),this.context);
   Assert.assertEquals(this.histogram.getName(),RECORD_SIZE_DISTRIBUTION);
-  Assert.assertEquals(this.histogram.getFullyQualifiedName(false),MetricRegistry.name(JOB_ID,RECORD_SIZE_DISTRIBUTION));
 }

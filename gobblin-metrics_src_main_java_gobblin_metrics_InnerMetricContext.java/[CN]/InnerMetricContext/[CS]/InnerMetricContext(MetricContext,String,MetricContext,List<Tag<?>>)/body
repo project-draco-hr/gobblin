@@ -1,0 +1,14 @@
+{
+  this.name=name;
+  this.closer=Closer.create();
+  this.parent=Optional.fromNullable(parent);
+  if (this.parent.isPresent()) {
+    this.parent.get().addChildContext(this.name,context);
+    this.metricContext=new ContextWeakReference(context,this);
+  }
+ else {
+    this.metricContext=new WeakReference<MetricContext>(context);
+  }
+  this.tagged=new Tagged(tags);
+  this.tagged.addTag(new Tag<String>(MetricContext.METRIC_CONTEXT_ID_TAG_NAME,UUID.randomUUID().toString()));
+}

@@ -1,19 +1,13 @@
 {
   ContextAwareMeter jobRecordsProcessRate=this.context.contextAwareMeter(RECORD_PROCESS_RATE);
-  Assert.assertEquals(this.context.getMeters().get(MetricRegistry.name(this.context.metricNamePrefix(false),jobRecordsProcessRate.getName())),jobRecordsProcessRate);
+  Assert.assertEquals(this.context.getMeters().get(jobRecordsProcessRate.getName()),jobRecordsProcessRate.getTrueMetric());
   Assert.assertEquals(jobRecordsProcessRate.getContext(),this.context);
   Assert.assertEquals(jobRecordsProcessRate.getName(),RECORD_PROCESS_RATE);
-  Assert.assertTrue(jobRecordsProcessRate.getTags().isEmpty());
-  jobRecordsProcessRate.addTag(new Tag<String>(METRIC_GROUP_KEY,INPUT_RECORDS_GROUP));
-  Assert.assertEquals(jobRecordsProcessRate.getTags().size(),1);
-  Assert.assertEquals(jobRecordsProcessRate.getTags().get(0).getKey(),METRIC_GROUP_KEY);
-  Assert.assertEquals(jobRecordsProcessRate.getTags().get(0).getValue(),INPUT_RECORDS_GROUP);
-  Assert.assertEquals(jobRecordsProcessRate.getFullyQualifiedName(false),MetricRegistry.name(INPUT_RECORDS_GROUP,RECORD_PROCESS_RATE));
   jobRecordsProcessRate.mark();
   jobRecordsProcessRate.mark(3);
   Assert.assertEquals(jobRecordsProcessRate.getCount(),4l);
   ContextAwareMeter taskRecordsProcessRate=this.childContext.contextAwareMeter(RECORD_PROCESS_RATE);
-  Assert.assertEquals(this.childContext.getMeters().get(MetricRegistry.name(this.childContext.metricNamePrefix(false),taskRecordsProcessRate.getName())),taskRecordsProcessRate);
+  Assert.assertEquals(this.childContext.getMeters().get(taskRecordsProcessRate.getName()),taskRecordsProcessRate.getTrueMetric());
   Assert.assertEquals(taskRecordsProcessRate.getContext(),this.childContext);
   Assert.assertEquals(taskRecordsProcessRate.getName(),RECORD_PROCESS_RATE);
   taskRecordsProcessRate.mark(2);

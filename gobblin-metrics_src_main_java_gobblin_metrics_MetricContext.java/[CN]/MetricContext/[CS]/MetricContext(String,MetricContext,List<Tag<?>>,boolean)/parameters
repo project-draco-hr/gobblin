@@ -1,0 +1,4 @@
+String name
+MetricContext parent
+List<Tag<?>> tags
+boolean isRoot

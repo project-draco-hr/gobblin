@@ -1,0 +1,6 @@
+{
+  builder.add(metricContext);
+  for (  MetricContext context : metricContext.getChildContextsAsMap().values()) {
+    addContextsRecursively(builder,context);
+  }
+}

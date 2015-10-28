@@ -1,0 +1,6 @@
+{
+  if (this.parent == null) {
+    this.parent=RootMetricContext.get();
+  }
+  return new MetricContext(this.name,this.parent,this.tags,false);
+}

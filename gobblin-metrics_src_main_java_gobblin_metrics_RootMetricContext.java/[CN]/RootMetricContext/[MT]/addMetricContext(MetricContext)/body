@@ -1,0 +1,4 @@
+{
+  this.innerMetricContexts.add(context.getInnerMetricContext());
+  this.sendNotification(new NewMetricContextNotification(context,context.getInnerMetricContext()));
+}

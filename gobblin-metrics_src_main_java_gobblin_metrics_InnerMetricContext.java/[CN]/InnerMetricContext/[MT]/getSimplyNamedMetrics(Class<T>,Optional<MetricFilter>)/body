@@ -1,0 +1,12 @@
+{
+  ImmutableSortedMap.Builder<String,T> builder=ImmutableSortedMap.naturalOrder();
+  for (  Map.Entry<String,TrueMetric> entry : this.contextAwareMetrics.entrySet()) {
+    if (mClass.isInstance(entry.getValue())) {
+      if (filter.isPresent() && !filter.get().matches(entry.getKey(),entry.getValue().getContextAwareMetric())) {
+        continue;
+      }
+      builder.put(entry.getKey(),(T)entry.getValue());
+    }
+  }
+  return builder.build();
+}

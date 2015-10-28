@@ -1,6 +1,4 @@
 {
-  this.name=name;
+  this.trueGauge=new TrueGauge<T>(context,name,gauge,this);
   this.context=context;
-  this.tagged=new Tagged();
-  this.gauge=gauge;
 }

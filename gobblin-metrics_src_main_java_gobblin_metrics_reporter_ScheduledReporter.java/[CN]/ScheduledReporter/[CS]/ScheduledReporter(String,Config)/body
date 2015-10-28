@@ -1,0 +1,6 @@
+{
+  super(name,config);
+  this.executor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("metrics-" + name + "-scheduler")));
+  this.reportingInterval=config.hasPath(REPORTING_INTERVAL_PERIOD) ? config.getLong(REPORTING_INTERVAL_PERIOD) : DEFAULT_REPORTING_INTERVAL_PERIOD;
+  this.reportingIntervalUnit=TimeUnit.valueOf(config.hasPath(REPORTING_INTERVAL_UNIT) ? config.getString(REPORTING_INTERVAL_UNIT).toUpperCase() : DEFAULT_REPORTING_INTERVAL_UNIT);
+}

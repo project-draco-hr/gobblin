@@ -1,0 +1,9 @@
+{
+  if (input instanceof NewMetricContextNotification && ((NewMetricContextNotification)input).getInnerMetricContext().getName().equals(this.name)) {
+    return true;
+  }
+  if (input instanceof MetricContextCleanupNotification && ((MetricContextCleanupNotification)input).getMetricContext().getName().equals(this.name)) {
+    return true;
+  }
+  return false;
+}

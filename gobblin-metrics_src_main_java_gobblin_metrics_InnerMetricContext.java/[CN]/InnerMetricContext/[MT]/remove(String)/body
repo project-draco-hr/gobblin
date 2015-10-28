@@ -1,0 +1,7 @@
+{
+  MetricContext metricContext=this.metricContext.get();
+  if (metricContext != null) {
+    metricContext.removeFromMetrics(this.contextAwareMetrics.get(name).getContextAwareMetric());
+  }
+  return this.contextAwareMetrics.remove(name) != null && removeChildrenMetrics(name);
+}

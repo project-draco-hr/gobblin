@@ -1,4 +1,0 @@
-MetricContext context
-String name
-Counter counter
-long timeStamp

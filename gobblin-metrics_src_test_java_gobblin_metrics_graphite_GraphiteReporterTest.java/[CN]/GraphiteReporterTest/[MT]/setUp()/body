@@ -1,4 +1,0 @@
-{
-  GraphiteReporter.Builder graphiteReporterBuilder=GraphiteReporter.builder(this.testGraphiteSender).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).filter(MetricFilter.ALL);
-  this.context=MetricContext.builder(CONTEXT_NAME).addContextAwareScheduledReporter(graphiteReporterBuilder).build();
-}

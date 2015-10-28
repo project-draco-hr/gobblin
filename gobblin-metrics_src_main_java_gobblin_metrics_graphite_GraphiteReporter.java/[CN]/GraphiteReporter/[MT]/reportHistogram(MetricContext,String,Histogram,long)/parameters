@@ -1,4 +1,0 @@
-MetricContext context
-String name
-Histogram histogram
-long timeStamp

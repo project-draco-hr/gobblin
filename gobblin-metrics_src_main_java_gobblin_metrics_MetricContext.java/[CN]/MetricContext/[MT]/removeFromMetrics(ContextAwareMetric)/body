@@ -1,0 +1,3 @@
+{
+  this.contextAwareMetricsSet.remove(metric);
+}

@@ -5,8 +5,8 @@
       entry.getValue().apply(notification);
     }
   }
-  if (this.parent.isPresent()) {
-    this.parent.get().sendNotification(notification);
+  if (getParent().isPresent()) {
+    getParent().get().sendNotification(notification);
   }
   timer.stop();
 }

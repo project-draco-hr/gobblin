@@ -1,5 +1,0 @@
-MetricContext context
-String metricName
-Optional<Measurements> measurements
-long timeStamp
-Object value

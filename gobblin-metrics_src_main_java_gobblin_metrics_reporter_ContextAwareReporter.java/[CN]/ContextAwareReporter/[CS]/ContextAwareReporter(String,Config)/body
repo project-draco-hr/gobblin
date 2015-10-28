@@ -1,0 +1,17 @@
+{
+  this.name=name;
+  this.started=false;
+  RootMetricContext.get().addNewReporter(this);
+  this.notificationTargetUUID=RootMetricContext.get().addNotificationTarget(new Function<Notification,Void>(){
+    @Nullable @Override public Void apply(    Notification input){
+      notificationCallback(input);
+      return null;
+    }
+  }
+);
+  this.contextFilter=ContextFilterFactory.createContextFilter(config);
+  this.contextsToReport=Sets.newConcurrentHashSet();
+  for (  MetricContext context : this.contextFilter.getMatchingContexts()) {
+    this.contextsToReport.add(context.getInnerMetricContext());
+  }
+}

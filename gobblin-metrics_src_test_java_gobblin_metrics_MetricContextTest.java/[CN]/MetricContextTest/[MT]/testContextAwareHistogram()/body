@@ -1,14 +1,8 @@
 {
   ContextAwareHistogram jobRecordSizeDist=this.context.contextAwareHistogram(RECORD_SIZE_DISTRIBUTION);
-  Assert.assertEquals(this.context.getHistograms().get(MetricRegistry.name(this.context.metricNamePrefix(false),jobRecordSizeDist.getName())),jobRecordSizeDist);
+  Assert.assertEquals(this.context.getHistograms().get(jobRecordSizeDist.getName()),jobRecordSizeDist.getTrueMetric());
   Assert.assertEquals(jobRecordSizeDist.getContext(),this.context);
   Assert.assertEquals(jobRecordSizeDist.getName(),RECORD_SIZE_DISTRIBUTION);
-  Assert.assertTrue(jobRecordSizeDist.getTags().isEmpty());
-  jobRecordSizeDist.addTag(new Tag<String>(METRIC_GROUP_KEY,INPUT_RECORDS_GROUP));
-  Assert.assertEquals(jobRecordSizeDist.getTags().size(),1);
-  Assert.assertEquals(jobRecordSizeDist.getTags().get(0).getKey(),METRIC_GROUP_KEY);
-  Assert.assertEquals(jobRecordSizeDist.getTags().get(0).getValue(),INPUT_RECORDS_GROUP);
-  Assert.assertEquals(jobRecordSizeDist.getFullyQualifiedName(false),MetricRegistry.name(INPUT_RECORDS_GROUP,RECORD_SIZE_DISTRIBUTION));
   jobRecordSizeDist.update(2);
   jobRecordSizeDist.update(4);
   jobRecordSizeDist.update(7);
@@ -16,7 +10,7 @@
   Assert.assertEquals(jobRecordSizeDist.getSnapshot().getMin(),2l);
   Assert.assertEquals(jobRecordSizeDist.getSnapshot().getMax(),7l);
   ContextAwareHistogram taskRecordSizeDist=this.childContext.contextAwareHistogram(RECORD_SIZE_DISTRIBUTION);
-  Assert.assertEquals(this.childContext.getHistograms().get(MetricRegistry.name(this.childContext.metricNamePrefix(false),taskRecordSizeDist.getName())),taskRecordSizeDist);
+  Assert.assertEquals(this.childContext.getHistograms().get(taskRecordSizeDist.getName()),taskRecordSizeDist.getTrueMetric());
   Assert.assertEquals(taskRecordSizeDist.getContext(),this.childContext);
   Assert.assertEquals(taskRecordSizeDist.getName(),RECORD_SIZE_DISTRIBUTION);
   taskRecordSizeDist.update(3);

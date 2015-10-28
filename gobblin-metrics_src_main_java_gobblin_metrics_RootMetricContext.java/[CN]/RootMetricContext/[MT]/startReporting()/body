@@ -1,0 +1,6 @@
+{
+  this.reportingStarted=true;
+  for (  ContextAwareReporter reporter : this.reporters) {
+    reporter.start();
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return config.withValue(CONTEXT_FILTER_CLASS,ConfigValueFactory.fromAnyRef(klazz.getCanonicalName()));
+}
