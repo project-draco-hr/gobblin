@@ -1,10 +1,10 @@
 {
-  List<WorkUnit> workUnitsOnly=Arrays.asList(new WorkUnit(),new WorkUnit(),new WorkUnit());
+  List<WorkUnit> workUnitsOnly=Arrays.asList(WorkUnit.createEmpty(),WorkUnit.createEmpty(),WorkUnit.createEmpty());
   Assert.assertEquals(JobLauncherUtils.flattenWorkUnits(workUnitsOnly).size(),3);
   MultiWorkUnit multiWorkUnit1=new MultiWorkUnit();
-  multiWorkUnit1.addWorkUnits(Arrays.asList(new WorkUnit(),new WorkUnit(),new WorkUnit()));
+  multiWorkUnit1.addWorkUnits(Arrays.asList(WorkUnit.createEmpty(),WorkUnit.createEmpty(),WorkUnit.createEmpty()));
   MultiWorkUnit multiWorkUnit2=new MultiWorkUnit();
-  multiWorkUnit1.addWorkUnits(Arrays.asList(new WorkUnit(),new WorkUnit(),new WorkUnit()));
-  List<WorkUnit> workUnitsAndMultiWorkUnits=Arrays.asList(new WorkUnit(),new WorkUnit(),new WorkUnit(),multiWorkUnit1,multiWorkUnit2);
+  multiWorkUnit1.addWorkUnits(Arrays.asList(WorkUnit.createEmpty(),WorkUnit.createEmpty(),WorkUnit.createEmpty()));
+  List<WorkUnit> workUnitsAndMultiWorkUnits=Arrays.asList(WorkUnit.createEmpty(),WorkUnit.createEmpty(),WorkUnit.createEmpty(),multiWorkUnit1,multiWorkUnit2);
   Assert.assertEquals(JobLauncherUtils.flattenWorkUnits(workUnitsAndMultiWorkUnits).size(),9);
 }
