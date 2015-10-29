@@ -1,4 +1,0 @@
-{
-  CopyableFile copyableFile=CopyableFile.deserializeCopyableFile(state.getProperties());
-  return new InputStreamExtractor(getSourceFileSystem(state),Iterators.singletonIterator(copyableFile));
-}

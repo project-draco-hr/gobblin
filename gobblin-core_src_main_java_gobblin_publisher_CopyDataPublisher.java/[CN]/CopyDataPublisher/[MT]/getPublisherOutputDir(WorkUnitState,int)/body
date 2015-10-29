@@ -1,3 +1,0 @@
-{
-  return new Path(workUnitState.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR));
-}

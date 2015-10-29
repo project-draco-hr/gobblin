@@ -1,6 +1,0 @@
-{
-  if (!recursive) {
-    throw new UnsupportedOperationException("Non recursive delete is not supported on this file system");
-  }
-  return delete(path);
-}

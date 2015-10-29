@@ -1,5 +1,0 @@
-{
-  State properties=this.destination.getProperties();
-  properties.setProp(ConfigurationKeys.WRITER_FILE_PATH,this.writerId);
-  return new ArchivedInputStreamDataWriter(properties,this.branches,this.branch);
-}

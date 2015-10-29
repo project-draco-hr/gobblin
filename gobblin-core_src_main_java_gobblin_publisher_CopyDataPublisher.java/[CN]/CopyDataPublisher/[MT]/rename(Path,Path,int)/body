@@ -1,7 +1,0 @@
-{
-  FileSystem fs=this.fileSystemByBranches.get(branchId);
-  for (  FileStatus fileStatus : fs.listStatus(writerOutputDir)) {
-    log.info(String.format("Publishing %s to %s",fileStatus.getPath(),new Path(publisherOutputDir,getNewFileName(fileStatus))));
-    fs.rename(fileStatus.getPath(),new Path(publisherOutputDir,getNewFileName(fileStatus)));
-  }
-}

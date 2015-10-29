@@ -1,8 +1,0 @@
-{
-  WorkUnitState state=new WorkUnitState();
-  FileStatus origin=new FileStatus(10,false,1,56,0,new Path("/some/path"));
-  CopyableFile copyableFile=new CopyableFile(origin,new Path("/destination/path"),new OwnerAndPermission("owner","group",FsPermission.getDefault()),Lists.newArrayList(new OwnerAndPermission("owner2","group2",FsPermission.getDefault())),"checksum".getBytes());
-  state.setProp(CopySource.SERIALIZED_COPYABLE_FILE,CopySource.serializeCopyableFile(copyableFile));
-  CopyableFile output=CopySource.getCopyableFile(state);
-  Assert.assertEquals(copyableFile,output);
-}

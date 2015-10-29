@@ -1,20 +1,15 @@
 {
-  Preconditions.checkArgument(!Strings.isNullOrEmpty(properties.getProperty(TARGET_DIRECTORY)),"Missing property " + TARGET_DIRECTORY);
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(properties.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR)),"Missing property " + ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR);
   this.rootPath=PathUtils.getPathWithoutSchemeAndAuthority(rootPath);
-  this._fs=fs;
-  this.targetDirectory=new Path(properties.getProperty(TARGET_DIRECTORY));
+  this.fs=fs;
+  this.targetDirectory=new Path(properties.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR));
   this.properties=properties;
   this.ownerAndPermissionCache=CacheBuilder.newBuilder().build(new CacheLoader<Path,OwnerAndPermission>(){
     @Override public OwnerAndPermission load(    Path path) throws Exception {
-      FileStatus fileStatus=_fs.getFileStatus(path);
+      FileStatus fileStatus=fs.getFileStatus(path);
       return new OwnerAndPermission(fileStatus.getOwner(),fileStatus.getGroup(),fileStatus.getPermission());
     }
   }
 );
-  this.pathFilter=new PathFilter(){
-    @Override public boolean accept(    Path path){
-      return path.getName().endsWith(".gpg") && path.getName().startsWith("Log");
-    }
-  }
-;
+  this.pathFilter=DatasetUtils.instantiatePathFilter(properties);
 }

@@ -1,5 +1,0 @@
-{
-  this.closer=Closer.create();
-  this.fs=closer.register(fs);
-  this.fileIterator=fileIterator;
-}

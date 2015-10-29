@@ -30,6 +30,7 @@ catch (    URISyntaxException e) {
   this.blockSize=properties.getPropAsLong(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_BLOCK_SIZE,numBranches,branchId),this.fs.getDefaultBlockSize(this.outputFile));
   this.filePermission=HadoopUtils.deserializeWriterFilePermissions(properties,numBranches,branchId);
   this.dirPermission=HadoopUtils.deserializeWriterDirPermissions(properties,numBranches,branchId);
+  this.stagingFileOutputStream=this.closer.register(this.fs.create(this.stagingFile,this.filePermission,true,this.bufferSize,this.replicationFactor,this.blockSize,null));
   this.group=Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_GROUP_NAME,numBranches,branchId)));
   if (this.group.isPresent()) {
     HadoopUtils.setGroup(this.fs,this.stagingFile,this.group.get());

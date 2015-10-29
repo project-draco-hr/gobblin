@@ -1,7 +1,0 @@
-{
-  State state=new State();
-  for (  Entry<String,String> entry : conf) {
-    state.setProp(entry.getKey(),entry.getValue());
-  }
-  return state;
-}

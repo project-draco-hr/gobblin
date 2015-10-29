@@ -1,8 +1,0 @@
-{
-  try {
-    return new SingleRecordIterable<FileAwareInputStream>(new FileAwareInputStream(fileAwareInputStream.getFile(),new GZIPInputStream(fileAwareInputStream.getInputStream())));
-  }
- catch (  IOException e) {
-    throw new DataConversionException(e);
-  }
-}

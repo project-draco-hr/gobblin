@@ -1,7 +1,0 @@
-{
-  closer.register(fileAwareInputStream.getInputStream());
-  this.fs.mkdirs(fileAwareInputStream.getFile().getDestination().getParent());
-  IOUtils.copyLarge(fileAwareInputStream.getInputStream(),fs.create(fileAwareInputStream.getFile().getDestination(),true));
-  filesWritten++;
-  this.commit(fileAwareInputStream.getFile());
-}

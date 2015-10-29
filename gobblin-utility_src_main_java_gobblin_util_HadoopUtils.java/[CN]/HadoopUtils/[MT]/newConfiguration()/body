@@ -8,6 +8,5 @@
     conf.set("fs.s3n.awsAccessKeyId",awsAccessKeyId);
     conf.set("fs.s3n.awsSecretAccessKey",awsSecretAccessKey);
   }
-  conf.set("fs.sftp.impl","gobblin.data.management.filesystem.lightweight.SftpLightWeightFileSystem");
   return conf;
 }

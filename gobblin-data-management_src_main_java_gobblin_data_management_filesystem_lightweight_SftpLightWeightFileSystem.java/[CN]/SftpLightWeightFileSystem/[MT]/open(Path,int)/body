@@ -1,9 +1,0 @@
-{
-  try {
-    InputStream is=fsHelper.getFileStream(path.toString());
-    return new FSDataInputStream(new BufferedFSInputStream(new SftpFsFileInputStream(is),bufferSize));
-  }
- catch (  FileBasedHelperException e) {
-    throw new IOException(e);
-  }
-}
