@@ -1,0 +1,9 @@
+{
+  TextToStringConverter textToStringConverter=(TextToStringConverter)new TextToStringConverter().init(new WorkUnitState());
+  Text text=new Text("test");
+  Iterator<String> iterator=textToStringConverter.convertRecord(null,text,new WorkUnitState()).iterator();
+  Assert.assertTrue(iterator.hasNext());
+  String textString=iterator.next();
+  Assert.assertEquals(textString,text.toString());
+  Assert.assertFalse(iterator.hasNext());
+}

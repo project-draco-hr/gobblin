@@ -50,7 +50,12 @@
     }
     for (    Optional<Fork> fork : this.forks) {
       if (fork.isPresent()) {
-        this.forkCompletionService.take();
+        try {
+          this.forkCompletionService.take();
+        }
+ catch (        InterruptedException ie) {
+          Thread.currentThread().interrupt();
+        }
       }
     }
     boolean allForksSucceeded=true;

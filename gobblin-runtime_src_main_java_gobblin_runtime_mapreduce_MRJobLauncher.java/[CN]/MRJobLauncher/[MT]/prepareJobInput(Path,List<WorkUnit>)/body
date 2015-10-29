@@ -1,5 +1,5 @@
 {
-  Path jobInputFile=new Path(jobInputPath,this.jobContext.getJobId() + ".wulist");
+  Path jobInputFile=new Path(jobInputPath,this.jobContext.getJobId() + WORK_UNIT_LIST_FILE_EXTENSION);
   Closer closer=Closer.create();
   try {
     ParallelRunner parallelRunner=closer.register(new ParallelRunner(this.parallelRunnerThreads,this.fs));

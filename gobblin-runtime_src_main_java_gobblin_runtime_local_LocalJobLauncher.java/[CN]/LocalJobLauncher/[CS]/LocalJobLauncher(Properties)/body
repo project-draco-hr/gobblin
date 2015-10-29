@@ -2,7 +2,7 @@
   super(jobProps);
   TimingEvent jobLocalSetupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.JOB_LOCAL_SETUP);
   this.taskExecutor=new TaskExecutor(jobProps);
-  this.taskStateTracker=new LocalTaskStateTracker2(jobProps,this.taskExecutor);
+  this.taskStateTracker=new LocalTaskStateTracker(jobProps,this.taskExecutor);
   this.serviceManager=new ServiceManager(Lists.newArrayList(this.taskExecutor,this.taskStateTracker));
   this.serviceManager.startAsync().awaitHealthy(5,TimeUnit.SECONDS);
   startCancellationExecutor();

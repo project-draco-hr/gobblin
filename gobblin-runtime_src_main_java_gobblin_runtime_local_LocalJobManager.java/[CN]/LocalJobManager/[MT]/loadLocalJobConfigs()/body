@@ -1,5 +1,0 @@
-{
-  List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(this.properties);
-  LOG.info(String.format(jobConfigs.size() <= 1 ? "Loaded %d job configuration" : "Loaded %d job configurations",jobConfigs.size()));
-  return jobConfigs;
-}
