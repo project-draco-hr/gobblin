@@ -1,0 +1,5 @@
+{
+  OwnerAndPermission oap=new OwnerAndPermission();
+  oap.readFields(input);
+  return oap;
+}

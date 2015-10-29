@@ -1,0 +1,4 @@
+{
+  this.files.addAll(collection);
+  return this;
+}
