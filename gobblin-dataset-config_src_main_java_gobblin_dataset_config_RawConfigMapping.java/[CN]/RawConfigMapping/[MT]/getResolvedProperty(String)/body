@@ -13,5 +13,8 @@
     ancestor=this.getResolvedProperty(parentId);
   }
   Map<String,Object> res=DatasetUtils.MergeTwoMaps(self,ancestor);
+  if (res != null) {
+    res.remove(DatasetUtils.IMPORTED_TAGS);
+  }
   return res;
 }

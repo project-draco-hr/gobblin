@@ -1,5 +1,8 @@
 {
   List<String> res=new ArrayList<String>();
+  if (urn.equals(adjusted)) {
+    return res;
+  }
   res.add(urn);
   String parentId=DatasetUtils.getParentId(urn);
   while (!parentId.equals(adjusted)) {

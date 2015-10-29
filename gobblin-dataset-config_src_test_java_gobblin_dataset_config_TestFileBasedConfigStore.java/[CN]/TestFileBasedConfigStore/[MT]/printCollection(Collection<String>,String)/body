@@ -1,0 +1,8 @@
+{
+  if (!debug)   return;
+  System.out.println("-----------------------------------");
+  System.out.println("tags associated for " + urn);
+  for (  String s : c) {
+    System.out.println(s);
+  }
+}

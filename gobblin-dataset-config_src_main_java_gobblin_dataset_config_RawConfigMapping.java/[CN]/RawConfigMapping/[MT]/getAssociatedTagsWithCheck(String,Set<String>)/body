@@ -13,7 +13,7 @@
   String parentId=DatasetUtils.getParentId(getAdjustedUrn(urn));
   if (!parentId.equals(DatasetUtils.ROOT)) {
     Set<String> selfChain=new HashSet<String>(getUrnTillAdjustedUrn(urn,parentId));
-    List<String> ancestorTags=getAssociatedTagsWithCheck(DatasetUtils.getParentId(getAdjustedUrn(urn)),selfChain);
+    List<String> ancestorTags=getAssociatedTagsWithCheck(parentId,selfChain);
     res.addAll(ancestorTags);
   }
   return dedup(res);

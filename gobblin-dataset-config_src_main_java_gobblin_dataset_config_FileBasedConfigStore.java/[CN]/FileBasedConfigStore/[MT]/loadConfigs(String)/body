@@ -1,5 +1,7 @@
 {
-  File configToLoad=new File(this.configLocation + "/" + version+ "/"+ CONF_FILE);
+  String configurationFile=this.configLocation + "/" + version+ "/"+ CONF_FILE;
+  LOG.info("Trying to load configuration file: " + configurationFile);
+  File configToLoad=new File(configurationFile);
   if (!configToLoad.isFile() || !configToLoad.canRead()) {
     throw new IllegalArgumentException("File does not exists : " + configToLoad.getAbsolutePath());
   }

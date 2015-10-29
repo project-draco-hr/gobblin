@@ -1,6 +1,7 @@
 {
   String urn="config-ds.a1.a2.a3";
   Config c=cs.getConfig(urn);
+  this.printConfig(c,urn);
   Assert.assertTrue(c.getString("testsubs").equals("foobar20"));
   Assert.assertTrue(c.getBoolean("deleteTarget"));
   Assert.assertTrue(c.getInt("retention") == 3);
@@ -11,6 +12,7 @@
   Assert.assertTrue(c.getString("keyInL3").equals("valueInL3"));
   Assert.assertTrue(c.getString("keyInTag1").equals("valueInTag1"));
   List<String> tags=cs.getAssociatedTags(urn);
+  this.printCollection(tags,urn);
   Assert.assertTrue(tags.size() == 3);
   Set<String> resSet=new HashSet<String>(tags);
   Assert.assertTrue(resSet.contains("config-tag.tag1.tag2.tag3"));
@@ -20,12 +22,15 @@
   tags=cs.getAssociatedTags(inputTag2);
   Assert.assertTrue(tags.size() == 1);
   Assert.assertTrue(tags.get(0).equals("config-tag.l1.l2.l3"));
+  this.printCollection(tags,inputTag2);
   c=cs.getConfig(inputTag2);
+  this.printConfig(c,inputTag2);
   Assert.assertTrue(c.getString("keyInT2").equals("valueInT2"));
   Assert.assertTrue(c.getString("keyInT3").equals("valueInT3"));
   Assert.assertTrue(c.getString("keyInL3").equals("valueInL3"));
   String inputTag3="config-tag.l1.l2.l3";
   Map<String,Config> urnConfigMap=cs.getTaggedConfig(inputTag3);
+  this.printConfig(c,inputTag3);
   Assert.assertTrue(urnConfigMap.size() == 3);
   Assert.assertTrue(urnConfigMap.containsKey("config-tag.tag1.tag2"));
   Assert.assertTrue(urnConfigMap.containsKey("config-tag.t1.t2.t3"));
