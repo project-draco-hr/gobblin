@@ -1,0 +1,6 @@
+{
+  if (!state.contains(HadoopFileInputSource.FILE_INPUT_FORMAT_CLASS_KEY)) {
+    state.setProp(HadoopFileInputSource.FILE_INPUT_FORMAT_CLASS_KEY,HiveSerDeWrapper.getDeserializer(state).getInputFormatClassName());
+  }
+  return super.getWorkunits(state);
+}

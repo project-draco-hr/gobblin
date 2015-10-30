@@ -1,0 +1,4 @@
+{
+  this.writer.close(false);
+  super.close();
+}

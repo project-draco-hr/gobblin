@@ -1,0 +1,4 @@
+String serDeClassName
+String inputFormatClassName
+String outputFormatClassName
+String extension

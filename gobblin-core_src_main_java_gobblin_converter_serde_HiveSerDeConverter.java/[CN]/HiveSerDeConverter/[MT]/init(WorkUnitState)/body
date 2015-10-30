@@ -1,0 +1,19 @@
+{
+  super.init(state);
+  Configuration conf=HadoopUtils.getConfFromState(state);
+  try {
+    this.serializer=HiveSerDeWrapper.getSerializer(state).getSerDe();
+    this.deserializer=HiveSerDeWrapper.getDeserializer(state).getSerDe();
+    serializer.initialize(conf,state.getProperties());
+    deserializer.initialize(conf,state.getProperties());
+  }
+ catch (  IOException e) {
+    log.error("Failed to instantiate serializer and deserializer",e);
+    throw Throwables.propagate(e);
+  }
+catch (  SerDeException e) {
+    log.error("Failed to initialize serializer and deserializer",e);
+    throw Throwables.propagate(e);
+  }
+  return this;
+}
