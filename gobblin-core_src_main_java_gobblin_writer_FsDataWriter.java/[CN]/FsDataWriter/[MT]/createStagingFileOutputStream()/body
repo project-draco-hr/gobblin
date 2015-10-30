@@ -1,0 +1,3 @@
+{
+  return this.closer.register(this.fs.create(this.stagingFile,this.filePermission,true,this.bufferSize,this.replicationFactor,this.blockSize,null));
+}

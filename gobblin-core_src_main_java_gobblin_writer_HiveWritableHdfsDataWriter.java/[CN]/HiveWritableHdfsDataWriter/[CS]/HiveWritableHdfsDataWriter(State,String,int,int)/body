@@ -1,0 +1,5 @@
+{
+  super(properties,fileName,numBranches,branchId);
+  Preconditions.checkArgument(this.properties.contains(HiveWritableHdfsDataWriterBuilder.WRITER_OUTPUT_FORMAT_CLASS));
+  this.writer=getWriter();
+}
