@@ -1,0 +1,7 @@
+{
+  try {
+    fs.delete(testTempPath,true);
+  }
+ catch (  IOException e) {
+  }
+}

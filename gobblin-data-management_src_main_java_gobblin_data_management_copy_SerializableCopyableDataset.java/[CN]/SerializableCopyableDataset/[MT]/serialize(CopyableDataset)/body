@@ -1,0 +1,3 @@
+{
+  return gson.toJson(new SerializableCopyableDataset(copyableDataset));
+}

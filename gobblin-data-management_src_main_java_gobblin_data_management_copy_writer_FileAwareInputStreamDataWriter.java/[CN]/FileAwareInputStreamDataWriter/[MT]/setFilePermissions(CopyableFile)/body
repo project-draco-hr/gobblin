@@ -1,0 +1,9 @@
+{
+  try {
+    setAncestorPermissions(file);
+    setRecursivePermission(getStagingFilePath(file),file.getDestinationOwnerAndPermission());
+  }
+ catch (  IOException e) {
+    log.error("Failed to set permissions for " + file.getOrigin(),e);
+  }
+}

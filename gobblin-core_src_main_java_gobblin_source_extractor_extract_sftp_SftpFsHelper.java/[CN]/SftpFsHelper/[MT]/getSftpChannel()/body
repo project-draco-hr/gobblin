@@ -1,0 +1,10 @@
+{
+  try {
+    ChannelSftp channelSftp=(ChannelSftp)session.openChannel("sftp");
+    channelSftp.connect();
+    return channelSftp;
+  }
+ catch (  JSchException e) {
+    throw new SftpException(0,"Cannot open a channel to SFTP server",e);
+  }
+}

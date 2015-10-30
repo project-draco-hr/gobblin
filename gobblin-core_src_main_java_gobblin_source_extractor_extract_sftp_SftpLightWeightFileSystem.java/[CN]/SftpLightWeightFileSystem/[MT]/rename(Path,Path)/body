@@ -1,0 +1,14 @@
+{
+  ChannelSftp channelSftp=null;
+  try {
+    channelSftp=fsHelper.getSftpChannel();
+    channelSftp.rename(oldpath.toString(),newpath.toString());
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+ finally {
+    safeDisconnect(channelSftp);
+  }
+  return true;
+}

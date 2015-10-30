@@ -1,0 +1,19 @@
+{
+  ChannelSftp channel=null;
+  try {
+    channel=fsHelper.getSftpChannel();
+    if (getFileStatus(path).isDir()) {
+      channel.rmdir(path.toString());
+    }
+ else {
+      channel.rm(path.toString());
+    }
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+ finally {
+    safeDisconnect(channel);
+  }
+  return true;
+}

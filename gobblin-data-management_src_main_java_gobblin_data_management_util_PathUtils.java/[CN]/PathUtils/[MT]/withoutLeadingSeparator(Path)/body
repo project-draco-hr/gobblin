@@ -1,0 +1,3 @@
+{
+  return new Path(StringUtils.removeStart(path.toString(),Path.SEPARATOR));
+}

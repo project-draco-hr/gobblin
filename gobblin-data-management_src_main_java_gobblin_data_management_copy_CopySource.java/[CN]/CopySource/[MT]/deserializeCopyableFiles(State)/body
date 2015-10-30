@@ -1,0 +1,3 @@
+{
+  return CopyableFile.deserializeList(state.getProp(SERIALIZED_COPYABLE_FILES));
+}

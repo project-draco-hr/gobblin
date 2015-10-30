@@ -1,0 +1,3 @@
+{
+  return SerializableCopyableDataset.deserialize(state.getProp(SERIALIZED_COPYABLE_DATASET));
+}

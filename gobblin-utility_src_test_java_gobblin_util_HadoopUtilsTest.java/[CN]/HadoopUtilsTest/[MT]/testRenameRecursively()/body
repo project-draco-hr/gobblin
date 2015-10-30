@@ -1,0 +1,11 @@
+{
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRename/a/b/c"));
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRenameStaging/a/b/c"));
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRenameStaging/a/b/c/e"));
+  fs.create(new Path(hadoopUtilsTestDir,"testRenameStaging/a/b/c/t1.txt"));
+  fs.create(new Path(hadoopUtilsTestDir,"testRenameStaging/a/b/c/e/t2.txt"));
+  HadoopUtils.renameRecursively(fs,new Path(hadoopUtilsTestDir,"testRenameStaging"),new Path(hadoopUtilsTestDir,"testRename"));
+  Assert.assertTrue(fs.exists(new Path(hadoopUtilsTestDir,"testRename/a/b/c/t1.txt")));
+  Assert.assertTrue(fs.exists(new Path(hadoopUtilsTestDir,"testRename/a/b/c/e/t2.txt")));
+}

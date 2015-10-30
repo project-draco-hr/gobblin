@@ -1,0 +1,4 @@
+{
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  fs.delete(new Path("gobblin-test-harness/testOutput"),true);
+}

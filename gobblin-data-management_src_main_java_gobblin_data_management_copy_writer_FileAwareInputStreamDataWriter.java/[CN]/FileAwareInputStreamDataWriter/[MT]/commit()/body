@@ -1,0 +1,3 @@
+{
+  HadoopUtils.safeRenameRecursively(fs,stagingDir,outputDir);
+}

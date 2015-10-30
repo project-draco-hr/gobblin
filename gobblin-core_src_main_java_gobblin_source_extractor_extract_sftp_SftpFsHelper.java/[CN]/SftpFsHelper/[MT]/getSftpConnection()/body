@@ -1,3 +1,9 @@
 {
-  return this.channelSftp;
+  try {
+    return this.getSftpChannel();
+  }
+ catch (  SftpException e) {
+    log.error("Failed to get new sftp channel",e);
+    return null;
+  }
 }

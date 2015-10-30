@@ -1,0 +1,3 @@
+{
+  return path.getName().endsWith(".tar.gz.gpg");
+}
