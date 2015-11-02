@@ -2,7 +2,7 @@
   Map<String,Object> self=getRawProperty(urn);
   List<String> tags=getAssociatedTags(urn);
   for (  String t : tags) {
-    DatasetUtils.MergeTwoMaps(self,getResolvedProperty(t));
+    DatasetUtils.mergeTwoMaps(self,getResolvedProperty(t));
   }
   String parentId=DatasetUtils.getParentId(getAdjustedUrn(urn));
   Map<String,Object> ancestor=null;
@@ -12,7 +12,7 @@
  else {
     ancestor=this.getResolvedProperty(parentId);
   }
-  Map<String,Object> res=DatasetUtils.MergeTwoMaps(self,ancestor);
+  Map<String,Object> res=DatasetUtils.mergeTwoMaps(self,ancestor);
   if (res != null) {
     res.remove(DatasetUtils.IMPORTED_TAGS);
   }
