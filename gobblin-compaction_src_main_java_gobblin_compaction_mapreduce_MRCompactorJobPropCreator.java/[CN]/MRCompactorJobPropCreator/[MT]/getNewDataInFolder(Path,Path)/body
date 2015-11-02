@@ -1,0 +1,17 @@
+{
+  List<Path> newFiles=Lists.newArrayList();
+  if (!this.fs.exists(inputFolder) || !this.fs.exists(outputFolder)) {
+    return newFiles;
+  }
+  DateTime lastCompactionTime=new DateTime(MRCompactor.readCompactionTimestamp(this.fs,outputFolder));
+  for (  FileStatus fstat : FileListUtils.listFilesRecursively(this.fs,inputFolder)) {
+    DateTime fileModificationTime=new DateTime(fstat.getModificationTime());
+    if (fileModificationTime.isAfter(lastCompactionTime)) {
+      newFiles.add(fstat.getPath());
+    }
+  }
+  if (!newFiles.isEmpty()) {
+    LOG.info(String.format("Found %d new files within folder %s which are more recent than the previous " + "compaction start time of %s.",newFiles.size(),inputFolder,lastCompactionTime));
+  }
+  return newFiles;
+}

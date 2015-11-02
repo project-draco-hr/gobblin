@@ -1,0 +1,16 @@
+{
+switch (schema.getType()) {
+case RECORD:
+    return removeUncomparableFieldsFromRecord(schema,processed);
+case UNION:
+  return removeUncomparableFieldsFromUnion(schema,processed);
+case MAP:
+return Optional.absent();
+case ARRAY:
+return Optional.absent();
+case ENUM:
+return Optional.absent();
+default :
+return Optional.of(schema);
+}
+}

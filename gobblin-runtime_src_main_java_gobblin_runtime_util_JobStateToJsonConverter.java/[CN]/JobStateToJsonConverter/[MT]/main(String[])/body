@@ -38,10 +38,15 @@
   if (cmd.hasOption('t')) {
     Closer closer=Closer.create();
     try {
-      FileWriter fw=closer.register(new FileWriter(cmd.getOptionValue('t')));
-      fw.write(stringWriter.toString());
+      FileOutputStream fileOutputStream=closer.register(new FileOutputStream(cmd.getOptionValue('t')));
+      OutputStreamWriter outputStreamWriter=closer.register(new OutputStreamWriter(fileOutputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
+      BufferedWriter bufferedWriter=closer.register(new BufferedWriter(outputStreamWriter));
+      bufferedWriter.write(stringWriter.toString());
     }
-  finally {
+ catch (    Throwable t) {
+      throw closer.rethrow(t);
+    }
+ finally {
       closer.close();
     }
   }

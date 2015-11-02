@@ -1,7 +1,7 @@
 {
   List<Pattern> patterns=Lists.newArrayList();
   for (  String s : strings) {
-    patterns.add(Pattern.compile(s,Pattern.CASE_INSENSITIVE));
+    patterns.add(Pattern.compile(s));
   }
   return patterns;
 }

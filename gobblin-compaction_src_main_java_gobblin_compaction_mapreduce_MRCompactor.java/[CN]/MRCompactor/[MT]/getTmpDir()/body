@@ -1,3 +1,0 @@
-{
-  return this.state.getProp(COMPACTION_TMP_DIR,DEFAULT_COMPACTION_TMP_DIR);
-}

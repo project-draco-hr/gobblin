@@ -1,0 +1,18 @@
+{
+  if (!props.containsKey(PATH_FILTER_KEY)) {
+    return ACCEPT_ALL_FILTER;
+  }
+  try {
+    Class<?> pathFilterClass=Class.forName(props.getProperty(PATH_FILTER_KEY));
+    return (PathFilter)pathFilterClass.newInstance();
+  }
+ catch (  ClassNotFoundException exception) {
+    throw new RuntimeException(exception);
+  }
+catch (  InstantiationException exception) {
+    throw new RuntimeException(exception);
+  }
+catch (  IllegalAccessException exception) {
+    throw new RuntimeException(exception);
+  }
+}

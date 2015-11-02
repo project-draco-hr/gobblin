@@ -1,0 +1,5 @@
+{
+  List<Path> inputPaths=Lists.newArrayList(this.dataset.inputPath());
+  inputPaths.addAll(this.dataset.additionalInputPaths());
+  return inputPaths;
+}

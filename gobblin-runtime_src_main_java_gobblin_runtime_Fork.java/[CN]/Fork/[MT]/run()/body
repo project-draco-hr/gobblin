@@ -21,6 +21,5 @@ catch (  Throwable t) {
   }
  finally {
     this.recordQueue.clear();
-    this.countDownLatch.countDown();
   }
 }

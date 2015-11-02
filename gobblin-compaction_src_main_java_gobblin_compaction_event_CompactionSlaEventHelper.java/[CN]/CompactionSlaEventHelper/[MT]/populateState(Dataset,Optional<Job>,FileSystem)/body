@@ -1,0 +1,9 @@
+{
+  setDatasetUrn(dataset);
+  setPartition(dataset);
+  setOutputDedupeStatus(dataset.jobProps());
+  setPreviousPublishTime(dataset,fs);
+  if (job.isPresent()) {
+    setRecordCount(dataset.jobProps(),job.get());
+  }
+}

@@ -1,8 +1,0 @@
-{
-  if (state.getPropAsBoolean(MRCompactor.COMPACTION_DEDUPLICATE,MRCompactor.DEFAULT_COMPACTION_DEDUPLICATE)) {
-    state.setProp(SlaEventKeys.DEDUPE_STATUS_KEY,DedupeStatus.DEDUPED);
-  }
- else {
-    state.setProp(SlaEventKeys.DEDUPE_STATUS_KEY,DedupeStatus.NOT_DEDUPED);
-  }
-}

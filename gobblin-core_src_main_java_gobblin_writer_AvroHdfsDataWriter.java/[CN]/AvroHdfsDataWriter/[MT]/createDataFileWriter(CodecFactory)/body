@@ -1,5 +1,5 @@
 {
-  DataFileWriter<GenericRecord> writer=new DataFileWriter<GenericRecord>(this.datumWriter);
+  DataFileWriter<GenericRecord> writer=this.closer.register(new DataFileWriter<GenericRecord>(this.datumWriter));
   writer.setCodec(codecFactory);
   return writer.create(this.schema,this.stagingFileOutputStream);
 }

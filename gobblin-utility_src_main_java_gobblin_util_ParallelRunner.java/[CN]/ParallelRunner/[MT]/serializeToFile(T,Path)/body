@@ -1,18 +1,7 @@
 {
   this.futures.add(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
-      Closer closer=Closer.create();
-      try {
-        OutputStream outputStream=closer.register(fs.create(outputFilePath));
-        DataOutputStream dataOutputStream=closer.register(new DataOutputStream(outputStream));
-        state.write(dataOutputStream);
-      }
- catch (      Throwable t) {
-        throw closer.rethrow(t);
-      }
- finally {
-        closer.close();
-      }
+      SerializationUtils.serializeState(fs,outputFilePath,state);
       return null;
     }
   }

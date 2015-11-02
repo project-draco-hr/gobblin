@@ -1,7 +1,4 @@
 {
-  if (this.useEagerWriterInitialization) {
-    buildWriterIfNotPresent();
-  }
   while (true) {
     try {
       Object record=this.recordQueue.get();

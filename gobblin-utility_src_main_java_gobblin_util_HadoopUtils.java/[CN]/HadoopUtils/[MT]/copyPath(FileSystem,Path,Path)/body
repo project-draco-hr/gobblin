@@ -1,0 +1,5 @@
+{
+  if (!FileUtil.copy(fs,src,fs,dst,false,fs.getConf())) {
+    throw new IOException(String.format("Failed to copy %s to %s",src,dst));
+  }
+}

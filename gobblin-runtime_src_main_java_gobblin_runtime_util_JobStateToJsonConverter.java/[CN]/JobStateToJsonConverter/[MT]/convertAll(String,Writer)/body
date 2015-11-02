@@ -1,5 +1,5 @@
 {
-  List<? extends JobState> jobStates=(List<? extends JobState>)this.jobStateStore.getAll(jobName);
+  List<? extends JobState> jobStates=this.jobStateStore.getAll(jobName);
   if (jobStates.isEmpty()) {
     LOGGER.warn(String.format("No job state found for job with name %s",jobName));
     return;

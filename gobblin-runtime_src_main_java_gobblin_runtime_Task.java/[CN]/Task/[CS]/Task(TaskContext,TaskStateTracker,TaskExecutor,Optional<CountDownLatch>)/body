@@ -4,6 +4,6 @@
   this.jobId=this.taskState.getJobId();
   this.taskId=this.taskState.getTaskId();
   this.taskStateTracker=taskStateTracker;
-  this.taskExecutor=taskExecutor;
+  this.forkCompletionService=new ExecutorCompletionService(taskExecutor.getForkExecutor());
   this.countDownLatch=countDownLatch;
 }

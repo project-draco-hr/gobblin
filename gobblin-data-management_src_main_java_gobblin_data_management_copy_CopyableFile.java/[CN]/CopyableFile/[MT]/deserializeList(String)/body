@@ -1,0 +1,5 @@
+{
+  return gson.fromJson(serialized,new TypeToken<List<CopyableFile>>(){
+  }
+.getType());
+}

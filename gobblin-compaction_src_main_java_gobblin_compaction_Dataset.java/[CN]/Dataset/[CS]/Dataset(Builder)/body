@@ -1,0 +1,12 @@
+{
+  this.topic=builder.topic;
+  this.inputPath=builder.inputPath;
+  this.inputLatePath=builder.inputLatePath;
+  this.outputPath=builder.outputPath;
+  this.outputLatePath=builder.outputLatePath;
+  this.outputTmpPath=builder.outputTmpPath;
+  this.additionalInputPaths=Lists.newArrayList();
+  this.throwables=Lists.newArrayList();
+  this.priority=builder.priority;
+  this.state=DatasetState.UNVERIFIED;
+}

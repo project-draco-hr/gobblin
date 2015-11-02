@@ -1,0 +1,2 @@
+RecordReader<Object,Writable> recordReader
+boolean readKeys

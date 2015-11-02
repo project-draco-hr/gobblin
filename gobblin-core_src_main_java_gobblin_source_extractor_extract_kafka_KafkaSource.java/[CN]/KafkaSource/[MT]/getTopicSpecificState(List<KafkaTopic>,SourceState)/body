@@ -1,6 +1,6 @@
 {
   if (!Strings.isNullOrEmpty(state.getProp(KAFKA_TOPIC_SPECIFIC_STATE))) {
-    Map<KafkaTopic,State> topicSpecificConfigMap=Maps.newHashMap();
+    Map<String,State> topicSpecificConfigMap=Maps.newHashMap();
     for (    JsonElement topicElement : state.getPropAsJsonArray(KAFKA_TOPIC_SPECIFIC_STATE)) {
       Preconditions.checkArgument(topicElement.isJsonObject(),"The value for property " + KAFKA_TOPIC_SPECIFIC_STATE + " is malformed");
       JsonObject object=topicElement.getAsJsonObject();
@@ -8,11 +8,11 @@
         JsonElement topicNameElement=object.get(TOPIC_NAME);
         Preconditions.checkArgument(topicNameElement.isJsonPrimitive(),"The value for property " + KAFKA_TOPIC_SPECIFIC_STATE + " is malformed, the "+ TOPIC_NAME+ " field must be a string");
         for (        KafkaTopic topic : Iterables.filter(topics,new KafkaTopicNamePredicate(topicNameElement.getAsString()))) {
-          if (topicSpecificConfigMap.containsKey(topic)) {
-            topicSpecificConfigMap.get(topic).addAll(StateUtils.jsonObjectToState(object,TOPIC_NAME));
+          if (topicSpecificConfigMap.containsKey(topic.getName())) {
+            topicSpecificConfigMap.get(topic.getName()).addAll(StateUtils.jsonObjectToState(object,TOPIC_NAME));
           }
  else {
-            topicSpecificConfigMap.put(topic,StateUtils.jsonObjectToState(object,TOPIC_NAME));
+            topicSpecificConfigMap.put(topic.getName(),StateUtils.jsonObjectToState(object,TOPIC_NAME));
           }
         }
       }

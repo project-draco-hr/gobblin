@@ -1,5 +1,7 @@
 {
-  FileInputFormat.addInputPath(job,getInputPath());
-  this.fs.delete(getTmpPath(),true);
-  FileOutputFormat.setOutputPath(job,getTmpPath());
+  for (  Path inputPath : getInputPaths()) {
+    FileInputFormat.addInputPath(job,inputPath);
+  }
+  this.fs.delete(this.dataset.outputTmpPath(),true);
+  FileOutputFormat.setOutputPath(job,this.dataset.outputTmpPath());
 }

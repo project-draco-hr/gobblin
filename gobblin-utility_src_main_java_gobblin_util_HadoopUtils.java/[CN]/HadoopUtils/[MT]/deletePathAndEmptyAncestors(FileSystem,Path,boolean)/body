@@ -1,0 +1,13 @@
+{
+  deletePath(fs,f,recursive);
+  Path parent=f.getParent();
+  while (parent != null) {
+    if (fs.exists(parent) && fs.listStatus(parent).length == 0) {
+      deletePath(fs,parent,true);
+      parent=parent.getParent();
+    }
+ else {
+      break;
+    }
+  }
+}

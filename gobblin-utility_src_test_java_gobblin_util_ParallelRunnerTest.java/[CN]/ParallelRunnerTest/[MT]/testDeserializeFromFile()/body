@@ -1,6 +1,6 @@
 {
-  WorkUnit workUnit1=new WorkUnit();
-  WorkUnit workUnit2=new WorkUnit();
+  WorkUnit workUnit1=WorkUnit.createEmpty();
+  WorkUnit workUnit2=WorkUnit.createEmpty();
   Closer closer=Closer.create();
   try {
     ParallelRunner parallelRunner=closer.register(new ParallelRunner(2,this.fs));

@@ -1,0 +1,6 @@
+{
+  List<CopyableFile> copyableFiles=ImmutableList.of(CopyableFileUtils.getTestCopyableFile(),CopyableFileUtils.getTestCopyableFile(),CopyableFileUtils.getTestCopyableFile());
+  String serialized=CopyableFile.serializeList(copyableFiles);
+  List<CopyableFile> deserialized=CopyableFile.deserializeList(serialized);
+  Assert.assertEquals(deserialized,copyableFiles);
+}

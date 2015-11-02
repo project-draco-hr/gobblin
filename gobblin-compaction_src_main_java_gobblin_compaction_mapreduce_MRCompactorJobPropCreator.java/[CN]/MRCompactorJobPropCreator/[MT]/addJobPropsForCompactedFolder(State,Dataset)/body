@@ -1,0 +1,17 @@
+{
+  if (this.recompactFromInputPaths) {
+    LOG.info(String.format("Will recompact for %s.",dataset.outputPath()));
+    addInputLateFilesForFirstTimeCompaction(jobProps,dataset);
+  }
+ else {
+    List<Path> newDataFiles=getNewDataInFolder(dataset.inputPath(),dataset.outputPath());
+    List<Path> newDataFilesInLatePath=getNewDataInFolder(dataset.inputLatePath(),dataset.outputPath());
+    newDataFiles.addAll(newDataFilesInLatePath);
+    if (!newDataFilesInLatePath.isEmpty()) {
+      dataset.addAdditionalInputPath(dataset.inputLatePath());
+    }
+    LOG.info(String.format("Will copy %d new data files for %s",newDataFiles.size(),dataset.outputPath()));
+    jobProps.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,true);
+    jobProps.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_FILES,Joiner.on(",").join(newDataFiles));
+  }
+}

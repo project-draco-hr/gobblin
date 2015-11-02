@@ -1,0 +1,12 @@
+{
+  WorkUnit workUnit1=WorkUnit.createEmpty();
+  WorkUnit workUnit2=WorkUnit.createEmpty();
+  SerializationUtils.deserializeState(this.fs,new Path(this.outputPath,"wu1"),workUnit1);
+  SerializationUtils.deserializeState(this.fs,new Path(this.outputPath,"wu2"),workUnit2);
+  Assert.assertEquals(workUnit1.getPropertyNames().size(),2);
+  Assert.assertEquals(workUnit1.getProp("foo"),"bar");
+  Assert.assertEquals(workUnit1.getPropAsInt("a"),10);
+  Assert.assertEquals(workUnit2.getPropertyNames().size(),2);
+  Assert.assertEquals(workUnit2.getProp("foo"),"baz");
+  Assert.assertEquals(workUnit2.getPropAsInt("b"),20);
+}

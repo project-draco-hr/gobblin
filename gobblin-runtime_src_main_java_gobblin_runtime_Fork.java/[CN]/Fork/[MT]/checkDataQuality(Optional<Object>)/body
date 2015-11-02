@@ -1,20 +1,23 @@
 {
-  TaskState taskStateForFork=this.taskState;
   if (this.branches > 1) {
-    taskStateForFork=new TaskState(this.taskState);
+    this.forkTaskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,this.taskState.getProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED));
+    this.forkTaskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXTRACTED,this.taskState.getProp(ConfigurationKeys.EXTRACTOR_ROWS_EXTRACTED));
   }
+  String writerRecordsWrittenKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_RECORDS_WRITTEN,this.branches,this.index);
   if (this.writer.isPresent()) {
-    taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.get().recordsWritten());
+    this.forkTaskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,this.writer.get().recordsWritten());
+    this.taskState.setProp(writerRecordsWrittenKey,this.writer.get().recordsWritten());
   }
  else {
-    taskStateForFork.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
+    this.forkTaskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
+    this.taskState.setProp(writerRecordsWrittenKey,0l);
   }
   if (schema.isPresent()) {
-    taskStateForFork.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.get().toString());
+    this.forkTaskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.get().toString());
   }
   try {
-    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(taskStateForFork,this.branches > 1 ? this.index : -1).executePolicies();
-    TaskPublisher publisher=this.taskContext.getTaskPublisher(taskStateForFork,taskResults,this.branches > 1 ? this.index : -1);
+    TaskLevelPolicyCheckResults taskResults=this.taskContext.getTaskLevelPolicyChecker(this.forkTaskState,this.branches > 1 ? this.index : -1).executePolicies();
+    TaskPublisher publisher=this.taskContext.getTaskPublisher(this.forkTaskState,taskResults,this.branches > 1 ? this.index : -1);
 switch (publisher.canPublish()) {
 case SUCCESS:
       return true;
