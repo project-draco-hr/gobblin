@@ -1,0 +1,10 @@
+{
+  try {
+    GenericRecord partition=this.shouldPartition ? this.partitioner.get().partitionForRecord(record) : NON_PARTITIONED_WRITER_KEY;
+    DataWriter<D> writer=this.partitionWriters.get(partition);
+    writer.write(record);
+  }
+ catch (  ExecutionException ee) {
+    throw new IOException(ee);
+  }
+}

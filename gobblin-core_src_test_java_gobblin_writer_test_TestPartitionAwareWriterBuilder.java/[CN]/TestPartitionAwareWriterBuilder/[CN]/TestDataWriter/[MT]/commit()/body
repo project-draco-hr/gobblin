@@ -1,0 +1,3 @@
+{
+  actions.add(new Action(Actions.COMMIT,this.partition,null));
+}

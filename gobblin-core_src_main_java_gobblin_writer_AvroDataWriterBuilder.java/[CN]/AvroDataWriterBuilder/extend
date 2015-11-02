@@ -1,1 +1,1 @@
-DataWriterBuilder<Schema,GenericRecord>
+PartitionAwareDataWriterBuilder<Schema,GenericRecord>

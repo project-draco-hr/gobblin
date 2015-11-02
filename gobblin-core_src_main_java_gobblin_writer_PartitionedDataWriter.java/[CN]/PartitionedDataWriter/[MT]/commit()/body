@@ -1,0 +1,15 @@
+{
+  int writersCommitted=0;
+  for (  Map.Entry<GenericRecord,DataWriter<D>> entry : this.partitionWriters.asMap().entrySet()) {
+    try {
+      entry.getValue().commit();
+      writersCommitted++;
+    }
+ catch (    Throwable throwable) {
+      log.error(String.format("Failed to commit writer for partition %s.",entry.getKey()),throwable);
+    }
+  }
+  if (writersCommitted < this.partitionWriters.asMap().size()) {
+    throw new IOException("Failed to commit all writers.");
+  }
+}

@@ -1,0 +1,22 @@
+{
+  try {
+    CommandLine cmd=new DefaultParser().parse(options(),args);
+    if (cmd.hasOption(HELP_OPTION.getOpt())) {
+      printUsage(caller);
+      System.exit(0);
+    }
+    if (!cmd.hasOption(SYS_CONFIG_OPTION.getLongOpt()) || !cmd.hasOption(JOB_CONFIG_OPTION.getLongOpt())) {
+      printUsage(caller);
+      System.exit(1);
+    }
+    Properties sysConfig=ConfigurationConverter.getProperties(new PropertiesConfiguration(cmd.getOptionValue(SYS_CONFIG_OPTION.getLongOpt())));
+    Properties jobConfig=ConfigurationConverter.getProperties(new PropertiesConfiguration(cmd.getOptionValue(JOB_CONFIG_OPTION.getLongOpt())));
+    return JobConfigurationUtils.combineSysAndJobProperties(sysConfig,jobConfig);
+  }
+ catch (  ParseException pe) {
+    throw new IOException(pe);
+  }
+catch (  ConfigurationException ce) {
+    throw new IOException(ce);
+  }
+}

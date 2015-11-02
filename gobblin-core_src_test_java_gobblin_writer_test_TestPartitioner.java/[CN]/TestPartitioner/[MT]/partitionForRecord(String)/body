@@ -1,0 +1,5 @@
+{
+  GenericRecord partition=new GenericData.Record(SCHEMA);
+  partition.put(PARTITION,record.toLowerCase().charAt(0));
+  return partition;
+}

@@ -1,0 +1,7 @@
+{
+  long totalBytes=0;
+  for (  Map.Entry<GenericRecord,DataWriter<D>> entry : this.partitionWriters.asMap().entrySet()) {
+    totalBytes+=entry.getValue().bytesWritten();
+  }
+  return totalBytes;
+}
