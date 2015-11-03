@@ -1,0 +1,20 @@
+{
+  Map<String,Object> self=getRawProperty(urn,traceId);
+  List<String> tags=getAssociatedTags(urn);
+  for (  String t : tags) {
+    mergeTwoMaps(self,urn,getResolvedProperty(t,traceId),t,traceId);
+  }
+  String parentId=DatasetUtils.getParentId(getAdjustedUrn(urn));
+  Map<String,Object> ancestor=null;
+  if (parentId.equals(DatasetUtils.ROOT)) {
+    ancestor=this.getRawProperty(parentId,traceId);
+  }
+ else {
+    ancestor=this.getResolvedProperty(parentId,traceId);
+  }
+  Map<String,Object> res=mergeTwoMaps(self,urn,ancestor,parentId,traceId);
+  if (res != null) {
+    res.remove(DatasetUtils.IMPORTED_TAGS);
+  }
+  return res;
+}

@@ -1,8 +1,3 @@
 {
-  String adjustedUrn=this.getAdjustedUrn(urn);
-  Map<String,Object> res=configMap.get(adjustedUrn);
-  if (res == null) {
-    return Collections.emptyMap();
-  }
-  return new HashMap<String,Object>(res);
+  return this.getRawProperty(urn,UUID.randomUUID().toString());
 }

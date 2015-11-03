@@ -1,5 +1,5 @@
 {
-  if (!DatasetUtils.isValidTag(inputTag))   return null;
+  if (!DatasetUtils.isValidTag(inputTag))   return Collections.emptyMap();
   Map<String,Config> res=new HashMap<String,Config>();
   for (  String urnKey : this.configMap.keySet()) {
     List<String> rawTags=this.getRawTags(urnKey);

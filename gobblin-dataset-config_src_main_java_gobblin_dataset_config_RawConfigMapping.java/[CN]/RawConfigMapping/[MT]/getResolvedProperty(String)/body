@@ -1,20 +1,5 @@
 {
-  Map<String,Object> self=getRawProperty(urn);
-  List<String> tags=getAssociatedTags(urn);
-  for (  String t : tags) {
-    DatasetUtils.mergeTwoMaps(self,getResolvedProperty(t));
-  }
-  String parentId=DatasetUtils.getParentId(getAdjustedUrn(urn));
-  Map<String,Object> ancestor=null;
-  if (parentId.equals(DatasetUtils.ROOT)) {
-    ancestor=this.getRawProperty(parentId);
-  }
- else {
-    ancestor=this.getResolvedProperty(parentId);
-  }
-  Map<String,Object> res=DatasetUtils.mergeTwoMaps(self,ancestor);
-  if (res != null) {
-    res.remove(DatasetUtils.IMPORTED_TAGS);
-  }
-  return res;
+  String traceId=UUID.randomUUID().toString();
+  LOG.info(String.format("Getting resolved property for Urn: %s using trace id: %s",urn,traceId));
+  return this.getResolvedProperty(urn,traceId);
 }

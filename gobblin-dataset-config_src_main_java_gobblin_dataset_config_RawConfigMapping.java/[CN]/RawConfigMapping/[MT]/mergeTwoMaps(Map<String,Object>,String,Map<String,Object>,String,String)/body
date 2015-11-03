@@ -1,0 +1,21 @@
+{
+  if (lowProp == null) {
+    return highProp;
+  }
+  if (highProp == null) {
+    for (    String key : lowProp.keySet()) {
+      LOG.info(String.format("Trace id: %s, origin urn: %s, Import property from urn: %s , property: %s",traceId,highPropUrn,lowPropUrn,key));
+    }
+    return lowProp;
+  }
+  for (  String key : lowProp.keySet()) {
+    if (!highProp.containsKey(key)) {
+      highProp.put(key,lowProp.get(key));
+      LOG.info(String.format("Trace id: %s, origin urn: %s, Import property from urn: %s , property: %s",traceId,highPropUrn,lowPropUrn,key));
+    }
+ else {
+      LOG.info(String.format("Trace id: %s, origin urn: %s, Overwrite property from urn: %s , property: %s",traceId,highPropUrn,lowPropUrn,key));
+    }
+  }
+  return highProp;
+}

@@ -1,5 +1,9 @@
 {
-  Map<String,Object> self=getRawProperty(urn);
+  String adjustedUrn=this.getAdjustedUrn(urn);
+  Map<String,Object> self=configMap.get(adjustedUrn);
+  if (self == null) {
+    return Collections.emptyList();
+  }
   Object tags=self.get(DatasetUtils.IMPORTED_TAGS);
   List<String> res=new ArrayList<String>();
   if (tags == null)   return res;

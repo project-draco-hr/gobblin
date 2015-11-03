@@ -1,2 +1,5 @@
 Map<String,Object> highProp
+String highPropUrn
 Map<String,Object> lowProp
+String lowPropUrn
+String traceId
