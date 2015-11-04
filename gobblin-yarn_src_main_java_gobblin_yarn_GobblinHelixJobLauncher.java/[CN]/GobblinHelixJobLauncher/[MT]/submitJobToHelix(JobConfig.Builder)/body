@@ -1,5 +1,5 @@
 {
-  JobQueue jobQueue=new JobQueue.Builder(this.jobContext.getJobName()).build();
+  JobQueue jobQueue=new JobQueue.Builder(this.helixQueueName).build();
   try {
     this.helixTaskDriver.createQueue(jobQueue);
   }
