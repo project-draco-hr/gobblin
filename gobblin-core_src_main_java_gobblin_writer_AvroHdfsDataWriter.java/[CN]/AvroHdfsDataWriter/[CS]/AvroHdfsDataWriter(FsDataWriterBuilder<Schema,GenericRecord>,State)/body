@@ -1,0 +1,8 @@
+{
+  super(builder,state);
+  CodecFactory codecFactory=WriterUtils.getCodecFactory(Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_CODEC_TYPE,this.numBranches,this.branchId))),Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DEFLATE_LEVEL,this.numBranches,this.branchId))));
+  this.schema=builder.getSchema();
+  this.stagingFileOutputStream=createStagingFileOutputStream();
+  this.datumWriter=new GenericDatumWriter<GenericRecord>();
+  this.writer=this.closer.register(createDataFileWriter(codecFactory));
+}

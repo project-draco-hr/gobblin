@@ -1,0 +1,11 @@
+{
+  FieldAssembler<Schema> assembler=SchemaBuilder.record("GenericRecordTimePartition").namespace("gobblin.writer.partitioner").fields();
+  if (!Strings.isNullOrEmpty(this.writerPartitionPrefix)) {
+    assembler=assembler.name(PREFIX).type(Schema.create(Schema.Type.STRING)).noDefault();
+  }
+  assembler=assembler.name(PARTITIONED_PATH).type(Schema.create(Schema.Type.STRING)).noDefault();
+  if (!Strings.isNullOrEmpty(this.writerPartitionSuffix)) {
+    assembler=assembler.name(SUFFIX).type(Schema.create(Schema.Type.STRING)).noDefault();
+  }
+  return assembler.endRecord();
+}

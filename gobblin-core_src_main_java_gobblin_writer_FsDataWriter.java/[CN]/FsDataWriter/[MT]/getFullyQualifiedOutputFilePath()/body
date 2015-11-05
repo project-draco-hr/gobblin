@@ -1,0 +1,3 @@
+{
+  return this.fs.makeQualified(this.outputFile).toString();
+}

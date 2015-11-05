@@ -1,0 +1,44 @@
+{
+  this.properties=properties;
+  this.numBranches=builder.getBranches();
+  this.branchId=builder.getBranch();
+  this.fileName=builder.getFileName(properties);
+  Configuration conf=new Configuration();
+  JobConfigurationUtils.putStateIntoConfiguration(properties,conf);
+  String uri=properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,this.numBranches,this.branchId),ConfigurationKeys.LOCAL_FS_URI);
+  if (properties.getPropAsBoolean(ConfigurationKeys.SHOULD_FS_PROXY_AS_USER,ConfigurationKeys.DEFAULT_SHOULD_FS_PROXY_AS_USER)) {
+    try {
+      this.fs=new ProxiedFileSystemWrapper().getProxiedFileSystem(properties,ProxiedFileSystemWrapper.AuthType.TOKEN,properties.getProp(ConfigurationKeys.FS_PROXY_AS_USER_TOKEN_FILE),uri);
+    }
+ catch (    InterruptedException e) {
+      throw new IOException(e);
+    }
+catch (    URISyntaxException e) {
+      throw new IOException(e);
+    }
+  }
+ else {
+    this.fs=FileSystem.get(URI.create(uri),conf);
+  }
+  this.stagingFile=new Path(WriterUtils.getWriterStagingDir(properties,this.numBranches,this.branchId),this.fileName);
+  this.outputFile=new Path(WriterUtils.getWriterOutputDir(properties,this.numBranches,this.branchId),this.fileName);
+  this.allOutputFilesPropName=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FINAL_OUTPUT_FILE_PATHS,this.numBranches,this.branchId);
+  if (this.fs.exists(this.stagingFile)) {
+    LOG.warn(String.format("Task staging file %s already exists, deleting it",this.stagingFile));
+    HadoopUtils.deletePath(this.fs,this.stagingFile,false);
+  }
+  this.shouldIncludeRecordCountInFileName=properties.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(WRITER_INCLUDE_RECORD_COUNT_IN_FILE_NAMES,this.numBranches,this.branchId),false);
+  this.bufferSize=properties.getPropAsInt(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUFFER_SIZE,this.numBranches,this.branchId),ConfigurationKeys.DEFAULT_BUFFER_SIZE);
+  this.replicationFactor=properties.getPropAsShort(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_REPLICATION_FACTOR,this.numBranches,this.branchId),this.fs.getDefaultReplication(this.outputFile));
+  this.blockSize=properties.getPropAsLong(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_BLOCK_SIZE,this.numBranches,this.branchId),this.fs.getDefaultBlockSize(this.outputFile));
+  this.filePermission=HadoopUtils.deserializeWriterFilePermissions(properties,this.numBranches,this.branchId);
+  this.dirPermission=HadoopUtils.deserializeWriterDirPermissions(properties,this.numBranches,this.branchId);
+  this.group=Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_GROUP_NAME,this.numBranches,this.branchId)));
+  if (this.group.isPresent()) {
+    HadoopUtils.setGroup(this.fs,this.stagingFile,this.group.get());
+  }
+ else {
+    LOG.warn("No group found for " + this.stagingFile);
+  }
+  WriterUtils.mkdirsWithRecursivePermission(this.fs,this.outputFile.getParent(),this.dirPermission);
+}

@@ -1,0 +1,9 @@
+{
+  String propName=ForkOperatorUtils.getPropertyNameForBranch(WRITER_PARTITION_PATTERN,numBranches,branchId);
+  if (state.contains(propName)) {
+    return Optional.of(DateTimeFormat.forPattern(state.getProp(propName)).withZone(this.timeZone));
+  }
+ else {
+    return Optional.absent();
+  }
+}

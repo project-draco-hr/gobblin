@@ -1,0 +1,21 @@
+{
+  if (record == null) {
+    return new Path("");
+  }
+  List<String> tokens=Lists.newArrayList();
+  for (  Schema.Field field : record.getSchema().getFields()) {
+    String sanitizedName=field.name().replaceAll(HDFS_ILLEGAL_TOKEN_REGEX,"_");
+    String sanitizedValue=record.get(field.name()).toString().replaceAll(HDFS_ILLEGAL_TOKEN_REGEX,"_");
+    if (replacePathSeparators) {
+      sanitizedName=sanitizedName.replaceAll(Path.SEPARATOR,"_");
+      sanitizedValue=sanitizedValue.replaceAll(Path.SEPARATOR,"_");
+    }
+    if (includeFieldNames) {
+      tokens.add(String.format("%s=%s",sanitizedName,sanitizedValue));
+    }
+ else     if (!Strings.isNullOrEmpty(sanitizedValue)) {
+      tokens.add(sanitizedValue);
+    }
+  }
+  return new Path(Joiner.on(Path.SEPARATOR).join(tokens));
+}

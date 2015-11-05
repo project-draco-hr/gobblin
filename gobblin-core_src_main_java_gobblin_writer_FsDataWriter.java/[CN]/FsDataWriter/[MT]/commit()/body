@@ -1,5 +1,5 @@
 {
-  this.close();
+  this.closer.close();
   if (!this.fs.exists(this.stagingFile)) {
     throw new IOException(String.format("File %s does not exist",this.stagingFile));
   }

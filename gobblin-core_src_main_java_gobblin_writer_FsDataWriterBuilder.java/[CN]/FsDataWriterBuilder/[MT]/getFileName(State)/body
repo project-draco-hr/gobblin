@@ -1,0 +1,7 @@
+{
+  String fileName=WriterUtils.getWriterFileName(properties,this.branches,this.branch,this.writerId,this.format.getExtension());
+  if (this.partition.isPresent()) {
+    fileName=getPartitionedFileName(properties,fileName);
+  }
+  return fileName;
+}

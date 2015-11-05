@@ -1,0 +1,5 @@
+{
+  boolean includePartitionerFieldNames=properties.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(WRITER_INCLUDE_PARTITION_IN_FILE_NAMES,this.branches,this.branch),false);
+  boolean removePathSeparators=properties.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(WRITER_REPLACE_PATH_SEPARATORS_IN_PARTITIONS,this.branches,this.branch),false);
+  return new Path(AvroUtils.serializeAsPath(this.partition.get(),includePartitionerFieldNames,removePathSeparators).toString(),originalFileName).toString();
+}

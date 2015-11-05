@@ -1,0 +1,4 @@
+{
+  String propName=ForkOperatorUtils.getPropertyNameForBranch(WRITER_PARTITION_PREFIX,numBranches,branchId);
+  return state.getProp(propName,StringUtils.EMPTY);
+}

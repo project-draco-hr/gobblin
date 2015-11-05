@@ -1,7 +1,0 @@
-{
-  long recordsWritten=0;
-  for (  DataWriter<GenericRecord> dataWriter : this.pathToWriterMap.values()) {
-    recordsWritten+=dataWriter.recordsWritten();
-  }
-  return recordsWritten;
-}

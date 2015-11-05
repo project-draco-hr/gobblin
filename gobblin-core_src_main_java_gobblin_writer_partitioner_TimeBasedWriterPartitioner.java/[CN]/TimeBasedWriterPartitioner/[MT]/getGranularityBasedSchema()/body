@@ -1,0 +1,24 @@
+{
+  FieldAssembler<Schema> assembler=SchemaBuilder.record("GenericRecordTimePartition").namespace("gobblin.writer.partitioner").fields();
+  if (!Strings.isNullOrEmpty(this.writerPartitionPrefix)) {
+    assembler=assembler.name(SUFFIX).type(Schema.create(Schema.Type.STRING)).noDefault();
+  }
+switch (this.granularity) {
+case MINUTE:
+    assembler=assembler.name(Granularity.MINUTE.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
+case HOUR:
+  assembler=assembler.name(Granularity.HOUR.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
+case DAY:
+assembler=assembler.name(Granularity.DAY.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
+case MONTH:
+assembler=assembler.name(Granularity.MONTH.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
+case YEAR:
+assembler=assembler.name(Granularity.YEAR.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
+}
+if (!Strings.isNullOrEmpty(this.writerPartitionSuffix)) {
+assembler=assembler.name(PREFIX).type(Schema.create(Schema.Type.STRING)).noDefault();
+}
+Schema schema=assembler.endRecord();
+Collections.reverse(schema.getFields());
+return schema;
+}
