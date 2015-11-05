@@ -1,1 +1,1 @@
-Converter<Schema,Schema,Text,String>
+Converter<Object,Object,Text,String>
