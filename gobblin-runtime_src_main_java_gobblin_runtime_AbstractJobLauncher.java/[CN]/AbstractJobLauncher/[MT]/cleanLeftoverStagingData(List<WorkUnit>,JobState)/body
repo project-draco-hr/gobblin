@@ -1,0 +1,27 @@
+{
+  try {
+    if (this.jobContext.shouldCleanupStagingDataPerTask()) {
+      Closer closer=Closer.create();
+      Map<String,ParallelRunner> parallelRunners=Maps.newHashMap();
+      try {
+        for (        WorkUnit workUnit : JobLauncherUtils.flattenWorkUnits(workUnits)) {
+          WorkUnit fatWorkUnit=WorkUnit.copyOf(workUnit);
+          fatWorkUnit.addAllIfNotExist(jobState);
+          JobLauncherUtils.cleanTaskStagingData(fatWorkUnit,LOG,closer,parallelRunners);
+        }
+      }
+ catch (      Throwable t) {
+        throw closer.rethrow(t);
+      }
+ finally {
+        closer.close();
+      }
+    }
+ else {
+      JobLauncherUtils.cleanJobStagingData(jobState,LOG);
+    }
+  }
+ catch (  Throwable t) {
+    LOG.error("Failed to clean leftover staging data",t);
+  }
+}

@@ -2,7 +2,7 @@
   LOGGER.info(String.format("Cancelling task %s of job %s",this.taskId,this.jobId));
   this.futureOptional.transform(new Function<Future<?>,Object>(){
     @Nullable @Override public Object apply(    Future<?> input){
-      return input.cancel(false);
+      return input.cancel(true);
     }
   }
 );

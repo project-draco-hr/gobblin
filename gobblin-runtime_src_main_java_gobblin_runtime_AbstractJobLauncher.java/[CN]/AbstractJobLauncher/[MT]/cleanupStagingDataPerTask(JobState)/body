@@ -6,7 +6,7 @@
       TaskState fatTaskState=new TaskState(taskState);
       fatTaskState.addAllIfNotExist(jobState);
       try {
-        JobLauncherUtils.cleanStagingData(fatTaskState,LOG,closer,parallelRunners);
+        JobLauncherUtils.cleanTaskStagingData(fatTaskState,LOG,closer,parallelRunners);
       }
  catch (      IOException e) {
         LOG.error(String.format("Failed to clean staging data for task %s: %s",taskState.getTaskId(),e),e);
