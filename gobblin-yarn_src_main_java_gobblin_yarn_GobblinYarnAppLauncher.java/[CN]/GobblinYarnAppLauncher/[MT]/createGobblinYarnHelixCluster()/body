@@ -1,18 +1,8 @@
 {
-  HelixConnection helixConnection=new ZkHelixConnection(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY));
-  helixConnection.connect();
-  try {
-    ClusterId clusterId=ClusterId.from(this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
-    ClusterConfig clusterConfig=new ClusterConfig.Builder(clusterId).addStateModelDefinition(new StateModelDefinition(StateModelConfigGenerator.generateConfigForTaskStateModel())).autoJoin(true).build();
-    boolean clusterCreated=helixConnection.createClusterAccessor(clusterId).createCluster(clusterConfig);
-    if (clusterCreated) {
-      LOGGER.info("Created Helix cluster " + clusterId.stringify());
-    }
- else {
-      LOGGER.info("Helix cluster " + clusterId.stringify() + " already exists");
-    }
-  }
-  finally {
-    helixConnection.disconnect();
-  }
+  ClusterSetup clusterSetup=new ClusterSetup(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY));
+  String clusterName=this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  clusterSetup.addCluster(clusterName,true);
+  String autoJoinConfig=ZKHelixManager.ALLOW_PARTICIPANT_AUTO_JOIN + "=true";
+  clusterSetup.setConfig(HelixConfigScope.ConfigScopeProperty.CLUSTER,clusterName,autoJoinConfig);
+  LOGGER.info("Created Helix cluster " + clusterName);
 }

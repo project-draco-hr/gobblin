@@ -20,7 +20,7 @@
   finally {
           workUnitFileCloser.close();
         }
-        JobLauncherUtils.cleanStagingData(new WorkUnitState(wu),LOG);
+        JobLauncherUtils.cleanTaskStagingData(new WorkUnitState(wu),LOG);
       }
       if (status.getPath().getName().endsWith(AbstractJobLauncher.MULTI_WORK_UNIT_FILE_EXTENSION)) {
         MultiWorkUnit mwu=MultiWorkUnit.createEmpty();
@@ -31,7 +31,7 @@
           workUnitFileCloser.close();
         }
         for (        WorkUnit wu : mwu.getWorkUnits()) {
-          JobLauncherUtils.cleanStagingData(new WorkUnitState(wu),LOG);
+          JobLauncherUtils.cleanTaskStagingData(new WorkUnitState(wu),LOG);
         }
       }
     }
