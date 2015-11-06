@@ -1,6 +1,6 @@
 {
   ContextAwareCounter jobRecordsProcessed=this.context.contextAwareCounter(RECORDS_PROCESSED);
-  Assert.assertEquals(this.context.getCounters().get(jobRecordsProcessed.getName()),jobRecordsProcessed.getTrueMetric());
+  Assert.assertEquals(this.context.getCounters().get(jobRecordsProcessed.getName()),jobRecordsProcessed.getInnerMetric());
   Assert.assertEquals(jobRecordsProcessed.getContext(),this.context);
   Assert.assertEquals(jobRecordsProcessed.getName(),RECORDS_PROCESSED);
   jobRecordsProcessed.inc();
@@ -12,7 +12,7 @@
   jobRecordsProcessed.dec(3);
   Assert.assertEquals(jobRecordsProcessed.getCount(),2l);
   ContextAwareCounter taskRecordsProcessed=this.childContext.contextAwareCounter(RECORDS_PROCESSED);
-  Assert.assertEquals(this.childContext.getCounters().get(taskRecordsProcessed.getName()),taskRecordsProcessed.getTrueMetric());
+  Assert.assertEquals(this.childContext.getCounters().get(taskRecordsProcessed.getName()),taskRecordsProcessed.getInnerMetric());
   Assert.assertEquals(taskRecordsProcessed.getContext(),this.childContext);
   Assert.assertEquals(taskRecordsProcessed.getName(),RECORDS_PROCESSED);
   taskRecordsProcessed.inc();

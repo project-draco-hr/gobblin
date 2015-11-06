@@ -1,5 +1,5 @@
 {
-  for (  Map.Entry<String,TrueMetric> entry : this.contextAwareMetrics.entrySet()) {
+  for (  Map.Entry<String,InnerMetric> entry : this.contextAwareMetrics.entrySet()) {
     if (filter.matches(entry.getKey(),entry.getValue().getContextAwareMetric())) {
       remove(entry.getKey());
     }

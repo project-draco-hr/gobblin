@@ -8,7 +8,7 @@
       return buildStrict();
     }
  catch (    NameConflictException nce2) {
-      throw new RuntimeException("Failed to build metric context.",nce2);
+      throw Throwables.propagate(nce2);
     }
   }
 }

@@ -2,7 +2,7 @@
   if (!(metric instanceof ContextAwareMetric)) {
     throw new UnsupportedOperationException("Can only register ContextAwareMetrics");
   }
-  if (this.contextAwareMetrics.putIfAbsent(name,((ContextAwareMetric)metric).getTrueMetric()) != null) {
+  if (this.contextAwareMetrics.putIfAbsent(name,((ContextAwareMetric)metric).getInnerMetric()) != null) {
     throw new IllegalArgumentException("A metric named " + name + " already exists");
   }
   MetricContext metricContext=this.metricContext.get();

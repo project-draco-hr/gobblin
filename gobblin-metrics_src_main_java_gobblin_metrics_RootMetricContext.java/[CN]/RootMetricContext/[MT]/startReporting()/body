@@ -1,6 +1,11 @@
 {
   this.reportingStarted=true;
   for (  ContextAwareReporter reporter : this.reporters) {
-    reporter.start();
+    try {
+      reporter.start();
+    }
+ catch (    Throwable throwable) {
+      log.error(String.format("Failed to start reporter with class %s",reporter.getClass().getCanonicalName()),throwable);
+    }
   }
 }

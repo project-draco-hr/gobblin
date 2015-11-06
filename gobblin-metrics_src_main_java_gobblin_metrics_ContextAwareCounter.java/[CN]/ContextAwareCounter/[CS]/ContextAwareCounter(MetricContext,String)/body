@@ -1,4 +1,4 @@
 {
-  this.trueCounter=new TrueCounter(context,name,this);
+  this.innerCounter=new InnerCounter(context,name,this);
   this.metricContext=context;
 }

@@ -1,3 +1,7 @@
 {
-  return config.withValue(REPORTING_INTERVAL_PERIOD,ConfigValueFactory.fromAnyRef(reportingInterval)).withValue(REPORTING_INTERVAL_UNIT,ConfigValueFactory.fromAnyRef(reportingIntervalUnit.toString()));
+  long seconds=TimeUnit.SECONDS.convert(reportingInterval,reportingIntervalUnit);
+  if (seconds > Integer.MAX_VALUE) {
+    throw new RuntimeException(String.format("Reporting interval is too long. Max: %d seconds.",Integer.MAX_VALUE));
+  }
+  return config.withValue(REPORTING_INTERVAL,ConfigValueFactory.fromAnyRef(seconds + "S"));
 }

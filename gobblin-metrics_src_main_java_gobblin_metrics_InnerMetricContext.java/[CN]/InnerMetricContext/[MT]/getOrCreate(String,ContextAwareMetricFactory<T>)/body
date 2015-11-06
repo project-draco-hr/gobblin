@@ -1,5 +1,5 @@
 {
-  TrueMetric metric=this.contextAwareMetrics.get(name);
+  InnerMetric metric=this.contextAwareMetrics.get(name);
   if (metric != null) {
     if (factory.isInstance(metric)) {
       return (T)metric.getContextAwareMetric();

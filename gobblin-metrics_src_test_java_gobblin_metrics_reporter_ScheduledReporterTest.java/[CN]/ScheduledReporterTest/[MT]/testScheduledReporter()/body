@@ -1,5 +1,5 @@
 {
-  long reportingIntervalMillis=400;
+  long reportingIntervalMillis=1000;
   String context1Name=ScheduledReporterTest.class.getSimpleName() + "_1";
   String context2Name=ScheduledReporterTest.class.getSimpleName() + "_2";
   String context3Name="SomeOtherName";

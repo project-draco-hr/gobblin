@@ -1,5 +1,5 @@
 {
   super(new ExponentiallyDecayingReservoir());
-  this.histogram=new TrueHistogram(context,name,this);
+  this.innerHistogram=new InnerHistogram(context,name,this);
   this.context=context;
 }

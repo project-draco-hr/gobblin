@@ -1,4 +1,4 @@
 {
-  this.trueTimer=new TrueTimer(context,name,this);
+  this.innerTimer=new InnerTimer(context,name,this);
   this.context=context;
 }

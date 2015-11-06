@@ -1,6 +1,6 @@
 {
   ContextAwareTimer jobTotalDuration=this.context.contextAwareTimer(TOTAL_DURATION);
-  Assert.assertEquals(this.context.getTimers().get(jobTotalDuration.getName()),jobTotalDuration.getTrueMetric());
+  Assert.assertEquals(this.context.getTimers().get(jobTotalDuration.getName()),jobTotalDuration.getInnerMetric());
   Assert.assertEquals(jobTotalDuration.getContext(),this.context);
   Assert.assertEquals(jobTotalDuration.getName(),TOTAL_DURATION);
   jobTotalDuration.update(50,TimeUnit.SECONDS);

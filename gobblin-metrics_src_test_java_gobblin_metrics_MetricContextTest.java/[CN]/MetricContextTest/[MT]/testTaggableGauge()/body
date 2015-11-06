@@ -7,7 +7,7 @@
 );
   this.context.register(QUEUE_SIZE,queueSize);
   Assert.assertEquals(queueSize.getValue().longValue(),1000l);
-  Assert.assertEquals(this.context.getGauges().get(queueSize.getName()),queueSize.getTrueMetric());
+  Assert.assertEquals(this.context.getGauges().get(queueSize.getName()),queueSize.getInnerMetric());
   Assert.assertEquals(queueSize.getContext(),this.context);
   Assert.assertEquals(queueSize.getName(),QUEUE_SIZE);
 }

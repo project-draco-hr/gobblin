@@ -4,5 +4,5 @@
       report();
     }
   }
-,0,this.reportingInterval,this.reportingIntervalUnit));
+,0,this.reportingPeriodSeconds,TimeUnit.SECONDS));
 }

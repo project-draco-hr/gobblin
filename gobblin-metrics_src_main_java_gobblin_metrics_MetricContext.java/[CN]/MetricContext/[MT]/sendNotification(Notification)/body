@@ -2,7 +2,12 @@
   ContextAwareTimer.Context timer=this.notificationTimer.time();
   if (!this.notificationTargets.isEmpty()) {
     for (    final Map.Entry<UUID,Function<Notification,Void>> entry : this.notificationTargets.entrySet()) {
-      entry.getValue().apply(notification);
+      try {
+        entry.getValue().apply(notification);
+      }
+ catch (      RuntimeException exception) {
+        LOG.warn("RuntimeException when running notification target. Skipping.",exception);
+      }
     }
   }
   if (getParent().isPresent()) {

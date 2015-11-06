@@ -1,4 +1,4 @@
 {
-  this.trueGauge=new TrueGauge<T>(context,name,gauge,this);
+  this.innerGauge=new InnerGauge<T>(context,name,gauge,this);
   this.context=context;
 }

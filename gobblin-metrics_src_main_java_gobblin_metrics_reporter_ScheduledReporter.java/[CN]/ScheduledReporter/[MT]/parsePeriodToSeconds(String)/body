@@ -1,0 +1,8 @@
+{
+  try {
+    return Period.parse(periodStr.toUpperCase(),PERIOD_FORMATTER).toStandardSeconds().getSeconds();
+  }
+ catch (  ArithmeticException ae) {
+    throw new RuntimeException(String.format("Reporting interval is too long. Max: %d seconds.",Integer.MAX_VALUE));
+  }
+}

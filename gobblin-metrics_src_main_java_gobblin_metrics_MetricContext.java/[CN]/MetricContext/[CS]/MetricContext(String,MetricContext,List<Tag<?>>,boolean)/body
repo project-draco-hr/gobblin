@@ -5,7 +5,7 @@
     this.innerMetricContext=this.closer.register(new InnerMetricContext(this,name,parent,tags));
   }
  catch (  ExecutionException ee) {
-    throw new RuntimeException("Failed to create metric context.");
+    throw Throwables.propagate(ee);
   }
   this.contextAwareMetricsSet=Sets.newConcurrentHashSet();
   this.notificationTargets=Maps.newConcurrentMap();
