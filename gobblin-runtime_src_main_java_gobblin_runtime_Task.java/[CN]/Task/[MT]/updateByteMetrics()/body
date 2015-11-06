@@ -7,6 +7,6 @@
     }
   }
  catch (  IOException ioe) {
-    LOG.error("Failed to update byte-level metrics for task " + this.taskId);
+    LOG.error("Failed to update byte-level metrics for task " + this.taskId,ioe);
   }
 }

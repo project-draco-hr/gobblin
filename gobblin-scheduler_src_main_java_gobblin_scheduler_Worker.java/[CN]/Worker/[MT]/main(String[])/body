@@ -1,8 +1,0 @@
-{
-  if (args.length != 1) {
-    System.err.println("Usage: Worker <work configuration properties file>");
-    System.exit(1);
-  }
-  Configuration config=new PropertiesConfiguration(args[0]);
-  new Worker(ConfigurationConverter.getProperties(config)).start();
-}

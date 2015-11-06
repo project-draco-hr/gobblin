@@ -8,10 +8,10 @@
   this.job.setMapOutputKeyClass(NullWritable.class);
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);
-  Path jobInputPath=new Path(this.mrJobDir,"input");
+  Path jobInputPath=new Path(this.mrJobDir,INPUT_DIR_NAME);
   Path jobInputFile=prepareJobInput(jobInputPath,workUnits);
   NLineInputFormat.addInputPath(this.job,jobInputFile);
-  Path jobOutputPath=new Path(this.mrJobDir,"output");
+  Path jobOutputPath=new Path(this.mrJobDir,OUTPUT_DIR_NAME);
   SequenceFileOutputFormat.setOutputPath(this.job,jobOutputPath);
   Path jobStateFilePath=new Path(this.mrJobDir,JOB_STATE_FILE_NAME);
   SerializationUtils.serializeState(this.fs,jobStateFilePath,this.jobContext.getJobState());

@@ -1,4 +1,0 @@
-{
-  LOG.info("Starting the work unit manager");
-  this.executorService.execute(this.workUnitHandler);
-}
