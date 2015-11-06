@@ -1,0 +1,31 @@
+{
+  Properties properties=new Properties();
+  properties.load(new FileReader("gobblin-core/src/test/resources/serde/serde.properties"));
+  SourceState sourceState=new SourceState(new State(properties),ImmutableList.<WorkUnitState>of());
+  OldApiWritableFileSource source=new OldApiWritableFileSource();
+  List<WorkUnit> workUnits=source.getWorkunits(sourceState);
+  Assert.assertEquals(workUnits.size(),1);
+  WorkUnitState wus=new WorkUnitState(workUnits.get(0));
+  wus.addAll(sourceState);
+  Closer closer=Closer.create();
+  try {
+    OldApiWritableFileExtractor extractor=closer.register((OldApiWritableFileExtractor)source.getExtractor(wus));
+    HiveSerDeConverter converter=closer.register(new HiveSerDeConverter());
+    HiveWritableHdfsDataWriter writer=closer.register((HiveWritableHdfsDataWriter)new HiveWritableHdfsDataWriterBuilder().withBranches(1).withWriterId("0").writeTo(Destination.of(DestinationType.HDFS,sourceState)).build());
+    converter.init(wus);
+    Writable record=null;
+    while ((record=extractor.readRecord(null)) != null) {
+      Iterable<Writable> convertedRecordIterable=converter.convertRecordImpl(null,record,wus);
+      Assert.assertEquals(Iterators.size(convertedRecordIterable.iterator()),1);
+      writer.write(convertedRecordIterable.iterator().next());
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+    Assert.assertTrue(this.fs.exists(new Path(sourceState.getProp(ConfigurationKeys.WRITER_STAGING_DIR),sourceState.getProp(ConfigurationKeys.WRITER_FILE_NAME))));
+    HadoopUtils.deletePath(this.fs,new Path(sourceState.getProp(ConfigurationKeys.WRITER_STAGING_DIR)),true);
+  }
+}

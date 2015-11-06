@@ -1,0 +1,12 @@
+{
+  List<CopyableFile> files=new ArrayList<CopyableFile>();
+  files.add(getTestCopyableFile("inputStreamExtractorTest/first.txt"));
+  files.add(getTestCopyableFile("inputStreamExtractorTest/second.txt"));
+  FileAwareInputStreamExtractor extractor=new FileAwareInputStreamExtractor(FileSystem.getLocal(new Configuration()),Lists.newArrayList(files).iterator());
+  FileAwareInputStream fileAwareInputStream=extractor.readRecord(null);
+  Assert.assertEquals(fileAwareInputStream.getFile().getOrigin().getPath(),files.get(0).getOrigin().getPath());
+  Assert.assertEquals(IOUtils.toString(fileAwareInputStream.getInputStream()),"first");
+  fileAwareInputStream=extractor.readRecord(null);
+  Assert.assertEquals(fileAwareInputStream.getFile().getOrigin().getPath(),files.get(1).getOrigin().getPath());
+  Assert.assertEquals(IOUtils.toString(fileAwareInputStream.getInputStream()),"second");
+}

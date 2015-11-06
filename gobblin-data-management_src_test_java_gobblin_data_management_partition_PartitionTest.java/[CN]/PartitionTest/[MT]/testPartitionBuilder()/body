@@ -1,0 +1,9 @@
+{
+  String file1="file1";
+  String file2="file2";
+  Partition<TestFile> partition=new Partition.Builder<TestFile>("test").add(new TestFile(createFileStatus(file1))).add(Lists.newArrayList(new TestFile(createFileStatus(file2)))).build();
+  Assert.assertEquals(partition.getFiles().size(),2);
+  Assert.assertEquals(partition.getName(),"test");
+  Assert.assertEquals(partition.getFiles().get(0).getFileStatus().getPath().toString(),file1);
+  Assert.assertEquals(partition.getFiles().get(1).getFileStatus().getPath().toString(),file2);
+}

@@ -1,0 +1,41 @@
+{
+  final FileSystem fs=FileSystem.getLocal(new Configuration());
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testSafeRename/a/b/c"));
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRenameStaging1/a/b/c"));
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRenameStaging1/a/b/c/e"));
+  fs.create(new Path(hadoopUtilsTestDir,"testRenameStaging1/a/b/c/t1.txt"));
+  fs.create(new Path(hadoopUtilsTestDir,"testRenameStaging1/a/b/c/e/t2.txt"));
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRenameStaging2/a/b/c"));
+  fs.mkdirs(new Path(hadoopUtilsTestDir,"testRenameStaging2/a/b/c/e"));
+  fs.create(new Path(hadoopUtilsTestDir,"testRenameStaging2/a/b/c/t3.txt"));
+  fs.create(new Path(hadoopUtilsTestDir,"testRenameStaging2/a/b/c/e/t4.txt"));
+  ExecutorService executorService=Executors.newFixedThreadPool(2);
+  executorService.submit(new Runnable(){
+    @Override public void run(){
+      try {
+        HadoopUtils.renameRecursively(fs,new Path(hadoopUtilsTestDir,"testRenameStaging1"),new Path(hadoopUtilsTestDir,"testSafeRename"));
+      }
+ catch (      IOException e) {
+        Assert.fail("Failed to rename",e);
+      }
+    }
+  }
+);
+  executorService.submit(new Runnable(){
+    @Override public void run(){
+      try {
+        HadoopUtils.safeRenameRecursively(fs,new Path(hadoopUtilsTestDir,"testRenameStaging2"),new Path(hadoopUtilsTestDir,"testSafeRename"));
+      }
+ catch (      IOException e) {
+        Assert.fail("Failed to rename",e);
+      }
+    }
+  }
+);
+  executorService.awaitTermination(2,TimeUnit.SECONDS);
+  executorService.shutdownNow();
+  Assert.assertTrue(fs.exists(new Path(hadoopUtilsTestDir,"testSafeRename/a/b/c/t1.txt")));
+  Assert.assertTrue(fs.exists(new Path(hadoopUtilsTestDir,"testSafeRename/a/b/c/t3.txt")));
+  Assert.assertTrue(fs.exists(new Path(hadoopUtilsTestDir,"testSafeRename/a/b/c/e/t2.txt")));
+  Assert.assertTrue(fs.exists(new Path(hadoopUtilsTestDir,"testSafeRename/a/b/c/e/t4.txt")));
+}

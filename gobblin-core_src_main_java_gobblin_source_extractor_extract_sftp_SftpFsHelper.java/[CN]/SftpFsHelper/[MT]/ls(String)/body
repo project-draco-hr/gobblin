@@ -1,10 +1,12 @@
 {
   try {
     List<String> list=new ArrayList<String>();
-    Vector<LsEntry> vector=this.channelSftp.ls(path);
+    ChannelSftp channel=getSftpChannel();
+    Vector<LsEntry> vector=channel.ls(path);
     for (    LsEntry entry : vector) {
       list.add(entry.getFilename());
     }
+    channel.disconnect();
     return list;
   }
  catch (  SftpException e) {

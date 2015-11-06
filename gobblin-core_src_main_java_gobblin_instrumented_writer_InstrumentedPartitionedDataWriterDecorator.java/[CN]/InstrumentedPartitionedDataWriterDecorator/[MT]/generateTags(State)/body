@@ -1,0 +1,8 @@
+{
+  ImmutableList.Builder<Tag<?>> tags=ImmutableList.<Tag<?>>builder().addAll(super.generateTags(state));
+  tags.add(new Tag<GenericRecord>(PARTITION,this.partition));
+  for (  Schema.Field field : this.partition.getSchema().getFields()) {
+    tags.add(new Tag<Object>(field.name(),this.partition.get(field.name())));
+  }
+  return tags.build();
+}

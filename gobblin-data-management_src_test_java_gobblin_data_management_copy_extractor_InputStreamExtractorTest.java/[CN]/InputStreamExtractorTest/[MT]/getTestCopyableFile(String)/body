@@ -1,0 +1,5 @@
+{
+  String filePath=getClass().getClassLoader().getResource(resourcePath).getFile();
+  FileStatus status=new FileStatus(0l,false,0,0l,0l,new Path(filePath));
+  return new CopyableFile(status,null,null,null,null,null);
+}

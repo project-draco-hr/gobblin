@@ -1,0 +1,15 @@
+{
+  Closer closer=Closer.create();
+  try {
+    JobLauncher jobLauncher=closer.register(JobLauncherFactory.newJobLauncher(gobblinProps,jobProps));
+    jobLauncher.launchJob(null);
+    String file1Path=gobblinProps.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR) + "/LogData/sub1/sub2/text1.txt";
+    String file2Path=gobblinProps.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR) + "/LogData/sub1/sub2/text2.txt";
+    FileSystem fs=FileSystem.getLocal(new Configuration());
+    Assert.assertEquals(IOUtils.toString(closer.register(fs.open(new Path(file1Path)))),"text1");
+    Assert.assertEquals(IOUtils.toString(closer.register(fs.open(new Path(file2Path)))),"text2");
+  }
+  finally {
+    closer.close();
+  }
+}

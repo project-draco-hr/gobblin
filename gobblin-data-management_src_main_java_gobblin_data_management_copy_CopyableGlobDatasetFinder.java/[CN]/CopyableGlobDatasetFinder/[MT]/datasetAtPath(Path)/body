@@ -1,0 +1,3 @@
+{
+  return new RecursiveCopyableDataset(this.fs,path,this.props);
+}

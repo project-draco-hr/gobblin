@@ -1,0 +1,2 @@
+Map<String,List<WorkUnit>> workUnits
+Map<String,State> topicSpecificStateMap

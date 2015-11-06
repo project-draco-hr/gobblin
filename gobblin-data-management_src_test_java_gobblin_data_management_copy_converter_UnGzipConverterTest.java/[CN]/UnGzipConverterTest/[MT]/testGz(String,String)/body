@@ -1,0 +1,9 @@
+{
+  UnGzipConverter converter=new UnGzipConverter();
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  String fullPath=getClass().getClassLoader().getResource(filePath).getFile();
+  FileAwareInputStream fileAwareInputStream=new FileAwareInputStream(CopyableFileUtils.getTestCopyableFile(filePath),fs.open(new Path(fullPath)));
+  Iterable<FileAwareInputStream> iterable=converter.convertRecord("outputSchema",fileAwareInputStream,new WorkUnitState());
+  String actual=readGzipStreamAsString(Iterables.getFirst(iterable,null).getInputStream());
+  Assert.assertEquals(actual.trim(),expectedText);
+}

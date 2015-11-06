@@ -19,11 +19,10 @@
     if (inMultipleBranches(forkedSchemas) && !(schema instanceof Copyable)) {
       throw new CopyNotSupportedException(schema + " is not copyable");
     }
-    CountDownLatch forkCountDownLatch=new CountDownLatch(branches);
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
-        Fork fork=closer.register(new Fork(this.taskContext,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i,forkCountDownLatch));
-        this.taskExecutor.execute(fork);
+        Fork fork=closer.register(new Fork(this.taskContext,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i));
+        this.forkCompletionService.submit(fork,fork);
         this.forks.add(Optional.of(fork));
       }
  else {
@@ -48,11 +47,17 @@
       if (fork.isPresent()) {
         fork.get().markParentTaskDone();
       }
- else {
-        forkCountDownLatch.countDown();
+    }
+    for (    Optional<Fork> fork : this.forks) {
+      if (fork.isPresent()) {
+        try {
+          this.forkCompletionService.take();
+        }
+ catch (        InterruptedException ie) {
+          Thread.currentThread().interrupt();
+        }
       }
     }
-    forkCountDownLatch.await();
     boolean allForksSucceeded=true;
     for (    Optional<Fork> fork : this.forks) {
       if (fork.isPresent()) {
@@ -79,6 +84,7 @@
     failTask(t);
   }
  finally {
+    this.taskState.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN,getRecordsWritten());
     try {
       closer.close();
     }
@@ -91,12 +97,14 @@
         this.taskState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
       }
     }
- catch (    Throwable t) {
-      failTask(t);
+ catch (    IOException ioe) {
+      failTask(ioe);
     }
-    long endTime=System.currentTimeMillis();
-    this.taskState.setEndTime(endTime);
-    this.taskState.setTaskDuration(endTime - startTime);
-    this.taskStateTracker.onTaskCompletion(this);
+ finally {
+      long endTime=System.currentTimeMillis();
+      this.taskState.setEndTime(endTime);
+      this.taskState.setTaskDuration(endTime - startTime);
+      this.taskStateTracker.onTaskCompletion(this);
+    }
   }
 }

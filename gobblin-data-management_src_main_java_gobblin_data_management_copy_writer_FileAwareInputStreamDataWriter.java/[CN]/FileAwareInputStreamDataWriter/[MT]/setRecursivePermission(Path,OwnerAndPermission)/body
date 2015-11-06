@@ -1,0 +1,6 @@
+{
+  List<FileStatus> files=FileListUtils.listPathsRecursively(fs,path,FileListUtils.NO_OP_PATH_FILTER);
+  for (  FileStatus file : files) {
+    setPathPermission(file.getPath(),ownerAndPermission);
+  }
+}

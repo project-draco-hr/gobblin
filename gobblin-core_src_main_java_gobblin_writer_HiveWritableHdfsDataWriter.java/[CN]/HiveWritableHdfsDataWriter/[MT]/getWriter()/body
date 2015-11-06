@@ -1,0 +1,10 @@
+{
+  try {
+    HiveOutputFormat<?,?> outputFormat=HiveOutputFormat.class.cast(Class.forName(this.properties.getProp(HiveWritableHdfsDataWriterBuilder.WRITER_OUTPUT_FORMAT_CLASS)).newInstance());
+    @SuppressWarnings("unchecked") Class<? extends Writable> writableClass=(Class<? extends Writable>)Class.forName(this.properties.getProp(HiveWritableHdfsDataWriterBuilder.WRITER_WRITABLE_CLASS));
+    return outputFormat.getHiveRecordWriter(new JobConf(),this.stagingFile,writableClass,true,this.properties.getProperties(),null);
+  }
+ catch (  Throwable t) {
+    throw new IOException(String.format("Failed to create writer"),t);
+  }
+}

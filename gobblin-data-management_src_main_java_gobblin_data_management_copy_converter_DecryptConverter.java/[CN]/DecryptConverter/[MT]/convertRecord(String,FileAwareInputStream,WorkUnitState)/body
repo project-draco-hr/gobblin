@@ -1,0 +1,12 @@
+{
+  try {
+    FileAwareInputStream decryptedFileAwareInputStream=new FileAwareInputStream(fileAwareInputStream.getFile(),GPGFileDecrypter.decryptFile(fileAwareInputStream.getInputStream(),passphrase));
+    return new SingleRecordIterable<FileAwareInputStream>(decryptedFileAwareInputStream);
+  }
+ catch (  IOException e) {
+    throw new DataConversionException(e);
+  }
+catch (  NoSuchProviderException e) {
+    throw new DataConversionException(e);
+  }
+}

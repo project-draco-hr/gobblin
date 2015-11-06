@@ -18,7 +18,9 @@
   LOG.info(String.format("Waiting for submitted tasks of job %s to complete in mapper %s...",jobId,context.getTaskAttemptID()));
   while (countDownLatch.getCount() > 0) {
     LOG.info(String.format("%d out of %d tasks of job %s are running in mapper %s",countDownLatch.getCount(),workUnits.size(),jobId,context.getTaskAttemptID()));
-    countDownLatch.await(10,TimeUnit.SECONDS);
+    if (countDownLatch.await(10,TimeUnit.SECONDS)) {
+      break;
+    }
   }
   LOG.info(String.format("All tasks of job %s have completed in mapper %s",jobId,context.getTaskAttemptID()));
   boolean hasTaskFailure=false;
@@ -30,6 +32,11 @@
     }
   }
   if (hasTaskFailure) {
+    for (    Task task : tasks) {
+      if (task.getTaskState().contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+        LOG.error(String.format("Task %s failed due to exception: %s",task.getTaskId(),task.getTaskState().getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)));
+      }
+    }
     throw new IOException(String.format("Not all tasks running in mapper %s completed successfully",context.getTaskAttemptID()));
   }
 }

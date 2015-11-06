@@ -4,7 +4,9 @@
   for (  final Dataset dataset : dataSets) {
     ListenableFuture<Void> future=this.service.submit(new Callable<Void>(){
       @Override public Void call() throws Exception {
-        dataset.clean();
+        if (dataset instanceof CleanableDataset) {
+          ((CleanableDataset)dataset).clean();
+        }
         return null;
       }
     }

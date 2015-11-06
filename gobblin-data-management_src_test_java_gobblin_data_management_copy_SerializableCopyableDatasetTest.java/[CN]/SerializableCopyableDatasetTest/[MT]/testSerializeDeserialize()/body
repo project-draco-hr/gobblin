@@ -1,0 +1,7 @@
+{
+  CopyableDataset copyableDataset=new TestCopyableDataset();
+  String serialized=SerializableCopyableDataset.serialize(copyableDataset);
+  CopyableDataset deserialized=SerializableCopyableDataset.deserialize(serialized);
+  Assert.assertEquals(copyableDataset.datasetRoot(),deserialized.datasetRoot());
+  Assert.assertEquals(copyableDataset.datasetTargetRoot(),deserialized.datasetTargetRoot());
+}

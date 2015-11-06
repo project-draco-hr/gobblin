@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(record);
+  this.writer.write(record);
+  this.count.incrementAndGet();
+}

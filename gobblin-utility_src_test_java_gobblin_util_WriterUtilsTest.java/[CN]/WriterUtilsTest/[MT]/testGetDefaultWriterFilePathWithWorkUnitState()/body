@@ -2,7 +2,7 @@
   String namespace="gobblin.test";
   String tableName="test-table";
   SourceState sourceState=new SourceState();
-  WorkUnit workUnit=new WorkUnit(sourceState,new Extract(sourceState,TableType.APPEND_ONLY,namespace,tableName));
+  WorkUnit workUnit=WorkUnit.create(new Extract(sourceState,TableType.APPEND_ONLY,namespace,tableName));
   WorkUnitState workUnitState=new WorkUnitState(workUnit);
   Assert.assertEquals(WriterUtils.getWriterFilePath(workUnitState,0,0),new Path(workUnitState.getExtract().getOutputFilePath()));
   Assert.assertEquals(WriterUtils.getWriterFilePath(workUnitState,2,0),new Path(workUnitState.getExtract().getOutputFilePath(),ConfigurationKeys.DEFAULT_FORK_BRANCH_NAME + "0"));

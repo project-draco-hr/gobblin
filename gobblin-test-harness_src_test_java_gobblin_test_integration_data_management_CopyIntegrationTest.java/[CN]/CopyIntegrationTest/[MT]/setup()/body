@@ -1,0 +1,6 @@
+{
+  this.gobblinProps=new Properties();
+  gobblinProps.load(new FileReader("gobblin-test-harness/resource/dataManagement/copy/job-props/copy.properties"));
+  this.jobProps=new Properties();
+  jobProps.load(new FileReader("gobblin-test-harness/resource/dataManagement/copy/job-props/copy.pull"));
+}

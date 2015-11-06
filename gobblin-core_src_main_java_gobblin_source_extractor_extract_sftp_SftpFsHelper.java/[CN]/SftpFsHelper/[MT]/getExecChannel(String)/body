@@ -1,0 +1,12 @@
+{
+  ChannelExec channelExec;
+  try {
+    channelExec=(ChannelExec)session.openChannel("exec");
+    channelExec.setCommand(command);
+    channelExec.connect();
+    return channelExec;
+  }
+ catch (  JSchException e) {
+    throw new SftpException(0,"Cannot open a channel to SFTP server",e);
+  }
+}

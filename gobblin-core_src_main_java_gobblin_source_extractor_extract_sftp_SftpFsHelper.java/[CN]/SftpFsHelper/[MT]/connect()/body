@@ -1,5 +1,5 @@
 {
-  String privateKey=state.getProp(ConfigurationKeys.SOURCE_CONN_PRIVATE_KEY);
+  String privateKey=PasswordManager.getInstance(state).readPassword(state.getProp(ConfigurationKeys.SOURCE_CONN_PRIVATE_KEY));
   String knownHosts=state.getProp(ConfigurationKeys.SOURCE_CONN_KNOWN_HOSTS);
   String userName=state.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME);
   String hostName=state.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
@@ -19,16 +19,11 @@
     UserInfo ui=new MyUserInfo();
     session.setUserInfo(ui);
     session.connect();
-    channelSftp=(ChannelSftp)session.openChannel("sftp");
-    channelSftp.connect();
     log.info("Finished connecting to source");
   }
  catch (  JSchException e) {
     if (session != null) {
       session.disconnect();
-    }
-    if (channelSftp != null) {
-      channelSftp.disconnect();
     }
     log.error(e.getMessage(),e);
     throw new FileBasedHelperException("Cannot connect to SFTP source",e);

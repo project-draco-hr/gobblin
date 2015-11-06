@@ -1,0 +1,15 @@
+{
+  TarArchiveInputStream tarIn=new TarArchiveInputStream(is);
+  try {
+    TarArchiveEntry tarEntry;
+    while ((tarEntry=tarIn.getNextTarEntry()) != null) {
+      if (tarEntry.isFile() && tarEntry.getName().endsWith(".txt")) {
+        return IOUtils.toString(tarIn,"UTF-8");
+      }
+    }
+  }
+  finally {
+    tarIn.close();
+  }
+  return Strings.EMPTY;
+}

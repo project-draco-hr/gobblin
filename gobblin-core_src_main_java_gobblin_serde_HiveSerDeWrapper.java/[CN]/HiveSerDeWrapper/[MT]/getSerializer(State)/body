@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(state.contains(SERDE_SERIALIZER_TYPE),"Missing required property " + SERDE_SERIALIZER_TYPE);
+  return get(state.getProp(SERDE_SERIALIZER_TYPE),Optional.fromNullable(state.getProp(SERDE_SERIALIZER_INPUT_FORMAT_TYPE)),Optional.fromNullable(state.getProp(SERDE_SERIALIZER_OUTPUT_FORMAT_TYPE)),Optional.fromNullable(state.getProp(SERDE_SERIALIZER_FILE_EXTENSION)));
+}

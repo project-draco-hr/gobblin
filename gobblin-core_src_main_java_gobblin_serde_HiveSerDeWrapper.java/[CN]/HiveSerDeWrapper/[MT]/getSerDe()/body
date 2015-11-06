@@ -1,0 +1,11 @@
+{
+  if (!this.serDe.isPresent()) {
+    try {
+      this.serDe=Optional.of(SerDe.class.cast(Class.forName(this.serDeClassName).newInstance()));
+    }
+ catch (    Throwable t) {
+      throw new IOException("Failed to instantiate SerDe " + this.serDeClassName,t);
+    }
+  }
+  return this.serDe.get();
+}

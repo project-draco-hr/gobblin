@@ -11,7 +11,7 @@
   Path writerOutputDir1=new Path(rootDir,"output" + Path.SEPARATOR + branchName1);
   try {
     SourceState sourceState=new SourceState();
-    WorkUnitState state=new WorkUnitState(new WorkUnit(sourceState,new Extract(sourceState,TableType.APPEND_ONLY,namespace,tableName)));
+    WorkUnitState state=new WorkUnitState(WorkUnit.create(new Extract(sourceState,TableType.APPEND_ONLY,namespace,tableName)));
     state.setProp(ConfigurationKeys.FORK_BRANCHES_KEY,"2");
     state.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_BRANCH_NAME_KEY,2,0),branchName0);
     state.setProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.FORK_BRANCH_NAME_KEY,2,1),branchName1);
@@ -29,7 +29,7 @@
     fs.mkdirs(writerOutputPath0);
     Path writerOutputPath1=new Path(writerOutputDir1,ForkOperatorUtils.getPathForBranch(state,state.getExtract().getOutputFilePath(),2,1));
     fs.mkdirs(writerOutputPath1);
-    JobLauncherUtils.cleanStagingData(state,LoggerFactory.getLogger(JobLauncherUtilsTest.class));
+    JobLauncherUtils.cleanTaskStagingData(state,LoggerFactory.getLogger(JobLauncherUtilsTest.class));
     Assert.assertFalse(fs.exists(writerStagingPath0));
     Assert.assertFalse(fs.exists(writerStagingPath1));
     Assert.assertFalse(fs.exists(writerOutputPath0));

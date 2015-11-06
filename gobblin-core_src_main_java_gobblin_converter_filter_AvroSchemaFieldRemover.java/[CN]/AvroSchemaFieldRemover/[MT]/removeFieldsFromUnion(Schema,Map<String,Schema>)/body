@@ -1,0 +1,7 @@
+{
+  List<Schema> newUnion=Lists.newArrayList();
+  for (  Schema unionType : schema.getTypes()) {
+    newUnion.add(this.removeFields(unionType,schemaMap));
+  }
+  return Schema.createUnion(newUnion);
+}

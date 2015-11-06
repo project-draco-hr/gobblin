@@ -1,0 +1,16 @@
+{
+  FileStatus status=null;
+  if (resourcePath == null) {
+    resourcePath=getRandomPath();
+    status=new FileStatus(0l,false,0,0l,0l,new Path(resourcePath));
+  }
+ else {
+    String filePath=CopyableFileUtils.class.getClassLoader().getResource(resourcePath).getFile();
+    status=new FileStatus(0l,false,0,0l,0l,new Path(filePath));
+  }
+  if (relativePath == null) {
+    relativePath=getRandomPath();
+  }
+  Path destinationRelativePath=new Path(relativePath);
+  return new CopyableFile(status,new Path(getRandomPath()),destinationRelativePath,ownerAndPermission,null,null);
+}

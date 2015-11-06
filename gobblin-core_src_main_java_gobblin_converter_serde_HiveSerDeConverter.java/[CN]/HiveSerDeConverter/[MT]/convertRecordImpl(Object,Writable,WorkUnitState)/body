@@ -1,0 +1,10 @@
+{
+  try {
+    Object deserialized=this.deserializer.deserialize(inputRecord);
+    Writable convertedRecord=this.serializer.serialize(deserialized,this.deserializer.getObjectInspector());
+    return new SingleRecordIterable<Writable>(convertedRecord);
+  }
+ catch (  SerDeException e) {
+    throw new DataConversionException(e);
+  }
+}

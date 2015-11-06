@@ -1,0 +1,11 @@
+{
+  SftpGetMonitor monitor=new SftpGetMonitor();
+  try {
+    ChannelSftp channelSftp=fsHelper.getSftpChannel();
+    InputStream is=channelSftp.get(path.toString(),monitor);
+    return new FSDataInputStream(new BufferedFSInputStream(new SftpFsFileInputStream(is,channelSftp),bufferSize));
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+}

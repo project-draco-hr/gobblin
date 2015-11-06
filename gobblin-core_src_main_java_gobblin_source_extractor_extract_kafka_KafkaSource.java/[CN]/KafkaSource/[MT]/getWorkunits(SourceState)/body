@@ -2,9 +2,9 @@
   Map<String,List<WorkUnit>> workUnits=Maps.newHashMap();
   this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
   List<KafkaTopic> topics=getFilteredTopics(state);
-  Map<KafkaTopic,State> topicSpecificStateMap=getTopicSpecificState(topics,state);
+  Map<String,State> topicSpecificStateMap=getTopicSpecificState(topics,state);
   for (  KafkaTopic topic : topics) {
-    workUnits.put(topic.getName(),getWorkUnitsForTopic(topic,state,Optional.fromNullable(topicSpecificStateMap.get(topic))));
+    workUnits.put(topic.getName(),getWorkUnitsForTopic(topic,state,Optional.fromNullable(topicSpecificStateMap.get(topic.getName()))));
   }
   createEmptyWorkUnitsForSkippedPartitions(workUnits,topicSpecificStateMap);
   int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);

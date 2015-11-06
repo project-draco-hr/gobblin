@@ -11,7 +11,7 @@
     }
   }
 );
-  trash.trash.moveToTrash(pathToDelete);
+  Assert.assertTrue(trash.trash.moveToTrash(pathToDelete));
   verify(trash.fs,times(1)).mkdirs(any(Path.class));
   Assert.assertEquals(movedPaths.size(),1);
   Assert.assertTrue(movedPaths.get(0).first().equals(pathToDelete));
