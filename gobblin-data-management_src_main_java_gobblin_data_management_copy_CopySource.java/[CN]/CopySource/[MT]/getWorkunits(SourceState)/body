@@ -1,0 +1,24 @@
+{
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  try {
+    DatasetFinder<CopyableDataset> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),getSourceFileSystem(state),DEFAULT_DATASET_PROFILE_CLASS_KEY);
+    List<CopyableDataset> copyableDatasets=datasetFinder.findDatasets();
+    for (    CopyableDataset copyableDataset : copyableDatasets) {
+      serializeCopyableDataset(state,copyableDataset);
+      Collection<Partition<CopyableFile>> partitions=copyableDataset.partitionFiles(copyableDataset.getCopyableFiles());
+      for (      Partition<CopyableFile> partition : partitions) {
+        Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,COPY_PREFIX,partition.getName());
+        for (        CopyableFile copyableFile : partition.getFiles()) {
+          WorkUnit workUnit=new WorkUnit(extract);
+          workUnit.addAll(state);
+          serializeCopyableFiles(workUnit,Lists.newArrayList(copyableFile));
+          workUnits.add(workUnit);
+        }
+      }
+    }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
+  return workUnits;
+}

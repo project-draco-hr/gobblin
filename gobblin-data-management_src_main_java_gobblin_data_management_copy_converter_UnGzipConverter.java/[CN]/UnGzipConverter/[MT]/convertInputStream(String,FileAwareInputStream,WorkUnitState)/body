@@ -1,0 +1,8 @@
+{
+  try {
+    return new SingleRecordIterable<FileAwareInputStream>(new FileAwareInputStream(fileAwareInputStream.getFile(),StreamUtils.convertStream(new GZIPInputStream(fileAwareInputStream.getInputStream()))));
+  }
+ catch (  IOException e) {
+    throw new DataConversionException(String.format("Failed to convert %s ",fileAwareInputStream.getFile().getOrigin().getPath()),e);
+  }
+}

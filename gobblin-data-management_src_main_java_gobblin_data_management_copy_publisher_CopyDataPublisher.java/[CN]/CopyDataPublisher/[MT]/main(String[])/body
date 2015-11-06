@@ -1,0 +1,4 @@
+{
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  fs.rename(new Path("/tmp/Lynda/perm.txt"),new Path("/tmp/Lynda/Lynda2/perm2.txt"));
+}

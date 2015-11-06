@@ -1,0 +1,4 @@
+{
+  this.datasetRoot=copyableDataset.datasetRoot();
+  this.datasetTargetRoot=copyableDataset.datasetTargetRoot();
+}

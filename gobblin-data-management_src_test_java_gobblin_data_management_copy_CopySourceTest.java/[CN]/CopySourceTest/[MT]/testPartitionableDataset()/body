@@ -1,0 +1,30 @@
+{
+  SourceState state=new SourceState();
+  state.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,"file:///");
+  state.setProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,"file:///");
+  state.setProp(DatasetUtils.DATASET_PROFILE_CLASS_KEY,TestCopyablePartitionableDatasedFinder.class.getCanonicalName());
+  CopySource source=new CopySource();
+  List<WorkUnit> workunits=source.getWorkunits(state);
+  Assert.assertEquals(workunits.size(),TestCopyableDataset.FILE_COUNT);
+  Extract extractAbove=null;
+  Extract extractBelow=null;
+  for (  WorkUnit workUnit : workunits) {
+    CopyableFile copyableFile=CopySource.deserializeCopyableFiles(workUnit).get(0);
+    Assert.assertTrue(copyableFile.getOrigin().getPath().toString().startsWith(TestCopyableDataset.ORIGIN_PREFIX));
+    Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission(),TestCopyableDataset.OWNER_AND_PERMISSION);
+    if (Integer.parseInt(copyableFile.getOrigin().getPath().getName()) < TestCopyablePartitionableDataset.THRESHOLD) {
+      if (extractBelow == null) {
+        extractBelow=workUnit.getExtract();
+      }
+      Assert.assertEquals(workUnit.getExtract(),extractBelow);
+    }
+ else {
+      if (extractAbove == null) {
+        extractAbove=workUnit.getExtract();
+      }
+      Assert.assertEquals(workUnit.getExtract(),extractAbove);
+    }
+  }
+  Assert.assertNotNull(extractAbove);
+  Assert.assertNotNull(extractBelow);
+}

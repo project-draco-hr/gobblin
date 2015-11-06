@@ -1,0 +1,14 @@
+{
+  final String expectedFileContents="123456789";
+  final String passphrase="12";
+  DecryptConverter converter=new DecryptConverter();
+  WorkUnitState workUnitState=new WorkUnitState();
+  setEncyptedPassphrase(passphrase,workUnitState);
+  converter.init(workUnitState);
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  String gpgFilePath=getClass().getClassLoader().getResource("decryptConverterTest/decrypt-test.txt.gpg").getFile();
+  FileAwareInputStream fileAwareInputStream=new FileAwareInputStream(null,fs.open(new Path(gpgFilePath)));
+  Iterable<FileAwareInputStream> iterable=converter.convertRecord("outputSchema",fileAwareInputStream,workUnitState);
+  String actual=IOUtils.toString(Iterables.getFirst(iterable,null).getInputStream());
+  Assert.assertEquals(actual,expectedFileContents);
+}

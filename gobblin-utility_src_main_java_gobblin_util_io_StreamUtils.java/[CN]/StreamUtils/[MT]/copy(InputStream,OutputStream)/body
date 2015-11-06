@@ -1,0 +1,7 @@
+{
+  final ReadableByteChannel inputChannel=Channels.newChannel(is);
+  final WritableByteChannel outputChannel=Channels.newChannel(os);
+  copy(inputChannel,outputChannel);
+  inputChannel.close();
+  outputChannel.close();
+}

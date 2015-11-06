@@ -1,0 +1,32 @@
+{
+  closer.register(fileAwareInputStream.getInputStream());
+  filesWritten++;
+  TarArchiveInputStream tarIn=new TarArchiveInputStream(fileAwareInputStream.getInputStream());
+  TarArchiveEntry tarEntry;
+  boolean firstEntrySeen=false;
+  try {
+    while ((tarEntry=tarIn.getNextTarEntry()) != null) {
+      Path tarEntryPath=PathUtils.withoutLeadingSeparator(new Path(fileAwareInputStream.getFile().getDestination().getParent(),tarEntry.getName()));
+      Path tarEntryStagingPath=new Path(this.stagingDir,tarEntryPath);
+      firstEntrySeen=updateName(fileAwareInputStream,firstEntrySeen,tarEntryStagingPath.getName());
+      log.info("Unarchiving " + tarEntryStagingPath);
+      if (tarEntry.isDirectory() && !fs.exists(tarEntryStagingPath)) {
+        fs.mkdirs(tarEntryStagingPath);
+      }
+ else       if (!tarEntry.isDirectory()) {
+        FSDataOutputStream out=fs.create(tarEntryStagingPath,true);
+        try {
+          IOUtils.copyBytes(tarIn,out,fs.getConf(),false);
+        }
+  finally {
+          out.close();
+        }
+      }
+    }
+  }
+  finally {
+    tarIn.close();
+    fileAwareInputStream.getInputStream().close();
+  }
+  this.setFilePermissions(fileAwareInputStream.getFile());
+}

@@ -1,0 +1,15 @@
+{
+  ChannelSftp channel=null;
+  try {
+    channel=fsHelper.getSftpChannel();
+    channel.mkdir(path.toString());
+    channel.chmod((int)permission.toShort(),path.toString());
+  }
+ catch (  SftpException e) {
+    throw new IOException(e);
+  }
+ finally {
+    safeDisconnect(channel);
+  }
+  return true;
+}

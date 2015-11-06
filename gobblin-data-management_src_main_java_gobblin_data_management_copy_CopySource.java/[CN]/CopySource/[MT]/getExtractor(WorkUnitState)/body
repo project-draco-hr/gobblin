@@ -1,0 +1,4 @@
+{
+  List<CopyableFile> copyableFiles=deserializeCopyableFiles(state);
+  return new FileAwareInputStreamExtractor(getSourceFileSystem(state),copyableFiles.iterator());
+}

@@ -1,0 +1,3 @@
+{
+  state.setProp(SERIALIZED_COPYABLE_DATASET,SerializableCopyableDataset.serialize(copyableDataset));
+}

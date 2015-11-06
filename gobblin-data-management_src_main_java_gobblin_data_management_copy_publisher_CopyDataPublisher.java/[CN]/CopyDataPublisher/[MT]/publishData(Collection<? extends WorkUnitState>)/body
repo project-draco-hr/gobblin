@@ -1,0 +1,6 @@
+{
+  Multimap<CopyableDataset,WorkUnitState> datasets=getDatasetRoots(states);
+  for (  CopyableDataset copyableDataset : datasets.keySet()) {
+    this.publishDataset(copyableDataset,datasets.get(copyableDataset));
+  }
+}

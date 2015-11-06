@@ -1,0 +1,4 @@
+{
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  fs.mkdirs(hadoopUtilsTestDir);
+}

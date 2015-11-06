@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(workUnit.contains(DECRYPTION_PASSPHRASE_KEY),"Passphrase is required while using DecryptConverter. Please specify " + DECRYPTION_PASSPHRASE_KEY);
+  this.passphrase=PasswordManager.getInstance(workUnit).readPassword(workUnit.getProp(DECRYPTION_PASSPHRASE_KEY));
+  return super.init(workUnit);
+}

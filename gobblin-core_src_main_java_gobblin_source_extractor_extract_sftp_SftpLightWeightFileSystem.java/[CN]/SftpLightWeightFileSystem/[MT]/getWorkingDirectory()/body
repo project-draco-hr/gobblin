@@ -1,0 +1,14 @@
+{
+  ChannelSftp channelSftp=null;
+  try {
+    channelSftp=fsHelper.getSftpChannel();
+    Path workingDir=new Path(channelSftp.pwd());
+    return workingDir;
+  }
+ catch (  SftpException e) {
+    return null;
+  }
+ finally {
+    safeDisconnect(channelSftp);
+  }
+}
