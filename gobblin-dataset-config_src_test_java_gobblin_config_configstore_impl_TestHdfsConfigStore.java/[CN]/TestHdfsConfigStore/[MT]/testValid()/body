@@ -1,0 +1,5 @@
+{
+  Configuration _hadoopConf=new Configuration();
+  FileSystem _localFS=FileSystem.getLocal(_hadoopConf);
+  System.out.println("OK");
+}

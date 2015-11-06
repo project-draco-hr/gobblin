@@ -1,0 +1,11 @@
+{
+  Path path=new Path(this.location);
+  try {
+    System.out.println("path exists ? " + fs.exists(path));
+    return "1.0";
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+  return null;
+}
