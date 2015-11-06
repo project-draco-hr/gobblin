@@ -7,7 +7,7 @@
   }
 );
   if (fileStatuses == null || fileStatuses.length == 0) {
-    return Lists.newArrayList();
+    return ImmutableList.of();
   }
   Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();
   Closer closer=Closer.create();
@@ -25,5 +25,5 @@
     closer.close();
   }
   LOGGER.info(String.format("Collected task state of %d completed tasks",taskStateQueue.size()));
-  return Lists.newArrayList(taskStateQueue);
+  return ImmutableList.copyOf(taskStateQueue);
 }

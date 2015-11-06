@@ -1,3 +1,0 @@
-{
-  this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
-}

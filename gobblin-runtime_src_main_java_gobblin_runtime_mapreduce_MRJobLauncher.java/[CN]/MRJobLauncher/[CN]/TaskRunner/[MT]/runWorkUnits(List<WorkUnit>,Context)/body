@@ -32,6 +32,11 @@
     }
   }
   if (hasTaskFailure) {
+    for (    Task task : tasks) {
+      if (task.getTaskState().contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+        LOG.error(String.format("Task %s failed due to exception: %s",task.getTaskId(),task.getTaskState().getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)));
+      }
+    }
     throw new IOException(String.format("Not all tasks running in mapper %s completed successfully",context.getTaskAttemptID()));
   }
 }

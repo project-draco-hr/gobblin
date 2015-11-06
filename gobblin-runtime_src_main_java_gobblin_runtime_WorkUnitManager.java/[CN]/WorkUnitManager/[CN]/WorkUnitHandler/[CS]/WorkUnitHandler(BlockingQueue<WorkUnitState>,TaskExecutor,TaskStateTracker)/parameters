@@ -1,3 +1,0 @@
-BlockingQueue<WorkUnitState> workUnitQueue
-TaskExecutor taskExecutor
-TaskStateTracker taskStateTracker

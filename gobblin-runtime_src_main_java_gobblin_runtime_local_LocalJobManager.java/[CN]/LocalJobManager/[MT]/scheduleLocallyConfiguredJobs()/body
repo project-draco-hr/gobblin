@@ -1,7 +1,0 @@
-{
-  LOG.info("Scheduling locally configured jobs");
-  for (  Properties jobProps : loadLocalJobConfigs()) {
-    boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
-    scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
-  }
-}
