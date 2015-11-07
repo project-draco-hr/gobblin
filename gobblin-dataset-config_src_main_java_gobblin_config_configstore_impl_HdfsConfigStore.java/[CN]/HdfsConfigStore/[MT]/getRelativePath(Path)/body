@@ -1,0 +1,8 @@
+{
+  String root=Path.getPathWithoutSchemeAndAuthority(this.currentVersionRoot).toString();
+  String input=Path.getPathWithoutSchemeAndAuthority(p).toString();
+  if (input.equals(root)) {
+    return "";
+  }
+  return input.substring(root.length() + 1);
+}

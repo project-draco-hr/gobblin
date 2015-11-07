@@ -1,6 +1,3 @@
 {
-  this.scheme=scheme;
-  this.location=location;
-  this.fs=getFileSystem();
-  this.currentVersion=this.findCurrentVersion();
+  this(scheme,location,new SimpleVersionComparator());
 }

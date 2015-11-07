@@ -1,3 +1,25 @@
 {
-  return null;
+  if (uri == null)   return ConfigFactory.empty();
+  Closer closer=Closer.create();
+  Path self=new Path(this.currentVersionRoot,uri.toString());
+  Path configFile=new Path(self,CONFIG_FILE_NAME);
+  try {
+    if (!this.fs.isFile(configFile)) {
+      return ConfigFactory.empty();
+    }
+    FSDataInputStream configFileStream=closer.register(this.fs.open(configFile));
+    return ConfigFactory.parseReader(new InputStreamReader(configFileStream)).resolve();
+  }
+ catch (  IOException ioe) {
+    LOG.error(String.format("Got error when get own config for %s, exception %s",self,ioe.getMessage()),ioe);
+    throw new RuntimeException(ioe);
+  }
+ finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      LOG.error("Failed to close FsInputStream: " + e,e);
+    }
+  }
 }

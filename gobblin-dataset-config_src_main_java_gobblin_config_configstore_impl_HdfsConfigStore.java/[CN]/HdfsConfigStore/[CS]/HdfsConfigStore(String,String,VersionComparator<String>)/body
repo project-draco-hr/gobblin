@@ -1,0 +1,14 @@
+{
+  this.scheme=scheme;
+  this.location=new Path(location);
+  try {
+    this.fs=this.location.getFileSystem(new Configuration());
+  }
+ catch (  IOException ioe) {
+    LOG.error("can not initial the file system " + ioe.getMessage(),ioe);
+    throw new RuntimeException(ioe);
+  }
+  this.vc=vc;
+  this.currentVersion=this.findCurrentVersion();
+  this.currentVersionRoot=new Path(this.location,this.currentVersion);
+}

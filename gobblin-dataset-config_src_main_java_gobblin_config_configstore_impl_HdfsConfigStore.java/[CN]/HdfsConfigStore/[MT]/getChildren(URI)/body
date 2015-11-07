@@ -1,3 +1,31 @@
 {
-  return null;
+  if (uri == null)   return null;
+  Path self=new Path(this.currentVersionRoot,uri.toString());
+  try {
+    if (this.fs.isFile(self)) {
+      return Collections.emptyList();
+    }
+    FileStatus[] fileStatus=this.fs.listStatus(self);
+    if (fileStatus == null || fileStatus.length == 0) {
+      return Collections.emptyList();
+    }
+    List<URI> res=new ArrayList<URI>();
+    for (    FileStatus f : fileStatus) {
+      if (f.isFile()) {
+        continue;
+      }
+      try {
+        res.add(new URI(this.getRelativePath(f.getPath())));
+      }
+ catch (      URISyntaxException e) {
+        LOG.error(String.format("Got error when create URI for %s, exception %s",f.getPath(),e.getMessage()),e);
+        throw new RuntimeException(e);
+      }
+    }
+    return res;
+  }
+ catch (  IOException ioe) {
+    LOG.error(String.format("Got error when find children for %s, exception %s",self,ioe.getMessage()),ioe);
+    throw new RuntimeException(ioe);
+  }
 }
