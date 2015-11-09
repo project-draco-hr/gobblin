@@ -7,6 +7,12 @@
   if (!Strings.isNullOrEmpty(inputQuery)) {
     columnListInQuery=Utils.getColumnListFromQuery(inputQuery);
   }
+  String excludedColumns=workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_EXCLUDED_COLUMNS);
+  List<String> columnListExcluded=ImmutableList.<String>of();
+  if (Strings.isNullOrEmpty(inputQuery) && !Strings.isNullOrEmpty(excludedColumns)) {
+    Splitter splitter=Splitter.on(",").omitEmptyStrings().trimResults();
+    columnListExcluded=splitter.splitToList(excludedColumns);
+  }
   try {
     boolean success=this.getConnection();
     if (!success) {
@@ -31,8 +37,10 @@
         String jsonStr=gson.toJson(obj);
         JsonObject jsonObject=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
         if (inputQuery == null || columnListInQuery == null || (columnListInQuery.size() == 1 && columnListInQuery.get(0).equals("*")) || (columnListInQuery.size() >= 1 && this.isMetadataColumn(columnName,columnListInQuery))) {
-          this.columnList.add(columnName);
-          columnArray.add(jsonObject);
+          if (!columnListExcluded.contains(columnName.trim().toLowerCase())) {
+            this.columnList.add(columnName);
+            columnArray.add(jsonObject);
+          }
         }
       }
       if (inputQuery == null && this.columnList.size() != 0) {
