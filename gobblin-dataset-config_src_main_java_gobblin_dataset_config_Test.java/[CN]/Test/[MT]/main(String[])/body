@@ -1,5 +1,13 @@
 {
-  Configuration _hadoopConf=new Configuration();
-  FileSystem _localFS=FileSystem.getLocal(_hadoopConf);
-  System.out.println("OK");
+  String fileName="/Users/mitu/main.conf";
+  RawConfigIncluder raw=new RawConfigIncluder(null);
+  ConfigParseOptions co=ConfigParseOptions.defaults().setIncluder(raw);
+  Config c=ConfigFactory.parseFile(new File(fileName),co);
+  printConfig(c,"test ");
+  System.out.println("----------------");
+  RawConfigIncluder foo=(RawConfigIncluder)co.getIncluder();
+  System.out.println("Equals ? " + (foo == raw));
+  for (  String s : foo.getRawIncludes()) {
+    System.out.println("Raw includes " + s);
+  }
 }

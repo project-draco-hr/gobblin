@@ -1,0 +1,14 @@
+{
+  if (this == fallback) {
+    throw new ConfigException.BugOrBroken("trying to create includer cycle");
+  }
+ else   if (this.fallback == fallback) {
+    return this;
+  }
+ else   if (this.fallback != null) {
+    return new RawConfigIncluder(this.fallback.withFallback(fallback));
+  }
+ else {
+    return new RawConfigIncluder(fallback);
+  }
+}

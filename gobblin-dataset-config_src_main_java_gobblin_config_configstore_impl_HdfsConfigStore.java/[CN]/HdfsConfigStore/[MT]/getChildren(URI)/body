@@ -11,7 +11,7 @@
     }
     List<URI> res=new ArrayList<URI>();
     for (    FileStatus f : fileStatus) {
-      if (f.isFile()) {
+      if (!f.isDir()) {
         continue;
       }
       try {
@@ -25,7 +25,7 @@
     return res;
   }
  catch (  IOException ioe) {
-    LOG.error(String.format("Got error when find children for %s, exception %s",self,ioe.getMessage()),ioe);
+    LOG.error(String.format("Got error when find children for %s, exception %s",self,ioe.getMessage()));
     throw new RuntimeException(ioe);
   }
 }

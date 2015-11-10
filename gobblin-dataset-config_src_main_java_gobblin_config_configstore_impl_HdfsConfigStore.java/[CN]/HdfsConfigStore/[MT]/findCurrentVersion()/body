@@ -9,7 +9,7 @@
     }
     List<String> versions=new ArrayList<String>();
     for (    FileStatus f : fileStatus) {
-      if (f.isFile()) {
+      if (!f.isDir()) {
         continue;
       }
       versions.add(f.getPath().getName());

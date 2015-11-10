@@ -1,0 +1,15 @@
+{
+  URL url;
+  try {
+    url=new URL(name);
+  }
+ catch (  MalformedURLException e) {
+    url=null;
+  }
+  if (url != null) {
+    return includeURLWithoutFallback(context,url);
+  }
+ else {
+    return ConfigFactory.empty().root();
+  }
+}
