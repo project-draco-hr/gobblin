@@ -1,0 +1,7 @@
+{
+  String propName=ForkOperatorUtils.getPropertyNameForBranch(WRITER_PARTITION_GRANULARITY,numBranches,branchId);
+  String granularityValue=state.getProp(propName,DEFAULT_WRITER_PARTITION_GRANULARITY.toString());
+  Optional<Granularity> granularity=Enums.getIfPresent(Granularity.class,granularityValue.toUpperCase());
+  Preconditions.checkState(granularity.isPresent(),granularityValue + " is not a valid writer partition granularity");
+  return granularity.get();
+}

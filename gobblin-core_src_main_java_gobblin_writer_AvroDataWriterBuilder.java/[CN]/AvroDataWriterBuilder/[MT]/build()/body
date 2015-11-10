@@ -5,14 +5,9 @@
   Preconditions.checkArgument(this.format == WriterOutputFormat.AVRO);
 switch (this.destination.getType()) {
 case HDFS:
-    State properties=this.destination.getProperties();
-  String fileName=WriterUtils.getWriterFileName(properties,this.branches,this.branch,this.writerId,this.format.getExtension());
-if (this.partition.isPresent()) {
-  fileName=new Path(AvroUtils.serializeAsPath(this.partition.get(),true).toString(),fileName).toString();
-}
-return new AvroHdfsDataWriter(properties,fileName,this.schema,this.branches,this.branch);
+    return new AvroHdfsDataWriter(this,this.destination.getProperties());
 case KAFKA:
-return new AvroKafkaDataWriter();
+  return new AvroKafkaDataWriter();
 default :
 throw new RuntimeException("Unknown destination type: " + this.destination.getType());
 }

@@ -1,0 +1,5 @@
+{
+  this.serDeClassName=serDeClassName;
+  this.inputFormatClassName=inputFormatClassName;
+  this.outputFormatClassName=outputFormatClassName;
+}

@@ -1,0 +1,3 @@
+{
+  return this.timestampToPathFormatter.get().print(timestamp);
+}

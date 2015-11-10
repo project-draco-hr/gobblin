@@ -1,0 +1,8 @@
+{
+  this.writerPartitionPrefix=getWriterPartitionPrefix(state,numBranches,branchId);
+  this.writerPartitionSuffix=getWriterPartitionSuffix(state,numBranches,branchId);
+  this.granularity=getGranularity(state,numBranches,branchId);
+  this.timeZone=getTimeZone(state,numBranches,branchId);
+  this.timestampToPathFormatter=getTimestampToPathFormatter(state,numBranches,branchId);
+  this.schema=getSchema();
+}

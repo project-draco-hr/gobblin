@@ -11,7 +11,7 @@
     try {
       this.shouldPartition=true;
       this.builder=Optional.of(PartitionAwareDataWriterBuilder.class.cast(builder));
-      this.partitioner=Optional.of(WriterPartitioner.class.cast(ConstructorUtils.invokeConstructor(Class.forName(state.getProp(ConfigurationKeys.WRITER_PARTITIONER_CLASS)),state)));
+      this.partitioner=Optional.of(WriterPartitioner.class.cast(ConstructorUtils.invokeConstructor(Class.forName(state.getProp(ConfigurationKeys.WRITER_PARTITIONER_CLASS)),state,builder.getBranches(),builder.getBranch())));
       Preconditions.checkArgument(this.builder.get().validatePartitionSchema(this.partitioner.get().partitionSchema()),String.format("Writer %s does not support schema from partitioner %s",builder.getClass().getCanonicalName(),this.partitioner.getClass().getCanonicalName()));
     }
  catch (    ReflectiveOperationException roe) {

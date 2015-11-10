@@ -1,0 +1,4 @@
+{
+  String propName=ForkOperatorUtils.getPropertyNameForBranch(WRITER_PARTITION_TIMEZONE,numBranches,branchId);
+  return DateTimeZone.forID(state.getProp(propName,DEFAULT_WRITER_PARTITION_TIMEZONE));
+}

@@ -1,4 +1,0 @@
-String serDeType
-Optional<String> inputFormatClassName
-Optional<String> outputFormatClassName
-Optional<String> extension
