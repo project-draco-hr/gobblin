@@ -1,4 +1,4 @@
 {
-  Preconditions.checkArgument(state.contains(KafkaSource.TOPIC_NAME));
+  Preconditions.checkArgument(state.contains(KafkaSource.TOPIC_NAME),"Missing configuration property " + KafkaSource.TOPIC_NAME);
   return state.getProp(KafkaSource.TOPIC_NAME);
 }

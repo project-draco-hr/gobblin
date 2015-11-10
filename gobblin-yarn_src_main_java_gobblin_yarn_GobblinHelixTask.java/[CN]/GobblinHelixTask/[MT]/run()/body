@@ -1,43 +1,31 @@
 {
-  LOGGER.info(String.format("Running task %s of job %s",taskId,jobId));
   try {
-    gobblin.runtime.Task task=buildTask();
-    this.taskStateTracker.registerNewTask(task);
-    LOGGER.info(String.format("Submitting Task %s to run",this.taskId));
-    this.futureOptional=Optional.<Future<?>>of(this.taskExecutor.submit(task));
-    this.futureOptional.get().get();
-    persistTaskState(task.getTaskState());
-    WorkUnitState.WorkingState workingState=task.getTaskState().getWorkingState();
-    LOGGER.info(String.format("Task %s completed with state %s",this.taskId,workingState));
-switch (workingState) {
-case SUCCESSFUL:
-      return new TaskResult(TaskResult.Status.COMPLETED,"task id: " + this.taskId);
-case FAILED:
-    return new TaskResult(TaskResult.Status.ERROR,"task id: " + this.taskId);
-case CANCELLED:
-  return new TaskResult(TaskResult.Status.CANCELED,"task id: " + this.taskId);
-default :
-throw new IllegalStateException("Unexpected result task state: " + workingState);
-}
-}
- catch (IOException ioe) {
-LOGGER.error("Failed to build task " + this.taskId,ioe);
-return new TaskResult(TaskResult.Status.ERROR,"task id: " + this.taskId);
-}
-catch (ExecutionException ee) {
-LOGGER.error("Failed to run task " + this.taskId,ee);
-return new TaskResult(TaskResult.Status.ERROR,"task id: " + this.taskId);
-}
-catch (InterruptedException ie) {
-cancel();
-Thread.currentThread().interrupt();
-return new TaskResult(TaskResult.Status.CANCELED,"task id: " + this.taskId);
-}
-catch (CancellationException ce) {
-return new TaskResult(TaskResult.Status.CANCELED,"task id: " + this.taskId);
-}
-catch (Throwable t) {
-LOGGER.error("Failed to run task " + this.taskId,t);
-return new TaskResult(TaskResult.Status.ERROR,"task id: " + this.taskId);
-}
+    Path workUnitFilePath=new Path(this.taskConfig.getConfigMap().get(GobblinYarnConfigurationKeys.WORK_UNIT_FILE_PATH));
+    WorkUnit workUnit=workUnitFilePath.getName().endsWith(AbstractJobLauncher.MULTI_WORK_UNIT_FILE_EXTENSION) ? MultiWorkUnit.createEmpty() : WorkUnit.createEmpty();
+    SerializationUtils.deserializeState(this.fs,workUnitFilePath,workUnit);
+    List<WorkUnit> workUnits=Lists.newArrayList();
+    if (workUnit instanceof MultiWorkUnit) {
+      List<WorkUnit> flattenedWorkUnits=JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits());
+      for (      WorkUnit flattenedWorkUnit : flattenedWorkUnits) {
+        flattenedWorkUnit.addAllIfNotExist(this.jobState);
+      }
+      workUnits.addAll(flattenedWorkUnits);
+    }
+ else {
+      workUnit.addAllIfNotExist(this.jobState);
+      workUnits.add(workUnit);
+    }
+    runWorkUnits(workUnits);
+    return new TaskResult(TaskResult.Status.COMPLETED,String.format("completed tasks: %d",workUnits.size()));
+  }
+ catch (  IOException ioe) {
+    return new TaskResult(TaskResult.Status.ERROR,Throwables.getStackTraceAsString(ioe));
+  }
+catch (  InterruptedException ie) {
+    Thread.currentThread().interrupt();
+    return new TaskResult(TaskResult.Status.CANCELED,"");
+  }
+catch (  Throwable t) {
+    return new TaskResult(TaskResult.Status.ERROR,Throwables.getStackTraceAsString(t));
+  }
 }
