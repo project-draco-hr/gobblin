@@ -2,8 +2,8 @@
   ChannelSftp channel=null;
   try {
     channel=fsHelper.getSftpChannel();
-    channel.mkdir(path.toString());
-    channel.chmod((int)permission.toShort(),path.toString());
+    channel.mkdir(HadoopUtils.toUriPath(path));
+    channel.chmod((int)permission.toShort(),HadoopUtils.toUriPath(path));
   }
  catch (  SftpException e) {
     throw new IOException(e);

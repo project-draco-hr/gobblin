@@ -1,0 +1,6 @@
+{
+  long mb=totalCount / 1000000L;
+  long secs=(System.currentTimeMillis() - startime) / 1000L;
+  double mbps=secs == 0L ? 0.0D : mb * 1.0D / secs;
+  return String.format("%.2f",new Object[]{Double.valueOf(mbps)});
+}

@@ -1,6 +1,6 @@
 {
   for (  String property : requiredProperties()) {
-    Preconditions.checkArgument(props.containsKey(property));
+    Preconditions.checkArgument(props.containsKey(property) || props.containsKey(DEPRECATIONS.get(property)));
   }
   if (props.containsKey(DATASET_BLACKLIST_KEY) && !Strings.isNullOrEmpty(props.getProperty(DATASET_BLACKLIST_KEY))) {
     this.blacklist=Optional.of(Pattern.compile(props.getProperty(DATASET_BLACKLIST_KEY)));
@@ -8,7 +8,12 @@
  else {
     this.blacklist=Optional.absent();
   }
-  this.datasetPattern=new Path(props.getProperty(DATASET_PATTERN_KEY));
+  if (props.getProperty(DATASET_FINDER_PATTERN_KEY) != null) {
+    this.datasetPattern=new Path(props.getProperty(DATASET_FINDER_PATTERN_KEY));
+  }
+ else {
+    this.datasetPattern=new Path(props.getProperty(DATASET_PATTERN_KEY));
+  }
   this.fs=fs;
   this.props=props;
 }

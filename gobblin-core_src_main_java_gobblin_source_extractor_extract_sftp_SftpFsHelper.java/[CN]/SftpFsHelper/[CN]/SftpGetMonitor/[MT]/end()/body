@@ -1,3 +1,4 @@
 {
-  log.info("Data transfer has finished for operation " + this.op + " src: "+ this.src+ " dest: "+ this.dest);
+  long secs=(System.currentTimeMillis() - startime) / 1000L;
+  log.info("Transfer finished " + this.op + " src: "+ this.src+ " dest: "+ this.dest+ " in "+ secs+ " at "+ getMbps());
 }

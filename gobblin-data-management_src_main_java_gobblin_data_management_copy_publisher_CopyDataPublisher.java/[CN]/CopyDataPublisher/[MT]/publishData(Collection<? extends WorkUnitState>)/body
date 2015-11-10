@@ -3,4 +3,5 @@
   for (  CopyableDataset copyableDataset : datasets.keySet()) {
     this.publishDataset(copyableDataset,datasets.get(copyableDataset));
   }
+  fs.delete(writerOutputDir,true);
 }

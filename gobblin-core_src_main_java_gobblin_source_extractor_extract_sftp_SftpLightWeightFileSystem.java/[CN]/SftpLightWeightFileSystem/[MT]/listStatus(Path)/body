@@ -1,6 +1,6 @@
 {
   try {
-    List<String> fileNames=fsHelper.ls(path.toString());
+    List<String> fileNames=fsHelper.ls(HadoopUtils.toUriPath(path));
     List<FileStatus> status=Lists.newArrayListWithCapacity(fileNames.size());
     for (    String name : fileNames) {
       Path filePath=new Path(name);

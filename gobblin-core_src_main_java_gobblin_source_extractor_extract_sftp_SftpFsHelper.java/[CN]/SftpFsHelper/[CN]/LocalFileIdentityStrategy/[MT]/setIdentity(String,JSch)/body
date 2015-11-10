@@ -1,0 +1,11 @@
+{
+  try {
+    jsch.addIdentity(privateKey);
+    log.info("Successfully set identity using local file " + privateKey);
+    return true;
+  }
+ catch (  Exception e) {
+    log.warn("Failed to set identity using local file. Will attempt next strategy. " + e.getMessage());
+  }
+  return false;
+}

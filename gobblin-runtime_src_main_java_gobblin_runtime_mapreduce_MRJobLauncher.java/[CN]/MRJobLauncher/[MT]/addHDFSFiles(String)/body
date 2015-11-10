@@ -1,5 +1,6 @@
 {
   DistributedCache.createSymlink(this.conf);
+  jobFileList=PasswordManager.getInstance(jobProps).readPassword(jobFileList);
   for (  String jobFile : SPLITTER.split(jobFileList)) {
     Path srcJobFile=new Path(jobFile);
     URI srcFileUri=URI.create(srcJobFile.toUri().getPath() + "#" + srcJobFile.getName());

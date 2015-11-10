@@ -1,0 +1,6 @@
+{
+  if (!StringUtils.containsIgnoreCase(state.getProp(ConfigurationKeys.WRITER_STAGING_DIR),state.getProp(ConfigurationKeys.JOB_ID_KEY))) {
+    state.setProp(ConfigurationKeys.WRITER_STAGING_DIR,new Path(state.getProp(ConfigurationKeys.WRITER_STAGING_DIR),state.getProp(ConfigurationKeys.JOB_ID_KEY)));
+    state.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR),state.getProp(ConfigurationKeys.JOB_ID_KEY)));
+  }
+}

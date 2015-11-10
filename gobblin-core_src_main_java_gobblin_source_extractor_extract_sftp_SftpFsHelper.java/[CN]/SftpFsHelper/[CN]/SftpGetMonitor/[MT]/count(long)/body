@@ -1,5 +1,11 @@
 {
   this.totalCount+=count;
-  log.info("Transfer is in progress for file: " + src + ". Finished transferring "+ this.totalCount+ " bytes "+ System.currentTimeMillis());
+  if (this.logFrequency == 0L) {
+    this.logFrequency=1000L;
+    log.info("Transfer is in progress for file: " + src + ". Finished transferring "+ this.totalCount+ " bytes ");
+    long mb=totalCount / 1000000L;
+    log.info("Transferd " + mb + " Mb. Speed "+ getMbps()+ " Mbps");
+  }
+  this.logFrequency--;
   return true;
 }
