@@ -4,7 +4,7 @@
     while (context.nextKeyValue()) {
       this.map(context.getCurrentKey(),context.getCurrentValue(),context);
     }
-    runWorkUnits(this.workUnits,context);
+    runWorkUnits(this.jobState.getJobId(),context.getTaskAttemptID().toString(),this.workUnits,this.taskStateTracker,this.taskExecutor,this.taskStateStore,LOG);
   }
   finally {
     this.cleanup(context);
