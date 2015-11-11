@@ -1,3 +1,5 @@
 {
-  return null;
+  Config self=this.getOwnConfig(uri);
+  Config ancestor=this.getAncestorConfig(uri);
+  return self.withFallback(ancestor);
 }

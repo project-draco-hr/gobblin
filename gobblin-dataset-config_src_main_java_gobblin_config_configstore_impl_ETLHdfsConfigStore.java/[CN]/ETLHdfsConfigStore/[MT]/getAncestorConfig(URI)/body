@@ -1,0 +1,10 @@
+{
+  URI parent=getParent(uri);
+  Config res=getOwnConfig(parent);
+  parent=getParent(parent);
+  while (parent != null) {
+    res.withFallback(getOwnConfig(parent));
+    parent=getParent(parent);
+  }
+  return res;
+}

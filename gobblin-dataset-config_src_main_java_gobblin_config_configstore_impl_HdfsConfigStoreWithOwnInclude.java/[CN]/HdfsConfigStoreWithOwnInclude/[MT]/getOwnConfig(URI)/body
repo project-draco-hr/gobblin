@@ -1,7 +1,7 @@
 {
   if (uri == null)   return ConfigFactory.empty();
   Closer closer=Closer.create();
-  Path self=new Path(this.currentVersionRoot,uri.toString());
+  Path self=getPath(uri);
   Path configFile=new Path(self,CONFIG_FILE_NAME);
   try {
     if (!this.fs.isFile(configFile)) {

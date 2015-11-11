@@ -1,6 +1,6 @@
 {
   if (uri == null)   return null;
-  Path self=new Path(this.currentVersionRoot,uri.toString());
+  Path self=getPath(uri);
   try {
     if (this.fs.isFile(self)) {
       return Collections.emptyList();
