@@ -29,7 +29,7 @@
   Assert.assertEquals(c.getString("t1.t2.t3.keyInT3"),"valueInT3");
   Assert.assertEquals(c.getList("listExample").size(),1);
   Assert.assertEquals(c.getList("listExample").get(0).render(),"\"element in a3\"");
-  Collection<URI> imported=store.getImports(new URI(dataset));
+  Collection<URI> imported=store.getOwnImports(new URI(dataset));
   Assert.assertEquals(imported.size(),1);
   Assert.assertEquals(imported.iterator().next().toString(),"tags/t1/t2/t3");
   Collection<URI> rootChildren=store.getChildren(new URI(""));
@@ -38,10 +38,20 @@
   Assert.assertEquals(it.next().toString(),"datasets");
   Assert.assertEquals(it.next().toString(),"tags");
   c=store.getResolvedConfig(new URI(dataset));
-  printConfig(c,"resolved");
-  ETLHdfsConfigStore circularStore=new ETLHdfsConfigStore("testSelfImportSelf","file:///Users/mitu/CircularDependencyTest/selfImportSelf");
-  Assert.assertEquals(circularStore.getCurrentVersion(),"v1.0");
-  System.out.println("circular version " + circularStore.getCurrentVersion());
-  URI circularNode=new URI("tags/t_a_1");
-  CircularDependencyChecker.checkCircularDependency(circularStore,circularNode);
+  Assert.assertEquals(c.entrySet().size(),9);
+  Assert.assertEquals(c.getString("t1.t2.keyInT2"),"valueInT2");
+  Assert.assertEquals(c.getString("t1.t2.t3.keyInT3"),"valueInT3");
+  Assert.assertEquals(c.getString("propKey1"),"propKey2");
+  Assert.assertEquals(c.getInt("foobar.a"),42);
+  Assert.assertEquals(c.getList("listExample").size(),1);
+  Assert.assertEquals(c.getList("listExample").get(0).unwrapped(),"element in a3");
+  Assert.assertEquals(c.getString("keyInT3"),"valueInT3_atA2level");
+  Assert.assertEquals(c.getInt("foobar.b"),43);
+  Assert.assertEquals(c.getString("keyInT1_T2_T3"),"valueInT1_T2_T3");
+  Assert.assertEquals(c.getString("keyInL1_L2"),"valueInL1_L2");
+  Collection<URI> resolvedImport=store.getResolvedImports(new URI(dataset));
+  Assert.assertEquals(resolvedImport.size(),2);
+  it=resolvedImport.iterator();
+  Assert.assertEquals(it.next().toString(),"tags/t1/t2/t3");
+  Assert.assertEquals(it.next().toString(),"tags/l1/l2");
 }

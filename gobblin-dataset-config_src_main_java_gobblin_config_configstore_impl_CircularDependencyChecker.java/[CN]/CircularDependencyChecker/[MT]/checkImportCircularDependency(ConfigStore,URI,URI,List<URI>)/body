@@ -4,7 +4,7 @@
       throw new CircularDependencyException(getChain(initialURI,previous,uri));
     }
   }
-  Collection<URI> imported=cs.getImports(uri);
+  Collection<URI> imported=cs.getOwnImports(uri);
   Iterator<URI> it=imported.iterator();
   while (it.hasNext()) {
     URI singleImport=it.next();

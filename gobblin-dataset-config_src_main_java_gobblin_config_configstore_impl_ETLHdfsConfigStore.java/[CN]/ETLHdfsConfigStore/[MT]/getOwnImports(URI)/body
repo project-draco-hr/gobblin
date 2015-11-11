@@ -2,7 +2,7 @@
   if (!isValidURI(uri)) {
     return Collections.emptyList();
   }
-  Collection<URI> superRes=super.getImports(uri);
+  Collection<URI> superRes=super.getOwnImports(uri);
   for (  URI i : superRes) {
     if (isValidDataset(i)) {
       throw new RuntimeException(String.format("URI %s Can not import dataset %s",uri.toString(),i.toString()));

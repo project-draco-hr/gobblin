@@ -1,9 +1,10 @@
 {
+  CircularDependencyChecker.checkCircularDependency(this,uri);
   Config self=this.getOwnConfig(uri);
   if (isRootURI(uri)) {
     return self;
   }
-  Collection<URI> imported=this.getImports(uri);
+  Collection<URI> imported=this.getOwnImports(uri);
   Iterator<URI> it=imported.iterator();
   List<Config> importedConfigs=new ArrayList<Config>();
   while (it.hasNext()) {
