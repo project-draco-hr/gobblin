@@ -1,0 +1,4 @@
+{
+  ETLHdfsConfigStore store=new ETLHdfsConfigStore("testSelfImportSelf","file:///Users/mitu/CircularDependencyTest/selfImportSelf");
+  Assert.assertEquals(store.getCurrentVersion(),"v1.0");
+}

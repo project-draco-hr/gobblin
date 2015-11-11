@@ -39,4 +39,9 @@
   Assert.assertEquals(it.next().toString(),"tags");
   c=store.getResolvedConfig(new URI(dataset));
   printConfig(c,"resolved");
+  ETLHdfsConfigStore circularStore=new ETLHdfsConfigStore("testSelfImportSelf","file:///Users/mitu/CircularDependencyTest/selfImportSelf");
+  Assert.assertEquals(circularStore.getCurrentVersion(),"v1.0");
+  System.out.println("circular version " + circularStore.getCurrentVersion());
+  URI circularNode=new URI("tags/t_a_1");
+  CircularDependencyChecker.checkCircularDependency(circularStore,circularNode);
 }

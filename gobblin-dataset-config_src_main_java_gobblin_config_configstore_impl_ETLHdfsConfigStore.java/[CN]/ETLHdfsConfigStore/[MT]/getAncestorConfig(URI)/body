@@ -1,9 +1,9 @@
 {
   URI parent=getParent(uri);
-  Config res=getOwnConfig(parent);
+  Config res=getResolvedConfig(parent);
   parent=getParent(parent);
   while (parent != null) {
-    res.withFallback(getOwnConfig(parent));
+    res.withFallback(getResolvedConfig(parent));
     parent=getParent(parent);
   }
   return res;

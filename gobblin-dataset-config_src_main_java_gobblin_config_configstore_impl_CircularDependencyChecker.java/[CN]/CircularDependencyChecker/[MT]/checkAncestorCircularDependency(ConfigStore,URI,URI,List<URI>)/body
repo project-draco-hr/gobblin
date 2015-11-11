@@ -1,0 +1,10 @@
+{
+  URI parent=cs.getParent(uri);
+  checkImportCircularDependency(cs,parent,parent,new ArrayList<URI>(previous));
+  if (parent != null) {
+    List<URI> current=new ArrayList<URI>();
+    current.addAll(previous);
+    current.add(uri);
+    checkAncestorCircularDependency(cs,initialURI,parent,current);
+  }
+}
