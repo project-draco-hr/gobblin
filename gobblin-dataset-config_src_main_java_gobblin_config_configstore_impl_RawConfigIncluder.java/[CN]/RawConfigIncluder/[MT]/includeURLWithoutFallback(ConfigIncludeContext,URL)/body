@@ -1,3 +1,0 @@
-{
-  return ConfigFactory.parseURL(url,context.parseOptions()).root();
-}

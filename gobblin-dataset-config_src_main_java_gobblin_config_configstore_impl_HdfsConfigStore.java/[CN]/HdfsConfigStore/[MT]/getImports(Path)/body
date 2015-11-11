@@ -1,0 +1,32 @@
+{
+  List<String> allImports=Lists.newArrayList();
+  if (!fs.exists(p) || !fs.isFile(p)) {
+    LOG.error("Include file " + p + " does not exist or is not a file.");
+    return allImports;
+  }
+  Closer closer=Closer.create();
+  try {
+    FSDataInputStream fsDataInputStream=closer.register(fs.open(p));
+    InputStreamReader inputStreamReader=closer.register(new InputStreamReader(fsDataInputStream));
+    BufferedReader br=closer.register(new BufferedReader(inputStreamReader));
+    String line=br.readLine();
+    while (line != null) {
+      Path singleImport=new Path(this.currentVersionRoot,line);
+      if (this.fs.isDirectory(singleImport)) {
+        allImports.add(line);
+      }
+ else {
+        LOG.error("Invalid imported for " + line);
+      }
+      line=br.readLine();
+    }
+  }
+ catch (  IOException exception) {
+    LOG.error("Could not find imports at path " + p,exception);
+    return Lists.newArrayList();
+  }
+ finally {
+    closer.close();
+  }
+  return allImports;
+}
