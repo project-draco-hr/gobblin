@@ -1,0 +1,3 @@
+{
+  return isValidTag(uri) || isValidDataset(uri);
+}

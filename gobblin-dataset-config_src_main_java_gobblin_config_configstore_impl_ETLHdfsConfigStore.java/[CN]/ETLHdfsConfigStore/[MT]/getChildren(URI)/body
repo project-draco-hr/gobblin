@@ -1,0 +1,6 @@
+{
+  if (isValidURI(uri)) {
+    return super.getChildren(uri);
+  }
+  return Collections.emptyList();
+}
