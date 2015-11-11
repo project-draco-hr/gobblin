@@ -1,5 +1,10 @@
 {
   LOG.info("Creating compaction jobs for topic " + topic + " with priority "+ priority);
   MRCompactorJobPropCreator jobPropCreator=getJobPropCreator(topic,priority);
-  this.datasets.addAll(jobPropCreator.createJobProps());
+  try {
+    this.datasets.addAll(jobPropCreator.createJobProps());
+  }
+ catch (  Throwable t) {
+    this.datasets.add(jobPropCreator.createFailedJobProps(t));
+  }
 }
