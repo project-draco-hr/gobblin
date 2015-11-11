@@ -1,0 +1,7 @@
+String jobId
+String containerId
+List<WorkUnit> workUnits
+TaskStateTracker taskStateTracker
+TaskExecutor taskExecutor
+StateStore<TaskState> taskStateStore
+Logger logger

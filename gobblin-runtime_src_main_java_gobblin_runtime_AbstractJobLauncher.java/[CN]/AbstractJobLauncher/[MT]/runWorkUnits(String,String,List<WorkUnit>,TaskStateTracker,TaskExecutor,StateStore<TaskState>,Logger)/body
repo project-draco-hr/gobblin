@@ -1,0 +1,38 @@
+{
+  if (workUnits.isEmpty()) {
+    logger.warn("No work units to run in container " + containerId);
+    return;
+  }
+  for (  WorkUnit workUnit : workUnits) {
+    String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
+    if (taskStateStore.exists(jobId,taskId + AbstractJobLauncher.TASK_STATE_STORE_TABLE_SUFFIX)) {
+      taskStateStore.delete(jobId,taskId + AbstractJobLauncher.TASK_STATE_STORE_TABLE_SUFFIX);
+    }
+  }
+  CountDownLatch countDownLatch=new CountDownLatch(workUnits.size());
+  List<Task> tasks=runWorkUnits(jobId,workUnits,taskStateTracker,taskExecutor,countDownLatch);
+  logger.info(String.format("Waiting for submitted tasks of job %s to complete in container %s...",jobId,containerId));
+  while (countDownLatch.getCount() > 0) {
+    logger.info(String.format("%d out of %d tasks of job %s are running in container %s",countDownLatch.getCount(),workUnits.size(),jobId,containerId));
+    if (countDownLatch.await(10,TimeUnit.SECONDS)) {
+      break;
+    }
+  }
+  logger.info(String.format("All assigned tasks of job %s have completed in container %s",jobId,containerId));
+  boolean hasTaskFailure=false;
+  for (  Task task : tasks) {
+    logger.info("Writing task state for task " + task.getTaskId());
+    taskStateStore.put(task.getJobId(),task.getTaskId() + AbstractJobLauncher.TASK_STATE_STORE_TABLE_SUFFIX,task.getTaskState());
+    if (task.getTaskState().getWorkingState() == WorkUnitState.WorkingState.FAILED) {
+      hasTaskFailure=true;
+    }
+  }
+  if (hasTaskFailure) {
+    for (    Task task : tasks) {
+      if (task.getTaskState().contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+        logger.error(String.format("Task %s failed due to exception: %s",task.getTaskId(),task.getTaskState().getProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)));
+      }
+    }
+    throw new IOException(String.format("Not all tasks running in container %s completed successfully",containerId));
+  }
+}

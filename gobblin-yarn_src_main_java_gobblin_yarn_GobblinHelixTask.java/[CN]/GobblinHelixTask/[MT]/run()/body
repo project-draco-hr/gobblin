@@ -15,13 +15,10 @@
       workUnit.addAllIfNotExist(this.jobState);
       workUnits.add(workUnit);
     }
-    runWorkUnits(workUnits);
+    AbstractJobLauncher.runWorkUnits(this.jobId,this.participantId,workUnits,this.taskStateTracker,this.taskExecutor,this.taskStateStore,LOGGER);
     return new TaskResult(TaskResult.Status.COMPLETED,String.format("completed tasks: %d",workUnits.size()));
   }
- catch (  IOException ioe) {
-    return new TaskResult(TaskResult.Status.ERROR,Throwables.getStackTraceAsString(ioe));
-  }
-catch (  InterruptedException ie) {
+ catch (  InterruptedException ie) {
     Thread.currentThread().interrupt();
     return new TaskResult(TaskResult.Status.CANCELED,"");
   }
