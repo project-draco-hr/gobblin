@@ -1,8 +1,0 @@
-{
-  ConfigStoreFactoryUsingProperty csf=new ConfigStoreFactoryUsingProperty("/Users/mitu/CircularDependencyTest/stores.conf");
-  Collection<String> schemes=csf.getConfigStoreSchemes();
-  Assert.assertEquals(schemes.size(),2);
-  Iterator<String> it=schemes.iterator();
-  Assert.assertEquals(it.next(),"DAI-ETL");
-  Assert.assertEquals(it.next(),"DALI");
-}

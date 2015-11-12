@@ -1,6 +1,0 @@
-{
-  if (isValidURI(uri)) {
-    return super.getParent(uri);
-  }
-  return null;
-}

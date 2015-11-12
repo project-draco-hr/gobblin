@@ -1,4 +1,0 @@
-{
-  Map<URI,Collection<URI>> result=new HashMap<URI,Collection<URI>>();
-  return result;
-}

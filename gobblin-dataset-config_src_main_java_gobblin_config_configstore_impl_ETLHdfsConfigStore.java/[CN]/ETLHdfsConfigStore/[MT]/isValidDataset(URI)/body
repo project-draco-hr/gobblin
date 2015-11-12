@@ -1,5 +1,0 @@
-{
-  if (uri == null)   return false;
-  if (uri.toString().equals(DATASET_PREFIX) || uri.toString().startsWith(DATASET_PREFIX + ID_DELEMETER))   return true;
-  return false;
-}

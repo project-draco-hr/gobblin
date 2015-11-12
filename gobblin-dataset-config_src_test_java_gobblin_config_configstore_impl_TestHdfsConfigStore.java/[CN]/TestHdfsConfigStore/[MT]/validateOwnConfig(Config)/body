@@ -1,8 +1,0 @@
-{
-  Assert.assertEquals(c.getString("t1.t2.keyInT2"),"valueInT2");
-  Assert.assertEquals(c.getInt("foobar.a"),42);
-  Assert.assertEquals(c.getString("propKey1"),"propKey2");
-  Assert.assertEquals(c.getString("t1.t2.t3.keyInT3"),"valueInT3");
-  Assert.assertEquals(c.getList("listExample").size(),1);
-  Assert.assertEquals(c.getList("listExample").get(0).unwrapped(),"element in a3");
-}

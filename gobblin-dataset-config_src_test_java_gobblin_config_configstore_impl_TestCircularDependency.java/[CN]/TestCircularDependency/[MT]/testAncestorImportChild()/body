@@ -1,6 +1,0 @@
-{
-  ETLHdfsConfigStore circularStore=new ETLHdfsConfigStore("ancestorImportChild","file:///Users/mitu/CircularDependencyTest/ancestorImportChild");
-  Assert.assertEquals(circularStore.getCurrentVersion(),"v1.0");
-  URI circularNode=new URI("tags/t_a_1/t_a_2/t_a_3");
-  CircularDependencyChecker.checkCircularDependency(circularStore,circularNode);
-}

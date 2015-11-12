@@ -1,4 +1,0 @@
-ConfigStore cs
-URI initialURI
-URI uri
-List<URI> previous

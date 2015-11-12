@@ -1,4 +1,0 @@
-{
-  if (!this.stores.containsKey(scheme))   return null;
-  return new ETLHdfsConfigStore(scheme,this.stores.get(scheme));
-}

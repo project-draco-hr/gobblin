@@ -1,4 +1,0 @@
-{
-  Path newPath=path.isAbsolute() ? new Path(null,null,path.toUri().getPath()) : path;
-  return newPath;
-}

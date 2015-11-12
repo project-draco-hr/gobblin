@@ -1,6 +1,0 @@
-{
-  Assert.assertEquals(c.getString("keyInT3"),"valueInT3_atA2level");
-  Assert.assertEquals(c.getInt("foobar.b"),43);
-  Assert.assertEquals(c.getString("keyInT1_T2_T3"),"valueInT1_T2_T3");
-  Assert.assertEquals(c.getString("keyInL1_L2"),"valueInL1_L2");
-}

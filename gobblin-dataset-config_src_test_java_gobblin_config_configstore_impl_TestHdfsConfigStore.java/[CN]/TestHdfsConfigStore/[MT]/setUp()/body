@@ -1,5 +1,0 @@
-{
-  VersionComparator<String> vc=new SimpleVersionComparator();
-  store=new ETLHdfsConfigStore("ETL_Local","file:///Users/mitu/HdfsBasedConfigTest",vc);
-  Assert.assertEquals(store.getCurrentVersion(),"v3.0");
-}

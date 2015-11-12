@@ -1,4 +1,0 @@
-{
-  checkAncestorCircularDependency(cs,uri,uri,new ArrayList<URI>());
-  checkImportCircularDependency(cs,uri,uri,new ArrayList<URI>());
-}
