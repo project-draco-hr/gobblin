@@ -11,7 +11,7 @@
   List<String> columnListExcluded=ImmutableList.<String>of();
   if (Strings.isNullOrEmpty(inputQuery) && !Strings.isNullOrEmpty(excludedColumns)) {
     Splitter splitter=Splitter.on(",").omitEmptyStrings().trimResults();
-    columnListExcluded=splitter.splitToList(excludedColumns);
+    columnListExcluded=splitter.splitToList(excludedColumns.toLowerCase());
   }
   try {
     boolean success=this.getConnection();
