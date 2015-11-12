@@ -2,18 +2,20 @@
   for (  RowLevelPolicy p : this.list) {
     RowLevelPolicy.Result result=p.executePolicy(record);
     results.put(p,result);
-    if (p.getType().equals(RowLevelPolicy.Type.FAIL) && result.equals(RowLevelPolicy.Result.FAILED)) {
-      throw new RuntimeException("RowLevelPolicy " + p + " failed on record "+ record);
-    }
-    if (p.getType().equals(RowLevelPolicy.Type.ERR_FILE)) {
-      if (!errFileOpen) {
-        this.writer.open(new Path(p.getErrFileLocation(),p.toString().replaceAll("\\.","-") + ".err"));
-        this.writer.write(record);
+    if (result.equals(RowLevelPolicy.Result.FAILED)) {
+      if (p.getType().equals(RowLevelPolicy.Type.FAIL)) {
+        throw new RuntimeException("RowLevelPolicy " + p + " failed on record "+ record);
       }
+ else       if (p.getType().equals(RowLevelPolicy.Type.ERR_FILE)) {
+        if (!errFileOpen) {
+          this.writer.open(new Path(p.getErrFileLocation(),p.toString().replaceAll("\\.","-") + ".err"));
+          this.writer.write(record);
+        }
  else {
-        this.writer.write(record);
+          this.writer.write(record);
+        }
+        errFileOpen=true;
       }
-      errFileOpen=true;
       return false;
     }
   }
