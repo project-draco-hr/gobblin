@@ -1,0 +1,9 @@
+{
+  ConfigStoreFactoryUsingProperty csf=new ConfigStoreFactoryUsingProperty("/Users/mitu/CircularDependencyTest/stores.conf");
+  Collection<String> schemes=csf.getConfigStoreSchemes();
+  ConfigStore cs1=csf.getConfigStore(schemes.iterator().next());
+  ConfigClient client=new SimpleConfigClient();
+  Config c=client.getConfig(cs1,new URI(dataset));
+  validateOwnConfig(c);
+  validateOtherConfig(c);
+}
