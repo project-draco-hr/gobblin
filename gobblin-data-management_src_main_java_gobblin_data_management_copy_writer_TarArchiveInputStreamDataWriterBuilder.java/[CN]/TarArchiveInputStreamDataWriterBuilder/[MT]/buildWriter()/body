@@ -1,0 +1,3 @@
+{
+  return new TarArchiveInputStreamDataWriter(this.destination.getProperties(),this.branches,this.branch);
+}

@@ -1,0 +1,24 @@
+{
+  FSDataInputStream privateKeyStream=null;
+  try {
+    FileSystem fs;
+    fs=FileSystem.get(new Configuration());
+    privateKeyStream=fs.open(new Path(privateKey));
+    byte[] bytes=IOUtils.toByteArray(privateKeyStream);
+    jsch.addIdentity("sftpIdentityKey",bytes,(byte[])null,(byte[])null);
+    log.info("Successfully set identity using HDFS file");
+    return true;
+  }
+ catch (  Exception e) {
+    log.warn("Failed to set identity using HDFS file. Will attempt next strategy. " + e.getMessage());
+  }
+ finally {
+    try {
+      privateKeyStream.close();
+    }
+ catch (    IOException e) {
+      log.error("Failed to close input stream",e);
+    }
+  }
+  return false;
+}

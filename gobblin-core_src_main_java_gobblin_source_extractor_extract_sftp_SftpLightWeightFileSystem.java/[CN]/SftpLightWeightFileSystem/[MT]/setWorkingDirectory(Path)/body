@@ -2,7 +2,7 @@
   ChannelSftp channelSftp=null;
   try {
     channelSftp=fsHelper.getSftpChannel();
-    channelSftp.lcd(path.toString());
+    channelSftp.lcd(HadoopUtils.toUriPath(path));
   }
  catch (  SftpException e) {
     throw new RuntimeException("Failed to set working directory",e);

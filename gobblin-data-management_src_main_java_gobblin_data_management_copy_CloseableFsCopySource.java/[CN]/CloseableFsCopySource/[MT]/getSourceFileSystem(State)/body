@@ -1,0 +1,3 @@
+{
+  return closer.register(super.getSourceFileSystem(state));
+}

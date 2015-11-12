@@ -2,5 +2,7 @@
   this.op=op;
   this.src=src;
   this.dest=dest;
-  log.info("Operation GET (" + op + ") has started with src: "+ src+ " dest: "+ dest+ " and file length: "+ max);
+  this.startime=System.currentTimeMillis();
+  this.logFrequency=0L;
+  log.info("Operation GET (" + op + ") has started with src: "+ src+ " dest: "+ dest+ " and file length: "+ (max / 1000000L)+ " mb");
 }

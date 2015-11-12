@@ -3,10 +3,10 @@
   try {
     channel=fsHelper.getSftpChannel();
     if (getFileStatus(path).isDir()) {
-      channel.rmdir(path.toString());
+      channel.rmdir(HadoopUtils.toUriPath(path));
     }
  else {
-      channel.rm(path.toString());
+      channel.rm(HadoopUtils.toUriPath(path));
     }
   }
  catch (  SftpException e) {

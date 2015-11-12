@@ -3,5 +3,6 @@
   Configuration conf=new Configuration();
   String uri=this.state.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,ConfigurationKeys.LOCAL_FS_URI);
   this.fs=FileSystem.get(URI.create(uri),conf);
+  FileAwareInputStreamDataWriterBuilder.setJobSpecificOutputPaths(state);
   this.writerOutputDir=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
 }

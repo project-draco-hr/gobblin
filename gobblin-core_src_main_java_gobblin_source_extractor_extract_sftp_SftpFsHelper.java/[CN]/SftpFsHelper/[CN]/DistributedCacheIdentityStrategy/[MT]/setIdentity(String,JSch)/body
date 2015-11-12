@@ -1,0 +1,3 @@
+{
+  return super.setIdentity(new File(privateKey).getName(),jsch);
+}
