@@ -1,0 +1,6 @@
+{
+  if (cs instanceof ConfigStoreWithResolution) {
+    return ((ConfigStoreWithResolution)cs).getResolvedImports(uri);
+  }
+  return cs.getOwnImports(uri);
+}
