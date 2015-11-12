@@ -1,0 +1,14 @@
+{
+  this.propertyLocation=propertyLocation;
+  Config c=ConfigFactory.parseFile(new File(this.propertyLocation));
+  List<? extends Object> l=c.getAnyRefList(STORES);
+  for (  Object o : l) {
+    if (o instanceof Map) {
+      Map<String,String> m=(Map<String,String>)o;
+      this.stores.put(m.get(SCHEME_NAME),m.get(LOCATION));
+    }
+ else {
+      throw new RuntimeException("Invalid type " + o.getClass());
+    }
+  }
+}

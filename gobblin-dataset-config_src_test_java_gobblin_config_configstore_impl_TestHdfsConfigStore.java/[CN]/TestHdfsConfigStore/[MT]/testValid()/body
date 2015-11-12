@@ -54,4 +54,10 @@
   it=resolvedImport.iterator();
   Assert.assertEquals(it.next().toString(),"tags/t1/t2/t3");
   Assert.assertEquals(it.next().toString(),"tags/l1/l2");
+  ConfigStoreFactoryUsingProperty csf=new ConfigStoreFactoryUsingProperty("/Users/mitu/CircularDependencyTest/stores.conf");
+  Collection<String> schemes=csf.getConfigStoreSchemes();
+  ConfigStore cs1=csf.getConfigStore(schemes.iterator().next());
+  ConfigClient client=new SimpleConfigClient();
+  c=client.getConfig(cs1,new URI(dataset));
+  printConfig(c,"from config client ");
 }
