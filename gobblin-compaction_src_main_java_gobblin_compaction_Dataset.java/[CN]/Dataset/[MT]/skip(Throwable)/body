@@ -1,0 +1,4 @@
+{
+  this.setState(DatasetState.COMPACTION_COMPLETE);
+  this.throwables.add(t);
+}

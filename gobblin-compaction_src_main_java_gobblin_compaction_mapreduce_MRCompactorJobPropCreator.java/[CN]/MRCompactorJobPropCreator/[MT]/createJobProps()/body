@@ -3,7 +3,7 @@
     LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ this.topic);
     return ImmutableList.<Dataset>of();
   }
-  Dataset dataset=new Dataset.Builder().withTopic(this.topic).withPriority(this.priority).withInputPath(this.recompactFromOutputPaths ? this.topicOutputDir : this.topicInputDir).withInputLatePath(this.recompactFromOutputPaths ? this.topicOutputLateDir : this.topicInputLateDir).withOutputPath(this.topicOutputDir).withOutputLatePath(this.topicOutputLateDir).withOutputTmpPath(this.topicTmpOutputDir).build();
+  Dataset dataset=buildDataset();
   Optional<Dataset> datasetWithJobProps=createJobProps(dataset);
   if (datasetWithJobProps.isPresent()) {
     return ImmutableList.<Dataset>of(datasetWithJobProps.get());
