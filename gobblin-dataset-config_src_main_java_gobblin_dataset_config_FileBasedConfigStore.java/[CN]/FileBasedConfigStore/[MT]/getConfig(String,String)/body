@@ -1,5 +1,0 @@
-{
-  initialCheck(version);
-  Map<String,Object> raw=this.rawConfigs.getResolvedProperty(urn);
-  return ConfigFactory.parseMap(raw);
-}

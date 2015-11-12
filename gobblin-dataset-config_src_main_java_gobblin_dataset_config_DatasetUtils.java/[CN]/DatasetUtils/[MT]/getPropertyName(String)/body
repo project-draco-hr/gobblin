@@ -1,9 +1,0 @@
-{
-  if (urn == null)   return null;
-  int index=urn.lastIndexOf(ID_DELEMETER);
-  if (index < 0)   return urn;
-  if (index == urn.length() - 1) {
-    throw new IllegalArgumentException("Wrong format: " + urn);
-  }
-  return urn.substring(index + 1);
-}

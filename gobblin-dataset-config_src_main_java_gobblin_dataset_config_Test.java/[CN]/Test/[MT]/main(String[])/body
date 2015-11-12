@@ -1,6 +1,0 @@
-{
-  String fileName="/Users/mitu/main.conf";
-  Config c=ConfigFactory.parseFile(new File(fileName));
-  printConfig(c,"test ");
-  System.out.println("----------------");
-}

@@ -1,6 +1,0 @@
-{
-  if (urn.equals(DatasetUtils.ROOT)) {
-    return Collections.emptyList();
-  }
-  return this.getAssociatedTagsWithCheck(urn,new HashSet<String>());
-}

@@ -1,5 +1,0 @@
-{
-  if (urn == null)   return false;
-  if (urn.equals(TAGS_PREFIX) || urn.startsWith(TAGS_PREFIX + ID_DELEMETER))   return true;
-  return false;
-}

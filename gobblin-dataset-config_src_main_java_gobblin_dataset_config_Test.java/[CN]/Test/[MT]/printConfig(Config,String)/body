@@ -1,8 +1,0 @@
-{
-  if (!debug)   return;
-  System.out.println("-----------------------------------");
-  System.out.println("Config for " + urn);
-  for (  Map.Entry<String,ConfigValue> entry : c.entrySet()) {
-    System.out.println("app key: " + entry.getKey() + " ,value:"+ entry.getValue());
-  }
-}

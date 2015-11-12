@@ -1,5 +1,0 @@
-{
-  String traceId=UUID.randomUUID().toString();
-  LOG.info(String.format("Getting resolved property for Urn: %s using trace id: %s",urn,traceId));
-  return this.getResolvedProperty(urn,traceId);
-}

@@ -1,3 +1,0 @@
-{
-  loadConfigs(this.getLatestVersion());
-}

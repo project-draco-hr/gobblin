@@ -1,3 +1,0 @@
-{
-  return configStore.getConfig(urn,configVersion);
-}

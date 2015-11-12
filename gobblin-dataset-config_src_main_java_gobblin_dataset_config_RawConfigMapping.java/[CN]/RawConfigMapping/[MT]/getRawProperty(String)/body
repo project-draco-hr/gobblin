@@ -1,3 +1,0 @@
-{
-  return this.getRawProperty(urn,UUID.randomUUID().toString());
-}

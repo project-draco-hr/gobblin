@@ -1,4 +1,0 @@
-{
-  initialCheck(version);
-  return this.rawConfigs.getTaggedConfig(urn);
-}

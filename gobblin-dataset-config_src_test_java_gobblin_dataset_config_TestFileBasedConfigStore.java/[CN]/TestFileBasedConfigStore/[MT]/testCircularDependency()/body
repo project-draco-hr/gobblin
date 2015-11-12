@@ -1,7 +1,0 @@
-{
-  URL url=getClass().getResource("/filebasedConfig/");
-  FileBasedConfigStore csbad=new FileBasedConfigStore(new File(url.getFile()),"test");
-  csbad.loadConfigs("v1.0.1");
-  String urn="config-ds.a1.a2.a3";
-  csbad.getConfig(urn);
-}

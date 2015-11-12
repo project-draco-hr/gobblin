@@ -1,4 +1,0 @@
-{
-  this.configStore=store;
-  this.configVersion=version;
-}
