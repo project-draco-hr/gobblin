@@ -1,0 +1,17 @@
+{
+  if (!file.isDir()) {
+    return ownerAndPermission;
+  }
+  FsAction newOwnerAction=ownerAndPermission.getFsPermission().getUserAction();
+  if (ownerAndPermission.getFsPermission().getUserAction() == FsAction.READ) {
+    newOwnerAction=FsAction.READ_EXECUTE;
+  }
+ else   if (ownerAndPermission.getFsPermission().getUserAction() == FsAction.WRITE) {
+    newOwnerAction=FsAction.WRITE_EXECUTE;
+  }
+ else   if (ownerAndPermission.getFsPermission().getUserAction() == FsAction.READ_WRITE) {
+    newOwnerAction=FsAction.ALL;
+  }
+  FsPermission withExecute=new FsPermission(newOwnerAction,ownerAndPermission.getFsPermission().getGroupAction(),ownerAndPermission.getFsPermission().getOtherAction());
+  return new OwnerAndPermission(ownerAndPermission.getOwner(),ownerAndPermission.getGroup(),withExecute);
+}
