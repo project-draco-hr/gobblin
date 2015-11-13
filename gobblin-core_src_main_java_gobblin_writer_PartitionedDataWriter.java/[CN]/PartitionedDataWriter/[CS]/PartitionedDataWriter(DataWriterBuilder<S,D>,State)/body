@@ -1,4 +1,5 @@
 {
+  this.baseWriterId=builder.getWriterId();
   this.closer=Closer.create();
   this.partitionWriters=CacheBuilder.newBuilder().build(new CacheLoader<GenericRecord,DataWriter<D>>(){
     @Override public DataWriter<D> load(    final GenericRecord key) throws Exception {
