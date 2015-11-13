@@ -1,3 +1,3 @@
 {
-  return ImmutableMap.copyOf(this.children.asMap());
+  return this.innerMetricContext.getChildContextsAsMap();
 }

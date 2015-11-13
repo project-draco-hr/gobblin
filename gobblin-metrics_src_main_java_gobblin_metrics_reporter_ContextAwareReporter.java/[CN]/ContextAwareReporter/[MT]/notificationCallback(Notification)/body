@@ -1,0 +1,8 @@
+{
+  if (notification instanceof MetricContextCleanupNotification) {
+    removedMetricContext(((MetricContextCleanupNotification)notification).getMetricContext());
+  }
+  if (notification instanceof NewMetricContextNotification) {
+    newMetricContext(((NewMetricContextNotification)notification).getMetricContext());
+  }
+}

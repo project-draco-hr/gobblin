@@ -1,8 +1,0 @@
-{
-  if (args.length != 3) {
-    usage();
-    System.exit(1);
-  }
-  GraphiteReporterExample graphiteReporterExample=new GraphiteReporterExample(Integer.parseInt(args[0]),Long.parseLong(args[1]),args[2]);
-  graphiteReporterExample.run();
-}

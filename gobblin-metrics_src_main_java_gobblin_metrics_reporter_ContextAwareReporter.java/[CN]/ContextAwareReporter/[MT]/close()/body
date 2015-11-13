@@ -1,0 +1,4 @@
+{
+  RootMetricContext.get().removeNotificationTarget(this.notificationTargetUUID);
+  RootMetricContext.get().removeReporter(this);
+}

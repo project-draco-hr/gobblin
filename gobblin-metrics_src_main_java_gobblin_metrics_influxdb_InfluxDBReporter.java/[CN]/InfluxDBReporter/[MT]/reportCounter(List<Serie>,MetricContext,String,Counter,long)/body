@@ -1,3 +1,0 @@
-{
-  series.add(buildSerie(context,name,Optional.of(Measurements.COUNT),timeStamp,counter.getCount()));
-}

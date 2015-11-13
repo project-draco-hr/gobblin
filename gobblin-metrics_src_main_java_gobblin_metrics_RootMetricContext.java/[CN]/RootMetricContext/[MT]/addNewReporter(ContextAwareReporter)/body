@@ -1,0 +1,6 @@
+{
+  this.reporters.add(this.closer.register(reporter));
+  if (this.reportingStarted) {
+    reporter.start();
+  }
+}

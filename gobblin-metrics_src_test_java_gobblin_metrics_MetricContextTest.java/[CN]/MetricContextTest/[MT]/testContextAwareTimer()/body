@@ -1,14 +1,8 @@
 {
   ContextAwareTimer jobTotalDuration=this.context.contextAwareTimer(TOTAL_DURATION);
-  Assert.assertEquals(this.context.getTimers().get(MetricRegistry.name(this.context.metricNamePrefix(false),jobTotalDuration.getName())),jobTotalDuration);
+  Assert.assertEquals(this.context.getTimers().get(jobTotalDuration.getName()),jobTotalDuration.getInnerMetric());
   Assert.assertEquals(jobTotalDuration.getContext(),this.context);
   Assert.assertEquals(jobTotalDuration.getName(),TOTAL_DURATION);
-  Assert.assertTrue(jobTotalDuration.getTags().isEmpty());
-  jobTotalDuration.addTag(new Tag<String>(METRIC_GROUP_KEY,INPUT_RECORDS_GROUP));
-  Assert.assertEquals(jobTotalDuration.getTags().size(),1);
-  Assert.assertEquals(jobTotalDuration.getTags().get(0).getKey(),METRIC_GROUP_KEY);
-  Assert.assertEquals(jobTotalDuration.getTags().get(0).getValue(),INPUT_RECORDS_GROUP);
-  Assert.assertEquals(jobTotalDuration.getFullyQualifiedName(false),MetricRegistry.name(INPUT_RECORDS_GROUP,TOTAL_DURATION));
   jobTotalDuration.update(50,TimeUnit.SECONDS);
   jobTotalDuration.update(100,TimeUnit.SECONDS);
   jobTotalDuration.update(150,TimeUnit.SECONDS);

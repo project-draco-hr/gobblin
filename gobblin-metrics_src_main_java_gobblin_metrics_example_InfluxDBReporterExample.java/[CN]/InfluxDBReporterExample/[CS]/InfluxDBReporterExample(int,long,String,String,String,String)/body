@@ -1,3 +1,0 @@
-{
-  super(InfluxDBReporter.builder().useUrl(url).useUsername(user).userPassword(password).writeTo(database),tasks,totalRecords);
-}

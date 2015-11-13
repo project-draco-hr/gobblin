@@ -1,0 +1,6 @@
+{
+  if (this.predicate.apply(input)) {
+    this.notificationList.add(input);
+  }
+  return null;
+}

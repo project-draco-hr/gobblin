@@ -1,0 +1,11 @@
+{
+  this.name=name;
+  Optional<MetricContext> parentContext=context.getParent();
+  if (parentContext.isPresent()) {
+    this.parentMeter=Optional.fromNullable(parentContext.get().contextAwareMeter(name));
+  }
+ else {
+    this.parentMeter=Optional.absent();
+  }
+  this.contextAwareMeter=new WeakReference<ContextAwareMeter>(contextAwareMeter);
+}

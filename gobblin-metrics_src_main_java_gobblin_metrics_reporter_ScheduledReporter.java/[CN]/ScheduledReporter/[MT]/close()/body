@@ -1,0 +1,16 @@
+{
+  this.executor.shutdown();
+  try {
+    if (!this.executor.awaitTermination(10,TimeUnit.SECONDS)) {
+      this.executor.shutdownNow();
+      if (!this.executor.awaitTermination(10,TimeUnit.SECONDS)) {
+        System.err.println(getClass().getSimpleName() + ": ScheduledExecutorService did not terminate");
+      }
+    }
+  }
+ catch (  InterruptedException ie) {
+    this.executor.shutdownNow();
+    Thread.currentThread().interrupt();
+  }
+  super.close();
+}

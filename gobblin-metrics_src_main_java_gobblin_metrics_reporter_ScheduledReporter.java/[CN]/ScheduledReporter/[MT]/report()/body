@@ -1,0 +1,5 @@
+{
+  for (  ReportableContext metricContext : getMetricContextsToReport()) {
+    report(metricContext);
+  }
+}

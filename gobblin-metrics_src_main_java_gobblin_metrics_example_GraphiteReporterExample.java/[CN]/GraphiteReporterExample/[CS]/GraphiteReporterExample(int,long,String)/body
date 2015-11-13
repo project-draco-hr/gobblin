@@ -1,3 +1,0 @@
-{
-  super(GraphiteReporter.builder(new Graphite(new InetSocketAddress(host,2003))),tasks,totalRecords);
-}

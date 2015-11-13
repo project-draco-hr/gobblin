@@ -4,7 +4,6 @@
   Timer recordProcessTimeTimer=this.context.contextAwareTimer(RECORD_PROCESS_TIME);
   Histogram recordSizesHistogram=this.context.contextAwareHistogram(RECORD_SIZES);
   try {
-    this.context.startMetricReporting(1,TimeUnit.SECONDS);
     for (int i=0; i < this.totalRecords; i++) {
       totalRecordsCounter.inc();
       recordProcessRateMeter.mark();

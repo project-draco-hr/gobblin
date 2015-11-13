@@ -1,0 +1,8 @@
+{
+  int maxTries=10;
+  while (maxTries > 0 && weakReference.get() != null) {
+    System.gc();
+    maxTries--;
+  }
+  Assert.assertNull(weakReference.get());
+}

@@ -1,3 +1,14 @@
 {
-  return new MetricContext(this.name,this.parent,this.tags,this.contextAwareReporterBuilders,this.reportFullyQualifiedNames,this.includeTagKeys);
+  try {
+    return buildStrict();
+  }
+ catch (  NameConflictException nce) {
+    this.name=this.name + "_" + UUID.randomUUID().toString();
+    try {
+      return buildStrict();
+    }
+ catch (    NameConflictException nce2) {
+      throw Throwables.propagate(nce2);
+    }
+  }
 }

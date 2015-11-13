@@ -1,4 +1,0 @@
-{
-  this.influxDB=new TestInfluxDB(URL,USER,PASSWORD);
-  this.influxDBReporter=new InfluxDBReporter(MetricContext.builder(CONTEXT_NAME).build(),InfluxDBReporter.class.getSimpleName(),MetricFilter.ALL,TimeUnit.SECONDS,TimeUnit.MILLISECONDS,this.influxDB,DATABASE,TimeUnit.MILLISECONDS);
-}

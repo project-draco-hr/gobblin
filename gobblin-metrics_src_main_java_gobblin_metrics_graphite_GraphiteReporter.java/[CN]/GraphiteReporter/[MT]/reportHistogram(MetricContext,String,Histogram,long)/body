@@ -1,4 +1,0 @@
-{
-  this.graphiteSender.send(MetricRegistry.name(context.getName(),name,Measurements.COUNT.getName()),Long.toString(histogram.getCount()),timeStamp);
-  reportSnapshot(context,name,histogram.getSnapshot(),timeStamp,false);
-}

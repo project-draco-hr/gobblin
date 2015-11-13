@@ -1,0 +1,8 @@
+{
+  return Sets.newHashSet(Iterables.transform(reporter.getContextsToReport(),new Function<ReportableContext,String>(){
+    @Nullable @Override public String apply(    ReportableContext input){
+      return input.getName();
+    }
+  }
+));
+}

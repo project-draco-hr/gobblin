@@ -1,0 +1,11 @@
+{
+  this.name=name;
+  Optional<MetricContext> parentContext=context.getParent();
+  if (parentContext.isPresent()) {
+    this.parentTimer=Optional.fromNullable(parentContext.get().contextAwareTimer(name));
+  }
+ else {
+    this.parentTimer=Optional.absent();
+  }
+  this.timer=new WeakReference<ContextAwareTimer>(contextAwareTimer);
+}

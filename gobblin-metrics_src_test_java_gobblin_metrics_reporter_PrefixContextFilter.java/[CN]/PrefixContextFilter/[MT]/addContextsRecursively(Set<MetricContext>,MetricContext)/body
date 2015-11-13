@@ -1,0 +1,8 @@
+{
+  if (matches(context)) {
+    matchingContexts.add(context);
+  }
+  for (  MetricContext context1 : context.getChildContextsAsMap().values()) {
+    addContextsRecursively(matchingContexts,context1);
+  }
+}

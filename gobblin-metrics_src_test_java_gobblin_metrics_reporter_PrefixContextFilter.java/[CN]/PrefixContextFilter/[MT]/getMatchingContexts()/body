@@ -1,0 +1,5 @@
+{
+  Set<MetricContext> contexts=Sets.newHashSet();
+  addContextsRecursively(contexts,RootMetricContext.get());
+  return ImmutableSet.copyOf(contexts);
+}

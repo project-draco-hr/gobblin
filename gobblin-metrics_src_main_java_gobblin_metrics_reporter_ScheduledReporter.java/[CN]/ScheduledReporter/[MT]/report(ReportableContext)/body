@@ -1,0 +1,3 @@
+{
+  report(context.getGauges(MetricFilter.ALL),context.getCounters(MetricFilter.ALL),context.getHistograms(MetricFilter.ALL),context.getMeters(MetricFilter.ALL),context.getTimers(MetricFilter.ALL),context.getTagMap());
+}

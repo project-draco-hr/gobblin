@@ -1,0 +1,5 @@
+{
+  if (this.contextFilter.matches(context)) {
+    this.contextsToReport.add(context.getInnerMetricContext());
+  }
+}

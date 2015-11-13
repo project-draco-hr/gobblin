@@ -1,0 +1,3 @@
+{
+  return ImmutableMap.<String,com.codahale.metrics.Metric>copyOf(this.contextAwareMetrics);
+}

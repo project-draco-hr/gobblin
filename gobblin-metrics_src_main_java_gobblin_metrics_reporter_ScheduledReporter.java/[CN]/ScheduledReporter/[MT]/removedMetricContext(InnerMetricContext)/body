@@ -1,0 +1,6 @@
+{
+  if (shouldReportInnerMetricContext(context)) {
+    report(context);
+  }
+  super.removedMetricContext(context);
+}

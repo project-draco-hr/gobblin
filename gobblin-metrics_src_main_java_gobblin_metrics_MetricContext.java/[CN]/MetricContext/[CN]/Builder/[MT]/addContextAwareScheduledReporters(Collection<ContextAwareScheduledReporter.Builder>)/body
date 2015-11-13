@@ -1,6 +1,0 @@
-{
-  for (  ContextAwareScheduledReporter.Builder builder : builders) {
-    addContextAwareScheduledReporter(builder);
-  }
-  return this;
-}

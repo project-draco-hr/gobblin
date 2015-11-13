@@ -1,7 +1,0 @@
-{
-  series.add(buildSerie(context,name,Optional.of(Measurements.COUNT),timeStamp,metered.getCount()));
-  series.add(buildSerie(context,name,Optional.of(Measurements.MEAN_RATE),timeStamp,convertRate(metered.getMeanRate())));
-  series.add(buildSerie(context,name,Optional.of(Measurements.RATE_1MIN),timeStamp,convertRate(metered.getOneMinuteRate())));
-  series.add(buildSerie(context,name,Optional.of(Measurements.RATE_5MIN),timeStamp,convertRate(metered.getFiveMinuteRate())));
-  series.add(buildSerie(context,name,Optional.of(Measurements.RATE_15MIN),timeStamp,convertRate(metered.getFifteenMinuteRate())));
-}
