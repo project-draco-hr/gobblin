@@ -3,15 +3,19 @@
     return ownerAndPermission;
   }
   FsAction newOwnerAction=ownerAndPermission.getFsPermission().getUserAction();
-  if (ownerAndPermission.getFsPermission().getUserAction() == FsAction.READ) {
+switch (ownerAndPermission.getFsPermission().getUserAction()) {
+case READ:
     newOwnerAction=FsAction.READ_EXECUTE;
-  }
- else   if (ownerAndPermission.getFsPermission().getUserAction() == FsAction.WRITE) {
-    newOwnerAction=FsAction.WRITE_EXECUTE;
-  }
- else   if (ownerAndPermission.getFsPermission().getUserAction() == FsAction.READ_WRITE) {
-    newOwnerAction=FsAction.ALL;
-  }
-  FsPermission withExecute=new FsPermission(newOwnerAction,ownerAndPermission.getFsPermission().getGroupAction(),ownerAndPermission.getFsPermission().getOtherAction());
-  return new OwnerAndPermission(ownerAndPermission.getOwner(),ownerAndPermission.getGroup(),withExecute);
+  break;
+case WRITE:
+newOwnerAction=FsAction.WRITE_EXECUTE;
+break;
+case READ_WRITE:
+newOwnerAction=FsAction.ALL;
+break;
+default :
+break;
+}
+FsPermission withExecute=new FsPermission(newOwnerAction,ownerAndPermission.getFsPermission().getGroupAction(),ownerAndPermission.getFsPermission().getOtherAction());
+return new OwnerAndPermission(ownerAndPermission.getOwner(),ownerAndPermission.getGroup(),withExecute);
 }
