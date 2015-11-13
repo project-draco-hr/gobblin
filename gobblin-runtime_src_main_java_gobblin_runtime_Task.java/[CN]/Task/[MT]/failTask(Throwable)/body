@@ -1,5 +1,5 @@
 {
   LOG.error(String.format("Task %s failed",this.taskId),t);
   this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
-  this.taskState.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,ExceptionUtils.getStackTrace(t));
+  this.taskState.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,Throwables.getStackTraceAsString(t));
 }
