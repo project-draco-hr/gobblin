@@ -1,5 +1,6 @@
 {
   this.properties=properties;
+  this.id=builder.getWriterId();
   this.numBranches=builder.getBranches();
   this.branchId=builder.getBranch();
   this.fileName=builder.getFileName(properties);

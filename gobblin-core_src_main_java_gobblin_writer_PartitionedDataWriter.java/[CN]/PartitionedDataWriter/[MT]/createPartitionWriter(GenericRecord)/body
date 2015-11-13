@@ -2,5 +2,5 @@
   if (!this.builder.isPresent()) {
     throw new IOException("Writer builder not found. This is an error in the code.");
   }
-  return this.builder.get().forPartition(partition).build();
+  return this.builder.get().forPartition(partition).withWriterId(this.baseWriterId + "_" + this.writerIdSuffix++).build();
 }
