@@ -2,7 +2,7 @@
   if (file.getAncestorsOwnerAndPermission() == null) {
     return;
   }
-  Path parentPath=file.getDestination().getParent();
+  Path parentPath=getStagingFilePath(file).getParent();
   for (  OwnerAndPermission ownerAndPermission : file.getAncestorsOwnerAndPermission()) {
     if (parentPath == null) {
       log.info("Ancestor owner and permission may not be set correctly. Exhausted parent paths before ancestor permissions");
