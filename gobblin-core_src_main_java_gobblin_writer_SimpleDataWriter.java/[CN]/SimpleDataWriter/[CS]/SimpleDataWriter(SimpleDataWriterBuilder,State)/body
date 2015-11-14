@@ -11,4 +11,5 @@
   this.recordsWritten=0;
   this.bytesWritten=0;
   this.stagingFileOutputStream=createStagingFileOutputStream();
+  setStagingFileGroup();
 }
