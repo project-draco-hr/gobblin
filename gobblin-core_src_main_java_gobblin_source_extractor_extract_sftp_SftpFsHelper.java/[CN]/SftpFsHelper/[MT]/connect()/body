@@ -18,7 +18,7 @@
     }
     session=jsch.getSession(userName,hostName,port);
     session.setConfig("PreferredAuthentications","publickey");
-    if (knownHosts == null) {
+    if (Strings.isNullOrEmpty(knownHosts)) {
       log.info("Known hosts path is not set, StrictHostKeyChecking will be turned off");
       session.setConfig("StrictHostKeyChecking","no");
     }
