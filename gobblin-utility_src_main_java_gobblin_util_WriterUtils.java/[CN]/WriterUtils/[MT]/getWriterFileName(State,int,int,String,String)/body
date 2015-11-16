@@ -1,3 +1,4 @@
 {
-  return state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_NAME,numBranches,branchId),String.format("%s.%s.%s",ConfigurationKeys.DEFAULT_WRITER_FILE_BASE_NAME,writerId,formatExtension));
+  String defaultFileName=Strings.isNullOrEmpty(formatExtension) ? String.format("%s.%s",ConfigurationKeys.DEFAULT_WRITER_FILE_BASE_NAME,writerId) : String.format("%s.%s.%s",ConfigurationKeys.DEFAULT_WRITER_FILE_BASE_NAME,writerId,formatExtension);
+  return state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_NAME,numBranches,branchId),defaultFileName);
 }
