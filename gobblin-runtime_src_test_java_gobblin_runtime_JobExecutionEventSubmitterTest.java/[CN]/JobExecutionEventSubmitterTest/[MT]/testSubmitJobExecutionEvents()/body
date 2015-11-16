@@ -1,0 +1,11 @@
+{
+  JobState mockJobState=mock(JobState.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockJobState.getState()).thenReturn(JobState.RunningState.SUCCESSFUL);
+  when(mockJobState.getLauncherType()).thenReturn(LauncherTypeEnum.$UNKNOWN);
+  when(mockJobState.getTrackingURL()).thenReturn(Optional.<String>absent());
+  TaskState mockTaskState1=createMockTaskState();
+  TaskState mockTaskState2=createMockTaskState();
+  when(mockJobState.getTaskStates()).thenReturn(Lists.newArrayList(mockTaskState1,mockTaskState2));
+  this.jobExecutionEventSubmitter.submitJobExecutionEvents(mockJobState);
+  verify(this.mockEventSubmitter,atLeastOnce()).submit(any(String.class),any(Map.class));
+}
