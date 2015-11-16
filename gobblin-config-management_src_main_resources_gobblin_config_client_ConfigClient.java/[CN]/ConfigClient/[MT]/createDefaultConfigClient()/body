@@ -1,0 +1,3 @@
+{
+  return createConfigClientWithStableVersion(VERSION_STABILITY_POLICY.CACHE_CONFIG_IN_MEMORY);
+}

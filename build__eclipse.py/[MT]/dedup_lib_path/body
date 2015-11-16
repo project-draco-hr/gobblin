@@ -1,0 +1,20 @@
+def dedup_lib_path(lib_path_dict):
+    to_be_del_keys = []
+    lib_path_dict_dedup = {}
+    for key in lib_path_dict:
+        m = re.search(' path="(.*)-([\\d\\.]+)', key)
+        if m:
+            lib_id = m.group(1).split('/')[(-1)]
+            lib_ver = m.group(2).rstrip('.')
+            if (lib_id in lib_path_dict_dedup):
+                save_ver = lib_path_dict_dedup[lib_id][0]
+                if (cmp_ver(save_ver, lib_ver) == (-1)):
+                    lib_path_dict_dedup[lib_id][0] = lib_ver
+                    to_be_del_keys.append(lib_path_dict_dedup[lib_id][1])
+                else:
+                    to_be_del_keys.append(key)
+            else:
+                lib_path_dict_dedup[lib_id] = [lib_ver, key]
+    for key in to_be_del_keys:
+        if (key in lib_path_dict):
+            del lib_path_dict[key]

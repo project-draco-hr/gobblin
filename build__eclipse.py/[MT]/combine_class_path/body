@@ -1,0 +1,33 @@
+def combine_class_path(classpath_files):
+    source_path_dict = {}
+    lib_path_dict = {}
+    re_src = re.compile('kind="src" path="([\\w/]+)"')
+    re_bogus_source_lib = re.compile(' path="(.+-sources.jar)"')
+    re_build = re.compile('/build/')
+    re_lib = re.compile('kind="lib"')
+    re_classpath = re.compile('<classpathentry')
+    re_no_close = re.compile('">$')
+    re_export = re.compile('exported="true"')
+    for c_file in classpath_files:
+        dirname = os.path.dirname(c_file).split(('%s/' % cur_dir))[1]
+        for line in open(c_file):
+            line.rstrip('\n')
+            if (not re_classpath.search(line)):
+                continue
+            if re_build.search(line):
+                continue
+            m = re_src.search(line)
+            if m:
+                if (not re_export.search(line)):
+                    source_dir = os.path.join(dirname, m.group(1))
+                    if os.path.exists(source_dir):
+                        source_path_dict[('  <classpathentry kind="src" path="%s"/>' % source_dir)] = 1
+                continue
+            if (re_lib.search(line) and re_bogus_source_lib.search(line)):
+                continue
+            elif re_lib.search(line):
+                if re_no_close.search(line):
+                    line = re_no_close.sub('"/>', line)
+                lib_path_dict[line] = 1
+    dedup_lib_path(lib_path_dict)
+    return (source_path_dict.keys(), lib_path_dict.keys())

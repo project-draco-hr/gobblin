@@ -1,0 +1,9 @@
+def find_file_recursively(file_pattern):
+    matches = []
+    for (root, dirnames, filenames) in os.walk(cur_dir):
+        for filename in fnmatch.filter(filenames, file_pattern):
+            if ((os.popen(('git ls-files %s' % root)).read() == '') and options.skip_non_git_file):
+                print ('WARNING: dir %s not in git. Skipping. Please consider rm the dir' % root)
+                continue
+            matches.append(os.path.join(root, filename))
+    return matches

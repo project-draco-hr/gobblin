@@ -1,0 +1,9 @@
+'\n  combine the project file and classpath created by "ligradle eclipse" into a top level project\n  It can be used to update the .classpath of an existing project when new\ndependencies are added  or create a\nnew project\n  -. cd to the top level directory of a MP checkout\n  -. run this script. It will first call "mint snapshot && ligrade eclipse"\n  -. refresh existing project or create/import a new project in the top level dir\n\n'
+import fnmatch
+import os, shutil, time, sys, pdb, re
+from optparse import OptionParser, OptionGroup
+cur_dir = None
+project_file = None
+classpath_file = None
+if (__name__ == '__main__'):
+    main(sys.argv[1:])

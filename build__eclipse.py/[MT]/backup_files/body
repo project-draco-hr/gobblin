@@ -1,0 +1,6 @@
+def backup_files():
+    backup_suffix = time.strftime('%y%m%d_%H%M%S')
+    if os.path.exists(project_file):
+        shutil.copy(project_file, ('%s_%s' % (project_file, backup_suffix)))
+    if os.path.exists(classpath_file):
+        shutil.copy(classpath_file, ('%s_%s' % (classpath_file, backup_suffix)))

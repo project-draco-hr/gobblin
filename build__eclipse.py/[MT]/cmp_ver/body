@@ -1,0 +1,5 @@
+def cmp_ver(version1, version2):
+
+    def normalize(v):
+        return [int(x) for x in re.sub('(\\.0+)*$', '', v).split('.')]
+    return cmp(normalize(version1), normalize(version2))
