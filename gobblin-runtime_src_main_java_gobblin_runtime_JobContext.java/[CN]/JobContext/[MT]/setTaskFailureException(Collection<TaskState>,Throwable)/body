@@ -1,0 +1,5 @@
+{
+  for (  TaskState taskState : taskStates) {
+    taskState.setTaskFailureException(t);
+  }
+}

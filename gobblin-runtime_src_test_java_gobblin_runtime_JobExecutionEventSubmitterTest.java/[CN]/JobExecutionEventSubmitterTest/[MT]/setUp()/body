@@ -1,0 +1,4 @@
+{
+  this.mockEventSubmitter=mock(EventSubmitter.class);
+  this.jobExecutionEventSubmitter=new JobExecutionEventSubmitter(this.mockEventSubmitter);
+}
