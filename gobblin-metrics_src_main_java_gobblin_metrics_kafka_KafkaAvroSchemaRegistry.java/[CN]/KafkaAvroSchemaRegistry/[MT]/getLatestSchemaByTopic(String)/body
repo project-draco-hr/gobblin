@@ -18,7 +18,7 @@ catch (  IOException e) {
     get.releaseConnection();
   }
   if (statusCode != HttpStatus.SC_OK) {
-    throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+    throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved. Status code = %d",topic,statusCode));
   }
   Schema schema;
   if (schemaString.startsWith("{")) {
@@ -26,11 +26,11 @@ catch (  IOException e) {
       schema=new Schema.Parser().parse(schemaString);
     }
  catch (    Exception e) {
-      throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+      throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved",topic),e);
     }
   }
  else {
-    throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+    throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved: schema should start with '{'",topic));
   }
   return schema;
 }
