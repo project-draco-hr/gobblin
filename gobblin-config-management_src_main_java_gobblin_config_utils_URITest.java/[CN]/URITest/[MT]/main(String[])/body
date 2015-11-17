@@ -1,0 +1,11 @@
+{
+  URI test=new URI("http://java.sun.com/j2se/1.3/docs/guide/index.html");
+  URI n=new URI("index2.html");
+  display(test,n);
+  test=new URI("hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu");
+  n=new URI("user");
+  display(test,n);
+  test=new URI("user/mitu");
+  n=new URI("user");
+  display(test,n);
+}

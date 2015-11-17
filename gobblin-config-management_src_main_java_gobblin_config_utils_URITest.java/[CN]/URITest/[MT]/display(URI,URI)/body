@@ -1,0 +1,10 @@
+{
+  System.out.println("scheme: " + u.getScheme());
+  System.out.println("authority: " + u.getAuthority());
+  System.out.println("path: " + u.getPath());
+  System.out.println("raw path: " + u.getRawPath());
+  System.out.println("isAbs: " + u.isAbsolute());
+  System.out.println("relative: " + u.relativize(n));
+  System.out.println("resolved: " + u.resolve(n));
+  System.out.println("-------------------");
+}

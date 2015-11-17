@@ -1,0 +1,13 @@
+{
+  try {
+    this.storeURI=root;
+    this.location=new Path(root.getPath());
+    this.fs=this.location.getFileSystem(new Configuration());
+  }
+ catch (  IOException ioe) {
+    LOG.error("can not initial the file system " + ioe.getMessage(),ioe);
+    throw new RuntimeException(ioe);
+  }
+  this.vc=vc;
+  this.currentVersion=this.findCurrentVersion();
+}
