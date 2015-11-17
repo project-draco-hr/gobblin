@@ -8,5 +8,6 @@
   this.additionalInputPaths=Lists.newArrayList();
   this.throwables=Collections.synchronizedCollection(Lists.<Throwable>newArrayList());
   this.priority=builder.priority;
+  this.lateDataThresholdForRecompact=builder.lateDataThresholdForRecompact;
   this.state=new AtomicReference<>(DatasetState.UNVERIFIED);
 }

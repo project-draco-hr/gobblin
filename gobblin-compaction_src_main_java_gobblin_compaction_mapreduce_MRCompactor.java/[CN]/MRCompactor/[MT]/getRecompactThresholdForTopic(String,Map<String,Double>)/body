@@ -1,0 +1,8 @@
+{
+  for (  String topicRegex : topicRegexAndRecompactThreshold.keySet()) {
+    if (DatasetFilterUtils.stringInPatterns(topic,DatasetFilterUtils.getPatternsFromStrings(Splitter.on(TOPICS_WITH_SAME_RECOMPACT_THRESHOLDS_SEPARATOR).trimResults().omitEmptyStrings().splitToList(topicRegex)))) {
+      return topicRegexAndRecompactThreshold.get(topicRegex);
+    }
+  }
+  return DEFAULT_COMPACTION_LATEDATA_THRESHOLD_FOR_RECOMPACT_PER_TOPIC;
+}
