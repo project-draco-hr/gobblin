@@ -2,7 +2,6 @@
   Multimap<CopyableDataset,WorkUnitState> datasetRoots=ArrayListMultimap.create();
   for (  WorkUnitState workUnitState : states) {
     CopyableDataset copyableDataset=SerializableCopyableDataset.deserialize(workUnitState.getProp(CopySource.SERIALIZED_COPYABLE_DATASET));
-    copyableDataset.datasetTargetRoot();
     datasetRoots.put(copyableDataset,workUnitState);
   }
   return datasetRoots;

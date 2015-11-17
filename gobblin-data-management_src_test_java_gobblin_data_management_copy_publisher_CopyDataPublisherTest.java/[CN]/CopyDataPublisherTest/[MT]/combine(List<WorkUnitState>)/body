@@ -1,0 +1,7 @@
+{
+  List<WorkUnitState> wus=Lists.newArrayList();
+  for (  List<WorkUnitState> workUnitStates : workUnitStateLists) {
+    wus.addAll(workUnitStates);
+  }
+  return wus;
+}

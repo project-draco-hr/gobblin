@@ -1,0 +1,13 @@
+{
+  State state=getTestState("testPublishDatasetFailure");
+  Path testMethodTempPath=new Path(testClassTempPath,"testPublishDatasetFailure");
+  CopyDataPublisher copyDataPublisher=closer.register(new CopyDataPublisher(state));
+  TestDatasetManager successDatasetManager=new TestDatasetManager(testMethodTempPath,state,"successTargetPath",ImmutableList.of("a/b"));
+  successDatasetManager.createDatasetFiles();
+  TestDatasetManager failedDatasetManager=new TestDatasetManager(testMethodTempPath,state,"failedTargetPath",ImmutableList.of("c/d"));
+  successDatasetManager.verifyDoesntExist();
+  failedDatasetManager.verifyDoesntExist();
+  copyDataPublisher.publishData(combine(successDatasetManager.getWorkUnitStates(),failedDatasetManager.getWorkUnitStates()));
+  successDatasetManager.verifyExists();
+  failedDatasetManager.verifyDoesntExist();
+}
