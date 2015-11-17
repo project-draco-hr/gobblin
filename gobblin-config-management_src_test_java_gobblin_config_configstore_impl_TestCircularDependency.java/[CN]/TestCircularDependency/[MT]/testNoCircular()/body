@@ -1,0 +1,21 @@
+{
+  String testName="noCircular";
+  File baseDir=new File(testRootDir,testName);
+  File versionRootInFile=new File(baseDir,Version);
+  String versionRootInResources="/" + TestRoot + "/"+ testName+ "/"+ Version+ "/";
+  String a_tagString="tags/t_a_1/t_a_2/t_a_3";
+  File a_tag=new File(versionRootInFile,a_tagString);
+  a_tag.mkdirs();
+  String b_tagString="tags/t_b_1/t_b_2";
+  File b_tag=new File(versionRootInFile,b_tagString);
+  b_tag.mkdirs();
+  File t_a_include=new File(this.getClass().getResource(versionRootInResources + a_tagString + "/"+ IncludeFile).getFile());
+  Files.copy(t_a_include,new File(a_tag,IncludeFile));
+  File t_b_include=new File(this.getClass().getResource(versionRootInResources + b_tagString + "/"+ IncludeFile).getFile());
+  Files.copy(t_b_include,new File(b_tag,IncludeFile));
+  URI storeURI=new URI("file://" + baseDir.getAbsolutePath());
+  HdfsConfigStoreWithOwnInclude circularStore=new HdfsConfigStoreWithOwnInclude(storeURI);
+  Assert.assertEquals(circularStore.getCurrentVersion(),Version);
+  URI circularNode=new URI(a_tagString);
+  CircularDependencyChecker.checkCircularDependency(circularStore,Version,circularNode);
+}

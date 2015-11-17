@@ -1,0 +1,23 @@
+{
+  String testName="rootImportChild";
+  File baseDir=new File(testRootDir,testName);
+  File versionRootInFile=new File(baseDir,Version);
+  String versionRootInResources="/" + TestRoot + "/"+ testName+ "/"+ Version+ "/";
+  String tagString="tags/t_a_1/t_a_2/t_a_3";
+  File tag=new File(versionRootInFile,tagString);
+  tag.mkdirs();
+  File rootDir=new File(testRootDir,testName + "/v1.0");
+  File root_include=new File(this.getClass().getResource(versionRootInResources + IncludeFile).getFile());
+  Files.copy(root_include,new File(rootDir,IncludeFile));
+  URI storeURI=new URI("file://" + baseDir.getAbsolutePath());
+  HdfsConfigStoreWithOwnInclude circularStore=new HdfsConfigStoreWithOwnInclude(storeURI);
+  Assert.assertEquals(circularStore.getCurrentVersion(),Version);
+  URI circularNode=new URI(tagString);
+  try {
+    CircularDependencyChecker.checkCircularDependency(circularStore,Version,circularNode);
+    Assert.fail("Did not catch expected CircularDependencyException");
+  }
+ catch (  CircularDependencyException e) {
+    Assert.assertTrue(e.getMessage().indexOf("tags/t_a_1/t_a_2/t_a_3 -> tags/t_a_1/t_a_2 -> tags/t_a_1") > 0);
+  }
+}

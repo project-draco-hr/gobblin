@@ -1,0 +1,27 @@
+{
+  String testName="selfImportSelf";
+  File baseDir=new File(testRootDir,testName);
+  File versionRootInFile=new File(baseDir,Version);
+  String versionRootInResources="/" + TestRoot + "/"+ testName+ "/"+ Version+ "/";
+  String dsString="datasets/ds1";
+  String tagString="tags/t_a_1";
+  File dataset=new File(versionRootInFile,dsString);
+  File tag=new File(versionRootInFile,tagString);
+  dataset.mkdirs();
+  tag.mkdirs();
+  URI storeURI=new URI("file://" + baseDir.getAbsolutePath());
+  File ds1_include=new File(this.getClass().getResource(versionRootInResources + dsString + "/"+ IncludeFile).getFile());
+  Files.copy(ds1_include,new File(dataset,IncludeFile));
+  File t_a_1_include=new File(this.getClass().getResource(versionRootInResources + tagString + "/"+ IncludeFile).getFile());
+  Files.copy(t_a_1_include,new File(tag,IncludeFile));
+  HdfsConfigStoreWithOwnInclude circularStore=new HdfsConfigStoreWithOwnInclude(storeURI);
+  Assert.assertEquals(circularStore.getCurrentVersion(),Version);
+  URI circularNode=new URI(tagString);
+  try {
+    CircularDependencyChecker.checkCircularDependency(circularStore,Version,circularNode);
+    Assert.fail("Did not catch expected CircularDependencyException");
+  }
+ catch (  CircularDependencyException e) {
+    Assert.assertTrue(e.getMessage().indexOf("import self") > 0);
+  }
+}

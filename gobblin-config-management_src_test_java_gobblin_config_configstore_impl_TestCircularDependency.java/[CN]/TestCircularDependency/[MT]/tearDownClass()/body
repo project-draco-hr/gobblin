@@ -1,0 +1,5 @@
+{
+  if (rootDir != null) {
+    FileUtils.deleteDirectory(rootDir);
+  }
+}

@@ -1,0 +1,14 @@
+{
+  String pStr=uri.getPath();
+  if (pStr.length() == 0)   return;
+  Path p=(new Path(uri.getPath())).getParent();
+  if (p == null)   return;
+  URI parent=p.toUri();
+  List<URI> current=new ArrayList<URI>();
+  current.addAll(previous);
+  current.add(uri);
+  checkImportCircularDependency(cs,version,parent,parent,current);
+  if (parent != null) {
+    checkAncestorCircularDependency(cs,version,initialURI,parent,current);
+  }
+}

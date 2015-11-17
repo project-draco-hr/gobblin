@@ -1,0 +1,5 @@
+{
+  rootDir=Files.createTempDir();
+  System.out.println("root dir is " + rootDir);
+  testRootDir=new File(rootDir,TestRoot);
+}

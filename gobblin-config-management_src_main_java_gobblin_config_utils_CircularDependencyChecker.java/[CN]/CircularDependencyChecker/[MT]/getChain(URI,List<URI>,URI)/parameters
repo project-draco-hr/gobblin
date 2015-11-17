@@ -1,0 +1,3 @@
+URI initialURI
+List<URI> chain
+URI circular

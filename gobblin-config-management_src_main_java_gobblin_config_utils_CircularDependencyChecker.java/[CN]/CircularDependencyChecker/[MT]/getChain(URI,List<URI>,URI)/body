@@ -1,0 +1,9 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append("Initial URI: " + initialURI);
+  for (  URI u : chain) {
+    sb.append(" -> " + u);
+  }
+  sb.append(" the uri causing circular dependency: " + circular);
+  return sb.toString();
+}
