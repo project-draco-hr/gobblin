@@ -1,8 +1,8 @@
 {
-  if (!failedFetchHistories.containsKey(id)) {
+  if (!this.failedFetchHistories.containsKey(id)) {
     return true;
   }
-  FailedFetchHistory failedFetchHistory=failedFetchHistories.get(id);
+  FailedFetchHistory failedFetchHistory=this.failedFetchHistories.get(id);
   boolean maxTriesNotExceeded=failedFetchHistory.getNumOfAttempts() < GET_SCHEMA_BY_ID_MAX_TIRES;
   boolean minRetryIntervalSatisfied=System.nanoTime() - failedFetchHistory.getPreviousAttemptTime() >= TimeUnit.SECONDS.toNanos(GET_SCHEMA_BY_ID_MIN_INTERVAL_SECONDS);
   return maxTriesNotExceeded && minRetryIntervalSatisfied;

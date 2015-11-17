@@ -1,8 +1,0 @@
-{
-  try {
-    return cachedSchemasById.get(id);
-  }
- catch (  ExecutionException e) {
-    throw new SchemaNotFoundException(e);
-  }
-}
