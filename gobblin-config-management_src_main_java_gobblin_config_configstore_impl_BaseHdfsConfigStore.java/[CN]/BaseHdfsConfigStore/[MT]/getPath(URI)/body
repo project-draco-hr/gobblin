@@ -1,0 +1,10 @@
+{
+  Path self;
+  if (isRootURI(uri)) {
+    self=this.currentVersionRoot;
+  }
+ else {
+    self=new Path(this.currentVersionRoot,uri.toString());
+  }
+  return self;
+}

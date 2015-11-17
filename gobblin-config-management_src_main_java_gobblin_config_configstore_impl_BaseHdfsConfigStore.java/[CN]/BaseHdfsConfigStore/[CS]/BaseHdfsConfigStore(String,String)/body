@@ -1,0 +1,3 @@
+{
+  this(scheme,location,new SimpleVersionComparator());
+}

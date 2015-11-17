@@ -1,6 +1,0 @@
-{
-  if (cs instanceof ConfigStoreWithResolution) {
-    return ((ConfigStoreWithResolution)cs).getResolvedConfig(uri);
-  }
-  return cs.getOwnConfig(uri);
-}

@@ -1,0 +1,12 @@
+{
+  if (uri == null || uri.toString().length() == 0)   return null;
+  Path self=new Path(this.currentVersionRoot,uri.toString());
+  Path parent=self.getParent();
+  try {
+    return new URI(getRelativePath(parent));
+  }
+ catch (  URISyntaxException e) {
+    LOG.error(String.format("Got error when create URI for %s, exception %s",parent,e.getMessage()),e);
+    throw new RuntimeException(e);
+  }
+}

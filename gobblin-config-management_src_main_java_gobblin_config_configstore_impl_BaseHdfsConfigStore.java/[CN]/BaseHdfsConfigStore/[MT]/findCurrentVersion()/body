@@ -1,0 +1,27 @@
+{
+  try {
+    if (this.fs.isFile(this.location)) {
+      throw new RuntimeException(String.format("location %s should be a directory ",this.location));
+    }
+    FileStatus[] fileStatus=this.fs.listStatus(this.location);
+    if (fileStatus == null || fileStatus.length == 0) {
+      throw new RuntimeException(String.format("location %s does not have any versions ",this.location));
+    }
+    List<String> versions=new ArrayList<String>();
+    for (    FileStatus f : fileStatus) {
+      if (!f.isDir()) {
+        continue;
+      }
+      versions.add(f.getPath().getName());
+    }
+    String res=this.vc.getCurrentVersion(versions);
+    if (res == null) {
+      throw new RuntimeException(String.format("location %s does not have any valid version: ",this.location));
+    }
+    return res;
+  }
+ catch (  IOException ioe) {
+    LOG.error("can not find current version: " + ioe.getMessage(),ioe);
+    throw new RuntimeException(ioe);
+  }
+}
