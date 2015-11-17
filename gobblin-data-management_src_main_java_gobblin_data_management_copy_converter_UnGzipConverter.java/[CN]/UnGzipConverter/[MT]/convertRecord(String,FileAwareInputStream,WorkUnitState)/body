@@ -1,3 +1,4 @@
 {
+  removeExtensionAtDestination(fileAwareInputStream.getFile());
   return convertInputStream(outputSchema,fileAwareInputStream,workUnit);
 }

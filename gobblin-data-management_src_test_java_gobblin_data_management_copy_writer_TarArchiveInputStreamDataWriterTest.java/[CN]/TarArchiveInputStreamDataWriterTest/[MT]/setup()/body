@@ -1,0 +1,5 @@
+{
+  fs=FileSystem.getLocal(new Configuration());
+  testTempPath=new Path(this.getClass().getClassLoader().getResource("").getFile(),"tarArchiveInputStreamDataWriterTest");
+  fs.mkdirs(testTempPath);
+}
