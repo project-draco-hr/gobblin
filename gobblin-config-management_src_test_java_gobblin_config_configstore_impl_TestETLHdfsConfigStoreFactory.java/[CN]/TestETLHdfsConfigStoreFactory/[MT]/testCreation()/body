@@ -1,0 +1,5 @@
+{
+  factory=new ETLHdfsConfigStoreFactory(new URI("etl-hdfs://" + testRootDir.getAbsolutePath()),true);
+  ETLHdfsConfigStore cs=factory.getDefaultConfigStore();
+  Assert.assertEquals(cs.getCurrentVersion(),Version);
+}
