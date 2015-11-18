@@ -1,0 +1,16 @@
+{
+  if (!this.fs.exists(this.applicationIdFilePath)) {
+    return Optional.absent();
+  }
+  Closer closer=Closer.create();
+  try {
+    String applicationId=CharStreams.toString(closer.register(new InputStreamReader(this.fs.open(this.applicationIdFilePath))));
+    return Optional.of(applicationId);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

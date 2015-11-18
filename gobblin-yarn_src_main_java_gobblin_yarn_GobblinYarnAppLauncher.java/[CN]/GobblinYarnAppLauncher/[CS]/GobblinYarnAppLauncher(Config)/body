@@ -11,8 +11,9 @@
   this.yarnClient.init(this.yarnConfiguration);
   this.fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),this.yarnConfiguration) : FileSystem.get(this.yarnConfiguration);
   this.fsCloser.register(this.fs);
+  this.applicationIdStore=new FsApplicationIdStore(this.fs,new Path(YarnHelixUtils.getAppRootDirPath(this.fs,this.applicationName),APPLICATION_ID_FILE_NAME));
   this.applicationStatusMonitor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinYarnAppStatusMonitor")));
   this.appReportIntervalMinutes=config.getLong(GobblinYarnConfigurationKeys.APP_REPORT_INTERVAL_MINUTES_KEY);
-  this.appMasterJvmArgs=Strings.nullToEmpty(config.getString(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY));
+  this.appMasterJvmArgs=config.hasPath(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY)) : Optional.<String>absent();
   this.sinkLogRootDir=new Path(config.getString(GobblinYarnConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY));
 }

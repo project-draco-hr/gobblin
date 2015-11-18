@@ -1,12 +1,9 @@
 {
   LOGGER.info(String.format("Received container status for container %s: %s",containerId,containerStatus));
   if (containerStatus.getState() == ContainerState.COMPLETE) {
-    LOGGER.info(String.format("Container %s completed",containerId));
+    LOGGER.info(String.format("Container %s completed with status %s",containerId,containerStatus));
     containerMap.remove(containerId);
-    if (containerMap.isEmpty()) {
-synchronized (allContainersStopped) {
-        allContainersStopped.notify();
-      }
-    }
+    LOGGER.info("Requesting a new container to replace the one that has completed");
+    eventBus.post(new NewContainerRequest(1));
   }
 }

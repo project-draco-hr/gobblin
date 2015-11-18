@@ -1,0 +1,5 @@
+{
+  if (this.fs.exists(this.applicationIdFilePath)) {
+    this.fs.delete(this.applicationIdFilePath,false);
+  }
+}

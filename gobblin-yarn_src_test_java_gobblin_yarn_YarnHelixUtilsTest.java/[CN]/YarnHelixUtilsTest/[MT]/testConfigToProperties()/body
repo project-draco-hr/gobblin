@@ -1,0 +1,14 @@
+{
+  Config config=ConfigFactory.load();
+  Assert.assertEquals(config.getString("k1"),"v1");
+  Assert.assertEquals(config.getString("k2"),"v1");
+  Assert.assertEquals(config.getInt("k3"),1000);
+  Assert.assertTrue(config.getBoolean("k4"));
+  Assert.assertEquals(config.getLong("k5"),10000);
+  Properties properties=YarnHelixUtils.configToProperties(config);
+  Assert.assertEquals(properties.getProperty("k1"),"v1");
+  Assert.assertEquals(properties.getProperty("k2"),"v1");
+  Assert.assertEquals(properties.getProperty("k3"),"1000");
+  Assert.assertEquals(properties.getProperty("k4"),"true");
+  Assert.assertEquals(properties.getProperty("k5"),"10000");
+}

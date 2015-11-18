@@ -1,0 +1,10 @@
+{
+  try {
+    this.applicationIdStore.close();
+  }
+  finally {
+    if (this.localFs.exists(this.testWorkDir)) {
+      this.localFs.delete(this.testWorkDir,true);
+    }
+  }
+}

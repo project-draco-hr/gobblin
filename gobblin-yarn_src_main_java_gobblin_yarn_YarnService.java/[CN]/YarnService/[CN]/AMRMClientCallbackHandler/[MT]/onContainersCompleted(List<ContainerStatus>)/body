@@ -5,5 +5,7 @@
       LOGGER.info(String.format("Received the following diagnostics information for container %s: %s",containerStatus.getContainerId(),containerStatus.getDiagnostics()));
     }
     containerMap.remove(containerStatus.getContainerId());
+    LOGGER.info("Requesting a new container to replace the one that has completed");
+    eventBus.post(new NewContainerRequest(1));
   }
 }

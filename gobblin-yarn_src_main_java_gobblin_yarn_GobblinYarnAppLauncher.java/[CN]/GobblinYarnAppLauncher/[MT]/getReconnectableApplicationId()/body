@@ -1,0 +1,16 @@
+{
+  Optional<String> existingApplicationId=this.applicationIdStore.get();
+  if (!existingApplicationId.isPresent()) {
+    return Optional.absent();
+  }
+  List<ApplicationReport> applicationReports=this.yarnClient.getApplications(APPLICATION_TYPES,RECONNECTABLE_APPLICATION_STATES);
+  if (applicationReports == null || applicationReports.isEmpty()) {
+    return Optional.absent();
+  }
+  for (  ApplicationReport applicationReport : applicationReports) {
+    if (applicationReport.getApplicationId().toString().equals(existingApplicationId.get())) {
+      return Optional.of(applicationReport.getApplicationId());
+    }
+  }
+  return Optional.absent();
+}

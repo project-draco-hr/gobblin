@@ -15,6 +15,7 @@
     if (this.helixManager.isConnected()) {
       this.helixManager.disconnect();
     }
+    this.applicationIdStore.delete();
   }
   finally {
     try {

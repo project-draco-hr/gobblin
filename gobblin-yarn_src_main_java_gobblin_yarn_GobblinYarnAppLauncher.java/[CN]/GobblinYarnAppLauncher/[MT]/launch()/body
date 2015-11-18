@@ -9,7 +9,8 @@
     throw Throwables.propagate(e);
   }
   this.yarnClient.start();
-  this.applicationId=Optional.of(setupAndSubmitApplication());
+  this.applicationId=getApplicationId();
+  this.applicationIdStore.put(this.applicationId.get().toString());
   this.applicationStatusMonitor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       try {

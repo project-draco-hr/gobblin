@@ -13,6 +13,6 @@
   this.initialContainers=config.getInt(GobblinYarnConfigurationKeys.INITIAL_CONTAINERS_KEY);
   this.requestedContainerMemoryMbs=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_MEMORY_MBS_KEY);
   this.requestedContainerCores=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_CORES_KEY);
-  this.containerJvmArgs=containerJvmArgs;
+  this.containerJvmArgs=config.hasPath(GobblinYarnConfigurationKeys.CONTAINER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinYarnConfigurationKeys.CONTAINER_JVM_ARGS_KEY)) : Optional.<String>absent();
   this.tokens=getSecurityTokens();
 }
