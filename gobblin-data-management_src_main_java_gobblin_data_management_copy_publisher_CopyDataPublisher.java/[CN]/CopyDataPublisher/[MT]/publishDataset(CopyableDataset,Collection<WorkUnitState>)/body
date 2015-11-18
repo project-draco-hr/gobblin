@@ -4,6 +4,8 @@
   HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,copyableDataset.datasetTargetRoot());
   fs.delete(datasetWriterOutputPath,true);
   for (  WorkUnitState wus : datasetWorkUnitStates) {
-    wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    if (wus.getWorkingState() == WorkingState.SUCCESSFUL) {
+      wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    }
   }
 }

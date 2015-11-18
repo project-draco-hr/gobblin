@@ -1,0 +1,11 @@
+{
+  List<CopyableFile> copyableFiles=CopySource.deserializeCopyableFiles(state);
+  for (  CopyableFile copyableFile : copyableFiles) {
+    if (this.sourceFs.exists(copyableFile.getOrigin().getPath())) {
+      log.info(String.format("Deleting %s on source fileSystem.",copyableFile.getOrigin().getPath()));
+      if (!this.sourceFs.delete(copyableFile.getOrigin().getPath(),true)) {
+        throw new IOException("Delete failed for " + copyableFile.getOrigin().getPath());
+      }
+    }
+  }
+}

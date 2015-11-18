@@ -1,0 +1,7 @@
+{
+  fs=FileSystem.getLocal(new Configuration());
+  testClassTempPath=new Path(this.getClass().getClassLoader().getResource("").getFile(),"DeletingCopyDataPublisherTest");
+  fs.delete(testClassTempPath,true);
+  log.info("Created a temp directory for CopyDataPublisherTest at " + testClassTempPath);
+  fs.mkdirs(testClassTempPath);
+}
