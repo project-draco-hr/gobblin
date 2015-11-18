@@ -1,0 +1,14 @@
+{
+  Collection<URI> rootChildren=store.getChildren(new URI(""),Version);
+  Assert.assertEquals(rootChildren.size(),2);
+  Iterator<URI> it=rootChildren.iterator();
+  Assert.assertEquals(it.next().toString(),"datasets");
+  Assert.assertEquals(it.next().toString(),"tags");
+  String tags="tags";
+  Collection<URI> children=store.getChildren(new URI(tags),Version);
+  Assert.assertEquals(children.size(),3);
+  it=children.iterator();
+  Assert.assertEquals(it.next().toString(),"tags/l1");
+  Assert.assertEquals(it.next().toString(),"tags/t1");
+  Assert.assertEquals(it.next().toString(),"tags/v1");
+}

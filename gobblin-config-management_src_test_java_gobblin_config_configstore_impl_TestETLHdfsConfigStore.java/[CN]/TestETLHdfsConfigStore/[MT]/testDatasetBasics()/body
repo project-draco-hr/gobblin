@@ -1,0 +1,18 @@
+{
+  String[] expected={"datasets/a1/a2","datasets/a1","datasets",""};
+  List<String> parents=new ArrayList<String>();
+  URI parent=store.getParent(dataset);
+  while (parent != null) {
+    parents.add(parent.toString());
+    parent=store.getParent(parent);
+  }
+  Assert.assertEquals(parents.size(),expected.length);
+  for (int i=0; i < parents.size(); i++) {
+    Assert.assertEquals(parents.get(i),expected[i]);
+  }
+  Config c=store.getOwnConfig(dataset,Version);
+  validateOwnConfig(c);
+  Collection<URI> imported=store.getOwnImports(dataset,Version);
+  Assert.assertEquals(imported.size(),1);
+  Assert.assertEquals(imported.iterator().next().toString(),"tags/t1/t2/t3");
+}
