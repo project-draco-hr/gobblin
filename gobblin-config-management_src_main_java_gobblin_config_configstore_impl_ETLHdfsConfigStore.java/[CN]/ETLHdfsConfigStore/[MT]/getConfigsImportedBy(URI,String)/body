@@ -1,0 +1,11 @@
+{
+  Collection<URI> importedBy=this.getImportedBy(uri,version);
+  Map<URI,Config> result=new HashMap<URI,Config>();
+  Iterator<URI> it=importedBy.iterator();
+  URI tmp;
+  while (it.hasNext()) {
+    tmp=it.next();
+    result.put(tmp,this.getOwnConfig(tmp,version));
+  }
+  return result;
+}

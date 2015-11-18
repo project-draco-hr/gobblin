@@ -1,0 +1,5 @@
+{
+  if (uri == null)   return false;
+  if (uri.toString().equals(TAG_PREFIX) || uri.toString().startsWith(TAG_PREFIX + ID_DELEMETER))   return true;
+  return false;
+}

@@ -1,0 +1,4 @@
+{
+  ImportMappings im=this.getImportMappings(version);
+  return im.getImportedByMappingRecursively().get(uri);
+}

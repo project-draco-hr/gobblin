@@ -1,0 +1,5 @@
+{
+  URI parent=getParent(uri);
+  Config res=getResolvedConfig(parent,version);
+  return res;
+}

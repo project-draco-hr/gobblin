@@ -1,0 +1,9 @@
+{
+  if (isValidURI(uri)) {
+    String pStr=uri.getPath();
+    if (pStr.length() == 0)     return null;
+    Path p=(new Path(uri.getPath())).getParent();
+    return p.toUri();
+  }
+  return null;
+}

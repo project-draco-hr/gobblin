@@ -1,0 +1,3 @@
+{
+  return isRootURI(uri) || isValidTag(uri) || isValidDataset(uri);
+}

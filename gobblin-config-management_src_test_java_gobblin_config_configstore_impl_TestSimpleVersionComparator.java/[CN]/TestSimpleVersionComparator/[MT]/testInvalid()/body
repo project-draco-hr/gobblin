@@ -1,0 +1,10 @@
+{
+  List<String> input=new ArrayList<String>();
+  input.add("a1");
+  input.add("V1.x");
+  input.add("V1.");
+  input.add("v2.0.4.9");
+  input.add("V1.1.2x");
+  Collection<String> result=comp.getValidVersions(input);
+  Assert.assertTrue(result.size() == 0);
+}

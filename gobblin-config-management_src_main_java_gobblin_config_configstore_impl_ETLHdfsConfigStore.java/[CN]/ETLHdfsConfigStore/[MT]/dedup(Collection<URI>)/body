@@ -1,0 +1,4 @@
+{
+  Set<URI> set=new LinkedHashSet<URI>(input);
+  return set;
+}

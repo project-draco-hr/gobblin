@@ -1,0 +1,23 @@
+{
+  try {
+    URI root=new URI("");
+    Collection<URI> currentLevel=this.store.getChildren(root,version);
+    while (currentLevel.size() != 0) {
+      Collection<URI> nextLevel=new ArrayList<URI>();
+      for (      URI u : currentLevel) {
+        Collection<URI> ownImported=this.store.getOwnImports(u,version);
+        this.addToImportMapping(u,ownImported,this.importMap,this.importedByMap);
+        if (this.store instanceof ConfigStoreWithResolution) {
+          Collection<URI> resolved=((ConfigStoreWithResolution)this.store).getImportsRecursively(u,version);
+          this.addToImportMapping(u,resolved,this.importMapResursively,this.importedByMapRecursively);
+        }
+        nextLevel.addAll(this.store.getChildren(u,version));
+      }
+      currentLevel=nextLevel;
+    }
+  }
+ catch (  URISyntaxException e) {
+    LOG.error("Got Exception: " + e.getMessage(),e);
+    throw new RuntimeException(e);
+  }
+}

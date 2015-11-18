@@ -1,0 +1,7 @@
+{
+  if (!targetImportMap.containsKey(u)) {
+    targetImportMap.put(u,new HashSet<URI>());
+  }
+  targetImportMap.get(u).addAll(imported);
+  this.addToImportedByMapping(u,imported,targetImportedByMap);
+}

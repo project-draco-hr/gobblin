@@ -1,0 +1,6 @@
+{
+  if (isValidURI(uri)) {
+    return super.getOwnConfig(uri,version);
+  }
+  return ConfigFactory.empty();
+}

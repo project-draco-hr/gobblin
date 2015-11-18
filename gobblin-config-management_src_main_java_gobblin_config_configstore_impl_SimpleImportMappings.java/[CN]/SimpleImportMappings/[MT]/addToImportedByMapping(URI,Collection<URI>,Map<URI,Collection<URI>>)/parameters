@@ -1,0 +1,3 @@
+URI u
+Collection<URI> imported
+Map<URI,Collection<URI>> targetImportedByMap
