@@ -1,9 +1,0 @@
-{
-  if (!this.failedFetchHistories.containsKey(id)) {
-    this.failedFetchHistories.put(id,new FailedFetchHistory(1,System.nanoTime()));
-  }
- else {
-    this.failedFetchHistories.get(id).incrementNumOfAttempts();
-    this.failedFetchHistories.get(id).setPreviousAttemptTime(System.nanoTime());
-  }
-}

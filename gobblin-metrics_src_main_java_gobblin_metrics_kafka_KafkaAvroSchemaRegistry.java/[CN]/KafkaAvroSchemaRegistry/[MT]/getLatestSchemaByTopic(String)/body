@@ -21,16 +21,11 @@ catch (  IOException e) {
     throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved. Status code = %d",topic,statusCode));
   }
   Schema schema;
-  if (schemaString.startsWith("{")) {
-    try {
-      schema=new Schema.Parser().parse(schemaString);
-    }
- catch (    Exception e) {
-      throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved",topic),e);
-    }
+  try {
+    schema=new Schema.Parser().parse(schemaString);
   }
- else {
-    throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved: schema should start with '{'",topic));
+ catch (  Throwable t) {
+    throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved",topic),t);
   }
   return schema;
 }

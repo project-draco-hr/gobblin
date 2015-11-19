@@ -1,0 +1,4 @@
+{
+  this.numOfAttempts=new AtomicInteger();
+  this.previousAttemptTime=previousAttemptTime;
+}
