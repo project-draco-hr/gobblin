@@ -1,5 +1,4 @@
 {
   this.fs=new Path(defaultConfigStoreRoot.getPath()).getFileSystem(new Configuration());
-  this.fsIsLocal=isLocal;
   this.store=this.createConfigStore(defaultConfigStoreRoot);
 }

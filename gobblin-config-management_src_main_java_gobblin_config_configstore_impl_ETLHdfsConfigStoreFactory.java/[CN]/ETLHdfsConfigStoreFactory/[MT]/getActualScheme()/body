@@ -1,6 +1,3 @@
 {
-  if (this.fsIsLocal) {
-    return "file";
-  }
   return "hdfs";
 }
