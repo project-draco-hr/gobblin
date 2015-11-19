@@ -2,7 +2,7 @@
   List<FileStatus> files=FileListUtils.listFilesRecursively(this.fs,this.rootPath,this.pathFilter);
   List<CopyableFile> copyableFiles=Lists.newArrayList();
   for (  FileStatus file : files) {
-    Path relativeOutputPath=PathUtils.relativizePath(PathUtils.getPathWithoutSchemeAndAuthority(file.getPath()),PathUtils.getPathWithoutSchemeAndAuthority(datasetRoot()));
+    Path relativeOutputPath=getRelativeOuptutPath(file);
     Path outputPath=new Path(this.targetDirectory,relativeOutputPath);
     OwnerAndPermission ownerAndPermission=new OwnerAndPermission(file.getOwner(),file.getGroup(),file.getPermission());
     List<OwnerAndPermission> ancestorOwnerAndPermissions=Lists.newArrayList();

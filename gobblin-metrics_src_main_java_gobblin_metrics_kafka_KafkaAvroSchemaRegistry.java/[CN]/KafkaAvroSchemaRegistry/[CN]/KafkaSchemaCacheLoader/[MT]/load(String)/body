@@ -1,12 +1,12 @@
 {
-  if (shouldFetchFromSchemaRegistry(id)) {
+  if (shouldFetchFromSchemaRegistry(key)) {
     try {
-      return fetchSchemaByID(id);
+      return fetchSchemaByKey(key);
     }
- catch (    SchemaNotFoundException e) {
-      addFetchToFailureHistory(id);
+ catch (    SchemaRegistryException e) {
+      addFetchToFailureHistory(key);
       throw e;
     }
   }
-  throw new SchemaNotFoundException(String.format("Schema with ID = %s cannot be retrieved",id));
+  throw new SchemaRegistryException(String.format("Schema with key %s cannot be retrieved",key));
 }

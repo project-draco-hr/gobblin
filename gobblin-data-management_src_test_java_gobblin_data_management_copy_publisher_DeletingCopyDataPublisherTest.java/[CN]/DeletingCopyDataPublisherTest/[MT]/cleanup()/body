@@ -1,0 +1,9 @@
+{
+  try {
+    closer.close();
+    fs.delete(testClassTempPath,true);
+  }
+ catch (  IOException e) {
+    log.warn(e.getMessage());
+  }
+}

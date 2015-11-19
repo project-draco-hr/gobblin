@@ -1,0 +1,6 @@
+{
+  super(state);
+  Configuration conf=HadoopUtils.getConfFromState(state);
+  String uri=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,ConfigurationKeys.LOCAL_FS_URI);
+  this.sourceFs=FileSystem.get(URI.create(uri),conf);
+}

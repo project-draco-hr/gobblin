@@ -1,0 +1,3 @@
+{
+  return properties.getProp(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY,StringUtils.EMPTY);
+}

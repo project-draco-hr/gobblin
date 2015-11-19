@@ -1,0 +1,6 @@
+{
+  for (  String fileRelativePath : relativeFilePaths) {
+    Path filePublishPath=new Path(copyableDataset.datasetTargetRoot(),fileRelativePath);
+    Assert.assertEquals(fs.exists(filePublishPath),true);
+  }
+}

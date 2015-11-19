@@ -1,0 +1,10 @@
+{
+  ImmutableMap.Builder<String,String> taskMetadataBuilder=new ImmutableMap.Builder<String,String>();
+  taskMetadataBuilder.putAll(jobMetadata);
+  taskMetadataBuilder.put(TASK_ID,taskState.getTaskId());
+  taskMetadataBuilder.put(TASK_START_TIME,Long.toString(taskState.getStartTime()));
+  taskMetadataBuilder.put(TASK_END_TIME,Long.toString(taskState.getEndTime()));
+  taskMetadataBuilder.put(TASK_WORKING_STATE,taskState.getWorkingState().toString());
+  taskMetadataBuilder.put(TASK_FAILURE_CONTEXT,taskState.getTaskFailureException().or(UNKNOWN_VALUE));
+  this.eventSubmitter.submit(TASK_STATE_EVENT,taskMetadataBuilder.build());
+}

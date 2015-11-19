@@ -1,0 +1,5 @@
+{
+  if (!this.contains(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY)) {
+    this.setProp(ConfigurationKeys.TASK_FAILURE_EXCEPTION_KEY,Throwables.getStackTraceAsString(taskFailureException));
+  }
+}
