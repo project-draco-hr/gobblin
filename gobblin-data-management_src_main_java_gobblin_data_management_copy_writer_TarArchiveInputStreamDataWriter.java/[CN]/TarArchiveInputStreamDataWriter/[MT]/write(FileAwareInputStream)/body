@@ -2,6 +2,7 @@
   closer.register(fileAwareInputStream.getInputStream());
   filesWritten++;
   TarArchiveInputStream tarIn=new TarArchiveInputStream(fileAwareInputStream.getInputStream());
+  final ReadableByteChannel inputChannel=Channels.newChannel(tarIn);
   TarArchiveEntry tarEntry;
   Path fileDestinationPath=fileAwareInputStream.getFile().getDestination();
   String tarEntryRootName=null;
@@ -19,17 +20,20 @@
       }
  else       if (!tarEntry.isDirectory()) {
         FSDataOutputStream out=fs.create(tarEntryStagingPath,true);
+        final WritableByteChannel outputChannel=Channels.newChannel(out);
         try {
-          IOUtils.copyBytes(tarIn,out,fs.getConf(),false);
+          bytesWritten+=StreamUtils.copy(inputChannel,outputChannel);
         }
   finally {
           out.close();
+          outputChannel.close();
         }
       }
     }
   }
   finally {
     tarIn.close();
+    inputChannel.close();
     fileAwareInputStream.getInputStream().close();
   }
   this.setFilePermissions(fileAwareInputStream.getFile());

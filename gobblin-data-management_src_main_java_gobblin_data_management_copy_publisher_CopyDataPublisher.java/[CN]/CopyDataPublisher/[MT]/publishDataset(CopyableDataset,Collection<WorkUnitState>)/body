@@ -6,6 +6,8 @@
   for (  WorkUnitState wus : datasetWorkUnitStates) {
     if (wus.getWorkingState() == WorkingState.SUCCESSFUL) {
       wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+      CopyEventSubmitterHelper.submitSuccessfulFilePublish(eventSubmitter,wus);
     }
   }
+  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(eventSubmitter,copyableDataset);
 }

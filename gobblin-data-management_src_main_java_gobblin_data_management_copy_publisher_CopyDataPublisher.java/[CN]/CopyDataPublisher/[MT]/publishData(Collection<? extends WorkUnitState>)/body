@@ -6,11 +6,11 @@
       this.publishDataset(copyableDataset,datasets.get(copyableDataset));
     }
  catch (    Throwable e) {
+      CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,copyableDataset);
       log.error("Failed to publish " + copyableDataset.datasetTargetRoot(),e);
       allDatasetsPublished=false;
     }
   }
-  fs.delete(writerOutputDir,true);
   if (!allDatasetsPublished) {
     throw new IOException("Not all datasets published successfully");
   }

@@ -1,6 +1,9 @@
 {
+  long bytesRead=0;
+  long totalBytesRead=0;
   final ByteBuffer buffer=ByteBuffer.allocateDirect(DEFAULT_BUFFER_SIZE);
-  while (inputChannel.read(buffer) != -1) {
+  while ((bytesRead=inputChannel.read(buffer)) != -1) {
+    totalBytesRead+=bytesRead;
     buffer.flip();
     outputChannel.write(buffer);
     buffer.compact();
@@ -9,4 +12,5 @@
   while (buffer.hasRemaining()) {
     outputChannel.write(buffer);
   }
+  return totalBytesRead;
 }
