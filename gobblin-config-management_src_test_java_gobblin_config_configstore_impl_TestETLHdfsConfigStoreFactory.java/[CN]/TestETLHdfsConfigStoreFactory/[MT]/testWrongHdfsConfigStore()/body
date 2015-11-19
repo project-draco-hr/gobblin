@@ -1,0 +1,9 @@
+{
+  String WrongTestRoot="WrongHdfsConfigStore";
+  File rootDir=Files.createTempDir();
+  System.out.println("wrong root dir is " + rootDir);
+  File WrongTestRootDir=new File(rootDir,WrongTestRoot);
+  File input=new File(this.getClass().getResource("/" + WrongTestRoot).getFile());
+  FilesUtil.SyncDirs(input,WrongTestRootDir);
+  factory=new ETLHdfsConfigStoreFactory(new URI("etl-hdfs://" + WrongTestRootDir.getAbsolutePath()));
+}

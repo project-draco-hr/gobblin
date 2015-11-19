@@ -2,7 +2,7 @@
   if (!uri.getScheme().equals(this.getScheme())) {
     String errMesg=String.format("Input scheme %s does NOT match config store scheme %s",uri.getScheme(),this.getScheme());
     LOG.error(errMesg);
-    throw new RuntimeException(errMesg);
+    throw new ConfigStoreCreationException(errMesg);
   }
   try {
     URI adjusted=new URI(getActualScheme(),uri.getAuthority(),uri.getPath(),uri.getQuery(),uri.getFragment());
