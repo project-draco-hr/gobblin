@@ -15,7 +15,6 @@
     if (this.helixManager.isConnected()) {
       this.helixManager.disconnect();
     }
-    this.applicationIdStore.delete();
   }
   finally {
     try {
@@ -24,7 +23,7 @@
       }
     }
   finally {
-      this.fsCloser.close();
+      this.closer.close();
     }
   }
   this.stopped=true;

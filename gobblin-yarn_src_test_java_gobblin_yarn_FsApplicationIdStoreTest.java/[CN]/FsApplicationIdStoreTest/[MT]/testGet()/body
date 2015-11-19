@@ -1,3 +1,0 @@
-{
-  Assert.assertEquals(this.applicationIdStore.get().get(),TEST_APPLICATION_ID);
-}

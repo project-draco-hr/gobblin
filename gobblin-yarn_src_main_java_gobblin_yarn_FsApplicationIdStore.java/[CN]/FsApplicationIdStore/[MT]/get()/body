@@ -1,8 +1,0 @@
-{
-  if (!this.fs.exists(this.applicationIdFilePath)) {
-    return Optional.absent();
-  }
-  try (InputStreamReader isReader=new InputStreamReader(this.fs.open(this.applicationIdFilePath))){
-    return Optional.of(CharStreams.toString(isReader));
-  }
- }

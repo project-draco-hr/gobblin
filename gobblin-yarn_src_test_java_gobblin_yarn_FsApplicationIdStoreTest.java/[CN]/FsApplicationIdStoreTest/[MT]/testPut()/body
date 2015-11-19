@@ -1,3 +1,0 @@
-{
-  this.applicationIdStore.put(TEST_APPLICATION_ID);
-}

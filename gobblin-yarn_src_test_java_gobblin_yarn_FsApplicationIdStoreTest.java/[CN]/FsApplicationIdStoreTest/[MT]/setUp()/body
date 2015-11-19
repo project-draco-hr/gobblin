@@ -1,6 +1,0 @@
-{
-  this.localFs=FileSystem.getLocal(new Configuration());
-  this.testWorkDir=new Path(FsApplicationIdStoreTest.class.getName());
-  Path applicationIdFilePath=new Path(this.testWorkDir,"_application.id");
-  this.applicationIdStore=new FsApplicationIdStore(this.localFs,applicationIdFilePath);
-}
