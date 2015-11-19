@@ -1,5 +1,5 @@
 {
-  URI parent=getParent(uri);
+  URI parent=PathUtils.getParentURI(uri);
   Config res=getResolvedConfig(parent,version);
   return res;
 }

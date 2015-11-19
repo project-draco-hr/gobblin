@@ -1,14 +1,3 @@
 {
-  CircularDependencyChecker.checkCircularDependency(this,version,uri);
-  Collection<URI> result=getOwnImports(uri,version);
-  if (isRootURI(uri)) {
-    return result;
-  }
-  Collection<URI> imported=this.getOwnImports(uri,version);
-  Iterator<URI> it=imported.iterator();
-  while (it.hasNext()) {
-    result.addAll(this.getImportsRecursively(it.next(),version));
-  }
-  result.addAll(this.getImportsRecursively(getParent(uri),version));
-  return dedup(result);
+  return this.resolver.getImportsRecursively(uri,version);
 }

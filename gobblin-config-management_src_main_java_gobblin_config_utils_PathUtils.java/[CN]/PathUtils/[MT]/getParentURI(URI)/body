@@ -1,0 +1,12 @@
+{
+  String pStr=uri.getPath();
+  if (pStr.length() == 0)   return null;
+  Path p=(new Path(uri.getPath())).getParent();
+  try {
+    return new URI(uri.getScheme(),uri.getAuthority(),p.toString(),uri.getQuery(),uri.getFragment());
+  }
+ catch (  URISyntaxException e) {
+    e.printStackTrace();
+  }
+  return null;
+}
