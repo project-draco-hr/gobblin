@@ -1,6 +1,0 @@
-{
-  if (!this.schemaRegistry.isPresent()) {
-    this.schemaRegistry=Optional.of(new KafkaAvroSchemaRegistry(state.getProperties()));
-  }
-  return super.getWorkunits(state);
-}

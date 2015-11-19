@@ -1,0 +1,16 @@
+{
+  super.publishData(states);
+  for (  WorkUnitState state : states) {
+    if (state.getWorkingState() == WorkingState.COMMITTED) {
+      try {
+        deleteFilesOnSource(state);
+      }
+ catch (      Throwable t) {
+        log.warn(String.format("Failed to delete one or more files on source in %s",state.getProp(CopySource.SERIALIZED_COPYABLE_FILES)),t);
+      }
+    }
+ else {
+      log.info(String.format("Not deleting files %s on source fileSystem as the workunit state is %s.",state.getProp(CopySource.SERIALIZED_COPYABLE_FILES),state.getWorkingState()));
+    }
+  }
+}

@@ -35,11 +35,5 @@ catch (    URISyntaxException e) {
   this.filePermission=HadoopUtils.deserializeWriterFilePermissions(properties,this.numBranches,this.branchId);
   this.dirPermission=HadoopUtils.deserializeWriterDirPermissions(properties,this.numBranches,this.branchId);
   this.group=Optional.fromNullable(properties.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_GROUP_NAME,this.numBranches,this.branchId)));
-  if (this.group.isPresent()) {
-    HadoopUtils.setGroup(this.fs,this.stagingFile,this.group.get());
-  }
- else {
-    LOG.warn("No group found for " + this.stagingFile);
-  }
   WriterUtils.mkdirsWithRecursivePermission(this.fs,this.outputFile.getParent(),this.dirPermission);
 }

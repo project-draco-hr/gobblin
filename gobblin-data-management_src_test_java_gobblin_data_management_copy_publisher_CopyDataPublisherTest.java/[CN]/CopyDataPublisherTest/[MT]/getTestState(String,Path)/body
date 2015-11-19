@@ -1,0 +1,8 @@
+{
+  Path testMethodPath=new Path(testClassTempPath,testMethodName);
+  State state=new State();
+  state.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,new Path(testMethodPath,"task-output"));
+  state.setProp(ConfigurationKeys.WRITER_STAGING_DIR,new Path(testMethodPath,"task-staging"));
+  state.setProp(ConfigurationKeys.JOB_ID_KEY,"jobid");
+  return state;
+}

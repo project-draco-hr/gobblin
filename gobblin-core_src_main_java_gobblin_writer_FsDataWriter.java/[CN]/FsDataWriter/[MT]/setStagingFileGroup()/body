@@ -1,0 +1,6 @@
+{
+  Preconditions.checkArgument(this.fs.exists(this.stagingFile),String.format("Staging output file %s does not exist",this.stagingFile));
+  if (this.group.isPresent()) {
+    HadoopUtils.setGroup(this.fs,this.stagingFile,this.group.get());
+  }
+}

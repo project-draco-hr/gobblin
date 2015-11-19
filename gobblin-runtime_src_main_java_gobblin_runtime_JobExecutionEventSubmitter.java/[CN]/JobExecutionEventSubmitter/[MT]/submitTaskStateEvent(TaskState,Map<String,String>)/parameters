@@ -1,0 +1,2 @@
+TaskState taskState
+Map<String,String> jobMetadata

@@ -5,4 +5,5 @@
   this.stagingFileOutputStream=createStagingFileOutputStream();
   this.datumWriter=new GenericDatumWriter<GenericRecord>();
   this.writer=this.closer.register(createDataFileWriter(codecFactory));
+  setStagingFileGroup();
 }

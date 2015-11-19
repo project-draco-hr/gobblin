@@ -1,0 +1,3 @@
+{
+  return LauncherTypeEnum.valueOf(this.getProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.LOCAL.name()));
+}

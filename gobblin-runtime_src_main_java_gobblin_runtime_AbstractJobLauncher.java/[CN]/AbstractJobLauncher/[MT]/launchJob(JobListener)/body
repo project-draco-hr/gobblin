@@ -62,11 +62,6 @@
       cleanupStagingData(jobState);
       jobCleanupTimer.stop();
       this.jobContext.storeJobExecutionInfo();
-      if (this.jobContext.getJobMetricsOptional().isPresent()) {
-        this.jobContext.getJobMetricsOptional().get().triggerMetricReporting();
-        this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
-        JobMetrics.remove(jobState);
-      }
     }
   finally {
       launchJobTimer.stop();
@@ -79,8 +74,23 @@
       break;
     }
   }
-  if (jobListener != null) {
-    jobListener.onJobCompletion(jobState);
+  Closer closer=Closer.create();
+  try {
+    JobListener parallelJobListener=closer.register(getParallelCombinedJobListener(jobListener));
+    parallelJobListener.onJobCompletion(jobState);
+  }
+  finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      throw new JobException("Failed to execute all JobListeners",e);
+    }
+  }
+  if (this.jobContext.getJobMetricsOptional().isPresent()) {
+    this.jobContext.getJobMetricsOptional().get().triggerMetricReporting();
+    this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
+    JobMetrics.remove(jobState);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {
     throw new JobException(String.format("Job %s failed",jobId));
