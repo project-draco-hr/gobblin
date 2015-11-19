@@ -1,3 +1,5 @@
 {
+  ConfigStoreAccessor csa=this.getConfigStoreAccessor(uri);
+  csa.store.getOwnConfig(uri,csa.version);
   return null;
 }

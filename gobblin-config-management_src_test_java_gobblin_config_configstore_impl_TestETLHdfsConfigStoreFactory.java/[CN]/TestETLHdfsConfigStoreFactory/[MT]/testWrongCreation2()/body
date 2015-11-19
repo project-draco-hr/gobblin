@@ -1,4 +1,3 @@
 {
-  factory=new ETLHdfsConfigStoreFactory(new URI("etl-hdfs://" + testRootDir.getAbsolutePath()));
   factory.createConfigStore(new URI("foo-hdfs://" + testRootDir.getAbsolutePath() + "/v3.0/datasets/a1/a2"));
 }

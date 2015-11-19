@@ -5,6 +5,8 @@
   test=new URI("etl-hdfs:///var/folders/rr/ps06_n69685g9m4cmfs_907c000ckg/T/1447889403003-0/HdfsBasedConfigTest");
   n=new URI("user");
   display(test,n);
+  System.out.println("AAA " + new Path(test.getPath()).toString());
+  System.out.println("AAA " + new Path(test.getPath()).toUri());
   URI test2=new URI("file",test.getAuthority(),test.getPath(),test.getQuery(),test.getFragment());
   display(test2,n);
 }

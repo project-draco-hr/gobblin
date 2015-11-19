@@ -1,0 +1,4 @@
+{
+  this.store=cs;
+  this.version=v;
+}

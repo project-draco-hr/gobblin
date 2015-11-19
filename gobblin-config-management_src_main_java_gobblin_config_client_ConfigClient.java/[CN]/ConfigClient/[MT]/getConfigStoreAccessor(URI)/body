@@ -1,0 +1,12 @@
+{
+  if (this.configStoreMap.containsKey(uri)) {
+    return this.configStoreMap.get(uri);
+  }
+  ConfigStoreFactory<ConfigStore> csFactory=this.getConfigStoreFactory(uri);
+  ConfigStore cs=csFactory.createConfigStore(uri);
+  URI csRoot=cs.getStoreURI();
+  URI key=new URI(csFactory.getScheme(),csRoot.getAuthority(),csRoot.getPath(),csRoot.getQuery(),csRoot.getFragment());
+  ConfigStoreAccessor value=new ConfigStoreAccessor(cs,cs.getCurrentVersion());
+  this.configStoreMap.put(key,value);
+  return value;
+}

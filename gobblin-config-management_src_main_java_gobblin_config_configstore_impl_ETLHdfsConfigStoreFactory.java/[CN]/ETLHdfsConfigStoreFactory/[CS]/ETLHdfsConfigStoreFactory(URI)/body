@@ -1,4 +1,0 @@
-{
-  this.fs=new Path(defaultConfigStoreRoot.getPath()).getFileSystem(new Configuration());
-  this.store=this.createConfigStore(defaultConfigStoreRoot);
-}

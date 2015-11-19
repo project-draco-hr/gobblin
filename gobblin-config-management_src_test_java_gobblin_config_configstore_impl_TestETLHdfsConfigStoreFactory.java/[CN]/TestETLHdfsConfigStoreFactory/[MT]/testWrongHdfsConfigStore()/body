@@ -5,5 +5,5 @@
   File WrongTestRootDir=new File(rootDir,WrongTestRoot);
   File input=new File(this.getClass().getResource("/" + WrongTestRoot).getFile());
   FilesUtil.SyncDirs(input,WrongTestRootDir);
-  factory=new ETLHdfsConfigStoreFactory(new URI("etl-hdfs://" + WrongTestRootDir.getAbsolutePath()));
+  factory.createConfigStore(new URI("etl-hdfs://" + WrongTestRootDir.getAbsolutePath()));
 }
