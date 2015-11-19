@@ -8,19 +8,18 @@
     }
     if (!this.containerMap.isEmpty()) {
 synchronized (this.allContainersStopped) {
-        this.allContainersStopped.wait(5 * 60 * 1000);
-        LOGGER.info("All of the containers have been stopped");
+        try {
+          this.allContainersStopped.wait(5 * 60 * 1000);
+          LOGGER.info("All of the containers have been stopped");
+        }
+ catch (        InterruptedException ie) {
+          Thread.currentThread().interrupt();
+        }
       }
     }
     this.amrmClientAsync.unregisterApplicationMaster(FinalApplicationStatus.SUCCEEDED,null,null);
   }
- catch (  IOException ioe) {
-    LOGGER.error("Failed to unregister the ApplicationMaster",ioe);
-  }
-catch (  YarnException ye) {
-    LOGGER.error("Failed to unregister the ApplicationMaster",ye);
-  }
-catch (  Exception e) {
+ catch (  IOException|YarnException e) {
     LOGGER.error("Failed to unregister the ApplicationMaster",e);
   }
  finally {

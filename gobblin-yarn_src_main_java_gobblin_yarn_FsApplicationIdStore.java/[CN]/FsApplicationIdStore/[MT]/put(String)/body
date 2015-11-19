@@ -1,16 +1,9 @@
 {
   delete();
-  Closer closer=Closer.create();
-  try {
+  try (OutputStreamWriter osWriter=new OutputStreamWriter(this.fs.create(this.applicationIdFilePath))){
     if (!this.fs.exists(this.applicationIdFilePath.getParent())) {
       this.fs.mkdirs(this.applicationIdFilePath.getParent());
     }
-    CharStreams.asWriter(closer.register(new OutputStreamWriter(this.fs.create(this.applicationIdFilePath)))).write(applicationId);
+    CharStreams.asWriter(osWriter).write(applicationId);
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-}
+ }
