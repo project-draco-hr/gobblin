@@ -1,0 +1,7 @@
+{
+  String pathString=path.toString();
+  for (  String extension : extensions) {
+    pathString=StringUtils.remove(pathString,extension);
+  }
+  return new Path(pathString);
+}

@@ -1,0 +1,14 @@
+{
+  State state=getTestState("testDeleteOnSource");
+  Path testMethodTempPath=new Path(testClassTempPath,"testDeleteOnSource");
+  DeletingCopyDataPublisher copyDataPublisher=closer.register(new DeletingCopyDataPublisher(state));
+  WorkUnitState wus=new WorkUnitState();
+  CopyableDataset copyableDataset=new TestCopyableDataset(new Path("origin"),new Path(testMethodTempPath,"testdataset"));
+  CopyableFile cf=CopyableFileUtils.createTestCopyableFile(new Path(testMethodTempPath,"test.txt").toString());
+  CopySource.serializeCopyableDataset(wus,copyableDataset);
+  CopySource.serializeCopyableFiles(wus,ImmutableList.of(cf));
+  Assert.assertTrue(fs.exists(new Path(testMethodTempPath,"test.txt")));
+  wus.setWorkingState(WorkingState.SUCCESSFUL);
+  copyDataPublisher.publishData(ImmutableList.of(wus));
+  Assert.assertFalse(fs.exists(new Path(testMethodTempPath,"test.txt")));
+}

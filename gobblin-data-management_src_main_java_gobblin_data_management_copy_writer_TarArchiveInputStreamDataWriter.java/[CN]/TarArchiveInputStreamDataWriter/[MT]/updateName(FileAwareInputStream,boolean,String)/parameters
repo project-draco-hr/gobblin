@@ -1,3 +1,0 @@
-FileAwareInputStream fileAwareInputStream
-boolean firstEntrySeen
-String newFileName

@@ -1,0 +1,8 @@
+{
+  this.fs=FileSystem.getLocal(new Configuration());
+  this.copyableDataset=new TestCopyableDataset(new Path("origin"),new Path(testMethodTempPath,datasetTargetPath));
+  this.relativeFilePaths=relativeFilePaths;
+  this.writerOutputPath=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  fs.mkdirs(testMethodTempPath);
+  log.info("Created a temp directory for test at " + testMethodTempPath);
+}

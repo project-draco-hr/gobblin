@@ -1,0 +1,9 @@
+{
+  ImmutableMap.Builder<String,String> jobMetadataBuilder=new ImmutableMap.Builder<String,String>();
+  jobMetadataBuilder.put(JOB_ID,jobState.getJobId());
+  jobMetadataBuilder.put(JOB_NAME,jobState.getJobName());
+  Map<String,String> jobMetadata=jobMetadataBuilder.build();
+  for (  TaskState taskState : jobState.getTaskStates()) {
+    submitTaskStateEvent(taskState,jobMetadata);
+  }
+}
