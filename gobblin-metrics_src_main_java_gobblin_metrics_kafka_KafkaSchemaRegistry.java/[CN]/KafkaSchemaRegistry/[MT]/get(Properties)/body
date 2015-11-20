@@ -1,0 +1,12 @@
+{
+  Preconditions.checkArgument(props.containsKey(KAFKA_SCHEMA_REGISTRY_CLASS),"Missing required property " + KAFKA_SCHEMA_REGISTRY_CLASS);
+  Class<? extends KafkaSchemaRegistry<?,?>> clazz;
+  try {
+    clazz=(Class<? extends KafkaSchemaRegistry<?,?>>)Class.forName(props.getProperty(KAFKA_SCHEMA_REGISTRY_CLASS));
+    return (KafkaSchemaRegistry<K,S>)ConstructorUtils.invokeConstructor(clazz,props);
+  }
+ catch (  ClassNotFoundException|NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException e) {
+    log.error("Failed to instantiate " + KafkaSchemaRegistry.class,e);
+    throw Throwables.propagate(e);
+  }
+}

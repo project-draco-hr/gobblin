@@ -1,0 +1,5 @@
+{
+  this.failedFetchHistories.putIfAbsent(key,new FailedFetchHistory(System.nanoTime()));
+  this.failedFetchHistories.get(key).incrementNumOfAttempts();
+  this.failedFetchHistories.get(key).setPreviousAttemptTime(System.nanoTime());
+}

@@ -1,0 +1,27 @@
+{
+  String schemaUrl=KafkaAvroSchemaRegistry.this.url + GET_RESOURCE_BY_ID + key;
+  GetMethod get=new GetMethod(schemaUrl);
+  int statusCode;
+  String schemaString;
+  try {
+    statusCode=this.httpClient.executeMethod(get);
+    schemaString=get.getResponseBodyAsString();
+  }
+ catch (  IOException e) {
+    throw new SchemaRegistryException(e);
+  }
+ finally {
+    get.releaseConnection();
+  }
+  if (statusCode != HttpStatus.SC_OK) {
+    throw new SchemaRegistryException(String.format("Schema with key %s cannot be retrieved, statusCode = %d",key,statusCode));
+  }
+  Schema schema;
+  try {
+    schema=new Schema.Parser().parse(schemaString);
+  }
+ catch (  Throwable t) {
+    throw new SchemaRegistryException(String.format("Schema with ID = %s cannot be parsed",key),t);
+  }
+  return schema;
+}

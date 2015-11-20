@@ -1,0 +1,12 @@
+{
+  if (shouldFetchFromSchemaRegistry(key)) {
+    try {
+      return KafkaSchemaRegistry.this.fetchSchemaByKey(key);
+    }
+ catch (    SchemaRegistryException e) {
+      addFetchToFailureHistory(key);
+      throw e;
+    }
+  }
+  throw new SchemaRegistryException(String.format("Schema with key %s cannot be retrieved",key));
+}

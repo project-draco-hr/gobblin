@@ -1,11 +1,12 @@
 {
   super(state);
+  this.schemaRegistry=state.contains(KafkaSchemaRegistry.KAFKA_SCHEMA_REGISTRY_CLASS) ? Optional.of(KafkaSchemaRegistry.<K,Schema>get(state.getProperties())) : Optional.<KafkaSchemaRegistry<K,Schema>>absent();
   this.schema=getExtractorSchema();
   if (this.schema.isPresent()) {
     this.reader=Optional.of(new GenericDatumReader<Record>(this.schema.get()));
   }
  else {
-    LOG.error(String.format("Cannot find latest schema for topic %s. This topic will be skipped",this.topicName));
+    log.error(String.format("Cannot find latest schema for topic %s. This topic will be skipped",this.topicName));
     this.reader=Optional.absent();
   }
 }

@@ -9,7 +9,7 @@
     return record;
   }
  catch (  IOException e) {
-    LOG.error(String.format("Error during decoding record for partition %s: ",this.getCurrentPartition()));
+    log.error(String.format("Error during decoding record for partition %s: ",this.getCurrentPartition()));
     throw e;
   }
 }
