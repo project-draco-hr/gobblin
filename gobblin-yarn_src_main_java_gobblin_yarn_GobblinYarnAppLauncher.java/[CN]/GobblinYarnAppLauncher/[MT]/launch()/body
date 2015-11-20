@@ -9,17 +9,14 @@
     throw Throwables.propagate(e);
   }
   this.yarnClient.start();
-  this.applicationId=Optional.of(setupAndSubmitApplication());
+  this.applicationId=getApplicationId();
   this.applicationStatusMonitor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       try {
         eventBus.post(new ApplicationReportArrivalEvent(yarnClient.getApplicationReport(applicationId.get())));
       }
- catch (      YarnException ye) {
-        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),ye);
-      }
-catch (      IOException ioe) {
-        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),ioe);
+ catch (      YarnException|IOException e) {
+        LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),e);
       }
     }
   }

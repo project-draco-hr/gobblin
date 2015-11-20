@@ -1,6 +1,7 @@
 {
   YarnClientApplication gobblinYarnApp=this.yarnClient.createApplication();
   ApplicationSubmissionContext appSubmissionContext=gobblinYarnApp.getApplicationSubmissionContext();
+  appSubmissionContext.setApplicationType(GOBBLIN_YARN_APPLICATION_TYPE);
   ApplicationId applicationId=appSubmissionContext.getApplicationId();
   GetNewApplicationResponse newApplicationResponse=gobblinYarnApp.getNewApplicationResponse();
   Resource resource=prepareContainerResource(newApplicationResponse);

@@ -1,0 +1,12 @@
+{
+  List<ApplicationReport> applicationReports=this.yarnClient.getApplications(APPLICATION_TYPES,RECONNECTABLE_APPLICATION_STATES);
+  if (applicationReports == null || applicationReports.isEmpty()) {
+    return Optional.absent();
+  }
+  for (  ApplicationReport applicationReport : applicationReports) {
+    if (this.applicationName.equals(applicationReport.getName())) {
+      return Optional.of(applicationReport.getApplicationId());
+    }
+  }
+  return Optional.absent();
+}

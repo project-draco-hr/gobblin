@@ -23,7 +23,7 @@
       }
     }
   finally {
-      this.fsCloser.close();
+      this.closer.close();
     }
   }
   this.stopped=true;

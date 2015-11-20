@@ -1,0 +1,3 @@
+{
+  YarnHelixUtils.writeTokenToFile(this.token,this.tokenFilePath,this.configuration);
+}
