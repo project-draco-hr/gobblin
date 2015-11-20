@@ -1,3 +1,12 @@
 {
-  return null;
+  ConfigStoreAccessor csa=this.getConfigStoreAccessor(uri);
+  URI rel_uri=getRelativeUriToStore(csa.store.getStoreURI(),uri);
+  if (!recursive) {
+    return getAbsoluteUri(csa.store.getStoreURI(),csa.store.getOwnImports(rel_uri,csa.version));
+  }
+  if (csa.store instanceof ConfigStoreWithResolution) {
+    return getAbsoluteUri(csa.store.getStoreURI(),((ConfigStoreWithResolution)csa.store).getImportsRecursively(rel_uri,csa.version));
+  }
+  SimpleImportMappings im=new SimpleImportMappings(csa.store,csa.version);
+  return getAbsoluteUri(csa.store.getStoreURI(),im.getImportMappingRecursively().get(rel_uri));
 }

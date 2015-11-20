@@ -1,3 +1,10 @@
 {
-  return null;
+  Map<URI,Config> result=new HashMap<URI,Config>();
+  Iterator<URI> it=uris.iterator();
+  URI tmp;
+  while (it.hasNext()) {
+    tmp=it.next();
+    result.put(tmp,this.getConfig(tmp));
+  }
+  return result;
 }

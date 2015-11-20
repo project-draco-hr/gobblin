@@ -1,7 +1,7 @@
 {
   String testName="selfImportSelf";
   File baseDir=new File(testRootDir,testName);
-  URI storeURI=new URI("hdfs://" + baseDir.getAbsolutePath());
+  URI storeURI=new URI("file://" + baseDir.getAbsolutePath());
   HdfsConfigStoreWithOwnInclude circularStore=new HdfsConfigStoreWithOwnInclude(storeURI);
   Assert.assertEquals(circularStore.getCurrentVersion(),Version);
   String tagString="tags/t_a_1";

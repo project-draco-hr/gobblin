@@ -4,6 +4,11 @@
   }
   ConfigStoreFactory<ConfigStore> csFactory=this.getConfigStoreFactory(uri);
   ConfigStore cs=csFactory.createConfigStore(uri);
+  if (!(cs instanceof ConfigStoreWithStableVersion)) {
+    if (this.policy == VERSION_STABILITY_POLICY.RAISE_ERROR) {
+      throw new Exception(String.format("Try to connect to unstable config store ",cs.getStoreURI()));
+    }
+  }
   URI csRoot=cs.getStoreURI();
   URI key=new URI(csFactory.getScheme(),csRoot.getAuthority(),csRoot.getPath(),csRoot.getQuery(),csRoot.getFragment());
   ConfigStoreAccessor value=new ConfigStoreAccessor(cs,cs.getCurrentVersion());
