@@ -1,0 +1,3 @@
+{
+  SlaEventSubmitter.builder().eventSubmitter(eventSubmitter).eventName(DATASET_PUBLISHED_EVENT_NAME).datasetUrn(copyableDataset.datasetRoot().toString()).partition(copyableDataset.datasetRoot().toString()).additionalMetadata(DATASET_TARGET_ROOT_METADATA_NAME,copyableDataset.datasetTargetRoot().toString()).build().submit();
+}

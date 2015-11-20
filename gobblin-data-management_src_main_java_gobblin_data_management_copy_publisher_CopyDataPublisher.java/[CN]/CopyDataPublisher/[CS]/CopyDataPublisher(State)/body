@@ -5,4 +5,6 @@
   this.fs=FileSystem.get(URI.create(uri),conf);
   FileAwareInputStreamDataWriterBuilder.setJobSpecificOutputPaths(state);
   this.writerOutputDir=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  MetricContext metricContext=Instrumented.getMetricContext(state,CopyDataPublisher.class,GobblinMetrics.getCustomTagsFromState(state));
+  this.eventSubmitter=new EventSubmitter.Builder(metricContext,"gobblin.copy.CopyDataPublisher").build();
 }

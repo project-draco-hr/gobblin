@@ -4,7 +4,7 @@
   this.fs.mkdirs(stagingFile.getParent(),fileAwareInputStream.getFile().getDestinationOwnerAndPermission().getFsPermission());
   FSDataOutputStream os=fs.create(stagingFile,true);
   try {
-    IOUtils.copyBytes(fileAwareInputStream.getInputStream(),os,fs.getConf(),false);
+    bytesWritten+=StreamUtils.copy(fileAwareInputStream.getInputStream(),os);
   }
   finally {
     os.close();

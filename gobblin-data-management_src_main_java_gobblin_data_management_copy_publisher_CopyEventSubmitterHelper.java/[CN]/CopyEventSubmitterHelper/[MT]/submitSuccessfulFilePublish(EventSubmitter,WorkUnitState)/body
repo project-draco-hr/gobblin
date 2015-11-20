@@ -1,0 +1,3 @@
+{
+  new SlaEventSubmitter(eventSubmitter,FILE_PUBLISHED_EVENT_NAME,workUnitState.getProperties()).submit();
+}
