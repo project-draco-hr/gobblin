@@ -1,0 +1,4 @@
+{
+  Config c=cc.getConfig(dsURI);
+  TestETLHdfsConfigStore.validateImportedConfig(c);
+}

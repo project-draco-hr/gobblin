@@ -2,14 +2,14 @@
   ConfigStoreAccessor csa=this.getConfigStoreAccessor(uri);
   URI rel_uri=getRelativeUriToStore(csa.store.getStoreURI(),uri);
   if ((!recursive) && (csa.store instanceof ConfigStoreWithImportedBy)) {
-    return getAbsoluteUri(csa.store.getStoreURI(),((ConfigStoreWithImportedBy)csa.store).getImportedBy(rel_uri,csa.version));
+    return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),((ConfigStoreWithImportedBy)csa.store).getImportedBy(rel_uri,csa.version));
   }
   if (recursive && (csa.store instanceof ConfigStoreWithImportedByRecursively)) {
-    return getAbsoluteUri(csa.store.getStoreURI(),((ConfigStoreWithImportedByRecursively)csa.store).getImportedByRecursively(rel_uri,csa.version));
+    return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),((ConfigStoreWithImportedByRecursively)csa.store).getImportedByRecursively(rel_uri,csa.version));
   }
   SimpleImportMappings im=new SimpleImportMappings(csa.store,csa.version);
   if (!recursive) {
-    return getAbsoluteUri(csa.store.getStoreURI(),im.getImportedByMapping().get(rel_uri));
+    return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),im.getImportedByMapping().get(rel_uri));
   }
-  return getAbsoluteUri(csa.store.getStoreURI(),im.getImportMappingRecursively().get(rel_uri));
+  return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),im.getImportMappingRecursively().get(rel_uri));
 }

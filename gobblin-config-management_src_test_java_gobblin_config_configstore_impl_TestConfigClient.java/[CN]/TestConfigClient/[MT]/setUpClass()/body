@@ -2,10 +2,9 @@
   String TestRoot="HdfsBasedConfigTest";
   rootDir=Files.createTempDir();
   System.out.println("root dir is " + rootDir);
-  File testRootDir=new File(rootDir,TestRoot);
+  testRootDir=new File(rootDir,TestRoot);
   File input=new File(this.getClass().getResource("/" + TestRoot).getFile());
   FilesUtil.SyncDirs(input,testRootDir);
-  URI storeURI=new URI("file://" + testRootDir.getAbsolutePath());
-  store=new ETLHdfsConfigStore(storeURI);
-  dataset=new URI("datasets/a1/a2/a3");
+  cc=ConfigClient.createDefaultConfigClient();
+  dsURI=new URI("etl-hdfs://" + testRootDir.getAbsolutePath() + "/datasets/a1/a2/a3");
 }

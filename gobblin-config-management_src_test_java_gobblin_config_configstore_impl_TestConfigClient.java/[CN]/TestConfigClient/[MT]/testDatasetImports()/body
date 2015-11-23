@@ -1,0 +1,12 @@
+{
+  Collection<URI> imports=cc.getImports(dsURI,false);
+  for (  URI i : imports) {
+    System.out.println("direct imports is " + i);
+    testDatasetImportedBy(dsURI,i,false);
+  }
+  imports=cc.getImports(dsURI,true);
+  for (  URI i : imports) {
+    System.out.println("resolved imports is " + i);
+    testDatasetImportedBy(dsURI,i,true);
+  }
+}
