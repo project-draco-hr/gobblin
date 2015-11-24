@@ -10,7 +10,7 @@
     }
   }
 );
-  this.eventSubmitter=new EventSubmitter.Builder(this.runtimeMetricContext,"gobblin.runtime").build();
+  this.eventSubmitter=new EventSubmitter.Builder(this.runtimeMetricContext,"gobblin.runtime").addMetadata(eventMetadata).build();
   JobExecutionEventSubmitter jobExecutionEventSubmitter=new JobExecutionEventSubmitter(this.eventSubmitter);
   this.mandatoryJobListeners.add(new JobExecutionEventSubmitterListener(jobExecutionEventSubmitter));
 }

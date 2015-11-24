@@ -2,3 +2,4 @@ Properties properties
 HelixManager helixManager
 EventBus eventBus
 Path appWorkDir
+Map<String,String> eventMetadata

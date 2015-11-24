@@ -4,4 +4,5 @@
   this.helixManager=helixManager;
   this.eventBus=eventBus;
   this.appWorkDir=appWorkDir;
+  this.eventMetadata=eventMetadata;
 }

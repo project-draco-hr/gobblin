@@ -1,5 +1,5 @@
 {
-  super(jobProps);
+  super(jobProps,eventMetadata);
   this.helixManager=helixManager;
   this.helixTaskDriver=new TaskDriver(this.helixManager);
   this.fs=FileSystem.get(new Configuration());
