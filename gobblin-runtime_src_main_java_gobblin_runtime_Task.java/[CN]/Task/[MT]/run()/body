@@ -78,7 +78,7 @@
       LOG.error(String.format("Not all forks of task %s succeeded",this.taskId));
       this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
     }
-    addConstructsFinalStateToTaskState(extractor,converter);
+    addConstructsFinalStateToTaskState(extractor,converter,rowChecker);
   }
  catch (  Throwable t) {
     failTask(t);
