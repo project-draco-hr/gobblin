@@ -15,13 +15,7 @@
       if (!f.isDir()) {
         continue;
       }
-      try {
-        res.add(new URI(this.getRelativePath(f.getPath(),version)));
-      }
- catch (      URISyntaxException e) {
-        LOG.error(String.format("Got error when create URI for %s, exception %s",f.getPath(),e.getMessage()),e);
-        throw new RuntimeException(e);
-      }
+      res.add(getRelativePathURI(f.getPath(),version));
     }
     return res;
   }
