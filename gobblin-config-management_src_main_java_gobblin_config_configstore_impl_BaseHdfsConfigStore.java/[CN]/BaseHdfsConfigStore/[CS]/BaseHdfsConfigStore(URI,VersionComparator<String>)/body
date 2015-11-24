@@ -1,7 +1,7 @@
 {
   try {
     this.storeURI=root;
-    this.location=new Path(root.getPath());
+    this.location=new Path(root);
     this.fs=FileSystem.get(root,new Configuration());
   }
  catch (  IOException ioe) {

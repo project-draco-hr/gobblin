@@ -1,9 +1,6 @@
 {
   List<URI> result=new ArrayList<URI>();
-  Iterator<URI> it=relativeURI.iterator();
-  URI tmp;
-  while (it.hasNext()) {
-    tmp=it.next();
+  for (  URI tmp : relativeURI) {
     result.add(new URI(scheme,storeRootURI.getAuthority(),storeRootURI.getPath() + "/" + tmp.getPath(),storeRootURI.getQuery(),storeRootURI.getFragment()));
   }
   return result;

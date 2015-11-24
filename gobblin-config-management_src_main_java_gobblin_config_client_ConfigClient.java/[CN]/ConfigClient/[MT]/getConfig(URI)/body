@@ -4,6 +4,10 @@
   if (csa.store instanceof ConfigStoreWithResolution) {
     return ((ConfigStoreWithResolution)csa.store).getResolvedConfig(rel_uri,csa.version);
   }
-  SimpleConfigStoreResolver resolver=new SimpleConfigStoreResolver(csa.store);
+  SimpleConfigStoreResolver resolver=csa.resolver;
+  if (resolver == null) {
+    resolver=new SimpleConfigStoreResolver(csa.store);
+    csa.resolver=resolver;
+  }
   return resolver.getResolvedConfig(rel_uri,csa.version);
 }

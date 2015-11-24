@@ -5,9 +5,8 @@
     return result;
   }
   Collection<URI> imported=this.getOwnImports(uri,version);
-  Iterator<URI> it=imported.iterator();
-  while (it.hasNext()) {
-    result.addAll(this.getImportsRecursively(it.next(),version));
+  for (  URI u : imported) {
+    result.addAll(this.getImportsRecursively(u,version));
   }
   result.addAll(this.getImportsRecursively(PathUtils.getParentURI(uri),version));
   return dedup(result);

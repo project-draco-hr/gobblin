@@ -1,7 +1,11 @@
 {
+  if (this.versionRootMap.containsKey(version)) {
+    return this.versionRootMap.get(version);
+  }
   Path versionRoot=new Path(this.location,version);
   try {
     if (this.fs.isDirectory(versionRoot)) {
+      this.versionRootMap.put(version,versionRoot);
       return versionRoot;
     }
  else {

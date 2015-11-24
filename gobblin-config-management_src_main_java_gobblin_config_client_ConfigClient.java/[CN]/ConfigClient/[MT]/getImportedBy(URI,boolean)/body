@@ -7,7 +7,11 @@
   if (recursive && (csa.store instanceof ConfigStoreWithImportedByRecursively)) {
     return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),((ConfigStoreWithImportedByRecursively)csa.store).getImportedByRecursively(rel_uri,csa.version));
   }
-  SimpleImportMappings im=new SimpleImportMappings(csa.store,csa.version);
+  SimpleImportMappings im=csa.simpleImportMappings;
+  if (im == null) {
+    im=new SimpleImportMappings(csa.store,csa.version);
+    csa.simpleImportMappings=im;
+  }
   if (!recursive) {
     return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),im.getImportedByMapping().get(rel_uri));
   }
