@@ -8,12 +8,15 @@
  else {
     this.blacklist=Optional.absent();
   }
+  this.fs=fs;
+  Path tmpDatasetPattern;
   if (props.getProperty(DATASET_FINDER_PATTERN_KEY) != null) {
-    this.datasetPattern=new Path(props.getProperty(DATASET_FINDER_PATTERN_KEY));
+    tmpDatasetPattern=new Path(props.getProperty(DATASET_FINDER_PATTERN_KEY));
   }
  else {
-    this.datasetPattern=new Path(props.getProperty(DATASET_PATTERN_KEY));
+    tmpDatasetPattern=new Path(props.getProperty(DATASET_PATTERN_KEY));
   }
-  this.fs=fs;
+  this.datasetPattern=tmpDatasetPattern.isAbsolute() ? tmpDatasetPattern : new Path(this.fs.getWorkingDirectory(),tmpDatasetPattern);
   this.props=props;
+  this.commonRoot=PathUtils.deepestNonGlobPath(this.datasetPattern);
 }

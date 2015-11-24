@@ -1,0 +1,19 @@
+{
+  URI uri=URI.create(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI));
+  if (state.getPropAsBoolean(ConfigurationKeys.SHOULD_FS_PROXY_AS_USER,ConfigurationKeys.DEFAULT_SHOULD_FS_PROXY_AS_USER)) {
+    try {
+      String user=state.getProp(ConfigurationKeys.FS_PROXY_AS_USER_NAME);
+      Optional<Token<?>> token=ProxiedFileSystemUtils.getTokenFromSeqFile(user,new Path(state.getProp(ConfigurationKeys.FS_PROXY_AS_USER_TOKEN_FILE)));
+      if (!token.isPresent()) {
+        throw new IOException("No token found for user " + user);
+      }
+      return ProxiedFileSystemCache.fromToken().userNameToken(token.get()).userNameToProxyAs(state.getProp(ConfigurationKeys.FS_PROXY_AS_USER_NAME)).fsURI(uri).build();
+    }
+ catch (    ExecutionException e) {
+      throw new IOException(e);
+    }
+  }
+ else {
+    return FileSystem.get(uri,new Configuration());
+  }
+}
