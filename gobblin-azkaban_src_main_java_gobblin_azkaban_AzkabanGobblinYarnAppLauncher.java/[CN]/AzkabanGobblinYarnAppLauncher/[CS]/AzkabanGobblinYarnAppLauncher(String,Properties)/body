@@ -1,0 +1,4 @@
+{
+  super(jobId,LOGGER);
+  this.gobblinYarnAppLauncher=new GobblinYarnAppLauncher(ConfigFactory.parseProperties(props));
+}
