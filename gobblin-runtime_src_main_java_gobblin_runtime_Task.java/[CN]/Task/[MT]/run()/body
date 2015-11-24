@@ -85,6 +85,7 @@
   }
  finally {
     this.taskState.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN,getRecordsWritten());
+    this.taskState.setProp(ConfigurationKeys.WRITER_BYTES_WRITTEN,getBytesWritten());
     try {
       closer.close();
     }
