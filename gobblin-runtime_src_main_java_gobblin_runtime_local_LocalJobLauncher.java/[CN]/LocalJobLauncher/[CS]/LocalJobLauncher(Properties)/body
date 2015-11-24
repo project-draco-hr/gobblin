@@ -1,5 +1,5 @@
 {
-  super(jobProps);
+  super(jobProps,ImmutableMap.<String,String>of());
   TimingEvent jobLocalSetupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.JOB_LOCAL_SETUP);
   this.taskExecutor=new TaskExecutor(jobProps);
   this.taskStateTracker=new LocalTaskStateTracker(jobProps,this.taskExecutor);

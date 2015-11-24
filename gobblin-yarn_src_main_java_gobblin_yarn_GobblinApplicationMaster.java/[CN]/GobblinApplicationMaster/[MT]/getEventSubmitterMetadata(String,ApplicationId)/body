@@ -1,0 +1,3 @@
+{
+  return new ImmutableMap.Builder<String,String>().put(GobblinYarnEventNames.YARN_APPLICATION_NAME,applicationName).put(GobblinYarnEventNames.YARN_APPLICATION_ID,applicationId.toString()).build();
+}

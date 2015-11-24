@@ -1,0 +1,4 @@
+{
+  this.metadata.putAll(additionalMetadata);
+  return this;
+}
