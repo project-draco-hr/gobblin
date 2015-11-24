@@ -1,6 +1,7 @@
 {
   this.taskState.addFinalConstructState(Constructs.EXTRACTOR.toString().toLowerCase(),extractor.getFinalState());
   this.taskState.addFinalConstructState(Constructs.CONVERTER.toString().toLowerCase(),converter.getFinalState());
+  this.taskState.addFinalConstructState(Constructs.ROW_QUALITY_CHECKER.toString().toLowerCase(),rowChecker.getFinalState());
   int forkIdx=0;
   for (  Optional<Fork> fork : this.forks) {
     if (fork.isPresent()) {
