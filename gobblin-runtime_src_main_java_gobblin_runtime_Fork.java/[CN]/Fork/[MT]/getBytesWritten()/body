@@ -1,0 +1,8 @@
+{
+  try {
+    return this.writer.isPresent() ? this.writer.get().bytesWritten() : 0L;
+  }
+ catch (  Throwable t) {
+    return 0L;
+  }
+}
