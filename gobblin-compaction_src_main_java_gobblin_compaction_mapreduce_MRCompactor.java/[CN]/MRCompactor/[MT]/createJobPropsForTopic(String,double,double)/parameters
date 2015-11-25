@@ -1,0 +1,3 @@
+String topic
+double priority
+double lateDataThresholdForRecompact

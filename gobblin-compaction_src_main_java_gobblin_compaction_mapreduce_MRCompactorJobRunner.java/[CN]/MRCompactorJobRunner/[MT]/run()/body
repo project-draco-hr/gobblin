@@ -26,6 +26,10 @@
       }
       this.submitLateRecordCountsEvent(newLateFilePaths,lateDataOutputPath);
       this.copyDataFiles(lateDataOutputPath,newLateFilePaths);
+      if (this.outputDeduplicated) {
+        LOG.info("Getting late record count from: " + this.dataset.outputLatePath());
+        this.dataset.checkIfNeedToRecompact(this.lateOutputRecordCountProvider.getRecordCount(this.getCumulativeLateFilePaths(this.dataset.outputLatePath())),this.outputRecordCountProvider.getRecordCount(this.getCumulativeLateFilePaths(this.dataset.outputPath())));
+      }
       this.status=Status.COMMITTED;
     }
  else {

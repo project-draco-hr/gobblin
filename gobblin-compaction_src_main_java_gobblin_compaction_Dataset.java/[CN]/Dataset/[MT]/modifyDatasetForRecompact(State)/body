@@ -1,0 +1,7 @@
+{
+  this.setJobProps(recompactState);
+  this.setInputPath(this.outputPath);
+  this.setInputLatePath(this.outputLatePath);
+  this.addAdditionalInputPath(this.outputLatePath);
+  this.resetNeedToRecompact();
+}
