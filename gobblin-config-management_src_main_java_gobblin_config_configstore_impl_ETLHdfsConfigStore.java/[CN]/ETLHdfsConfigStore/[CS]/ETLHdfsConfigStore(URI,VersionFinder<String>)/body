@@ -1,4 +1,3 @@
 {
   super(root,vc);
-  this.resolver=new SimpleConfigStoreResolver(this);
 }

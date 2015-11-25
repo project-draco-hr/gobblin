@@ -1,0 +1,15 @@
+{
+  URI tagURI=new URI("etl-hdfs://" + testRootDir.getAbsolutePath() + "/tags/l1/l2");
+  Collection<URI> importedBy=cc.getImportedBy(tagURI,false);
+  Assert.assertEquals(importedBy.size(),2);
+  for (  URI i : importedBy) {
+    System.out.println("direct imported by  is " + i);
+    Assert.assertTrue(i.toString().endsWith("/HdfsBasedConfigTest/tags/t1/t2/t3") || i.toString().endsWith("/HdfsBasedConfigTest/tags/v1"));
+  }
+  importedBy=cc.getImportedBy(tagURI,true);
+  Assert.assertEquals(importedBy.size(),5);
+  for (  URI i : importedBy) {
+    System.out.println("recursively imported by  is " + i);
+    Assert.assertTrue(i.toString().endsWith("/HdfsBasedConfigTest/tags/v1/v2/v3") || i.toString().endsWith("/HdfsBasedConfigTest/tags/v1") || i.toString().endsWith("/HdfsBasedConfigTest/datasets/a1/a2/a3")|| i.toString().endsWith("/HdfsBasedConfigTest/tags/t1/t2/t3")|| i.toString().endsWith("/HdfsBasedConfigTest/tags/v1/v2"));
+  }
+}

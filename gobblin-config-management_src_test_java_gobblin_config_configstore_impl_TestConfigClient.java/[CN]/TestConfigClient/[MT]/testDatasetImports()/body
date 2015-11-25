@@ -1,12 +1,16 @@
 {
   Collection<URI> imports=cc.getImports(dsURI,false);
+  Assert.assertTrue(imports.size() == 1);
   for (  URI i : imports) {
     System.out.println("direct imports is " + i);
+    Assert.assertTrue(i.toString().endsWith("/HdfsBasedConfigTest/tags/t1/t2/t3"));
     testDatasetImportedBy(dsURI,i,false);
   }
   imports=cc.getImports(dsURI,true);
+  Assert.assertTrue(imports.size() == 2);
   for (  URI i : imports) {
     System.out.println("resolved imports is " + i);
+    Assert.assertTrue(i.toString().endsWith("/HdfsBasedConfigTest/tags/t1/t2/t3") || i.toString().endsWith("/HdfsBasedConfigTest/tags/l1/l2"));
     testDatasetImportedBy(dsURI,i,true);
   }
 }
