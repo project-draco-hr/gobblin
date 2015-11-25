@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(maxMinutesPerLogFile > 0,"Max minutes per log file must be positive");
+  this.maxMinutesPerLogFile=maxMinutesPerLogFile;
+  return this;
+}

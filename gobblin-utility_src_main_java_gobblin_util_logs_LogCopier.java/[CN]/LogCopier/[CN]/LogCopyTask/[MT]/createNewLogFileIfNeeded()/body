@@ -1,0 +1,7 @@
+{
+  if (LogCopier.this.destFs.exists(this.destLogFile) && (this.watch.elapsed(TimeUnit.MINUTES) > LogCopier.this.maxMinutesPerLogFile || LogCopier.this.destFs.getFileStatus(this.destLogFile).getLen() > LogCopier.this.maxBytesPerLogFile)) {
+    HadoopUtils.renamePath(LogCopier.this.destFs,this.destLogFile,new Path(this.destLogFile.toString() + "." + System.currentTimeMillis()));
+    this.watch.reset();
+    this.watch.start();
+  }
+}
