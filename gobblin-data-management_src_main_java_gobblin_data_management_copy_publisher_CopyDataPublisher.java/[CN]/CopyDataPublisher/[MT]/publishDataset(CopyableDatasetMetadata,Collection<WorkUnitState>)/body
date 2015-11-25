@@ -1,0 +1,13 @@
+{
+  Path datasetWriterOutputPath=new Path(writerOutputDir,PathUtils.withoutLeadingSeparator(copyableDataset.getDatasetTargetRoot()));
+  log.info(String.format("Publishing dataset from %s to %s",datasetWriterOutputPath,copyableDataset.getDatasetTargetRoot()));
+  HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,copyableDataset.getDatasetTargetRoot());
+  fs.delete(datasetWriterOutputPath,true);
+  for (  WorkUnitState wus : datasetWorkUnitStates) {
+    if (wus.getWorkingState() == WorkingState.SUCCESSFUL) {
+      wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+      CopyEventSubmitterHelper.submitSuccessfulFilePublish(eventSubmitter,wus);
+    }
+  }
+  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(eventSubmitter,copyableDataset);
+}

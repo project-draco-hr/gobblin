@@ -1,3 +1,0 @@
-{
-  throw new UnsupportedOperationException("This implementation of CopyableDataset is ONLY meant for serialization and desrialization.");
-}

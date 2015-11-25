@@ -1,7 +1,0 @@
-{
-  List<CopyableFile> files=Lists.newArrayList();
-  for (int i=0; i < FILE_COUNT; i++) {
-    files.add(new CopyableFile(new FileStatus(10,false,0,0,0,new Path(datasetRoot,Integer.toString(i))),new Path(datasetTargetRoot,Integer.toString(i)),new Path(RELATIVE_PREFIX,Integer.toString(i)),OWNER_AND_PERMISSION,Lists.newArrayList(OWNER_AND_PERMISSION),"checksum".getBytes()));
-  }
-  return files;
-}

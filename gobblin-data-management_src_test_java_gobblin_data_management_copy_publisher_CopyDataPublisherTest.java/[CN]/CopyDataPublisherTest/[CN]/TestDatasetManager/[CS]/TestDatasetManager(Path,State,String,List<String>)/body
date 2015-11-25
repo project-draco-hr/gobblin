@@ -1,6 +1,7 @@
 {
   this.fs=FileSystem.getLocal(new Configuration());
-  this.copyableDataset=new TestCopyableDataset(new Path("origin"),new Path(testMethodTempPath,datasetTargetPath));
+  this.copyableDataset=new TestCopyableDataset(new Path("origin"));
+  this.metadata=new CopyableDatasetMetadata(this.copyableDataset,new Path(testMethodTempPath,datasetTargetPath));
   this.relativeFilePaths=relativeFilePaths;
   this.writerOutputPath=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
   fs.mkdirs(testMethodTempPath);

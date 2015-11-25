@@ -1,0 +1,6 @@
+{
+  Preconditions.checkArgument(state.contains(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),"Missing property " + ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR);
+  Path basePath=new Path(state.getProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR));
+  Path datasetRelativeToCommonRoot=PathUtils.relativizePath(PathUtils.getPathWithoutSchemeAndAuthority(dataset.datasetRoot()),PathUtils.getPathWithoutSchemeAndAuthority(datasetFinder.commonDatasetRoot()));
+  return new Path(basePath,datasetRelativeToCommonRoot);
+}

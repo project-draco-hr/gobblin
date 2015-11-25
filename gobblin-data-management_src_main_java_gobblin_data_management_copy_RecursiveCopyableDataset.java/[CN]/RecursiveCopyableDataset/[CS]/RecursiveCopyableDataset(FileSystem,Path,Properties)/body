@@ -1,8 +1,6 @@
 {
-  Preconditions.checkArgument(!Strings.isNullOrEmpty(properties.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR)),"Missing property " + ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR);
   this.rootPath=PathUtils.getPathWithoutSchemeAndAuthority(rootPath);
   this.fs=fs;
-  this.targetDirectory=new Path(properties.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR));
   this.properties=properties;
   this.ownerAndPermissionCache=CacheBuilder.newBuilder().build(new CacheLoader<Path,OwnerAndPermission>(){
     @Override public OwnerAndPermission load(    Path path) throws Exception {
