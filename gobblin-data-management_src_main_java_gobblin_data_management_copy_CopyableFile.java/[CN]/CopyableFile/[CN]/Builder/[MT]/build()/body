@@ -1,0 +1,19 @@
+{
+  if (this.destinationOwnerAndPermission == null) {
+    String owner=this.preserve.preserve(Option.OWNER) ? this.origin.getOwner() : null;
+    String group=this.preserve.preserve(Option.GROUP) ? this.origin.getGroup() : null;
+    FsPermission permission=this.preserve.preserve(Option.PERMISSION) ? this.origin.getPermission() : null;
+    this.destinationOwnerAndPermission=new OwnerAndPermission(owner,group,permission);
+  }
+  if (this.ancestorsOwnerAndPermission == null) {
+    this.ancestorsOwnerAndPermission=replicateOwnerAndPermission(this.originFs,this.origin.getPath(),this.preserve);
+  }
+  if (this.checksum == null) {
+    FileChecksum checksumTmp=this.originFs.getFileChecksum(origin.getPath());
+    this.checksum=checksumTmp == null ? new byte[0] : checksumTmp.getBytes();
+  }
+  if (this.partition == null) {
+    this.partition=this.rootPath.toString();
+  }
+  return new CopyableFile(origin,destination,relativeDestination,destinationOwnerAndPermission,ancestorsOwnerAndPermission,null,preserve,partition);
+}

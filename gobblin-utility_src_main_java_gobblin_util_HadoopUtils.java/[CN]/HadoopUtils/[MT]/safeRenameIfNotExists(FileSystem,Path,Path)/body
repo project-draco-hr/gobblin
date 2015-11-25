@@ -1,0 +1,14 @@
+{
+  if (!fs.exists(to)) {
+    if (!fs.exists(to.getParent())) {
+      fs.mkdirs(to.getParent());
+    }
+    if (!fs.rename(from,to)) {
+      throw new IOException(String.format("Failed to rename %s to %s.",from,to));
+    }
+    return true;
+  }
+ else {
+    return false;
+  }
+}

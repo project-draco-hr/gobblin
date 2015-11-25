@@ -1,0 +1,9 @@
+{
+  super.modifyCopyableFile(builder,origin);
+  if (Integer.parseInt(origin.getPath().getName()) < THRESHOLD) {
+    builder.partition(BELOW);
+  }
+ else {
+    builder.partition(ABOVE);
+  }
+}

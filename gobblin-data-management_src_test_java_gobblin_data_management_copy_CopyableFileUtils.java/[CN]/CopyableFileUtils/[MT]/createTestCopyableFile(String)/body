@@ -2,5 +2,5 @@
   FileSystem fs=FileSystem.getLocal(new Configuration());
   fs.create(new Path(resourcePath));
   FileStatus status=new FileStatus(0l,false,0,0l,0l,new Path(resourcePath));
-  return new CopyableFile(status,new Path(getRandomPath()),new Path(getRandomPath()),null,null,null);
+  return new CopyableFile(status,new Path(getRandomPath()),new Path(getRandomPath()),null,null,null,PreserveAttributes.fromMnemonicString(""),"");
 }

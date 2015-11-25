@@ -1,0 +1,15 @@
+{
+  Map<String,Partition.Builder<CopyableFile>> partitionBuildersMaps=Maps.newHashMap();
+  for (  CopyableFile file : files) {
+    if (!partitionBuildersMaps.containsKey(file.getPartition())) {
+      partitionBuildersMaps.put(file.getPartition(),new Partition.Builder<CopyableFile>(file.getPartition()));
+    }
+    partitionBuildersMaps.get(file.getPartition()).add(file);
+  }
+  return Lists.newArrayList(Iterables.transform(partitionBuildersMaps.values(),new Function<Partition.Builder<CopyableFile>,Partition<CopyableFile>>(){
+    @Nullable @Override public Partition<CopyableFile> apply(    Partition.Builder<CopyableFile> input){
+      return input.build();
+    }
+  }
+));
+}

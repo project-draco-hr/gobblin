@@ -1,4 +1,7 @@
 {
+  if (ownerAndPermission.getFsPermission() == null) {
+    return ownerAndPermission;
+  }
   if (!file.isDir()) {
     return ownerAndPermission;
   }

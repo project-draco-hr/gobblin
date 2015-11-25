@@ -1,3 +1,4 @@
 {
-  return new Path(this.stagingDir,PathUtils.withoutLeadingSeparator(file.getDestination()));
+  CopyableFile.DatasetAndPartition datasetAndPartition=file.getDatasetAndPartition(this.copyableDatasetMetadata);
+  return new Path(new Path(this.stagingDir,datasetAndPartition.identifier()),PathUtils.withoutLeadingSeparator(file.getDestination()));
 }
