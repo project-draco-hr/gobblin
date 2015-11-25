@@ -1,6 +1,6 @@
 {
   ConfigStoreAccessor csa=this.getConfigStoreAccessor(uri);
-  URI rel_uri=getRelativeUriToStore(csa.store.getStoreURI(),uri);
+  URI rel_uri=csa.store.getStoreURI().relativize(uri);
   if (csa.store instanceof ConfigStoreWithResolution) {
     return ((ConfigStoreWithResolution)csa.store).getResolvedConfig(rel_uri,csa.version);
   }

@@ -1,15 +1,15 @@
 {
   ConfigStoreAccessor csa=this.getConfigStoreAccessor(uri);
-  URI rel_uri=getRelativeUriToStore(csa.store.getStoreURI(),uri);
+  URI rel_uri=csa.store.getStoreURI().relativize(uri);
   if ((!recursive) && (csa.store instanceof ConfigStoreWithImportedBy)) {
-    return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),((ConfigStoreWithImportedBy)csa.store).getImportedBy(rel_uri,csa.version));
+    return getAbsoluteUri(csa.store.getStoreURI(),((ConfigStoreWithImportedBy)csa.store).getImportedBy(rel_uri,csa.version));
   }
   if (recursive && (csa.store instanceof ConfigStoreWithImportedByRecursively)) {
-    return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),((ConfigStoreWithImportedByRecursively)csa.store).getImportedByRecursively(rel_uri,csa.version));
+    return getAbsoluteUri(csa.store.getStoreURI(),((ConfigStoreWithImportedByRecursively)csa.store).getImportedByRecursively(rel_uri,csa.version));
   }
   SimpleImportMappings im=csa.simpleImportMappings;
   if (!recursive) {
-    return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),im.getImportedByMapping().get(rel_uri));
+    return getAbsoluteUri(csa.store.getStoreURI(),im.getImportedByMapping().get(rel_uri));
   }
-  return getAbsoluteUri(uri.getScheme(),csa.store.getStoreURI(),im.getImportedByMappingRecursively().get(rel_uri));
+  return getAbsoluteUri(csa.store.getStoreURI(),im.getImportedByMappingRecursively().get(rel_uri));
 }

@@ -1,6 +1,7 @@
 {
-  if (this.configStoreMap.containsKey(uri)) {
-    return this.configStoreMap.get(uri);
+  URI floorKey=this.configStoreMap.floorKey(uri);
+  if (PathUtils.checkDescendant(floorKey,uri)) {
+    return this.configStoreMap.get(floorKey);
   }
   ConfigStoreFactory<ConfigStore> csFactory=this.getConfigStoreFactory(uri);
   ConfigStore cs=csFactory.createConfigStore(uri);
@@ -9,10 +10,8 @@
       throw new Exception(String.format("Try to connect to unstable config store ",cs.getStoreURI()));
     }
   }
-  URI csRoot=cs.getStoreURI();
-  URI key=new URI(csFactory.getScheme(),csRoot.getAuthority(),csRoot.getPath(),csRoot.getQuery(),csRoot.getFragment());
-  String curVersion=cs.getCurrentVersion();
-  ConfigStoreAccessor value=new ConfigStoreAccessor(cs,curVersion);
+  URI key=cs.getStoreURI();
+  ConfigStoreAccessor value=new ConfigStoreAccessor(cs,cs.getCurrentVersion());
   if (!(cs instanceof ConfigStoreWithResolution)) {
     SimpleConfigStoreResolver resolver=new SimpleConfigStoreResolver(cs);
     value.resolver=resolver;

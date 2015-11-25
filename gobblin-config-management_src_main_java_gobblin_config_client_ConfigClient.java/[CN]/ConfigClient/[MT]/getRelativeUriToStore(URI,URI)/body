@@ -1,8 +1,0 @@
-{
-  String root=storeRootURI.getPath();
-  String absPath=absURI.getPath();
-  if (root.equals(absPath)) {
-    return new URI("");
-  }
-  return new URI(absPath.substring(root.length() + 1));
-}

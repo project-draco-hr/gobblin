@@ -1,7 +1,0 @@
-{
-  List<URI> result=new ArrayList<URI>();
-  for (  URI tmp : relativeURI) {
-    result.add(new URI(scheme,storeRootURI.getAuthority(),storeRootURI.getPath() + "/" + tmp.getPath(),storeRootURI.getQuery(),storeRootURI.getFragment()));
-  }
-  return result;
-}
