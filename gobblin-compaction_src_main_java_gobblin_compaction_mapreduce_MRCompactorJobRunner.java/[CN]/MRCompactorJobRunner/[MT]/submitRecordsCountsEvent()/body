@@ -1,0 +1,14 @@
+{
+  try {
+    long lateOutputRecordCount=0l;
+    Path outputLatePath=this.dataset.outputLatePath();
+    if (this.fs.exists(outputLatePath)) {
+      lateOutputRecordCount=this.lateOutputRecordCountProvider.getRecordCount(this.getApplicableFilePaths(this.dataset.outputLatePath()));
+    }
+    long outputRecordCount=this.outputRecordCountProvider.getRecordCount(this.getApplicableFilePaths(this.dataset.outputPath()));
+    new CompactionRecordCountEvent(this.dataset,outputRecordCount,lateOutputRecordCount,this.eventSubmitter).submit();
+  }
+ catch (  Exception e) {
+    LOG.error("Failed to submit late event count:" + e,e);
+  }
+}

@@ -1,9 +1,9 @@
 {
-  if (!this.fs.exists(lateDataDir)) {
+  if (!this.fs.exists(dataDir)) {
     return Lists.newArrayList();
   }
   List<Path> paths=Lists.newArrayList();
-  for (  FileStatus fileStatus : FileListUtils.listFilesRecursively(fs,lateDataDir,new PathFilter(){
+  for (  FileStatus fileStatus : FileListUtils.listFilesRecursively(fs,dataDir,new PathFilter(){
     @Override public boolean accept(    Path path){
       for (      String validExtention : getApplicableFileExtensions()) {
         if (path.getName().endsWith(validExtention)) {
