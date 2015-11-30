@@ -17,9 +17,16 @@
     value.resolver=resolver;
   }
   if (!((cs instanceof ConfigStoreWithImportedBy) && (cs instanceof ConfigStoreWithImportedByRecursively))) {
-    SimpleImportMappings im=new SimpleImportMappings(value.resolver,value.version);
+    SimpleImportMappings im=null;
+    if (!(cs instanceof ConfigStoreWithResolution)) {
+      im=new SimpleImportMappings(value.resolver,value.version);
+    }
+ else {
+      im=new SimpleImportMappings(cs,value.version);
+    }
     value.simpleImportMappings=im;
   }
   this.configStoreMap.put(key,value);
+  LOG.info(String.format("Created new config store with uri: %s, version: %s",cs.getStoreURI(),cs.getCurrentVersion()));
   return value;
 }

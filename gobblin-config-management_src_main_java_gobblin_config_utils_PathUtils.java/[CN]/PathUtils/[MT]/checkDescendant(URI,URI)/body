@@ -16,7 +16,7 @@
   if (!result)   return result;
   String path1=parent.getPath();
   String path2=child.getPath();
-  if (path1.equals(path2) || path1.indexOf(path2 + "/") == 0) {
+  if (path2.equals(path1) || path2.indexOf(path1 + "/") == 0) {
     return true;
   }
   return false;

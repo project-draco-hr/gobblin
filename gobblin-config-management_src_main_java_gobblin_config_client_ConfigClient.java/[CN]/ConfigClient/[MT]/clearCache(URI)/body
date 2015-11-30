@@ -1,3 +1,7 @@
 {
-  this.configStoreMap.remove(uri);
+  URI floorKey=this.configStoreMap.floorKey(uri);
+  if (PathUtils.checkDescendant(floorKey,uri)) {
+    ConfigStoreAccessor csa=this.configStoreMap.remove(floorKey);
+    LOG.info(String.format("Cleared cache for config store: %s, version %s",csa.store.getStoreURI(),csa.version));
+  }
 }
