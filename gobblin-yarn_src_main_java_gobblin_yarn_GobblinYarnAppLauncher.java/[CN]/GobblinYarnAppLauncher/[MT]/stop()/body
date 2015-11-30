@@ -12,9 +12,7 @@
     }
     ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor,Optional.of(LOGGER),5,TimeUnit.MINUTES);
     this.yarnClient.stop();
-    if (this.helixManager.isConnected()) {
-      this.helixManager.disconnect();
-    }
+    disconnectHelixManager();
   }
   finally {
     try {

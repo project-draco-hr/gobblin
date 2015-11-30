@@ -1,6 +1,6 @@
 {
   Schema schema=new Schema.Parser().parse(AVRO_SCHEMA);
-  Path sourceFile=new Path(workUnitState.getWorkunit().getProp(SOURCE_FILE_KEY));
+  Path sourceFile=new Path(workUnitState.getWorkunit().getProp(TestSource.SOURCE_FILE_KEY));
   LOG.info("Reading from source file " + sourceFile);
   DatumReader<GenericRecord> datumReader=new GenericDatumReader<GenericRecord>(schema);
   try {

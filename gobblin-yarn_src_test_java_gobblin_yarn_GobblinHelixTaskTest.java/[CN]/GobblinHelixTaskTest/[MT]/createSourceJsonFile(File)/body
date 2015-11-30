@@ -1,0 +1,4 @@
+{
+  Files.createParentDirs(sourceJsonFile);
+  Files.write(SOURCE_JSON_DOCS,sourceJsonFile,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
+}

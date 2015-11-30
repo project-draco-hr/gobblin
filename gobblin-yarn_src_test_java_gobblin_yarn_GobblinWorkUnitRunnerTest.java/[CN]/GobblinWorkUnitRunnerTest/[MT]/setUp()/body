@@ -1,0 +1,14 @@
+{
+  this.testingZKServer=new TestingServer(TEST_ZK_PORT);
+  URL url=GobblinWorkUnitRunnerTest.class.getClassLoader().getResource(GobblinWorkUnitRunnerTest.class.getSimpleName() + ".conf");
+  if (url == null) {
+    Assert.fail();
+  }
+  Config config=ConfigFactory.parseURL(url).resolve();
+  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectionString,config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
+  this.gobblinWorkUnitRunner=new GobblinWorkUnitRunner(TEST_APPLICATION_NAME,ConverterUtils.toContainerId(TEST_PARTICIPANT_CONTAINER_ID),config);
+  this.gobblinWorkUnitRunner.connectHelixManager();
+  this.gobblinApplicationMaster=new GobblinApplicationMaster(TEST_APPLICATION_NAME,ConverterUtils.toContainerId(TEST_CONTROLLER_CONTAINER_ID),config,new YarnConfiguration());
+  this.gobblinApplicationMaster.connectHelixManager();
+}

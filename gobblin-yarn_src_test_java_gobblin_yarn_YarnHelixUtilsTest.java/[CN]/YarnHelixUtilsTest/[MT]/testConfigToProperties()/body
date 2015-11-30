@@ -1,5 +1,9 @@
 {
-  Config config=ConfigFactory.load();
+  URL url=YarnHelixUtilsTest.class.getClassLoader().getResource(YarnHelixUtilsTest.class.getSimpleName() + ".conf");
+  if (url == null) {
+    Assert.fail();
+  }
+  Config config=ConfigFactory.parseURL(url).resolve();
   Assert.assertEquals(config.getString("k1"),"v1");
   Assert.assertEquals(config.getString("k2"),"v1");
   Assert.assertEquals(config.getInt("k3"),1000);

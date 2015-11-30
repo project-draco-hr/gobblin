@@ -13,10 +13,7 @@
   }
  finally {
     this.taskStateModelFactory.shutdown();
-    if (this.helixManager.isConnected()) {
-      this.helixManager.getStateMachineEngine().removeStateModelFactory("Task",this.taskStateModelFactory);
-      this.helixManager.disconnect();
-    }
+    disconnectHelixManager();
   }
   this.isStopped=true;
 }

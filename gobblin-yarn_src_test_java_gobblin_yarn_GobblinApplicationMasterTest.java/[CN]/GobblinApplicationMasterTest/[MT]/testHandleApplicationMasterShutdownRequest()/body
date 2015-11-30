@@ -1,0 +1,5 @@
+{
+  this.gobblinApplicationMaster.getEventBus().post(new ApplicationMasterShutdownRequest());
+  Thread.sleep(1000);
+  Assert.assertFalse(this.gobblinApplicationMaster.isHelixManagerConnected());
+}

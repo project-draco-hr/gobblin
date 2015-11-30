@@ -1,0 +1,14 @@
+{
+  try {
+    if (this.helixManager.isConnected()) {
+      this.helixManager.disconnect();
+    }
+    this.gobblinApplicationMaster.disconnectHelixManager();
+  }
+ catch (  Throwable t) {
+    Assert.fail();
+  }
+ finally {
+    this.testingZKServer.close();
+  }
+}

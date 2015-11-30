@@ -1,0 +1,18 @@
+{
+  this.applicationName=applicationName;
+  this.applicationId=applicationId;
+  this.config=config;
+  this.yarnConfiguration=yarnConfiguration;
+  this.amrmClientAsync=closer.register(AMRMClientAsync.createAMRMClientAsync(1000,new AMRMClientCallbackHandler()));
+  this.amrmClientAsync.init(this.yarnConfiguration);
+  this.nmClientAsync=closer.register(NMClientAsync.createNMClientAsync(new NMClientCallbackHandler()));
+  this.nmClientAsync.init(this.yarnConfiguration);
+  this.containerLaunchExecutor=Executors.newFixedThreadPool(10,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("ContainerLaunchExecutor")));
+  this.fs=fs;
+  this.eventBus=eventBus;
+  this.initialContainers=config.getInt(GobblinYarnConfigurationKeys.INITIAL_CONTAINERS_KEY);
+  this.requestedContainerMemoryMbs=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_MEMORY_MBS_KEY);
+  this.requestedContainerCores=config.getInt(GobblinYarnConfigurationKeys.CONTAINER_CORES_KEY);
+  this.containerJvmArgs=config.hasPath(GobblinYarnConfigurationKeys.CONTAINER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinYarnConfigurationKeys.CONTAINER_JVM_ARGS_KEY)) : Optional.<String>absent();
+  this.tokens=getSecurityTokens();
+}

@@ -1,0 +1,5 @@
+{
+  if (this.helixManager.isConnected()) {
+    this.helixManager.disconnect();
+  }
+}

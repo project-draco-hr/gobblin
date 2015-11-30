@@ -1,8 +1,0 @@
-{
-  ClusterSetup clusterSetup=new ClusterSetup(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY));
-  String clusterName=this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
-  clusterSetup.addCluster(clusterName,true);
-  String autoJoinConfig=ZKHelixManager.ALLOW_PARTICIPANT_AUTO_JOIN + "=true";
-  clusterSetup.setConfig(HelixConfigScope.ConfigScopeProperty.CLUSTER,clusterName,autoJoinConfig);
-  LOGGER.info("Created Helix cluster " + clusterName);
-}

@@ -1,0 +1,11 @@
+{
+  try {
+    if (this.localFs.exists(this.appWorkDir)) {
+      this.localFs.delete(this.appWorkDir,true);
+    }
+  }
+  finally {
+    this.taskExecutor.stopAsync().awaitTerminated();
+    this.taskStateTracker.stopAsync().awaitTerminated();
+  }
+}

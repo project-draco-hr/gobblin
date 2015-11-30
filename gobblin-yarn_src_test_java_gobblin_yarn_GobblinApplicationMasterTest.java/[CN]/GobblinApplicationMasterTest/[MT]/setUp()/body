@@ -1,0 +1,18 @@
+{
+  this.testingZKServer=new TestingServer(TEST_ZK_PORT);
+  URL url=GobblinApplicationMasterTest.class.getClassLoader().getResource(GobblinApplicationMasterTest.class.getSimpleName() + ".conf");
+  if (url == null) {
+    Assert.fail();
+  }
+  Config config=ConfigFactory.parseURL(url).resolve();
+  YarnConfiguration yarnConfiguration=new YarnConfiguration();
+  yarnConfiguration.set(YarnConfiguration.NM_CLIENT_MAX_NM_PROXIES,"1");
+  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectionString,config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),TEST_HELIX_INSTANCE_NAME,InstanceType.PARTICIPANT,zkConnectionString);
+  this.helixManager.connect();
+  this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new TestShutdownMessageHandlerFactory(this));
+  this.gobblinApplicationMaster=new GobblinApplicationMaster(TEST_APPLICATION_NAME,ConverterUtils.toContainerId(TEST_CONTAINER_ID),config,yarnConfiguration);
+  this.gobblinApplicationMaster.getEventBus().register(this.gobblinApplicationMaster);
+  this.gobblinApplicationMaster.connectHelixManager();
+}

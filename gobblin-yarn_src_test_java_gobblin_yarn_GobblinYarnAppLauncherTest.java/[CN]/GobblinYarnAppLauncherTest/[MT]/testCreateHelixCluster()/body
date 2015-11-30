@@ -1,0 +1,5 @@
+{
+  YarnHelixUtils.createGobblinYarnHelixCluster(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY),this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
+  Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s",GobblinYarnAppLauncherTest.class.getSimpleName())).getVersion(),0);
+  Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s/CONTROLLER",GobblinYarnAppLauncherTest.class.getSimpleName())).getVersion(),0);
+}
