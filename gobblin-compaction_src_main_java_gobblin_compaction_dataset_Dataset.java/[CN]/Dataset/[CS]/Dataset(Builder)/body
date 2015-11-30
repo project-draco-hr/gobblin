@@ -1,0 +1,13 @@
+{
+  this.inputPath=builder.inputPath;
+  this.inputLatePath=builder.inputLatePath;
+  this.outputPath=builder.outputPath;
+  this.outputLatePath=builder.outputLatePath;
+  this.outputTmpPath=builder.outputTmpPath;
+  this.additionalInputPaths=Lists.newArrayList();
+  this.throwables=Collections.synchronizedCollection(Lists.<Throwable>newArrayList());
+  this.priority=builder.priority;
+  this.lateDataThresholdForRecompact=builder.lateDataThresholdForRecompact;
+  this.state=new AtomicReference<>(DatasetState.UNVERIFIED);
+  this.jobProps=new State();
+}

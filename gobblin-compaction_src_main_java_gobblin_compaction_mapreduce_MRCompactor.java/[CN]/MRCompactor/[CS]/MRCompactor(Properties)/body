@@ -2,15 +2,9 @@
   this.state=new State();
   state.addAll(props);
   this.conf=HadoopUtils.getConfFromState(state);
-  this.inputDir=getInputDir();
-  this.inputSubDir=getInputSubDir();
-  this.inputLateSubDir=getInputLateSubDir();
-  this.destDir=getDestDir();
-  this.destSubDir=getDestSubDir();
-  this.destLateSubDir=getDestLateSubDir();
   this.tmpOutputDir=getTmpOutputDir();
   this.fs=getFileSystem();
-  this.datasets=Sets.newHashSet();
+  this.datasets=getDatasetsFinder().findDistinctDatasets();
   this.jobExecutor=createJobExecutor();
   this.jobRunnables=Maps.newConcurrentMap();
   this.closer=Closer.create();

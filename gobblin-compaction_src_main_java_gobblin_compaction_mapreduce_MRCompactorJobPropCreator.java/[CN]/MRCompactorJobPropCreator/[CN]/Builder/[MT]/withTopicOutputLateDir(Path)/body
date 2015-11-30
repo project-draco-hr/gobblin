@@ -1,4 +1,0 @@
-{
-  this.topicOutputLateDir=topicOutputLateDir;
-  return (T)this;
-}

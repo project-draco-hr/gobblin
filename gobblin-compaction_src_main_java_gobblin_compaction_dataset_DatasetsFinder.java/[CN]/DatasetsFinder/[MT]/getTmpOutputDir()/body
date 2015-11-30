@@ -1,0 +1,3 @@
+{
+  return this.state.getProp(MRCompactor.COMPACTION_TMP_DEST_DIR,MRCompactor.DEFAULT_COMPACTION_TMP_DEST_DIR);
+}

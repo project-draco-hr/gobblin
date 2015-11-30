@@ -1,0 +1,41 @@
+{
+  Set<Dataset> datasets=Sets.newHashSet();
+  for (  FileStatus datasetsFileStatus : this.fs.listStatus(new Path(this.inputDir))) {
+    if (datasetsFileStatus.isDir()) {
+      String datasetName=datasetsFileStatus.getPath().getName();
+      if (DatasetFilterUtils.survived(datasetName,this.blacklist,this.whitelist)) {
+        log.info("Found dataset: " + datasetsFileStatus.getPath().getName());
+        Path inputPath=new Path(this.inputDir,new Path(datasetName,this.inputSubDir));
+        Path inputLatePath=new Path(this.inputDir,new Path(datasetName,this.inputLateSubDir));
+        Path outputPath=new Path(this.destDir,new Path(datasetName,this.destSubDir));
+        Path outputLatePath=new Path(this.destDir,new Path(datasetName,this.destLateSubDir));
+        Path outputTmpPath=new Path(this.tmpOutputDir,new Path(datasetName,this.destSubDir));
+        double priority=this.getDatasetPriority(datasetName);
+        double lateDataThresholdForRecompact=this.getDatasetRecompactThreshold(datasetName);
+        String folderStructure=getFolderStructure();
+        for (        FileStatus status : this.fs.globStatus(new Path(inputPath,folderStructure))) {
+          Path jobInputPath=status.getPath();
+          DateTime folderTime=null;
+          try {
+            folderTime=getFolderTime(jobInputPath,inputPath);
+          }
+ catch (          RuntimeException e) {
+            log.warn(jobInputPath + " is not a valid folder. Will be skipped.");
+            continue;
+          }
+          if (folderWithinAllowedPeriod(jobInputPath,folderTime)) {
+            Path jobInputLatePath=appendFolderTime(inputLatePath,folderTime);
+            Path jobOutputPath=appendFolderTime(outputPath,folderTime);
+            Path jobOutputLatePath=appendFolderTime(outputLatePath,folderTime);
+            Path jobOutputTmpPath=appendFolderTime(outputTmpPath,folderTime);
+            Dataset timeBasedDataset=new Dataset.Builder().withPriority(priority).withLateDataThresholdForRecompact(lateDataThresholdForRecompact).withInputPath(this.recompactDatasets ? jobOutputPath : jobInputPath).withInputLatePath(this.recompactDatasets ? jobOutputLatePath : jobInputLatePath).withOutputPath(jobOutputPath).withOutputLatePath(jobOutputLatePath).withOutputTmpPath(jobOutputTmpPath).build();
+            timeBasedDataset.setJobProp(MRCompactor.COMPACTION_JOB_DEST_PARTITION,folderTime.toString(this.timeFormatter));
+            timeBasedDataset.setJobProp(MRCompactor.COMPACTION_INPUT_PATH_TIME,folderTime.getMillis());
+            datasets.add(timeBasedDataset);
+          }
+        }
+      }
+    }
+  }
+  return datasets;
+}

@@ -1,0 +1,3 @@
+{
+  return this.state.getPropAsBoolean(MRCompactor.COMPACTION_RECOMPACT_FROM_DEST_PATHS,MRCompactor.DEFAULT_COMPACTION_RECOMPACT_FROM_DEST_PATHS);
+}

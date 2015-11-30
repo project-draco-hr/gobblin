@@ -6,7 +6,6 @@
     if (jobRunner.status() == COMMITTED) {
       if (jobRunner.getDataset().needToRecompact()) {
         State recompactState=new State();
-        recompactState.addAll(jobRunner.getDataset().jobProps());
         recompactState.setProp(MRCompactor.COMPACTION_RECOMPACT_FROM_DEST_PATHS,Boolean.TRUE);
         recompactState.setProp(MRCompactor.COMPACTION_JOB_LATE_DATA_MOVEMENT_TASK,Boolean.FALSE);
         jobRunner.getDataset().modifyDatasetForRecompact(recompactState);

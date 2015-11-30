@@ -1,4 +1,4 @@
 {
   this.fs=fs;
-  return (T)this;
+  return this;
 }

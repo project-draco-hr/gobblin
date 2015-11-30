@@ -1,4 +1,0 @@
-{
-  createJobPropsForTopics(topics);
-  processCompactionJobs();
-}

@@ -1,0 +1,8 @@
+{
+  try {
+    return new MRCompactorJobPropCreator.Builder().withDataset(dataset).withFileSystem(this.fs).withState(this.state).build();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

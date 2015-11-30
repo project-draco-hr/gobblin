@@ -1,0 +1,10 @@
+{
+  Set<Dataset> datasets=Sets.newHashSet();
+  Path inputPath=new Path(this.inputDir);
+  Path inputLatePath=new Path(inputPath,MRCompactor.COMPACTION_LATE_DIR_SUFFIX);
+  Path outputPath=new Path(this.destDir);
+  Path outputLatePath=new Path(outputPath,MRCompactor.COMPACTION_LATE_DIR_SUFFIX);
+  Dataset dataset=new Dataset.Builder().withPriority(this.getDatasetPriority(inputPath.getName())).withLateDataThresholdForRecompact(this.getDatasetRecompactThreshold(inputPath.getName())).withInputPath(this.recompactDatasets ? outputPath : inputPath).withInputLatePath(this.recompactDatasets ? outputLatePath : inputLatePath).withOutputPath(outputPath).withOutputLatePath(outputLatePath).withOutputTmpPath(new Path(this.tmpOutputDir)).build();
+  datasets.add(dataset);
+  return datasets;
+}
