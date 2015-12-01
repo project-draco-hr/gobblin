@@ -4,8 +4,8 @@
   }
   List<String> tokens=Lists.newArrayList();
   for (  Schema.Field field : record.getSchema().getFields()) {
-    String sanitizedName=field.name().replaceAll(HDFS_ILLEGAL_TOKEN_REGEX,"_");
-    String sanitizedValue=record.get(field.name()).toString().replaceAll(HDFS_ILLEGAL_TOKEN_REGEX,"_");
+    String sanitizedName=HadoopUtils.sanitizePath(field.name(),"_");
+    String sanitizedValue=HadoopUtils.sanitizePath(record.get(field.name()).toString(),"_");
     if (replacePathSeparators) {
       sanitizedName=sanitizedName.replaceAll(Path.SEPARATOR,"_");
       sanitizedValue=sanitizedValue.replaceAll(Path.SEPARATOR,"_");
