@@ -1,0 +1,16 @@
+{
+  Preconditions.checkState(dirFileStatus.isDir());
+  File dir=new File(destDir,dirFileStatus.getPath().getName());
+  dirToTarArchiveOutputStream(dir,tarArchiveOutputStream);
+  for (  FileStatus childFileStatus : fs.listStatus(dirFileStatus.getPath())) {
+    File childFile=new File(dir,childFileStatus.getPath().getName());
+    if (childFileStatus.isDir()) {
+      dirToTarArchiveOutputStreamRecursive(childFileStatus,fs,childFile,tarArchiveOutputStream);
+    }
+ else {
+      try (FSDataInputStream fsDataInputStream=fs.open(childFileStatus.getPath())){
+        fileToTarArchiveOutputStream(childFileStatus,fsDataInputStream,childFile,tarArchiveOutputStream);
+      }
+     }
+  }
+}

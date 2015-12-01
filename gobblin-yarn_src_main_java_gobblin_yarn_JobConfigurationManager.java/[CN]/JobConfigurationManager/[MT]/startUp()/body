@@ -1,7 +1,8 @@
 {
-  if (this.jobConfPackagePath.isPresent()) {
-    File path=new File(this.jobConfPackagePath.get());
-    File jobConfigDir=new File(System.getenv().get(ApplicationConstants.Environment.PWD.key()),path.getName());
+  if (this.jobConfDirPath.isPresent()) {
+    File path=new File(this.jobConfDirPath.get());
+    String pwd=System.getenv().get(ApplicationConstants.Environment.PWD.key());
+    File jobConfigDir=new File(pwd,path.getName() + GobblinYarnConfigurationKeys.TAR_GZ_FILE_SUFFIX);
     if (jobConfigDir.exists()) {
       LOGGER.info("Loading job configurations from " + jobConfigDir);
       Properties properties=new Properties();
