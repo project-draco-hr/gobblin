@@ -1,0 +1,8 @@
+{
+  Map<String,String> eventMetadataMap=Maps.newHashMap();
+  eventMetadataMap.put(DATASET_OUTPUT_PATH,dataset.outputPath().toString());
+  eventMetadataMap.put(LATE_RECORD_COUNT,Long.toString(lateOutputRecordCount));
+  eventMetadataMap.put(REGULAR_RECORD_COUNT,Long.toString(outputRecordCount));
+  log.info("Compaction record count event metadata: " + eventMetadataMap);
+  return eventMetadataMap;
+}
