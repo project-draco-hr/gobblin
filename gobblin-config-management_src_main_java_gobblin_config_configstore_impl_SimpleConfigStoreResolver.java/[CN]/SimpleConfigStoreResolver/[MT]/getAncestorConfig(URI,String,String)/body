@@ -1,0 +1,5 @@
+{
+  URI parent=PathUtils.getParentURI(uri);
+  Config res=getResolvedConfigWithTrace(parent,version,traceID);
+  return res;
+}

@@ -1,17 +1,5 @@
 {
-  CircularDependencyChecker.checkCircularDependency(store,version,uri);
-  Config self=this.getOwnConfig(uri,version);
-  if (isRootURI(uri)) {
-    return self;
-  }
-  Collection<URI> imported=this.getOwnImports(uri,version);
-  List<Config> importedConfigs=new ArrayList<Config>();
-  for (  URI u : imported) {
-    importedConfigs.add(this.getResolvedConfig(u,version));
-  }
-  for (int i=importedConfigs.size() - 1; i >= 0; i--) {
-    self=self.withFallback(importedConfigs.get(i));
-  }
-  Config ancestor=this.getAncestorConfig(uri,version);
-  return self.withFallback(ancestor);
+  UUID traceID=UUID.randomUUID();
+  LOG.info(String.format("Getting resolved config for uri: %s for version %s, with traceID: %s",uri,version,traceID));
+  return getResolvedConfigWithTrace(uri,version,traceID.toString());
 }
