@@ -1,4 +1,4 @@
 {
   Base64 base64decoder=new Base64();
-  return new String(base64decoder.encode(rawString.getBytes()));
+  return new String(base64decoder.encode(rawString.getBytes(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)),ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
 }
