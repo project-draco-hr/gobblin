@@ -1,0 +1,4 @@
+FileSystem sourceFs
+FileSystem destFs
+Path sourcePath
+Path destPath

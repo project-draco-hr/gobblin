@@ -1,0 +1,33 @@
+{
+  FileSystem localFs=FileSystem.getLocal(new Configuration());
+  Set<Path> expectedPaths=Sets.newHashSet();
+  Path testInDir=new Path("testDir");
+  expectedPaths.add(testInDir);
+  Path testOutFile=new Path("testTarOut" + UUID.randomUUID() + ".tar.gz");
+  try {
+    localFs.mkdirs(testInDir);
+    Path testFile1=new Path(testInDir,"testFile1");
+    expectedPaths.add(testFile1);
+    FSDataOutputStream testFileOut1=localFs.create(testFile1);
+    testFileOut1.close();
+    Path testFile2=new Path(testInDir,"testFile2");
+    expectedPaths.add(testFile2);
+    FSDataOutputStream testFileOut2=localFs.create(testFile2);
+    testFileOut2.close();
+    StreamUtils.tar(localFs,testInDir,testOutFile);
+    try (TarArchiveInputStream tarArchiveInputStream=new TarArchiveInputStream(new GzipCompressorInputStream(localFs.open(testOutFile)))){
+      TarArchiveEntry tarArchiveEntry;
+      while (null != (tarArchiveEntry=tarArchiveInputStream.getNextTarEntry())) {
+        assertThat(new Path(tarArchiveEntry.getName()),isIn(expectedPaths));
+      }
+    }
+   }
+  finally {
+    if (localFs.exists(testInDir)) {
+      localFs.delete(testInDir,true);
+    }
+    if (localFs.exists(testOutFile)) {
+      localFs.delete(testOutFile,true);
+    }
+  }
+}
