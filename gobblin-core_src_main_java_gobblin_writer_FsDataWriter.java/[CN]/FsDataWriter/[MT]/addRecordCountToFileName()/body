@@ -3,5 +3,6 @@
   String filePathWithRecordCount=new IngestionRecordCountProvider().constructFilePath(filePath,recordsWritten());
   LOG.info("Renaming " + filePath + " to "+ filePathWithRecordCount);
   HadoopUtils.renamePath(this.fs,new Path(filePath),new Path(filePathWithRecordCount));
+  this.outputFile=new Path(filePathWithRecordCount);
   return filePathWithRecordCount;
 }
