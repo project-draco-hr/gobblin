@@ -1,0 +1,8 @@
+{
+  this.list=list;
+  this.stateId=stateId;
+  this.fs=fs;
+  this.errFileOpen=false;
+  this.closer=Closer.create();
+  this.writer=this.closer.register(new RowLevelErrFileWriter(this.fs));
+}

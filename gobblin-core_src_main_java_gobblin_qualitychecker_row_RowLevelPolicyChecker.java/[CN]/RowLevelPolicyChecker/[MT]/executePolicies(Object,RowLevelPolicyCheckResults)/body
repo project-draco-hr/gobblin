@@ -8,7 +8,7 @@
       }
  else       if (p.getType().equals(RowLevelPolicy.Type.ERR_FILE)) {
         if (!errFileOpen) {
-          this.writer.open(new Path(p.getErrFileLocation(),p.toString().replaceAll("\\.","-") + ".err"));
+          this.writer.open(getErrFilePath(p));
           this.writer.write(record);
         }
  else {
