@@ -1,22 +1,21 @@
 {
-  ApplicationAttemptId applicationAttemptId=containerId.getApplicationAttemptId();
-  String applicationId=applicationAttemptId.getApplicationId().toString();
+  String applicationId=containerId.getApplicationAttemptId().getApplicationId().toString();
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
-  String helixInstanceName=YarnHelixUtils.getHelixInstanceName(YarnHelixUtils.getHostname(),containerId);
-  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.CONTROLLER,zkConnectionString);
-  FileSystem fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),new Configuration()) : FileSystem.get(new Configuration());
+  this.helixManager=buildHelixManager(config,containerId,zkConnectionString);
+  FileSystem fs=buildFileSystem(config);
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
+  Map<String,String> eventMetadata=getEventSubmitterMetadata(applicationName,applicationId);
   List<Service> services=Lists.newArrayList();
   if (isLogSourcePresent()) {
     services.add(buildLogCopier(containerId,fs,appWorkDir));
   }
-  services.add(new YarnService(config,applicationName,applicationId,yarnConfiguration,fs,this.eventBus));
-  services.add(new GobblinHelixJobScheduler(YarnHelixUtils.configToProperties(config),this.helixManager,this.eventBus,appWorkDir));
-  services.add(new JobConfigurationManager(this.eventBus,config.hasPath(GobblinYarnConfigurationKeys.JOB_CONF_PACKAGE_PATH_KEY) ? Optional.of(config.getString(GobblinYarnConfigurationKeys.JOB_CONF_PACKAGE_PATH_KEY)) : Optional.<String>absent()));
+  services.add(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
+  services.add(buildGobblinHelixJobScheduler(config,appWorkDir,eventMetadata));
+  services.add(buildJobConfigurationManager(config));
   if (UserGroupInformation.isSecurityEnabled()) {
     LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");
-    services.add(new YarnContainerSecurityManager(config,fs,this.eventBus));
+    services.add(buildYarnContainerSecurityManager(config,fs));
   }
   this.serviceManager=new ServiceManager(services);
   this.metricRegistry=new MetricRegistry();

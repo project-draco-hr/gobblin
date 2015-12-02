@@ -1,0 +1,9 @@
+{
+  CopyableDataset copyableDataset=new TestCopyableDataset();
+  Path target=new Path("/target");
+  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset,target);
+  String serialized=metadata.serialize();
+  CopyableDatasetMetadata deserialized=CopyableDatasetMetadata.deserialize(serialized);
+  Assert.assertEquals(copyableDataset.datasetRoot(),deserialized.getDatasetRoot());
+  Assert.assertEquals(target,deserialized.getDatasetTargetRoot());
+}

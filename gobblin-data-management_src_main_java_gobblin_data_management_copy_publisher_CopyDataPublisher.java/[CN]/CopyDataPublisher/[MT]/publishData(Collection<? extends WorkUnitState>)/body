@@ -1,13 +1,13 @@
 {
-  Multimap<CopyableDataset,WorkUnitState> datasets=getDatasetRoots(states);
+  Multimap<CopyableDatasetMetadata,WorkUnitState> datasets=getDatasetRoots(states);
   boolean allDatasetsPublished=true;
-  for (  CopyableDataset copyableDataset : datasets.keySet()) {
+  for (  CopyableDatasetMetadata copyableDataset : datasets.keySet()) {
     try {
       this.publishDataset(copyableDataset,datasets.get(copyableDataset));
     }
  catch (    Throwable e) {
       CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,copyableDataset);
-      log.error("Failed to publish " + copyableDataset.datasetTargetRoot(),e);
+      log.error("Failed to publish " + copyableDataset.getDatasetTargetRoot(),e);
       allDatasetsPublished=false;
     }
   }

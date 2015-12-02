@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(maxBytesPerLogFile > 0,"Max bytes per log file must be positive");
+  this.maxBytesPerLogFile=maxBytesPerLogFile;
+  return this;
+}

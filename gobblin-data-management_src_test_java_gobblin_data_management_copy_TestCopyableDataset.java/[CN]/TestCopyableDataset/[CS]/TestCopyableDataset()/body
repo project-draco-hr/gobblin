@@ -1,4 +1,3 @@
 {
   this.datasetRoot=new Path(ORIGIN_PREFIX);
-  this.datasetTargetRoot=new Path(DESTINATION_PREFIX);
 }

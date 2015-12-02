@@ -1,0 +1,3 @@
+{
+  this.eventSubmitter.submit(COMPACTION_RECORD_COUNT_EVENT,this.buildRecordCountEventMetaData());
+}

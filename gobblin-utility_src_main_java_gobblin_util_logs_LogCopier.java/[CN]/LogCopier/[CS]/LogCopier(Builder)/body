@@ -5,6 +5,8 @@
   this.destLogDir=this.destFs.makeQualified(builder.destLogDir);
   this.sourceLogFileMonitorInterval=builder.sourceLogFileMonitorInterval;
   this.copyInterval=builder.copyInterval;
+  this.maxMinutesPerLogFile=builder.maxMinutesPerLogFile;
+  this.maxBytesPerLogFile=builder.maxBytesPerLogFile;
   this.timeUnit=builder.timeUnit;
   this.logFileExtensions=builder.logFileExtensions;
   this.includingRegexPatterns=Optional.fromNullable(builder.includingRegexPatterns);

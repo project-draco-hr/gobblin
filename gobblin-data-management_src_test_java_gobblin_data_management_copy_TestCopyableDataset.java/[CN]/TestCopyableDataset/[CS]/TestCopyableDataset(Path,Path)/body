@@ -1,4 +1,0 @@
-{
-  this.datasetRoot=datasetRoot;
-  this.datasetTargetRoot=datasetTargetRoot;
-}

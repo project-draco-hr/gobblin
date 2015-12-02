@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(substitute.replaceAll(HDFS_ILLEGAL_TOKEN_REGEX,"").equals(substitute),"substitute contains illegal characters: " + substitute);
+  return path.replaceAll(HDFS_ILLEGAL_TOKEN_REGEX,substitute);
+}

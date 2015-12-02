@@ -1,4 +1,5 @@
 {
   this.srcLogFile=srcLogFile;
   this.destLogFile=destLogFile;
+  this.watch.start();
 }

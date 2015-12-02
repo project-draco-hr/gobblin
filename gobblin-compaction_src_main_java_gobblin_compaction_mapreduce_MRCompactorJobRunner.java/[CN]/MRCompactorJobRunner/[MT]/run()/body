@@ -24,8 +24,11 @@
           }
         }
       }
-      this.submitLateRecordCountsEvent(newLateFilePaths,lateDataOutputPath);
       this.copyDataFiles(lateDataOutputPath,newLateFilePaths);
+      if (this.outputDeduplicated) {
+        LOG.info("Getting late record count from: " + this.dataset.outputLatePath());
+        this.dataset.checkIfNeedToRecompact(this.lateOutputRecordCountProvider.getRecordCount(this.getApplicableFilePaths(this.dataset.outputLatePath())),this.outputRecordCountProvider.getRecordCount(this.getApplicableFilePaths(this.dataset.outputPath())));
+      }
       this.status=Status.COMMITTED;
     }
  else {
@@ -54,6 +57,7 @@
       }
     }
     this.markOutputDirAsCompleted(compactionTimestamp);
+    this.submitRecordsCountsEvent();
   }
  catch (  Throwable t) {
     throw Throwables.propagate(t);

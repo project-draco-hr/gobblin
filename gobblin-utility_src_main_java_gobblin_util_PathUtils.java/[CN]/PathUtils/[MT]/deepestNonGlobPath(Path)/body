@@ -1,0 +1,7 @@
+{
+  Path commonRoot=input;
+  while (commonRoot != null && GLOB_TOKENS.matcher(commonRoot.toString()).find()) {
+    commonRoot=commonRoot.getParent();
+  }
+  return commonRoot;
+}
