@@ -1,3 +1,3 @@
 {
-  this(split,AvroJob.getInputKeySchema(cx.getConfiguration()),idx);
+  this(split,AvroJob.getInputKeySchema(cx.getConfiguration()) != null ? AvroJob.getInputKeySchema(cx.getConfiguration()) : ((AvroCombineFileSplit)split).getSchema(),idx);
 }
