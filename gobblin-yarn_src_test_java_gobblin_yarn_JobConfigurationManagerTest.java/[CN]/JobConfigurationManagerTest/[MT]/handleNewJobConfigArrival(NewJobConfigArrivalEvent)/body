@@ -1,0 +1,4 @@
+{
+  this.receivedJobConfigs.add(newJobConfigArrivalEvent.getJobConfig());
+  this.countDownLatch.countDown();
+}

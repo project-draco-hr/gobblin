@@ -2,9 +2,9 @@
   TaskResult taskResult=this.gobblinHelixTask.run();
   System.out.println(taskResult.getInfo());
   Assert.assertEquals(taskResult.getStatus(),TaskResult.Status.COMPLETED);
-  File outputAvroFile=new File(this.taskOutputDir.toString(),REL_WRITER_FILE_PATH + File.separator + WRITER_FILE_NAME);
+  File outputAvroFile=new File(this.taskOutputDir.toString(),TestHelper.REL_WRITER_FILE_PATH + File.separator + TestHelper.WRITER_FILE_NAME);
   Assert.assertTrue(outputAvroFile.exists());
-  Schema schema=new Schema.Parser().parse(SOURCE_SCHEMA);
+  Schema schema=new Schema.Parser().parse(TestHelper.SOURCE_SCHEMA);
   try (DataFileReader<GenericRecord> reader=new DataFileReader<>(outputAvroFile,new GenericDatumReader<GenericRecord>(schema))){
     Iterator<GenericRecord> iterator=reader.iterator();
     GenericRecord record=iterator.next();

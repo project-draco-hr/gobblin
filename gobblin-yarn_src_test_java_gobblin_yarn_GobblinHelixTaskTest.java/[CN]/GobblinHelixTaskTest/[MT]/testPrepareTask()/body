@@ -1,23 +1,24 @@
 {
-  Path jobStateFilePath=new Path(appWorkDir,JOB_ID + "." + AbstractJobLauncher.JOB_STATE_FILE_NAME);
+  Path jobStateFilePath=new Path(appWorkDir,TestHelper.TEST_JOB_ID + "." + AbstractJobLauncher.JOB_STATE_FILE_NAME);
   JobState jobState=new JobState();
-  jobState.setJobName(JOB_NAME);
-  jobState.setJobId(JOB_ID);
+  jobState.setJobName(TestHelper.TEST_JOB_NAME);
+  jobState.setJobId(TestHelper.TEST_JOB_ID);
   SerializationUtils.serializeState(this.localFs,jobStateFilePath,jobState);
   WorkUnit workUnit=WorkUnit.createEmpty();
   prepareWorkUnit(workUnit);
-  File sourceJsonFile=new File(this.appWorkDir.toString(),JOB_NAME + ".json");
-  createSourceJsonFile(sourceJsonFile);
+  File sourceJsonFile=new File(this.appWorkDir.toString(),TestHelper.TEST_JOB_NAME + ".json");
+  TestHelper.createSourceJsonFile(sourceJsonFile);
   workUnit.setProp(SimpleJsonSource.SOURCE_FILE_KEY,sourceJsonFile.getAbsolutePath());
-  Path workUnitFilePath=new Path(this.appWorkDir,JOB_NAME + ".wu");
+  Path workUnitFilePath=new Path(this.appWorkDir,TestHelper.TEST_JOB_NAME + ".wu");
   SerializationUtils.serializeState(this.localFs,workUnitFilePath,workUnit);
   Assert.assertTrue(this.localFs.exists(workUnitFilePath));
   Map<String,String> taskConfigMap=Maps.newHashMap();
   taskConfigMap.put(GobblinYarnConfigurationKeys.WORK_UNIT_FILE_PATH,workUnitFilePath.toString());
-  taskConfigMap.put(ConfigurationKeys.JOB_ID_KEY,JOB_ID);
+  taskConfigMap.put(ConfigurationKeys.JOB_ID_KEY,TestHelper.TEST_JOB_ID);
   TaskConfig taskConfig=new TaskConfig("",taskConfigMap,true);
   TaskCallbackContext taskCallbackContext=Mockito.mock(TaskCallbackContext.class);
   Mockito.when(taskCallbackContext.getTaskConfig()).thenReturn(taskConfig);
   Mockito.when(taskCallbackContext.getManager()).thenReturn(this.helixManager);
-  this.gobblinHelixTask=new GobblinHelixTask(taskCallbackContext,this.taskExecutor,this.taskStateTracker,this.localFs,this.appWorkDir);
+  GobblinHelixTaskFactory gobblinHelixTaskFactory=new GobblinHelixTaskFactory(this.taskExecutor,this.taskStateTracker,this.localFs,this.appWorkDir);
+  this.gobblinHelixTask=(GobblinHelixTask)gobblinHelixTaskFactory.createNewTask(taskCallbackContext);
 }

@@ -15,6 +15,6 @@
   }
   this.config=ConfigFactory.parseURL(url).resolve();
   String zkConnectionString=this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
-  this.helixManager=HelixManagerFactory.getZKHelixManager(this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),TEST_HELIX_INSTANCE_NAME,InstanceType.CONTROLLER,zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.CONTROLLER,zkConnectionString);
   this.gobblinYarnAppLauncher=new GobblinYarnAppLauncher(this.config,clusterConf);
 }

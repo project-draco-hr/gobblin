@@ -10,9 +10,10 @@
   Properties properties=YarnHelixUtils.configToProperties(config);
   TaskExecutor taskExecutor=new TaskExecutor(properties);
   TaskStateTracker taskStateTracker=new GobblinHelixTaskStateTracker(properties,this.helixManager);
+  Path appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
   List<Service> services=Lists.newArrayList();
   if (isLogSourcePresent()) {
-    services.add(buildLogCopier(this.containerId,fs,YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId)));
+    services.add(buildLogCopier(this.containerId,fs,appWorkDir));
   }
   services.add(taskExecutor);
   services.add(taskStateTracker);
@@ -22,7 +23,6 @@
   }
   this.serviceManager=new ServiceManager(services);
   Map<String,TaskFactory> taskFactoryMap=Maps.newHashMap();
-  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
   taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(taskExecutor,taskStateTracker,fs,appWorkDir));
   this.taskStateModelFactory=new TaskStateModelFactory(this.helixManager,taskFactoryMap);
   this.helixManager.getStateMachineEngine().registerStateModelFactory("Task",this.taskStateModelFactory);

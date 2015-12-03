@@ -1,4 +1,5 @@
 Properties jobProps
 HelixManager helixManager
+FileSystem fs
 Path appWorkDir
 Map<String,String> eventMetadata

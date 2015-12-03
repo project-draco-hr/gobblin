@@ -1,0 +1,6 @@
+{
+  this.jobConfigurationManager.stopAsync().awaitTerminated();
+  if (this.jobConfigFileDir.exists()) {
+    FileUtils.deleteDirectory(this.jobConfigFileDir);
+  }
+}

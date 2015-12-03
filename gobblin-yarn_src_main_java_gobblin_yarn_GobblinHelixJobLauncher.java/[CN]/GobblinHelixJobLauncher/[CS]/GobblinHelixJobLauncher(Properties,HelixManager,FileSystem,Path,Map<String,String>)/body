@@ -2,7 +2,7 @@
   super(jobProps,eventMetadata);
   this.helixManager=helixManager;
   this.helixTaskDriver=new TaskDriver(this.helixManager);
-  this.fs=FileSystem.get(new Configuration());
+  this.fs=fs;
   this.appWorkDir=appWorkDir;
   this.inputWorkUnitDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.INPUT_WORK_UNIT_DIR_NAME);
   this.helixQueueName=this.jobContext.getJobName();

@@ -1,13 +1,13 @@
 {
-  workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,TASK_ID);
+  workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,TestHelper.TEST_TASK_ID);
+  workUnit.setProp(ConfigurationKeys.SOURCE_CLASS_KEY,SimpleJsonSource.class.getName());
   workUnit.setProp(ConfigurationKeys.CONVERTER_CLASSES_KEY,SimpleJsonConverter.class.getName());
   workUnit.setProp(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY,WriterOutputFormat.AVRO.toString());
   workUnit.setProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,Destination.DestinationType.HDFS.toString());
   workUnit.setProp(ConfigurationKeys.WRITER_STAGING_DIR,this.appWorkDir.toString() + Path.SEPARATOR + "staging");
   workUnit.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,this.taskOutputDir.toString());
-  workUnit.setProp(ConfigurationKeys.WRITER_FILE_NAME,WRITER_FILE_NAME);
-  workUnit.setProp(ConfigurationKeys.WRITER_FILE_PATH,REL_WRITER_FILE_PATH);
+  workUnit.setProp(ConfigurationKeys.WRITER_FILE_NAME,TestHelper.WRITER_FILE_NAME);
+  workUnit.setProp(ConfigurationKeys.WRITER_FILE_PATH,TestHelper.REL_WRITER_FILE_PATH);
   workUnit.setProp(ConfigurationKeys.WRITER_BUILDER_CLASS,AvroDataWriterBuilder.class.getName());
-  workUnit.setProp(ConfigurationKeys.SOURCE_SCHEMA,SOURCE_SCHEMA);
-  workUnit.setProp(ConfigurationKeys.SOURCE_CLASS_KEY,SimpleJsonSource.class.getName());
+  workUnit.setProp(ConfigurationKeys.SOURCE_SCHEMA,TestHelper.SOURCE_SCHEMA);
 }
