@@ -1,3 +1,6 @@
 {
   this.closer.close();
+  if (this.writerMetricsUpdater.isPresent()) {
+    ExecutorsUtils.shutdownExecutorService(this.writerMetricsUpdater.get(),Optional.of(log));
+  }
 }

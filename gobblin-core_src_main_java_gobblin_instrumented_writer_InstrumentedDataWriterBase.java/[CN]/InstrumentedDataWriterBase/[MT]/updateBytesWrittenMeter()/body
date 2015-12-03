@@ -1,0 +1,10 @@
+{
+  if (this.bytesWrittenMeter.isPresent()) {
+    try {
+      this.bytesWrittenMeter.get().mark(bytesWritten() - this.bytesWrittenMeter.get().getCount());
+    }
+ catch (    IOException e) {
+      log.error("Cannot get bytesWritten for DataWriter, will not update " + this.bytesWrittenMeter.get().toString(),e);
+    }
+  }
+}

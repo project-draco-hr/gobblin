@@ -2,5 +2,12 @@
   this.closer=Closer.create();
   this.instrumentationEnabled=GobblinMetrics.isEnabled(state);
   this.metricContext=this.closer.register(Instrumented.getMetricContext(state,classTag.or(this.getClass())));
+  if (this.instrumentationEnabled) {
+    this.writerMetricsUpdater=Optional.of(buildWriterMetricsUpdater());
+    scheduleWriterMetricsUpdater(this.writerMetricsUpdater.get(),getWriterMetricsUpdaterInterval(state));
+  }
+ else {
+    this.writerMetricsUpdater=Optional.absent();
+  }
   regenerateMetrics();
 }
