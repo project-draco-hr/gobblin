@@ -1,0 +1,5 @@
+{
+  if (this.recordsWrittenMeter.isPresent()) {
+    this.recordsWrittenMeter.get().mark(recordsWritten() - this.recordsWrittenMeter.get().getCount());
+  }
+}
