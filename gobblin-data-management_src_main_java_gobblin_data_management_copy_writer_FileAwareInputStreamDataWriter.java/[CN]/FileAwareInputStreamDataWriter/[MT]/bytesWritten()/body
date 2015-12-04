@@ -1,3 +1,3 @@
 {
-  return this.bytesWritten;
+  return this.bytesWritten.get();
 }

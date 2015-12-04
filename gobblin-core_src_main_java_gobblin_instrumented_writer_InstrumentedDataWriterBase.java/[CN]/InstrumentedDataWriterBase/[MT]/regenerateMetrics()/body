@@ -3,16 +3,16 @@
     this.recordsInMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_IN_METER));
     this.successfulWritesMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.SUCCESSFUL_WRITES_METER));
     this.failedWritesMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.FAILED_WRITES_METER));
-    this.recordsWrittenMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.RECORDS_WRITTEN_METER));
-    this.bytesWrittenMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.BYTES_WRITTEN_METER));
+    setRecordsWrittenMeter(isInstrumentationEnabled());
+    setBytesWrittenMeter(isInstrumentationEnabled());
     this.dataWriterTimer=Optional.of(this.metricContext.timer(MetricNames.DataWriterMetrics.WRITE_TIMER));
   }
  else {
     this.recordsInMeter=Optional.absent();
     this.successfulWritesMeter=Optional.absent();
     this.failedWritesMeter=Optional.absent();
-    this.recordsWrittenMeter=Optional.absent();
-    this.bytesWrittenMeter=Optional.absent();
+    setRecordsWrittenMeter(isInstrumentationEnabled());
+    setBytesWrittenMeter(isInstrumentationEnabled());
     this.dataWriterTimer=Optional.absent();
   }
 }
