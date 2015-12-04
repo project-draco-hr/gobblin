@@ -5,5 +5,5 @@
   for (  Map.Entry<String,Object> entry : fields.entrySet()) {
     record.put(entry.getKey(),entry.getValue());
   }
-  return new SingleRecordIterable<GenericRecord>(record);
+  return new SingleRecordIterable<>(record);
 }

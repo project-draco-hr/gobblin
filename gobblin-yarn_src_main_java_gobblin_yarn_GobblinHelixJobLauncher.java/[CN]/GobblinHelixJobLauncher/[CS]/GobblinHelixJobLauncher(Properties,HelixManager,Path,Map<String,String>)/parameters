@@ -1,4 +1,0 @@
-Properties jobProps
-HelixManager helixManager
-Path appWorkDir
-Map<String,String> eventMetadata

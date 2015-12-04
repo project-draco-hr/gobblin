@@ -2,16 +2,7 @@
   LOGGER.info("Starting the Gobblin Yarn ApplicationMaster");
   addShutdownHook();
   this.eventBus.register(this);
-  try {
-    this.helixManager.connect();
-    this.helixManager.addLiveInstanceChangeListener(new GobblinLiveInstanceChangeListener());
-    this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new ControllerShutdownMessageHandlerFactory());
-    this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.USER_DEFINE_MSG.toString(),new ControllerUserDefinedMessageHandlerFactory());
-  }
- catch (  Exception e) {
-    LOGGER.error("HelixManager failed to connect",e);
-    throw Throwables.propagate(e);
-  }
+  connectHelixManager();
   registerJvmMetrics();
   this.jmxReporter.start();
   this.serviceManager.startAsync();

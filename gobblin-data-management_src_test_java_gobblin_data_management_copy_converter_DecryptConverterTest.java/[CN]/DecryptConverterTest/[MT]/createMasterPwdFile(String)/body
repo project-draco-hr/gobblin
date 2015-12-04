@@ -1,0 +1,6 @@
+{
+  if (!this.masterPwdFile.createNewFile()) {
+    Assert.fail();
+  }
+  Files.write(masterPwd,this.masterPwdFile,Charset.defaultCharset());
+}

@@ -1,5 +1,5 @@
 {
-  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId);
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId.toString());
   Path appMasterWorkDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.APP_MASTER_WORK_DIR_NAME);
   Map<String,LocalResource> appMasterResources=Maps.newHashMap();
   if (this.config.hasPath(GobblinYarnConfigurationKeys.LIB_JARS_DIR_KEY)) {

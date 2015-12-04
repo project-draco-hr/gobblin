@@ -1,0 +1,3 @@
+{
+  return System.getenv().containsKey(ApplicationConstants.Environment.LOG_DIRS.toString());
+}

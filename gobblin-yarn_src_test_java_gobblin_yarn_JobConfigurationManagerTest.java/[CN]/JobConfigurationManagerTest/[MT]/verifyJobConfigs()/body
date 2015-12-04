@@ -1,0 +1,7 @@
+{
+  this.countDownLatch.await();
+  Assert.assertEquals(this.receivedJobConfigs.size(),3);
+  for (int i=0; i < NUM_JOB_CONFIG_FILES; i++) {
+    Assert.assertEquals(this.receivedJobConfigs.get(i).getProperty("foo"),"bar" + i);
+  }
+}

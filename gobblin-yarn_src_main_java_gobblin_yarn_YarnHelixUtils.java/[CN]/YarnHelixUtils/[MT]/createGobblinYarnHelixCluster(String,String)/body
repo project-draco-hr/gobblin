@@ -1,0 +1,6 @@
+{
+  ClusterSetup clusterSetup=new ClusterSetup(zkConnectionString);
+  clusterSetup.addCluster(clusterName,true);
+  String autoJoinConfig=ZKHelixManager.ALLOW_PARTICIPANT_AUTO_JOIN + "=true";
+  clusterSetup.setConfig(HelixConfigScope.ConfigScopeProperty.CLUSTER,clusterName,autoJoinConfig);
+}

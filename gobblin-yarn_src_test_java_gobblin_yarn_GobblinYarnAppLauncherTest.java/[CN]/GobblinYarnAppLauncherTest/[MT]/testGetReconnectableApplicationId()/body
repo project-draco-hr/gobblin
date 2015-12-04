@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(this.gobblinYarnAppLauncher.getReconnectableApplicationId().get(),this.applicationId);
+  this.yarnClient.killApplication(this.applicationId);
+}

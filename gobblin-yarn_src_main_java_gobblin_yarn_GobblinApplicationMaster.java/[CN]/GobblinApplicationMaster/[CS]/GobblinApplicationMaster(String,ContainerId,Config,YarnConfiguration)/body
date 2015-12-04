@@ -1,0 +1,23 @@
+{
+  String applicationId=containerId.getApplicationAttemptId().getApplicationId().toString();
+  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
+  this.helixManager=buildHelixManager(config,containerId,zkConnectionString);
+  FileSystem fs=buildFileSystem(config);
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
+  Map<String,String> eventMetadata=getEventSubmitterMetadata(applicationName,applicationId);
+  List<Service> services=Lists.newArrayList();
+  if (isLogSourcePresent()) {
+    services.add(buildLogCopier(containerId,fs,appWorkDir));
+  }
+  services.add(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
+  services.add(buildGobblinHelixJobScheduler(config,appWorkDir,eventMetadata));
+  services.add(buildJobConfigurationManager(config));
+  if (UserGroupInformation.isSecurityEnabled()) {
+    LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");
+    services.add(buildYarnContainerSecurityManager(config,fs));
+  }
+  this.serviceManager=new ServiceManager(services);
+  this.metricRegistry=new MetricRegistry();
+  this.jmxReporter=JmxReporter.forRegistry(this.metricRegistry).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
+}

@@ -1,5 +1,5 @@
 {
-  final GobblinYarnAppLauncher gobblinYarnAppLauncher=new GobblinYarnAppLauncher(ConfigFactory.load());
+  final GobblinYarnAppLauncher gobblinYarnAppLauncher=new GobblinYarnAppLauncher(ConfigFactory.load(),new YarnConfiguration());
   Runtime.getRuntime().addShutdownHook(new Thread(){
     @Override public void run(){
       try {

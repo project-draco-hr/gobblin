@@ -1,0 +1,7 @@
+{
+  Thread.sleep(1000);
+  this.helixMessageTestBase.assertMessageReception(_message);
+  HelixTaskResult result=new HelixTaskResult();
+  result.setSuccess(true);
+  return result;
+}

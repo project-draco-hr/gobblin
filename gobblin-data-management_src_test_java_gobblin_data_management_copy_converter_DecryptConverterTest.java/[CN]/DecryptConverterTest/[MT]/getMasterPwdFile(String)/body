@@ -1,6 +1,0 @@
-{
-  File masterPwdFile=new File("masterPwd");
-  masterPwdFile.createNewFile();
-  Files.write(masterPwd,masterPwdFile,Charset.defaultCharset());
-  return masterPwdFile;
-}

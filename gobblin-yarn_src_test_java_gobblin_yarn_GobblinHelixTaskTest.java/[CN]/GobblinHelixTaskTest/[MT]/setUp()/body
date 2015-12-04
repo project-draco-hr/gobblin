@@ -1,0 +1,11 @@
+{
+  Configuration configuration=new Configuration();
+  configuration.setInt(ConfigurationKeys.TASK_EXECUTOR_THREADPOOL_SIZE_KEY,1);
+  this.taskExecutor=new TaskExecutor(configuration);
+  this.helixManager=Mockito.mock(HelixManager.class);
+  Mockito.when(this.helixManager.getInstanceName()).thenReturn(GobblinHelixTaskTest.class.getSimpleName());
+  this.taskStateTracker=new GobblinHelixTaskStateTracker(new Properties(),this.helixManager);
+  this.localFs=FileSystem.getLocal(configuration);
+  this.appWorkDir=new Path(GobblinHelixTaskTest.class.getSimpleName());
+  this.taskOutputDir=new Path(this.appWorkDir,"output");
+}

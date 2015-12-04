@@ -1,5 +1,5 @@
 {
-  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId);
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId.toString());
   if (this.fs.exists(appWorkDir)) {
     LOGGER.info("Deleting application working directory " + appWorkDir);
     this.fs.delete(appWorkDir,true);

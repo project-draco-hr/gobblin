@@ -12,9 +12,7 @@
     LOGGER.error("Timeout in stopping the service manager",te);
   }
  finally {
+    disconnectHelixManager();
     this.jmxReporter.stop();
-    if (this.helixManager.isConnected()) {
-      this.helixManager.disconnect();
-    }
   }
 }

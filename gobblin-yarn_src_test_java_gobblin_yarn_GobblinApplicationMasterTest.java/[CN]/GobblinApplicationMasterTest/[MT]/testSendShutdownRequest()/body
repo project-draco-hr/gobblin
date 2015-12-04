@@ -1,0 +1,15 @@
+{
+  CuratorFramework curatorFramework=CuratorFrameworkFactory.newClient(this.testingZKServer.getConnectString(),new RetryOneTime(2000));
+  curatorFramework.start();
+  try {
+    this.gobblinApplicationMaster.sendShutdownRequest();
+    Assert.assertEquals(curatorFramework.checkExists().forPath(String.format("/%s/INSTANCES/%s/MESSAGES",GobblinApplicationMasterTest.class.getSimpleName(),TestHelper.TEST_HELIX_INSTANCE_NAME)).getVersion(),0);
+    Thread.sleep(500);
+    Assert.assertEquals(curatorFramework.getChildren().forPath(String.format("/%s/INSTANCES/%s/MESSAGES",GobblinApplicationMasterTest.class.getSimpleName(),TestHelper.TEST_HELIX_INSTANCE_NAME)).size(),1);
+    Thread.sleep(2000);
+    Assert.assertEquals(curatorFramework.getChildren().forPath(String.format("/%s/INSTANCES/%s/MESSAGES",GobblinApplicationMasterTest.class.getSimpleName(),TestHelper.TEST_HELIX_INSTANCE_NAME)).size(),0);
+  }
+  finally {
+    curatorFramework.close();
+  }
+}

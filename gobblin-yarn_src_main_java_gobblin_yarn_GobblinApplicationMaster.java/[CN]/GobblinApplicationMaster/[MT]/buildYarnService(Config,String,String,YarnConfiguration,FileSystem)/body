@@ -1,0 +1,3 @@
+{
+  return new YarnService(config,applicationName,applicationId,yarnConfiguration,fs,this.eventBus);
+}
