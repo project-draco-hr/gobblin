@@ -1,5 +1,5 @@
 {
-  if (this.helixManager.isConnected()) {
+  if (isHelixManagerConnected()) {
     this.helixManager.disconnect();
   }
 }

@@ -1,9 +1,7 @@
 {
   this.closer.register(new TestingServer(TEST_ZK_PORT));
   URL url=GobblinHelixJobLauncherTest.class.getClassLoader().getResource(GobblinHelixJobLauncherTest.class.getSimpleName() + ".conf");
-  if (url == null) {
-    Assert.fail();
-  }
+  Assert.assertNotNull(url,"Could not find resource " + url);
   Config config=ConfigFactory.parseURL(url).resolve();
   String zkConnectingString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   String helixClusterName=config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
