@@ -2,7 +2,7 @@
   Preconditions.checkNotNull(unit);
   executorService.shutdown();
   if (logger.isPresent()) {
-    logger.get().info("Attempting to shutdown ExecutorSerivce: " + executorService);
+    logger.get().info("Attempting to shutdown ExecutorService: " + executorService);
   }
   try {
     long halfTimeoutNanos=TimeUnit.NANOSECONDS.convert(timeout,unit) / 2;
@@ -23,7 +23,7 @@
     Thread.currentThread().interrupt();
     executorService.shutdownNow();
     if (logger.isPresent()) {
-      logger.get().info("Attempting to shutdownNow ExecutorSerivce: " + executorService);
+      logger.get().info("Attempting to shutdownNow ExecutorService: " + executorService);
     }
   }
 }

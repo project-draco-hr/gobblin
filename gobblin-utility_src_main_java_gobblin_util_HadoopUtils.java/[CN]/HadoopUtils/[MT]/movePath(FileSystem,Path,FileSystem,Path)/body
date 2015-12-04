@@ -1,0 +1,10 @@
+{
+  if (srcFs.getUri().equals(dstFs.getUri())) {
+    renamePath(srcFs,src,dst);
+  }
+ else {
+    if (!FileUtil.copy(srcFs,src,dstFs,dst,true,false,dstFs.getConf())) {
+      throw new IOException(String.format("Failed to move %s to %s",src,dst));
+    }
+  }
+}
