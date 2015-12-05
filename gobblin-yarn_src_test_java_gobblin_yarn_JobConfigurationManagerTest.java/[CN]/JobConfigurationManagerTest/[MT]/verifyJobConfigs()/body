@@ -1,7 +1,11 @@
 {
   this.countDownLatch.await();
+  Set<String> actual=Sets.newHashSet();
+  Set<String> expected=Sets.newHashSet();
   Assert.assertEquals(this.receivedJobConfigs.size(),3);
   for (int i=0; i < NUM_JOB_CONFIG_FILES; i++) {
-    Assert.assertEquals(this.receivedJobConfigs.get(i).getProperty("foo"),"bar" + i);
+    actual.add(this.receivedJobConfigs.get(i).getProperty("foo"));
+    expected.add("bar" + i);
   }
+  Assert.assertEquals(actual,expected);
 }
