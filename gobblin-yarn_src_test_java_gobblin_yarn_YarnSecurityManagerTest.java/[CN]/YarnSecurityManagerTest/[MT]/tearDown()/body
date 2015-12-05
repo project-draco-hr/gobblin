@@ -1,0 +1,19 @@
+{
+  try {
+    if (this.helixManager.isConnected()) {
+      this.helixManager.disconnect();
+    }
+    try {
+      FileSystem.getLocal(this.dfsConfig).delete(this.miniHDFSBaseDir,true);
+    }
+  finally {
+      this.miniDFSCluster.shutdown(true);
+    }
+  }
+ catch (  Throwable t) {
+    throw this.closer.rethrow(t);
+  }
+ finally {
+    this.closer.close();
+  }
+}

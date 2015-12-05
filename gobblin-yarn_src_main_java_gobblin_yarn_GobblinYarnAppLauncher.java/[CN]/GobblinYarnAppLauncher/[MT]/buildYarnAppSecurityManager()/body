@@ -1,0 +1,4 @@
+{
+  Path tokenFilePath=new Path(this.fs.getHomeDirectory(),this.applicationName + Path.SEPARATOR + GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
+  return new YarnAppSecurityManager(this.config,this.helixManager,this.fs,tokenFilePath);
+}

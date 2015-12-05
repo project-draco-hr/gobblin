@@ -5,10 +5,7 @@
     }
     this.gobblinYarnAppLauncher.disconnectHelixManager();
   }
- catch (  Throwable t) {
-    Assert.fail();
-  }
- finally {
+  finally {
     this.closer.close();
   }
 }

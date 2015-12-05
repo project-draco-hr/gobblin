@@ -1,0 +1,5 @@
+{
+  this.yarnAppSecurityManager.writeDelegationTokenToFile();
+  Assert.assertTrue(this.fs.exists(this.tokenFilePath));
+  assertToken(YarnHelixUtils.readTokensFromFile(this.tokenFilePath,this.dfsConfig));
+}

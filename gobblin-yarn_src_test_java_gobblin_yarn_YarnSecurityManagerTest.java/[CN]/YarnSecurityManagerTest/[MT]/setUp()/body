@@ -1,0 +1,26 @@
+{
+  TestingServer testingZKServer=this.closer.register(new TestingServer(TEST_ZK_PORT));
+  this.curatorFramework=this.closer.register(CuratorFrameworkFactory.newClient(testingZKServer.getConnectString(),new RetryOneTime(2000)));
+  this.curatorFramework.start();
+  URL url=YarnSecurityManagerTest.class.getClassLoader().getResource(YarnSecurityManagerTest.class.getSimpleName() + ".conf");
+  Assert.assertNotNull(url,"Could not find resource " + url);
+  Config config=ConfigFactory.parseURL(url).resolve();
+  String zkConnectingString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  String helixClusterName=config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectingString,helixClusterName);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.SPECTATOR,zkConnectingString);
+  this.helixManager.connect();
+  this.miniHDFSBaseDir=new Path(YarnSecurityManagerTest.class.getSimpleName());
+  this.dfsConfig=getTestConfiguration(this.miniHDFSBaseDir);
+  dfsConfig.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR,this.miniHDFSBaseDir.toUri().toString());
+  MiniDFSCluster.Builder builder=new MiniDFSCluster.Builder(dfsConfig);
+  this.miniDFSCluster=builder.numDataNodes(1).build();
+  this.fs=Mockito.spy(this.closer.register(this.miniDFSCluster.getFileSystem()));
+  this.token=new Token<>();
+  this.token.setKind(new Text("test"));
+  this.token.setService(new Text("test"));
+  Mockito.<Token<?>>when(this.fs.getDelegationToken(UserGroupInformation.getLoginUser().getShortUserName())).thenReturn(this.token);
+  this.tokenFilePath=new Path(this.fs.getHomeDirectory(),GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
+  this.yarnAppSecurityManager=new YarnAppSecurityManager(config,this.helixManager,this.fs,this.tokenFilePath);
+  this.yarnContainerSecurityManager=new YarnContainerSecurityManager(config,this.fs,new EventBus());
+}
