@@ -1,2 +1,2 @@
-File destDir
+Path destDir
 TarArchiveOutputStream tarArchiveOutputStream

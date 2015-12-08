@@ -1,0 +1,3 @@
+{
+  return StringUtils.removeEnd(path.toString(),Path.SEPARATOR);
+}

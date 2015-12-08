@@ -1,4 +1,4 @@
 FileStatus dirFileStatus
 FileSystem fs
-File destDir
+Optional<Path> destDir
 TarArchiveOutputStream tarArchiveOutputStream

@@ -1,0 +1,12 @@
+{
+  TarArchiveEntry tarArchiveEntry=new TarArchiveEntry(formatPathToFile(destFile));
+  tarArchiveEntry.setSize(fileStatus.getLen());
+  tarArchiveEntry.setModTime(System.currentTimeMillis());
+  tarArchiveOutputStream.putArchiveEntry(tarArchiveEntry);
+  try {
+    IOUtils.copy(fsDataInputStream,tarArchiveOutputStream);
+  }
+  finally {
+    tarArchiveOutputStream.closeArchiveEntry();
+  }
+}
