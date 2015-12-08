@@ -7,26 +7,26 @@
   ConfigStore cs=csFactory.createConfigStore(uri);
   if (!(cs instanceof ConfigStoreWithStableVersion)) {
     if (this.policy == VERSION_STABILITY_POLICY.RAISE_ERROR) {
-      throw new Exception(String.format("Try to connect to unstable config store ",cs.getStoreURI()));
+      throw new RuntimeException(String.format("Try to connect to unstable config store ",cs.getStoreURI()));
     }
   }
-  URI key=cs.getStoreURI();
-  ConfigStoreAccessor value=new ConfigStoreAccessor(cs,cs.getCurrentVersion());
+  URI csRootURI=cs.getStoreURI();
+  ConfigStoreAccessor CSAccessor=new ConfigStoreAccessor(cs,cs.getCurrentVersion());
   if (!(cs instanceof ConfigStoreWithResolution)) {
     SimpleConfigStoreResolver resolver=new SimpleConfigStoreResolver(cs);
-    value.resolver=resolver;
+    CSAccessor.resolver=resolver;
   }
   if (!((cs instanceof ConfigStoreWithImportedBy) && (cs instanceof ConfigStoreWithImportedByRecursively))) {
     SimpleImportMappings im=null;
     if (!(cs instanceof ConfigStoreWithResolution)) {
-      im=new SimpleImportMappings(value.resolver,value.version);
+      im=new SimpleImportMappings(CSAccessor.resolver,CSAccessor.version);
     }
  else {
-      im=new SimpleImportMappings(cs,value.version);
+      im=new SimpleImportMappings(cs,CSAccessor.version);
     }
-    value.simpleImportMappings=im;
+    CSAccessor.simpleImportMappings=im;
   }
-  this.configStoreMap.put(key,value);
+  this.configStoreMap.put(csRootURI,CSAccessor);
   LOG.info(String.format("Created new config store with uri: %s, version: %s",cs.getStoreURI(),cs.getCurrentVersion()));
-  return value;
+  return CSAccessor;
 }
