@@ -1,0 +1,6 @@
+{
+  super(state,type);
+  this.partitioner=getPartitioner();
+  this.timeZone=DateTimeZone.forID(state.getProp(ConfigurationKeys.QUALITY_CHECKER_TIMEZONE,ConfigurationKeys.DEFAULT_QUALITY_CHECKER_TIMEZONE));
+  this.earliestAllowedTimestamp=getEarliestAllowedTimestamp();
+}

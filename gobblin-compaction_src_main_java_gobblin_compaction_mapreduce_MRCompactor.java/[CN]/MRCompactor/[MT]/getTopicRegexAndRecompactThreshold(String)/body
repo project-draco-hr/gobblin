@@ -1,0 +1,13 @@
+{
+  Map<String,Double> topicRegexAndRecompactThreshold=Maps.newHashMap();
+  for (  String entry : Splitter.on(TOPICS_WITH_DIFFERENT_RECOMPACT_THRESHOLDS_SEPARATOR).trimResults().omitEmptyStrings().splitToList(topicsAndRecompactThresholds)) {
+    List<String> topicsAndRecompactThreshold=Splitter.on(TOPICS_AND_RECOMPACT_THRESHOLD_SEPARATOR).trimResults().omitEmptyStrings().splitToList(entry);
+    if (topicsAndRecompactThreshold.size() != 2) {
+      LOG.error("Invalid form (TOPIC:THRESHOLD) in " + COMPACTION_LATEDATA_THRESHOLD_FOR_RECOMPACT_PER_TOPIC + ".");
+    }
+ else {
+      topicRegexAndRecompactThreshold.put(topicsAndRecompactThreshold.get(0),Double.parseDouble(topicsAndRecompactThreshold.get(1)));
+    }
+  }
+  return topicRegexAndRecompactThreshold;
+}

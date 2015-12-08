@@ -1,0 +1,8 @@
+{
+  try {
+    return OutputStreamEventReporter.forContext(MetricContext.class.cast(registry)).build();
+  }
+ catch (  ClassCastException cce) {
+    throw new IOException(cce);
+  }
+}

@@ -1,0 +1,6 @@
+{
+  TarArchiveEntry tarArchiveEntry=new TarArchiveEntry(formatPathToDir(destDir));
+  tarArchiveEntry.setModTime(System.currentTimeMillis());
+  tarArchiveOutputStream.putArchiveEntry(tarArchiveEntry);
+  tarArchiveOutputStream.closeArchiveEntry();
+}

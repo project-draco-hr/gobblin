@@ -1,0 +1,7 @@
+{
+  double lateDataPercent=lateDataCount * 1.0 / (lateDataCount + nonLateDataCount);
+  log.info("Late data percentage is " + lateDataPercent + " and threshold is "+ this.lateDataThresholdForRecompact);
+  if (lateDataPercent > this.lateDataThresholdForRecompact) {
+    this.needToRecompact=true;
+  }
+}

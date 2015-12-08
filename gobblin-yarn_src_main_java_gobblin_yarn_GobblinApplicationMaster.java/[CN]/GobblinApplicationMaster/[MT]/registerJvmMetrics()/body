@@ -2,5 +2,5 @@
   registerMetricSetWithPrefix("jvm.gc",new GarbageCollectorMetricSet());
   registerMetricSetWithPrefix("jvm.memory",new MemoryUsageGaugeSet());
   registerMetricSetWithPrefix("jvm.threads",new ThreadStatesGaugeSet());
-  this.metricContext.register("jvm.fileDescriptorRatio",new FileDescriptorRatioGauge());
+  this.metricRegistry.register("jvm.fileDescriptorRatio",new FileDescriptorRatioGauge());
 }

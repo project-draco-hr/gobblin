@@ -1,3 +1,0 @@
-{
-  System.err.println("Usage: InfluxDBReporterExample " + "<number of tasks to spawn> " + "<total number of records to process per task> "+ "<InfluxDB server URL>"+ "<InfluxDB user name> "+ "<InfluxDB password> "+ "<InfluxDB database to write metrics into>");
-}

@@ -4,6 +4,7 @@
   }
   try {
     if (GobblinMetrics.isEnabled(this.taskState.getWorkunit())) {
+      updateRecordMetrics();
       updateByteMetrics();
     }
   }

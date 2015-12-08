@@ -1,0 +1,11 @@
+{
+  if (config.hasPath(CONTEXT_FILTER_CLASS)) {
+    try {
+      return ContextFilter.class.cast(ConstructorUtils.invokeConstructor(Class.forName(config.getString(CONTEXT_FILTER_CLASS)),config));
+    }
+ catch (    ReflectiveOperationException rfe) {
+      log.error("Failed to instantiate context filter with class " + config.getString(CONTEXT_FILTER_CLASS),rfe);
+    }
+  }
+  return new AllContextFilter();
+}

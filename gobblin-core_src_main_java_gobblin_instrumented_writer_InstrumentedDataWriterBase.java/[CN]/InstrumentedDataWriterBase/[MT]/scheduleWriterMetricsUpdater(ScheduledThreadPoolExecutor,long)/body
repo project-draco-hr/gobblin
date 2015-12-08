@@ -1,0 +1,3 @@
+{
+  return writerMetricsUpdater.scheduleAtFixedRate(new WriterMetricsUpdater(),scheduleInterval,scheduleInterval,TimeUnit.MILLISECONDS);
+}

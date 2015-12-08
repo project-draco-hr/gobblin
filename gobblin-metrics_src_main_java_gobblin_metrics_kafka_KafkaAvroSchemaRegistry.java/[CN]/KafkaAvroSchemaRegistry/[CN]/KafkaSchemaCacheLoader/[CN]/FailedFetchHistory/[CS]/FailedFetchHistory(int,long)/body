@@ -1,4 +1,0 @@
-{
-  this.numOfAttempts=numOfAttempts;
-  this.previousAttemptTime=previousAttemptTime;
-}

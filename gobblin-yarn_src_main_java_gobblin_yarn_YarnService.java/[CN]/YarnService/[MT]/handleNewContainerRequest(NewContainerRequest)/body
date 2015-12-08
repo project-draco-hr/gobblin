@@ -11,10 +11,7 @@
   try {
     requestContainers(newContainersRequested);
   }
- catch (  IOException ioe) {
-    LOGGER.error("Failed to handle new container request",ioe);
-  }
-catch (  YarnException ye) {
-    LOGGER.error("Failed to handle new container request",ye);
+ catch (  IOException|YarnException e) {
+    LOGGER.error("Failed to handle new container request",e);
   }
 }

@@ -1,9 +1,6 @@
 {
-  if (metric instanceof MetricSet) {
-    registerAll((MetricSet)metric);
+  if (!(metric instanceof ContextAwareMetric)) {
+    throw new UnsupportedOperationException("Can only register ContextAwareMetrics.");
   }
-  if (this.contextAwareMetrics.putIfAbsent(name,metric) != null) {
-    throw new IllegalArgumentException("A metric named " + name + " already exists");
-  }
-  return super.register(MetricRegistry.name(metricNamePrefix(this.includeTagKeys),name),metric);
+  return this.innerMetricContext.register(name,metric);
 }

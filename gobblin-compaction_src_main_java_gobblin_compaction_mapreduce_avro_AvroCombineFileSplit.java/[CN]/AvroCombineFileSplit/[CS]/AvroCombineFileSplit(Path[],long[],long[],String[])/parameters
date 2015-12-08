@@ -1,0 +1,4 @@
+Path[] paths
+long[] startOffsets
+long[] lengths
+String[] locations

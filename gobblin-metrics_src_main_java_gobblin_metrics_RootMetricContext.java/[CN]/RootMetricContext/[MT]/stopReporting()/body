@@ -1,0 +1,11 @@
+{
+  this.reportingStarted=false;
+  for (  ContextAwareReporter reporter : this.reporters) {
+    try {
+      reporter.stop();
+    }
+ catch (    Throwable throwable) {
+      log.error(String.format("Failed to stop reporter with class %s",reporter.getClass().getCanonicalName()),throwable);
+    }
+  }
+}

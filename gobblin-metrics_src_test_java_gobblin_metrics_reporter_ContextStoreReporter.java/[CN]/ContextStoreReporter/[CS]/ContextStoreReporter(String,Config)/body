@@ -1,0 +1,4 @@
+{
+  super(name,config);
+  this.reportedContexts=Lists.newArrayList();
+}

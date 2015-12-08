@@ -1,0 +1,6 @@
+{
+  Collection<Token<?>> tokens=YarnHelixUtils.readTokensFromFile(this.tokenFilePath,this.configuration);
+  Assert.assertEquals(tokens.size(),1);
+  Token<?> token=tokens.iterator().next();
+  Assert.assertEquals(token,this.token);
+}

@@ -1,6 +1,6 @@
 {
   try {
-    JobLauncher jobLauncher=new GobblinHelixJobLauncher(jobProps,this.helixManager,this.appWorkDir);
+    JobLauncher jobLauncher=buildGobblinHelixJobLauncher(jobProps);
     runJob(jobProps,jobListener,jobLauncher);
   }
  catch (  Exception e) {

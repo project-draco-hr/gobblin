@@ -18,19 +18,14 @@ catch (  IOException e) {
     get.releaseConnection();
   }
   if (statusCode != HttpStatus.SC_OK) {
-    throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+    throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved. Status code = %d",topic,statusCode));
   }
   Schema schema;
-  if (schemaString.startsWith("{")) {
-    try {
-      schema=new Schema.Parser().parse(schemaString);
-    }
- catch (    Exception e) {
-      throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
-    }
+  try {
+    schema=new Schema.Parser().parse(schemaString);
   }
- else {
-    throw new SchemaNotFoundException(String.format("Latest schema for topic %s cannot be retrieved",topic));
+ catch (  Throwable t) {
+    throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved",topic),t);
   }
   return schema;
 }

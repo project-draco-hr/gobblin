@@ -4,7 +4,7 @@
     List<String> executionTimeRange=splitter.splitToList(this.props.getProperty(ConfigurationKeys.AZKABAN_EXECUTION_TIME_RANGE));
     List<String> executionDays=splitter.splitToList(this.props.getProperty(ConfigurationKeys.AZKABAN_EXECUTION_DAYS_LIST));
     Preconditions.checkArgument(executionTimeRange.size() == 2,"The property " + ConfigurationKeys.AZKABAN_EXECUTION_DAYS_LIST + " should be a comma separated list of two entries");
-    return TimeRangeChecker.isTimeInRange(executionDays,executionTimeRange.get(0),executionTimeRange.get(1),new DateTime(DateTimeZone.forID("America/Los_Angeles")));
+    return TimeRangeChecker.isTimeInRange(executionDays,executionTimeRange.get(0),executionTimeRange.get(1),new DateTime(DateTimeZone.forID(ConfigurationKeys.PST_TIMEZONE_NAME)));
   }
   return true;
 }

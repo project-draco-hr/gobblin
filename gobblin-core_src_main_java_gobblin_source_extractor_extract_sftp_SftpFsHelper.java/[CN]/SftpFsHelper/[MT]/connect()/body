@@ -10,14 +10,27 @@
   JSch jsch=new JSch();
   log.info("Attempting to connect to source via SFTP with" + " privateKey: " + privateKey + " knownHosts: "+ knownHosts+ " userName: "+ userName+ " hostName: "+ hostName+ " port: "+ port+ " proxyHost: "+ proxyHost+ " proxyPort: "+ proxyPort);
   try {
-    jsch.addIdentity(privateKey);
-    jsch.setKnownHosts(knownHosts);
+    List<IdentityStrategy> identityStrategies=ImmutableList.of(new LocalFileIdentityStrategy(),new DistributedCacheIdentityStrategy(),new HDFSIdentityStrategy());
+    for (    IdentityStrategy identityStrategy : identityStrategies) {
+      if (identityStrategy.setIdentity(privateKey,jsch)) {
+        break;
+      }
+    }
     session=jsch.getSession(userName,hostName,port);
+    session.setConfig("PreferredAuthentications","publickey");
+    if (Strings.isNullOrEmpty(knownHosts)) {
+      log.info("Known hosts path is not set, StrictHostKeyChecking will be turned off");
+      session.setConfig("StrictHostKeyChecking","no");
+    }
+ else {
+      jsch.setKnownHosts(knownHosts);
+    }
     if (proxyHost != null && proxyPort >= 0) {
       session.setProxy(new ProxyHTTP(proxyHost,proxyPort));
     }
     UserInfo ui=new MyUserInfo();
     session.setUserInfo(ui);
+    session.setDaemonThread(true);
     session.connect();
     log.info("Finished connecting to source");
   }

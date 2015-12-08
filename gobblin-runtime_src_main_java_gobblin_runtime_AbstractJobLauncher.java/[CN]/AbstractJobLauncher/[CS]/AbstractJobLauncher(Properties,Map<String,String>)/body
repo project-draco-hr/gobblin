@@ -1,0 +1,16 @@
+{
+  Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
+  this.jobProps=new Properties();
+  this.jobProps.putAll(jobProps);
+  this.jobContext=new JobContext(this.jobProps,LOG);
+  this.cancellationExecutor=Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("CancellationExecutor")));
+  this.runtimeMetricContext=this.jobContext.getJobMetricsOptional().transform(new Function<JobMetrics,MetricContext>(){
+    @Override public MetricContext apply(    JobMetrics input){
+      return input.getMetricContext();
+    }
+  }
+);
+  this.eventSubmitter=new EventSubmitter.Builder(this.runtimeMetricContext,"gobblin.runtime").addMetadata(eventMetadata).build();
+  JobExecutionEventSubmitter jobExecutionEventSubmitter=new JobExecutionEventSubmitter(this.eventSubmitter);
+  this.mandatoryJobListeners.add(new JobExecutionEventSubmitterListener(jobExecutionEventSubmitter));
+}

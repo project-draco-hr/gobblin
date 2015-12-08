@@ -1,0 +1,4 @@
+{
+  String propName=ForkOperatorUtils.getPropertyNameForBranch(WRITER_PARTITION_COLUMNS,numBranches,branchId);
+  return state.contains(propName) ? Optional.of(state.getPropAsList(propName)) : Optional.<List<String>>absent();
+}

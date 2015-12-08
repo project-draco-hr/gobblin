@@ -1,6 +1,7 @@
 {
   YarnClientApplication gobblinYarnApp=this.yarnClient.createApplication();
   ApplicationSubmissionContext appSubmissionContext=gobblinYarnApp.getApplicationSubmissionContext();
+  appSubmissionContext.setApplicationType(GOBBLIN_YARN_APPLICATION_TYPE);
   ApplicationId applicationId=appSubmissionContext.getApplicationId();
   GetNewApplicationResponse newApplicationResponse=gobblinYarnApp.getNewApplicationResponse();
   Resource resource=prepareContainerResource(newApplicationResponse);
@@ -20,5 +21,10 @@
   addContainerLocalResources(applicationId);
   LOGGER.info("Submitting application " + applicationId);
   this.yarnClient.submitApplication(appSubmissionContext);
+  LOGGER.info("Application successfully submitted and accepted");
+  ApplicationReport applicationReport=this.yarnClient.getApplicationReport(applicationId);
+  LOGGER.info("Application Name: " + applicationReport.getName());
+  LOGGER.info("Application Tracking URL: " + applicationReport.getTrackingUrl());
+  LOGGER.info("Application User: " + applicationReport.getUser() + " Queue: "+ applicationReport.getQueue());
   return applicationId;
 }

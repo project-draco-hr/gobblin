@@ -1,0 +1,8 @@
+{
+  Reference<? extends MetricContext> reference;
+  while ((reference=referenceQueue.poll()) != null) {
+    ContextWeakReference contextReference=(ContextWeakReference)reference;
+    sendNotification(new MetricContextCleanupNotification(contextReference.getInnerContext()));
+    innerMetricContexts.remove(contextReference.getInnerContext());
+  }
+}

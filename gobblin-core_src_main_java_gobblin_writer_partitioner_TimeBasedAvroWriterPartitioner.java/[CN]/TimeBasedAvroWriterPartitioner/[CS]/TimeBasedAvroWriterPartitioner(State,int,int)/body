@@ -1,0 +1,4 @@
+{
+  super(state,numBranches,branchId);
+  this.partitionColumns=getWriterPartitionColumns(state,numBranches,branchId);
+}

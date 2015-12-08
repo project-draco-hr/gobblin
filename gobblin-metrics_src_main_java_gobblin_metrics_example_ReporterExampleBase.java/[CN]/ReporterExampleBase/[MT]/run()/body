@@ -1,6 +1,5 @@
 {
   try {
-    this.context.startMetricReporting(1,TimeUnit.SECONDS);
     CountDownLatch countDownLatch=new CountDownLatch(this.tasks);
     for (int i=0; i < this.tasks; i++) {
       addTask(i,countDownLatch);

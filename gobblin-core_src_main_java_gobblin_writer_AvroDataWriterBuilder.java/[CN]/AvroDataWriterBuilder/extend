@@ -1,1 +1,1 @@
-PartitionAwareDataWriterBuilder<Schema,GenericRecord>
+FsDataWriterBuilder<Schema,GenericRecord>

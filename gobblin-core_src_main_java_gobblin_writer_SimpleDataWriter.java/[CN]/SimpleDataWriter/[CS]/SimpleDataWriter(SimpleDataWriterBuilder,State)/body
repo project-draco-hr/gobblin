@@ -1,0 +1,15 @@
+{
+  super(builder,properties);
+  String delim;
+  if ((delim=properties.getProp(ConfigurationKeys.SIMPLE_WRITER_DELIMITER,null)) == null || delim.length() == 0) {
+    this.recordDelimiter=Optional.absent();
+  }
+ else {
+    this.recordDelimiter=Optional.of(delim.getBytes(ConfigurationKeys.DEFAULT_CHARSET_ENCODING)[0]);
+  }
+  this.prependSize=properties.getPropAsBoolean(ConfigurationKeys.SIMPLE_WRITER_PREPEND_SIZE,true);
+  this.recordsWritten=0;
+  this.bytesWritten=0;
+  this.stagingFileOutputStream=createStagingFileOutputStream();
+  setStagingFileGroup();
+}

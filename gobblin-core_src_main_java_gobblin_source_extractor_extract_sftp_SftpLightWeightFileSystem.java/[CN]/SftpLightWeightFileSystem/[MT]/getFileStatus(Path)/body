@@ -4,7 +4,7 @@
   ChannelExec channelExec2=null;
   try {
     channelSftp=fsHelper.getSftpChannel();
-    SftpATTRS sftpAttrs=channelSftp.stat(path.toString());
+    SftpATTRS sftpAttrs=channelSftp.stat(HadoopUtils.toUriPath(path));
     FsPermission permission=new FsPermission((short)sftpAttrs.getPermissions());
     channelExec1=fsHelper.getExecChannel("id " + sftpAttrs.getUId());
     String userName=IOUtils.toString(channelExec1.getInputStream());

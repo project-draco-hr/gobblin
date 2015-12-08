@@ -1,5 +1,5 @@
 {
   for (  Dataset dataset : this.datasets) {
-    dataset.setState(VERIFIED);
+    dataset.compareAndSetState(UNVERIFIED,VERIFIED);
   }
 }

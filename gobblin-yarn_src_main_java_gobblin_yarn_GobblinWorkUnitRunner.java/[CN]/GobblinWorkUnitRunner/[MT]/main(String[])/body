@@ -7,7 +7,8 @@
       System.exit(1);
     }
     Log4jConfigurationHelper.updateLog4jConfiguration(GobblinWorkUnitRunner.class,Log4jConfigurationHelper.LOG4J_CONFIGURATION_FILE_NAME);
-    GobblinWorkUnitRunner gobblinWorkUnitRunner=new GobblinWorkUnitRunner(cmd.getOptionValue(GobblinYarnConfigurationKeys.APPLICATION_NAME_OPTION_NAME),ConfigFactory.load());
+    ContainerId containerId=ConverterUtils.toContainerId(System.getenv().get(ApplicationConstants.Environment.CONTAINER_ID.key()));
+    GobblinWorkUnitRunner gobblinWorkUnitRunner=new GobblinWorkUnitRunner(cmd.getOptionValue(GobblinYarnConfigurationKeys.APPLICATION_NAME_OPTION_NAME),containerId,ConfigFactory.load(),Optional.<Path>absent());
     gobblinWorkUnitRunner.start();
   }
  catch (  ParseException pe) {

@@ -1,0 +1,9 @@
+{
+  @SuppressWarnings("unchecked") long recordTimestamp=this.partitioner.getRecordTimestamp(record);
+  if (this.earliestAllowedTimestamp.isPresent() && recordTimestamp < this.earliestAllowedTimestamp.get()) {
+    return RowLevelPolicy.Result.FAILED;
+  }
+ else {
+    return RowLevelPolicy.Result.PASSED;
+  }
+}

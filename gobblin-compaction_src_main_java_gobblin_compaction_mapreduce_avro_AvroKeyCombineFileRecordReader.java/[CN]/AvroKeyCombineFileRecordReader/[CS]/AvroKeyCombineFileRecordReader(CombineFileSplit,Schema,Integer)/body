@@ -1,5 +1,5 @@
 {
   super(inputKeySchema);
-  this.split=split;
+  this.split=(AvroCombineFileSplit)split;
   this.idx=idx;
 }

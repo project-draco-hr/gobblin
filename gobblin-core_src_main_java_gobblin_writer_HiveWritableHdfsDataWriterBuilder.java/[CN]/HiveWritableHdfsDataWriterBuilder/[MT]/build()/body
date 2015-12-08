@@ -2,12 +2,10 @@
   Preconditions.checkNotNull(this.destination);
   Preconditions.checkArgument(!Strings.isNullOrEmpty(this.writerId));
   State properties=this.destination.getProperties();
-  if (!properties.contains(WRITER_WRITABLE_CLASS) || !properties.contains(WRITER_OUTPUT_FORMAT_CLASS) || !properties.contains(WRITER_OUTPUT_FILE_EXTENSION)) {
+  if (!properties.contains(WRITER_WRITABLE_CLASS) || !properties.contains(WRITER_OUTPUT_FORMAT_CLASS)) {
     HiveSerDeWrapper serializer=HiveSerDeWrapper.getSerializer(properties);
     properties.setProp(WRITER_WRITABLE_CLASS,serializer.getSerDe().getSerializedClass().getName());
     properties.setProp(WRITER_OUTPUT_FORMAT_CLASS,serializer.getOutputFormatClassName());
-    properties.setProp(WRITER_OUTPUT_FILE_EXTENSION,serializer.getExtension());
   }
-  String fileName=WriterUtils.getWriterFileName(properties,this.branches,this.branch,this.writerId,properties.getProp(WRITER_OUTPUT_FILE_EXTENSION));
-  return new HiveWritableHdfsDataWriter(properties,fileName,this.branches,this.branch);
+  return new HiveWritableHdfsDataWriter(this,properties);
 }

@@ -1,8 +1,0 @@
-{
-  Path datasetWriterOutputPath=new Path(writerOutputDir,PathUtils.withoutLeadingSeparator(copyableDataset.datasetTargetRoot()));
-  log.info(String.format("Publishing dataset from %s to %s",datasetWriterOutputPath,copyableDataset.datasetTargetRoot()));
-  HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,copyableDataset.datasetTargetRoot());
-  for (  WorkUnitState wus : datasetWorkUnitStates) {
-    wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
-  }
-}

@@ -1,0 +1,11 @@
+{
+  UnGzipConverter converter=new UnGzipConverter();
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  String fullPath=getClass().getClassLoader().getResource(filePath).getFile();
+  FileStatus status=fs.getFileStatus(testTempPath);
+  OwnerAndPermission ownerAndPermission=new OwnerAndPermission(status.getOwner(),status.getGroup(),new FsPermission(FsAction.ALL,FsAction.ALL,FsAction.ALL));
+  CopyableFile cf=CopyableFileUtils.getTestCopyableFile(filePath,new Path(testTempPath,newFileName).toString(),newFileName,ownerAndPermission);
+  FileAwareInputStream fileAwareInputStream=new FileAwareInputStream(cf,fs.open(new Path(fullPath)));
+  Iterable<FileAwareInputStream> iterable=converter.convertRecord("outputSchema",fileAwareInputStream,new WorkUnitState());
+  return Iterables.getFirst(iterable,null);
+}

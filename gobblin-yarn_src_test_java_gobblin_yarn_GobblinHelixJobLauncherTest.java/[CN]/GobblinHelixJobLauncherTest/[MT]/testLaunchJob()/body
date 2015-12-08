@@ -1,0 +1,22 @@
+{
+  this.gobblinHelixJobLauncher.launchJob(null);
+  Assert.assertTrue(this.jobOutputFile.exists());
+  Schema schema=new Schema.Parser().parse(TestHelper.SOURCE_SCHEMA);
+  try (DataFileReader<GenericRecord> reader=new DataFileReader<>(this.jobOutputFile,new GenericDatumReader<GenericRecord>(schema))){
+    Iterator<GenericRecord> iterator=reader.iterator();
+    GenericRecord record=iterator.next();
+    Assert.assertEquals(record.get("name").toString(),"Alyssa");
+    record=iterator.next();
+    Assert.assertEquals(record.get("name").toString(),"Ben");
+    record=iterator.next();
+    Assert.assertEquals(record.get("name").toString(),"Charlie");
+    Assert.assertFalse(iterator.hasNext());
+  }
+   List<JobState.DatasetState> datasetStates=this.fsDatasetStateStore.getAll(this.jobName,FsDatasetStateStore.CURRENT_DATASET_STATE_FILE_SUFFIX + FsDatasetStateStore.DATASET_STATE_STORE_TABLE_SUFFIX);
+  Assert.assertEquals(datasetStates.size(),1);
+  JobState.DatasetState datasetState=datasetStates.get(0);
+  Assert.assertEquals(datasetState.getCompletedTasks(),1);
+  Assert.assertEquals(datasetState.getState(),JobState.RunningState.COMMITTED);
+  Assert.assertEquals(datasetState.getTaskStates().size(),1);
+  Assert.assertEquals(datasetState.getTaskStates().get(0).getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
+}

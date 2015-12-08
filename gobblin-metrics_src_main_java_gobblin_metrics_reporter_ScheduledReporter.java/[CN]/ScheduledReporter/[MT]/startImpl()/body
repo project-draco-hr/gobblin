@@ -1,0 +1,8 @@
+{
+  this.scheduledTask=Optional.<ScheduledFuture>of(this.executor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      report();
+    }
+  }
+,0,this.reportingPeriodSeconds,TimeUnit.SECONDS));
+}

@@ -2,30 +2,38 @@
   closer.register(fileAwareInputStream.getInputStream());
   filesWritten++;
   TarArchiveInputStream tarIn=new TarArchiveInputStream(fileAwareInputStream.getInputStream());
+  final ReadableByteChannel inputChannel=Channels.newChannel(tarIn);
   TarArchiveEntry tarEntry;
-  boolean firstEntrySeen=false;
+  Path fileDestinationPath=fileAwareInputStream.getFile().getDestination();
+  String tarEntryRootName=null;
   try {
     while ((tarEntry=tarIn.getNextTarEntry()) != null) {
-      Path tarEntryPath=PathUtils.withoutLeadingSeparator(new Path(fileAwareInputStream.getFile().getDestination().getParent(),tarEntry.getName()));
-      Path tarEntryStagingPath=new Path(this.stagingDir,tarEntryPath);
-      firstEntrySeen=updateName(fileAwareInputStream,firstEntrySeen,tarEntryStagingPath.getName());
-      log.info("Unarchiving " + tarEntryStagingPath);
+      if (tarEntryRootName == null) {
+        tarEntryRootName=StringUtils.remove(tarEntry.getName(),Path.SEPARATOR);
+      }
+      String newTarEntryPath=tarEntry.getName().replace(tarEntryRootName,fileDestinationPath.getName());
+      Path tarEntryDestinationPath=PathUtils.withoutLeadingSeparator(new Path(fileDestinationPath.getParent(),newTarEntryPath));
+      Path tarEntryStagingPath=new Path(this.stagingDir,tarEntryDestinationPath);
+      log.info("Unarchiving at " + tarEntryStagingPath);
       if (tarEntry.isDirectory() && !fs.exists(tarEntryStagingPath)) {
         fs.mkdirs(tarEntryStagingPath);
       }
  else       if (!tarEntry.isDirectory()) {
         FSDataOutputStream out=fs.create(tarEntryStagingPath,true);
+        final WritableByteChannel outputChannel=Channels.newChannel(out);
         try {
-          IOUtils.copyBytes(tarIn,out,fs.getConf(),false);
+          bytesWritten+=StreamUtils.copy(inputChannel,outputChannel);
         }
   finally {
           out.close();
+          outputChannel.close();
         }
       }
     }
   }
   finally {
     tarIn.close();
+    inputChannel.close();
     fileAwareInputStream.getInputStream().close();
   }
   this.setFilePermissions(fileAwareInputStream.getFile());

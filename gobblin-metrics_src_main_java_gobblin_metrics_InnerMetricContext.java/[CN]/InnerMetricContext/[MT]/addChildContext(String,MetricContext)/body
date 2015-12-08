@@ -1,0 +1,10 @@
+{
+  if (this.children.get(childContextName,new Callable<MetricContext>(){
+    @Override public MetricContext call() throws Exception {
+      return childContext;
+    }
+  }
+) != childContext) {
+    throw new NameConflictException("A child context with that name already exists.");
+  }
+}

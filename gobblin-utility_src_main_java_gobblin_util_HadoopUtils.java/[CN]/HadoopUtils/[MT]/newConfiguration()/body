@@ -9,5 +9,6 @@
     conf.set("fs.s3n.awsSecretAccessKey",awsSecretAccessKey);
   }
   conf.set("fs.sftp.impl","gobblin.source.extractor.extract.sftp.SftpLightWeightFileSystem");
+  conf.set("fs.sftp.impl.disable.cache","true");
   return conf;
 }

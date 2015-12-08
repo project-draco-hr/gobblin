@@ -6,6 +6,7 @@
   Preconditions.checkArgument(this.dataset.jobProps().contains(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE),String.format("Missing property %s for dataset %s",MRCompactor.COMPACTION_SHOULD_DEDUPLICATE,this.dataset));
   this.shouldDeduplicate=this.dataset.jobProps().getPropAsBoolean(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE);
   this.outputDeduplicated=this.dataset.jobProps().getPropAsBoolean(MRCompactor.COMPACTION_OUTPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_OUTPUT_DEDUPLICATED);
+  this.usePrimeReducers=this.dataset.jobProps().getPropAsBoolean(COMPACTION_JOB_USE_PRIME_REDUCERS,DEFAULT_COMPACTION_JOB_USE_PRIME_REDUCERS);
   this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.dataset.jobProps().getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
   try {
     this.inputRecordCountProvider=(RecordCountProvider)Class.forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_INPUT_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_INPUT_RECORD_COUNT_PROVIDER)).newInstance();

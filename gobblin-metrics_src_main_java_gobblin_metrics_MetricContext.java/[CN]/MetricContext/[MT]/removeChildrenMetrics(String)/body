@@ -1,9 +1,0 @@
-{
-  boolean removed=true;
-  for (  MetricContext child : this.children.asMap().values()) {
-    if (!child.remove(name)) {
-      removed=false;
-    }
-  }
-  return removed;
-}

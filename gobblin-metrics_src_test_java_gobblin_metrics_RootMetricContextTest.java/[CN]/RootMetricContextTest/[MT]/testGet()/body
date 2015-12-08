@@ -1,0 +1,5 @@
+{
+  Assert.assertNotNull(RootMetricContext.get());
+  Assert.assertEquals(RootMetricContext.get(),RootMetricContext.get());
+  Assert.assertEquals(RootMetricContext.get().getName(),RootMetricContext.ROOT_METRIC_CONTEXT);
+}

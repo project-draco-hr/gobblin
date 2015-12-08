@@ -2,6 +2,6 @@
   super(fs,props);
   String pattern=props.getProperty(DATE_TIME_PATTERN_KEY);
   this.globPattern=new Path(pattern.replaceAll("[^/]+","*"));
-  LOGGER.debug(String.format("Setting timezone for patthern: %s. By default it is America/Los_Angeles",pattern));
+  LOGGER.debug(String.format("Setting timezone for patthern: %s. By default it is %s",pattern,DEFAULT_DATE_TIME_PATTERN_TIMEZONE));
   this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(props.getProperty(DATE_TIME_PATTERN_TIMEZONE_KEY,DEFAULT_DATE_TIME_PATTERN_TIMEZONE)));
 }

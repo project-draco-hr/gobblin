@@ -1,8 +1,0 @@
-{
-  if (!firstEntrySeen) {
-    fileAwareInputStream.getFile().setDestination(new Path(fileAwareInputStream.getFile().getDestination().getParent(),newFileName));
-    fileAwareInputStream.getFile().setRelativeDestination(new Path(fileAwareInputStream.getFile().getRelativeDestination().getParent(),newFileName));
-    firstEntrySeen=true;
-  }
-  return firstEntrySeen;
-}

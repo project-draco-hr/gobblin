@@ -1,0 +1,4 @@
+{
+  Iterables.removeIf(jobListeners,Predicates.isNull());
+  return new ParallelJobListener(jobListeners);
+}

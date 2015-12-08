@@ -1,0 +1,4 @@
+{
+  this(old);
+  this.schema=schema;
+}

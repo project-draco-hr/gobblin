@@ -1,0 +1,6 @@
+{
+  if (this.reporters.contains(reporter)) {
+    reporter.stop();
+    this.reporters.remove(reporter);
+  }
+}

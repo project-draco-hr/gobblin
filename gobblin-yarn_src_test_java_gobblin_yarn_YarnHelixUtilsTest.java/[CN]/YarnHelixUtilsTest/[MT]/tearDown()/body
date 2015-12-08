@@ -1,0 +1,5 @@
+{
+  if (this.fileSystem.exists(this.tokenFilePath.getParent())) {
+    this.fileSystem.delete(this.tokenFilePath.getParent(),true);
+  }
+}

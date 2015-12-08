@@ -1,3 +1,3 @@
 {
-  return this.reportFullyQualifiedNames ? super.getTimers() : getSimplyNamedMetrics(Timer.class,Optional.<MetricFilter>absent());
+  return this.innerMetricContext.getTimers(MetricFilter.ALL);
 }

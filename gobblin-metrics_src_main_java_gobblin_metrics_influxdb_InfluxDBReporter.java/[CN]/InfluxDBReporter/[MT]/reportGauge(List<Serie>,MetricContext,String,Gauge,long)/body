@@ -1,3 +1,0 @@
-{
-  series.add(buildSerie(context,name,Optional.<Measurements>absent(),timeStamp,gauge.getValue()));
-}

@@ -1,0 +1,13 @@
+{
+  if (this.started) {
+    log.warn(String.format("Reporter %s has already been started.",this.name));
+    return;
+  }
+  try {
+    startImpl();
+    this.started=true;
+  }
+ catch (  Exception exception) {
+    log.warn(String.format("Reporter %s did not start correctly.",this.name),exception);
+  }
+}

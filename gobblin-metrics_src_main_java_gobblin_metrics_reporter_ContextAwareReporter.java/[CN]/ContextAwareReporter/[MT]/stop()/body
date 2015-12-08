@@ -1,0 +1,13 @@
+{
+  if (!this.started) {
+    log.warn(String.format("Reporter %s has already been stopped.",this.name));
+    return;
+  }
+  try {
+    stopImpl();
+    this.started=false;
+  }
+ catch (  Exception exception) {
+    log.warn(String.format("Reporter %s did not stop correctly.",this.name),exception);
+  }
+}

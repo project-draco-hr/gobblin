@@ -1,13 +1,16 @@
 {
+  if (!fileSystem.exists(from)) {
+    return;
+  }
   for (  FileStatus fromFile : fileSystem.listStatus(from)) {
     Path relativeFilePath=new Path(StringUtils.substringAfter(fromFile.getPath().toString(),from.toString() + Path.SEPARATOR));
     Path toFilePath=new Path(to,relativeFilePath);
     if (!fileSystem.exists(toFilePath)) {
+      if (!fileSystem.exists(toFilePath.getParent())) {
+        fileSystem.mkdirs(toFilePath.getParent());
+      }
       if (!fileSystem.rename(fromFile.getPath(),toFilePath)) {
         throw new IOException(String.format("Failed to rename %s to %s.",fromFile.getPath(),toFilePath));
-      }
- else {
-        log.info(String.format("Renamed %s to %s",fromFile.getPath(),toFilePath));
       }
     }
  else     if (fromFile.isDir()) {

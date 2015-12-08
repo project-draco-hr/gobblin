@@ -1,0 +1,22 @@
+{
+  State state=new State();
+  try {
+    for (    Map.Entry<GenericRecord,DataWriter<D>> entry : this.partitionWriters.asMap().entrySet()) {
+      if (entry.getValue() instanceof FinalState) {
+        State partitionFinalState=((FinalState)entry.getValue()).getFinalState();
+        if (this.shouldPartition) {
+          for (          String key : partitionFinalState.getPropertyNames()) {
+            partitionFinalState.setProp(key + "_" + AvroUtils.serializeAsPath(entry.getKey(),false,true),partitionFinalState.getProp(key));
+          }
+        }
+        state.addAll(partitionFinalState);
+      }
+    }
+    state.setProp("RecordsWritten",recordsWritten());
+    state.setProp("BytesWritten",bytesWritten());
+  }
+ catch (  Exception exception) {
+    log.warn("Failed to get final state." + exception.getMessage());
+  }
+  return state;
+}

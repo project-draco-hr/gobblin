@@ -1,0 +1,3 @@
+{
+  return ImmutableSet.<ReportableContext>copyOf(this.contextsToReport);
+}

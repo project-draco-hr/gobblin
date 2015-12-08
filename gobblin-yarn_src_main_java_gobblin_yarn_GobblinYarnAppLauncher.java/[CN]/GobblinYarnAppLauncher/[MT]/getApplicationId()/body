@@ -1,0 +1,9 @@
+{
+  Optional<ApplicationId> reconnectableApplicationId=getReconnectableApplicationId();
+  if (reconnectableApplicationId.isPresent()) {
+    LOGGER.info("Found reconnectable application with application ID: " + reconnectableApplicationId.get());
+    return reconnectableApplicationId;
+  }
+  LOGGER.info("No reconnectable application found so submitting a new application");
+  return Optional.of(setupAndSubmitApplication());
+}

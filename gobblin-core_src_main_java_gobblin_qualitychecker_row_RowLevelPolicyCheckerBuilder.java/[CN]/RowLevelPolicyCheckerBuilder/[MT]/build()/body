@@ -1,3 +1,3 @@
 {
-  return new RowLevelPolicyChecker(createPolicyList());
+  return new RowLevelPolicyChecker(createPolicyList(),this.state.getId(),WriterUtils.getWriterFS(this.state,1,0));
 }

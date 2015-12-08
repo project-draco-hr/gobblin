@@ -1,5 +1,0 @@
-{
-  for (  Serie serie : series) {
-    this.series.put(serie.getName(),serie);
-  }
-}

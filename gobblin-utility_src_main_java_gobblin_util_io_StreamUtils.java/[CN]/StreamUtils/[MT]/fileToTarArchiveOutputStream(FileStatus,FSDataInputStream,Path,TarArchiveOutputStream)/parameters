@@ -1,0 +1,4 @@
+FileStatus fileStatus
+FSDataInputStream fsDataInputStream
+Path destFile
+TarArchiveOutputStream tarArchiveOutputStream

@@ -1,0 +1,9 @@
+{
+  String builderClassName=this.state.getProp(COMPACTION_JOBPROPS_CREATOR_CLASS,DEFAULT_COMPACTION_JOBPROPS_CREATOR_CLASS) + "$Builder";
+  try {
+    return ((MRCompactorJobPropCreator.Builder<?>)Class.forName(builderClassName).newInstance()).withTopic(topic).withPriority(priority).withLateDataThresholdForRecompact(lateDataThresholdForRecompact).withTopicInputDir(new Path(this.inputDir,new Path(topic,this.inputSubDir))).withTopicInputLateDir(new Path(this.inputDir,new Path(topic,this.inputLateSubDir))).withTopicOutputDir(new Path(this.destDir,new Path(topic,this.destSubDir))).withTopicOutputLateDir(new Path(this.destDir,new Path(topic,this.destLateSubDir))).withTopicTmpOutputDir(new Path(this.tmpOutputDir,new Path(topic,this.destSubDir))).withFileSystem(this.fs).withState(this.state).build();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return Enums.getIfPresent(LauncherTypeEnum.class,this.getProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.LOCAL.name())).or(LauncherTypeEnum.LOCAL);
+}

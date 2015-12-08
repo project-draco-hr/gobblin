@@ -1,0 +1,10 @@
+{
+  super(properties);
+  this.properties=properties;
+  this.helixManager=helixManager;
+  this.eventBus=eventBus;
+  this.appWorkDir=appWorkDir;
+  this.eventMetadata=eventMetadata;
+  URI fsUri=URI.create(properties.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
+  this.fs=FileSystem.get(fsUri,new Configuration());
+}

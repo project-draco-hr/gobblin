@@ -1,6 +1,0 @@
-int tasks
-long totalRecords
-String url
-String user
-String password
-String database

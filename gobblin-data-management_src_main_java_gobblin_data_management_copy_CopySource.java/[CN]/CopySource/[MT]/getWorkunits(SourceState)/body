@@ -3,15 +3,21 @@
   try {
     DatasetFinder<CopyableDataset> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),getSourceFileSystem(state),DEFAULT_DATASET_PROFILE_CLASS_KEY);
     List<CopyableDataset> copyableDatasets=datasetFinder.findDatasets();
+    FileSystem targetFs=getTargetFileSystem(state);
     for (    CopyableDataset copyableDataset : copyableDatasets) {
-      serializeCopyableDataset(state,copyableDataset);
-      Collection<Partition<CopyableFile>> partitions=copyableDataset.partitionFiles(copyableDataset.getCopyableFiles());
+      Path targetRoot=getTargetRoot(state,datasetFinder,copyableDataset);
+      Collection<Partition<CopyableFile>> partitions=copyableDataset.partitionFiles(copyableDataset.getCopyableFiles(targetFs,targetRoot));
       for (      Partition<CopyableFile> partition : partitions) {
         Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,COPY_PREFIX,partition.getName());
         for (        CopyableFile copyableFile : partition.getFiles()) {
           WorkUnit workUnit=new WorkUnit(extract);
           workUnit.addAll(state);
           serializeCopyableFiles(workUnit,Lists.newArrayList(copyableFile));
+          serializeCopyableDataset(workUnit,new CopyableDatasetMetadata(copyableDataset,targetRoot));
+          GobblinMetrics.addCustomTagToState(workUnit,new Tag<String>(CopyEventSubmitterHelper.DATASET_ROOT_METADATA_NAME,copyableDataset.datasetRoot().toString()));
+          workUnit.setProp(SlaEventKeys.DATASET_URN_KEY,copyableDataset.datasetRoot().toString());
+          workUnit.setProp(SlaEventKeys.PARTITION_KEY,partition.getName());
+          workUnit.setProp(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY,copyableFile.getFileStatus().getModificationTime());
           workUnits.add(workUnit);
         }
       }
@@ -20,5 +26,6 @@
  catch (  IOException e) {
     throw new RuntimeException(e);
   }
+  log.info(String.format("Created %s workunits",workUnits.size()));
   return workUnits;
 }

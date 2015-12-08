@@ -1,0 +1,18 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(name));
+  this.closer=Closer.create();
+  try {
+    this.innerMetricContext=this.closer.register(new InnerMetricContext(this,name,parent,tags));
+  }
+ catch (  ExecutionException ee) {
+    throw Throwables.propagate(ee);
+  }
+  this.contextAwareMetricsSet=Sets.newConcurrentHashSet();
+  this.notificationTargets=Maps.newConcurrentMap();
+  this.executorServiceOptional=Optional.absent();
+  this.notificationTimer=new ContextAwareTimer(this,GOBBLIN_METRICS_NOTIFICATIONS_TIMER_NAME);
+  register(this.notificationTimer);
+  if (!isRoot) {
+    RootMetricContext.get().addMetricContext(this);
+  }
+}

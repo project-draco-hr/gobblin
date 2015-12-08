@@ -1,3 +1,0 @@
-{
-  return MetricRegistry.name(metricNamePrefix(includeTagKeys),this.name);
-}

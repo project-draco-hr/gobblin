@@ -1,0 +1,3 @@
+{
+  return new Object[][]{{"tarArchiveInputStreamDataWriterTest/archived.tar.gz","archived.tar.gz","text"},{"tarArchiveInputStreamDataWriterTest/archived.tgz","archived_new_name","text"}};
+}

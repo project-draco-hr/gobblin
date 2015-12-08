@@ -1,0 +1,8 @@
+{
+  if (this.timestampToPathFormatter.isPresent()) {
+    return getDateTimeFormatBasedSchema();
+  }
+ else {
+    return getGranularityBasedSchema();
+  }
+}

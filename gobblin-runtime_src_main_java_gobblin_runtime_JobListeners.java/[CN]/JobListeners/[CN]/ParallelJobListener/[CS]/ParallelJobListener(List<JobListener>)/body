@@ -1,0 +1,5 @@
+{
+  this.jobListeners=jobListeners;
+  this.executor=Executors.newCachedThreadPool(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("ParallelJobListener")));
+  this.completionService=new ExecutorCompletionService(this.executor);
+}

@@ -1,0 +1,3 @@
+GenericRecord record
+boolean includeFieldNames
+boolean replacePathSeparators

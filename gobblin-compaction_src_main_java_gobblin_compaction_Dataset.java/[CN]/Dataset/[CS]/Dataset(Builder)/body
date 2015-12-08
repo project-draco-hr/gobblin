@@ -6,7 +6,8 @@
   this.outputLatePath=builder.outputLatePath;
   this.outputTmpPath=builder.outputTmpPath;
   this.additionalInputPaths=Lists.newArrayList();
-  this.throwables=Lists.newArrayList();
+  this.throwables=Collections.synchronizedCollection(Lists.<Throwable>newArrayList());
   this.priority=builder.priority;
-  this.state=DatasetState.UNVERIFIED;
+  this.lateDataThresholdForRecompact=builder.lateDataThresholdForRecompact;
+  this.state=new AtomicReference<>(DatasetState.UNVERIFIED);
 }

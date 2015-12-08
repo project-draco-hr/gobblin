@@ -1,6 +1,18 @@
 {
-  List<Path> files=findAvroFilesInDirs(subdirs,fs);
-  Job helperJob=Job.getInstance(cx.getConfiguration());
-  setInputPaths(helperJob,files.toArray(new Path[files.size()]));
-  splits.addAll(super.getSplits(helperJob));
+  Map<Schema,List<Path>> filesBySchema=new HashMap<Schema,List<Path>>();
+  for (  Path file : findAvroFilesInDirs(subdirs,fs)) {
+    final Schema schema=AvroUtils.getSchemaFromDataFile(file,fs);
+    if (!filesBySchema.containsKey(schema)) {
+      filesBySchema.put(schema,new ArrayList<Path>());
+    }
+    filesBySchema.get(schema).add(file);
+  }
+  for (  Map.Entry<Schema,List<Path>> entry : filesBySchema.entrySet()) {
+    List<Path> files=entry.getValue();
+    Job helperJob=Job.getInstance(cx.getConfiguration());
+    setInputPaths(helperJob,files.toArray(new Path[files.size()]));
+    for (    InputSplit inputSplit : super.getSplits(helperJob)) {
+      splits.add(new AvroCombineFileSplit((CombineFileSplit)inputSplit,entry.getKey()));
+    }
+  }
 }

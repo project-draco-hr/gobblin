@@ -7,16 +7,24 @@ synchronized (this.cancellationRequest) {
     this.cancellationRequest.notify();
   }
 synchronized (this.cancellationExecution) {
+    Closer closer=Closer.create();
     try {
       while (!this.cancellationExecuted) {
         this.cancellationExecution.wait();
       }
-      if (jobListener != null) {
-        jobListener.onJobCancellation(this.jobContext.getJobState());
-      }
+      JobListener parallelJobListener=closer.register(getParallelCombinedJobListener(jobListener));
+      parallelJobListener.onJobCancellation(this.jobContext.getJobState());
     }
  catch (    InterruptedException ie) {
       Thread.currentThread().interrupt();
+    }
+ finally {
+      try {
+        closer.close();
+      }
+ catch (      IOException e) {
+        throw new JobException("Failed to execute all JobListeners",e);
+      }
     }
   }
 }

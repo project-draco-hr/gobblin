@@ -1,9 +1,14 @@
 {
   LOG.info("Running compaction for dataset " + dataset);
-  MRCompactorJobRunner jobRunner=getMRCompactorJobRunner(dataset,dataset.priority());
-  this.jobRunnables.put(dataset,jobRunner);
-  if (proceed) {
-    jobRunner.proceed();
+  try {
+    MRCompactorJobRunner jobRunner=getMRCompactorJobRunner(dataset,dataset.priority());
+    this.jobRunnables.put(dataset,jobRunner);
+    if (proceed) {
+      jobRunner.proceed();
+    }
+    this.jobExecutor.execute(jobRunner);
   }
-  this.jobExecutor.execute(jobRunner);
+ catch (  Throwable t) {
+    dataset.skip(t);
+  }
 }

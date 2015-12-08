@@ -1,0 +1,7 @@
+{
+  long seconds=TimeUnit.SECONDS.convert(reportingInterval,reportingIntervalUnit);
+  if (seconds > Integer.MAX_VALUE) {
+    throw new RuntimeException(String.format("Reporting interval is too long. Max: %d seconds.",Integer.MAX_VALUE));
+  }
+  return config.withValue(REPORTING_INTERVAL,ConfigValueFactory.fromAnyRef(seconds + "S"));
+}

@@ -1,0 +1,12 @@
+{
+  CopyableDataset copyableDataset=new TestCopyableDataset();
+  Path target=new Path("/target");
+  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset,target);
+  String serialized=metadata.serialize();
+  CopyableDatasetMetadata deserialized=CopyableDatasetMetadata.deserialize(serialized);
+  CopyableDatasetMetadata deserialized2=CopyableDatasetMetadata.deserialize(serialized);
+  Multimap<CopyableDatasetMetadata,WorkUnitState> datasetRoots=ArrayListMultimap.create();
+  datasetRoots.put(deserialized,new WorkUnitState());
+  datasetRoots.put(deserialized2,new WorkUnitState());
+  Assert.assertEquals(datasetRoots.keySet().size(),1);
+}

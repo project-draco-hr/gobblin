@@ -1,5 +1,0 @@
-{
-  for (  ScheduledReporter reporter : this.contextAwareScheduledReporters.values()) {
-    reporter.report();
-  }
-}

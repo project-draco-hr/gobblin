@@ -1,5 +1,0 @@
-{
-  if (this.influxDBReporter != null) {
-    this.influxDBReporter.close();
-  }
-}

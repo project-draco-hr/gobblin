@@ -1,3 +1,0 @@
-{
-  return new Path(this.datasetName,partitionLevel + Path.SEPARATOR + timestampToPathFormatter.print(timestamp));
-}

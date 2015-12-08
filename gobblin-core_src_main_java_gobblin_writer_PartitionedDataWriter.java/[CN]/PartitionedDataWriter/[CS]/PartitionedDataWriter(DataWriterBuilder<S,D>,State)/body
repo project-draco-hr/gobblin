@@ -1,4 +1,5 @@
 {
+  this.baseWriterId=builder.getWriterId();
   this.closer=Closer.create();
   this.partitionWriters=CacheBuilder.newBuilder().build(new CacheLoader<GenericRecord,DataWriter<D>>(){
     @Override public DataWriter<D> load(    final GenericRecord key) throws Exception {
@@ -11,7 +12,7 @@
     try {
       this.shouldPartition=true;
       this.builder=Optional.of(PartitionAwareDataWriterBuilder.class.cast(builder));
-      this.partitioner=Optional.of(WriterPartitioner.class.cast(ConstructorUtils.invokeConstructor(Class.forName(state.getProp(ConfigurationKeys.WRITER_PARTITIONER_CLASS)),state)));
+      this.partitioner=Optional.of(WriterPartitioner.class.cast(ConstructorUtils.invokeConstructor(Class.forName(state.getProp(ConfigurationKeys.WRITER_PARTITIONER_CLASS)),state,builder.getBranches(),builder.getBranch())));
       Preconditions.checkArgument(this.builder.get().validatePartitionSchema(this.partitioner.get().partitionSchema()),String.format("Writer %s does not support schema from partitioner %s",builder.getClass().getCanonicalName(),this.partitioner.getClass().getCanonicalName()));
     }
  catch (    ReflectiveOperationException roe) {

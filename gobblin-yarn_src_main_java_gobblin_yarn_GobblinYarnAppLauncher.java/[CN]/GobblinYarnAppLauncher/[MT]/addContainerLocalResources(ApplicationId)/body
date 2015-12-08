@@ -1,5 +1,5 @@
 {
-  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId);
+  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId.toString());
   Path containerWorkDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.CONTAINER_WORK_DIR_NAME);
   if (this.config.hasPath(GobblinYarnConfigurationKeys.CONTAINER_JARS_KEY)) {
     Path appJarsDestDir=new Path(containerWorkDir,GobblinYarnConfigurationKeys.APP_JARS_DIR_NAME);

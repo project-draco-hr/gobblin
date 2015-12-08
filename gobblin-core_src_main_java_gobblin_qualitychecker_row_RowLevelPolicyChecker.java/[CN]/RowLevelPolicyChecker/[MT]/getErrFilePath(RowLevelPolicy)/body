@@ -1,0 +1,8 @@
+{
+  String errFileName=HadoopUtils.sanitizePath(policy.toString(),"-");
+  if (!Strings.isNullOrEmpty(this.stateId)) {
+    errFileName+="-" + this.stateId;
+  }
+  errFileName+=".err";
+  return new Path(policy.getErrFileLocation(),errFileName);
+}

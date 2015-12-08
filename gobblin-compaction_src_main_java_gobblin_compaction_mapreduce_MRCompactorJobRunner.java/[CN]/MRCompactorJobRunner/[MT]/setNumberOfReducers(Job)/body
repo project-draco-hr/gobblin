@@ -1,5 +1,9 @@
 {
   long inputSize=getInputSize();
   long targetFileSize=getTargetFileSize();
-  job.setNumReduceTasks(Math.min(Ints.checkedCast(inputSize / targetFileSize) + 1,getMaxNumReducers()));
+  int numReducers=Math.min(Ints.checkedCast(inputSize / targetFileSize) + 1,getMaxNumReducers());
+  if (this.usePrimeReducers && numReducers != 1) {
+    numReducers=Primes.nextPrime(numReducers);
+  }
+  job.setNumReduceTasks(numReducers);
 }

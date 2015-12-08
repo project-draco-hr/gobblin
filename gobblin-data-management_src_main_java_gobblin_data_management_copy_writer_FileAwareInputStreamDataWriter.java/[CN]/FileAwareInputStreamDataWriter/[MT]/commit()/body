@@ -1,3 +1,5 @@
 {
-  HadoopUtils.safeRenameRecursively(fs,stagingDir,outputDir);
+  log.info(String.format("Committing data from %s to %s",this.stagingDir,this.outputDir));
+  HadoopUtils.renameRecursively(this.fs,this.stagingDir,this.outputDir);
+  this.fs.delete(this.stagingDir,true);
 }

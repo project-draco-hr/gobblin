@@ -1,0 +1,4 @@
+FileStatus dirFileStatus
+FileSystem fs
+Optional<Path> destDir
+TarArchiveOutputStream tarArchiveOutputStream

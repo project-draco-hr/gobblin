@@ -1,0 +1,3 @@
+{
+  this.setProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,jobLauncherType.name());
+}

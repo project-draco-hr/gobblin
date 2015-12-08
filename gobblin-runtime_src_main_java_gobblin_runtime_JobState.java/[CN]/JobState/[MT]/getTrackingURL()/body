@@ -1,0 +1,3 @@
+{
+  return Optional.fromNullable(this.getProp(ConfigurationKeys.JOB_TRACKING_URL_KEY));
+}

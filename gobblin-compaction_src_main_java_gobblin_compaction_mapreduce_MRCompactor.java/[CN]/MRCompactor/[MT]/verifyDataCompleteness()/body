@@ -4,6 +4,9 @@
   int numDatasetsVerifiedTogether=getNumDatasetsVerifiedTogether();
   List<Dataset> datasetsToBeVerified=Lists.newArrayList();
   for (  Dataset dataset : this.datasets) {
+    if (dataset.state() != UNVERIFIED) {
+      continue;
+    }
     if (shouldVerifyCompletenessForDataset(dataset,blacklist,whitelist)) {
       datasetsToBeVerified.add(dataset);
       if (datasetsToBeVerified.size() >= numDatasetsVerifiedTogether) {

@@ -1,0 +1,4 @@
+String applicationName
+ContainerId containerId
+Config config
+YarnConfiguration yarnConfiguration

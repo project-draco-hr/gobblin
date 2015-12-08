@@ -1,0 +1,5 @@
+{
+  ImmutableSet.Builder<MetricContext> builder=ImmutableSet.builder();
+  addContextsRecursively(builder,RootMetricContext.get());
+  return builder.build();
+}

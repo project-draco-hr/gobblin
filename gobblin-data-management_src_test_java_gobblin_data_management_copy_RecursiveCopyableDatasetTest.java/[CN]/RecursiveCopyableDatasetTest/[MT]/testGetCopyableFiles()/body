@@ -3,9 +3,8 @@
   String baseDir=getClass().getClassLoader().getResource("copyableDatasetTest/source").getFile();
   String destinationDir=getClass().getClassLoader().getResource("copyableDatasetTest/destination").getFile();
   Properties properties=new Properties();
-  properties.setProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,destinationDir);
   RecursiveCopyableDataset dataset=new RecursiveCopyableDataset(FileSystem.getLocal(new Configuration()),new Path(baseDir),properties);
-  List<CopyableFile> files=dataset.getCopyableFiles();
+  List<CopyableFile> files=dataset.getCopyableFiles(FileSystem.getLocal(new Configuration()),new Path(destinationDir));
   Assert.assertEquals(files.size(),3);
   for (  CopyableFile copyableFile : files) {
     Path originRelativePath=PathUtils.relativizePath(PathUtils.getPathWithoutSchemeAndAuthority(copyableFile.getOrigin().getPath()),PathUtils.getPathWithoutSchemeAndAuthority(new Path(baseDir)));
