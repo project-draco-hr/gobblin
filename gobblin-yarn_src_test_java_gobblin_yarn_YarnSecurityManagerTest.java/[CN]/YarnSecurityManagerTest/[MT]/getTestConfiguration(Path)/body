@@ -1,7 +1,0 @@
-{
-  HdfsConfiguration hdfsConfiguration=new HdfsConfiguration(false);
-  hdfsConfiguration.set("dfs.namenode.name.dir",miniHDFSBaseDir.toString());
-  hdfsConfiguration.set("dfs.namenode.edits.dir",miniHDFSBaseDir.toString());
-  hdfsConfiguration.setLong("dfs.namenode.fs-limits.min-block-size",0L);
-  return hdfsConfiguration;
-}

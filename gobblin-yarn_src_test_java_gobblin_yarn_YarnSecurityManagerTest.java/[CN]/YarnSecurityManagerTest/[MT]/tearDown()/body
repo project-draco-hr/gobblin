@@ -3,12 +3,7 @@
     if (this.helixManager.isConnected()) {
       this.helixManager.disconnect();
     }
-    try {
-      FileSystem.getLocal(this.dfsConfig).delete(this.miniHDFSBaseDir,true);
-    }
-  finally {
-      this.miniDFSCluster.shutdown(true);
-    }
+    this.localFs.delete(this.baseDir,true);
   }
  catch (  Throwable t) {
     throw this.closer.rethrow(t);

@@ -10,17 +10,14 @@
   YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectingString,helixClusterName);
   this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.SPECTATOR,zkConnectingString);
   this.helixManager.connect();
-  this.miniHDFSBaseDir=new Path(YarnSecurityManagerTest.class.getSimpleName());
-  this.dfsConfig=getTestConfiguration(this.miniHDFSBaseDir);
-  dfsConfig.set(MiniDFSCluster.HDFS_MINIDFS_BASEDIR,this.miniHDFSBaseDir.toUri().toString());
-  MiniDFSCluster.Builder builder=new MiniDFSCluster.Builder(dfsConfig);
-  this.miniDFSCluster=builder.numDataNodes(1).build();
-  this.fs=Mockito.spy(this.closer.register(this.miniDFSCluster.getFileSystem()));
+  this.configuration=new Configuration();
+  this.localFs=Mockito.spy(FileSystem.getLocal(this.configuration));
   this.token=new Token<>();
   this.token.setKind(new Text("test"));
   this.token.setService(new Text("test"));
-  Mockito.<Token<?>>when(this.fs.getDelegationToken(UserGroupInformation.getLoginUser().getShortUserName())).thenReturn(this.token);
-  this.tokenFilePath=new Path(this.fs.getHomeDirectory(),GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
-  this.yarnAppSecurityManager=new YarnAppSecurityManager(config,this.helixManager,this.fs,this.tokenFilePath);
-  this.yarnContainerSecurityManager=new YarnContainerSecurityManager(config,this.fs,new EventBus());
+  Mockito.<Token<?>>when(this.localFs.getDelegationToken(UserGroupInformation.getLoginUser().getShortUserName())).thenReturn(this.token);
+  this.baseDir=new Path(YarnSecurityManagerTest.class.getSimpleName());
+  this.tokenFilePath=new Path(this.baseDir,GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
+  this.yarnAppSecurityManager=new YarnAppSecurityManager(config,this.helixManager,this.localFs,this.tokenFilePath);
+  this.yarnContainerSecurityManager=new YarnContainerSecurityManager(config,this.localFs,new EventBus());
 }
