@@ -1,9 +1,0 @@
-{
-  Preconditions.checkArgument(destDir.isDirectory());
-  try {
-    tarArchiveOutputStream.putArchiveEntry(new TarArchiveEntry(destDir));
-  }
-  finally {
-    tarArchiveOutputStream.closeArchiveEntry();
-  }
-}

@@ -1,0 +1,3 @@
+{
+  return path.toString().endsWith(Path.SEPARATOR) ? path.toString() : path.toString() + Path.SEPARATOR;
+}

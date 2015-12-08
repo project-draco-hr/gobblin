@@ -1,12 +1,12 @@
 {
   try (FSDataOutputStream fsDataOutputStream=destFs.create(destPath);TarArchiveOutputStream tarArchiveOutputStream=new TarArchiveOutputStream(new GzipCompressorOutputStream(fsDataOutputStream),ConfigurationKeys.DEFAULT_CHARSET_ENCODING.name())){
     FileStatus fileStatus=sourceFs.getFileStatus(sourcePath);
-    if (fileStatus.isDir()) {
-      dirToTarArchiveOutputStreamRecursive(fileStatus,sourceFs,new File("."),tarArchiveOutputStream);
+    if (sourceFs.isDirectory(sourcePath)) {
+      dirToTarArchiveOutputStreamRecursive(fileStatus,sourceFs,Optional.<Path>absent(),tarArchiveOutputStream);
     }
  else {
       try (FSDataInputStream fsDataInputStream=sourceFs.open(sourcePath)){
-        fileToTarArchiveOutputStream(fileStatus,fsDataInputStream,new File(sourcePath.getName()),tarArchiveOutputStream);
+        fileToTarArchiveOutputStream(fileStatus,fsDataInputStream,new Path(sourcePath.getName()),tarArchiveOutputStream);
       }
      }
   }
