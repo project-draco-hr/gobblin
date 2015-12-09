@@ -3,9 +3,12 @@
     if (this.helixManager.isConnected()) {
       this.helixManager.disconnect();
     }
-    this.gobblinYarnAppLauncher.disconnectHelixManager();
+    this.localFs.delete(this.baseDir,true);
   }
-  finally {
+ catch (  Throwable t) {
+    throw this.closer.rethrow(t);
+  }
+ finally {
     this.closer.close();
   }
 }

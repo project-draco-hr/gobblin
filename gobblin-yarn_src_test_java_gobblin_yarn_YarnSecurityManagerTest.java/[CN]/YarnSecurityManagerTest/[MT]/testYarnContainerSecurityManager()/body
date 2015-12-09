@@ -1,0 +1,6 @@
+{
+  Collection<Token<?>> tokens=this.yarnContainerSecurityManager.readDelegationTokens(this.tokenFilePath);
+  assertToken(tokens);
+  this.yarnContainerSecurityManager.addDelegationTokens(tokens);
+  assertToken(UserGroupInformation.getCurrentUser().getTokens());
+}

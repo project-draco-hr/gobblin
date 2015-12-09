@@ -9,8 +9,8 @@
     this.taskState.setProp(writerRecordsWrittenKey,this.writer.get().recordsWritten());
   }
  else {
-    this.forkTaskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0l);
-    this.taskState.setProp(writerRecordsWrittenKey,0l);
+    this.forkTaskState.setProp(ConfigurationKeys.WRITER_ROWS_WRITTEN,0L);
+    this.taskState.setProp(writerRecordsWrittenKey,0L);
   }
   if (schema.isPresent()) {
     this.forkTaskState.setProp(ConfigurationKeys.EXTRACT_SCHEMA,schema.get().toString());
