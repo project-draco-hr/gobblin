@@ -4,13 +4,13 @@
   this.fs.mkdirs(stagingFile.getParent(),fileAwareInputStream.getFile().getDestinationOwnerAndPermission().getFsPermission());
   FSDataOutputStream os=this.fs.create(stagingFile,true);
   try {
-    this.bytesWritten+=StreamUtils.copy(fileAwareInputStream.getInputStream(),os);
-    log.info("bytes written: " + this.bytesWritten + " for file "+ fileAwareInputStream.getFile());
+    this.bytesWritten.addAndGet(StreamUtils.copy(fileAwareInputStream.getInputStream(),os));
+    log.info("bytes written: " + this.bytesWritten.get() + " for file "+ fileAwareInputStream.getFile());
   }
   finally {
     os.close();
     fileAwareInputStream.getInputStream().close();
   }
-  this.filesWritten++;
+  this.filesWritten.incrementAndGet();
   setFilePermissions(fileAwareInputStream.getFile());
 }
