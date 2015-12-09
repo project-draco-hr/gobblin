@@ -1,0 +1,3 @@
+{
+  PerformanceUtils.multiTest().name("HistogramPerformance").threads(1).depth(Sets.newHashSet(0,1,2,3)).forkAtDepth(0).histograms(Sets.newHashSet(0,1,2,3)).queries(10000000l).run();
+}

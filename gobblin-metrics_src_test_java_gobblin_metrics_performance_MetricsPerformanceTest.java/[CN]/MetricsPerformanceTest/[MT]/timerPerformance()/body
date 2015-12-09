@@ -1,0 +1,3 @@
+{
+  PerformanceUtils.multiTest().name("TimerPerformance").threads(1).depth(Sets.newHashSet(0,1,2,3)).forkAtDepth(0).timers(Sets.newHashSet(0,1,2,3)).queries(10000000l).run();
+}

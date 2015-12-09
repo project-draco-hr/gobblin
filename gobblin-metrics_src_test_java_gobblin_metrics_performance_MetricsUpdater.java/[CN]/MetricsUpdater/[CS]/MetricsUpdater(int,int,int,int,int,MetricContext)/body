@@ -1,0 +1,26 @@
+{
+  this.depth=depth;
+  this.random=new Random();
+  MetricContext tmpContext=baseContext == null ? RootMetricContext.get() : baseContext;
+  while (depth > 0) {
+    tmpContext=tmpContext.childBuilder(UUID.randomUUID().toString()).build();
+    depth--;
+  }
+  this.context=tmpContext;
+  this.counters=Lists.newArrayList();
+  for (int i=0; i < counters; i++) {
+    this.counters.add(this.context.counter("gobblin.performance.test.counter" + i));
+  }
+  this.meters=Lists.newArrayList();
+  for (int i=0; i < meters; i++) {
+    this.meters.add(this.context.meter("gobblin.performance.test.meter" + i));
+  }
+  this.histograms=Lists.newArrayList();
+  for (int i=0; i < histograms; i++) {
+    this.histograms.add(this.context.histogram("gobblin.performance.test.histogram" + i));
+  }
+  this.timers=Lists.newArrayList();
+  for (int i=0; i < timers; i++) {
+    this.timers.add(this.context.timer("gobblin.performance.test.timer" + i));
+  }
+}
