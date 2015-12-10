@@ -1,0 +1,14 @@
+{
+  try {
+    if (this.state.contains(MRCompactor.COMPACTION_FILE_SYSTEM_URI)) {
+      URI uri=URI.create(this.state.getProp(MRCompactor.COMPACTION_FILE_SYSTEM_URI));
+      return FileSystem.get(uri,this.conf);
+    }
+ else {
+      return FileSystem.get(this.conf);
+    }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("Failed to get filesystem for datasetsFinder.",e);
+  }
+}

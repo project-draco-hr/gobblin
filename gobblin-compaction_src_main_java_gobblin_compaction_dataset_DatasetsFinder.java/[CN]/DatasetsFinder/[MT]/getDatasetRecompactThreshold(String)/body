@@ -1,0 +1,9 @@
+{
+  Map<String,Double> datasetRegexAndRecompactThreshold=this.getDatasetRegexAndRecompactThreshold(this.state.getProp(MRCompactor.COMPACTION_LATEDATA_THRESHOLD_FOR_RECOMPACT_PER_DATASET,StringUtils.EMPTY));
+  for (  Map.Entry<String,Double> topicRegexEntry : datasetRegexAndRecompactThreshold.entrySet()) {
+    if (DatasetFilterUtils.stringInPatterns(datasetName,DatasetFilterUtils.getPatternsFromStrings(Splitter.on(DATASETS_WITH_SAME_RECOMPACT_THRESHOLDS_SEPARATOR).trimResults().omitEmptyStrings().splitToList(topicRegexEntry.getKey())))) {
+      return topicRegexEntry.getValue();
+    }
+  }
+  return MRCompactor.DEFAULT_COMPACTION_LATEDATA_THRESHOLD_FOR_RECOMPACT_PER_DATASET;
+}

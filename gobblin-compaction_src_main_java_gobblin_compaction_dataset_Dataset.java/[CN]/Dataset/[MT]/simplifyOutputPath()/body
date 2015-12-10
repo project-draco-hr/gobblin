@@ -1,0 +1,5 @@
+{
+  Path simplifiedPath=new Path(StringUtils.removeEnd(this.outputPath.toString(),this.jobProps().getProp(MRCompactor.COMPACTION_JOB_DEST_PARTITION,StringUtils.EMPTY)));
+  simplifiedPath=new Path(StringUtils.removeEnd(simplifiedPath.toString(),this.jobProps().getProp(MRCompactor.COMPACTION_DEST_SUBDIR,MRCompactor.DEFAULT_COMPACTION_DEST_SUBDIR)));
+  return simplifiedPath;
+}

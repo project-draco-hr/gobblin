@@ -1,11 +1,11 @@
 {
-  if (!this.fs.exists(this.topicInputDir)) {
-    LOG.warn("Input folder " + this.topicInputDir + " does not exist. Skipping topic "+ this.topic);
+  if (!this.fs.exists(this.dataset.inputPath())) {
+    LOG.warn("Input folder " + this.dataset.inputPath() + " does not exist. Skipping dataset "+ this.dataset);
     return ImmutableList.<Dataset>of();
   }
-  Dataset dataset=buildDataset();
-  Optional<Dataset> datasetWithJobProps=createJobProps(dataset);
+  Optional<Dataset> datasetWithJobProps=createJobProps(this.dataset);
   if (datasetWithJobProps.isPresent()) {
+    setCompactionSLATimestamp(datasetWithJobProps.get());
     return ImmutableList.<Dataset>of(datasetWithJobProps.get());
   }
  else {

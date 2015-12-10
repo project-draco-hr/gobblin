@@ -1,6 +1,0 @@
-{
-  super(builder);
-  this.folderTimePattern=getFolderPattern();
-  this.timeZone=DateTimeZone.forID(this.state.getProp(MRCompactor.COMPACTION_TIMEZONE,MRCompactor.DEFAULT_COMPACTION_TIMEZONE));
-  this.timeFormatter=DateTimeFormat.forPattern(this.folderTimePattern).withZone(this.timeZone);
-}

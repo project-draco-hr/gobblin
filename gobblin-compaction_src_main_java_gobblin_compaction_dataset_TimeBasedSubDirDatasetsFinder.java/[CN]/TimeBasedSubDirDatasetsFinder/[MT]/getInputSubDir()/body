@@ -1,0 +1,3 @@
+{
+  return this.state.getProp(MRCompactor.COMPACTION_INPUT_SUBDIR,MRCompactor.DEFAULT_COMPACTION_INPUT_SUBDIR);
+}

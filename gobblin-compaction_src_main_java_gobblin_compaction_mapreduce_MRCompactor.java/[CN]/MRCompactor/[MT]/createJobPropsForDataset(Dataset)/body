@@ -1,0 +1,11 @@
+{
+  LOG.info("Creating compaction jobs for dataset " + dataset + " with priority "+ dataset.priority()+ " and late data threshold for recompact "+ dataset.lateDataThresholdForRecompact());
+  MRCompactorJobPropCreator jobPropCreator=getJobPropCreator(dataset);
+  this.datasets.remove(dataset);
+  try {
+    this.datasets.addAll(jobPropCreator.createJobProps());
+  }
+ catch (  Throwable t) {
+    this.datasets.add(jobPropCreator.createFailedJobProps(t));
+  }
+}

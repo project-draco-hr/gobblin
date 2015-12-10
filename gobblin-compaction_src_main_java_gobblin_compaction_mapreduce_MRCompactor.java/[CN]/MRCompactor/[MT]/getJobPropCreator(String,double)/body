@@ -1,3 +1,0 @@
-{
-  return this.getJobPropCreator(topic,priority,DEFAULT_COMPACTION_LATEDATA_THRESHOLD_FOR_RECOMPACT_PER_TOPIC);
-}

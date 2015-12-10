@@ -1,6 +1,5 @@
 {
-  Dataset dataset=buildDataset();
-  dataset.setJobProps(this.state);
-  dataset.skip(t);
-  return dataset;
+  this.dataset.setJobProps(this.state);
+  this.dataset.skip(t);
+  return this.dataset;
 }

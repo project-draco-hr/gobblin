@@ -1,8 +1,7 @@
 {
   try {
     copyDependencyJarsToHdfs();
-    List<String> topics=findAllTopics();
-    processTopics(topics);
+    processDatasets();
     throwExceptionsIfAnyDatasetCompactionFailed();
   }
  catch (  Throwable t) {
