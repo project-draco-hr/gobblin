@@ -6,7 +6,7 @@
   ConfigStoreFactory<ConfigStore> csFactory=this.getConfigStoreFactory(uri);
   ConfigStore cs=csFactory.createConfigStore(uri);
   if (!(cs instanceof ConfigStoreWithStableVersion)) {
-    if (this.policy == VERSION_STABILITY_POLICY.RAISE_ERROR) {
+    if (this.policy == VersionStabilityPolicy.RAISE_ERROR) {
       throw new RuntimeException(String.format("Try to connect to unstable config store ",cs.getStoreURI()));
     }
   }

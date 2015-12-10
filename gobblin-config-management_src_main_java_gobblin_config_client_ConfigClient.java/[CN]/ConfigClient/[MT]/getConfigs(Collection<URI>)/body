@@ -1,6 +1,6 @@
 {
   Map<URI,Config> result=new HashMap<URI,Config>();
-  for (  URI tmp : uris) {
+  for (  URI tmp : configKeyUris) {
     result.put(tmp,this.getConfig(tmp));
   }
   return result;

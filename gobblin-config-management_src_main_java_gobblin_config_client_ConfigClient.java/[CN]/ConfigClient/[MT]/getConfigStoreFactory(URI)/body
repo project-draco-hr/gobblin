@@ -1,7 +1,7 @@
 {
   ConfigStoreFactory csf=configStoreFactoryMap.get(uri.getScheme());
   if (csf == null) {
-    throw new Exception("can not find corresponding config store factory for scheme " + uri.getScheme());
+    throw new ConfigStoreFactoryDoesNotExistsException("can not find corresponding config store factory for scheme " + uri.getScheme());
   }
   return (ConfigStoreFactory<ConfigStore>)csf;
 }
