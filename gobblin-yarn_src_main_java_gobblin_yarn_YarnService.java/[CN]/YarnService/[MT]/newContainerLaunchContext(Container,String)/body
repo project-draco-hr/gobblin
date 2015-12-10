@@ -11,7 +11,7 @@
   ContainerLaunchContext containerLaunchContext=Records.newRecord(ContainerLaunchContext.class);
   containerLaunchContext.setLocalResources(resourceMap);
   containerLaunchContext.setEnvironment(YarnHelixUtils.getEnvironmentVariables(this.yarnConfiguration));
-  containerLaunchContext.setCommands(Lists.newArrayList(buildContainerCommand(container)));
+  containerLaunchContext.setCommands(Lists.newArrayList(buildContainerCommand(container,helixInstanceName)));
   if (UserGroupInformation.isSecurityEnabled()) {
     containerLaunchContext.setTokens(this.tokens.duplicate());
   }

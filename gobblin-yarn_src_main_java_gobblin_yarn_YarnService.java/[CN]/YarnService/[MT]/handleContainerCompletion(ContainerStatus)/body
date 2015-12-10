@@ -1,0 +1,16 @@
+{
+  Map.Entry<Container,String> completedContainerEntry=this.containerMap.remove(containerStatus.getContainerId());
+  String completedInstanceName=completedContainerEntry.getValue();
+  LOGGER.info(String.format("Container %s running Helix instance %s has completed with exit status %d",containerStatus.getContainerId(),completedInstanceName,containerStatus.getExitStatus()));
+  if (!Strings.isNullOrEmpty(containerStatus.getDiagnostics())) {
+    LOGGER.info(String.format("Received the following diagnostics information for container %s: %s",containerStatus.getContainerId(),containerStatus.getDiagnostics()));
+  }
+  int retryCount=this.helixInstanceRetryCount.putIfAbsent(completedInstanceName,new AtomicInteger(0)).incrementAndGet();
+  if (this.helixInstanceMaxRetries > 0 && retryCount > this.helixInstanceMaxRetries) {
+    LOGGER.warn("Maximum number of retries has been achieved for Helix instance " + completedInstanceName);
+    return;
+  }
+  this.unusedHelixInstanceNames.offer(completedInstanceName);
+  LOGGER.info(String.format("Requesting a new container to replace %s to run Helix instance %s",containerStatus.getContainerId(),completedInstanceName));
+  this.eventBus.post(new NewContainerRequest(shouldStickToTheSameNode(containerStatus.getExitStatus()) ? Optional.of(completedContainerEntry.getKey()) : Optional.<Container>absent()));
+}

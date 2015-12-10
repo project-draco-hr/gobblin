@@ -1,4 +1,4 @@
 {
-  String helixInstanceName=YarnHelixUtils.getHelixInstanceName(YarnHelixUtils.getHostname(),containerId);
+  String helixInstanceName=GobblinApplicationMaster.class.getSimpleName();
   return HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.CONTROLLER,zkConnectionString);
 }

@@ -1,0 +1,9 @@
+{
+switch (containerExitStatus) {
+case ContainerExitStatus.DISKS_FAILED:
+case ContainerExitStatus.ABORTED:
+    return false;
+default :
+  return this.containerHostAffinityEnabled;
+}
+}

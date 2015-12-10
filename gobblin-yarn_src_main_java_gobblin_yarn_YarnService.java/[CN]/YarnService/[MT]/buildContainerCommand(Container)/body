@@ -1,4 +1,0 @@
-{
-  String containerProcessName=GobblinWorkUnitRunner.class.getSimpleName();
-  return new StringBuilder().append(ApplicationConstants.Environment.JAVA_HOME.$()).append("/bin/java").append(" -Xmx").append(container.getResource().getMemory()).append("M").append(" ").append(this.containerJvmArgs.or("")).append(" ").append(GobblinWorkUnitRunner.class.getName()).append(" --").append(GobblinYarnConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.applicationName).append(" 1>").append(ApplicationConstants.LOG_DIR_EXPANSION_VAR).append(File.separator).append(containerProcessName).append(".").append(ApplicationConstants.STDOUT).append(" 2>").append(ApplicationConstants.LOG_DIR_EXPANSION_VAR).append(File.separator).append(containerProcessName).append(".").append(ApplicationConstants.STDERR).toString();
-}

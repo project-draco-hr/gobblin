@@ -1,0 +1,11 @@
+{
+  Priority priority=Records.newRecord(Priority.class);
+  priority.setPriority(0);
+  Resource capability=Records.newRecord(Resource.class);
+  int maxMemoryCapacity=this.maxResourceCapacity.get().getMemory();
+  capability.setMemory(this.requestedContainerMemoryMbs <= maxMemoryCapacity ? this.requestedContainerMemoryMbs : maxMemoryCapacity);
+  int maxCoreCapacity=this.maxResourceCapacity.get().getVirtualCores();
+  capability.setVirtualCores(this.requestedContainerCores <= maxCoreCapacity ? this.requestedContainerCores : maxCoreCapacity);
+  String[] preferredNodes=preferredNode.isPresent() ? new String[]{preferredNode.get()} : null;
+  this.amrmClientAsync.addContainerRequest(new AMRMClient.ContainerRequest(capability,preferredNodes,null,priority));
+}

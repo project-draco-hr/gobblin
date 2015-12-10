@@ -1,3 +1,2 @@
 Config config
-ContainerId containerId
 String zkConnectionString

@@ -2,7 +2,7 @@
   String applicationId=containerId.getApplicationAttemptId().getApplicationId().toString();
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
-  this.helixManager=buildHelixManager(config,containerId,zkConnectionString);
+  this.helixManager=buildHelixManager(config,zkConnectionString);
   FileSystem fs=buildFileSystem(config);
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
   Map<String,String> eventMetadata=getEventSubmitterMetadata(applicationName,applicationId);
