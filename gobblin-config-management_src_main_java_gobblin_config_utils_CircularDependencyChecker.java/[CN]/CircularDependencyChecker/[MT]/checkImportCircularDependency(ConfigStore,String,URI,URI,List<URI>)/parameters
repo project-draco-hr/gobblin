@@ -1,5 +1,0 @@
-ConfigStore cs
-String version
-URI initialURI
-URI uri
-List<URI> previous

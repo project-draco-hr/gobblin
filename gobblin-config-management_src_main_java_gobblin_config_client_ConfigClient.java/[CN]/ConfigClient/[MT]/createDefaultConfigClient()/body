@@ -1,3 +1,0 @@
-{
-  return createConfigClientWithStableVersion(VersionStabilityPolicy.RAISE_ERROR);
-}

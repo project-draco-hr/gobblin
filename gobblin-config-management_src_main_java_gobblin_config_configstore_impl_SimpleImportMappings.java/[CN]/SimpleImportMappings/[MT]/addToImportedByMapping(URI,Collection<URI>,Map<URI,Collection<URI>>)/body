@@ -1,8 +1,0 @@
-{
-  for (  URI one_imported : imported) {
-    if (!targetImportedByMap.containsKey(one_imported)) {
-      targetImportedByMap.put(one_imported,new HashSet<URI>());
-    }
-    targetImportedByMap.get(one_imported).add(u);
-  }
-}

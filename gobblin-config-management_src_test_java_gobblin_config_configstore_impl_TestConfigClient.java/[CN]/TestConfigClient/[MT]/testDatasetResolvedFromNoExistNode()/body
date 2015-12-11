@@ -1,5 +1,0 @@
-{
-  URI notExist=new URI("etl-hdfs://" + testRootDir.getAbsolutePath() + "/datasets/a1/a2/a3/a4/a5");
-  Config c=cc.getConfig(notExist);
-  TestETLHdfsConfigStore.validateImportedConfig(c);
-}

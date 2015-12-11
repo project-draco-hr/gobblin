@@ -1,5 +1,0 @@
-{
-  this.store=cs;
-  this.version=version;
-  buildMaps();
-}

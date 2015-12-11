@@ -1,8 +1,0 @@
-{
-  this.policy=policy;
-  ServiceLoader<ConfigStoreFactory> loader=ServiceLoader.load(ConfigStoreFactory.class);
-  for (  ConfigStoreFactory f : loader) {
-    configStoreFactoryMap.put(f.getScheme(),f);
-    LOG.info("Created the config store factory with scheme name " + f.getScheme());
-  }
-}

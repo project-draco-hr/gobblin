@@ -1,4 +1,0 @@
-{
-  if (uri == null)   return false;
-  return uri.toString().length() == 0;
-}

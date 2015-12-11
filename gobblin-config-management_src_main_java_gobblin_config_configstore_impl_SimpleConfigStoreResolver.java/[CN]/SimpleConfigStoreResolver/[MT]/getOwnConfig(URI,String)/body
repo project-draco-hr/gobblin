@@ -1,3 +1,0 @@
-{
-  return store.getOwnConfig(uri,version);
-}

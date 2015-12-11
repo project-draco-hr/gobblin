@@ -1,3 +1,0 @@
-{
-  store.getChildren(new URI(""),"V1.0");
-}

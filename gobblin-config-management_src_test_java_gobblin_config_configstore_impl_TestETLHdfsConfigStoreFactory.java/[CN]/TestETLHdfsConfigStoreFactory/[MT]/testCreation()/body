@@ -1,5 +1,0 @@
-{
-  ETLHdfsConfigStore cs2=factory.createConfigStore(new URI("etl-hdfs://" + testRootDir.getAbsolutePath() + "/v3.0/datasets/a1/a2"));
-  Assert.assertTrue(cs2.getStoreURI().toString().indexOf(testRootDir.toString()) > 0);
-  Assert.assertEquals(cs2.getCurrentVersion(),Version);
-}

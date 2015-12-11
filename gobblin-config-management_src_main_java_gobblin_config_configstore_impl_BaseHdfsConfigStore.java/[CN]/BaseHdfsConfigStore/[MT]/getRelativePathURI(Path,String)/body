@@ -1,5 +1,0 @@
-{
-  URI versionRootURI=this.getVersionRoot(version).toUri();
-  URI input=p.toUri();
-  return versionRootURI.relativize(input);
-}

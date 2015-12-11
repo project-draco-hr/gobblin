@@ -1,7 +1,0 @@
-{
-  rootDir=Files.createTempDir();
-  System.out.println("root dir is " + rootDir);
-  testRootDir=new File(rootDir,TestRoot);
-  File input=new File(this.getClass().getResource("/" + TestRoot).getFile());
-  FilesUtil.SyncDirs(input,testRootDir);
-}

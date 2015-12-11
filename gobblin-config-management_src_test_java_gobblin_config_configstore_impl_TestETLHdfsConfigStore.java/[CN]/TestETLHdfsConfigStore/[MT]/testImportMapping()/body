@@ -1,6 +1,0 @@
-{
-  Collection<URI> imported=store.getOwnImports(dataset,Version);
-  Assert.assertEquals(imported.size(),1);
-  Iterator<URI> it=imported.iterator();
-  Assert.assertEquals(it.next().toString(),"tags/t1/t2/t3");
-}

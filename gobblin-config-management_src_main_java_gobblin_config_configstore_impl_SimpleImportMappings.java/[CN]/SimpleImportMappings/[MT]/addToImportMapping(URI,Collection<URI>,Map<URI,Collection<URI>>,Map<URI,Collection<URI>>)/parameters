@@ -1,4 +1,0 @@
-URI u
-Collection<URI> imported
-Map<URI,Collection<URI>> targetImportMap
-Map<URI,Collection<URI>> targetImportedByMap

@@ -1,7 +1,0 @@
-{
-  Config c=cc.getConfig(dsURI);
-  TestETLHdfsConfigStore.validateImportedConfig(c);
-  cc.clearCache(dsURI);
-  c=cc.getConfig(dsURI);
-  TestETLHdfsConfigStore.validateImportedConfig(c);
-}

@@ -1,5 +1,0 @@
-{
-  UUID traceID=UUID.randomUUID();
-  LOG.info(String.format("Getting resolved config for uri: %s for version %s, with traceID: %s",uri,version,traceID));
-  return getResolvedConfigWithTrace(uri,version,traceID.toString());
-}

@@ -1,3 +1,0 @@
-{
-  return store.getChildren(uri,version);
-}

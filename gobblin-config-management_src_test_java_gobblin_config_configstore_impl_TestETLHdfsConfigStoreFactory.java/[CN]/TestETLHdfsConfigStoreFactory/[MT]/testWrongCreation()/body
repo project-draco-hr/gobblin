@@ -1,3 +1,0 @@
-{
-  factory.createConfigStore(new URI("foo-hdfs://" + testRootDir.getAbsolutePath()));
-}
