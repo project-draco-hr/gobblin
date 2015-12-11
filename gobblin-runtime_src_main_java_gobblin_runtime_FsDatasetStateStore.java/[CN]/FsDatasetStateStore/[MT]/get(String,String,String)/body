@@ -5,7 +5,7 @@
   }
   Closer closer=Closer.create();
   try {
-    SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
+    @SuppressWarnings("deprecation") SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
     Writable writable=reader.getValueClass() == JobState.class ? new JobState() : new JobState.DatasetState();
     try {
       Text key=new Text();

@@ -1,0 +1,8 @@
+{
+  if (isInstrumentationEnabled) {
+    this.bytesWrittenMeter=Optional.of(this.metricContext.meter(MetricNames.DataWriterMetrics.BYTES_WRITTEN_METER));
+  }
+ else {
+    this.bytesWrittenMeter=Optional.absent();
+  }
+}

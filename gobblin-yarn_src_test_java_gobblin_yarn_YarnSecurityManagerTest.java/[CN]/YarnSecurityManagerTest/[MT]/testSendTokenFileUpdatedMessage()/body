@@ -1,0 +1,6 @@
+{
+  this.yarnAppSecurityManager.sendTokenFileUpdatedMessage(InstanceType.CONTROLLER);
+  Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s/CONTROLLER/MESSAGES",YarnSecurityManagerTest.class.getSimpleName())).getVersion(),0);
+  Thread.sleep(500);
+  Assert.assertEquals(this.curatorFramework.getChildren().forPath(String.format("/%s/CONTROLLER/MESSAGES",YarnSecurityManagerTest.class.getSimpleName())).size(),1);
+}

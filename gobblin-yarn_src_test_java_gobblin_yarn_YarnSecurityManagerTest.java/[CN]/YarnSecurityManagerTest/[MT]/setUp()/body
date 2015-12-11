@@ -1,0 +1,23 @@
+{
+  TestingServer testingZKServer=this.closer.register(new TestingServer(TEST_ZK_PORT));
+  this.curatorFramework=this.closer.register(CuratorFrameworkFactory.newClient(testingZKServer.getConnectString(),new RetryOneTime(2000)));
+  this.curatorFramework.start();
+  URL url=YarnSecurityManagerTest.class.getClassLoader().getResource(YarnSecurityManagerTest.class.getSimpleName() + ".conf");
+  Assert.assertNotNull(url,"Could not find resource " + url);
+  Config config=ConfigFactory.parseURL(url).resolve();
+  String zkConnectingString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  String helixClusterName=config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectingString,helixClusterName);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.SPECTATOR,zkConnectingString);
+  this.helixManager.connect();
+  this.configuration=new Configuration();
+  this.localFs=Mockito.spy(FileSystem.getLocal(this.configuration));
+  this.token=new Token<>();
+  this.token.setKind(new Text("test"));
+  this.token.setService(new Text("test"));
+  Mockito.<Token<?>>when(this.localFs.getDelegationToken(UserGroupInformation.getLoginUser().getShortUserName())).thenReturn(this.token);
+  this.baseDir=new Path(YarnSecurityManagerTest.class.getSimpleName());
+  this.tokenFilePath=new Path(this.baseDir,GobblinYarnConfigurationKeys.TOKEN_FILE_NAME);
+  this.yarnAppSecurityManager=new YarnAppSecurityManager(config,this.helixManager,this.localFs,this.tokenFilePath);
+  this.yarnContainerSecurityManager=new YarnContainerSecurityManager(config,this.localFs,new EventBus());
+}

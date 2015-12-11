@@ -1,0 +1,4 @@
+{
+  int startPos=path.toString().indexOf(basePath.toString()) + basePath.toString().length();
+  return this.timeFormatter.parseDateTime(StringUtils.removeStart(path.toString().substring(startPos),"/"));
+}

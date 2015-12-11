@@ -1,0 +1,4 @@
+Path src
+FileSystem dstFs
+Path dst
+Optional<String> group

@@ -1,0 +1,10 @@
+{
+  double priority=LOW_PRIORITY;
+  if (DatasetFilterUtils.stringInPatterns(datasetName,this.highPriority)) {
+    priority=HIGH_PRIORITY;
+  }
+ else   if (DatasetFilterUtils.stringInPatterns(datasetName,this.normalPriority)) {
+    priority=NORMAL_PRIORITY;
+  }
+  return priority;
+}

@@ -1,0 +1,12 @@
+{
+  try (DataFileReader<GenericRecord> reader=new DataFileReader<>(outputAvroFile,new GenericDatumReader<GenericRecord>(schema))){
+    Iterator<GenericRecord> iterator=reader.iterator();
+    GenericRecord record=iterator.next();
+    Assert.assertEquals(record.get("name").toString(),"Alyssa");
+    record=iterator.next();
+    Assert.assertEquals(record.get("name").toString(),"Ben");
+    record=iterator.next();
+    Assert.assertEquals(record.get("name").toString(),"Charlie");
+    Assert.assertFalse(iterator.hasNext());
+  }
+ }

@@ -1,0 +1,6 @@
+{
+  if ((this.recompactFromOutputPaths || !MRCompactor.datasetAlreadyCompacted(this.fs,dataset)) && dataset.jobProps().contains(MRCompactor.COMPACTION_INPUT_PATH_TIME)) {
+    long timeInMills=dataset.jobProps().getPropAsLong(MRCompactor.COMPACTION_INPUT_PATH_TIME);
+    CompactionSlaEventHelper.setUpstreamTimeStamp(state,timeInMills + TimeUnit.MILLISECONDS.convert(1,TimeUnit.DAYS));
+  }
+}

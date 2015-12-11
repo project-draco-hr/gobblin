@@ -1,0 +1,4 @@
+{
+  LOGGER.info("Reading updated token from token file: " + tokenFilePath);
+  return YarnHelixUtils.readTokensFromFile(tokenFilePath,this.fs.getConf());
+}

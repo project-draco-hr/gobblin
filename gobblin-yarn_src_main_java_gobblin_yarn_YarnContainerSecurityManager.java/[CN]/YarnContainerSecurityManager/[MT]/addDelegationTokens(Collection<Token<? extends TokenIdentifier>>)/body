@@ -1,0 +1,7 @@
+{
+  for (  Token<? extends TokenIdentifier> token : tokens) {
+    if (!UserGroupInformation.getCurrentUser().addToken(token)) {
+      LOGGER.error(String.format("Failed to add token %s to user %s",token.toString(),UserGroupInformation.getLoginUser().getShortUserName()));
+    }
+  }
+}

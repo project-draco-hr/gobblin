@@ -1,0 +1,5 @@
+{
+  String folderPattern=this.state.getProp(COMPACTION_TIMEBASED_FOLDER_PATTERN,DEFAULT_COMPACTION_TIMEBASED_FOLDER_PATTERN);
+  log.info("Compaction folder pattern: " + folderPattern);
+  return folderPattern;
+}

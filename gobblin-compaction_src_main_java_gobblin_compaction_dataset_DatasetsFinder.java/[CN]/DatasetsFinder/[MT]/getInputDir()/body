@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(this.state.contains(MRCompactor.COMPACTION_INPUT_DIR),"Missing required property " + MRCompactor.COMPACTION_INPUT_DIR);
+  return this.state.getProp(MRCompactor.COMPACTION_INPUT_DIR);
+}

@@ -1,0 +1,10 @@
+{
+  super(state);
+  this.inputSubDir=getInputSubDir();
+  this.inputLateSubDir=getInputLateSubDir();
+  this.destSubDir=getDestSubDir();
+  this.destLateSubDir=getDestLateSubDir();
+  this.folderTimePattern=getFolderPattern();
+  this.timeZone=DateTimeZone.forID(this.state.getProp(MRCompactor.COMPACTION_TIMEZONE,MRCompactor.DEFAULT_COMPACTION_TIMEZONE));
+  this.timeFormatter=DateTimeFormat.forPattern(this.folderTimePattern).withZone(this.timeZone);
+}

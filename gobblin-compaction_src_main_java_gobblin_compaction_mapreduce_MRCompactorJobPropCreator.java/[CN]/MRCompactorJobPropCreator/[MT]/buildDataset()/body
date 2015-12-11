@@ -1,3 +1,0 @@
-{
-  return new Dataset.Builder().withTopic(this.topic).withPriority(this.priority).withLateDataThresholdForRecompact(this.lateDataThresholdForRecompact).withInputPath(this.recompactFromOutputPaths ? this.topicOutputDir : this.topicInputDir).withInputLatePath(this.recompactFromOutputPaths ? this.topicOutputLateDir : this.topicInputLateDir).withOutputPath(this.topicOutputDir).withOutputLatePath(this.topicOutputLateDir).withOutputTmpPath(this.topicTmpOutputDir).build();
-}

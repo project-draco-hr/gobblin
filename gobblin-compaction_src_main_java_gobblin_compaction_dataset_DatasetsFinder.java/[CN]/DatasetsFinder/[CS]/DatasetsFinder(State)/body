@@ -1,0 +1,13 @@
+{
+  this.state=state;
+  this.conf=HadoopUtils.getConfFromState(state);
+  this.fs=getFileSystem();
+  this.inputDir=getInputDir();
+  this.destDir=getDestDir();
+  this.tmpOutputDir=getTmpOutputDir();
+  this.blacklist=getBlacklist();
+  this.whitelist=getWhitelist();
+  this.highPriority=getHighPriorityPatterns();
+  this.normalPriority=getNormalPriorityPatterns();
+  this.recompactDatasets=getRecompactDatasets();
+}

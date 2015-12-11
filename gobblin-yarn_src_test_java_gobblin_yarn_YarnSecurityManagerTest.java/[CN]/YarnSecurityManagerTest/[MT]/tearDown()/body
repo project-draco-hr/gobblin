@@ -1,0 +1,14 @@
+{
+  try {
+    if (this.helixManager.isConnected()) {
+      this.helixManager.disconnect();
+    }
+    this.localFs.delete(this.baseDir,true);
+  }
+ catch (  Throwable t) {
+    throw this.closer.rethrow(t);
+  }
+ finally {
+    this.closer.close();
+  }
+}
