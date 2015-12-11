@@ -1,6 +1,3 @@
 {
   LOGGER.info(String.format("Received container status for container %s: %s",containerId,containerStatus));
-  if (containerStatus.getState() == ContainerState.COMPLETE) {
-    handleContainerCompletion(containerStatus);
-  }
 }

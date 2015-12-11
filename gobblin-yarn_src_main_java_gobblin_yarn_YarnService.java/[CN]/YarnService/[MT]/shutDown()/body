@@ -1,5 +1,6 @@
 {
   LOGGER.info("Stopping the YarnService");
+  this.shutdownInProgress=true;
   try {
     ExecutorsUtils.shutdownExecutorService(this.containerLaunchExecutor,Optional.of(LOGGER));
     for (    Map.Entry<Container,String> entry : this.containerMap.values()) {

@@ -5,6 +5,9 @@
   if (!Strings.isNullOrEmpty(containerStatus.getDiagnostics())) {
     LOGGER.info(String.format("Received the following diagnostics information for container %s: %s",containerStatus.getContainerId(),containerStatus.getDiagnostics()));
   }
+  if (this.shutdownInProgress) {
+    return;
+  }
   int retryCount=this.helixInstanceRetryCount.putIfAbsent(completedInstanceName,new AtomicInteger(0)).incrementAndGet();
   if (this.helixInstanceMaxRetries > 0 && retryCount > this.helixInstanceMaxRetries) {
     LOGGER.warn("Maximum number of retries has been achieved for Helix instance " + completedInstanceName);
