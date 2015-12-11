@@ -19,6 +19,6 @@
   TaskCallbackContext taskCallbackContext=Mockito.mock(TaskCallbackContext.class);
   Mockito.when(taskCallbackContext.getTaskConfig()).thenReturn(taskConfig);
   Mockito.when(taskCallbackContext.getManager()).thenReturn(this.helixManager);
-  GobblinHelixTaskFactory gobblinHelixTaskFactory=new GobblinHelixTaskFactory(this.taskExecutor,this.taskStateTracker,this.localFs,this.appWorkDir);
+  GobblinHelixTaskFactory gobblinHelixTaskFactory=new GobblinHelixTaskFactory(Optional.<ContainerMetrics>absent(),this.taskExecutor,this.taskStateTracker,this.localFs,this.appWorkDir);
   this.gobblinHelixTask=(GobblinHelixTask)gobblinHelixTaskFactory.createNewTask(taskCallbackContext);
 }

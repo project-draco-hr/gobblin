@@ -28,6 +28,7 @@
     OutputStream output=append ? fs.append(metricLogFile) : fs.create(metricLogFile,true);
     this.scheduledReporters.add(this.closer.register(OutputStreamReporter.forContext(this.metricContext).outputTo(output).build()));
     this.scheduledReporters.add(this.closer.register(OutputStreamEventReporter.forContext(this.metricContext).outputTo(output).build()));
+    LOGGER.info("Will start reporting metrics to directory " + metricsLogDir);
   }
  catch (  IOException ioe) {
     LOGGER.error("Failed to build file metric reporter for job " + this.id,ioe);

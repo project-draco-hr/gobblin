@@ -1,4 +1,3 @@
 {
-  super(name(job),null,tagsForJob(job));
-  this.jobName=job.getJobName();
+  this(job,null);
 }

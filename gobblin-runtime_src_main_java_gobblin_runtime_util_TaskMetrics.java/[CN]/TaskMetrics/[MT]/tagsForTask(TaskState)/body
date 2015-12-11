@@ -1,6 +1,6 @@
 {
   List<Tag<?>> tags=Lists.newArrayList();
-  tags.add(new Tag<String>("taskId",taskState.getTaskId()));
+  tags.add(new Tag<>("taskId",taskState.getTaskId()));
   tags.addAll(getCustomTagsFromState(taskState));
   return tags;
 }

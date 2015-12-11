@@ -1,0 +1,13 @@
+{
+  Properties metricsReportingProps=new Properties();
+  metricsReportingProps.putAll(state.getProperties());
+  String oldMetricsFileSuffix=state.getProp(ConfigurationKeys.METRICS_FILE_SUFFIX,ConfigurationKeys.DEFAULT_METRICS_FILE_SUFFIX);
+  if (Strings.isNullOrEmpty(oldMetricsFileSuffix)) {
+    oldMetricsFileSuffix=metricsFileSuffix;
+  }
+ else {
+    oldMetricsFileSuffix+="." + metricsFileSuffix;
+  }
+  metricsReportingProps.setProperty(ConfigurationKeys.METRICS_FILE_SUFFIX,oldMetricsFileSuffix);
+  startMetricReporting(metricsReportingProps);
+}

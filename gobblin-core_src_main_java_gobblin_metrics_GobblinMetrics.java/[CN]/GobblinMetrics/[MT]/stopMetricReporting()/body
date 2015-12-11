@@ -3,6 +3,7 @@
     LOGGER.warn("Metric reporting has not started yet");
     return;
   }
+  LOGGER.info("Stopping metric reporting");
   if (this.jmxReporter.isPresent()) {
     this.jmxReporter.get().stop();
   }
