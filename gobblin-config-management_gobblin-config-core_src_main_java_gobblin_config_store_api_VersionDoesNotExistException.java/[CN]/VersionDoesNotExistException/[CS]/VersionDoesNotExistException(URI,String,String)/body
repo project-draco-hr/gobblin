@@ -1,0 +1,5 @@
+{
+  super(String.format("failed to find the version %s in config store %s with message %s ",version,storeURI,message));
+  this.storeURI=storeURI;
+  this.version=version;
+}
