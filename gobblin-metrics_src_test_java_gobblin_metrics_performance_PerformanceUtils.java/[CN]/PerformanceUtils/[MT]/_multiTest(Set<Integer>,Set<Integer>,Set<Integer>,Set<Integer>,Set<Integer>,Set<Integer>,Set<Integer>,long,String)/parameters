@@ -1,0 +1,9 @@
+Set<Integer> threads
+Set<Integer> depth
+Set<Integer> forkAtDepth
+Set<Integer> counters
+Set<Integer> meters
+Set<Integer> histograms
+Set<Integer> timers
+long queries
+String name

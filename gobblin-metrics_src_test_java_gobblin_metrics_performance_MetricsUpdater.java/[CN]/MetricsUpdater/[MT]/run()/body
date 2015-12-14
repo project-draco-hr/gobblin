@@ -1,0 +1,6 @@
+{
+  updateCounters();
+  updateMeters();
+  updateHistograms();
+  updateTimers();
+}

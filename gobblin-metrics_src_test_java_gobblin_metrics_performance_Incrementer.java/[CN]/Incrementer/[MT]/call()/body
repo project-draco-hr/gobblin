@@ -1,0 +1,15 @@
+{
+  long count=0;
+  long startTime=System.currentTimeMillis();
+  long nextLog=this.logInterval;
+  while (count < this.max_count) {
+    if (count >= nextLog) {
+      log.info(String.format("Incremented %d of %d times.",count,this.max_count));
+      nextLog+=this.logInterval;
+    }
+    onIteration();
+    count++;
+  }
+  long endTime=System.currentTimeMillis();
+  return endTime - startTime;
+}

@@ -1,0 +1,33 @@
+{
+  System.gc();
+  ExecutorService executorService=Executors.newFixedThreadPool(threads);
+  if (queries == 0) {
+    queries=50000000l;
+  }
+  long queriesPerThread=queries / threads;
+  long actualQueries=queriesPerThread * threads;
+  MetricsUpdater commonUpdater=MetricsUpdater.builder().depth(forkAtDepth).build();
+  List<Incrementer> incrementerList=Lists.newArrayList();
+  while (incrementerList.size() < threads) {
+    final MetricsUpdater metricsUpdater=MetricsUpdater.builder().baseContext(commonUpdater.getContext()).depth(depth - forkAtDepth).counters(counters).meters(meters).histograms(histograms).timers(timers).build();
+    incrementerList.add(new Incrementer(queriesPerThread,new Runnable(){
+      @Override public void run(){
+        metricsUpdater.run();
+      }
+    }
+));
+  }
+  List<Future<Long>> incrementerFutures=Lists.newArrayList();
+  for (  Incrementer incrementer : incrementerList) {
+    incrementerFutures.add(executorService.submit(incrementer));
+  }
+  long totalTime=0;
+  for (  Future<Long> future : incrementerFutures) {
+    totalTime+=future.get();
+  }
+  double averageTime=(double)totalTime / threads;
+  double qps=1000 * (double)actualQueries / averageTime;
+  log.info(String.format("Average qps: %f.",qps));
+  executorService.shutdown();
+  return qps;
+}

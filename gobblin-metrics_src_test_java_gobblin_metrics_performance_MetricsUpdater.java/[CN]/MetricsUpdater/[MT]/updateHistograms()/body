@@ -1,0 +1,5 @@
+{
+  for (  Histogram histogram : this.histograms) {
+    histogram.update(this.random.nextInt(1000));
+  }
+}

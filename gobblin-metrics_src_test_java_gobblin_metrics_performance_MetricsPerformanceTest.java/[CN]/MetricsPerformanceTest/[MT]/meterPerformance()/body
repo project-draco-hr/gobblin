@@ -1,0 +1,3 @@
+{
+  PerformanceUtils.multiTest().name("MeterPerformance").threads(1).depth(Sets.newHashSet(0,1,2,3)).forkAtDepth(0).meters(Sets.newHashSet(0,1,2,3)).queries(20000000l).run();
+}
