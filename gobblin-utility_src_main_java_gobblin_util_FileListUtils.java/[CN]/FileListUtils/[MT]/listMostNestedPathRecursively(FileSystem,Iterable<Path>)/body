@@ -1,0 +1,7 @@
+{
+  List<FileStatus> results=Lists.newArrayList();
+  for (  Path path : paths) {
+    results.addAll(listMostNestedPathRecursively(fs,path));
+  }
+  return results;
+}
