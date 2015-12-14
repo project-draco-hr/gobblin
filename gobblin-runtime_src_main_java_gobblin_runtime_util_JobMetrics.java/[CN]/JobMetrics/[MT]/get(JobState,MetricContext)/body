@@ -1,0 +1,3 @@
+{
+  return (JobMetrics)GOBBLIN_METRICS_REGISTRY.getOrDefault(name(jobState),new JobMetrics(jobState,parentContext));
+}

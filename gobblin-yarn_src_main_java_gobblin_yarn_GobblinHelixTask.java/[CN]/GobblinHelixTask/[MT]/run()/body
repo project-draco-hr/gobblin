@@ -23,6 +23,7 @@
     return new TaskResult(TaskResult.Status.CANCELED,"");
   }
 catch (  Throwable t) {
+    LOGGER.error("GobblinHelixTask failed due to " + t.getMessage(),t);
     return new TaskResult(TaskResult.Status.ERROR,Throwables.getStackTraceAsString(t));
   }
 }

@@ -4,8 +4,12 @@
   }
   this.stopInProgress=true;
   LOGGER.info("Stopping the Gobblin Yarn WorkUnit runner");
+  this.jmxReporter.stop();
+  if (this.containerMetrics.isPresent()) {
+    this.containerMetrics.get().triggerMetricReporting();
+    this.containerMetrics.get().stopMetricReporting();
+  }
   try {
-    this.jmxReporter.stop();
     this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.MINUTES);
   }
  catch (  TimeoutException te) {
