@@ -1,0 +1,3 @@
+{
+  return namePrefix + "_" + instanceId;
+}

@@ -1,5 +1,6 @@
 {
   Options options=new Options();
   options.addOption("a",GobblinYarnConfigurationKeys.APPLICATION_NAME_OPTION_NAME,true,"Yarn application name");
+  options.addOption("i",GobblinYarnConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME,true,"Helix instance name");
   return options;
 }

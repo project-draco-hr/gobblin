@@ -1,5 +1,5 @@
 {
-  LOGGER.info(String.format("Starting %s in container %s",GobblinWorkUnitRunner.class.getSimpleName(),this.containerId));
+  LOGGER.info(String.format("Starting %s in container %s",this.helixInstanceName,this.containerId));
   addShutdownHook();
   connectHelixManager();
   registerJvmMetrics();

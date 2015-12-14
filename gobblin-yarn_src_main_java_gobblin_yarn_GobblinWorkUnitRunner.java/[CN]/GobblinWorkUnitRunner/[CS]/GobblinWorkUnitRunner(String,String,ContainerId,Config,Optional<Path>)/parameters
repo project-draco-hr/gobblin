@@ -1,0 +1,5 @@
+String applicationName
+String helixInstanceName
+ContainerId containerId
+Config config
+Optional<Path> appWorkDirOptional
