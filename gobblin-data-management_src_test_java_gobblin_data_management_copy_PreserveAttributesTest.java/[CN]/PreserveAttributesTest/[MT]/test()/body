@@ -8,7 +8,7 @@
   tests.put("ru",Sets.newHashSet(Option.REPLICATION,Option.OWNER));
   tests.put("rbugp",Sets.newHashSet(Option.REPLICATION,Option.OWNER,Option.BLOCK_SIZE,Option.GROUP,Option.PERMISSION));
   tests.put("rrr",Sets.newHashSet(Option.REPLICATION));
-  tests.put("rrbx",Sets.newHashSet(Option.REPLICATION,Option.BLOCK_SIZE));
+  tests.put("rrb",Sets.newHashSet(Option.REPLICATION,Option.BLOCK_SIZE));
   tests.put("",Sets.<Option>newHashSet());
   for (  Map.Entry<String,Set<PreserveAttributes.Option>> entry : tests.entrySet()) {
     PreserveAttributes preserve=PreserveAttributes.fromMnemonicString(entry.getKey());
