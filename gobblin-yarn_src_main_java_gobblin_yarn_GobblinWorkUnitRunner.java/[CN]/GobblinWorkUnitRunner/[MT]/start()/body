@@ -4,6 +4,9 @@
   connectHelixManager();
   registerJvmMetrics();
   this.jmxReporter.start();
+  if (this.containerMetrics.isPresent()) {
+    this.containerMetrics.get().startMetricReportingWithFileSuffix(YarnHelixUtils.configToState(this.config),this.containerId.toString());
+  }
   this.serviceManager.startAsync();
   this.serviceManager.awaitStopped();
 }

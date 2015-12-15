@@ -1,6 +1,0 @@
-{
-  this.taskExecutor=taskExecutor;
-  this.taskStateTracker=taskStateTracker;
-  this.fs=fs;
-  this.appWorkDir=appWorkDir;
-}

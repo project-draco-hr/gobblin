@@ -1,0 +1,3 @@
+{
+  return (ContainerMetrics)GOBBLIN_METRICS_REGISTRY.getOrDefault(name(containerId),new ContainerMetrics(containerState,applicationName,containerId));
+}

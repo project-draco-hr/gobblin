@@ -1,0 +1,4 @@
+{
+  super(name(job),parentContext,tagsForJob(job));
+  this.jobName=job.getJobName();
+}

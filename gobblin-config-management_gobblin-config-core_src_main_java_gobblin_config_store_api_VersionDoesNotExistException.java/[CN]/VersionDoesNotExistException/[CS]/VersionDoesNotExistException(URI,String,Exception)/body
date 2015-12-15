@@ -1,0 +1,5 @@
+{
+  super(e);
+  this.storeURI=storeURI;
+  this.version=version;
+}

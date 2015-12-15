@@ -1,5 +1,6 @@
 {
   this.helixInstanceName=helixInstanceName;
+  this.config=config;
   this.containerId=containerId;
   ApplicationAttemptId applicationAttemptId=this.containerId.getApplicationAttemptId();
   String applicationId=applicationAttemptId.getApplicationId().toString();
@@ -22,8 +23,14 @@
     services.add(new YarnContainerSecurityManager(config,fs,this.eventBus));
   }
   this.serviceManager=new ServiceManager(services);
+  if (GobblinMetrics.isEnabled(properties)) {
+    this.containerMetrics=Optional.of(ContainerMetrics.get(YarnHelixUtils.configToState(this.config),applicationName,containerId));
+  }
+ else {
+    this.containerMetrics=Optional.absent();
+  }
   Map<String,TaskFactory> taskFactoryMap=Maps.newHashMap();
-  taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(taskExecutor,taskStateTracker,fs,appWorkDir));
+  taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(this.containerMetrics,taskExecutor,taskStateTracker,fs,appWorkDir));
   this.taskStateModelFactory=new TaskStateModelFactory(this.helixManager,taskFactoryMap);
   this.helixManager.getStateMachineEngine().registerStateModelFactory("Task",this.taskStateModelFactory);
   this.metricRegistry=new MetricRegistry();
