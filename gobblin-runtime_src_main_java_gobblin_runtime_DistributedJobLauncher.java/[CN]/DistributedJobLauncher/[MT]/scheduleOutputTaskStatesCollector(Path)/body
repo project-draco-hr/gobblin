@@ -1,0 +1,14 @@
+{
+  this.outputTaskStatesCollectorExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        collectOutputTaskStates(outputTaskStateDir);
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to collect output task states",ioe);
+        jobContext.getJobState().setState(JobState.RunningState.FAILED);
+      }
+    }
+  }
+,0,this.outputTaskStatesCollectorIntervalSeconds,TimeUnit.SECONDS);
+}

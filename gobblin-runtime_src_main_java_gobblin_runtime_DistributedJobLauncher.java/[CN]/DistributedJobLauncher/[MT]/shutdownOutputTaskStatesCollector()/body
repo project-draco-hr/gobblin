@@ -1,0 +1,3 @@
+{
+  ExecutorsUtils.shutdownExecutorService(this.outputTaskStatesCollectorExecutor,Optional.of(LOGGER));
+}

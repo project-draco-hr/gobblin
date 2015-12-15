@@ -2,3 +2,4 @@ Class<? extends Writable> keyClass
 Class<T> stateClass
 Path inputFilePath
 Collection<T> states
+boolean deleteAfter

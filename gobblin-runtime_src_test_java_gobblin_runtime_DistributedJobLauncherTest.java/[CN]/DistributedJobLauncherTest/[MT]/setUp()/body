@@ -1,0 +1,11 @@
+{
+  this.localFs=FileSystem.getLocal(new Configuration());
+  this.localFs.mkdirs(this.outputTaskStateDir);
+  this.taskStateStore=new FsStateStore<>(this.localFs,this.outputTaskStateDir.toUri().getPath(),TaskState.class);
+  Properties properties=new Properties();
+  properties.setProperty(ConfigurationKeys.JOB_NAME_KEY,JOB_NAME);
+  properties.setProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,this.outputTaskStateDir.toUri().getPath());
+  properties.setProperty(ConfigurationKeys.SOURCE_CLASS_KEY,TestSource.class.getName());
+  this.distributedJobLauncher=new TestDistributedJobLauncher(properties,this.localFs,ImmutableMap.<String,String>of());
+  this.distributedJobLauncher.eventBus.register(this);
+}

@@ -10,6 +10,9 @@
           states.add(state);
           state=stateClass.newInstance();
         }
+        if (deleteAfter) {
+          HadoopUtils.deletePath(fs,inputFilePath,false);
+        }
       }
  catch (      Throwable t) {
         throw closer.rethrow(t);

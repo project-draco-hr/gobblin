@@ -1,0 +1,5 @@
+{
+  if (this.localFs.exists(this.outputTaskStateDir)) {
+    this.localFs.delete(this.outputTaskStateDir,true);
+  }
+}

@@ -18,6 +18,11 @@
   while (this.countDownLatch.getCount() > 0) {
     LOG.info(String.format("%d out of %d tasks of job %s are running",this.countDownLatch.getCount(),workUnitsToRun.size(),jobId));
     this.countDownLatch.await(1,TimeUnit.MINUTES);
+    for (    Task task : tasks) {
+      if (task.isCompleted()) {
+        this.eventBus.post(new NewOutputTaskStateEvent(task.getTaskState()));
+      }
+    }
   }
   workUnitsRunTimer.stop();
   if (this.cancellationRequested) {
@@ -30,8 +35,5 @@ synchronized (this.cancellationExecution) {
   LOG.info(String.format("All tasks of job %s have completed",jobId));
   if (jobState.getState() == JobState.RunningState.RUNNING) {
     jobState.setState(JobState.RunningState.SUCCESSFUL);
-  }
-  for (  Task task : tasks) {
-    jobState.addTaskState(task.getTaskState());
   }
 }

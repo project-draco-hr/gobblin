@@ -1,0 +1,7 @@
+{
+  super(jobProps,eventMetadata);
+  this.fs=fs;
+  this.stateSerDeRunnerThreads=Integer.parseInt(jobProps.getProperty(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,Integer.toString(ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS)));
+  this.outputTaskStatesCollectorIntervalSeconds=Integer.parseInt(jobProps.getProperty(ConfigurationKeys.TASK_STATE_COLLECTOR_INTERVAL_SECONDS,Integer.toString(ConfigurationKeys.DEFAULT_TASK_STATE_COLLECTOR_INTERVAL_SECONDS)));
+  this.outputTaskStatesCollectorExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("OutputTaskStatesCollector")));
+}
