@@ -1,0 +1,4 @@
+{
+  super(String.format("failed to create config store %s with message %s",storeURI,message));
+  this.storeURI=storeURI;
+}
