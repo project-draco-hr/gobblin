@@ -3,7 +3,7 @@
   Closer closer=Closer.create();
   try {
     CuratorFramework curatorFramework=TestHelper.createZkClient(this.testingZKServer,closer);
-    final GetMessageNumFunc getMessageNumFunc=new GetMessageNumFunc(curatorFramework);
+    final GetInstanceMessageNumFunc getMessageNumFunc=new GetInstanceMessageNumFunc(GobblinApplicationMasterTest.class.getSimpleName(),curatorFramework);
     AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(log).timeoutMs(30000);
     this.gobblinApplicationMaster.sendShutdownRequest();
     Assert.assertEquals(curatorFramework.checkExists().forPath(String.format("/%s/INSTANCES/%s/MESSAGES",GobblinApplicationMasterTest.class.getSimpleName(),TestHelper.TEST_HELIX_INSTANCE_NAME)).getVersion(),0);

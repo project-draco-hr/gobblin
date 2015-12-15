@@ -1,5 +1,10 @@
 {
+  Logger log=LoggerFactory.getLogger("testSendReceiveShutdownMessage");
   this.gobblinApplicationMaster.sendShutdownRequest();
-  Thread.sleep(2000);
-  Assert.assertTrue(this.gobblinWorkUnitRunner.isStopped());
+  AssertWithBackoff.create().logger(log).timeoutMs(20000).assertTrue(new Predicate<Void>(){
+    @Override public boolean apply(    Void input){
+      return GobblinWorkUnitRunnerTest.this.gobblinWorkUnitRunner.isStopped();
+    }
+  }
+,"gobblinWorkUnitRunner stopped");
 }
