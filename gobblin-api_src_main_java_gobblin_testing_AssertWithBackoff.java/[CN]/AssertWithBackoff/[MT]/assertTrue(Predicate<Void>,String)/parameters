@@ -1,0 +1,2 @@
+Predicate<Void> condition
+String message
