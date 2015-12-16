@@ -5,16 +5,19 @@
   this.conf.set("mapred.max.map.failures.percent","100");
   this.conf.set("mapreduce.map.failures.maxpercent","100");
   this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
-  URI fsUri=URI.create(this.jobProps.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
-  this.fs=FileSystem.get(fsUri,conf);
+  this.fs=buildFileSystem(jobProps,this.conf);
   this.mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),jobContext.getJobName());
   if (this.fs.exists(this.mrJobDir)) {
     LOG.warn("Job working directory already exists for job " + jobContext.getJobName());
     this.fs.delete(this.mrJobDir,true);
   }
   this.fs.mkdirs(this.mrJobDir);
+  this.jobInputPath=new Path(this.mrJobDir,INPUT_DIR_NAME);
+  this.jobOutputPath=new Path(this.mrJobDir,OUTPUT_DIR_NAME);
+  Path outputTaskStateDir=new Path(jobOutputPath,this.jobContext.getJobId());
   addDependencies();
   this.job=Job.getInstance(this.conf,JOB_NAME_PREFIX + this.jobContext.getJobName());
   this.parallelRunnerThreads=Integer.parseInt(jobProps.getProperty(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,Integer.toString(ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS)));
+  this.taskStateCollectorService=new TaskStateCollectorService(jobProps,this.jobContext.getJobState(),this.eventBus,this.fs,outputTaskStateDir);
   startCancellationExecutor();
 }

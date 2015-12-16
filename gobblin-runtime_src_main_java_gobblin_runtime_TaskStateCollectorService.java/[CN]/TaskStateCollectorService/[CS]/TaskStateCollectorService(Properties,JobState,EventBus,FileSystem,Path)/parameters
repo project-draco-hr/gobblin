@@ -1,0 +1,5 @@
+Properties jobProps
+JobState jobState
+EventBus eventBus
+FileSystem fs
+Path outputTaskStateDir

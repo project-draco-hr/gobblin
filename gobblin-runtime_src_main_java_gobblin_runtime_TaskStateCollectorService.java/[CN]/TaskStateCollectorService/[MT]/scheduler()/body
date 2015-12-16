@@ -1,0 +1,3 @@
+{
+  return Scheduler.newFixedRateSchedule(this.outputTaskStatesCollectorIntervalSeconds,this.outputTaskStatesCollectorIntervalSeconds,TimeUnit.SECONDS);
+}

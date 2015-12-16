@@ -1,0 +1,4 @@
+{
+  LOG.info("{} more tasks of job {} have completed",newOutputTaskStateEvent.getTaskStates().size(),this.jobId);
+  storeJobExecutionInfo();
+}

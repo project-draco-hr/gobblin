@@ -1,0 +1,5 @@
+{
+  for (  TaskState taskState : newOutputTaskStateEvent.getTaskStates()) {
+    this.taskStateMap.put(taskState.getTaskId(),taskState);
+  }
+}

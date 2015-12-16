@@ -15,16 +15,8 @@
   Mockito.when(fs2.getUri()).thenReturn(new URI("fs2:////"));
   Mockito.when(fs2.getConf()).thenReturn(new Configuration());
   Mockito.when(fs2.create(dst,false)).thenReturn(new FSDataOutputStream(actual,null));
-  Closer closer=Closer.create();
-  try {
-    ParallelRunner parallelRunner=closer.register(new ParallelRunner(1,fs1));
+  try (ParallelRunner parallelRunner=new ParallelRunner(1,fs1)){
     parallelRunner.movePath(src,fs2,dst,Optional.<String>absent());
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-  Assert.assertEquals(actual.toString(),expected);
+   Assert.assertEquals(actual.toString(),expected);
 }

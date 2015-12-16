@@ -1,8 +1,6 @@
 {
   Map<String,TaskConfig> taskConfigMap=Maps.newHashMap();
-  Closer closer=Closer.create();
-  try {
-    ParallelRunner stateSerDeRunner=closer.register(new ParallelRunner(this.stateSerDeRunnerThreads,this.fs));
+  try (ParallelRunner stateSerDeRunner=new ParallelRunner(this.stateSerDeRunnerThreads,this.fs)){
     int multiTaskIdSequence=0;
     for (    WorkUnit workUnit : workUnits) {
       if (workUnit instanceof MultiWorkUnit) {
@@ -13,13 +11,7 @@
     Path jobStateFilePath=new Path(this.appWorkDir,this.jobContext.getJobId() + "." + JOB_STATE_FILE_NAME);
     SerializationUtils.serializeState(this.fs,jobStateFilePath,this.jobContext.getJobState());
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-  JobConfig.Builder jobConfigBuilder=new JobConfig.Builder();
+   JobConfig.Builder jobConfigBuilder=new JobConfig.Builder();
   jobConfigBuilder.setMaxAttemptsPerTask(this.jobContext.getJobState().getPropAsInt(ConfigurationKeys.MAX_TASK_RETRIES_KEY,ConfigurationKeys.DEFAULT_MAX_TASK_RETRIES));
   jobConfigBuilder.setFailureThreshold(workUnits.size());
   jobConfigBuilder.addTaskConfigMap(taskConfigMap).setCommand(GobblinWorkUnitRunner.GOBBLIN_TASK_FACTORY_NAME);
