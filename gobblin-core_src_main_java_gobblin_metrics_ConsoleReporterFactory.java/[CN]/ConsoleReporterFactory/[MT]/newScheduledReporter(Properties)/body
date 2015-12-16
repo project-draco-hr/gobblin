@@ -1,0 +1,3 @@
+{
+  return OutputStreamReporter.Factory.newBuilder().build(properties);
+}

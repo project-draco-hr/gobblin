@@ -1,3 +1,0 @@
-{
-  return KafkaAvroReporter.Factory.forRegistry(registry).withKafkaPusher(pusher);
-}

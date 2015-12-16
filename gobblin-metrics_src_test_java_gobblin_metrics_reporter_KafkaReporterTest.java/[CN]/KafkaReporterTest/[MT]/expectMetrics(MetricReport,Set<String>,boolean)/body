@@ -1,0 +1,12 @@
+{
+  List<Metric> metricIterator=report.getMetrics();
+  for (  Metric metric : metricIterator) {
+    if (expected.contains(metric.getName())) {
+      expected.remove(metric.getName());
+    }
+ else     if (strict && !metric.getName().contains(MetricContext.GOBBLIN_METRICS_NOTIFICATIONS_TIMER_NAME)) {
+      Assert.assertTrue(false,"Metric present in report not expected: " + metric.toString());
+    }
+  }
+  Assert.assertTrue(expected.isEmpty());
+}

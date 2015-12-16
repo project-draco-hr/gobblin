@@ -1,0 +1,20 @@
+{
+  if (!this.metricsReportingStarted) {
+    LOGGER.warn("Metric reporting has not started yet");
+    return;
+  }
+  if (this.jmxReporter.isPresent()) {
+    this.jmxReporter.get().stop();
+  }
+  RootMetricContext.get().stopReporting();
+  for (  com.codahale.metrics.ScheduledReporter scheduledReporter : this.scheduledReporters) {
+    scheduledReporter.report();
+  }
+  try {
+    this.codahaleReportersCloser.close();
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Failed to close metric output stream for job " + this.id,ioe);
+  }
+  this.metricsReportingStarted=false;
+}
