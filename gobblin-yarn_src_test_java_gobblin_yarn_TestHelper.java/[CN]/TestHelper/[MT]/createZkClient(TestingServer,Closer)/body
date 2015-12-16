@@ -1,0 +1,8 @@
+{
+  CuratorFramework curatorFramework=closer.register(CuratorFrameworkFactory.newClient(testingZKServer.getConnectString(),new RetryOneTime(2000)));
+  curatorFramework.start();
+  if (!curatorFramework.blockUntilConnected(60,TimeUnit.SECONDS)) {
+    throw new RuntimeException("Time out waiting to connect to ZK!");
+  }
+  return curatorFramework;
+}

@@ -1,0 +1,4 @@
+{
+  this.curatorFramework=curatorFramework;
+  this.testName=testName;
+}

@@ -1,0 +1,9 @@
+{
+  long newSleepMs=Math.round(currentSleepMs * backoffFactor);
+  if (newSleepMs <= currentSleepMs) {
+    newSleepMs=currentSleepMs + 1;
+  }
+  long currentTimeMs=System.currentTimeMillis();
+  newSleepMs=Math.min(Math.min(newSleepMs,maxSleepMs),endTimeMs - currentTimeMs);
+  return newSleepMs;
+}

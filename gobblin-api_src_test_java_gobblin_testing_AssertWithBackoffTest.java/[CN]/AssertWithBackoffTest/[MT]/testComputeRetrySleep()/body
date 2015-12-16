@@ -1,0 +1,10 @@
+{
+  final long infiniteFutureMs=Long.MAX_VALUE;
+  Assert.assertEquals(AssertWithBackoff.computeRetrySleep(0,2,100,infiniteFutureMs),1);
+  Assert.assertEquals(AssertWithBackoff.computeRetrySleep(10,2,100,infiniteFutureMs),20);
+  Assert.assertEquals(AssertWithBackoff.computeRetrySleep(50,1,100,infiniteFutureMs),51);
+  Assert.assertEquals(AssertWithBackoff.computeRetrySleep(50,3,100,infiniteFutureMs),100);
+  Assert.assertEquals(AssertWithBackoff.computeRetrySleep(50,3,60,System.currentTimeMillis() + 100),60);
+  long sleepMs=AssertWithBackoff.computeRetrySleep(50,3,1000,System.currentTimeMillis() + 100);
+  Assert.assertTrue(sleepMs <= 100);
+}

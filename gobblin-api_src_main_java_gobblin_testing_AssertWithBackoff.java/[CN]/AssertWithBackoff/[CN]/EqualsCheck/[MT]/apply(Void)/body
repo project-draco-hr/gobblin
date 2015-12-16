@@ -1,0 +1,5 @@
+{
+  T currentValue=this.actual.apply(input);
+  getLogger().debug("checking '" + this.message + "': "+ currentValue);
+  return this.eqToExpected.apply(currentValue);
+}

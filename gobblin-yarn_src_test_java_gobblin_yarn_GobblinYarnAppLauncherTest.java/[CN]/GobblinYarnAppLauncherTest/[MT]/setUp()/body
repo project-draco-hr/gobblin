@@ -7,8 +7,7 @@
   this.yarnClient.init(clusterConf);
   this.yarnClient.start();
   TestingServer testingZKServer=this.closer.register(new TestingServer(TEST_ZK_PORT));
-  this.curatorFramework=this.closer.register(CuratorFrameworkFactory.newClient(testingZKServer.getConnectString(),new RetryOneTime(2000)));
-  this.curatorFramework.start();
+  this.curatorFramework=TestHelper.createZkClient(testingZKServer,this.closer);
   URL url=GobblinYarnAppLauncherTest.class.getClassLoader().getResource(GobblinYarnAppLauncherTest.class.getSimpleName() + ".conf");
   Assert.assertNotNull(url,"Could not find resource " + url);
   this.config=ConfigFactory.parseURL(url).resolve();

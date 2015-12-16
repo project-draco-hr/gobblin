@@ -1,0 +1,3 @@
+{
+  return JobConfigFileMonitorTest.this.jobScheduler.getScheduledJobs().size();
+}

@@ -1,0 +1,3 @@
+{
+  assertTrue(new EqualsCheck<T>(actual,expected,message),message);
+}

@@ -1,0 +1,4 @@
+{
+  Logger log=LoggerFactory.getLogger("testAssertWithBackoff_conditionTrue");
+  AssertWithBackoff.create().logger(log).timeoutMs(1000).assertTrue(Predicates.<Void>alwaysTrue(),"should always succeed");
+}
