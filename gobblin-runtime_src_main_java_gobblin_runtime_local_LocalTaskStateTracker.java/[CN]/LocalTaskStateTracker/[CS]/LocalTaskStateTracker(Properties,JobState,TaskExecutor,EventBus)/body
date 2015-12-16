@@ -1,5 +1,7 @@
 {
   super(properties,LOG);
+  this.jobState=jobState;
   this.taskExecutor=taskExecutor;
+  this.eventBus=eventBus;
   this.maxTaskRetries=Integer.parseInt(properties.getProperty(ConfigurationKeys.MAX_TASK_RETRIES_KEY,Integer.toString(ConfigurationKeys.DEFAULT_MAX_TASK_RETRIES)));
 }

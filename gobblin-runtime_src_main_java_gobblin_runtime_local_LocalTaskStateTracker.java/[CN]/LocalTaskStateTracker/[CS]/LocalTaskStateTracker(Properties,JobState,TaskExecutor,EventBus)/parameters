@@ -1,2 +1,4 @@
 Properties properties
+JobState jobState
 TaskExecutor taskExecutor
+EventBus eventBus

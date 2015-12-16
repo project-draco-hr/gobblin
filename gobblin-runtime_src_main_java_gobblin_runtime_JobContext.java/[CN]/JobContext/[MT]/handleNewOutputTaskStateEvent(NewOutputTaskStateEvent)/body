@@ -1,4 +1,0 @@
-{
-  this.jobState.addTaskState(newOutputTaskStateEvent.getTaskState());
-  storeJobExecutionInfo();
-}

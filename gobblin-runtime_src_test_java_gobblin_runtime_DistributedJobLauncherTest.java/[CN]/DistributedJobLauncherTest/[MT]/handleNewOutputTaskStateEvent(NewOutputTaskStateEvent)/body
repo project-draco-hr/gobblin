@@ -1,3 +1,0 @@
-{
-  this.taskStateMap.put(newOutputTaskStateEvent.getTaskState().getTaskId(),newOutputTaskStateEvent.getTaskState());
-}
