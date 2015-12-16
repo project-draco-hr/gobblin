@@ -1,7 +1,6 @@
 {
   try {
-    Path outputTaskStateDir=new Path(this.appWorkDir,GobblinYarnConfigurationKeys.OUTPUT_TASK_STATE_DIR_NAME + Path.SEPARATOR + this.jobContext.getJobId());
-    scheduleOutputTaskStatesCollector(outputTaskStateDir);
+    this.taskStateCollectorService.startAsync().awaitRunning();
     TimingEvent jobSubmissionTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.HELIX_JOB_SUBMISSION);
     submitJobToHelix(createJob(workUnits));
     jobSubmissionTimer.stop();
@@ -12,10 +11,9 @@
     jobRunTimer.stop();
     LOGGER.info(String.format("Job %s completed",this.jobContext.getJobId()));
     this.jobComplete=true;
-    shutdownOutputTaskStatesCollector();
-    collectOutputTaskStates(outputTaskStateDir);
   }
   finally {
+    this.taskStateCollectorService.stopAsync().awaitTerminated();
     deletePersistedWorkUnitsForJob();
   }
 }

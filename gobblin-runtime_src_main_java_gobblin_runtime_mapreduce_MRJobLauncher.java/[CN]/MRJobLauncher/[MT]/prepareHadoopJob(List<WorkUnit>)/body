@@ -8,11 +8,9 @@
   this.job.setMapOutputKeyClass(NullWritable.class);
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);
-  Path jobInputPath=new Path(this.mrJobDir,INPUT_DIR_NAME);
-  Path jobInputFile=prepareJobInput(jobInputPath,workUnits);
+  Path jobInputFile=prepareJobInput(workUnits);
   NLineInputFormat.addInputPath(this.job,jobInputFile);
-  Path jobOutputPath=new Path(this.mrJobDir,OUTPUT_DIR_NAME);
-  SequenceFileOutputFormat.setOutputPath(this.job,jobOutputPath);
+  SequenceFileOutputFormat.setOutputPath(this.job,this.jobOutputPath);
   Path jobStateFilePath=new Path(this.mrJobDir,JOB_STATE_FILE_NAME);
   SerializationUtils.serializeState(this.fs,jobStateFilePath,this.jobContext.getJobState());
   job.getConfiguration().set(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY,jobStateFilePath.toString());
@@ -24,5 +22,4 @@
     }
   }
   mrJobSetupTimer.stop();
-  return jobOutputPath;
 }

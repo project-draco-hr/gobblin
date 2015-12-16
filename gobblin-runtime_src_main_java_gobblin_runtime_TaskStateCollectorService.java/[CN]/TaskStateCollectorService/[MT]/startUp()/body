@@ -1,0 +1,4 @@
+{
+  LOGGER.info("Starting the " + TaskStateCollectorService.class.getSimpleName());
+  super.startUp();
+}

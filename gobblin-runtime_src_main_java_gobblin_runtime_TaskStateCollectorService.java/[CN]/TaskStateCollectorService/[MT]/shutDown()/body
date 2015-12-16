@@ -1,0 +1,9 @@
+{
+  LOGGER.info("Stopping the " + TaskStateCollectorService.class.getSimpleName());
+  try {
+    runOneIteration();
+  }
+  finally {
+    super.shutDown();
+  }
+}
