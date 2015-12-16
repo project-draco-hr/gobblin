@@ -1,0 +1,10 @@
+{
+  timemoutMs=assertTimeoutMs;
+  if (!this.maxSleepMs.isPresent()) {
+    this.maxSleepMs=Optional.of(getAutoMaxSleep());
+  }
+  if (!this.backoffFactor.isPresent()) {
+    this.backoffFactor=Optional.of(getAutoBackoffFactor());
+  }
+  return this;
+}

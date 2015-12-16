@@ -1,0 +1,14 @@
+{
+  Logger log=LoggerFactory.getLogger("testAssertWithBackoff_conditionFalse");
+  setLogjLevelForLogger(log,Level.ERROR);
+  long startTimeMs=System.currentTimeMillis();
+  try {
+    AssertWithBackoff.create().logger(log).timeoutMs(50).assertTrue(Predicates.<Void>alwaysFalse(),"should timeout");
+    Assert.fail("TimeoutException expected");
+  }
+ catch (  TimeoutException e) {
+  }
+  long durationMs=System.currentTimeMillis() - startTimeMs;
+  log.debug("assert took " + durationMs + "ms");
+  Assert.assertTrue(durationMs >= 50L,Long.toString(durationMs) + ">= 50ms");
+}

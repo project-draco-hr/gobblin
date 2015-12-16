@@ -1,0 +1,8 @@
+{
+  try {
+    return this.curatorFramework.getChildren().forPath(String.format("/%s/INSTANCES/%s/MESSAGES",this.testName,TestHelper.TEST_HELIX_INSTANCE_NAME)).size();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}
