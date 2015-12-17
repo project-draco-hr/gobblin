@@ -1,9 +1,9 @@
 {
-  Multimap<CopyableFile.DatasetAndPartition,WorkUnitState> datasets=getDatasetRoots(states);
+  Multimap<CopyableFile.DatasetAndPartition,WorkUnitState> datasets=groupByFileSet(states);
   boolean allDatasetsPublished=true;
   for (  CopyableFile.DatasetAndPartition datasetAndPartition : datasets.keySet()) {
     try {
-      this.publishDataset(datasetAndPartition,datasets.get(datasetAndPartition));
+      this.publishFileSet(datasetAndPartition,datasets.get(datasetAndPartition));
     }
  catch (    Throwable e) {
       CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,datasetAndPartition);

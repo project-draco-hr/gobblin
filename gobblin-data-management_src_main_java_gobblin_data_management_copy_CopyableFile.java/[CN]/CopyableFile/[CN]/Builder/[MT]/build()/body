@@ -12,8 +12,8 @@
     FileChecksum checksumTmp=this.originFs.getFileChecksum(origin.getPath());
     this.checksum=checksumTmp == null ? new byte[0] : checksumTmp.getBytes();
   }
-  if (this.partition == null) {
-    this.partition=this.rootPath.toString();
+  if (this.fileSet == null) {
+    this.fileSet=this.rootPath.toString();
   }
-  return new CopyableFile(origin,destination,relativeDestination,destinationOwnerAndPermission,ancestorsOwnerAndPermission,null,preserve,partition);
+  return new CopyableFile(origin,destination,relativeDestination,destinationOwnerAndPermission,ancestorsOwnerAndPermission,null,preserve,fileSet);
 }
