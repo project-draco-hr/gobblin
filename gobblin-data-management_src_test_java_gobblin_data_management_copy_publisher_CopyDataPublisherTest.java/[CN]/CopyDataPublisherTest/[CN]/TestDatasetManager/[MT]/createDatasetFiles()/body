@@ -1,5 +1,5 @@
 {
-  Path datasetWriterOutputPath=new Path(writerOutputPath,PathUtils.withoutLeadingSeparator(metadata.getDatasetTargetRoot()));
+  Path datasetWriterOutputPath=new Path(new Path(writerOutputPath,copyableFile.getDatasetAndPartition(this.metadata).identifier()),PathUtils.withoutLeadingSeparator(metadata.getDatasetTargetRoot()));
   for (  String path : relativeFilePaths) {
     Path pathToCreate=new Path(datasetWriterOutputPath,path);
     fs.mkdirs(pathToCreate.getParent());

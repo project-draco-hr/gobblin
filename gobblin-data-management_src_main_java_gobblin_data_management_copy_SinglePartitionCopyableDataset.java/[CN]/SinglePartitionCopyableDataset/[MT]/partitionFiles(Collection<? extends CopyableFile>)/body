@@ -1,7 +1,3 @@
 {
-  List<CopyableFile> copyableFiles=Lists.newArrayListWithCapacity(files.size());
-  for (  CopyableFile file : files) {
-    copyableFiles.add(file);
-  }
-  return Lists.newArrayList(new Partition.Builder<CopyableFile>(datasetRoot().toString()).add(copyableFiles).build());
+  return singlePartition(files,datasetRoot().toString());
 }

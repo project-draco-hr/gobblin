@@ -1,3 +1,0 @@
-{
-  eventSubmitter.submit(DATASET_PUBLISHED_FAILED_EVENT_NAME,ImmutableMap.of(DATASET_ROOT_METADATA_NAME,copyableDataset.getDatasetRoot().toString(),DATASET_TARGET_ROOT_METADATA_NAME,copyableDataset.getDatasetTargetRoot().toString()));
-}

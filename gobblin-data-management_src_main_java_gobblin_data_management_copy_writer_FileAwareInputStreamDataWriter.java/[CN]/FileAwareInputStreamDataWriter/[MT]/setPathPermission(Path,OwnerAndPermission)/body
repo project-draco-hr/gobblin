@@ -1,9 +1,0 @@
-{
-  this.fs.setPermission(path,ownerAndPermission.getFsPermission());
-  if (StringUtils.isNotBlank(ownerAndPermission.getGroup()) && StringUtils.isNotBlank(ownerAndPermission.getOwner())) {
-    this.fs.setOwner(path,ownerAndPermission.getOwner(),ownerAndPermission.getGroup());
-  }
- else {
-    log.info("Owner and group will not be set as no valid user and group available for " + path);
-  }
-}

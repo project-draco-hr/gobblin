@@ -1,0 +1,8 @@
+{
+  List<FileStatus> files=FileListUtils.listFilesRecursively(this.fs,this.rootPath,this.pathFilter);
+  List<CopyableFile> copyableFiles=Lists.newArrayList();
+  for (  FileStatus file : files) {
+    copyableFiles.add(CopyableFile.builder(this.fs,file,this.rootPath,configuration).build());
+  }
+  return copyableFiles;
+}

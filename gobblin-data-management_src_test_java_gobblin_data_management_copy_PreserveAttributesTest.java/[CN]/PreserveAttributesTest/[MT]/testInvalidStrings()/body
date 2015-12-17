@@ -1,0 +1,20 @@
+{
+  try {
+    PreserveAttributes.fromMnemonicString("x");
+    Assert.fail();
+  }
+ catch (  IllegalArgumentException iae) {
+  }
+  try {
+    PreserveAttributes.fromMnemonicString("rx");
+    Assert.fail();
+  }
+ catch (  IllegalArgumentException iae) {
+  }
+  try {
+    PreserveAttributes.fromMnemonicString("ugq");
+    Assert.fail();
+  }
+ catch (  IllegalArgumentException iae) {
+  }
+}

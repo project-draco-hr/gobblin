@@ -1,13 +1,13 @@
 {
-  Multimap<CopyableDatasetMetadata,WorkUnitState> datasets=getDatasetRoots(states);
+  Multimap<CopyableFile.DatasetAndPartition,WorkUnitState> datasets=groupByFileSet(states);
   boolean allDatasetsPublished=true;
-  for (  CopyableDatasetMetadata copyableDataset : datasets.keySet()) {
+  for (  CopyableFile.DatasetAndPartition datasetAndPartition : datasets.keySet()) {
     try {
-      this.publishDataset(copyableDataset,datasets.get(copyableDataset));
+      this.publishFileSet(datasetAndPartition,datasets.get(datasetAndPartition));
     }
  catch (    Throwable e) {
-      CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,copyableDataset);
-      log.error("Failed to publish " + copyableDataset.getDatasetTargetRoot(),e);
+      CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,datasetAndPartition);
+      log.error("Failed to publish " + datasetAndPartition.getDataset().getDatasetTargetRoot(),e);
       allDatasetsPublished=false;
     }
   }
