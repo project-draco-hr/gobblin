@@ -7,6 +7,6 @@
     ExecutorsUtils.shutdownExecutorService(this.jobExecutor,Optional.of(LOG));
   }
   finally {
-    this.scheduler.shutdown(true);
+    this.scheduler.shutdown(this.waitForJobCompletion);
   }
 }
