@@ -1,6 +1,6 @@
 {
   final Logger log=LoggerFactory.getLogger("testAddNewJobConfigFile");
-  AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(log).timeoutMs(5000);
+  AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(log).timeoutMs(7500);
   assertWithBackoff.assertEquals(new GetNumScheduledJobs(),3,"3 scheduled jobs");
   Properties jobProps=new Properties();
   jobProps.load(new FileReader(new File(JOB_CONFIG_FILE_DIR,"GobblinTest1.pull")));
