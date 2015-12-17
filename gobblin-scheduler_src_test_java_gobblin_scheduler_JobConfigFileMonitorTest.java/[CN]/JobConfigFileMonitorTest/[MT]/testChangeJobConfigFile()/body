@@ -5,7 +5,7 @@
   jobProps.load(new FileReader(this.newJobConfigFile));
   jobProps.setProperty(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
   jobProps.store(new FileWriter(this.newJobConfigFile),null);
-  AssertWithBackoff.create().logger(log).timeoutMs(5000).assertEquals(new GetNumScheduledJobs(),4,"4 scheduled jobs");
+  AssertWithBackoff.create().logger(log).timeoutMs(7500).assertEquals(new GetNumScheduledJobs(),4,"4 scheduled jobs");
   Set<String> jobNames=Sets.newHashSet(this.jobScheduler.getScheduledJobs());
   Assert.assertEquals(jobNames.size(),4);
   Assert.assertTrue(jobNames.contains("GobblinTest1"));

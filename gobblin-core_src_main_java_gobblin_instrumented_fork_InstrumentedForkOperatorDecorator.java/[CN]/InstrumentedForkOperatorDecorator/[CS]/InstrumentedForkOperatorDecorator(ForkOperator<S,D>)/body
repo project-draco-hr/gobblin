@@ -1,4 +1,5 @@
 {
+  super(Optional.<Class<?>>of(DecoratorUtils.resolveUnderlyingObject(forkOperator).getClass()));
   this.embeddedForkOperator=this.closer.register(forkOperator);
   this.isEmbeddedInstrumented=Instrumented.isLineageInstrumented(forkOperator);
 }
