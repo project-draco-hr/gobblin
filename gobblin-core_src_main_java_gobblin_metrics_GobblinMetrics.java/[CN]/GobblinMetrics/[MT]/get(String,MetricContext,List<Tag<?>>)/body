@@ -1,3 +1,8 @@
 {
-  return GOBBLIN_METRICS_REGISTRY.getOrDefault(id,new GobblinMetrics(id,parentContext,tags));
+  return GOBBLIN_METRICS_REGISTRY.getOrDefault(id,new Callable<GobblinMetrics>(){
+    @Override public GobblinMetrics call() throws Exception {
+      return new GobblinMetrics(id,parentContext,tags);
+    }
+  }
+);
 }

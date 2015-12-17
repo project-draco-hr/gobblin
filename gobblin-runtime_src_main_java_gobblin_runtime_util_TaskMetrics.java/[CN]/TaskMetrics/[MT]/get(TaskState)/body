@@ -1,3 +1,8 @@
 {
-  return (TaskMetrics)GOBBLIN_METRICS_REGISTRY.getOrDefault(name(taskState),new TaskMetrics(taskState));
+  return (TaskMetrics)GOBBLIN_METRICS_REGISTRY.getOrDefault(name(taskState),new Callable<GobblinMetrics>(){
+    @Override public GobblinMetrics call() throws Exception {
+      return new TaskMetrics(taskState);
+    }
+  }
+);
 }
