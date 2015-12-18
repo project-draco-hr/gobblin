@@ -1,5 +1,5 @@
 {
-  BoundedBlockingRecordQueue.QueueStats stats=this.boundedBlockingRecordQueue.stats().get();
+  BoundedBlockingRecordQueue<Integer>.QueueStats stats=this.boundedBlockingRecordQueue.stats().get();
   Assert.assertEquals(stats.queueSize(),0);
   Assert.assertEquals(stats.fillRatio(),0d);
   Assert.assertEquals(stats.getAttemptCount(),7);
