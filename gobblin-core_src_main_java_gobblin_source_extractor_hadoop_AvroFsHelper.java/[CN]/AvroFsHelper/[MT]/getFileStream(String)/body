@@ -1,8 +1,8 @@
 {
   try {
     Path p=new Path(path);
-    InputStream in=this.fs.open(p);
-    CompressionCodecFactory factory=new CompressionCodecFactory(this.fs.getConf());
+    InputStream in=this.getFileSystem().open(p);
+    CompressionCodecFactory factory=new CompressionCodecFactory(this.getFileSystem().getConf());
     CompressionCodec codec=factory.getCodec(p);
     return (codec == null) ? in : codec.createInputStream(in);
   }
