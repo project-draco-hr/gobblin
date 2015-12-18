@@ -1,0 +1,18 @@
+{
+  String uri=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI);
+  try {
+    if (Strings.isNullOrEmpty(uri)) {
+      throw new FileBasedHelperException(ConfigurationKeys.SOURCE_FILEBASED_FS_URI + " has not been configured");
+    }
+    this.createFileSystem(uri);
+  }
+ catch (  IOException e) {
+    throw new FileBasedHelperException("Cannot connect to given URI " + uri + " due to "+ e.getMessage(),e);
+  }
+catch (  URISyntaxException e) {
+    throw new FileBasedHelperException("Malformed uri " + uri + " due to "+ e.getMessage(),e);
+  }
+catch (  InterruptedException e) {
+    throw new FileBasedHelperException("Interrupted exception is caught when getting the proxy file system",e);
+  }
+}
