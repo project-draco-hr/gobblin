@@ -1,0 +1,3 @@
+{
+  this.commitSequenceBuilder=Optional.<CommitSequence.Builder>absent();
+}

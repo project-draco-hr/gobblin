@@ -10,6 +10,9 @@
       this.eventSubmitter.submit(gobblin.metrics.event.EventNames.LOCK_IN_USE);
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
     }
+    if (this.jobContext.getSemantics() == DeliverySemantics.EXACTLY_ONCE) {
+      executeUnfinishedCommitSequences(jobState.getJobName());
+    }
     TimingEvent workUnitsCreationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_CREATION);
     Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
     workUnitsCreationTimer.stop();

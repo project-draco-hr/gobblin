@@ -1,0 +1,8 @@
+{
+  if (this.semantics != DeliverySemantics.EXACTLY_ONCE) {
+    return Optional.<CommitSequenceStore>absent();
+  }
+  Preconditions.checkState(this.jobState.contains(FsCommitSequenceStore.GOBBLIN_RUNTIME_COMMIT_SEQUENCE_STORE_DIR));
+  FileSystem fs=FileSystem.get(URI.create(this.jobState.getProp(FsCommitSequenceStore.GOBBLIN_RUNTIME_COMMIT_SEQUENCE_STORE_FS_URI,ConfigurationKeys.LOCAL_FS_URI)),HadoopUtils.getConfFromState(this.jobState));
+  return Optional.<CommitSequenceStore>of(new FsCommitSequenceStore(fs,new Path(this.jobState.getProp(FsCommitSequenceStore.GOBBLIN_RUNTIME_COMMIT_SEQUENCE_STORE_DIR))));
+}

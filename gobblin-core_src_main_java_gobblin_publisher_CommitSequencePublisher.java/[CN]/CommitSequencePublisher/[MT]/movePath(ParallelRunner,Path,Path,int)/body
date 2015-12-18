@@ -1,0 +1,4 @@
+{
+  log.info(String.format("Creating CommitStep for moving %s to %s",src,dst));
+  this.commitSequenceBuilder.get().beginStep(FsRenameCommitStep.Builder.class).withProps(this.state).from(src).withSrcFs(this.writerFileSystemByBranches.get(branchId)).to(dst).withDstFs(this.publisherFileSystemByBranches.get(branchId)).endStep();
+}

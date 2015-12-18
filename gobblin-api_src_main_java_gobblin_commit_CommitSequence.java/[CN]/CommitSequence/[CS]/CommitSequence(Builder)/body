@@ -1,0 +1,5 @@
+{
+  this.jobName=builder.jobName;
+  this.datasetUrn=builder.datasetUrn;
+  this.steps=ImmutableList.copyOf(builder.steps);
+}

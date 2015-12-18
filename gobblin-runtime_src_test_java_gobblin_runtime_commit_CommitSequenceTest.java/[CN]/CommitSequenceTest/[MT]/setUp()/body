@@ -1,0 +1,21 @@
+{
+  this.fs=FileSystem.getLocal(new Configuration());
+  this.fs.delete(new Path(ROOT_DIR),true);
+  Path storeRootDir=new Path(ROOT_DIR,"store");
+  Path dir1=new Path(ROOT_DIR,"dir1");
+  Path dir2=new Path(ROOT_DIR,"dir2");
+  this.fs.mkdirs(dir1);
+  this.fs.mkdirs(dir2);
+  Path src1=new Path(dir1,"file1");
+  Path src2=new Path(dir2,"file2");
+  Path dst1=new Path(dir2,"file1");
+  Path dst2=new Path(dir1,"file2");
+  this.fs.createNewFile(src1);
+  this.fs.createNewFile(src2);
+  DatasetState ds=new DatasetState("job-name","job-id");
+  ds.setProp("key1","value1");
+  ds.setProp("key2","value2");
+  State state=new State();
+  state.setProp(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,storeRootDir.toString());
+  this.sequence=new CommitSequence.Builder().withJobName("testjob").withDatasetUrn("testurn").beginStep(FsRenameCommitStep.Builder.class).from(src1).to(dst1).withProps(state).endStep().beginStep(FsRenameCommitStep.Builder.class).from(src2).to(dst2).withProps(state).endStep().beginStep(DatasetStateCommitStep.Builder.class).withDatasetUrn("urn").withDatasetState(ds).withProps(state).endStep().build();
+}

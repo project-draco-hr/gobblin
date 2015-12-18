@@ -1,0 +1,5 @@
+{
+  Path jobPath=new Path(this.rootPath,jobName);
+  Path datasetPath=new Path(jobPath,sanitizeDatasetUrn(datasetUrn));
+  HadoopUtils.deletePathAndEmptyAncestors(this.fs,datasetPath,true);
+}

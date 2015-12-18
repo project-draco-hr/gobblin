@@ -1,0 +1,4 @@
+{
+  this.step.execute();
+  Assert.assertTrue(this.fs.exists(new Path(ROOT_DIR,"dir2/file")));
+}

@@ -1,0 +1,11 @@
+{
+  tearDown();
+  this.store.put(this.jobName,this.datasetUrn,this.sequence);
+  Assert.assertTrue(this.store.exists(this.jobName,this.datasetUrn));
+  try {
+    this.store.put(this.jobName,this.datasetUrn,this.sequence);
+    Assert.fail();
+  }
+ catch (  IOException e) {
+  }
+}

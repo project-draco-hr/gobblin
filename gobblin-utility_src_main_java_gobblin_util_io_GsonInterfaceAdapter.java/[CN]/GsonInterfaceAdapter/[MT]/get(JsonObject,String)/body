@@ -1,0 +1,5 @@
+{
+  JsonElement elem=wrapper.get(memberName);
+  Preconditions.checkNotNull(elem);
+  return elem;
+}

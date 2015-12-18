@@ -1,7 +1,8 @@
 {
   this.datasetStatesByUrns=Optional.of(this.jobState.createDatasetStatesByUrns());
   boolean allDatasetsCommit=true;
-  boolean shouldCommitDataInJob=shouldCommitDataInJob();
+  boolean shouldCommitDataInJob=shouldCommitDataInJob(this.jobState);
+  DeliverySemantics deliverySemantics=DeliverySemantics.parse(this.jobState);
   if (!shouldCommitDataInJob) {
     this.logger.info("Job will not commit data since data are committed by tasks.");
   }
@@ -17,7 +18,12 @@
     try {
       if (shouldCommitDataInJob) {
         this.logger.info(String.format("Committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
-        commitDataset(datasetState);
+        if (deliverySemantics == DeliverySemantics.EXACTLY_ONCE) {
+          generateCommitSequenceBuilder(datasetState);
+        }
+ else {
+          commitDataset(datasetState);
+        }
       }
  else {
         if (datasetState.getState() == JobState.RunningState.SUCCESSFUL) {
@@ -31,7 +37,14 @@
     }
  finally {
       try {
-        persistDatasetState(datasetUrn,datasetState);
+        finalizeDatasetState(datasetState,datasetUrn);
+        if (this.commitSequenceBuilder.isPresent()) {
+          buildAndExecuteCommitSequence(commitSequenceBuilder.get(),datasetState,datasetUrn);
+          datasetState.setState(JobState.RunningState.COMMITTED);
+        }
+ else {
+          persistDatasetState(datasetUrn,datasetState);
+        }
       }
  catch (      IOException ioe) {
         this.logger.error(String.format("Failed to persist dataset state for dataset %s of job %s",datasetUrn,this.jobId),ioe);

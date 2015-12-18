@@ -1,0 +1,4 @@
+{
+  Path jobPath=new Path(this.rootPath,jobName);
+  HadoopUtils.deletePathAndEmptyAncestors(this.fs,jobPath,true);
+}

@@ -1,0 +1,4 @@
+{
+  Preconditions.checkNotNull(this.datasetState);
+  return this.datasetState.equals(getDatasetStateStore().getLatestDatasetState(this.datasetState.getJobName(),this.datasetUrn));
+}

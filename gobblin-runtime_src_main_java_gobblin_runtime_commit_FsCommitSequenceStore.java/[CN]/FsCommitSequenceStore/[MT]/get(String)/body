@@ -1,0 +1,10 @@
+{
+  ImmutableList.Builder<String> builder=new ImmutableList.Builder<>();
+  Path jobPath=new Path(this.rootPath,jobName);
+  if (this.fs.exists(jobPath)) {
+    for (    FileStatus status : this.fs.listStatus(jobPath,new HiddenFilter())) {
+      builder.add(status.getPath().getName());
+    }
+  }
+  return builder.build();
+}

@@ -1,0 +1,13 @@
+{
+  try {
+    for (    CommitStep step : this.steps) {
+      if (!step.isCompleted()) {
+        step.execute();
+      }
+    }
+  }
+ catch (  Throwable t) {
+    log.error("Commit failed for dataset " + this.datasetUrn,t);
+    throw Throwables.propagate(t);
+  }
+}
