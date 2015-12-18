@@ -7,6 +7,6 @@
     return (codec == null) ? in : codec.createInputStream(in);
   }
  catch (  IOException e) {
-    throw new FileBasedHelperException("Cannot do open file " + path + " due to "+ e.getMessage(),e);
+    throw new FileBasedHelperException("Cannot open file " + path + " due to "+ e.getMessage(),e);
   }
 }
