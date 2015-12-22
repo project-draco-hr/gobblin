@@ -1,5 +1,5 @@
 {
-  report();
+  report(true);
   this.scheduledTask.get().cancel(false);
   this.scheduledTask=Optional.absent();
 }

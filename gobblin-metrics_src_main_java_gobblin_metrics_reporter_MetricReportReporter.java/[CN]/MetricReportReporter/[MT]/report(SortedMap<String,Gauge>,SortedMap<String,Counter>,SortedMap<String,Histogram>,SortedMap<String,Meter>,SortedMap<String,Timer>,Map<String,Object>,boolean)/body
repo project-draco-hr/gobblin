@@ -1,0 +1,8 @@
+{
+  if (isFinal) {
+    report(gauges,counters,histograms,meters,timers,ImmutableMap.<String,Object>builder().putAll(tags).put(FINAL_TAG_KEY,Boolean.TRUE).build());
+  }
+ else {
+    report(gauges,counters,histograms,meters,timers,tags);
+  }
+}
