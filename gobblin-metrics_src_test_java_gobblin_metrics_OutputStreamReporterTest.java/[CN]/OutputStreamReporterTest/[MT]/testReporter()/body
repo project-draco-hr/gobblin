@@ -1,9 +1,9 @@
 {
-  MetricRegistry registry=new MetricRegistry();
-  Counter counter=registry.counter("com.linkedin.example.counter");
-  Meter meter=registry.meter("com.linkedin.example.meter");
-  Histogram histogram=registry.histogram("com.linkedin.example.histogram");
-  OutputStreamReporter reporter=OutputStreamReporter.forRegistry(registry).outputTo(stream).build();
+  MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName()).build();
+  Counter counter=metricContext.counter("com.linkedin.example.counter");
+  Meter meter=metricContext.meter("com.linkedin.example.meter");
+  Histogram histogram=metricContext.histogram("com.linkedin.example.histogram");
+  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().outputTo(stream).build(new Properties());
   counter.inc();
   meter.mark(2);
   histogram.update(1);

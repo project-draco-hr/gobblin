@@ -1,0 +1,38 @@
+{
+  String tag1="tag1";
+  String value1="value1";
+  String metadataValue1="metadata1";
+  String tag2="tag2";
+  String value2="value2";
+  MetricContext context=MetricContext.builder("context").addTag(new Tag<String>(tag1,value1)).addTag(new Tag<String>(tag2,value2)).build();
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaEventReporter kafkaReporter=getBuilder(context,pusher).build("localhost:0000","topic");
+  String namespace="gobblin.metrics.test";
+  String eventName="testEvent";
+  GobblinTrackingEvent event=new GobblinTrackingEvent();
+  event.setName(eventName);
+  event.setNamespace(namespace);
+  Map<String,String> metadata=Maps.newHashMap();
+  metadata.put(tag1,metadataValue1);
+  event.setMetadata(metadata);
+  context.submitEvent(event);
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  GobblinTrackingEvent retrievedEvent=nextEvent(pusher.messageIterator());
+  Assert.assertEquals(retrievedEvent.getNamespace(),namespace);
+  Assert.assertEquals(retrievedEvent.getName(),eventName);
+  Assert.assertEquals(retrievedEvent.getMetadata().size(),4);
+  Assert.assertEquals(retrievedEvent.getMetadata().get(tag1),metadataValue1);
+  Assert.assertEquals(retrievedEvent.getMetadata().get(tag2),value2);
+}

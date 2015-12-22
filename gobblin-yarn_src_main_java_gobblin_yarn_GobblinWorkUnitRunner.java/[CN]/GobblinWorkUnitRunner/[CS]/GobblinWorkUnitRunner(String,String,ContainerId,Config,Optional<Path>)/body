@@ -8,7 +8,7 @@
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
   this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.PARTICIPANT,zkConnectionString);
-  Properties properties=YarnHelixUtils.configToProperties(config);
+  Properties properties=ConfigUtils.configToProperties(config);
   TaskExecutor taskExecutor=new TaskExecutor(properties);
   TaskStateTracker taskStateTracker=new GobblinHelixTaskStateTracker(properties,this.helixManager);
   Path appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
@@ -24,7 +24,7 @@
   }
   this.serviceManager=new ServiceManager(services);
   if (GobblinMetrics.isEnabled(properties)) {
-    this.containerMetrics=Optional.of(ContainerMetrics.get(YarnHelixUtils.configToState(this.config),applicationName,containerId));
+    this.containerMetrics=Optional.of(ContainerMetrics.get(ConfigUtils.configToState(this.config),applicationName,containerId));
   }
  else {
     this.containerMetrics=Optional.absent();

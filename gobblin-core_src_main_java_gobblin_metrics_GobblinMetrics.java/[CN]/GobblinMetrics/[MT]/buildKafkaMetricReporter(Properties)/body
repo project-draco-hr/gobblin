@@ -26,8 +26,7 @@
   }
   if (metricsTopic.or(defaultTopic).isPresent()) {
     try {
-      KafkaReporter.Builder<?> builder=formatEnum.metricReporterBuilder(this.metricContext,properties);
-      this.scheduledReporters.add(this.closer.register(builder.build(brokers,metricsTopic.or(defaultTopic).get())));
+      formatEnum.metricReporterBuilder(properties).build(brokers,metricsTopic.or(defaultTopic).get(),properties);
     }
  catch (    IOException exception) {
       LOGGER.error("Failed to create Kafka metrics reporter. Will not report metrics to Kafka.",exception);
@@ -39,7 +38,7 @@
   if (eventsTopic.or(defaultTopic).isPresent()) {
     try {
       KafkaEventReporter.Builder<?> builder=formatEnum.eventReporterBuilder(this.metricContext,properties);
-      this.scheduledReporters.add(this.closer.register(builder.build(brokers,eventsTopic.or(defaultTopic).get())));
+      this.scheduledReporters.add(this.codahaleReportersCloser.register(builder.build(brokers,eventsTopic.or(defaultTopic).get())));
     }
  catch (    IOException exception) {
       LOGGER.error("Failed to create Kafka events reporter. Will not report events to Kafka.",exception);

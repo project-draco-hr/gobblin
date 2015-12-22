@@ -1,0 +1,32 @@
+{
+  MetricContext context=MetricContext.builder("context").build();
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaEventReporter kafkaReporter=getBuilder(context,pusher).build("localhost:0000","topic");
+  String namespace="gobblin.metrics.test";
+  String eventName="testEvent";
+  GobblinTrackingEvent event=new GobblinTrackingEvent();
+  event.setName(eventName);
+  event.setNamespace(namespace);
+  Map<String,String> metadata=Maps.newHashMap();
+  metadata.put("m1","v1");
+  metadata.put("m2",null);
+  event.setMetadata(metadata);
+  context.submitEvent(event);
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  GobblinTrackingEvent retrievedEvent=nextEvent(pusher.messageIterator());
+  Assert.assertEquals(retrievedEvent.getNamespace(),namespace);
+  Assert.assertEquals(retrievedEvent.getName(),eventName);
+  Assert.assertEquals(retrievedEvent.getMetadata().size(),4);
+}

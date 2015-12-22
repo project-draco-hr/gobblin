@@ -1,4 +1,0 @@
-{
-  super(registry);
-  this.kafkaPusher=Optional.absent();
-}

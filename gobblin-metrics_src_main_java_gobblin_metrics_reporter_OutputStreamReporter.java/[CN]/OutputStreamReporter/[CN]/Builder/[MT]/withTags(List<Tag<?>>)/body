@@ -1,6 +1,0 @@
-{
-  for (  Tag<?> tag : tags) {
-    this.tags.put(tag.getKey(),tag.getValue().toString());
-  }
-  return self();
-}

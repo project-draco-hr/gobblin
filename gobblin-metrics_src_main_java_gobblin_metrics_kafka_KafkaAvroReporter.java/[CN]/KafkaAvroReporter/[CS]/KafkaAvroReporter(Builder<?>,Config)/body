@@ -1,0 +1,6 @@
+{
+  super(builder,config);
+  if (builder.registry.isPresent()) {
+    this.serializer.setSchemaVersionWriter(new SchemaRegistryVersionWriter(builder.registry.get(),builder.topic));
+  }
+}

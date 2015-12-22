@@ -1,10 +1,10 @@
 {
-  MetricRegistry registry=new MetricRegistry();
-  Counter counter=registry.counter("com.linkedin.example.counter");
+  MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName()).build();
+  Counter counter=metricContext.counter("com.linkedin.example.counter");
   Map<String,String> tags=new HashMap<String,String>();
   tags.put("testKey","testValue");
   tags.put("key2","value2");
-  OutputStreamReporter reporter=OutputStreamReporter.forRegistry(registry).withTags(tags).outputTo(stream).build();
+  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().withTags(tags).outputTo(stream).build(new Properties());
   counter.inc();
   reporter.report();
   Assert.assertTrue(stream.toString().contains("key2=value2"));

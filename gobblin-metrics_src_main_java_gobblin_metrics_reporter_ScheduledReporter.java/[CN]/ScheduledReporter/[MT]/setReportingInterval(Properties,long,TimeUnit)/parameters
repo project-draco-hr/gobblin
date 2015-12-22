@@ -1,0 +1,3 @@
+Properties props
+long reportingInterval
+TimeUnit reportingIntervalUnit
