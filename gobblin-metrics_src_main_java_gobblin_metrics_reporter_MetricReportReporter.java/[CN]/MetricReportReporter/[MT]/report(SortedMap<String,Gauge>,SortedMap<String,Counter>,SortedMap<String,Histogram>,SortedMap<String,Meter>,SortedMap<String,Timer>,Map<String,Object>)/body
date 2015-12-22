@@ -1,0 +1,32 @@
+{
+  List<Metric> metrics=Lists.newArrayList();
+  for (  Map.Entry<String,Gauge> gauge : gauges.entrySet()) {
+    metrics.addAll(serializeGauge(gauge.getKey(),gauge.getValue()));
+  }
+  for (  Map.Entry<String,Counter> counter : counters.entrySet()) {
+    metrics.addAll(serializeCounter(counter.getKey(),counter.getValue()));
+  }
+  for (  Map.Entry<String,Histogram> histogram : histograms.entrySet()) {
+    metrics.addAll(serializeSnapshot(histogram.getKey(),histogram.getValue().getSnapshot()));
+    metrics.addAll(serializeCounter(histogram.getKey(),histogram.getValue()));
+  }
+  for (  Map.Entry<String,Meter> meter : meters.entrySet()) {
+    metrics.addAll(serializeMetered(meter.getKey(),meter.getValue()));
+  }
+  for (  Map.Entry<String,Timer> timer : timers.entrySet()) {
+    metrics.addAll(serializeSnapshot(timer.getKey(),timer.getValue().getSnapshot()));
+    metrics.addAll(serializeMetered(timer.getKey(),timer.getValue()));
+    metrics.addAll(serializeSingleValue(timer.getKey(),timer.getValue().getCount(),Measurements.COUNT.getName()));
+  }
+  Map<String,Object> allTags=Maps.newHashMap();
+  allTags.putAll(tags);
+  allTags.putAll(this.tags);
+  Map<String,String> allTagsString=Maps.transformValues(allTags,new Function<Object,String>(){
+    @Nullable @Override public String apply(    Object input){
+      return input.toString();
+    }
+  }
+);
+  MetricReport report=new MetricReport(allTagsString,System.currentTimeMillis(),metrics);
+  emitReport(report);
+}

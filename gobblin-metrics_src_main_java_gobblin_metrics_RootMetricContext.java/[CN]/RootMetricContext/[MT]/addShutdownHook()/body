@@ -1,0 +1,14 @@
+{
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      stopReporting();
+      try {
+        close();
+      }
+ catch (      IOException e) {
+        log.warn("Unable to close " + this.getClass().getCanonicalName(),e);
+      }
+    }
+  }
+);
+}

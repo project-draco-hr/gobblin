@@ -4,8 +4,9 @@
   String context2Name=ScheduledReporterTest.class.getSimpleName() + "_2";
   String context3Name="SomeOtherName";
   MetricContext context1=MetricContext.builder(context1Name).build();
-  Config config=ConfigFactory.empty();
-  config=ScheduledReporter.setReportingInterval(config,reportingIntervalMillis,TimeUnit.MILLISECONDS);
+  Properties props=new Properties();
+  ScheduledReporter.setReportingInterval(props,reportingIntervalMillis,TimeUnit.MILLISECONDS);
+  Config config=ConfigUtils.propertiesToConfig(props);
   config=PrefixContextFilter.setPrefixString(config,ScheduledReporterTest.class.getSimpleName());
   config=ContextFilterFactory.setContextFilterClass(config,PrefixContextFilter.class);
   ContextStoreReporter reporter=new ContextStoreReporter("testContext",config);

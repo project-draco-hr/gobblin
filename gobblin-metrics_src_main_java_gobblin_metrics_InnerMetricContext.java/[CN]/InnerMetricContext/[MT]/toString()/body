@@ -1,0 +1,17 @@
+{
+  StringBuilder stringBuilder=new StringBuilder();
+  stringBuilder.append("InnerMetricContext Name: ");
+  stringBuilder.append(this.name);
+  if (this.getParent().isPresent()) {
+    stringBuilder.append(", Parent Name: ");
+    stringBuilder.append(this.getParent().get().getName());
+  }
+ else {
+    stringBuilder.append(", No Parent Context");
+  }
+  stringBuilder.append(", Number of Children: ");
+  stringBuilder.append(this.getChildContextsAsMap().size());
+  stringBuilder.append(", Tags: ");
+  stringBuilder.append(Joiner.on(", ").withKeyValueSeparator(" : ").useForNull("NULL").join(this.getTagMap()));
+  return stringBuilder.toString();
+}

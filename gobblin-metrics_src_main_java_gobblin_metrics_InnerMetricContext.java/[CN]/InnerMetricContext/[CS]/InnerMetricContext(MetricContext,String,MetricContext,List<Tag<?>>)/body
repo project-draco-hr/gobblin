@@ -7,8 +7,9 @@
     this.metricContext=new ContextWeakReference(context,this);
   }
  else {
-    this.metricContext=new WeakReference<MetricContext>(context);
+    this.metricContext=new WeakReference<>(context);
   }
   this.tagged=new Tagged(tags);
-  this.tagged.addTag(new Tag<String>(MetricContext.METRIC_CONTEXT_ID_TAG_NAME,UUID.randomUUID().toString()));
+  this.tagged.addTag(new Tag<>(MetricContext.METRIC_CONTEXT_ID_TAG_NAME,UUID.randomUUID().toString()));
+  this.tagged.addTag(new Tag<>(MetricContext.METRIC_CONTEXT_NAME_TAG_NAME,name));
 }

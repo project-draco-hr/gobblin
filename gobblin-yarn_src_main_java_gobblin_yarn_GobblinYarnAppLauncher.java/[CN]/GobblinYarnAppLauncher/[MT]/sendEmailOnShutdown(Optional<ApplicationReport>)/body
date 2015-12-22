@@ -25,7 +25,7 @@
     messageBuilder.append(' ').append("Not available");
   }
   try {
-    EmailUtils.sendEmail(YarnHelixUtils.configToState(this.config),subject,messageBuilder.toString());
+    EmailUtils.sendEmail(ConfigUtils.configToState(this.config),subject,messageBuilder.toString());
   }
  catch (  EmailException ee) {
     LOGGER.error("Failed to send email notification on shutdown",ee);

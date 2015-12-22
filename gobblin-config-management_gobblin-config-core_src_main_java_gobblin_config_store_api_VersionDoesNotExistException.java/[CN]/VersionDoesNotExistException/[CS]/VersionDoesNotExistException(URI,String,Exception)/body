@@ -1,5 +1,5 @@
 {
-  super(e);
+  super(String.format(MESSAGE_FORMAT,configVersion,storeURI,e.getMessage()),e);
   this.storeURI=storeURI;
-  this.version=version;
+  this.configVersion=configVersion;
 }

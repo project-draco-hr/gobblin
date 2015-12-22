@@ -1,7 +1,7 @@
 {
-  this.getApplicationReportFailureCount++;
-  if (this.getApplicationReportFailureCount > this.maxGetApplicationReportFailures) {
-    LOGGER.warn(String.format("Number of consecutive failures to get the ApplicationReport %d exceeds the threshold %d",this.getApplicationReportFailureCount,this.maxGetApplicationReportFailures));
+  int numConsecutiveFailures=this.getApplicationReportFailureCount.incrementAndGet();
+  if (numConsecutiveFailures > this.maxGetApplicationReportFailures) {
+    LOGGER.warn(String.format("Number of consecutive failures to get the ApplicationReport %d exceeds the threshold %d",numConsecutiveFailures,this.maxGetApplicationReportFailures));
     try {
       stop();
     }
