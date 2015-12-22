@@ -15,7 +15,7 @@
     }
   finally {
       deleteDependencyJars();
-      gobblinMetrics.stopMetricReporting();
+      gobblinMetrics.stopMetricsReporting();
     }
   }
 }

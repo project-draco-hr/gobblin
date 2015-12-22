@@ -1,5 +1,0 @@
-{
-  this.brokers=brokers;
-  this.topic=topic;
-  return new KafkaAvroReporter(this);
-}

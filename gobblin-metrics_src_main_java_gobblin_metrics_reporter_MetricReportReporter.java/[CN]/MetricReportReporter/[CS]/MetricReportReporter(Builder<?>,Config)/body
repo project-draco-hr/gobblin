@@ -1,0 +1,9 @@
+{
+  super(builder.name,config);
+  this.rateUnit=builder.rateUnit;
+  this.durationUnit=builder.durationUnit;
+  this.rateFactor=builder.rateUnit.toSeconds(1);
+  this.durationFactor=1.0 / builder.durationUnit.toNanos(1);
+  this.tags=ImmutableMap.copyOf(builder.tags);
+  this.closer=Closer.create();
+}

@@ -1,0 +1,10 @@
+{
+  super(builder,config);
+  this.serializer=this.closer.register(createSerializer(new FixedSchemaVersionWriter()));
+  if (builder.kafkaPusher.isPresent()) {
+    this.kafkaPusher=builder.kafkaPusher.get();
+  }
+ else {
+    this.kafkaPusher=this.closer.register(new KafkaPusher(builder.brokers,builder.topic));
+  }
+}
