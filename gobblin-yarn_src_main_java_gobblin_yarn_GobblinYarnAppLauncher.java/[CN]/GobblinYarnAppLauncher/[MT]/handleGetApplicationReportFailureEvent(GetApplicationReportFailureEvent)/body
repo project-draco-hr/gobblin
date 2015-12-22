@@ -1,0 +1,20 @@
+{
+  int numConsecutiveFailures=this.getApplicationReportFailureCount.incrementAndGet();
+  if (numConsecutiveFailures > this.maxGetApplicationReportFailures) {
+    LOGGER.warn(String.format("Number of consecutive failures to get the ApplicationReport %d exceeds the threshold %d",numConsecutiveFailures,this.maxGetApplicationReportFailures));
+    try {
+      stop();
+    }
+ catch (    IOException ioe) {
+      LOGGER.error("Failed to close the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);
+    }
+catch (    TimeoutException te) {
+      LOGGER.error("Timeout in stopping the service manager",te);
+    }
+ finally {
+      if (this.emailNotificationOnShutdown) {
+        sendEmailOnShutdown(Optional.<ApplicationReport>absent());
+      }
+    }
+  }
+}

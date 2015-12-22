@@ -12,6 +12,7 @@
       }
  catch (      YarnException|IOException e) {
         LOGGER.error("Failed to get application report for Gobblin Yarn application " + applicationId.get(),e);
+        eventBus.post(new GetApplicationReportFailureEvent(e));
       }
     }
   }

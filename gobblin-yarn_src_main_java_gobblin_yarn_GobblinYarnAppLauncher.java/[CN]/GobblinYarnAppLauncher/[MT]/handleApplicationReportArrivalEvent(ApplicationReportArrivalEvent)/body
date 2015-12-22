@@ -2,6 +2,7 @@
   ApplicationReport applicationReport=applicationReportArrivalEvent.getApplicationReport();
   YarnApplicationState appState=applicationReport.getYarnApplicationState();
   LOGGER.info("Gobblin Yarn application state: " + appState.toString());
+  this.getApplicationReportFailureCount.set(0);
   if (appState == YarnApplicationState.FINISHED || appState == YarnApplicationState.FAILED || appState == YarnApplicationState.KILLED) {
     applicationCompleted=true;
     LOGGER.info("Gobblin Yarn application finished with final status: " + applicationReport.getFinalApplicationStatus().toString());
@@ -16,6 +17,11 @@
     }
 catch (    TimeoutException te) {
       LOGGER.error("Timeout in stopping the service manager",te);
+    }
+ finally {
+      if (this.emailNotificationOnShutdown) {
+        sendEmailOnShutdown(Optional.of(applicationReport));
+      }
     }
   }
 }
