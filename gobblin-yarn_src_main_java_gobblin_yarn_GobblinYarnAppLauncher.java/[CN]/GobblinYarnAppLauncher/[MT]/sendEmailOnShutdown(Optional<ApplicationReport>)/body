@@ -1,0 +1,33 @@
+{
+  String subject=String.format("Gobblin Yarn application %s completed",this.applicationName);
+  StringBuilder messageBuilder=new StringBuilder("Gobblin Yarn ApplicationReport:");
+  if (applicationReport.isPresent()) {
+    messageBuilder.append("\n");
+    messageBuilder.append("\tApplication ID: ").append(applicationReport.get().getApplicationId()).append("\n");
+    messageBuilder.append("\tApplication attempt ID: ").append(applicationReport.get().getCurrentApplicationAttemptId()).append("\n");
+    messageBuilder.append("\tFinal application status: ").append(applicationReport.get().getFinalApplicationStatus()).append("\n");
+    messageBuilder.append("\tStart time: ").append(applicationReport.get().getStartTime()).append("\n");
+    messageBuilder.append("\tFinish time: ").append(applicationReport.get().getFinishTime()).append("\n");
+    if (!Strings.isNullOrEmpty(applicationReport.get().getDiagnostics())) {
+      messageBuilder.append("\tDiagnostics: ").append(applicationReport.get().getDiagnostics()).append("\n");
+    }
+    ApplicationResourceUsageReport resourceUsageReport=applicationReport.get().getApplicationResourceUsageReport();
+    if (resourceUsageReport != null) {
+      messageBuilder.append("\tUsed containers: ").append(resourceUsageReport.getNumUsedContainers()).append("\n");
+      Resource usedResource=resourceUsageReport.getUsedResources();
+      if (usedResource != null) {
+        messageBuilder.append("\tUsed memory (MBs): ").append(usedResource.getMemory()).append("\n");
+        messageBuilder.append("\tUsed vcores: ").append(usedResource.getVirtualCores()).append("\n");
+      }
+    }
+  }
+ else {
+    messageBuilder.append(' ').append("Not available");
+  }
+  try {
+    EmailUtils.sendEmail(ConfigUtils.configToState(this.config),subject,messageBuilder.toString());
+  }
+ catch (  EmailException ee) {
+    LOGGER.error("Failed to send email notification on shutdown",ee);
+  }
+}
