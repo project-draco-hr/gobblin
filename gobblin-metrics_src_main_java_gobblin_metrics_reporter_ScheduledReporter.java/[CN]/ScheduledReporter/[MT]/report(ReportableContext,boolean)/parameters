@@ -1,1 +1,2 @@
 ReportableContext context
+boolean isFinal

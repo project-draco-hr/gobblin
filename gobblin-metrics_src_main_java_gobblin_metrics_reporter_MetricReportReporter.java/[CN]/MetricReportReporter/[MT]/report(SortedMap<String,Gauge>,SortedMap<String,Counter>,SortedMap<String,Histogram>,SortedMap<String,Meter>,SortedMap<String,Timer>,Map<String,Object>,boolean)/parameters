@@ -1,0 +1,7 @@
+SortedMap<String,Gauge> gauges
+SortedMap<String,Counter> counters
+SortedMap<String,Histogram> histograms
+SortedMap<String,Meter> meters
+SortedMap<String,Timer> timers
+Map<String,Object> tags
+boolean isFinal
