@@ -1,0 +1,8 @@
+{
+  if (isRootPath()) {
+    return;
+  }
+  this.parent.constructAbsolutePathString(pathBuilder);
+  pathBuilder.append('/');
+  pathBuilder.append(this.ownPathName);
+}

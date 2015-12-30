@@ -1,0 +1,7 @@
+{
+  String pathString=configURI.getPath();
+  if (null == pathString || pathString.isEmpty()) {
+    pathString="/";
+  }
+  return createFromPathString(pathString);
+}

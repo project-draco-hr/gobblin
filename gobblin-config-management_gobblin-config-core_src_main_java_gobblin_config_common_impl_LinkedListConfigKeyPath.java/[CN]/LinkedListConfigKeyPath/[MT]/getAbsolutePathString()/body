@@ -1,0 +1,8 @@
+{
+  if (isRootPath()) {
+    return "/";
+  }
+  StringBuilder res=new StringBuilder(128);
+  constructAbsolutePathString(res);
+  return res.toString();
+}
