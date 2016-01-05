@@ -1,0 +1,30 @@
+{
+  Path jobInputFile=new Path(this.jobInputPath,this.jobContext.getJobId() + WORK_UNIT_LIST_FILE_EXTENSION);
+  Closer closer=Closer.create();
+  try {
+    ParallelRunner parallelRunner=closer.register(new ParallelRunner(this.parallelRunnerThreads,this.fs));
+    OutputStream os=closer.register(this.fs.create(jobInputFile));
+    Writer osw=closer.register(new OutputStreamWriter(os,ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
+    Writer bw=closer.register(new BufferedWriter(osw));
+    int multiTaskIdSequence=0;
+    for (    WorkUnit workUnit : workUnits) {
+      String workUnitFileName;
+      if (workUnit instanceof MultiWorkUnit) {
+        workUnitFileName=JobLauncherUtils.newMultiTaskId(this.jobContext.getJobId(),multiTaskIdSequence++) + MULTI_WORK_UNIT_FILE_EXTENSION;
+      }
+ else {
+        workUnitFileName=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY) + WORK_UNIT_FILE_EXTENSION;
+      }
+      Path workUnitFile=new Path(this.jobInputPath,workUnitFileName);
+      parallelRunner.serializeToFile(workUnit,workUnitFile);
+      bw.write(workUnitFile.toUri().getPath() + "\n");
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+  return jobInputFile;
+}

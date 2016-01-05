@@ -1,0 +1,34 @@
+{
+  this.helixInstanceName=helixInstanceName;
+  this.config=config;
+  this.containerId=containerId;
+  ApplicationAttemptId applicationAttemptId=this.containerId.getApplicationAttemptId();
+  String applicationId=applicationAttemptId.getApplicationId().toString();
+  Configuration conf=HadoopUtils.newConfiguration();
+  FileSystem fs=buildFileSystem(this.config,conf);
+  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.PARTICIPANT,zkConnectionString);
+  Properties properties=ConfigUtils.configToProperties(config);
+  TaskExecutor taskExecutor=new TaskExecutor(properties);
+  TaskStateTracker taskStateTracker=new GobblinHelixTaskStateTracker(properties,this.helixManager);
+  Path appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
+  List<Service> services=Lists.newArrayList();
+  if (isLogSourcePresent()) {
+    services.add(buildLogCopier(this.containerId,fs,appWorkDir));
+  }
+  services.add(taskExecutor);
+  services.add(taskStateTracker);
+  if (config.hasPath(GobblinYarnConfigurationKeys.KEYTAB_FILE_PATH)) {
+    LOGGER.info("Adding YarnContainerSecurityManager since login is keytab based");
+    services.add(new YarnContainerSecurityManager(config,fs,this.eventBus));
+  }
+  this.serviceManager=new ServiceManager(services);
+  this.containerMetrics=buildContainerMetrics(this.config,properties,applicationName,containerId);
+  Map<String,TaskFactory> taskFactoryMap=Maps.newHashMap();
+  taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(this.containerMetrics,taskExecutor,taskStateTracker,fs,appWorkDir));
+  this.taskStateModelFactory=new TaskStateModelFactory(this.helixManager,taskFactoryMap);
+  this.helixManager.getStateMachineEngine().registerStateModelFactory("Task",this.taskStateModelFactory);
+  this.metricRegistry=new MetricRegistry();
+  this.jmxReporter=JmxReporter.forRegistry(this.metricRegistry).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
+}

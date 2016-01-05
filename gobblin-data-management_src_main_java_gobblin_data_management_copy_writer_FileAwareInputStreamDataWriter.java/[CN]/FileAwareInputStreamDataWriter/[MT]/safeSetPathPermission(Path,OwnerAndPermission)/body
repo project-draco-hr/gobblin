@@ -1,0 +1,20 @@
+{
+  try {
+    if (ownerAndPermission.getFsPermission() != null) {
+      fs.setPermission(path,ownerAndPermission.getFsPermission());
+    }
+  }
+ catch (  IOException ioe) {
+    log.warn("Failed to set permission for directory " + path,ioe);
+  }
+  String owner=Strings.isNullOrEmpty(ownerAndPermission.getOwner()) ? null : ownerAndPermission.getOwner();
+  String group=Strings.isNullOrEmpty(ownerAndPermission.getGroup()) ? null : ownerAndPermission.getGroup();
+  try {
+    if (owner != null || group != null) {
+      this.fs.setOwner(path,owner,group);
+    }
+  }
+ catch (  IOException ioe) {
+    log.warn("Failed to set owner and/or group for path " + path,ioe);
+  }
+}

@@ -1,0 +1,25 @@
+{
+  long startTimeMs=System.currentTimeMillis();
+  long endTimeMs=startTimeMs + assertTimeoutMs;
+  long currentSleepMs=0;
+  boolean done=false;
+  try {
+    while (!done && System.currentTimeMillis() < endTimeMs) {
+      done=condition.apply(null);
+      if (!done) {
+        currentSleepMs=computeRetrySleep(currentSleepMs,backoffFactor,maxSleepMs,endTimeMs);
+        log.debug("Condition check for '" + message + "' failed; sleeping for "+ currentSleepMs+ "ms");
+        Thread.sleep(currentSleepMs);
+      }
+    }
+    if (!done && !condition.apply(null)) {
+      throw new TimeoutException("Timeout waiting for condition '" + message + "'.");
+    }
+  }
+ catch (  TimeoutException|InterruptedException e) {
+    throw e;
+  }
+catch (  RuntimeException e) {
+    throw new RuntimeException("Exception checking condition '" + message + "':"+ e,e);
+  }
+}

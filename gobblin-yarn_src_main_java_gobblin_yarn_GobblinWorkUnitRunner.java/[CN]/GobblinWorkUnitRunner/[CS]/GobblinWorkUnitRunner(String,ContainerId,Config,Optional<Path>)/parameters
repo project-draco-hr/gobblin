@@ -1,4 +1,0 @@
-String applicationName
-ContainerId containerId
-Config config
-Optional<Path> appWorkDirOptional

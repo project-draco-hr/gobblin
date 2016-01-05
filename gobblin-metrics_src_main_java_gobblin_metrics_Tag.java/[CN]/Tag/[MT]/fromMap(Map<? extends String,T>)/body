@@ -1,7 +1,7 @@
 {
-  List<Tag<T>> tags=Lists.newArrayList();
+  ImmutableList.Builder<Tag<T>> tagsBuilder=ImmutableList.builder();
   for (  Map.Entry<? extends String,T> entry : tagsMap.entrySet()) {
-    tags.add(new Tag<T>(entry));
+    tagsBuilder.add(new Tag<>(entry));
   }
-  return tags;
+  return tagsBuilder.build();
 }

@@ -1,0 +1,3 @@
+{
+  PerformanceUtils.multiTest().name("CounterPerformance").threads(1).depth(Sets.newHashSet(0,1,2,3)).forkAtDepth(0).counters(Sets.newHashSet(0,1,2,3)).run();
+}

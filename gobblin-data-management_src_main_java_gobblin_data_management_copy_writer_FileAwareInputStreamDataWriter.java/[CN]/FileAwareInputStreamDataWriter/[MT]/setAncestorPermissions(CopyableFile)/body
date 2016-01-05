@@ -9,7 +9,7 @@
       log.info(String.format("File destination path %s, AncestorOwnerAndPermissions size %s.",file.getDestination(),file.getAncestorsOwnerAndPermission().size()));
       break;
     }
-    setPathPermission(parentPath,ownerAndPermission);
+    safeSetPathPermission(parentPath,ownerAndPermission);
     parentPath=parentPath.getParent();
   }
 }

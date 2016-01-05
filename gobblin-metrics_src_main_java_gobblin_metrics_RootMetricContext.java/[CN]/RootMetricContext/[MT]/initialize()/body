@@ -3,6 +3,6 @@
     INSTANCE=new RootMetricContext(Lists.<Tag<?>>newArrayList());
   }
  catch (  NameConflictException nce) {
-    throw new RuntimeException("Failed to generate root metric context. This is an error in the code.");
+    throw new IllegalStateException("Failed to generate root metric context. This is an error in the code.",nce);
   }
 }

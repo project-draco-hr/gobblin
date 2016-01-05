@@ -1,3 +1,4 @@
 {
+  this.gobblinYarnAppLauncher.startYarnClient();
   this.applicationId=this.gobblinYarnAppLauncher.setupAndSubmitApplication();
 }

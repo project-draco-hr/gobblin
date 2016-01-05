@@ -1,3 +1,0 @@
-{
-  return KafkaReporter.Factory.forContext(context).withKafkaPusher(pusher);
-}

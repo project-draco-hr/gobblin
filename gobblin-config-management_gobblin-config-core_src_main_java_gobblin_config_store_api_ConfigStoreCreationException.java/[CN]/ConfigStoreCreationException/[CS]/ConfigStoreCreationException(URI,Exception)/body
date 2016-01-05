@@ -1,4 +1,4 @@
 {
-  super(e);
+  super(String.format(MESSAGE_FORMAT,storeURI,e.getMessage()),e);
   this.storeURI=storeURI;
 }

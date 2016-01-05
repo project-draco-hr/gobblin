@@ -1,19 +1,19 @@
 {
   try {
+    this.taskStateCollectorService.startAsync().awaitRunning();
+    TimingEvent jobSubmissionTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.HELIX_JOB_SUBMISSION);
     submitJobToHelix(createJob(workUnits));
+    jobSubmissionTimer.stop();
     LOGGER.info(String.format("Submitted job %s to Helix",this.jobContext.getJobId()));
     this.jobSubmitted=true;
+    TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.HELIX_JOB_RUN);
     waitForJobCompletion();
+    jobRunTimer.stop();
     LOGGER.info(String.format("Job %s completed",this.jobContext.getJobId()));
     this.jobComplete=true;
-    List<TaskState> outputTaskStates=collectOutputTaskStates();
-    if (outputTaskStates.size() < this.jobContext.getJobState().getTaskCount()) {
-      LOGGER.error(String.format("Collected %d task states while expecting %d task states",outputTaskStates.size(),this.jobContext.getJobState().getTaskCount()));
-      this.jobContext.getJobState().setState(JobState.RunningState.FAILED);
-    }
-    this.jobContext.getJobState().addTaskStates(outputTaskStates);
   }
   finally {
+    this.taskStateCollectorService.stopAsync().awaitTerminated();
     deletePersistedWorkUnitsForJob();
   }
 }

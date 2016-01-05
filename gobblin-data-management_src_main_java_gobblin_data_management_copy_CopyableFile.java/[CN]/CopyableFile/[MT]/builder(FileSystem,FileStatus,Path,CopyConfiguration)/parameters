@@ -1,0 +1,4 @@
+FileSystem originFs
+FileStatus origin
+Path datasetRoot
+CopyConfiguration copyConfiguration

@@ -1,0 +1,5 @@
+{
+  this.closer=Closer.create();
+  this.classTag=classTag;
+  regenerateMetrics();
+}

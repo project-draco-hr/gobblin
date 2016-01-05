@@ -1,6 +1,9 @@
 {
   try {
-    return new GobblinHelixTask(context,this.taskExecutor,this.taskStateTracker,this.fs,this.appWorkDir);
+    if (this.newTasksCounter.isPresent()) {
+      this.newTasksCounter.get().inc();
+    }
+    return new GobblinHelixTask(context,this.containerMetrics,this.taskExecutor,this.taskStateTracker,this.fs,this.appWorkDir);
   }
  catch (  IOException ioe) {
     LOGGER.error("Failed to create a new GobblinHelixTask",ioe);

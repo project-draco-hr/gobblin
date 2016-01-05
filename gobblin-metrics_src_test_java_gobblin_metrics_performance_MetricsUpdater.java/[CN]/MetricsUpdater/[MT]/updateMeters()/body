@@ -1,0 +1,5 @@
+{
+  for (  Meter meter : this.meters) {
+    meter.mark();
+  }
+}

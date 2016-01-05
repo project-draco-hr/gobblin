@@ -1,4 +1,5 @@
 {
+  BasicConfigurator.configure();
   this.fs=FileSystem.getLocal(new Configuration());
   this.path=new Path("MRJobLockTest");
   if (!this.fs.exists(this.path)) {

@@ -74,22 +74,14 @@
       break;
     }
   }
-  Closer closer=Closer.create();
-  try {
-    JobListener parallelJobListener=closer.register(getParallelCombinedJobListener(jobListener));
+  try (CloseableJobListener parallelJobListener=getParallelCombinedJobListener(jobListener)){
     parallelJobListener.onJobCompletion(jobState);
   }
-  finally {
-    try {
-      closer.close();
-    }
- catch (    IOException e) {
-      throw new JobException("Failed to execute all JobListeners",e);
-    }
+ catch (  IOException ioe) {
+    throw new JobException("Failed to execute all JobListeners",ioe);
   }
   if (this.jobContext.getJobMetricsOptional().isPresent()) {
-    this.jobContext.getJobMetricsOptional().get().triggerMetricReporting();
-    this.jobContext.getJobMetricsOptional().get().stopMetricReporting();
+    this.jobContext.getJobMetricsOptional().get().stopMetricsReporting();
     JobMetrics.remove(jobState);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {

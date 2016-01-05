@@ -9,11 +9,12 @@
   this.yarnConfiguration.set("fs.automatic.close","false");
   this.yarnClient=YarnClient.createYarnClient();
   this.yarnClient.init(this.yarnConfiguration);
-  this.yarnClient.start();
   this.fs=config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),this.yarnConfiguration) : FileSystem.get(this.yarnConfiguration);
   this.closer.register(this.fs);
   this.applicationStatusMonitor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinYarnAppStatusMonitor")));
   this.appReportIntervalMinutes=config.getLong(GobblinYarnConfigurationKeys.APP_REPORT_INTERVAL_MINUTES_KEY);
   this.appMasterJvmArgs=config.hasPath(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinYarnConfigurationKeys.APP_MASTER_JVM_ARGS_KEY)) : Optional.<String>absent();
   this.sinkLogRootDir=new Path(config.getString(GobblinYarnConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY));
+  this.maxGetApplicationReportFailures=config.getInt(GobblinYarnConfigurationKeys.MAX_GET_APP_REPORT_FAILURES_KEY);
+  this.emailNotificationOnShutdown=config.getBoolean(GobblinYarnConfigurationKeys.EMAIL_NOTIFICATION_ON_SHUTDOWN_KEY);
 }

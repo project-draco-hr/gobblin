@@ -2,7 +2,7 @@
   Tag<?> tag1=new Tag<String>("tag1","value1");
   MetricContext context=MetricContext.builder("context").addTag(tag1).build();
   Counter counter=context.counter("com.linkedin.example.counter");
-  OutputStreamReporter reporter=OutputStreamReporter.forContext(context).outputTo(stream).build();
+  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().outputTo(stream).build(new Properties());
   counter.inc();
   reporter.report();
   Assert.assertTrue(stream.toString().contains("tag1=value1"));

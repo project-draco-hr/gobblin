@@ -2,6 +2,7 @@
   List<WorkUnitState> workUnitStates=Lists.newArrayList(new WorkUnitState(),new WorkUnitState(),new WorkUnitState());
   for (  WorkUnitState wus : workUnitStates) {
     CopySource.serializeCopyableDataset(wus,metadata);
+    CopySource.serializeCopyableFiles(wus,Lists.newArrayList(this.copyableFile));
   }
   return workUnitStates;
 }

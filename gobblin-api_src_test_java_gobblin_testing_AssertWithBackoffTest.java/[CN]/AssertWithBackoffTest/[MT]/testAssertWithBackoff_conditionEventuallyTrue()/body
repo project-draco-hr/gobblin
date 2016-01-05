@@ -1,0 +1,11 @@
+{
+  Logger log=LoggerFactory.getLogger("testAssertWithBackoff_conditionEventuallyTrue");
+  setLogjLevelForLogger(log,Level.ERROR);
+  final AtomicInteger cnt=new AtomicInteger();
+  AssertWithBackoff.create().logger(log).timeoutMs(100000).backoffFactor(2.0).assertEquals(new Function<Void,Integer>(){
+    @Override public Integer apply(    Void input){
+      return cnt.incrementAndGet();
+    }
+  }
+,5,"should eventually succeed");
+}

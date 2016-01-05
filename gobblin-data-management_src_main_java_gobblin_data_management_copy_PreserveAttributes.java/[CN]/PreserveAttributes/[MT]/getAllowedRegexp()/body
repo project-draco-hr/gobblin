@@ -1,0 +1,8 @@
+{
+  StringBuilder builder=new StringBuilder("[");
+  for (  Option option : Option.values()) {
+    builder.append(option.token);
+  }
+  builder.append("]*");
+  return Pattern.compile(builder.toString());
+}

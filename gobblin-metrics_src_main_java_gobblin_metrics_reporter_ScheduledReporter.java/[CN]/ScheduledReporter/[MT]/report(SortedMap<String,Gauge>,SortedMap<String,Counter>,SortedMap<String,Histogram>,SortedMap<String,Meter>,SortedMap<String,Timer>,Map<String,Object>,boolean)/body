@@ -1,0 +1,3 @@
+{
+  report(gauges,counters,histograms,meters,timers,tags);
+}

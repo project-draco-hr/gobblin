@@ -1,18 +1,22 @@
 {
-  if (this.reportingStarted) {
+  if (this.metricsReportingStarted) {
     LOGGER.warn("Metric reporting has already started");
     return;
   }
+  TimeUnit reportTimeUnit=TimeUnit.MILLISECONDS;
   long reportInterval=Long.parseLong(properties.getProperty(ConfigurationKeys.METRICS_REPORT_INTERVAL_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORT_INTERVAL));
+  ScheduledReporter.setReportingInterval(properties,reportInterval,reportTimeUnit);
   buildJmxMetricReporter(properties);
   if (this.jmxReporter.isPresent()) {
+    LOGGER.info("Will start reporting metrics to JMX");
     this.jmxReporter.get().start();
   }
   buildFileMetricReporter(properties);
   buildKafkaMetricReporter(properties);
   buildCustomMetricReporters(properties);
-  for (  ScheduledReporter reporter : this.scheduledReporters) {
-    reporter.start(reportInterval,TimeUnit.MILLISECONDS);
+  RootMetricContext.get().startReporting();
+  for (  com.codahale.metrics.ScheduledReporter scheduledReporter : this.scheduledReporters) {
+    scheduledReporter.start(reportInterval,reportTimeUnit);
   }
-  this.reportingStarted=true;
+  this.metricsReportingStarted=true;
 }

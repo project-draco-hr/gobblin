@@ -2,6 +2,6 @@
   List<FileStatus> files=FileListUtils.listPathsRecursively(fs,path,FileListUtils.NO_OP_PATH_FILTER);
   Collections.reverse(files);
   for (  FileStatus file : files) {
-    setPathPermission(file.getPath(),addExecutePermissionsIfRequired(file,ownerAndPermission));
+    safeSetPathPermission(file.getPath(),addExecutePermissionsIfRequired(file,ownerAndPermission));
   }
 }

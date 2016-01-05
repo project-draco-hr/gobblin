@@ -2,7 +2,8 @@
   String jobName=this.jobContext.getJobName();
   JobState jobState=this.jobContext.getJobState();
   try {
-    Path jobOutputPath=prepareHadoopJob(workUnits);
+    prepareHadoopJob(workUnits);
+    this.taskStateCollectorService.startAsync().awaitRunning();
     LOG.info("Launching Hadoop MR job " + this.job.getJobName());
     this.job.submit();
     this.hadoopJobSubmitted=true;
@@ -20,15 +21,10 @@ synchronized (this.cancellationExecution) {
         }
       }
     }
-    List<TaskState> outputTaskStates=collectOutputTaskStates(new Path(jobOutputPath,jobState.getJobId()));
-    if (outputTaskStates.size() < jobState.getTaskCount()) {
-      LOG.error(String.format("Collected %d task states while expecting %d task states",outputTaskStates.size(),jobState.getTaskCount()));
-      jobState.setState(JobState.RunningState.FAILED);
-    }
-    jobState.addTaskStates(outputTaskStates);
-    countersToMetrics(Optional.fromNullable(this.job.getCounters()),JobMetrics.get(jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
+    countersToMetrics(JobMetrics.get(jobName,this.jobProps.getProperty(ConfigurationKeys.JOB_ID_KEY)));
   }
   finally {
+    this.taskStateCollectorService.stopAsync().awaitTerminated();
     cleanUpWorkingDirectory();
   }
 }

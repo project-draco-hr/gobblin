@@ -1,0 +1,5 @@
+{
+  this.max_count=max_count;
+  this.runnable=runnable;
+  this.logInterval=max_count / 10;
+}

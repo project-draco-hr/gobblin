@@ -1,0 +1,10 @@
+{
+  TaskState taskState1=new TaskState();
+  taskState1.setJobId(JOB_ID);
+  taskState1.setTaskId(TASK_ID_0);
+  this.taskStateStore.put(JOB_ID,TASK_ID_0 + AbstractJobLauncher.TASK_STATE_STORE_TABLE_SUFFIX,taskState1);
+  TaskState taskState2=new TaskState();
+  taskState2.setJobId(JOB_ID);
+  taskState2.setTaskId(TASK_ID_1);
+  this.taskStateStore.put(JOB_ID,TASK_ID_1 + AbstractJobLauncher.TASK_STATE_STORE_TABLE_SUFFIX,taskState2);
+}

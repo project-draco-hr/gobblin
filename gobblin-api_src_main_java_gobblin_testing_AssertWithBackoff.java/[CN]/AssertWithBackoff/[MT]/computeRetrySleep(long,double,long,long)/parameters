@@ -1,0 +1,4 @@
+long currentSleepMs
+double backoffFactor
+long maxSleepMs
+long endTimeMs

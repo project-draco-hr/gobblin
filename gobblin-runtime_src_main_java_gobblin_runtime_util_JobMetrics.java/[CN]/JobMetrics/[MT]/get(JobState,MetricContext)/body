@@ -1,0 +1,8 @@
+{
+  return (JobMetrics)GOBBLIN_METRICS_REGISTRY.getOrDefault(name(jobState),new Callable<GobblinMetrics>(){
+    @Override public GobblinMetrics call() throws Exception {
+      return new JobMetrics(jobState,parentContext);
+    }
+  }
+);
+}

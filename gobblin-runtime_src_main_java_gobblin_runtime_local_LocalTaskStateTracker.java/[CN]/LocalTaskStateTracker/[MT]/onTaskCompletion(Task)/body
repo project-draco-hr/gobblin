@@ -16,6 +16,8 @@
  catch (  Throwable t) {
     LOG.error("Failed to process a task completion callback",t);
   }
+  this.jobState.addTaskState(task.getTaskState());
   task.markTaskCompletion();
+  this.eventBus.post(new NewTaskCompletionEvent(ImmutableList.of(task.getTaskState())));
   LOG.info(String.format("Task %s completed in %dms with state %s",task.getTaskId(),task.getTaskState().getTaskDuration(),task.getTaskState().getWorkingState()));
 }

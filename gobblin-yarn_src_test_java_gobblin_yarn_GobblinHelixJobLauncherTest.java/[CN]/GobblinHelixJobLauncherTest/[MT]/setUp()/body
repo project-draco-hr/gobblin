@@ -8,7 +8,7 @@
   YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectingString,helixClusterName);
   this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.CONTROLLER,zkConnectingString);
   this.helixManager.connect();
-  Properties properties=YarnHelixUtils.configToProperties(config);
+  Properties properties=ConfigUtils.configToProperties(config);
   this.localFs=FileSystem.getLocal(new Configuration());
   this.appWorkDir=new Path(GobblinHelixJobLauncherTest.class.getSimpleName());
   this.jobName=config.getString(ConfigurationKeys.JOB_NAME_KEY);
@@ -16,8 +16,8 @@
   File sourceJsonFile=new File(this.appWorkDir.toString(),TestHelper.TEST_JOB_NAME + ".json");
   TestHelper.createSourceJsonFile(sourceJsonFile);
   properties.setProperty(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,sourceJsonFile.getAbsolutePath());
-  this.gobblinHelixJobLauncher=this.closer.register(new GobblinHelixJobLauncher(properties,this.helixManager,this.localFs,this.appWorkDir,ImmutableMap.<String,String>of()));
-  this.gobblinWorkUnitRunner=new GobblinWorkUnitRunner(TestHelper.TEST_APPLICATION_NAME,ConverterUtils.toContainerId(TestHelper.TEST_PARTICIPANT_CONTAINER_ID),config,Optional.of(appWorkDir));
+  this.gobblinHelixJobLauncher=this.closer.register(new GobblinHelixJobLauncher(properties,this.helixManager,this.localFs,this.appWorkDir,ImmutableList.<Tag<?>>of()));
+  this.gobblinWorkUnitRunner=new GobblinWorkUnitRunner(TestHelper.TEST_APPLICATION_NAME,TestHelper.TEST_HELIX_INSTANCE_NAME,ConverterUtils.toContainerId(TestHelper.TEST_PARTICIPANT_CONTAINER_ID),config,Optional.of(appWorkDir));
   this.fsDatasetStateStore=new FsDatasetStateStore(this.localFs,config.getString(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY));
   this.thread=new Thread(new Runnable(){
     @Override public void run(){

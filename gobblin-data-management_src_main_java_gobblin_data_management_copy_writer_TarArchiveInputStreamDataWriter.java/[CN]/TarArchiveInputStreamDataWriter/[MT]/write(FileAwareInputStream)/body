@@ -12,8 +12,7 @@
         tarEntryRootName=StringUtils.remove(tarEntry.getName(),Path.SEPARATOR);
       }
       String newTarEntryPath=tarEntry.getName().replace(tarEntryRootName,fileDestinationPath.getName());
-      Path tarEntryDestinationPath=PathUtils.withoutLeadingSeparator(new Path(fileDestinationPath.getParent(),newTarEntryPath));
-      Path tarEntryStagingPath=new Path(this.stagingDir,tarEntryDestinationPath);
+      Path tarEntryStagingPath=new Path(getStagingFilePath(fileAwareInputStream.getFile()).getParent(),newTarEntryPath);
       log.info("Unarchiving at " + tarEntryStagingPath);
       if (tarEntry.isDirectory() && !this.fs.exists(tarEntryStagingPath)) {
         this.fs.mkdirs(tarEntryStagingPath);

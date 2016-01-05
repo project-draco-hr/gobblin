@@ -1,0 +1,3 @@
+{
+  return KafkaReporter.BuilderFactory.newBuilder().withKafkaPusher(pusher);
+}

@@ -1,0 +1,14 @@
+{
+  if (Strings.isNullOrEmpty(s)) {
+    return new PreserveAttributes(0);
+  }
+  s=s.toLowerCase();
+  Preconditions.checkArgument(ATTRIBUTES_REGEXP.matcher(s).matches(),"Invalid %s string %s, must be of the form %s.",PreserveAttributes.class.getSimpleName(),s,ATTRIBUTES_REGEXP.pattern());
+  int value=0;
+  for (  Option option : Option.values()) {
+    if (s.indexOf(option.token) >= 0) {
+      value|=1 << option.ordinal();
+    }
+  }
+  return new PreserveAttributes(value);
+}

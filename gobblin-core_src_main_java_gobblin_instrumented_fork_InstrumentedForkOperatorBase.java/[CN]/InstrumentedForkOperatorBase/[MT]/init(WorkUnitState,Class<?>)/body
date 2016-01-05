@@ -1,5 +1,5 @@
 {
   this.instrumentationEnabled=GobblinMetrics.isEnabled(workUnitState);
-  this.metricContext=closer.register(Instrumented.getMetricContext(workUnitState,classTag));
+  this.metricContext=this.closer.register(Instrumented.getMetricContext(workUnitState,this.classTag.or(classTag)));
   regenerateMetrics();
 }

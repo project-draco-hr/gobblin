@@ -1,3 +1,0 @@
-{
-  return KafkaReporter.Factory.forRegistry(registry).withKafkaPusher(pusher);
-}
