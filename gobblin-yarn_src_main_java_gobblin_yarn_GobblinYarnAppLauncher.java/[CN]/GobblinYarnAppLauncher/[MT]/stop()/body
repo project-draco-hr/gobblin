@@ -11,7 +11,7 @@
       this.serviceManager.get().stopAsync().awaitStopped(5,TimeUnit.MINUTES);
     }
     ExecutorsUtils.shutdownExecutorService(this.applicationStatusMonitor,Optional.of(LOGGER),5,TimeUnit.MINUTES);
-    this.yarnClient.stop();
+    stopYarnClient();
     disconnectHelixManager();
   }
   finally {

@@ -1,0 +1,7 @@
+{
+  final int prime=31;
+  int result=1;
+  result=prime * result + ((ownName == null) ? 0 : ownName.hashCode());
+  result=prime * result + ((parent == null) ? 0 : parent.hashCode());
+  return result;
+}

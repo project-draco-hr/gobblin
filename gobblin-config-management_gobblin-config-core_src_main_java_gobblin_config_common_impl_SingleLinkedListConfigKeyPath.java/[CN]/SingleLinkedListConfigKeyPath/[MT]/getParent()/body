@@ -1,0 +1,4 @@
+{
+  if (this.isRootPath())   throw new UnsupportedOperationException("Can not getParent from Root");
+  return this.parent;
+}

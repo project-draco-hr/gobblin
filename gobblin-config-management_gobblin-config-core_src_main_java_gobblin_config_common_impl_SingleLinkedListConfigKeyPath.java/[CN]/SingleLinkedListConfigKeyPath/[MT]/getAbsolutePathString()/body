@@ -1,0 +1,7 @@
+{
+  if (this.isRootPath()) {
+    return this.getOwnPathName() + PATH_DELIMETER;
+  }
+  if (this.parent.isRootPath())   return this.parent.getAbsolutePathString() + this.ownName;
+  return this.parent.getAbsolutePathString() + PATH_DELIMETER + this.ownName;
+}
