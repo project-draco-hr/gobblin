@@ -1,0 +1,20 @@
+{
+  this.state=new State();
+  this.state.addAll(props);
+  this.tags=tags;
+  this.conf=HadoopUtils.getConfFromState(state);
+  this.tmpOutputDir=getTmpOutputDir();
+  this.fs=getFileSystem();
+  this.datasets=getDatasetsFinder().findDistinctDatasets();
+  this.jobExecutor=createJobExecutor();
+  this.jobRunnables=Maps.newConcurrentMap();
+  this.closer=Closer.create();
+  this.stopwatch=Stopwatch.createStarted();
+  this.gobblinMetrics=initializeMetrics();
+  this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.state.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  this.dataVerifTimeoutMinutes=getDataVerifTimeoutMinutes();
+  this.compactionTimeoutMinutes=getCompactionTimeoutMinutes();
+  this.shouldVerifDataCompl=shouldVerifyDataCompleteness();
+  this.verifier=this.shouldVerifDataCompl ? Optional.of(this.closer.register(new DataCompletenessVerifier(this.state))) : Optional.<DataCompletenessVerifier>absent();
+  this.shouldPublishDataIfCannotVerifyCompl=shouldPublishDataIfCannotVerifyCompl();
+}

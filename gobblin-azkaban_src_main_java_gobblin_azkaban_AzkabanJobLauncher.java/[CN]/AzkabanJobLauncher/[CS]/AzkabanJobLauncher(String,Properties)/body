@@ -17,7 +17,7 @@
     this.props.setProperty(MAPREDUCE_JOB_CREDENTIALS_BINARY,System.getenv(HADOOP_TOKEN_FILE_LOCATION));
   }
   List<Tag<?>> tags=Lists.newArrayList();
-  tags.addAll(Tag.fromMap(TagUtils.getRuntimeTags()));
+  tags.addAll(Tag.fromMap(AzkabanTags.getAzkabanTags()));
   JobMetrics.addCustomTagsToProperties(this.props,tags);
   if (!this.props.containsKey(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY)) {
     this.props.setProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.MAPREDUCE.toString());
