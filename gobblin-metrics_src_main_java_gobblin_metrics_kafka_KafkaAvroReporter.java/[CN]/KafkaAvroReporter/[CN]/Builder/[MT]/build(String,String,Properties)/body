@@ -1,5 +1,5 @@
 {
   this.brokers=brokers;
   this.topic=topic;
-  return new KafkaAvroReporter(this,ConfigUtils.propertiesToConfig(props));
+  return new KafkaAvroReporter(this,ConfigUtils.propertiesToConfig(props,Optional.of(ConfigurationKeys.METRICS_CONFIGURATIONS_PREFIX)));
 }

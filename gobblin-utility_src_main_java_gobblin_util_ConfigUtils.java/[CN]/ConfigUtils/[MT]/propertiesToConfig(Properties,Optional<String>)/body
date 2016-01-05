@@ -1,0 +1,9 @@
+{
+  ImmutableMap.Builder<String,Object> immutableMapBuilder=ImmutableMap.builder();
+  for (  Map.Entry<Object,Object> entry : properties.entrySet()) {
+    if (StringUtils.startsWith(entry.getKey().toString(),prefix.or(StringUtils.EMPTY))) {
+      immutableMapBuilder.put(entry.getKey().toString(),entry.getValue());
+    }
+  }
+  return ConfigFactory.parseMap(immutableMapBuilder.build());
+}
