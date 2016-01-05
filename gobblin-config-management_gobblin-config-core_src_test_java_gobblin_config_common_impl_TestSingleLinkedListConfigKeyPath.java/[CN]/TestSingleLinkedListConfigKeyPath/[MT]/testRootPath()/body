@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(SingleLinkedListConfigKeyPath.ROOT.getAbsolutePathString(),"/");
+  Assert.assertEquals(SingleLinkedListConfigKeyPath.ROOT.getOwnPathName(),"");
+}
