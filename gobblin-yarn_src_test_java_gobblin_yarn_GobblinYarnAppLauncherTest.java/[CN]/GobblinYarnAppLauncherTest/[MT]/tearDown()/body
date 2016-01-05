@@ -1,5 +1,6 @@
 {
   try {
+    this.gobblinYarnAppLauncher.stopYarnClient();
     if (this.helixManager.isConnected()) {
       this.helixManager.disconnect();
     }
