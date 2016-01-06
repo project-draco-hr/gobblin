@@ -1,4 +1,3 @@
 {
-  ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log),10,TimeUnit.SECONDS);
   super.close();
 }
