@@ -1,3 +1,6 @@
 {
+  if (eventSubmitter.isPresent()) {
+    eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.CONTAINER_STARTED,GobblinYarnMetricTagNames.CONTAINER_ID,containerId.toString());
+  }
   LOGGER.info(String.format("Container %s has been started",containerId));
 }

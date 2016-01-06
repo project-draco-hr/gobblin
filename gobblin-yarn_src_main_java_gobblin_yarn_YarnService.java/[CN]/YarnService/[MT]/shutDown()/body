@@ -24,6 +24,13 @@ synchronized (this.allContainersStopped) {
     LOGGER.error("Failed to unregister the ApplicationMaster",e);
   }
  finally {
-    this.closer.close();
+    try {
+      this.closer.close();
+    }
+  finally {
+      if (this.gobblinMetrics.isPresent()) {
+        this.gobblinMetrics.get().stopMetricsReporting();
+      }
+    }
   }
 }

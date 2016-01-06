@@ -1,3 +1,6 @@
 {
+  if (eventSubmitter.isPresent()) {
+    eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.CONTAINER_STOP_ERROR,GobblinYarnMetricTagNames.CONTAINER_ID,containerId.toString(),GobblinYarnEventConstants.EventMetadata.ERROR_EXCEPTION,Throwables.getStackTraceAsString(t));
+  }
   LOGGER.error(String.format("Failed to stop container %s due to error %s",containerId,t));
 }
