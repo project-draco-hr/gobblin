@@ -1,5 +1,0 @@
-{
-  Preconditions.checkNotNull(childPathName);
-  Preconditions.checkArgument(!childPathName.isEmpty());
-  return new LinkedListConfigKeyPath(childPathName,this);
-}

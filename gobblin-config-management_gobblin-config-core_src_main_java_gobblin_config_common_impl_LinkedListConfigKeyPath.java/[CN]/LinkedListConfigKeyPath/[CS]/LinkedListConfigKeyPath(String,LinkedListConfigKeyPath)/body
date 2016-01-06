@@ -1,5 +1,0 @@
-{
-  Preconditions.checkNotNull(ownPathName);
-  this.ownPathName=ownPathName;
-  this.parent=parent;
-}

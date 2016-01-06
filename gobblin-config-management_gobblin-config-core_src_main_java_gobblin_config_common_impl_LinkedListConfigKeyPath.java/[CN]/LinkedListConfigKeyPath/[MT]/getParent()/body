@@ -1,6 +1,0 @@
-{
-  if (!isRootPath()) {
-    return this.parent;
-  }
-  throw new UnsupportedOperationException("No parent for root");
-}

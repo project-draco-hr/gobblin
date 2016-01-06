@@ -1,8 +1,0 @@
-{
-  try {
-    return createFromURI(new URI(configURI));
-  }
- catch (  URISyntaxException e) {
-    throw new IllegalArgumentException(e);
-  }
-}
