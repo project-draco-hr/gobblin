@@ -1,10 +1,7 @@
 {
-  try {
-    Properties jobProperties=CliOptions.parseArgs(CliLocalJobLauncher.class,args);
-    LOG.debug(String.format("Running job with properties:%n%s",jobProperties));
-    new LocalJobLauncher(jobProperties).launchJob(null);
+  Properties jobProperties=CliOptions.parseArgs(CliLocalJobLauncher.class,args);
+  LOG.debug(String.format("Running job with properties:%n%s",jobProperties));
+  try (LocalJobLauncher localJobLauncher=new LocalJobLauncher(jobProperties)){
+    localJobLauncher.launchJob(null);
   }
- catch (  Exception exception) {
-    throw new RuntimeException(exception);
-  }
-}
+ }

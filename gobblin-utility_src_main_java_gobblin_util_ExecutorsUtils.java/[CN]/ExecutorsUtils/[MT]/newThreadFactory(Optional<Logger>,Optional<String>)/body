@@ -1,7 +1,3 @@
 {
-  ThreadFactoryBuilder builder=new ThreadFactoryBuilder();
-  if (nameFormat.isPresent()) {
-    builder.setNameFormat(nameFormat.get());
-  }
-  return builder.setUncaughtExceptionHandler(new LoggingUncaughtExceptionHandler(logger)).build();
+  return newThreadFactory(new ThreadFactoryBuilder(),logger,nameFormat);
 }
