@@ -1,7 +1,8 @@
 {
-  List<Tag<?>> tags=Lists.newArrayList();
-  tags.addAll(Tag.fromMap(TagUtils.getRuntimeTags()));
-  GobblinMetrics gobblinMetrics=GobblinMetrics.get(state.getProp(ConfigurationKeys.JOB_NAME_KEY),null,tags);
-  gobblinMetrics.startMetricReporting(state.getProperties());
+  ImmutableList.Builder<Tag<?>> tags=ImmutableList.builder();
+  tags.addAll(this.tags);
+  tags.addAll(Tag.fromMap(ClusterNameTags.getClusterNameTags()));
+  GobblinMetrics gobblinMetrics=GobblinMetrics.get(this.state.getProp(ConfigurationKeys.JOB_NAME_KEY),null,tags.build());
+  gobblinMetrics.startMetricReporting(this.state.getProperties());
   return gobblinMetrics;
 }

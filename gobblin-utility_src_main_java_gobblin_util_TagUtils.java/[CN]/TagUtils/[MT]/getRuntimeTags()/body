@@ -1,3 +1,0 @@
-{
-  return getRuntimeTags(new Configuration());
-}

@@ -1,12 +1,11 @@
 {
-  Logger log=LoggerFactory.getLogger("testSendShutdownRequest");
   this.helixManager.connect();
   this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new TestShutdownMessageHandlerFactory(this));
   this.gobblinYarnAppLauncher.connectHelixManager();
   this.gobblinYarnAppLauncher.sendShutdownRequest();
   Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s/CONTROLLER/MESSAGES",GobblinYarnAppLauncherTest.class.getSimpleName())).getVersion(),0);
   YarnSecurityManagerTest.GetControllerMessageNumFunc getCtrlMessageNum=new YarnSecurityManagerTest.GetControllerMessageNumFunc(GobblinYarnAppLauncherTest.class.getSimpleName(),this.curatorFramework);
-  AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(log).timeoutMs(20000);
+  AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(LoggerFactory.getLogger("testSendShutdownRequest")).timeoutMs(20000);
   assertWithBackoff.assertEquals(getCtrlMessageNum,1,"1 controller message queued");
   assertWithBackoff.assertEquals(getCtrlMessageNum,0,"all controller messages processed");
 }

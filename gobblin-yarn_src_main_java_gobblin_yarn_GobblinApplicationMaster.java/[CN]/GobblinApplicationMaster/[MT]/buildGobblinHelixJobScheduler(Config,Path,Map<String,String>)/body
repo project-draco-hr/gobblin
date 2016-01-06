@@ -1,4 +1,0 @@
-{
-  Properties properties=ConfigUtils.configToProperties(config);
-  return new GobblinHelixJobScheduler(properties,this.helixManager,this.eventBus,appWorkDir,eventMetadata);
-}

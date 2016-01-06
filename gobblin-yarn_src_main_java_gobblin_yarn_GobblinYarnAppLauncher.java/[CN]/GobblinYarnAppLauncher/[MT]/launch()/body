@@ -4,6 +4,7 @@
   YarnHelixUtils.createGobblinYarnHelixCluster(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY),clusterName);
   LOGGER.info("Created Helix cluster " + clusterName);
   connectHelixManager();
+  startYarnClient();
   this.applicationId=getApplicationId();
   this.applicationStatusMonitor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){

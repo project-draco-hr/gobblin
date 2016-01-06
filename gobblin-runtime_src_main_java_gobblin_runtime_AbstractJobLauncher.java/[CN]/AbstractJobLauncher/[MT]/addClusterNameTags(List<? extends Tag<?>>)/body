@@ -1,0 +1,3 @@
+{
+  return ImmutableList.<Tag<?>>builder().addAll(tags).addAll(Tag.fromMap(ClusterNameTags.getClusterNameTags())).build();
+}

@@ -1,0 +1,8 @@
+{
+  ImmutableMap.Builder<String,String> tagMap=ImmutableMap.builder();
+  String clusterIdentifierTag=ClustersNames.getInstance().getClusterName(conf);
+  if (!Strings.isNullOrEmpty(clusterIdentifierTag)) {
+    tagMap.put(CLUSTER_IDENTIFIER_TAG_NAME,clusterIdentifierTag);
+  }
+  return tagMap.build();
+}

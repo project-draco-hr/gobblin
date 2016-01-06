@@ -1,0 +1,3 @@
+{
+  return config.hasPath(ConfigurationKeys.FS_URI_KEY) ? FileSystem.get(URI.create(config.getString(ConfigurationKeys.FS_URI_KEY)),conf) : FileSystem.get(conf);
+}

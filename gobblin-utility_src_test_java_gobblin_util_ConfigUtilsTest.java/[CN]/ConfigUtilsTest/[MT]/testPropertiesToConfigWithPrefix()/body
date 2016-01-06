@@ -1,0 +1,10 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty("k1.kk1","v1");
+  properties.setProperty("k1.kk2","v2");
+  properties.setProperty("k2.kk","v3");
+  Config conf=ConfigUtils.propertiesToConfig(properties,Optional.of("k1"));
+  Assert.assertEquals(conf.getString("k1.kk1"),"v1");
+  Assert.assertEquals(conf.getString("k1.kk2"),"v2");
+  Assert.assertFalse(conf.hasPath("k2.kk"),"Should not contain key k2.kk");
+}

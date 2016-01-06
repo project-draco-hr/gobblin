@@ -1,3 +1,3 @@
 {
-  return new OutputStreamReporter(this,ConfigUtils.propertiesToConfig(props));
+  return new OutputStreamReporter(this,ConfigUtils.propertiesToConfig(props,Optional.of(ConfigurationKeys.METRICS_CONFIGURATIONS_PREFIX)));
 }

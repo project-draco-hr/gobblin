@@ -1,7 +1,7 @@
 {
   try {
     Class<? extends Compactor> compactorClass=getCompactorClass();
-    Compactor compactor=compactorClass.getDeclaredConstructor(Properties.class).newInstance(this.properties);
+    Compactor compactor=compactorClass.getDeclaredConstructor(Properties.class,List.class).newInstance(this.properties,Tag.fromMap(AzkabanTags.getAzkabanTags()));
     return compactor;
   }
  catch (  Exception e) {
