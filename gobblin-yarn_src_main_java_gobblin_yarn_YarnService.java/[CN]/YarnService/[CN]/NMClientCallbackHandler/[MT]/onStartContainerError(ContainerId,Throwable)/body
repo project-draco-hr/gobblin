@@ -1,4 +1,7 @@
 {
+  if (eventSubmitter.isPresent()) {
+    eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.CONTAINER_START_ERROR,GobblinYarnMetricTagNames.CONTAINER_ID,containerId.toString(),GobblinYarnEventConstants.EventMetadata.ERROR_EXCEPTION,Throwables.getStackTraceAsString(t));
+  }
   LOGGER.error(String.format("Failed to start container %s due to error %s",containerId,t));
   containerMap.remove(containerId);
 }

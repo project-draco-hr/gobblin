@@ -1,4 +1,7 @@
 {
+  if (eventSubmitter.isPresent()) {
+    eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.CONTAINER_STOPPED,GobblinYarnMetricTagNames.CONTAINER_ID,containerId.toString());
+  }
   LOGGER.info(String.format("Container %s has been stopped",containerId));
   containerMap.remove(containerId);
   if (containerMap.isEmpty()) {

@@ -1,4 +1,7 @@
 {
+  if (eventSubmitter.isPresent()) {
+    eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.ERROR,GobblinYarnEventConstants.EventMetadata.ERROR_EXCEPTION,Throwables.getStackTraceAsString(t));
+  }
   LOGGER.error("Received error: " + t,t);
   this.done=true;
   eventBus.post(new ApplicationMasterShutdownRequest());
