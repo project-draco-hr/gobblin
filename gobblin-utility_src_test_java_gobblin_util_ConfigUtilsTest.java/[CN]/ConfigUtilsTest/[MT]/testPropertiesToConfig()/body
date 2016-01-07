@@ -1,0 +1,10 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty("k1.kk1","v1");
+  properties.setProperty("k1.kk2","v2");
+  properties.setProperty("k2.kk","v3");
+  Config conf=ConfigUtils.propertiesToConfig(properties);
+  Assert.assertEquals(conf.getString("k1.kk1"),"v1");
+  Assert.assertEquals(conf.getString("k1.kk2"),"v2");
+  Assert.assertEquals(conf.getString("k2.kk"),"v3");
+}

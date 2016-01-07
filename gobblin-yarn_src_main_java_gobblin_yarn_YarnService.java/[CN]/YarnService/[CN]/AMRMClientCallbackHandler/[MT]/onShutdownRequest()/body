@@ -1,4 +1,7 @@
 {
+  if (eventSubmitter.isPresent()) {
+    eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.SHUTDOWN_REQUEST);
+  }
   LOGGER.info("Received shutdown request from the ResourceManager");
   this.done=true;
   eventBus.post(new ApplicationMasterShutdownRequest());

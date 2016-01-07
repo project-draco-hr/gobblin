@@ -1,0 +1,12 @@
+{
+  ImmutableMap.Builder eventMetadataBuilder=new ImmutableMap.Builder<String,String>();
+  eventMetadataBuilder.put(GobblinYarnMetricTagNames.CONTAINER_ID,containerStatus.getContainerId().toString());
+  eventMetadataBuilder.put(GobblinYarnEventConstants.EventMetadata.CONTAINER_STATUS_CONTAINER_STATE,containerStatus.getState().toString());
+  if (ContainerExitStatus.INVALID != containerStatus.getExitStatus()) {
+    eventMetadataBuilder.put(GobblinYarnEventConstants.EventMetadata.CONTAINER_STATUS_EXIT_STATUS,containerStatus.getExitStatus() + "");
+  }
+  if (!Strings.isNullOrEmpty(containerStatus.getDiagnostics())) {
+    eventMetadataBuilder.put(GobblinYarnEventConstants.EventMetadata.CONTAINER_STATUS_EXIT_DIAGNOSTICS,containerStatus.getDiagnostics());
+  }
+  return eventMetadataBuilder;
+}
