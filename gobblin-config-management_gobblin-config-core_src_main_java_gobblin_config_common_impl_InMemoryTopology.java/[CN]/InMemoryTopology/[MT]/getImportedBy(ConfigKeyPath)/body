@@ -1,0 +1,14 @@
+{
+  if (this.ownImportedByMap.containsKey(configKey)) {
+    return this.ownImportedByMap.get(configKey);
+  }
+  try {
+    Collection<ConfigKeyPath> result=this.fallback.getImportedBy(configKey);
+    this.ownImportedByMap.putAll(configKey,result);
+    return result;
+  }
+ catch (  UnsupportedOperationException uoe) {
+    loadRawTopologyFromConfigStore();
+    return this.ownImportedByMap.get(configKey);
+  }
+}

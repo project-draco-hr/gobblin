@@ -1,0 +1,3 @@
+ConfigKeyPath initialConfigKey
+List<ConfigKeyPath> chain
+ConfigKeyPath circular

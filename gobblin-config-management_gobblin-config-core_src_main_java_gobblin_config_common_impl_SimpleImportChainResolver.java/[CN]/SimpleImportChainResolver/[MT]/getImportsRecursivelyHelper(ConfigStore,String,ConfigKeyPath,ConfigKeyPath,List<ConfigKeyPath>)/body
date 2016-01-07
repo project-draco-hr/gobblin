@@ -1,0 +1,22 @@
+{
+  for (  ConfigKeyPath p : previous) {
+    if (currentConfigKey != null && currentConfigKey.equals(p)) {
+      previous.add(p);
+      throw new CircularDependencyException(getChain(initialConfigKey,previous,currentConfigKey));
+    }
+  }
+  if (currentConfigKey.isRootPath()) {
+    return Collections.emptyList();
+  }
+  List<ConfigKeyPath> result=new ArrayList<>();
+  List<ConfigKeyPath> imported=cs.getOwnImports(currentConfigKey,version);
+  imported.add(currentConfigKey.getParent());
+  for (  ConfigKeyPath u : imported) {
+    result.add(u);
+    List<ConfigKeyPath> current=new ArrayList<ConfigKeyPath>();
+    current.addAll(previous);
+    current.add(currentConfigKey);
+    result.addAll(getImportsRecursivelyHelper(cs,version,initialConfigKey,u,current));
+  }
+  return dedup(result);
+}

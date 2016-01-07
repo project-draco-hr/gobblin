@@ -1,0 +1,5 @@
+ConfigStore cs
+String version
+ConfigKeyPath initialConfigKey
+ConfigKeyPath currentConfigKey
+List<ConfigKeyPath> previous

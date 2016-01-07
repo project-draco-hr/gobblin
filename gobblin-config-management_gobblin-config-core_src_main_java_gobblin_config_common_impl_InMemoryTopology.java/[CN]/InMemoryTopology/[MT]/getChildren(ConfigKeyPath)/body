@@ -1,0 +1,8 @@
+{
+  if (this.childrenMap.containsKey(configKey)) {
+    return this.childrenMap.get(configKey);
+  }
+  Collection<ConfigKeyPath> result=this.fallback.getChildren(configKey);
+  this.childrenMap.putAll(configKey,result);
+  return result;
+}
