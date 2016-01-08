@@ -1,0 +1,20 @@
+{
+  Iterator<CopyableFile> cfIterator=copyableFiles.iterator();
+  ImmutableList.Builder<CopyableFile> filtered=ImmutableList.builder();
+  while (cfIterator.hasNext()) {
+    CopyableFile cf=cfIterator.next();
+    Path readyFilePath=PathUtils.addExtension(cf.getOrigin().getPath(),READY_EXTENSION);
+    try {
+      if (sourceFs.exists(readyFilePath)) {
+        filtered.add(cf);
+      }
+ else {
+        log.info(String.format("Removing %s as the .ready file is not found",cf.getOrigin().getPath()));
+      }
+    }
+ catch (    IOException e) {
+      log.warn(String.format("Removing %s as the .ready file can not be read. Exception %s",cf.getOrigin().getPath(),e.getMessage()));
+    }
+  }
+  return filtered.build();
+}

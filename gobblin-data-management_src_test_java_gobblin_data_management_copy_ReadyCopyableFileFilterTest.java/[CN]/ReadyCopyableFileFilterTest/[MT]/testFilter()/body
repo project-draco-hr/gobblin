@@ -1,0 +1,13 @@
+{
+  CopyableFileFilter readyFilter=new ReadyCopyableFileFilter();
+  List<CopyableFile> copyableFiles=Lists.newArrayList();
+  copyableFiles.add(CopyableFileUtils.getTestCopyableFile());
+  copyableFiles.add(CopyableFileUtils.getTestCopyableFile());
+  copyableFiles.add(CopyableFileUtils.getTestCopyableFile());
+  FileSystem sourceFs=Mockito.mock(FileSystem.class);
+  Mockito.when(sourceFs.exists(PathUtils.addExtension(copyableFiles.get(0).getOrigin().getPath(),".ready"))).thenReturn(false);
+  Mockito.when(sourceFs.exists(PathUtils.addExtension(copyableFiles.get(1).getOrigin().getPath(),".ready"))).thenReturn(true);
+  Mockito.when(sourceFs.exists(PathUtils.addExtension(copyableFiles.get(2).getOrigin().getPath(),".ready"))).thenReturn(false);
+  Collection<CopyableFile> filtered=readyFilter.filter(sourceFs,null,copyableFiles);
+  Assert.assertEquals(filtered.size(),1);
+}
