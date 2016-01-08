@@ -2,21 +2,29 @@
   for (  ConfigKeyPath p : previous) {
     if (currentConfigKey != null && currentConfigKey.equals(p)) {
       previous.add(p);
-      throw new CircularDependencyException(getChain(initialConfigKey,previous,currentConfigKey));
+      throw new CircularDependencyException(getCircularDependencyChain(initialConfigKey,previous,currentConfigKey));
     }
   }
   if (currentConfigKey.isRootPath()) {
     return Collections.emptyList();
   }
   List<ConfigKeyPath> result=new ArrayList<>();
-  List<ConfigKeyPath> imported=cs.getOwnImports(currentConfigKey,version);
+  List<ConfigKeyPath> imported=this.getOwnImportsFromCache(currentConfigKey);
   imported.add(currentConfigKey.getParent());
   for (  ConfigKeyPath u : imported) {
     result.add(u);
     List<ConfigKeyPath> current=new ArrayList<ConfigKeyPath>();
     current.addAll(previous);
     current.add(currentConfigKey);
-    result.addAll(getImportsRecursivelyHelper(cs,version,initialConfigKey,u,current));
+    List<ConfigKeyPath> subResult=null;
+    if (this.recursiveImportMap.containsKey(u)) {
+      subResult=this.recursiveImportMap.get(u);
+    }
+ else {
+      subResult=buildImportsRecursiveFromCacheHelper(initialConfigKey,u,current);
+      this.recursiveImportMap.putAll(u,subResult);
+    }
+    result.addAll(subResult);
   }
   return dedup(result);
 }

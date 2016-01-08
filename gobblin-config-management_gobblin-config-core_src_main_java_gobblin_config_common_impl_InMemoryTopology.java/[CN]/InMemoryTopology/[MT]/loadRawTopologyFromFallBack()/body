@@ -1,0 +1,30 @@
+{
+  Collection<ConfigKeyPath> currentLevel=this.getChildren(SingleLinkedListConfigKeyPath.ROOT);
+  while (!currentLevel.isEmpty()) {
+    Collection<ConfigKeyPath> nextLevel=new ArrayList<ConfigKeyPath>();
+    for (    ConfigKeyPath configKeyPath : currentLevel) {
+      List<ConfigKeyPath> ownImports=this.getOwnImports(configKeyPath);
+      for (      ConfigKeyPath p : ownImports) {
+        this.ownImportedByMap.put(p,configKeyPath);
+      }
+      Collection<ConfigKeyPath> tmp=this.getChildren(configKeyPath);
+      nextLevel.addAll(tmp);
+    }
+    currentLevel=nextLevel;
+  }
+  for (  ConfigKeyPath configKey : this.ownImportMap.keySet()) {
+    List<ConfigKeyPath> recursiveImports=null;
+    if (this.recursiveImportMap.containsKey(configKey)) {
+      recursiveImports=this.recursiveImportMap.get(configKey);
+    }
+ else {
+      recursiveImports=this.buildImportsRecursiveFromCache(configKey);
+      this.recursiveImportMap.putAll(configKey,recursiveImports);
+    }
+    if (recursiveImports != null) {
+      for (      ConfigKeyPath p : recursiveImports) {
+        this.recursiveImportedByMap.put(p,configKey);
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  if (this.ownImportMap.containsKey(configKey)) {
+    return this.ownImportMap.get(configKey);
+  }
+  return Collections.emptyList();
+}

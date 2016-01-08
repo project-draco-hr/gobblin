@@ -8,7 +8,7 @@
     return result;
   }
  catch (  UnsupportedOperationException uoe) {
-    loadRawTopologyFromConfigStore();
+    loadRawTopologyFromFallBack();
     return this.recursiveImportMap.get(configKey);
   }
 }
