@@ -12,6 +12,8 @@
     }
     currentLevel=nextLevel;
   }
+  System.out.println("size of ownImportMpa is " + this.ownImportMap.size());
+  System.out.println("size of chldrenMap is " + this.childrenMap.size());
   for (  ConfigKeyPath configKey : this.ownImportMap.keySet()) {
     List<ConfigKeyPath> recursiveImports=null;
     if (this.recursiveImportMap.containsKey(configKey)) {

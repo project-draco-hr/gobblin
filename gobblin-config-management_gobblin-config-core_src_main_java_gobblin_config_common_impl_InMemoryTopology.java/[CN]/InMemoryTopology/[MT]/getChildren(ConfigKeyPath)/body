@@ -1,8 +1,12 @@
 {
+  System.out.println("BBB " + configKey);
   if (this.childrenMap.containsKey(configKey)) {
+    System.out.println("BBB in cache");
     return this.childrenMap.get(configKey);
   }
   Collection<ConfigKeyPath> result=this.fallback.getChildren(configKey);
   this.childrenMap.putAll(configKey,result);
+  System.out.println("BBB size is " + result.size());
+  System.out.println("BBB in cahche? " + this.childrenMap.containsKey(configKey));
   return result;
 }

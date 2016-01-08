@@ -1,0 +1,36 @@
+{
+  Assert.assertEquals(mockConfigStore.getCurrentVersion(),version);
+  ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(this.mockConfigStore,this.version);
+  InMemoryTopology inMemory=new InMemoryTopology(csTopology);
+  Collection<ConfigKeyPath> result=inMemory.getChildren(data);
+  Assert.assertTrue(result.size() == 1);
+  Assert.assertEquals(result.iterator().next(),databases);
+  result=inMemory.getOwnImports(identity);
+  Assert.assertTrue(result.size() == 2);
+  Iterator<ConfigKeyPath> it=result.iterator();
+  Assert.assertEquals(it.next(),espressoTag);
+  Assert.assertEquals(it.next(),highPriorityTag);
+  result=inMemory.getImportsRecursively(identity);
+  Assert.assertTrue(result.size() == 3);
+  it=result.iterator();
+  Assert.assertEquals(it.next(),espressoTag);
+  Assert.assertEquals(it.next(),nertzTag2);
+  Assert.assertEquals(it.next(),highPriorityTag);
+  result=inMemory.getImportedBy(nertzTag2);
+  Assert.assertTrue(result.size() == 1);
+  Assert.assertEquals(result.iterator().next(),espressoTag);
+  result=inMemory.getImportedByRecursively(nertzTag2);
+  Set<ConfigKeyPath> expected=new HashSet<ConfigKeyPath>();
+  expected.add(espressoTag);
+  expected.add(identity);
+  Assert.assertTrue(result.size() == 2);
+  it=result.iterator();
+  while (it.hasNext()) {
+    ConfigKeyPath tmp=it.next();
+    Assert.assertTrue(expected.contains(tmp));
+    expected.remove(tmp);
+  }
+  for (  ConfigKeyPath p : result) {
+    System.out.println("imported by recur is " + p);
+  }
+}

@@ -1,3 +1,6 @@
 {
+  if (childPathName == null || childPathName.length() == 0 || childPathName.indexOf(PATH_DELIMETER) >= 0) {
+    throw new IllegalArgumentException("Name can not be null/empty string and can not contains the delimter " + PATH_DELIMETER);
+  }
   return new SingleLinkedListConfigKeyPath(this,childPathName);
 }

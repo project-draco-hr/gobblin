@@ -1,5 +1,7 @@
 {
+  System.out.println("current is " + currentConfigKey);
   for (  ConfigKeyPath p : previous) {
+    System.out.println("previous is " + p);
     if (currentConfigKey != null && currentConfigKey.equals(p)) {
       previous.add(p);
       throw new CircularDependencyException(getCircularDependencyChain(initialConfigKey,previous,currentConfigKey));
@@ -9,10 +11,16 @@
     return Collections.emptyList();
   }
   List<ConfigKeyPath> result=new ArrayList<>();
-  List<ConfigKeyPath> imported=this.getOwnImportsFromCache(currentConfigKey);
-  imported.add(currentConfigKey.getParent());
+  List<ConfigKeyPath> rawList=this.getOwnImportsFromCache(currentConfigKey);
+  List<ConfigKeyPath> imported=new ArrayList<ConfigKeyPath>();
+  imported.addAll(rawList);
+  if (!currentConfigKey.isRootPath()) {
+    imported.add(currentConfigKey.getParent());
+  }
   for (  ConfigKeyPath u : imported) {
-    result.add(u);
+    if (!u.equals(currentConfigKey.getParent())) {
+      result.add(u);
+    }
     List<ConfigKeyPath> current=new ArrayList<ConfigKeyPath>();
     current.addAll(previous);
     current.add(currentConfigKey);
