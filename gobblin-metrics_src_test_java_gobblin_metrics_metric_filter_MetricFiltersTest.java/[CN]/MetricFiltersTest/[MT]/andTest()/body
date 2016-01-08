@@ -1,0 +1,10 @@
+{
+  MetricFilter trueMetricFilter=mock(MetricFilter.class);
+  when(trueMetricFilter.matches(any(String.class),any(Metric.class))).thenReturn(true);
+  MetricFilter falseMetricFilter=mock(MetricFilter.class);
+  when(falseMetricFilter.matches(any(String.class),any(Metric.class))).thenReturn(false);
+  Assert.assertTrue(MetricFilters.and(trueMetricFilter,trueMetricFilter).matches("",mock(Metric.class)));
+  Assert.assertFalse(MetricFilters.and(trueMetricFilter,falseMetricFilter).matches("",mock(Metric.class)));
+  Assert.assertFalse(MetricFilters.and(falseMetricFilter,trueMetricFilter).matches("",mock(Metric.class)));
+  Assert.assertFalse(MetricFilters.and(falseMetricFilter,falseMetricFilter).matches("",mock(Metric.class)));
+}
