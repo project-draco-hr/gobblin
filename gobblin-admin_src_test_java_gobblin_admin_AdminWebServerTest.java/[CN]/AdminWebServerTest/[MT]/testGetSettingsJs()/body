@@ -1,0 +1,11 @@
+{
+  CloseableHttpClient client=HttpClients.createDefault();
+  HttpGet getReq=new HttpGet(String.format("http://localhost:%s/js/settings.js",portNumber));
+  try (CloseableHttpResponse response=client.execute(getReq)){
+    assertEquals(200,response.getStatusLine().getStatusCode());
+    HttpEntity body=response.getEntity();
+    String bodyString=EntityUtils.toString(body);
+    assertStringContains("http://foobar",bodyString);
+    assertStringContains("3333",bodyString);
+  }
+ }

@@ -5,7 +5,11 @@
   List<Service> services=Lists.<Service>newArrayList(new JobScheduler(properties));
   boolean jobExecInfoServerEnabled=Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_EXECINFO_SERVER_ENABLED_KEY,Boolean.FALSE.toString()));
   if (jobExecInfoServerEnabled) {
-    services.add(new JobExecutionInfoServer(properties));
+    JobExecutionInfoServer executionInfoServer=new JobExecutionInfoServer(properties);
+    services.add(executionInfoServer);
+    if (shouldRunAdminServer(properties)) {
+      services.add(new AdminWebServer(properties,executionInfoServer.getServerUri()));
+    }
   }
   this.serviceManager=new ServiceManager(services);
 }
