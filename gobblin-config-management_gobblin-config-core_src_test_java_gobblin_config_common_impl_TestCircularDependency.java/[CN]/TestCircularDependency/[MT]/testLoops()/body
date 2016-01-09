@@ -1,0 +1,34 @@
+{
+  ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
+  ConfigKeyPath subTag1=tag.createChild("subTag1");
+  ConfigKeyPath subTag2=tag.createChild("subTag2");
+  ConfigKeyPath subTag3=tag.createChild("subTag3");
+  ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStore.getCurrentVersion()).thenReturn(version);
+  List<ConfigKeyPath> rootChildren=new ArrayList<ConfigKeyPath>();
+  rootChildren.add(tag);
+  when(mockConfigStore.getChildren(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(rootChildren);
+  List<ConfigKeyPath> tagChildren=new ArrayList<ConfigKeyPath>();
+  tagChildren.add(subTag1);
+  tagChildren.add(subTag2);
+  tagChildren.add(subTag3);
+  when(mockConfigStore.getChildren(tag,version)).thenReturn(tagChildren);
+  List<ConfigKeyPath> subTag1Imports=new ArrayList<ConfigKeyPath>();
+  subTag1Imports.add(subTag2);
+  when(mockConfigStore.getOwnImports(subTag1,version)).thenReturn(subTag1Imports);
+  List<ConfigKeyPath> subTag2Imports=new ArrayList<ConfigKeyPath>();
+  subTag2Imports.add(subTag3);
+  when(mockConfigStore.getOwnImports(subTag2,version)).thenReturn(subTag2Imports);
+  List<ConfigKeyPath> subTag3Imports=new ArrayList<ConfigKeyPath>();
+  subTag3Imports.add(subTag1);
+  when(mockConfigStore.getOwnImports(subTag3,version)).thenReturn(subTag3Imports);
+  ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
+  InMemoryTopology inMemory=new InMemoryTopology(csTopology);
+  try {
+    inMemory.getImportsRecursively(subTag1);
+    Assert.fail("Did not catch expected CircularDependencyException");
+  }
+ catch (  CircularDependencyException e) {
+    Assert.assertTrue(e.getMessage().indexOf("/tag/subTag1") > 0 && e.getMessage().indexOf("/tag/subTag2") > 0 && e.getMessage().indexOf("/tag/subTag3") > 0);
+  }
+}

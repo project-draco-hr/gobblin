@@ -1,15 +1,18 @@
 {
   ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
+  ConfigKeyPath highPriorityTag=tag.createChild("highPriorityTag");
   ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
   when(mockConfigStore.getCurrentVersion()).thenReturn(version);
   List<ConfigKeyPath> rootChildren=new ArrayList<ConfigKeyPath>();
   rootChildren.add(tag);
   when(mockConfigStore.getChildren(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(rootChildren);
-  when(mockConfigStore.getChildren(tag,version)).thenReturn(emptyList);
+  List<ConfigKeyPath> tagChildren=new ArrayList<ConfigKeyPath>();
+  tagChildren.add(highPriorityTag);
+  when(mockConfigStore.getChildren(tag,version)).thenReturn(tagChildren);
+  when(mockConfigStore.getChildren(highPriorityTag,version)).thenReturn(this.emptyList);
   List<ConfigKeyPath> tagImports=new ArrayList<ConfigKeyPath>();
-  tagImports.add(tag);
+  tagImports.add(highPriorityTag);
   when(mockConfigStore.getOwnImports(tag,version)).thenReturn(tagImports);
-  when(mockConfigStore.getOwnImports(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(emptyList);
   ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
   InMemoryTopology inMemory=new InMemoryTopology(csTopology);
   try {
@@ -17,6 +20,6 @@
     Assert.fail("Did not catch expected CircularDependencyException");
   }
  catch (  CircularDependencyException e) {
-    Assert.assertTrue(e.getMessage().indexOf("/tag") > 0);
+    Assert.assertTrue(e.getMessage().indexOf("/tag/highPriorityTag") > 0 && e.getMessage().indexOf("/tag ") > 0);
   }
 }

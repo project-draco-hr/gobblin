@@ -4,7 +4,7 @@
   }
   try {
     Collection<ConfigKeyPath> result=this.fallback.getImportedByRecursively(configKey);
-    this.recursiveImportedByMap.putAll(configKey,result);
+    this.addToCollectionMapForCollectionValue(this.recursiveImportedByMap,configKey,result);
     return result;
   }
  catch (  UnsupportedOperationException uoe) {
