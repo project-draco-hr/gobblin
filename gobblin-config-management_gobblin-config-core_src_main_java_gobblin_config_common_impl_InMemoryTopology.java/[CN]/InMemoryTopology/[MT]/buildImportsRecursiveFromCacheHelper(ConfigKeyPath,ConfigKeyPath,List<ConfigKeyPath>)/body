@@ -1,7 +1,5 @@
 {
-  System.out.println("initial is " + initialConfigKey + ",current is "+ currentConfigKey);
   for (  ConfigKeyPath p : previous) {
-    System.out.println("previous is " + p);
     if (currentConfigKey != null && currentConfigKey.equals(p)) {
       previous.add(p);
       throw new CircularDependencyException(getCircularDependencyChain(initialConfigKey,previous,currentConfigKey));
@@ -24,16 +22,11 @@
     List<ConfigKeyPath> current=new ArrayList<ConfigKeyPath>();
     current.addAll(previous);
     current.add(currentConfigKey);
-    System.out.println("AA concurrent is " + currentConfigKey + " u is "+ u);
-    System.out.println("previous size is " + previous.size() + ": "+ previous);
-    System.out.println("current size is " + current.size() + ";"+ current);
     List<ConfigKeyPath> subResult=null;
     if (this.recursiveImportMap.containsKey(u)) {
-      System.out.println("AAAA in here 0");
       subResult=this.recursiveImportMap.get(u);
     }
  else {
-      System.out.println("BBBB in here 1");
       subResult=buildImportsRecursiveFromCacheHelper(initialConfigKey,u,current);
       this.addToListMapForListValue(this.recursiveImportMap,u,subResult);
     }

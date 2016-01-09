@@ -2,25 +2,14 @@
   ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
   ConfigKeyPath highPriorityTag=tag.createChild("highPriorityTag");
   ConfigKeyPath nertzHighPriorityTag=highPriorityTag.createChild("nertzHighPriorityTag");
-  ConfigKeyPath tag2=tag.createChild("tag2");
+  ConfigKeyPath tag2=SingleLinkedListConfigKeyPath.ROOT.createChild("tag2");
   ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
   when(mockConfigStore.getCurrentVersion()).thenReturn(version);
-  List<ConfigKeyPath> rootChildren=new ArrayList<ConfigKeyPath>();
-  rootChildren.add(tag);
-  rootChildren.add(tag2);
-  when(mockConfigStore.getChildren(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(rootChildren);
-  List<ConfigKeyPath> tagChildren=new ArrayList<ConfigKeyPath>();
-  tagChildren.add(highPriorityTag);
-  when(mockConfigStore.getChildren(tag,version)).thenReturn(tagChildren);
-  List<ConfigKeyPath> highPriorityTagChildren=new ArrayList<ConfigKeyPath>();
-  highPriorityTagChildren.add(nertzHighPriorityTag);
-  when(mockConfigStore.getChildren(highPriorityTag,version)).thenReturn(highPriorityTagChildren);
-  List<ConfigKeyPath> tagImports=new ArrayList<ConfigKeyPath>();
-  tagImports.add(tag2);
-  when(mockConfigStore.getOwnImports(tag,version)).thenReturn(tagImports);
-  List<ConfigKeyPath> tag2Imports=new ArrayList<ConfigKeyPath>();
-  tag2Imports.add(nertzHighPriorityTag);
-  when(mockConfigStore.getOwnImports(tag2,version)).thenReturn(tag2Imports);
+  addConfigStoreChildren(mockConfigStore,version,SingleLinkedListConfigKeyPath.ROOT,tag,tag2);
+  addConfigStoreChildren(mockConfigStore,version,tag,highPriorityTag);
+  addConfigStoreChildren(mockConfigStore,version,highPriorityTag,nertzHighPriorityTag);
+  addConfigStoreImports(mockConfigStore,version,tag,tag2);
+  addConfigStoreImports(mockConfigStore,version,tag2,nertzHighPriorityTag);
   ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
   InMemoryTopology inMemory=new InMemoryTopology(csTopology);
   try {
@@ -28,7 +17,6 @@
     Assert.fail("Did not catch expected CircularDependencyException");
   }
  catch (  CircularDependencyException e) {
-    System.out.println("FFF " + e.getMessage());
     Assert.assertTrue(e.getMessage().indexOf("/tag/highPriorityTag/nertzHighPriorityTag") > 0 && e.getMessage().indexOf("/tag/highPriorityTag ") > 0 && e.getMessage().indexOf("/tag ") > 0 && e.getMessage().indexOf("/tag2 ") > 0);
   }
 }

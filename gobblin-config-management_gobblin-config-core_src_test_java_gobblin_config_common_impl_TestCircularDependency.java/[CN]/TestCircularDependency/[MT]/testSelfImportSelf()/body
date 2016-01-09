@@ -2,14 +2,8 @@
   ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
   ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
   when(mockConfigStore.getCurrentVersion()).thenReturn(version);
-  List<ConfigKeyPath> rootChildren=new ArrayList<ConfigKeyPath>();
-  rootChildren.add(tag);
-  when(mockConfigStore.getChildren(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(rootChildren);
-  when(mockConfigStore.getChildren(tag,version)).thenReturn(emptyList);
-  List<ConfigKeyPath> tagImports=new ArrayList<ConfigKeyPath>();
-  tagImports.add(tag);
-  when(mockConfigStore.getOwnImports(tag,version)).thenReturn(tagImports);
-  when(mockConfigStore.getOwnImports(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(emptyList);
+  addConfigStoreChildren(mockConfigStore,version,SingleLinkedListConfigKeyPath.ROOT,tag);
+  addConfigStoreImports(mockConfigStore,version,tag,tag);
   ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
   InMemoryTopology inMemory=new InMemoryTopology(csTopology);
   try {
