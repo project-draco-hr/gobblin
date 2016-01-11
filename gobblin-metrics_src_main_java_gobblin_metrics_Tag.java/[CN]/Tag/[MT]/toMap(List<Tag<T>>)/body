@@ -1,0 +1,7 @@
+{
+  ImmutableMap.Builder<String,T> tagsMapBuilder=ImmutableMap.builder();
+  for (  Tag<T> tag : tags) {
+    tagsMapBuilder.put(tag.getKey(),tag.getValue());
+  }
+  return tagsMapBuilder.build();
+}

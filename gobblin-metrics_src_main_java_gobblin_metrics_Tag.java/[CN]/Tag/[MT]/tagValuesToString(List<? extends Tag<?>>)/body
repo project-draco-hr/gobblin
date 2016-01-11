@@ -1,0 +1,8 @@
+{
+  return Lists.transform(tags,new Function<Tag<?>,Tag<String>>(){
+    @Nullable @Override public Tag<String> apply(    Tag<?> input){
+      return input == null ? null : Tag.tagValueToString(input);
+    }
+  }
+);
+}

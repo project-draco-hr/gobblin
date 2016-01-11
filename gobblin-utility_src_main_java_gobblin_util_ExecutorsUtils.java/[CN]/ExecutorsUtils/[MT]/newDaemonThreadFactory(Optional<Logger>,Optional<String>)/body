@@ -1,0 +1,3 @@
+{
+  return newThreadFactory(new ThreadFactoryBuilder().setDaemon(true),logger,nameFormat);
+}

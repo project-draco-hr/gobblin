@@ -10,4 +10,5 @@
   }
 );
   this.pathFilter=DatasetUtils.instantiatePathFilter(properties);
+  this.copyableFileFilter=DatasetUtils.instantiateCopyableFileFilter(properties);
 }

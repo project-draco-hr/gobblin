@@ -1,11 +1,7 @@
 {
   List<CopyableFile> copyableFiles=CopySource.deserializeCopyableFiles(state);
   for (  CopyableFile copyableFile : copyableFiles) {
-    if (this.sourceFs.exists(copyableFile.getOrigin().getPath())) {
-      log.info(String.format("Deleting %s on source fileSystem.",copyableFile.getOrigin().getPath()));
-      if (!this.sourceFs.delete(copyableFile.getOrigin().getPath(),true)) {
-        throw new IOException("Delete failed for " + copyableFile.getOrigin().getPath());
-      }
-    }
+    HadoopUtils.deletePath(this.sourceFs,copyableFile.getOrigin().getPath(),true);
+    HadoopUtils.deletePath(this.sourceFs,PathUtils.addExtension(copyableFile.getOrigin().getPath(),ReadyCopyableFileFilter.READY_EXTENSION),true);
   }
 }

@@ -3,6 +3,8 @@
   this.applicationId=applicationId;
   this.config=config;
   this.eventBus=eventBus;
+  this.gobblinMetrics=config.getBoolean(ConfigurationKeys.METRICS_ENABLED_KEY) ? Optional.of(buildGobblinMetrics()) : Optional.<GobblinMetrics>absent();
+  this.eventSubmitter=config.getBoolean(ConfigurationKeys.METRICS_ENABLED_KEY) ? Optional.of(buildEventSubmitter()) : Optional.<EventSubmitter>absent();
   this.yarnConfiguration=yarnConfiguration;
   this.fs=fs;
   this.amrmClientAsync=closer.register(AMRMClientAsync.createAMRMClientAsync(1000,new AMRMClientCallbackHandler()));

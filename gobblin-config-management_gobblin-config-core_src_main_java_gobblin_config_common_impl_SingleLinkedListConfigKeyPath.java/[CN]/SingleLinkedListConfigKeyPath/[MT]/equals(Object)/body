@@ -1,0 +1,15 @@
+{
+  if (this == obj)   return true;
+  if (obj == null)   return false;
+  if (getClass() != obj.getClass())   return false;
+  SingleLinkedListConfigKeyPath other=(SingleLinkedListConfigKeyPath)obj;
+  if (ownName == null) {
+    if (other.ownName != null)     return false;
+  }
+ else   if (!ownName.equals(other.ownName))   return false;
+  if (parent == null) {
+    if (other.parent != null)     return false;
+  }
+ else   if (!parent.equals(other.parent))   return false;
+  return true;
+}

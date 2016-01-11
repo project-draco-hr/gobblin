@@ -1,4 +1,4 @@
 {
-  file.setDestination(PathUtils.removeExtention(file.getDestination(),TAR_EXTENSION,GZ_EXTENSION,TGZ_EXTENSION));
-  file.setRelativeDestination(PathUtils.removeExtention(file.getRelativeDestination(),TAR_EXTENSION,GZ_EXTENSION,TGZ_EXTENSION));
+  file.setDestination(PathUtils.removeExtension(file.getDestination(),TAR_EXTENSION,GZ_EXTENSION,TGZ_EXTENSION));
+  file.setRelativeDestination(PathUtils.removeExtension(file.getRelativeDestination(),TAR_EXTENSION,GZ_EXTENSION,TGZ_EXTENSION));
 }

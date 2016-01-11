@@ -5,13 +5,12 @@
   this.helixManager=buildHelixManager(config,zkConnectionString);
   FileSystem fs=buildFileSystem(config);
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
-  Map<String,String> eventMetadata=getEventSubmitterMetadata(applicationName,applicationId);
   List<Service> services=Lists.newArrayList();
   if (isLogSourcePresent()) {
     services.add(buildLogCopier(containerId,fs,appWorkDir));
   }
   services.add(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
-  services.add(buildGobblinHelixJobScheduler(config,appWorkDir,eventMetadata));
+  services.add(buildGobblinHelixJobScheduler(config,appWorkDir,getMetadataTags(applicationName,applicationId)));
   services.add(buildJobConfigurationManager(config));
   if (UserGroupInformation.isSecurityEnabled()) {
     LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");

@@ -1,5 +1,6 @@
 {
   this.name=name;
+  this.config=config;
   this.started=false;
   RootMetricContext.get().addNewReporter(this);
   this.notificationTargetUUID=RootMetricContext.get().addNotificationTarget(new Function<Notification,Void>(){

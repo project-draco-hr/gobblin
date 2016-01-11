@@ -1,5 +1,5 @@
 {
-  super(jobProps,ImmutableMap.<String,String>of());
+  super(jobProps,ImmutableList.<Tag<?>>of());
   this.conf=conf;
   JobConfigurationUtils.putPropertiesIntoConfiguration(this.jobProps,this.conf);
   this.conf.set("mapred.max.map.failures.percent","100");

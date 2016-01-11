@@ -1,0 +1,8 @@
+{
+  return new MetricFilter(){
+    @Override public boolean matches(    String name,    Metric metric){
+      return metricFilter1.matches(name,metric) && metricFilter2.matches(name,metric);
+    }
+  }
+;
+}

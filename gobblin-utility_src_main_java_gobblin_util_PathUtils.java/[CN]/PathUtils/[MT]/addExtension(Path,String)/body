@@ -1,0 +1,9 @@
+{
+  StringBuilder pathStringBuilder=new StringBuilder(path.toString());
+  for (  String extension : extensions) {
+    if (!Strings.isNullOrEmpty(extension)) {
+      pathStringBuilder.append(extension);
+    }
+  }
+  return new Path(pathStringBuilder.toString());
+}

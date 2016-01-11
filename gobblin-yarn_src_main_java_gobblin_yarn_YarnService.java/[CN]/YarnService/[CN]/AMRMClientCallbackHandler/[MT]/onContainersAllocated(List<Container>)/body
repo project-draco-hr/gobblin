@@ -1,5 +1,8 @@
 {
   for (  final Container container : containers) {
+    if (eventSubmitter.isPresent()) {
+      eventSubmitter.get().submit(GobblinYarnEventConstants.EventNames.CONTAINER_ALLOCATION,GobblinYarnMetricTagNames.CONTAINER_ID,container.getId().toString());
+    }
     LOGGER.info(String.format("Container %s has been allocated",container.getId()));
     String instanceName=unusedHelixInstanceNames.poll();
     if (Strings.isNullOrEmpty(instanceName)) {

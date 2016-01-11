@@ -1,5 +1,6 @@
 {
-  report();
   this.scheduledTask.get().cancel(false);
   this.scheduledTask=Optional.absent();
+  ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log),10,TimeUnit.SECONDS);
+  report(true);
 }

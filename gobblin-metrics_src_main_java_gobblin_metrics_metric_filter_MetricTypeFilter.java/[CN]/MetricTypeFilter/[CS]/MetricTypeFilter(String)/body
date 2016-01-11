@@ -1,0 +1,14 @@
+{
+  if (Strings.isNullOrEmpty(allowedMetrics)) {
+    this.allowedMetrics=Lists.newArrayList(Metrics.values());
+  }
+ else {
+    List<String> allowedMetricsList=Splitter.on(",").trimResults().omitEmptyStrings().splitToList(allowedMetrics);
+    this.allowedMetrics=Lists.transform(allowedMetricsList,new Function<String,Metrics>(){
+      @Nullable @Override public Metrics apply(      String input){
+        return input == null ? null : Metrics.valueOf(input);
+      }
+    }
+);
+  }
+}

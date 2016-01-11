@@ -1,7 +1,3 @@
 {
-  ImmutableMap.Builder<String,Object> immutableMapBuilder=ImmutableMap.builder();
-  for (  Map.Entry<Object,Object> entry : properties.entrySet()) {
-    immutableMapBuilder.put(entry.getKey().toString(),entry.getValue());
-  }
-  return ConfigFactory.parseMap(immutableMapBuilder.build());
+  return propertiesToConfig(properties,Optional.<String>absent());
 }
