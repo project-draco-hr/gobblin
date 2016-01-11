@@ -1,0 +1,9 @@
+{
+  String pathString=path.toUri().getPath();
+  String replaced=pathString.replace("/","_");
+  if (replaced.length() <= bytes) {
+    return replaced;
+  }
+  int bytesPerHalf=(bytes - 3) / 2;
+  return replaced.substring(0,bytesPerHalf) + "..." + replaced.substring(replaced.length() - bytesPerHalf);
+}

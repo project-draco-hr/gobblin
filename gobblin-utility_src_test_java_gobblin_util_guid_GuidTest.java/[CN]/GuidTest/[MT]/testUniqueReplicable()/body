@@ -1,0 +1,11 @@
+{
+  Random random=new Random();
+  byte[] b=new byte[10];
+  random.nextBytes(b);
+  Assert.assertEquals(new Guid(b),new Guid(b));
+  byte[] other=new byte[10];
+  for (int i=0; i < 1000; i++) {
+    random.nextBytes(other);
+    Assert.assertNotEquals(new Guid(b),new Guid(other));
+  }
+}

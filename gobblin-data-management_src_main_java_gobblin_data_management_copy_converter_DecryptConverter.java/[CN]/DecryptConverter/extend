@@ -1,1 +1,1 @@
-Converter<String,String,FileAwareInputStream,FileAwareInputStream>
+DistcpConverter

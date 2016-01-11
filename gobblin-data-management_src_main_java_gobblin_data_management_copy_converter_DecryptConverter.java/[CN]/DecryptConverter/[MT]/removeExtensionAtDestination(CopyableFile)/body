@@ -1,4 +1,0 @@
-{
-  file.setDestination(PathUtils.removeExtension(file.getDestination(),GPG_EXTENSION));
-  file.setRelativeDestination(PathUtils.removeExtension(file.getRelativeDestination(),GPG_EXTENSION));
-}

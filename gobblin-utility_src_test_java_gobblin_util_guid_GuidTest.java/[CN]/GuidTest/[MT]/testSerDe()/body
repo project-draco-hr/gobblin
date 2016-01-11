@@ -1,0 +1,8 @@
+{
+  Random random=new Random();
+  byte[] b=new byte[10];
+  random.nextBytes(b);
+  Guid guid=new Guid(b);
+  Assert.assertEquals(guid.toString().length(),2 * Guid.GUID_LENGTH);
+  Assert.assertEquals(guid,Guid.deserialize(guid.toString()));
+}

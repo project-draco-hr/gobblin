@@ -1,0 +1,6 @@
+{
+  if (guids == null || guids.length == 0) {
+    return this;
+  }
+  return combine(ArrayUtils.add(guids,this));
+}

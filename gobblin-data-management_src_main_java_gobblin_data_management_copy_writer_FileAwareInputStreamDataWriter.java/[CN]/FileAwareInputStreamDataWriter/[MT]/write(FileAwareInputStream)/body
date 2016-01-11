@@ -3,17 +3,36 @@
   Path stagingFile=getStagingFilePath(fileAwareInputStream.getFile());
   CopyableFile copyableFile=fileAwareInputStream.getFile();
   this.fs.mkdirs(stagingFile.getParent());
-  short replication=copyableFile.getPreserve().preserve(PreserveAttributes.Option.REPLICATION) ? copyableFile.getOrigin().getReplication() : fs.getDefaultReplication(stagingFile);
-  long blockSize=copyableFile.getPreserve().preserve(PreserveAttributes.Option.BLOCK_SIZE) ? copyableFile.getOrigin().getBlockSize() : fs.getDefaultBlockSize(stagingFile);
-  FSDataOutputStream os=this.fs.create(stagingFile,true,fs.getConf().getInt("io.file.buffer.size",4096),replication,blockSize);
-  try {
-    this.bytesWritten.addAndGet(StreamUtils.copy(fileAwareInputStream.getInputStream(),os));
-    log.info("bytes written: " + this.bytesWritten.get() + " for file "+ fileAwareInputStream.getFile());
+  final short replication=copyableFile.getPreserve().preserve(PreserveAttributes.Option.REPLICATION) ? copyableFile.getOrigin().getReplication() : fs.getDefaultReplication(stagingFile);
+  final long blockSize=copyableFile.getPreserve().preserve(PreserveAttributes.Option.BLOCK_SIZE) ? copyableFile.getOrigin().getBlockSize() : fs.getDefaultBlockSize(stagingFile);
+  Predicate<FileStatus> fileStatusAttributesFilter=new Predicate<FileStatus>(){
+    @Override public boolean apply(    FileStatus input){
+      return input.getReplication() == replication && input.getBlockSize() == blockSize;
+    }
   }
+;
+  Optional<FileStatus> persistedFile=this.recoveryHelper.findPersistedFile(this.state,fileAwareInputStream.getFile(),fileStatusAttributesFilter);
+  if (persistedFile.isPresent()) {
+    log.info(String.format("Recovering persisted file %s to %s.",persistedFile.get().getPath(),stagingFile));
+    this.fs.rename(persistedFile.get().getPath(),stagingFile);
+  }
+ else {
+    FSDataOutputStream os=this.fs.create(stagingFile,true,fs.getConf().getInt("io.file.buffer.size",4096),replication,blockSize);
+    try {
+      this.bytesWritten.addAndGet(StreamUtils.copy(fileAwareInputStream.getInputStream(),os));
+      log.info("bytes written: " + this.bytesWritten.get() + " for file "+ fileAwareInputStream.getFile());
+    }
   finally {
-    os.close();
-    fileAwareInputStream.getInputStream().close();
+      os.close();
+      fileAwareInputStream.getInputStream().close();
+    }
   }
   this.filesWritten.incrementAndGet();
-  setFilePermissions(fileAwareInputStream.getFile());
+  try {
+    setFilePermissions(fileAwareInputStream.getFile());
+  }
+ catch (  IOException ioe) {
+    log.error(String.format("Failed to set permissions for file %s. Attempting to persist it for future runs.",stagingFile));
+    this.recoveryHelper.persistFile(this.state,fileAwareInputStream.getFile(),stagingFile);
+  }
 }

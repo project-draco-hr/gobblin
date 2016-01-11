@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(RecoveryHelper.shortenPathName(new Path("/test"),10),"_test");
+  Assert.assertEquals(RecoveryHelper.shortenPathName(new Path("/relatively/long/path"),9),"_re...ath");
+}
