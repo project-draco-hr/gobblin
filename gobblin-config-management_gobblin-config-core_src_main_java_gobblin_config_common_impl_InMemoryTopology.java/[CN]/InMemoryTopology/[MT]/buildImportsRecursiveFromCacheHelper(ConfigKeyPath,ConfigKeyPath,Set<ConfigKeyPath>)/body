@@ -1,0 +1,19 @@
+{
+  for (  ConfigKeyPath p : previousVisited) {
+    if (currentConfigKey != null && currentConfigKey.equals(p)) {
+      previousVisited.add(p);
+      throw new CircularDependencyException(getCircularDependencyChain(initialConfigKey,previousVisited,currentConfigKey));
+    }
+  }
+  if (currentConfigKey.isRootPath()) {
+    return Collections.emptyList();
+  }
+  List<ConfigKeyPath> result=new ArrayList<>();
+  Set<ConfigKeyPath> currentVisited=new LinkedHashSet<ConfigKeyPath>(previousVisited);
+  currentVisited.add(currentConfigKey);
+  for (  ConfigKeyPath u : this.getOwnImportsFromCache(currentConfigKey)) {
+    addRecursiveImportsToResult(u,initialConfigKey,currentConfigKey,result,currentVisited);
+  }
+  addRecursiveImportsToResult(currentConfigKey.getParent(),initialConfigKey,currentConfigKey,result,currentVisited);
+  return dedup(result);
+}

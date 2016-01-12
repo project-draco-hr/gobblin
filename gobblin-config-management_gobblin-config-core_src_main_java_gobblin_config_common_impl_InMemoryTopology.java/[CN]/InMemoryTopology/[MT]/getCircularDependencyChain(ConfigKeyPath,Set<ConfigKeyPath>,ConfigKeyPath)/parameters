@@ -1,3 +1,3 @@
 ConfigKeyPath initialConfigKey
-List<ConfigKeyPath> chain
+Set<ConfigKeyPath> chain
 ConfigKeyPath circular
