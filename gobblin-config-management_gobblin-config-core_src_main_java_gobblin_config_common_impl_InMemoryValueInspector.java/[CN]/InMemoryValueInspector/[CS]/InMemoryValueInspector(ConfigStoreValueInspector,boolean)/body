@@ -1,0 +1,11 @@
+{
+  this.valueFallback=valueFallback;
+  if (useStrongRef) {
+    this.ownConfigMap=new HashMap<>();
+    this.recursiveConfigMap=new HashMap<>();
+  }
+ else {
+    this.ownConfigMap=new WeakHashMap<>();
+    this.recursiveConfigMap=new WeakHashMap<>();
+  }
+}

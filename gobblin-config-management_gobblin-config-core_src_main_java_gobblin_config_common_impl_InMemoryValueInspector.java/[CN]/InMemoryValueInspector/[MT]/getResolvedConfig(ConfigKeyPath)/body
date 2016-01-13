@@ -1,0 +1,11 @@
+{
+  if (this.recursiveConfigMap.containsKey(configKey)) {
+    Config result=this.recursiveConfigMap.get(configKey);
+    if (result != null) {
+      return result;
+    }
+  }
+  Config recursiveConfig=this.valueFallback.getResolvedConfig(configKey);
+  this.recursiveConfigMap.put(configKey,recursiveConfig);
+  return recursiveConfig;
+}

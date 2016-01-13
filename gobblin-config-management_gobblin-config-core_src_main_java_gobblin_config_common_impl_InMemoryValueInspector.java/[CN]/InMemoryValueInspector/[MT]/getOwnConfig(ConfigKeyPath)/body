@@ -1,0 +1,11 @@
+{
+  if (this.ownConfigMap.containsKey(configKey)) {
+    Config result=this.ownConfigMap.get(configKey);
+    if (result != null) {
+      return result;
+    }
+  }
+  Config ownConfig=this.valueFallback.getOwnConfig(configKey);
+  this.ownConfigMap.put(configKey,ownConfig);
+  return ownConfig;
+}
