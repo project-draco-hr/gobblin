@@ -1,0 +1,8 @@
+{
+  for (  Predicate<HiveRegister> pred : spec.getPredicates()) {
+    if (!pred.apply(this)) {
+      return false;
+    }
+  }
+  return true;
+}

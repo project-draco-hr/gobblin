@@ -1,0 +1,13 @@
+{
+  for (  String tableName : this.tableNames) {
+    try {
+      if (register.existsTable(this.dbName,tableName)) {
+        return false;
+      }
+    }
+ catch (    IOException e) {
+      throw Throwables.propagate(e);
+    }
+  }
+  return true;
+}

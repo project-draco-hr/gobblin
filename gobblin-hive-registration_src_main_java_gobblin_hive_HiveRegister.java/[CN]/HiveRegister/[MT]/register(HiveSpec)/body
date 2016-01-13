@@ -1,0 +1,38 @@
+{
+  ListenableFuture<Void> future=this.executor.submit(new Callable<Void>(){
+    @Override public Void call() throws Exception {
+      IMetaStoreClient client=borrowClient();
+      try {
+        if (spec instanceof HiveSpecWithPredicates && !evaluatePredicates((HiveSpecWithPredicates)spec)) {
+          log.info("Skipping " + spec + " since predicates return false");
+          return null;
+        }
+        if (spec instanceof HiveSpecWithPreActivities) {
+          for (          Activity activity : ((HiveSpecWithPreActivities)spec).getActivities()) {
+            activity.execute(HiveRegister.this);
+          }
+        }
+        String dbName=spec.getDbName();
+        String tableName=spec.getTableName();
+        createDbIfNotExists(client,dbName);
+        Optional<HivePartition> partition=spec.getPartition();
+        Table table=createOrAlterTable(client,dbName,tableName,partition,spec.getSd());
+        if (!table.getPartitionKeys().isEmpty()) {
+          addOrAlterPartition(client,table,partition.get(),spec.getPath());
+        }
+        if (spec instanceof HiveSpecWithPostActivities) {
+          for (          Activity activity : ((HiveSpecWithPostActivities)spec).getActivities()) {
+            activity.execute(HiveRegister.this);
+          }
+        }
+        return null;
+      }
+  finally {
+        HiveRegister.this.clientPool.returnObject(client);
+      }
+    }
+  }
+);
+  this.futures.add(future);
+  return future;
+}

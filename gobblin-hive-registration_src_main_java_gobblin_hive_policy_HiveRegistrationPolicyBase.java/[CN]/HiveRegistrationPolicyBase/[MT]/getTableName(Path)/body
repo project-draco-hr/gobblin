@@ -1,0 +1,3 @@
+{
+  return getDatabaseOrTableName(path,HIVE_TABLE_NAME,HIVE_TABLE_REGEX,this.tableNamePattern);
+}

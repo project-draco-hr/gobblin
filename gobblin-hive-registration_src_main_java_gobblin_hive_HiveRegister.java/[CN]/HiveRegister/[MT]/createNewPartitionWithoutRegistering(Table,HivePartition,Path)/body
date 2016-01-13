@@ -1,0 +1,9 @@
+{
+  Partition newPartition=new Partition();
+  newPartition.setDbName(table.getDbName());
+  newPartition.setTableName(table.getTableName());
+  newPartition.setValues(partition.getValues());
+  newPartition.setSd(table.getSd());
+  newPartition.getSd().setLocation(partitionLocation.toString());
+  return newPartition;
+}

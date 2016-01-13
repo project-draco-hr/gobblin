@@ -1,0 +1,4 @@
+{
+  super(props);
+  this.fs=FileSystem.get(HadoopUtils.getConfFromState(props));
+}

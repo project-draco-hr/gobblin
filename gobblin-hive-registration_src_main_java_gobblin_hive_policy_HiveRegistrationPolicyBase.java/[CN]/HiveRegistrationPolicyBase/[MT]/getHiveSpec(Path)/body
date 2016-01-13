@@ -1,0 +1,3 @@
+{
+  return new SimpleHiveSpec.Builder<>(path).withDbName(getDatabaseName(path)).withTableName(getTableName(path)).withPartition(getPartition(path)).withStorageDescriptor(getSd(path)).build();
+}

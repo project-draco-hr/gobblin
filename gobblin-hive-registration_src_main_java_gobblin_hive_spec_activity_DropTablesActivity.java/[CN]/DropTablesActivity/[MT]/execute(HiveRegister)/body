@@ -1,0 +1,6 @@
+{
+  for (  String tableName : this.tableNames) {
+    register.dropTableIfExists(this.dbName,tableName);
+  }
+  return true;
+}
