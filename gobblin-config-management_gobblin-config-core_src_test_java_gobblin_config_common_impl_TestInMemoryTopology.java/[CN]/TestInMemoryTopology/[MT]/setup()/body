@@ -31,4 +31,5 @@
   List<ConfigKeyPath> espressoImports=new ArrayList<ConfigKeyPath>();
   espressoImports.add(nertzTag2);
   when(mockConfigStore.getOwnImports(espressoTag,version)).thenReturn(espressoImports);
+  mockupConfigValues();
 }

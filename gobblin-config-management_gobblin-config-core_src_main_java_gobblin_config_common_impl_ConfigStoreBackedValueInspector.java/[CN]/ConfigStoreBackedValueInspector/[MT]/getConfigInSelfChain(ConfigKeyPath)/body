@@ -3,9 +3,9 @@
   if (configKey.isRootPath())   return result;
   ConfigKeyPath parent=configKey.getParent();
   while (!parent.isRootPath()) {
-    result.withFallback(this.getOwnConfig(parent));
+    result=result.withFallback(this.getOwnConfig(parent));
     parent=parent.getParent();
   }
-  result.withFallback(this.getOwnConfig(parent));
+  result=result.withFallback(this.getOwnConfig(parent));
   return result;
 }
