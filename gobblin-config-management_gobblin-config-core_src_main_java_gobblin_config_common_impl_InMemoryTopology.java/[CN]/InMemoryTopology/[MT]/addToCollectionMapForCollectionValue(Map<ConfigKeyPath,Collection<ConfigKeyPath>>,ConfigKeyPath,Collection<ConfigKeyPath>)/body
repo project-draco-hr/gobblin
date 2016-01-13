@@ -1,0 +1,8 @@
+{
+  if (theMap.containsKey(key)) {
+    theMap.get(key).addAll(value);
+  }
+ else {
+    theMap.put(key,value);
+  }
+}

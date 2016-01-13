@@ -1,0 +1,6 @@
+{
+  if (this.cs instanceof ConfigStoreWithResolution) {
+    return ((ConfigStoreWithResolution)this.cs).getImportsRecursively(configKey,this.version);
+  }
+  throw new UnsupportedOperationException("Internal ConfigStore does not support this operation");
+}

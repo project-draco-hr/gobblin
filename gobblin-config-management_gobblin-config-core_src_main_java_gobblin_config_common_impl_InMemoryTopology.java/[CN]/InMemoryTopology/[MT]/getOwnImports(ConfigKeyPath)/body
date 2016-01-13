@@ -1,0 +1,8 @@
+{
+  if (this.ownImportMap.containsKey(configKey)) {
+    return this.ownImportMap.get(configKey);
+  }
+  List<ConfigKeyPath> result=this.fallback.getOwnImports(configKey);
+  this.addToListMapForListValue(this.ownImportMap,configKey,result);
+  return result;
+}

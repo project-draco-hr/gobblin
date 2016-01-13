@@ -1,0 +1,11 @@
+{
+  List<ConfigKeyPath> result=new ArrayList<ConfigKeyPath>();
+  Set<ConfigKeyPath> alreadySeen=new HashSet<ConfigKeyPath>();
+  for (  ConfigKeyPath u : input) {
+    if (!alreadySeen.contains(u)) {
+      result.add(u);
+      alreadySeen.add(u);
+    }
+  }
+  return result;
+}

@@ -1,0 +1,20 @@
+{
+  ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
+  ConfigKeyPath highPriorityTag=tag.createChild("highPriorityTag");
+  ConfigKeyPath nertzHighPriorityTag=highPriorityTag.createChild("nertzHighPriorityTag");
+  ConfigKeyPath tag2=SingleLinkedListConfigKeyPath.ROOT.createChild("tag2");
+  ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStore.getCurrentVersion()).thenReturn(version);
+  addConfigStoreChildren(mockConfigStore,version,SingleLinkedListConfigKeyPath.ROOT,tag,tag2);
+  addConfigStoreChildren(mockConfigStore,version,tag,highPriorityTag);
+  addConfigStoreChildren(mockConfigStore,version,highPriorityTag,nertzHighPriorityTag);
+  addConfigStoreImports(mockConfigStore,version,nertzHighPriorityTag,tag2);
+  addConfigStoreImports(mockConfigStore,version,tag2,tag);
+  ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
+  InMemoryTopology inMemory=new InMemoryTopology(csTopology);
+  List<ConfigKeyPath> result=inMemory.getImportsRecursively(nertzHighPriorityTag);
+  Assert.assertTrue(result.size() == 2);
+  Iterator<ConfigKeyPath> it=result.iterator();
+  Assert.assertEquals(it.next(),tag2);
+  Assert.assertEquals(it.next(),tag);
+}

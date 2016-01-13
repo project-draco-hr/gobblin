@@ -1,0 +1,7 @@
+{
+  List<ConfigKeyPath> ownImports=new ArrayList<ConfigKeyPath>();
+  for (  ConfigKeyPath p : configKeyPaths) {
+    ownImports.add(p);
+  }
+  when(mockup.getOwnImports(self,version)).thenReturn(ownImports);
+}

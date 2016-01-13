@@ -1,0 +1,16 @@
+{
+  ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
+  ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStore.getCurrentVersion()).thenReturn(version);
+  addConfigStoreChildren(mockConfigStore,version,SingleLinkedListConfigKeyPath.ROOT,tag);
+  addConfigStoreImports(mockConfigStore,version,tag,tag);
+  ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
+  InMemoryTopology inMemory=new InMemoryTopology(csTopology);
+  try {
+    inMemory.getImportsRecursively(tag);
+    Assert.fail("Did not catch expected CircularDependencyException");
+  }
+ catch (  CircularDependencyException e) {
+    Assert.assertTrue(e.getMessage().indexOf("/tag") > 0);
+  }
+}
