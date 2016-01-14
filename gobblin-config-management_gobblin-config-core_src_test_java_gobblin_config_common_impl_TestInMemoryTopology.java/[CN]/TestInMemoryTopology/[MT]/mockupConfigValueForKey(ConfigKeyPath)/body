@@ -1,5 +1,4 @@
 {
-  System.out.println("mockup values for " + configKey);
   final String generalKey="generalKey";
   Map<String,String> valueMap=new HashMap<>();
   valueMap.put(generalKey,"valueOf_" + generalKey + "_"+ configKey.getOwnPathName());
