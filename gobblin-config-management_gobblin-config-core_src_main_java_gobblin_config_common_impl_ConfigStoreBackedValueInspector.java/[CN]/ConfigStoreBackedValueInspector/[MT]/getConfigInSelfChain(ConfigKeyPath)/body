@@ -1,11 +1,5 @@
 {
   Config result=this.getOwnConfig(configKey);
   if (configKey.isRootPath())   return result;
-  ConfigKeyPath parent=configKey.getParent();
-  while (!parent.isRootPath()) {
-    result=result.withFallback(this.getOwnConfig(parent));
-    parent=parent.getParent();
-  }
-  result=result.withFallback(this.getOwnConfig(parent));
-  return result;
+  return result.withFallback(getConfigInSelfChain(configKey.getParent()));
 }
