@@ -1,11 +1,13 @@
 {
-  if (this.ownConfigMap.containsKey(configKey)) {
-    Config result=this.ownConfigMap.get(configKey);
-    if (result != null) {
-      return result;
+  try {
+    return this.ownConfigCache.get(configKey,new Callable<Config>(){
+      @Override public Config call(){
+        return valueFallback.getOwnConfig(configKey);
+      }
     }
+);
   }
-  Config ownConfig=this.valueFallback.getOwnConfig(configKey);
-  this.ownConfigMap.put(configKey,ownConfig);
-  return ownConfig;
+ catch (  ExecutionException e) {
+    throw new RuntimeException("Can not getOwnConfig for " + configKey);
+  }
 }
