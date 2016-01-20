@@ -7,7 +7,7 @@
   CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset,new Path(testMethodTempPath,"testdataset"));
   CopyableFile cf=CopyableFileUtils.createTestCopyableFile(new Path(testMethodTempPath,"test.txt").toString());
   CopySource.serializeCopyableDataset(wus,metadata);
-  CopySource.serializeCopyableFiles(wus,ImmutableList.of(cf));
+  CopySource.serializeCopyableFile(wus,cf);
   Assert.assertTrue(fs.exists(new Path(testMethodTempPath,"test.txt")));
   wus.setWorkingState(WorkingState.SUCCESSFUL);
   copyDataPublisher.publishData(ImmutableList.of(wus));
