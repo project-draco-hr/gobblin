@@ -1,0 +1,13 @@
+{
+  return new Function<FSDataInputStream,FSDataInputStream>(){
+    @Nullable @Override public FSDataInputStream apply(    FSDataInputStream input){
+      try {
+        return GPGFileDecrypter.decryptFile(input,passphrase);
+      }
+ catch (      NoSuchProviderException|IOException exception) {
+        throw new RuntimeException(exception);
+      }
+    }
+  }
+;
+}

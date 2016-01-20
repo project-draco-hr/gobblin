@@ -1,0 +1,10 @@
+{
+  modifyExtensionAtDestination(fileAwareInputStream.getFile());
+  try {
+    FSDataInputStream newInputStream=inputStreamTransformation().apply(fileAwareInputStream.getInputStream());
+    return new SingleRecordIterable<>(new FileAwareInputStream(fileAwareInputStream.getFile(),newInputStream));
+  }
+ catch (  RuntimeException re) {
+    throw new DataConversionException(re);
+  }
+}

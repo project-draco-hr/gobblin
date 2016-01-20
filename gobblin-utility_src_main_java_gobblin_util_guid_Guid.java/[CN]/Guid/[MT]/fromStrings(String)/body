@@ -1,0 +1,6 @@
+{
+  if (strings == null || strings.length == 0) {
+    throw new IOException("Attempting to compute guid for an empty array.");
+  }
+  return new Guid(StringUtils.join(strings).getBytes(Charsets.UTF_8));
+}
