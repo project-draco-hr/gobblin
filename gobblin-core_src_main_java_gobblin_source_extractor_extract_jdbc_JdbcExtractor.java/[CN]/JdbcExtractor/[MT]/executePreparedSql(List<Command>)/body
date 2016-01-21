@@ -23,9 +23,10 @@ break;
 }
 this.log.info("Executing query:" + query);
 ResultSet resultSet=null;
+Connection connection=null;
 try {
 this.jdbcSource=createJdbcSource();
-Connection connection=this.jdbcSource.getConnection();
+connection=this.jdbcSource.getConnection();
 PreparedStatement statement=connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
 int parameterPosition=1;
 if (queryParameters != null && queryParameters.size() > 0) {
@@ -45,6 +46,11 @@ resultSet=statement.getResultSet();
 }
  catch (Exception e) {
 log.error("Failed to execute sql:" + query + " ;error-"+ e.getMessage(),e);
+}
+ finally {
+if (connection != null) {
+connection.close();
+}
 }
 CommandOutput<JdbcCommand,ResultSet> output=new JdbcCommandOutput();
 output.put((JdbcCommand)cmds.get(0),resultSet);
