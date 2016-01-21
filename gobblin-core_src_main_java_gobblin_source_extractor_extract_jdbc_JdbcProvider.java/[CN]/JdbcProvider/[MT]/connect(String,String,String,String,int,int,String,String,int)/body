@@ -13,7 +13,7 @@
       connectionUrl=newConnectionUrl;
     }
  catch (    IOException ioe) {
-      LOG.warn("Failed to open tunnel via proxy " + proxyHost + ":"+ proxyPort+ ", attempting direct connection to remote host",ioe);
+      throw new IllegalStateException("Failed to open tunnel to remote host " + remoteHost + ":"+ remotePort+ " via proxy "+ proxyHost+ ":"+ proxyPort,ioe);
     }
   }
   this.setDriverClassName(driver);
