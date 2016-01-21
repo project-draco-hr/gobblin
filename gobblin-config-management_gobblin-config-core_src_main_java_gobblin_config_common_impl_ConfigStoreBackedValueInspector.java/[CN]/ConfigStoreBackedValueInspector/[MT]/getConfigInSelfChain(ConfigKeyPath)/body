@@ -1,5 +1,0 @@
-{
-  Config result=this.getOwnConfig(configKey);
-  if (configKey.isRootPath())   return result;
-  return result.withFallback(getConfigInSelfChain(configKey.getParent()));
-}
