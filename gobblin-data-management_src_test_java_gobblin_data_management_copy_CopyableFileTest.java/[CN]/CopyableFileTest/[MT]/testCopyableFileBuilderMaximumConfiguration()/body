@@ -1,0 +1,29 @@
+{
+  String datasetRootDir="/data/databases/source";
+  Path datasetRoot=new Path(datasetRootDir);
+  FileSystem originFS=FileSystem.getLocal(new Configuration());
+  Path originFile=new Path(datasetRootDir,"copyableFile");
+  FileStatus origin=new FileStatus(0l,false,0,0l,System.currentTimeMillis(),originFile);
+  PreserveAttributes preserveAttributes=PreserveAttributes.fromMnemonicString("ugp");
+  String targetRoot="/data/databases/destination";
+  Path relativePath=PathUtils.relativizePath(originFile,datasetRoot);
+  Path targetPath=new Path(targetRoot,relativePath);
+  CopyConfiguration copyConfiguration=new CopyConfiguration(new Path(targetRoot),preserveAttributes,new CopyContext());
+  String fileSet="fileset";
+  byte[] checksum=new byte[1];
+  long originTimestamp=23091986l;
+  long upstreamTimestamp=23091986l;
+  OwnerAndPermission ownerAndPermission=new OwnerAndPermission("gobblin","gobblin-dev",origin.getPermission());
+  CopyableFile copyableFile=CopyableFile.builder(originFS,origin,datasetRoot,copyConfiguration).fileSet(fileSet).checksum(checksum).originTimestamp(originTimestamp).upstreamTimestamp(upstreamTimestamp).destinationOwnerAndPermission(ownerAndPermission).origin(origin).preserve(preserveAttributes).relativeDestination(relativePath).destination(targetPath).build();
+  Assert.assertEquals(copyableFile.getPreserve().toMnemonicString(),preserveAttributes.toMnemonicString());
+  Assert.assertEquals(copyableFile.getFileSet(),fileSet);
+  Assert.assertEquals(copyableFile.getOrigin(),origin);
+  Assert.assertEquals(copyableFile.getChecksum().length,1);
+  Assert.assertEquals(copyableFile.getDestination().toString(),targetPath.toString());
+  Assert.assertEquals(copyableFile.getRelativeDestination().toString(),relativePath.toString());
+  Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission().getGroup(),ownerAndPermission.getGroup());
+  Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission().getOwner(),ownerAndPermission.getOwner());
+  Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission().getFsPermission(),ownerAndPermission.getFsPermission());
+  Assert.assertEquals(copyableFile.getOriginTimestamp(),originTimestamp);
+  Assert.assertEquals(copyableFile.getUpstreamTimestamp(),upstreamTimestamp);
+}

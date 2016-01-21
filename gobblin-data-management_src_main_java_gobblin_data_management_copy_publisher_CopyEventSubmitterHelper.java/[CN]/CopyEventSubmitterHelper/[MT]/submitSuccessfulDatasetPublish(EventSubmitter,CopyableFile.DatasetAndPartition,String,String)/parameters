@@ -1,2 +1,4 @@
 EventSubmitter eventSubmitter
 CopyableFile.DatasetAndPartition datasetAndPartition
+String originTimestamp
+String upstreamTimestamp

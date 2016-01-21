@@ -15,5 +15,11 @@
   if (this.fileSet == null) {
     this.fileSet=this.rootPath.toString();
   }
-  return new CopyableFile(origin,destination,relativeDestination,destinationOwnerAndPermission,ancestorsOwnerAndPermission,null,preserve,fileSet);
+  if (this.originTimestamp == 0) {
+    this.originTimestamp=origin.getModificationTime();
+  }
+  if (this.upstreamTimestamp == 0) {
+    this.upstreamTimestamp=origin.getModificationTime();
+  }
+  return new CopyableFile(origin,destination,relativeDestination,destinationOwnerAndPermission,ancestorsOwnerAndPermission,checksum,preserve,fileSet,originTimestamp,upstreamTimestamp);
 }

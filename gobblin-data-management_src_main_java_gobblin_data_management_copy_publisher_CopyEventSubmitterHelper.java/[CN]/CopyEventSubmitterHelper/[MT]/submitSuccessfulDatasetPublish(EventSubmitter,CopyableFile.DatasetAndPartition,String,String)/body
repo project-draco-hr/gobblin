@@ -1,0 +1,3 @@
+{
+  SlaEventSubmitter.builder().eventSubmitter(eventSubmitter).eventName(DATASET_PUBLISHED_EVENT_NAME).datasetUrn(datasetAndPartition.getDataset().getDatasetRoot().toString()).partition(datasetAndPartition.getPartition()).originTimestamp(originTimestamp).upstreamTimestamp(upstreamTimestamp).additionalMetadata(DATASET_TARGET_ROOT_METADATA_NAME,datasetAndPartition.getDataset().getDatasetTargetRoot().toString()).build().submit();
+}
