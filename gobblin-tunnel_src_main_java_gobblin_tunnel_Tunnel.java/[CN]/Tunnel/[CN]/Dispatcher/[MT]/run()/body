@@ -1,6 +1,6 @@
 {
   try {
-    new AcceptHandler(server,selector,config);
+    server.register(selector,SelectionKey.OP_ACCEPT,new AcceptHandler(server,selector,config));
     while (!Thread.interrupted()) {
       selector.select();
       Set<SelectionKey> selectionKeys=selector.selectedKeys();
@@ -11,7 +11,7 @@
     }
   }
  catch (  IOException ioe) {
-    LOG.error("Unhandled exception.  Tunnel will close",ioe);
+    LOG.error("Unhandled exception. Tunnel will close",ioe);
   }
   LOG.info("Closing tunnel");
 }
