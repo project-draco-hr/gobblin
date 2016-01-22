@@ -6,4 +6,5 @@
   this.outputDir=new Path(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,numBranches,branchId)));
   this.copyableDatasetMetadata=CopyableDatasetMetadata.deserialize(state.getProp(CopySource.SERIALIZED_COPYABLE_DATASET));
   this.recoveryHelper=new RecoveryHelper(this.fs,state);
+  this.actualProcessedCopyableFile=Optional.absent();
 }

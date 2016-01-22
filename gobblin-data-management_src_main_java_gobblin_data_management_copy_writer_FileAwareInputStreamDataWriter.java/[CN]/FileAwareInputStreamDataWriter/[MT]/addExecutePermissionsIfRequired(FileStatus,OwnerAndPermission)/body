@@ -5,20 +5,5 @@
   if (!file.isDir()) {
     return ownerAndPermission;
   }
-  FsAction newOwnerAction=ownerAndPermission.getFsPermission().getUserAction();
-switch (ownerAndPermission.getFsPermission().getUserAction()) {
-case READ:
-    newOwnerAction=FsAction.READ_EXECUTE;
-  break;
-case WRITE:
-newOwnerAction=FsAction.WRITE_EXECUTE;
-break;
-case READ_WRITE:
-newOwnerAction=FsAction.ALL;
-break;
-default :
-break;
-}
-FsPermission withExecute=new FsPermission(newOwnerAction,ownerAndPermission.getFsPermission().getGroupAction(),ownerAndPermission.getFsPermission().getOtherAction());
-return new OwnerAndPermission(ownerAndPermission.getOwner(),ownerAndPermission.getGroup(),withExecute);
+  return new OwnerAndPermission(ownerAndPermission.getOwner(),ownerAndPermission.getGroup(),addExecutePermissionToOwner(ownerAndPermission.getFsPermission()));
 }

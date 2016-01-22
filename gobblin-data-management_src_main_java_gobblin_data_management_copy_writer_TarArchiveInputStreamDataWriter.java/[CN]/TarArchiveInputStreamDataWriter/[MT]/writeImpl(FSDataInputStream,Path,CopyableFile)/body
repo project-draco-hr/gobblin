@@ -1,0 +1,34 @@
+{
+  this.closer.register(inputStream);
+  TarArchiveInputStream tarIn=new TarArchiveInputStream(inputStream);
+  final ReadableByteChannel inputChannel=Channels.newChannel(tarIn);
+  TarArchiveEntry tarEntry;
+  tarEntry=tarIn.getNextTarEntry();
+  String tarEntryRootName=StringUtils.remove(tarEntry.getName(),Path.SEPARATOR);
+  log.info("Unarchiving at " + writeAt);
+  try {
+    while ((tarEntry=tarIn.getNextTarEntry()) != null) {
+      String newTarEntryPath=tarEntry.getName().replace(tarEntryRootName,writeAt.getName());
+      Path tarEntryStagingPath=new Path(writeAt.getParent(),newTarEntryPath);
+      if (tarEntry.isDirectory() && !this.fs.exists(tarEntryStagingPath)) {
+        this.fs.mkdirs(tarEntryStagingPath);
+      }
+ else       if (!tarEntry.isDirectory()) {
+        FSDataOutputStream out=this.fs.create(tarEntryStagingPath,true);
+        final WritableByteChannel outputChannel=Channels.newChannel(out);
+        try {
+          this.bytesWritten.addAndGet(StreamUtils.copy(inputChannel,outputChannel));
+        }
+  finally {
+          out.close();
+          outputChannel.close();
+        }
+      }
+    }
+  }
+  finally {
+    tarIn.close();
+    inputChannel.close();
+    inputStream.close();
+  }
+}

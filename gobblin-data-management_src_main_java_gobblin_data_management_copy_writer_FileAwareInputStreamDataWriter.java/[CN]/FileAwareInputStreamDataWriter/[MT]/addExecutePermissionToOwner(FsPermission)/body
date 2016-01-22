@@ -1,0 +1,4 @@
+{
+  FsAction newOwnerAction=fsPermission.getUserAction().or(FsAction.EXECUTE);
+  return new FsPermission(newOwnerAction,fsPermission.getGroupAction(),fsPermission.getOtherAction());
+}
