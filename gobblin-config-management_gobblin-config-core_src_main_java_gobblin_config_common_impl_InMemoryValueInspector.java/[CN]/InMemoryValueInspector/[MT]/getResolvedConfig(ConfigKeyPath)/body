@@ -1,0 +1,13 @@
+{
+  try {
+    return this.recursiveConfigCache.get(configKey,new Callable<Config>(){
+      @Override public Config call(){
+        return valueFallback.getResolvedConfig(configKey);
+      }
+    }
+);
+  }
+ catch (  ExecutionException e) {
+    throw new RuntimeException("Can not getOwnConfig for " + configKey);
+  }
+}

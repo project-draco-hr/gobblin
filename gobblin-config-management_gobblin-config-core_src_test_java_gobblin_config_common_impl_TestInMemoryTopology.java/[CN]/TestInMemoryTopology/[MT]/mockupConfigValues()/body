@@ -1,0 +1,14 @@
+{
+  Map<String,String> rootMap=new HashMap<>();
+  rootMap.put("keyInRoot","valueInRoot");
+  when(mockConfigStore.getOwnConfig(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(ConfigFactory.parseMap(rootMap));
+  Collection<ConfigKeyPath> currentLevel=mockConfigStore.getChildren(SingleLinkedListConfigKeyPath.ROOT,version);
+  while (!currentLevel.isEmpty()) {
+    Collection<ConfigKeyPath> nextLevel=new ArrayList<ConfigKeyPath>();
+    for (    ConfigKeyPath p : currentLevel) {
+      mockupConfigValueForKey(p);
+      nextLevel.addAll(mockConfigStore.getChildren(p,version));
+    }
+    currentLevel=nextLevel;
+  }
+}
