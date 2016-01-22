@@ -6,5 +6,6 @@
     }
   }
 );
+  thread.setDaemon(true);
   thread.start();
 }
