@@ -1,5 +1,5 @@
 {
-  if (!this.encryptor.isPresent()) {
+  if (password == null || !this.encryptor.isPresent()) {
     return password;
   }
   Matcher matcher=PASSWORD_PATTERN.matcher(password);
