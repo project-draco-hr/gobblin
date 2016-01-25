@@ -1,0 +1,6 @@
+{
+  if (byteArrays == null || byteArrays.length == 0) {
+    return this;
+  }
+  return fromByteArrays(ArrayUtils.add(byteArrays,this.sha));
+}

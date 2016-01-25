@@ -1,0 +1,3 @@
+ConfigKeyPath initialConfigKey
+ConfigKeyPath currentConfigKey
+Set<ConfigKeyPath> previousVisited

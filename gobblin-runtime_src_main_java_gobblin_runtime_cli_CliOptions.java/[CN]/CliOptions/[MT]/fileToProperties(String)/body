@@ -1,0 +1,6 @@
+{
+  Path filePath=new Path(fileName);
+  PropertiesConfiguration propsConfig=new PropertiesConfiguration();
+  propsConfig.load(filePath.getFileSystem(new Configuration()).open(filePath));
+  return ConfigurationConverter.getProperties(propsConfig);
+}

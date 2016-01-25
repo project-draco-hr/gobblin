@@ -1,0 +1,22 @@
+{
+  ConfigKeyPath tag=SingleLinkedListConfigKeyPath.ROOT.createChild("tag");
+  ConfigKeyPath highPriorityTag=tag.createChild("highPriorityTag");
+  ConfigKeyPath nertzHighPriorityTag=highPriorityTag.createChild("nertzHighPriorityTag");
+  ConfigKeyPath tag2=SingleLinkedListConfigKeyPath.ROOT.createChild("tag2");
+  ConfigStore mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStore.getCurrentVersion()).thenReturn(version);
+  addConfigStoreChildren(mockConfigStore,version,SingleLinkedListConfigKeyPath.ROOT,tag,tag2);
+  addConfigStoreChildren(mockConfigStore,version,tag,highPriorityTag);
+  addConfigStoreChildren(mockConfigStore,version,highPriorityTag,nertzHighPriorityTag);
+  addConfigStoreImports(mockConfigStore,version,tag,tag2);
+  addConfigStoreImports(mockConfigStore,version,tag2,nertzHighPriorityTag);
+  ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(mockConfigStore,this.version);
+  InMemoryTopology inMemory=new InMemoryTopology(csTopology);
+  try {
+    inMemory.getImportsRecursively(tag);
+    Assert.fail("Did not catch expected CircularDependencyException");
+  }
+ catch (  CircularDependencyException e) {
+    Assert.assertTrue(e.getMessage().indexOf("/tag/highPriorityTag/nertzHighPriorityTag") > 0 && e.getMessage().indexOf("/tag/highPriorityTag ") > 0 && e.getMessage().indexOf("/tag ") > 0 && e.getMessage().indexOf("/tag2 ") > 0);
+  }
+}

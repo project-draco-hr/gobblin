@@ -1,0 +1,35 @@
+{
+  mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStore.getCurrentVersion()).thenReturn(version);
+  List<ConfigKeyPath> emptyList=Collections.emptyList();
+  List<ConfigKeyPath> rootChildren=new ArrayList<ConfigKeyPath>();
+  rootChildren.add(data);
+  rootChildren.add(tag);
+  rootChildren.add(tag2);
+  when(mockConfigStore.getChildren(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(rootChildren);
+  List<ConfigKeyPath> dataChildren=new ArrayList<ConfigKeyPath>();
+  dataChildren.add(databases);
+  when(mockConfigStore.getChildren(data,version)).thenReturn(dataChildren);
+  List<ConfigKeyPath> databasesChildren=new ArrayList<ConfigKeyPath>();
+  databasesChildren.add(identity);
+  when(mockConfigStore.getChildren(databases,version)).thenReturn(databasesChildren);
+  when(mockConfigStore.getChildren(identity,version)).thenReturn(emptyList);
+  List<ConfigKeyPath> tagChildren=new ArrayList<ConfigKeyPath>();
+  tagChildren.add(highPriorityTag);
+  tagChildren.add(espressoTag);
+  when(mockConfigStore.getChildren(tag,version)).thenReturn(tagChildren);
+  when(mockConfigStore.getChildren(highPriorityTag,version)).thenReturn(emptyList);
+  when(mockConfigStore.getChildren(espressoTag,version)).thenReturn(emptyList);
+  List<ConfigKeyPath> tag2Children=new ArrayList<ConfigKeyPath>();
+  tag2Children.add(nertzTag2);
+  when(mockConfigStore.getChildren(tag2,version)).thenReturn(tag2Children);
+  when(mockConfigStore.getChildren(nertzTag2,version)).thenReturn(emptyList);
+  List<ConfigKeyPath> identityImports=new ArrayList<ConfigKeyPath>();
+  identityImports.add(espressoTag);
+  identityImports.add(highPriorityTag);
+  when(mockConfigStore.getOwnImports(identity,version)).thenReturn(identityImports);
+  List<ConfigKeyPath> espressoImports=new ArrayList<ConfigKeyPath>();
+  espressoImports.add(nertzTag2);
+  when(mockConfigStore.getOwnImports(espressoTag,version)).thenReturn(espressoImports);
+  mockupConfigValues();
+}

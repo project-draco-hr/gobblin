@@ -1,0 +1,9 @@
+{
+  final Class<? extends Metric> metricClass=metric.getClass();
+  return Iterables.any(this.allowedMetrics,new Predicate<Metrics>(){
+    @Override public boolean apply(    @Nullable Metrics input){
+      return input != null && input.getMetricClass().isAssignableFrom(metricClass);
+    }
+  }
+);
+}

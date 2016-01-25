@@ -1,0 +1,32 @@
+{
+  Collection<ConfigKeyPath> currentLevel=this.getChildren(SingleLinkedListConfigKeyPath.ROOT);
+  List<ConfigKeyPath> rootImports=this.getOwnImports(SingleLinkedListConfigKeyPath.ROOT);
+  Preconditions.checkArgument(rootImports == null || rootImports.size() == 0,"Root can not import other nodes, otherwise circular dependency will happen");
+  while (!currentLevel.isEmpty()) {
+    Collection<ConfigKeyPath> nextLevel=new ArrayList<ConfigKeyPath>();
+    for (    ConfigKeyPath configKeyPath : currentLevel) {
+      List<ConfigKeyPath> ownImports=this.getOwnImports(configKeyPath);
+      for (      ConfigKeyPath p : ownImports) {
+        this.addToCollectionMapForSingleValue(this.ownImportedByMap,p,configKeyPath);
+      }
+      Collection<ConfigKeyPath> tmp=this.getChildren(configKeyPath);
+      nextLevel.addAll(tmp);
+    }
+    currentLevel=nextLevel;
+  }
+  for (  ConfigKeyPath configKey : this.ownImportMap.keySet()) {
+    List<ConfigKeyPath> recursiveImports=null;
+    if (this.recursiveImportMap.containsKey(configKey)) {
+      recursiveImports=this.recursiveImportMap.get(configKey);
+    }
+ else {
+      recursiveImports=this.buildImportsRecursiveFromCache(configKey);
+      this.addToListMapForListValue(recursiveImportMap,configKey,recursiveImports);
+    }
+    if (recursiveImports != null) {
+      for (      ConfigKeyPath p : recursiveImports) {
+        this.addToCollectionMapForSingleValue(this.recursiveImportedByMap,p,configKey);
+      }
+    }
+  }
+}

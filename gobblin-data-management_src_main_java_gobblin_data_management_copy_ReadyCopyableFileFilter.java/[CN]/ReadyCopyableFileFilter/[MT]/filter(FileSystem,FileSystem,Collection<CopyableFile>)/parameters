@@ -1,0 +1,3 @@
+FileSystem sourceFs
+FileSystem targetFs
+Collection<CopyableFile> copyableFiles

@@ -1,0 +1,3 @@
+{
+  Assert.assertEquals(new Guid(new byte[0]).sha.length,Guid.GUID_LENGTH);
+}

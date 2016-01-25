@@ -1,0 +1,12 @@
+{
+  if (config.hasPath(METRIC_FILTER_NAME_REGEX) && config.hasPath(METRIC_FILTER_TYPE_LIST)) {
+    return MetricFilters.and(new MetricNameRegexFilter(config.getString(METRIC_FILTER_NAME_REGEX)),new MetricTypeFilter(config.getString(METRIC_FILTER_TYPE_LIST)));
+  }
+  if (config.hasPath(METRIC_FILTER_NAME_REGEX)) {
+    return new MetricNameRegexFilter(config.getString(METRIC_FILTER_NAME_REGEX));
+  }
+  if (config.hasPath(METRIC_FILTER_TYPE_LIST)) {
+    return new MetricTypeFilter(config.getString(METRIC_FILTER_TYPE_LIST));
+  }
+  return MetricFilter.ALL;
+}

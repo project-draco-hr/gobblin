@@ -5,11 +5,20 @@
   log.info(String.format("Publishing fileSet from %s to %s",datasetWriterOutputPath,metadata.getDatasetTargetRoot()));
   HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,metadata.getDatasetTargetRoot());
   fs.delete(datasetWriterOutputPath,true);
+  long datasetOriginTimestamp=Long.MAX_VALUE;
+  long datasetUpstreamTimestamp=Long.MAX_VALUE;
   for (  WorkUnitState wus : datasetWorkUnitStates) {
     if (wus.getWorkingState() == WorkingState.SUCCESSFUL) {
       wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
       CopyEventSubmitterHelper.submitSuccessfulFilePublish(eventSubmitter,wus);
     }
+    CopyableFile copyableFile=CopySource.deserializeCopyableFile(wus);
+    if (datasetOriginTimestamp > copyableFile.getOriginTimestamp()) {
+      datasetOriginTimestamp=copyableFile.getOriginTimestamp();
+    }
+    if (datasetUpstreamTimestamp > copyableFile.getUpstreamTimestamp()) {
+      datasetUpstreamTimestamp=copyableFile.getUpstreamTimestamp();
+    }
   }
-  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(eventSubmitter,datasetAndPartition);
+  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(eventSubmitter,datasetAndPartition,Long.toString(datasetOriginTimestamp),Long.toString(datasetUpstreamTimestamp));
 }

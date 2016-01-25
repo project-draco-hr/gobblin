@@ -1,0 +1,7 @@
+{
+  List<ConfigKeyPath> children=new ArrayList<ConfigKeyPath>();
+  for (  ConfigKeyPath p : configKeyPaths) {
+    children.add(p);
+  }
+  when(mockup.getChildren(parent,version)).thenReturn(children);
+}

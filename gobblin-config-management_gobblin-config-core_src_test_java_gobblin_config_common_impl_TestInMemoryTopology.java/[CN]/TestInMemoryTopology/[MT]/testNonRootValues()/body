@@ -1,0 +1,10 @@
+{
+  ConfigStoreBackedTopology csTopology=new ConfigStoreBackedTopology(this.mockConfigStore,this.version);
+  InMemoryTopology inMemory=new InMemoryTopology(csTopology);
+  ConfigStoreBackedValueInspector rawValueInspector=new ConfigStoreBackedValueInspector(this.mockConfigStore,this.version,inMemory);
+  InMemoryValueInspector inMemoryStrongRef=new InMemoryValueInspector(rawValueInspector,true);
+  InMemoryValueInspector inMemoryWeakRef=new InMemoryValueInspector(rawValueInspector,false);
+  testValues(rawValueInspector);
+  testValues(inMemoryStrongRef);
+  testValues(inMemoryWeakRef);
+}

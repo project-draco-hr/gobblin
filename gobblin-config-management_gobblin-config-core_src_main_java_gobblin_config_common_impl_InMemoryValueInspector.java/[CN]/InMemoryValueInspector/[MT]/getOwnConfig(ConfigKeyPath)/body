@@ -1,0 +1,13 @@
+{
+  try {
+    return this.ownConfigCache.get(configKey,new Callable<Config>(){
+      @Override public Config call(){
+        return valueFallback.getOwnConfig(configKey);
+      }
+    }
+);
+  }
+ catch (  ExecutionException e) {
+    throw new RuntimeException("Can not getOwnConfig for " + configKey);
+  }
+}

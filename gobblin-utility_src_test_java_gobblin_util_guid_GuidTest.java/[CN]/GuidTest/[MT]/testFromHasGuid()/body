@@ -1,0 +1,8 @@
+{
+  Random random=new Random();
+  byte[] b=new byte[10];
+  random.nextBytes(b);
+  Guid guid=new Guid(b);
+  HasGuid hasGuid=new Guid.SimpleHasGuid(guid);
+  Assert.assertEquals(hasGuid.guid(),guid);
+}

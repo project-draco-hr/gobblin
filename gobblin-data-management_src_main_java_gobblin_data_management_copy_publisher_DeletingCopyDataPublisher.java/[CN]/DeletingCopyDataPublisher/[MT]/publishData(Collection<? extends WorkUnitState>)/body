@@ -6,11 +6,11 @@
         deleteFilesOnSource(state);
       }
  catch (      Throwable t) {
-        log.warn(String.format("Failed to delete one or more files on source in %s",state.getProp(CopySource.SERIALIZED_COPYABLE_FILES)),t);
+        log.warn(String.format("Failed to delete one or more files on source in %s",state.getProp(CopySource.SERIALIZED_COPYABLE_FILE)),t);
       }
     }
  else {
-      log.info(String.format("Not deleting files %s on source fileSystem as the workunit state is %s.",state.getProp(CopySource.SERIALIZED_COPYABLE_FILES),state.getWorkingState()));
+      log.info(String.format("Not deleting files %s on source fileSystem as the workunit state is %s.",state.getProp(CopySource.SERIALIZED_COPYABLE_FILE),state.getWorkingState()));
     }
   }
 }

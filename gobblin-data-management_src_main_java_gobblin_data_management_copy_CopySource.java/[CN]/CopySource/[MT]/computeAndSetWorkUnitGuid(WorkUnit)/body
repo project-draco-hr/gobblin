@@ -1,0 +1,4 @@
+{
+  Guid guid=Guid.fromStrings(workUnit.contains(ConfigurationKeys.CONVERTER_CLASSES_KEY) ? workUnit.getProp(ConfigurationKeys.CONVERTER_CLASSES_KEY) : "");
+  setWorkUnitGuid(workUnit,guid.append(deserializeCopyableFile(workUnit)));
+}

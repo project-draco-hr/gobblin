@@ -1,0 +1,4 @@
+ConfigStore mockup
+String version
+ConfigKeyPath self
+ConfigKeyPath configKeyPaths

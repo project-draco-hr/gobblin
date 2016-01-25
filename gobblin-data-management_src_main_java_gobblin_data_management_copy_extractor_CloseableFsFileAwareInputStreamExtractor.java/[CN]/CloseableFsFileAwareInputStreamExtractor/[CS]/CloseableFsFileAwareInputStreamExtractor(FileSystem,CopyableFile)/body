@@ -1,0 +1,4 @@
+{
+  super(fs,file);
+  closer.register(fs);
+}

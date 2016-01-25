@@ -1,0 +1,4 @@
+{
+  this.regex=Pattern.compile(regex);
+  this.matcher=this.regex.matcher("");
+}

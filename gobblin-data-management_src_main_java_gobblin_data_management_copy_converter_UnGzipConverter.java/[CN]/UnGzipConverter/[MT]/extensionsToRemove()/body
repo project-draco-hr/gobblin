@@ -1,0 +1,3 @@
+{
+  return Lists.newArrayList(TAR_EXTENSION,GZ_EXTENSION,TGZ_EXTENSION);
+}

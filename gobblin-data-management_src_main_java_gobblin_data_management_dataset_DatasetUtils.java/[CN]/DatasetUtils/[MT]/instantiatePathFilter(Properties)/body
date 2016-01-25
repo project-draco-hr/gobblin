@@ -1,6 +1,6 @@
 {
   if (!props.containsKey(PATH_FILTER_KEY)) {
-    return ACCEPT_ALL_FILTER;
+    return ACCEPT_ALL_PATH_FILTER;
   }
   try {
     Class<?> pathFilterClass=Class.forName(props.getProperty(PATH_FILTER_KEY));

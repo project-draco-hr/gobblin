@@ -1,0 +1,13 @@
+{
+  return new Function<FSDataInputStream,FSDataInputStream>(){
+    @Nullable @Override public FSDataInputStream apply(    FSDataInputStream input){
+      try {
+        return StreamUtils.convertStream(new GZIPInputStream(input));
+      }
+ catch (      IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+    }
+  }
+;
+}

@@ -1,0 +1,24 @@
+{
+  String datasetRootDir="/data/databases/source";
+  Path datasetRoot=new Path(datasetRootDir);
+  FileSystem originFS=FileSystem.getLocal(new Configuration());
+  Path originFile=new Path(datasetRootDir,"copyableFile");
+  FileStatus origin=new FileStatus(0l,false,0,0l,System.currentTimeMillis(),originFile);
+  PreserveAttributes preserveAttributes=PreserveAttributes.fromMnemonicString("ugp");
+  String targetRoot="/data/databases/destination";
+  Path relativePath=PathUtils.relativizePath(originFile,datasetRoot);
+  Path targetPath=new Path(targetRoot,relativePath);
+  CopyConfiguration copyConfiguration=new CopyConfiguration(new Path(targetRoot),preserveAttributes,new CopyContext());
+  CopyableFile copyableFile=CopyableFile.builder(originFS,origin,datasetRoot,copyConfiguration).build();
+  Assert.assertEquals(copyableFile.getPreserve().toMnemonicString(),preserveAttributes.toMnemonicString());
+  Assert.assertEquals(copyableFile.getFileSet(),datasetRootDir);
+  Assert.assertEquals(copyableFile.getOrigin(),origin);
+  Assert.assertEquals(copyableFile.getChecksum().length,0);
+  Assert.assertEquals(copyableFile.getDestination().toString(),targetPath.toString());
+  Assert.assertEquals(copyableFile.getRelativeDestination().toString(),relativePath.toString());
+  Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission().getGroup(),origin.getGroup());
+  Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission().getOwner(),origin.getOwner());
+  Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission().getFsPermission(),origin.getPermission());
+  Assert.assertEquals(copyableFile.getOriginTimestamp(),origin.getModificationTime());
+  Assert.assertEquals(copyableFile.getUpstreamTimestamp(),origin.getModificationTime());
+}

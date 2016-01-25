@@ -1,0 +1,14 @@
+{
+  if (this.recursiveImportMap.containsKey(configKey)) {
+    return this.recursiveImportMap.get(configKey);
+  }
+  try {
+    List<ConfigKeyPath> result=this.fallback.getImportsRecursively(configKey);
+    this.addToListMapForListValue(this.recursiveImportMap,configKey,result);
+    return result;
+  }
+ catch (  UnsupportedOperationException uoe) {
+    loadRawTopologyFromFallBack();
+    return this.recursiveImportMap.get(configKey);
+  }
+}

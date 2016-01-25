@@ -4,5 +4,5 @@
   for (  FileStatus file : files) {
     copyableFiles.add(CopyableFile.builder(this.fs,file,this.rootPath,configuration).build());
   }
-  return copyableFiles;
+  return copyableFileFilter.filter(this.fs,targetFs,copyableFiles);
 }

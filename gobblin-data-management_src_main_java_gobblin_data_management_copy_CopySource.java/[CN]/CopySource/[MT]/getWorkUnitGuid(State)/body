@@ -1,0 +1,8 @@
+{
+  if (state.contains(WORK_UNIT_GUID)) {
+    return Optional.of(Guid.deserialize(state.getProp(WORK_UNIT_GUID)));
+  }
+ else {
+    return Optional.absent();
+  }
+}
