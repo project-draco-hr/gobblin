@@ -1,0 +1,17 @@
+{
+  String datasetName="dataset-test-get-children";
+  String childDatasetName="childDataset";
+  Path datasetPath=new Path(CONFIG_DIR_PATH,datasetName);
+  try {
+    this.fs.mkdirs(new Path(datasetPath,childDatasetName));
+    ConfigKeyPath datasetConfigKey=SingleLinkedListConfigKeyPath.ROOT.createChild(datasetName);
+    Collection<ConfigKeyPath> children=this.simpleHDFSConfigStore.getChildren(datasetConfigKey,VERSION);
+    Assert.assertEquals(children.size(),1);
+    Assert.assertEquals(children.iterator().next().getOwnPathName(),childDatasetName);
+  }
+  finally {
+    if (this.fs.exists(datasetPath)) {
+      this.fs.delete(datasetPath,true);
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  Path configStoreDir=new Path(SimpleHDFSConfigStore.CONFIG_STORE_NAME);
+  FileSystem fs=null;
+  try {
+    fs=FileSystem.getLocal(new Configuration());
+    fs.mkdirs(configStoreDir);
+    SimpleLocalHDFSConfigStoreFactory simpleLocalHDFSConfigStoreFactory=new SimpleLocalHDFSConfigStoreFactory();
+    URI configKey=new URI(simpleLocalHDFSConfigStoreFactory.getScheme(),"","","","");
+    SimpleHDFSConfigStore simpleHDFSConfigStore=simpleLocalHDFSConfigStoreFactory.createConfigStore(configKey);
+    Assert.assertEquals(simpleHDFSConfigStore.getStoreURI().getScheme(),simpleLocalHDFSConfigStoreFactory.getScheme());
+    Assert.assertNull(simpleHDFSConfigStore.getStoreURI().getAuthority());
+    Assert.assertEquals(simpleHDFSConfigStore.getStoreURI().getPath(),System.getProperty("user.dir"));
+  }
+  finally {
+    if (fs != null && fs.exists(configStoreDir)) {
+      fs.delete(configStoreDir,true);
+    }
+  }
+}

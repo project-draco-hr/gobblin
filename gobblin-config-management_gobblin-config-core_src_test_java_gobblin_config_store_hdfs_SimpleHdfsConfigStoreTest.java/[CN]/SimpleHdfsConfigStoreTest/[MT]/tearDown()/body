@@ -1,0 +1,5 @@
+{
+  if (this.fs.exists(new Path(CONFIG_DIR_NAME))) {
+    this.fs.delete(new Path(CONFIG_DIR_NAME),true);
+  }
+}

@@ -1,0 +1,20 @@
+{
+  Preconditions.checkNotNull(configKey,"configKey cannot be null!");
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(version),"version cannot be null or empty!");
+  List<ConfigKeyPath> children=new ArrayList<>();
+  Path datasetDir=getDatasetDirForKey(configKey,version);
+  try {
+    if (!this.fs.exists(datasetDir)) {
+      return children;
+    }
+    for (    FileStatus fileStatus : this.fs.listStatus(datasetDir)) {
+      if (fileStatus.isDir()) {
+        children.add(configKey.createChild(fileStatus.getPath().getName()));
+      }
+    }
+    return children;
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(String.format("Error while getting children for configKey: \"%s\"",configKey),e);
+  }
+}
