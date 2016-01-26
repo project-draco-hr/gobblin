@@ -2,6 +2,7 @@
   try {
     runQuietly();
   }
- catch (  Exception ignored) {
+ catch (  Exception e) {
+    LOG.info("Exception in EasyThread#run",e);
   }
 }
