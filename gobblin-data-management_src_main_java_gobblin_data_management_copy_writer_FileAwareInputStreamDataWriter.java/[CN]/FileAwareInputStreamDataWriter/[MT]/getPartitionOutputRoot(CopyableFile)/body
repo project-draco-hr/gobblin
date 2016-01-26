@@ -1,0 +1,4 @@
+{
+  CopyableFile.DatasetAndPartition datasetAndPartition=file.getDatasetAndPartition(this.copyableDatasetMetadata);
+  return new Path(this.outputDir,datasetAndPartition.identifier());
+}
