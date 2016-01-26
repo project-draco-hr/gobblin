@@ -1,20 +1,6 @@
 {
-  this.closer=Closer.create();
   this.args=args;
   this.options=new Options();
   this.options.addOption("H",HOST_OPT,true,"Specify host (default:" + DEFAULT_REST_SERVER_HOST + ")");
   this.options.addOption("P",PORT_OPT,true,"Specify port (default:" + DEFAULT_REST_SERVER_PORT + ")");
-  OptionGroup actionGroup=new OptionGroup();
-  actionGroup.addOption(new Option("h",HELP_OPT,false,"Shows the help message."));
-  actionGroup.addOption(new Option("d",DETAILS_OPT,false,"Show details about a job/task."));
-  actionGroup.addOption(new Option("l",LIST_OPT,false,"List jobs/tasks."));
-  actionGroup.addOption(new Option("p",PROPS_OPT,false,"Fetch properties with the query."));
-  actionGroup.setRequired(true);
-  this.options.addOptionGroup(actionGroup);
-  OptionGroup idGroup=new OptionGroup();
-  idGroup.addOption(new Option("j",NAME_OPT,true,"Find job(s) matching given job name."));
-  idGroup.addOption(new Option("i",ID_OPT,true,"Find the job/task with the given id."));
-  this.options.addOptionGroup(idGroup);
-  this.options.addOption("n",true,"Limit the number of results returned. (default:" + resultsLimit + ")");
-  this.options.addOption("r",RECENT_OPT,false,"List the most recent jobs (instead of a list of unique jobs)");
 }

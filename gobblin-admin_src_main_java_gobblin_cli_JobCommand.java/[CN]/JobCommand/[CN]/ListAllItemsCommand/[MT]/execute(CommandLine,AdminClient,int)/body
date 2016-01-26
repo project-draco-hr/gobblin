@@ -1,0 +1,16 @@
+{
+  try {
+    if (parsedOpts.hasOption(NAME_OPT)) {
+      JobInfoPrintUtils.printJobRuns(adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT),resultsLimit));
+    }
+ else     if (parsedOpts.hasOption(RECENT_OPT)) {
+      JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.RECENT,resultsLimit),resultsLimit);
+    }
+ else {
+      JobInfoPrintUtils.printAllJobs(adminClient.queryAllJobs(QueryListType.DISTINCT,resultsLimit),resultsLimit);
+    }
+  }
+ catch (  RemoteInvocationException e) {
+    throw new CommandException("Error talking to adminServer: " + e.getMessage());
+  }
+}

@@ -1,0 +1,3 @@
+CommandLine parsedOpts
+AdminClient adminClient
+int resultsLimit

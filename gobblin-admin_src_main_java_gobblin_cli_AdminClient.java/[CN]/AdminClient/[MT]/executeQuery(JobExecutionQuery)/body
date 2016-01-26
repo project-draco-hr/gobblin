@@ -1,0 +1,9 @@
+{
+  JobExecutionQueryResult result=this.client.get(query);
+  if (result != null && result.hasJobExecutions()) {
+    return result.getJobExecutions();
+  }
+ else {
+    return Collections.emptyList();
+  }
+}

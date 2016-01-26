@@ -1,9 +1,0 @@
-{
-  if (jobExecutionInfos == null) {
-    System.err.println("Job not found.");
-    System.exit(1);
-  }
- else {
-    printJobProperties(jobExecutionInfos.get(0));
-  }
-}
