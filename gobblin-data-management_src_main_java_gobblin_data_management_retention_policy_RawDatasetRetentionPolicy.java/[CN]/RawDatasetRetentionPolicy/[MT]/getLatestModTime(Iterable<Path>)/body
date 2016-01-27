@@ -1,0 +1,7 @@
+{
+  long latestModTime=Long.MIN_VALUE;
+  for (  FileStatus status : FileListUtils.listMostNestedPathRecursively(this.fs,paths)) {
+    latestModTime=Math.max(latestModTime,status.getModificationTime());
+  }
+  return latestModTime == Long.MIN_VALUE ? Optional.<Long>absent() : Optional.of(latestModTime);
+}
