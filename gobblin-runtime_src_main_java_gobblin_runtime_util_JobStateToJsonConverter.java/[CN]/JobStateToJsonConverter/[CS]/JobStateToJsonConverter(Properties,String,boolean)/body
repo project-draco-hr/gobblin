@@ -1,0 +1,11 @@
+{
+  Configuration conf=new Configuration();
+  for (  String key : props.stringPropertyNames()) {
+    conf.set(key,props.getProperty(key));
+  }
+  Path storePath=new Path(storeUrl);
+  FileSystem fs=storePath.getFileSystem(conf);
+  String storeRootDir=storePath.toUri().getPath();
+  this.jobStateStore=new FsDatasetStateStore(fs,storeRootDir);
+  this.keepConfig=keepConfig;
+}
