@@ -1,0 +1,7 @@
+{
+  Set<String> set=value == null ? Sets.<String>newHashSet() : Sets.newHashSet(Splitter.on(",").trimResults().omitEmptyStrings().splitToList(value));
+  if (contains(key)) {
+    set.addAll(getPropAsSet(key));
+  }
+  setProp(key,Joiner.on(",").join(set));
+}
