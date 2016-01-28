@@ -1,4 +1,3 @@
 {
-  setAncestorPermissions(file);
   setRecursivePermission(getStagingFilePath(file),file.getDestinationOwnerAndPermission());
 }

@@ -7,8 +7,9 @@
   state.setProp(ConfigurationKeys.WRITER_FILE_PATH,"writer_file_path_" + RandomStringUtils.randomAlphabetic(5));
   CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(new TestCopyableDataset(new Path("/source")),new Path("/"));
   CopySource.serializeCopyableDataset(state,metadata);
-  TarArchiveInputStreamDataWriter dataWriter=new TarArchiveInputStreamDataWriter(state,1,0);
   FileAwareInputStream fileAwareInputStream=getCompressedInputStream(filePath,newFileName);
+  CopySource.serializeCopyableFile(state,fileAwareInputStream.getFile());
+  TarArchiveInputStreamDataWriter dataWriter=new TarArchiveInputStreamDataWriter(state,1,0);
   dataWriter.write(fileAwareInputStream);
   dataWriter.commit();
   Path unArchivedFilePath=new Path(fileAwareInputStream.getFile().getDestination(),fileNameInArchive);

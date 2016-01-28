@@ -1,0 +1,9 @@
+{
+  try {
+    @SuppressWarnings("unchecked") Class<? extends RawDatasetRetentionPolicy> clazz=(Class<? extends RawDatasetRetentionPolicy>)Class.forName(DATASET_RETENTION_POLICY_CLASS);
+    return (RawDatasetRetentionPolicy)ConstructorUtils.invokeConstructor(clazz,fs,getVersionFinder().versionClass(),this.embeddedDataset.getRetentionPolicy());
+  }
+ catch (  ReflectiveOperationException e) {
+    throw new RuntimeException("Failed to instantiate RetentionPolicy",e);
+  }
+}
