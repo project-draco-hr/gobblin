@@ -9,8 +9,8 @@
       printUsage(caller);
       System.exit(1);
     }
-    Properties sysConfig=ConfigurationConverter.getProperties(new PropertiesConfiguration(cmd.getOptionValue(SYS_CONFIG_OPTION.getLongOpt())));
-    Properties jobConfig=ConfigurationConverter.getProperties(new PropertiesConfiguration(cmd.getOptionValue(JOB_CONFIG_OPTION.getLongOpt())));
+    Properties sysConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(SYS_CONFIG_OPTION.getLongOpt()));
+    Properties jobConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(JOB_CONFIG_OPTION.getLongOpt()));
     return JobConfigurationUtils.combineSysAndJobProperties(sysConfig,jobConfig);
   }
  catch (  ParseException pe) {

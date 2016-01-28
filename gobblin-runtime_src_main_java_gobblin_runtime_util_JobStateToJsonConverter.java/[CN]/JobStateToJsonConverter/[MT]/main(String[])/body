@@ -26,7 +26,7 @@
   }
   Properties sysConfig=new Properties();
   if (cmd.hasOption(sysConfigOption.getLongOpt())) {
-    sysConfig=fileToProperties(cmd.getOptionValue(sysConfigOption.getLongOpt()));
+    sysConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(sysConfigOption.getLongOpt()));
   }
   JobStateToJsonConverter converter=new JobStateToJsonConverter(sysConfig,cmd.getOptionValue('u'),cmd.hasOption("kc"));
   StringWriter stringWriter=new StringWriter();
