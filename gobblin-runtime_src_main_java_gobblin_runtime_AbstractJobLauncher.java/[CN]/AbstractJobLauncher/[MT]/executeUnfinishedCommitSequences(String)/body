@@ -1,0 +1,11 @@
+{
+  Preconditions.checkState(this.jobContext.getCommitSequenceStore().isPresent());
+  CommitSequenceStore commitSequenceStore=this.jobContext.getCommitSequenceStore().get();
+  for (  String datasetUrn : commitSequenceStore.get(jobName)) {
+    Optional<CommitSequence> commitSequence=commitSequenceStore.get(jobName,datasetUrn);
+    if (commitSequence.isPresent()) {
+      commitSequence.get().execute();
+    }
+    commitSequenceStore.delete(jobName,datasetUrn);
+  }
+}

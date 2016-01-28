@@ -1,0 +1,3 @@
+{
+  return !(this.jobContext.getSemantics() == DeliverySemantics.EXACTLY_ONCE && this.jobContext.getCommitSequenceStore().get().exists(jobState.getJobName()));
+}

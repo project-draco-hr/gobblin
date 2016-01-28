@@ -1,0 +1,12 @@
+{
+  this.fs=FileSystem.getLocal(new Configuration());
+  this.fs.delete(new Path(ROOT_DIR),true);
+  Path dir1=new Path(ROOT_DIR,"dir1");
+  Path dir2=new Path(ROOT_DIR,"dir2");
+  this.fs.mkdirs(dir1);
+  this.fs.mkdirs(dir2);
+  Path src=new Path(dir1,"file");
+  Path dst=new Path(dir2,"file");
+  this.fs.createNewFile(src);
+  this.step=(FsRenameCommitStep)new FsRenameCommitStep.Builder<>().from(src).to(dst).withProps(new State()).build();
+}

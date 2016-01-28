@@ -1,0 +1,6 @@
+{
+  if (this.dstFs == null) {
+    this.dstFs=getFileSystem(this.dstFsUri);
+  }
+  return this.dstFs.exists(this.dstPath);
+}

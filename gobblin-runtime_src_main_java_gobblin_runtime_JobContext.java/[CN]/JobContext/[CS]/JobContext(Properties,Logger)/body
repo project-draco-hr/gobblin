@@ -32,6 +32,8 @@
  else {
     this.jobMetricsOptional=Optional.absent();
   }
+  this.semantics=DeliverySemantics.parse(this.jobState);
+  this.commitSequenceStore=createCommitSequenceStore();
   this.source=new SourceDecorator(Source.class.cast(Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance()),this.jobId,logger);
   this.logger=logger;
 }

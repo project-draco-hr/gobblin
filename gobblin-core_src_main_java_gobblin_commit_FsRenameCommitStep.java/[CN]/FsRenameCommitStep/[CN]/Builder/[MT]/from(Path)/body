@@ -1,0 +1,4 @@
+{
+  this.srcPath=srcPath;
+  return (T)this;
+}
