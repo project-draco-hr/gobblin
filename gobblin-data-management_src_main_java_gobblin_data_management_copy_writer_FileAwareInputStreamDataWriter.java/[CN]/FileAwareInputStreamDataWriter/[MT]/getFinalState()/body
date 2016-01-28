@@ -1,0 +1,13 @@
+{
+  try {
+    State state=new State();
+    CopySource.serializeCopyableFile(state,this.actualProcessedCopyableFile.get());
+    state.setProp("did.i.actually.write.props","yes");
+    ConstructState constructState=new ConstructState();
+    constructState.addOverwriteProperties(state);
+    return constructState;
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException("Could not serialize actual processed copyable file.",ioe);
+  }
+}

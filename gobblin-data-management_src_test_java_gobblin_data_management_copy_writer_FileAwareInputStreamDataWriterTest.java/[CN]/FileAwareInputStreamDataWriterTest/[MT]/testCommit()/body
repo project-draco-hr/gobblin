@@ -34,7 +34,7 @@
   Path writtenFile=writer.getStagingFilePath(cf);
   this.fs.mkdirs(writtenFile.getParent());
   this.fs.createNewFile(writtenFile);
-  Path outputRoot=writer.getPartitionOutputRoot(cf);
+  Path outputRoot=FileAwareInputStreamDataWriter.getPartitionOutputRoot(outputDir,cf.getDatasetAndPartition(metadata));
   Path existingOutputPath=new Path(outputRoot,destinationExistingToken);
   this.fs.mkdirs(existingOutputPath);
   FileStatus fileStatus=this.fs.getFileStatus(existingOutputPath);

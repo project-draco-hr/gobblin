@@ -1,9 +1,12 @@
 {
+  if (numBranches > 1) {
+    throw new IOException("Distcp can only operate with one branch.");
+  }
   this.state=state;
   String uri=this.state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,numBranches,branchId),ConfigurationKeys.LOCAL_FS_URI);
   this.fs=FileSystem.get(URI.create(uri),new Configuration());
   this.stagingDir=WriterUtils.getWriterStagingDir(state,numBranches,branchId);
-  this.outputDir=new Path(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,numBranches,branchId)));
+  this.outputDir=getOutputDir(state);
   this.copyableDatasetMetadata=CopyableDatasetMetadata.deserialize(state.getProp(CopySource.SERIALIZED_COPYABLE_DATASET));
   this.recoveryHelper=new RecoveryHelper(this.fs,state);
   this.actualProcessedCopyableFile=Optional.absent();

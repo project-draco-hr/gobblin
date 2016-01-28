@@ -1,7 +1,7 @@
 {
-  State state=super.getFinalState();
-  for (  Converter<?,?,?,?> converter : this.converters) {
-    state.addAll(converter.getFinalState());
+  ConstructState state=new ConstructState(super.getFinalState());
+  for (int i=0; i < this.converters.size(); i++) {
+    state.addConstructState(Constructs.CONVERTER,new ConstructState(this.converters.get(i).getFinalState()),Integer.toString(i));
   }
   return state;
 }
