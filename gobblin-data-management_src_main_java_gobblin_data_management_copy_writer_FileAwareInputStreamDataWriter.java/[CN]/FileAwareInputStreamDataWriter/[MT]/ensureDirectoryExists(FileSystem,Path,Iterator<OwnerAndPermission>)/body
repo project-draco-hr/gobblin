@@ -1,6 +1,6 @@
 {
   if (fs.exists(path)) {
-    return true;
+    return;
   }
   if (ownerAndPermissionIterator.hasNext()) {
     OwnerAndPermission ownerAndPermission=ownerAndPermissionIterator.next();
@@ -9,12 +9,12 @@
     }
     if (ownerAndPermission.getFsPermission() == null) {
       if (!fs.mkdirs(path)) {
-        return false;
+        return;
       }
     }
  else {
       if (!fs.mkdirs(path,addExecutePermissionToOwner(ownerAndPermission.getFsPermission()))) {
-        return false;
+        return;
       }
     }
     String group=ownerAndPermission.getGroup();
@@ -24,7 +24,6 @@
     }
   }
  else {
-    return fs.mkdirs(path);
+    fs.mkdirs(path);
   }
-  return true;
 }
