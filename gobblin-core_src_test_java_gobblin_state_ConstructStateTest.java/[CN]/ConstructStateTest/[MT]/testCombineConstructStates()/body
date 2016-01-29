@@ -1,0 +1,19 @@
+{
+  ConstructState constructState=new ConstructState();
+  ConstructState constructState2=new ConstructState();
+  String overrideKey="overrideMe";
+  String overrideKey2="overrideMe2";
+  String nonOverrideKey="overrideMe.not";
+  String str1="str1";
+  String str2="str2";
+  constructState.addOverwriteProperties(ImmutableMap.<String,String>builder().put(overrideKey,str1).build());
+  constructState.addOverwriteProperties(ImmutableMap.<String,String>builder().put(overrideKey2,str1).build());
+  constructState.setProp(nonOverrideKey,str1);
+  constructState2.addOverwriteProperties(ImmutableMap.<String,String>builder().put(overrideKey,str2).build());
+  constructState2.setProp(nonOverrideKey,str2);
+  constructState.addConstructState(Constructs.CONVERTER,constructState2);
+  Properties overrideProperties=constructState.getOverwriteProperties();
+  Assert.assertEquals(overrideProperties.getProperty(overrideKey),str2);
+  Assert.assertEquals(overrideProperties.getProperty(overrideKey2),str1);
+  Assert.assertEquals(constructState.getPropertyNames().size(),3);
+}

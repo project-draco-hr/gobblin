@@ -1,0 +1,4 @@
+{
+  int filesPersisted=persistFailedFileSet(states);
+  log.info(String.format("Successfully persisted %d work units.",filesPersisted));
+}

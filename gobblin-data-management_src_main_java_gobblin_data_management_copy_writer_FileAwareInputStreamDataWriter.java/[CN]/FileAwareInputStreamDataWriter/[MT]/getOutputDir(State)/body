@@ -1,0 +1,3 @@
+{
+  return new Path(state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_DIR,1,0)));
+}

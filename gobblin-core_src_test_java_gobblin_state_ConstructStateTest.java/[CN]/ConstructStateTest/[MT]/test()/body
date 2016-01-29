@@ -1,0 +1,16 @@
+{
+  ConstructState constructState=new ConstructState();
+  WorkUnitState workUnitState=new WorkUnitState();
+  String overrideKey="overrideMe";
+  String nonOverrideKey="overrideMe.not";
+  String workUnitToken="workUnit";
+  String constructToken="construct";
+  workUnitState.setProp(overrideKey,workUnitToken);
+  workUnitState.setProp(nonOverrideKey,workUnitToken);
+  constructState.addOverwriteProperties(ImmutableMap.<String,String>builder().put(overrideKey,constructToken).build());
+  constructState.setProp(nonOverrideKey,constructToken);
+  constructState.mergeIntoWorkUnitState(workUnitState);
+  Assert.assertEquals(workUnitState.getProp(overrideKey),constructToken);
+  Assert.assertEquals(workUnitState.getProp(nonOverrideKey),workUnitToken);
+  Assert.assertEquals(workUnitState.getPropertyNames().size(),3);
+}

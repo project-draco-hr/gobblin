@@ -10,19 +10,31 @@
     String datasetUrn=entry.getKey();
     JobState.DatasetState datasetState=entry.getValue();
     finalizeDatasetStateBeforeCommit(datasetState);
-    if (!canCommitDataset(datasetState)) {
-      this.logger.warn(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
-      allDatasetsCommit=false;
-      continue;
+    Class<? extends DataPublisher> dataPublisherClass;
+    try (Closer closer=Closer.create()){
+      dataPublisherClass=(Class<? extends DataPublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+      if (!canCommitDataset(datasetState)) {
+        this.logger.warn(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
+        allDatasetsCommit=false;
+        if (UnpublishedHandling.class.isAssignableFrom(dataPublisherClass)) {
+          DataPublisher publisher=closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
+          this.logger.info(String.format("Calling publisher to handle unpublished work units for dataset %s of job %s.",datasetUrn,this.jobId));
+          ((UnpublishedHandling)publisher).handleUnpublishedWorkUnits(datasetState.getTaskStatesAsWorkUnitStates());
+        }
+        continue;
+      }
     }
-    try {
+ catch (    ReflectiveOperationException roe) {
+      throw new IOException(roe);
+    }
+    try (Closer closer=Closer.create()){
       if (shouldCommitDataInJob) {
         this.logger.info(String.format("Committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
         if (deliverySemantics == DeliverySemantics.EXACTLY_ONCE) {
           generateCommitSequenceBuilder(datasetState);
         }
  else {
-          commitDataset(datasetState);
+          commitDataset(datasetState,closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState)));
         }
       }
  else {
@@ -31,7 +43,10 @@
         }
       }
     }
- catch (    IOException ioe) {
+ catch (    ReflectiveOperationException roe) {
+      this.logger.error(String.format("Failed to instantiate data publisher for dataset %s of job %s.",datasetUrn,this.jobId),roe);
+    }
+catch (    IOException ioe) {
       this.logger.error(String.format("Failed to commit dataset state for dataset %s of job %s",datasetUrn,this.jobId),ioe);
       allDatasetsCommit=false;
     }
