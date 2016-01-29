@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(properties);
+  Preconditions.checkNotNull(restServerUri);
+  this.properties=properties;
+  this.restServerUri=restServerUri;
+}

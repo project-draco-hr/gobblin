@@ -1,0 +1,7 @@
+{
+  try {
+    server.shutDown();
+  }
+ catch (  Exception e) {
+  }
+}

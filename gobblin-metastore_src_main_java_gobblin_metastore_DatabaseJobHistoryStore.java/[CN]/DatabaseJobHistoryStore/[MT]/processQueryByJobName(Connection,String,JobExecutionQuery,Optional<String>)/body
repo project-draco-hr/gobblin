@@ -23,7 +23,7 @@
   queryStatement.setString(1,jobName);
   ResultSet rs=queryStatement.executeQuery();
   while (rs.next()) {
-    jobExecutionInfos.add(processQueryById(connection,rs.getString(1),tableFilter));
+    jobExecutionInfos.add(processQueryById(connection,rs.getString(1),query,tableFilter));
   }
   return jobExecutionInfos;
 }

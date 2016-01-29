@@ -1,0 +1,4 @@
+{
+  this.adminServerHost=adminServerHost;
+  this.adminServerPort=adminServerPort;
+}
