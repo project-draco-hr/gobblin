@@ -1,0 +1,11 @@
+{
+  basicDataSource=new BasicDataSource();
+  basicDataSource.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
+  basicDataSource.setUrl("jdbc:derby:memory:derbypoc;create=true");
+  Connection connection=basicDataSource.getConnection();
+  connection.setAutoCommit(false);
+  this.connection=connection;
+  execute("CREATE TABLE Snapshots (dataset_path VARCHAR(255), name VARCHAR(255), path VARCHAR(255), ts TIMESTAMP, row_count bigint)");
+  execute("CREATE TABLE Daily_Partitions (dataset_path VARCHAR(255), path VARCHAR(255), ts TIMESTAMP)");
+  execute("CREATE FUNCTION TIMESTAMP_DIFF(timestamp1 TIMESTAMP, timestamp2 TIMESTAMP, unitString VARCHAR(50)) RETURNS BIGINT PARAMETER STYLE JAVA NO SQL LANGUAGE JAVA EXTERNAL NAME 'gobblin.data.management.retention.sql.SqlUdfs.timestamp_diff'");
+}

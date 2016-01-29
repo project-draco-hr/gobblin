@@ -1,0 +1,4 @@
+{
+  PreparedStatement insertStatement=connection.prepareStatement(query);
+  insertStatement.executeUpdate();
+}

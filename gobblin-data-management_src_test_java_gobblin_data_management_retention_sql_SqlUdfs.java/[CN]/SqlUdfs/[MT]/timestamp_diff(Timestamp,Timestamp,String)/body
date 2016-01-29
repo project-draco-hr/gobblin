@@ -1,0 +1,3 @@
+{
+  return date_diff(timestamp1.getTime(),timestamp2.getTime(),unit);
+}

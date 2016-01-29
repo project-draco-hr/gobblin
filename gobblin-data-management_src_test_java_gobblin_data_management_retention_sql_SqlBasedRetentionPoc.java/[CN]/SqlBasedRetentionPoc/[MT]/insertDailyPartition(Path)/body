@@ -1,0 +1,9 @@
+{
+  String datasetPath=StringUtils.substringBeforeLast(dailyPartitionPath.toString(),Path.SEPARATOR + "daily");
+  DateTime partition=DateTimeFormat.forPattern(DAILY_PARTITION_PATTERN).parseDateTime(StringUtils.substringAfter(dailyPartitionPath.toString(),"daily" + Path.SEPARATOR));
+  PreparedStatement insert=connection.prepareStatement("INSERT INTO Daily_Partitions VALUES (?, ?, ?)");
+  insert.setString(1,datasetPath);
+  insert.setString(2,dailyPartitionPath.toString());
+  insert.setTimestamp(3,new Timestamp(partition.getMillis()));
+  insert.executeUpdate();
+}
