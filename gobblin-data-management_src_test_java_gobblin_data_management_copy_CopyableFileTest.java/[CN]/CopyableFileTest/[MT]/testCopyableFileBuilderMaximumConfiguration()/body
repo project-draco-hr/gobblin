@@ -8,7 +8,7 @@
   String targetRoot="/data/databases/destination";
   Path relativePath=PathUtils.relativizePath(originFile,datasetRoot);
   Path targetPath=new Path(targetRoot,relativePath);
-  CopyConfiguration copyConfiguration=new CopyConfiguration(new Path(targetRoot),preserveAttributes,new CopyContext());
+  CopyConfiguration copyConfiguration=CopyConfiguration.builder().targetRoot(new Path(targetRoot)).preserve(preserveAttributes).build();
   String fileSet="fileset";
   byte[] checksum=new byte[1];
   long originTimestamp=23091986l;

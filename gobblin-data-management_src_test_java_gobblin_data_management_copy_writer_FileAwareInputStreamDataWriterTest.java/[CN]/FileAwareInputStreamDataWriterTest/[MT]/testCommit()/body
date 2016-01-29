@@ -22,7 +22,7 @@
   ancestorOwnerAndPermissions.add(ownerAndPermission);
   ancestorOwnerAndPermissions.add(ownerAndPermission);
   ancestorOwnerAndPermissions.add(ownerAndPermission);
-  CopyableFile cf=CopyableFile.builder(this.fs,status,new Path("/dataset"),new CopyConfiguration(new Path("/target"),PreserveAttributes.fromMnemonicString(""),new CopyContext())).destination(destination).destinationOwnerAndPermission(ownerAndPermission).ancestorsOwnerAndPermission(ancestorOwnerAndPermissions).build();
+  CopyableFile cf=CopyableFile.builder(this.fs,status,new Path("/dataset"),CopyConfiguration.builder().targetRoot(new Path("/target")).preserve(PreserveAttributes.fromMnemonicString("")).build()).destination(destination).destinationOwnerAndPermission(ownerAndPermission).ancestorsOwnerAndPermission(ancestorOwnerAndPermissions).build();
   WorkUnitState state=new WorkUnitState();
   state.setProp(ConfigurationKeys.WRITER_STAGING_DIR,stagingDir.toUri().getPath());
   state.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,outputDir.toUri().getPath());

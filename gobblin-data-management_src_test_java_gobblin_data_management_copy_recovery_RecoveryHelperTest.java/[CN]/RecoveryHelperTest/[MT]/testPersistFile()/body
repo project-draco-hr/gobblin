@@ -11,7 +11,7 @@
   state.setProp(RecoveryHelper.PERSIST_DIR_KEY,this.tmpDir.getAbsolutePath());
   File recoveryDir=new File(RecoveryHelper.getPersistDir(state).get().toUri().getPath());
   FileSystem fs=FileSystem.getLocal(new Configuration());
-  CopyableFile copyableFile=CopyableFile.builder(fs,new FileStatus(0,false,0,0,0,new Path("/file")),new Path("/dataset"),new CopyConfiguration(new Path("/target"),PreserveAttributes.fromMnemonicString(""),new CopyContext())).build();
+  CopyableFile copyableFile=CopyableFile.builder(fs,new FileStatus(0,false,0,0,0,new Path("/file")),new Path("/dataset"),CopyConfiguration.builder().targetRoot(new Path("/target")).preserve(PreserveAttributes.fromMnemonicString("")).build()).build();
   CopySource.setWorkUnitGuid(state,Guid.fromHasGuid(copyableFile));
   RecoveryHelper recoveryHelper=new RecoveryHelper(FileSystem.getLocal(new Configuration()),state);
   recoveryHelper.persistFile(state,copyableFile,new Path(file.getAbsolutePath()));

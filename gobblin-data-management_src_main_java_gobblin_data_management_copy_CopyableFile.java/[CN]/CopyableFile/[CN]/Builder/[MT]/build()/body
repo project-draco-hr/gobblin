@@ -1,7 +1,13 @@
 {
   if (this.destinationOwnerAndPermission == null) {
     String owner=this.preserve.preserve(Option.OWNER) ? this.origin.getOwner() : null;
-    String group=this.preserve.preserve(Option.GROUP) ? this.origin.getGroup() : null;
+    String group=null;
+    if (this.preserve.preserve(Option.GROUP)) {
+      group=this.origin.getGroup();
+    }
+ else     if (this.configuration.getTargetGroup().isPresent()) {
+      group=this.configuration.getTargetGroup().get();
+    }
     FsPermission permission=this.preserve.preserve(Option.PERMISSION) ? this.origin.getPermission() : null;
     this.destinationOwnerAndPermission=new OwnerAndPermission(owner,group,permission);
   }
