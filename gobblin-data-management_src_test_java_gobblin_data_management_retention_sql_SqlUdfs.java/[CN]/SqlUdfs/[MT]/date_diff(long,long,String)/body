@@ -1,6 +1,6 @@
 {
   try {
-    TimeUnit unit=TimeUnit.valueOf(TimeUnit.class,StringUtils.toUpperCase(unitString));
+    TimeUnit unit=TimeUnit.valueOf(TimeUnit.class,StringUtils.upperCase(unitString));
     return unit.convert(timestamp1 - timestamp2,TimeUnit.MILLISECONDS);
   }
  catch (  IllegalArgumentException e) {
