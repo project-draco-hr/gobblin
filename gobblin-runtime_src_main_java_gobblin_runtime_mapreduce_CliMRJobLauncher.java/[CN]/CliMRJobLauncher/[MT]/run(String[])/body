@@ -1,19 +1,6 @@
 {
-  Closer closer=Closer.create();
-  try {
-    try {
-      closer.register(new MRJobLauncher(jobProperties,getConf())).launchJob(null);
-    }
- catch (    JobException je) {
-      LOG.error("Failed to launch the job!",je);
-      return 1;
-    }
-catch (    Throwable t) {
-      throw closer.rethrow(t);
-    }
- finally {
-      closer.close();
-    }
+  try (JobLauncher launcher=new MRJobLauncher(jobProperties,getConf())){
+    launcher.launchJob(null);
   }
  catch (  Exception e) {
     LOG.error("Failed to launch the job!",e);

@@ -2,6 +2,5 @@
   Configuration conf=new Configuration();
   String[] genericCmdLineOpts=new GenericOptionsParser(conf,args).getCommandLine().getArgs();
   Properties jobProperties=CliOptions.parseArgs(CliMRJobLauncher.class,genericCmdLineOpts);
-  configureLog4j(conf);
   System.exit(ToolRunner.run(conf,new CliMRJobLauncher(jobProperties),args));
 }

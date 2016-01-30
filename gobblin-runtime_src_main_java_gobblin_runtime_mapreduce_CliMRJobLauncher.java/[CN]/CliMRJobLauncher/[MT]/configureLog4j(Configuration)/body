@@ -1,9 +1,0 @@
-{
-  String log4jFilefLocation=conf.get("gobblin.log4j.conf");
-  if (log4jFilefLocation == null || !new File(log4jFilefLocation).exists()) {
-    BasicConfigurator.configure();
-  }
- else {
-    DOMConfigurator.configure(log4jFilefLocation);
-  }
-}
