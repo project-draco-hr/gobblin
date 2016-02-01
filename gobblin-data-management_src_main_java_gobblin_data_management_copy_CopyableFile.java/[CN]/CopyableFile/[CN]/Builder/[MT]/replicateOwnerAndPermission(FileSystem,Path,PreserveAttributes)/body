@@ -13,7 +13,14 @@
         }
       }
 );
-      ancestorOwnerAndPermissions.add(new OwnerAndPermission(preserve.preserve(Option.OWNER) ? ownerAndPermission.getOwner() : null,preserve.preserve(Option.GROUP) ? ownerAndPermission.getGroup() : null,preserve.preserve(Option.PERMISSION) ? ownerAndPermission.getFsPermission() : null));
+      String group=null;
+      if (this.preserve.preserve(Option.GROUP)) {
+        group=ownerAndPermission.getGroup();
+      }
+ else       if (this.configuration.getTargetGroup().isPresent()) {
+        group=this.configuration.getTargetGroup().get();
+      }
+      ancestorOwnerAndPermissions.add(new OwnerAndPermission(preserve.preserve(Option.OWNER) ? ownerAndPermission.getOwner() : null,group,preserve.preserve(Option.PERMISSION) ? ownerAndPermission.getFsPermission() : null));
     }
   }
  catch (  ExecutionException ee) {
