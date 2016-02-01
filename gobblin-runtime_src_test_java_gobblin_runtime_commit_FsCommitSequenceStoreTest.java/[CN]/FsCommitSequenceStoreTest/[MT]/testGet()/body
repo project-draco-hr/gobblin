@@ -1,0 +1,5 @@
+{
+  Optional<CommitSequence> sequence2=this.store.get(this.jobName,this.datasetUrn);
+  Assert.assertTrue(sequence2.isPresent());
+  Assert.assertEquals(GSON.toJsonTree(sequence2.get()),GSON.toJsonTree(this.sequence));
+}

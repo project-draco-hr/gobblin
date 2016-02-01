@@ -1,0 +1,6 @@
+{
+  this.args=args;
+  this.options=new Options();
+  this.options.addOption("H",HOST_OPT,true,"Specify host (default:" + DEFAULT_REST_SERVER_HOST + ")");
+  this.options.addOption("P",PORT_OPT,true,"Specify port (default:" + DEFAULT_REST_SERVER_PORT + ")");
+}

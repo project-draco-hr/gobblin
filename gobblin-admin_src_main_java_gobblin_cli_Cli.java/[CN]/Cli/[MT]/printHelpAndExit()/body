@@ -1,0 +1,9 @@
+{
+  System.out.println("Common usages:");
+  System.out.println("  gobblin-admin.sh jobs --list");
+  System.out.println("  gobblin-admin.sh jobs --list --name JobName");
+  System.out.println("  gobblin-admin.sh jobs --details --id job_id");
+  System.out.println("  gobblin-admin.sh jobs --properties --<id|name> <job_id|JobName>");
+  System.out.println();
+  printHelpAndExit(0);
+}

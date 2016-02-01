@@ -1,0 +1,4 @@
+{
+  this.delimiterWidth=delimiterWidth;
+  return this;
+}

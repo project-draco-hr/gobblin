@@ -4,7 +4,7 @@
     LOG.warn("Missing property " + outputFilePropName + ". This task may have pulled no data.");
     return;
   }
-  Iterable<String> taskOutputFiles=workUnitState.getPropAsList(outputFilePropName);
+  Iterable<String> taskOutputFiles=workUnitState.getPropAsSet(outputFilePropName);
   for (  String taskOutputFile : taskOutputFiles) {
     Path taskOutputPath=new Path(taskOutputFile);
     if (!this.writerFileSystemByBranches.get(branchId).exists(taskOutputPath)) {
@@ -14,7 +14,6 @@
     String pathSuffix=taskOutputFile.substring(taskOutputFile.indexOf(writerOutputDir.toString()) + writerOutputDir.toString().length() + 1);
     Path publisherOutputPath=new Path(publisherOutputDir,pathSuffix);
     WriterUtils.mkdirsWithRecursivePermission(this.publisherFileSystemByBranches.get(branchId),publisherOutputPath.getParent(),this.permissions.get(branchId));
-    LOG.info(String.format("Moving %s to %s",taskOutputFile,publisherOutputPath));
-    parallelRunner.movePath(taskOutputPath,this.publisherFileSystemByBranches.get(branchId),publisherOutputPath,Optional.<String>absent());
+    movePath(parallelRunner,taskOutputPath,publisherOutputPath,branchId);
   }
 }

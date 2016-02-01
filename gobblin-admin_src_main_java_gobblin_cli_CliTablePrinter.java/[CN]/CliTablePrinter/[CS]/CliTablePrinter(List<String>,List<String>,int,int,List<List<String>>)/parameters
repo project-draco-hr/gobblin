@@ -1,0 +1,5 @@
+List<String> labels
+List<String> flags
+int indentation
+int delimiterWidth
+List<List<String>> data

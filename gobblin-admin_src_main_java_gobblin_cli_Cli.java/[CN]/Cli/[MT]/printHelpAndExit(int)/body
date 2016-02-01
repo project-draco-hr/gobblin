@@ -1,0 +1,9 @@
+{
+  HelpFormatter hf=new HelpFormatter();
+  hf.printHelp("gobblin-admin.sh <command> [options]",this.options);
+  System.out.println("Valid commands:");
+  for (  String command : getCommandNames()) {
+    System.out.println(command);
+  }
+  System.exit(exitCode);
+}

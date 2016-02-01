@@ -1,0 +1,8 @@
+{
+  if (this.labels != null) {
+    System.out.printf(this.rowFormat,this.labels.toArray());
+  }
+  for (  List<String> row : this.data) {
+    System.out.printf(this.rowFormat,row.toArray());
+  }
+}

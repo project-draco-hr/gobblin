@@ -1,0 +1,5 @@
+{
+  Map<String,String> previousOverwriteProps=getOverwritePropertiesMap();
+  previousOverwriteProps.putAll(properties);
+  setProp(OVERWRITE_PROPS_KEY,serializeMap(previousOverwriteProps));
+}

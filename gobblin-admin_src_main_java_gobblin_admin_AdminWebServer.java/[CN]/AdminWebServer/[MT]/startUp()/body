@@ -1,0 +1,10 @@
+{
+  int port=Integer.parseInt(properties.getProperty(ConfigurationKeys.ADMIN_SERVER_PORT_KEY,ConfigurationKeys.DEFAULT_ADMIN_SERVER_PORT));
+  LOGGER.info("Starting the admin web server");
+  server=new Server(port);
+  HandlerCollection handlerCollection=new HandlerCollection();
+  handlerCollection.addHandler(buildSettingsHandler());
+  handlerCollection.addHandler(buildStaticResourceHandler());
+  server.setHandler(handlerCollection);
+  server.start();
+}

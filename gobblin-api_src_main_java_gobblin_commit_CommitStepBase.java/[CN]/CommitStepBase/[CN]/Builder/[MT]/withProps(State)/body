@@ -1,0 +1,4 @@
+{
+  this.props=new State(props.getProperties());
+  return (T)this;
+}

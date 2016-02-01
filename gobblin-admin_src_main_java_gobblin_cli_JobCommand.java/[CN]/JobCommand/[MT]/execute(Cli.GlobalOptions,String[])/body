@@ -1,0 +1,22 @@
+{
+  this.options=createCommandLineOptions();
+  DefaultParser parser=new DefaultParser();
+  AdminClient adminClient=null;
+  try {
+    CommandLine parsedOpts=parser.parse(options,otherArgs);
+    int resultLimit=parseResultsLimit(parsedOpts);
+    adminClient=new AdminClient(globalOptions.getAdminServerHost(),globalOptions.getAdminServerPort());
+    try {
+      getAction(parsedOpts).execute(parsedOpts,adminClient,resultLimit);
+    }
+ catch (    CommandException e) {
+      printHelpAndExit(e.getMessage());
+    }
+  }
+ catch (  ParseException e) {
+    printHelpAndExit("Failed to parse jobs arguments: " + e.getMessage());
+  }
+ finally {
+    if (adminClient != null)     adminClient.close();
+  }
+}

@@ -1,0 +1,8 @@
+{
+  Properties overwriteProperties=getOverwriteProperties();
+  state.addAll(overwriteProperties);
+  removeProp(OVERWRITE_PROPS_KEY);
+  for (  String key : getPropertyNames()) {
+    state.setProp(FINAL_CONSTRUCT_STATE_PREFIX + key,getProp(key));
+  }
+}

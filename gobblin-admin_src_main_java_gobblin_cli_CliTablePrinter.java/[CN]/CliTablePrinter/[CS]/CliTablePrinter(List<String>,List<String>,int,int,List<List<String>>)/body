@@ -1,0 +1,16 @@
+{
+  Preconditions.checkArgument(data.size() > 0);
+  Preconditions.checkArgument(data.get(0).size() > 0);
+  if (labels != null) {
+    Preconditions.checkArgument(data.get(0).size() == labels.size());
+  }
+  if (flags != null) {
+    Preconditions.checkArgument(data.get(0).size() == flags.size());
+  }
+  this.labels=labels;
+  this.flags=flags;
+  this.indentation=indentation;
+  this.delimiterWidth=delimiterWidth;
+  this.data=data;
+  this.rowFormat=getRowFormat(getColumnMaxWidths());
+}

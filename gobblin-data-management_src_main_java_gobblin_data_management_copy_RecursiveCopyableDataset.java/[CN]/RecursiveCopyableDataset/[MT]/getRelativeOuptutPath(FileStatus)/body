@@ -1,3 +1,0 @@
-{
-  return PathUtils.relativizePath(PathUtils.getPathWithoutSchemeAndAuthority(file.getPath()),PathUtils.getPathWithoutSchemeAndAuthority(datasetRoot()));
-}

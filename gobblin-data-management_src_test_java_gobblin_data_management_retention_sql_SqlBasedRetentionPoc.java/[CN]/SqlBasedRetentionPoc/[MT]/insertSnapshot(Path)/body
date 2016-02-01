@@ -1,0 +1,13 @@
+{
+  String datasetPath=StringUtils.substringBeforeLast(snapshotPath.toString(),Path.SEPARATOR);
+  String snapshotName=StringUtils.substringAfterLast(snapshotPath.toString(),Path.SEPARATOR);
+  long ts=Long.parseLong(StringUtils.substringBefore(snapshotName,"-PT-"));
+  long recordCount=Long.parseLong(StringUtils.substringAfter(snapshotName,"-PT-"));
+  PreparedStatement insert=connection.prepareStatement("INSERT INTO Snapshots VALUES (?, ?, ?, ?, ?)");
+  insert.setString(1,datasetPath);
+  insert.setString(2,snapshotName);
+  insert.setString(3,snapshotPath.toString());
+  insert.setTimestamp(4,new Timestamp(ts));
+  insert.setLong(5,recordCount);
+  insert.executeUpdate();
+}

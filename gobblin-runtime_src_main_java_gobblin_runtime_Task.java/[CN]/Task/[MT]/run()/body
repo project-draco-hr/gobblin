@@ -4,9 +4,12 @@
   this.taskState.setWorkingState(WorkUnitState.WorkingState.RUNNING);
   this.forks.clear();
   Closer closer=Closer.create();
+  Converter converter=null;
+  InstrumentedExtractorBase extractor=null;
+  RowLevelPolicyChecker rowChecker=null;
   try {
-    InstrumentedExtractorBase extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,this.taskContext.getExtractor()));
-    Converter converter=closer.register(new MultiConverter(this.taskContext.getConverters()));
+    extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,this.taskContext.getExtractor()));
+    converter=closer.register(new MultiConverter(this.taskContext.getConverters()));
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);
     int branches=forkOperator.getBranches(this.taskState);
@@ -29,7 +32,7 @@
         this.forks.add(Optional.<Fork>absent());
       }
     }
-    RowLevelPolicyChecker rowChecker=closer.register(this.taskContext.getRowLevelPolicyChecker());
+    rowChecker=closer.register(this.taskContext.getRowLevelPolicyChecker());
     RowLevelPolicyCheckResults rowResults=new RowLevelPolicyCheckResults();
     long recordsPulled=0;
     Object record;
@@ -78,12 +81,12 @@
       LOG.error(String.format("Not all forks of task %s succeeded",this.taskId));
       this.taskState.setWorkingState(WorkUnitState.WorkingState.FAILED);
     }
-    addConstructsFinalStateToTaskState(extractor,converter,rowChecker);
   }
  catch (  Throwable t) {
     failTask(t);
   }
  finally {
+    addConstructsFinalStateToTaskState(extractor,converter,rowChecker);
     this.taskState.setProp(ConfigurationKeys.WRITER_RECORDS_WRITTEN,getRecordsWritten());
     this.taskState.setProp(ConfigurationKeys.WRITER_BYTES_WRITTEN,getBytesWritten());
     try {

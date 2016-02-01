@@ -1,0 +1,10 @@
+{
+  if (this.srcFs == null) {
+    this.srcFs=getFileSystem(this.srcFsUri);
+  }
+  if (this.dstFs == null) {
+    this.dstFs=getFileSystem(this.dstFsUri);
+  }
+  log.info(String.format("Moving %s to %s",this.srcPath,this.dstPath));
+  HadoopUtils.movePath(this.srcFs,this.srcPath,this.dstFs,this.dstPath);
+}

@@ -1,0 +1,7 @@
+{
+  Map<String,String> propsMap=Maps.newHashMap();
+  for (  String key : state.getPropertyNames()) {
+    propsMap.put(key,state.getProp(key));
+  }
+  addOverwriteProperties(propsMap);
+}

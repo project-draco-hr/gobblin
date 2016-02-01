@@ -1,0 +1,7 @@
+{
+  if (this.stateStore == null) {
+    FileSystem fs=FileSystem.get(URI.create(this.props.getProp(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI)),HadoopUtils.getConfFromState(this.props));
+    this.stateStore=new FsDatasetStateStore(fs,this.props.getProp(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY));
+  }
+  return this.stateStore;
+}

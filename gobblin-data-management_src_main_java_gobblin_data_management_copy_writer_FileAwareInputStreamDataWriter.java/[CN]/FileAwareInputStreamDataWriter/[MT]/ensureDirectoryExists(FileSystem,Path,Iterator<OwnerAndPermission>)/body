@@ -1,0 +1,29 @@
+{
+  if (fs.exists(path)) {
+    return;
+  }
+  if (ownerAndPermissionIterator.hasNext()) {
+    OwnerAndPermission ownerAndPermission=ownerAndPermissionIterator.next();
+    if (path.getParent() != null) {
+      ensureDirectoryExists(fs,path.getParent(),ownerAndPermissionIterator);
+    }
+    if (ownerAndPermission.getFsPermission() == null) {
+      if (!fs.mkdirs(path)) {
+        return;
+      }
+    }
+ else {
+      if (!fs.mkdirs(path,addExecutePermissionToOwner(ownerAndPermission.getFsPermission()))) {
+        return;
+      }
+    }
+    String group=ownerAndPermission.getGroup();
+    String owner=ownerAndPermission.getOwner();
+    if (group != null || owner != null) {
+      fs.setOwner(path,owner,group);
+    }
+  }
+ else {
+    fs.mkdirs(path);
+  }
+}

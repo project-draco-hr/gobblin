@@ -1,0 +1,9 @@
+{
+  JobExecutionQuery query=new JobExecutionQuery();
+  query.setIdType(QueryIdTypeEnum.LIST_TYPE);
+  query.setId(JobExecutionQuery.Id.create(lookupType));
+  query.setJobProperties(ConfigurationKeys.JOB_RUN_ONCE_KEY + "," + ConfigurationKeys.JOB_SCHEDULE_KEY);
+  query.setIncludeTaskExecutions(false);
+  query.setLimit(resultsLimit);
+  return executeQuery(query);
+}

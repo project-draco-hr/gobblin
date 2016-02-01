@@ -1,0 +1,13 @@
+{
+  insertSnapshot(new Path("/data/databases/Forum/Comments/1453743903767-PT-440505235"));
+  insertSnapshot(new Path("/data/databases/Forum/Comments/1453830569999-PT-440746131"));
+  insertSnapshot(new Path("/data/databases/Forum/Comments/1453860526464-PT-440847244"));
+  insertSnapshot(new Path("/data/databases/Forum/Comments/1453889323804-PT-440936752"));
+  PreparedStatement statement=connection.prepareStatement("SELECT name FROM Snapshots ORDER BY ts desc");
+  statement.setMaxRows(2);
+  ResultSet rs=statement.executeQuery();
+  rs.next();
+  Assert.assertEquals(rs.getString(1),"1453889323804-PT-440936752");
+  rs.next();
+  Assert.assertEquals(rs.getString(1),"1453860526464-PT-440847244");
+}
