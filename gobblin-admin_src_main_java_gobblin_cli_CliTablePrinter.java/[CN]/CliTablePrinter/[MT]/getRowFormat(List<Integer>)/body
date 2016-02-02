@@ -1,12 +1,12 @@
 {
-  String rowFormat=spaces(this.indentation);
+  StringBuilder rowFormat=new StringBuilder(spaces(this.indentation));
   for (int i=0; i < widths.size(); i++) {
-    rowFormat+="%";
-    rowFormat+=this.flags != null ? this.flags.get(i) : "";
-    rowFormat+=widths.get(i).toString();
-    rowFormat+="s";
-    rowFormat+=spaces(this.delimiterWidth);
+    rowFormat.append("%");
+    rowFormat.append(this.flags != null ? this.flags.get(i) : "");
+    rowFormat.append(widths.get(i).toString());
+    rowFormat.append("s");
+    rowFormat.append(spaces(this.delimiterWidth));
   }
-  rowFormat+="\n";
-  return rowFormat;
+  rowFormat.append("\n");
+  return rowFormat.toString();
 }
