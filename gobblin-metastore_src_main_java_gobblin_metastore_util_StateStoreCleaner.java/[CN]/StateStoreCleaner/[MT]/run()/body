@@ -4,7 +4,17 @@
     LOGGER.warn("The state store root directory does not exist or is empty");
     return;
   }
+  List<Future<?>> futures=Lists.newArrayList();
   for (  FileStatus stateStoreDir : stateStoreDirs) {
-    this.cleanerRunnerExecutor.submit(new CleanerRunner(this.fs,stateStoreDir.getPath(),this.retention,this.retentionTimeUnit));
+    futures.add(this.cleanerRunnerExecutor.submit(new CleanerRunner(this.fs,stateStoreDir.getPath(),this.retention,this.retentionTimeUnit)));
   }
+  for (  Future<?> future : futures) {
+    try {
+      future.get();
+    }
+ catch (    InterruptedException e) {
+      throw new ExecutionException("Thread interrupted",e);
+    }
+  }
+  ExecutorsUtils.shutdownExecutorService(cleanerRunnerExecutor,Optional.of(LOGGER),60,TimeUnit.SECONDS);
 }
