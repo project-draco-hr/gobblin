@@ -1,7 +1,0 @@
-{
-  List<CopyableFile> copyableFiles=Lists.newArrayListWithCapacity(files.size());
-  for (  CopyableFile file : files) {
-    copyableFiles.add(file);
-  }
-  return ImmutableList.of(new Partition.Builder<CopyableFile>(name).add(copyableFiles).build());
-}

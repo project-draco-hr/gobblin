@@ -1,0 +1,13 @@
+{
+  if (state.contains(MAX_FILESYSTEM_QPS)) {
+    try {
+      RateControlledFileSystem newFS=new RateControlledFileSystem(fs,state.getPropAsInt(MAX_FILESYSTEM_QPS));
+      newFS.startRateControl();
+      return newFS;
+    }
+ catch (    ExecutionException ee) {
+      throw new IOException("Could not create throttled FileSystem.",ee);
+    }
+  }
+  return fs;
+}

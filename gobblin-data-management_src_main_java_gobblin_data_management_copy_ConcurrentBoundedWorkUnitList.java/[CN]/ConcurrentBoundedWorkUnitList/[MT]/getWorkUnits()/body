@@ -1,0 +1,7 @@
+{
+  ImmutableList.Builder<WorkUnit> allWorkUnits=ImmutableList.builder();
+  for (  List<WorkUnit> workUnits : this.workUnitsMap.values()) {
+    allWorkUnits.addAll(workUnits);
+  }
+  return allWorkUnits.build();
+}
