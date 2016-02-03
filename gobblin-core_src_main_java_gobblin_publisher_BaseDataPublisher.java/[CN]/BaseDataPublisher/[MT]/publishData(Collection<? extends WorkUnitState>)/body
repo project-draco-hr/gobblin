@@ -4,6 +4,9 @@
     for (int branchId=0; branchId < this.numBranches; branchId++) {
       publishMultiTaskData(workUnitState,branchId,writerOutputPathsMoved);
     }
+  }
+  this.parallelRunnerCloser.close();
+  for (  WorkUnitState workUnitState : states) {
     workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   }
 }

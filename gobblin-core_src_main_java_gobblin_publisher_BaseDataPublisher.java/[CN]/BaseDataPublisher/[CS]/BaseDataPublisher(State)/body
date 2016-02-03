@@ -19,4 +19,5 @@
     this.permissions.add(new FsPermission(state.getPropAsShortWithRadix(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_PERMISSIONS,numBranches,i),FsPermission.getDefault().toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX)));
   }
   this.parallelRunnerThreads=state.getPropAsInt(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS);
+  this.parallelRunnerCloser=Closer.create();
 }
