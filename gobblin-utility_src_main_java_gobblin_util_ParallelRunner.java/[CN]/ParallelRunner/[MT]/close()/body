@@ -1,15 +1,21 @@
 {
   try {
+    boolean wasInterrupted=false;
     IOException exception=null;
     for (    Future<?> future : this.futures) {
       try {
-        future.get();
+        if (wasInterrupted) {
+          future.cancel(true);
+        }
+ else {
+          future.get();
+        }
       }
  catch (      InterruptedException ie) {
+        wasInterrupted=true;
         if (exception == null) {
           exception=new IOException(ie);
         }
-        exception.initCause(ie);
       }
 catch (      ExecutionException ee) {
         if (exception == null) {
