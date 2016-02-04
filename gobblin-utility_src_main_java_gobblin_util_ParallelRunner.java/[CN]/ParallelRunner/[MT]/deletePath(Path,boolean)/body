@@ -1,5 +1,5 @@
 {
-  this.futures.add(this.executor.submit(new Callable<Void>(){
+  this.futures.add(new NamedFuture(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
       Lock lock=locks.get(path.toString());
       lock.lock();
@@ -12,5 +12,5 @@
       }
     }
   }
-));
+),"Delete path " + path));
 }
