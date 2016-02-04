@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(descendant,"input can not be null");
+  Preconditions.checkNotNull(ancestor,"input can not be null");
+  if (descendant.equals(ancestor))   return true;
+  if (descendant.isRootPath())   return false;
+  return isAncestorOrSame(descendant.getParent(),ancestor);
+}

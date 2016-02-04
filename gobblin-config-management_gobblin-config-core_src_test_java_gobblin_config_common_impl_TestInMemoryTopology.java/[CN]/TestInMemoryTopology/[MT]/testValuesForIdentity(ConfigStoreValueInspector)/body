@@ -1,0 +1,6 @@
+{
+  Config ownConfig=valueInspector.getOwnConfig(identity);
+  checkValuesForIdentityOwnConfig(ownConfig);
+  Config resolvedConfig=valueInspector.getResolvedConfig(identity);
+  checkValuesForIdentityResolvedConfig(resolvedConfig);
+}

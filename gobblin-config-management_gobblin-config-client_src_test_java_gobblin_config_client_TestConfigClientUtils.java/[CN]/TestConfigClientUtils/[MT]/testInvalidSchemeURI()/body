@@ -1,0 +1,4 @@
+{
+  URI clientURI=new URI("hdfs:///datasets/a1/a2");
+  ConfigClientUtils.buildConfigKeyPath(clientURI,mockConfigStore);
+}

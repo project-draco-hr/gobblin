@@ -1,0 +1,19 @@
+{
+  Collection<ConfigKeyPath> configKeysNotInCache=new ArrayList<ConfigKeyPath>();
+  Map<ConfigKeyPath,Config> result=new HashMap<>();
+  for (  ConfigKeyPath configKey : configKeys) {
+    Config cachedValue=this.recursiveConfigCache.getIfPresent(configKey);
+    if (cachedValue == null) {
+      configKeysNotInCache.add(configKey);
+    }
+ else {
+      result.put(configKey,cachedValue);
+    }
+  }
+  if (configKeysNotInCache.size() > 0) {
+    Map<ConfigKeyPath,Config> configsFromFallBack=this.valueFallback.getResolvedConfigs(configKeysNotInCache);
+    this.recursiveConfigCache.putAll(configsFromFallBack);
+    result.putAll(configsFromFallBack);
+  }
+  return result;
+}

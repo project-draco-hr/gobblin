@@ -1,0 +1,17 @@
+{
+  String expected="/datasets/a1/a2";
+  URI clientAbsURI=new URI("etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/datasets/a1/a2");
+  ConfigKeyPath result=ConfigClientUtils.buildConfigKeyPath(clientAbsURI,mockConfigStore);
+  Assert.assertEquals(result.toString(),expected);
+  URI clientRelativeURI=new URI("etl-hdfs:///datasets/a1/a2");
+  result=ConfigClientUtils.buildConfigKeyPath(clientRelativeURI,mockConfigStore);
+  Assert.assertEquals(result.toString(),expected);
+  clientRelativeURI=new URI("etl-hdfs:/datasets/a1/a2");
+  result=ConfigClientUtils.buildConfigKeyPath(clientRelativeURI,mockConfigStore);
+  Assert.assertEquals(result.toString(),expected);
+  ConfigKeyPath configKey=SingleLinkedListConfigKeyPath.ROOT.createChild("data").createChild("databases").createChild("Identity");
+  URI adjusted=ConfigClientUtils.buildUriInClientFormat(configKey,mockConfigStore,false);
+  Assert.assertTrue(adjusted.toString().equals("etl-hdfs:/data/databases/Identity"));
+  adjusted=ConfigClientUtils.buildUriInClientFormat(configKey,mockConfigStore,true);
+  Assert.assertTrue(adjusted.toString().equals("etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/data/databases/Identity"));
+}

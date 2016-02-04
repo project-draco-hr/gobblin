@@ -1,0 +1,3 @@
+{
+  return configStoreFactoryMap.get(scheme);
+}

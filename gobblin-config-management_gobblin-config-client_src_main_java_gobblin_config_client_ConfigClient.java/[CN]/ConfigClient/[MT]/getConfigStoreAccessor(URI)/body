@@ -1,0 +1,25 @@
+{
+  URI matchedFloorKey=getMatchedFloorKeyFromCache(configKeyURI);
+  ConfigStoreAccessor result;
+  if (matchedFloorKey != null) {
+    result=this.configStoreAccessorMap.get(matchedFloorKey);
+    return result;
+  }
+  result=createNewConfigStoreAccessor(configKeyURI);
+  ConfigStore cs=result.configStore;
+  if (configKeyURI.getAuthority() == null) {
+    try {
+      this.configStoreAccessorMap.put(new URI(configKeyURI.getScheme(),null,"/",null,null),result);
+    }
+ catch (    URISyntaxException e) {
+      throw new RuntimeException("Can not build URI based on " + configKeyURI);
+    }
+  }
+ else {
+    if (!ConfigClientUtils.isAncestorOrSame(configKeyURI,cs.getStoreURI())) {
+      throw new RuntimeException(String.format("Config Store root URI %s is not the prefix of input %s",cs.getStoreURI(),configKeyURI));
+    }
+  }
+  this.configStoreAccessorMap.put(cs.getStoreURI(),result);
+  return result;
+}

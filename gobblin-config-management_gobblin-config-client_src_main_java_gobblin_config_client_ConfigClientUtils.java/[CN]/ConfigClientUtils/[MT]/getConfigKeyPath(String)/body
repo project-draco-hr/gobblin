@@ -1,0 +1,11 @@
+{
+  ConfigKeyPath result=SingleLinkedListConfigKeyPath.ROOT;
+  String[] paths=input.split("/");
+  for (  String p : paths) {
+    if (p.equals("")) {
+      continue;
+    }
+    result=result.createChild(p);
+  }
+  return result;
+}

@@ -1,0 +1,10 @@
+{
+  URI floorKey=this.configStoreAccessorMap.floorKey(configKeyURI);
+  if (floorKey == null) {
+    return null;
+  }
+  if (ConfigClientUtils.isAncestorOrSame(configKeyURI,floorKey)) {
+    return floorKey;
+  }
+  return null;
+}

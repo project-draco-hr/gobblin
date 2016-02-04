@@ -4,7 +4,21 @@
   ConfigStoreBackedValueInspector rawValueInspector=new ConfigStoreBackedValueInspector(this.mockConfigStore,this.version,inMemory);
   InMemoryValueInspector inMemoryStrongRef=new InMemoryValueInspector(rawValueInspector,true);
   InMemoryValueInspector inMemoryWeakRef=new InMemoryValueInspector(rawValueInspector,false);
-  testValues(rawValueInspector);
-  testValues(inMemoryStrongRef);
-  testValues(inMemoryWeakRef);
+  testValuesForIdentity(rawValueInspector);
+  testValuesForIdentity(inMemoryStrongRef);
+  testValuesForIdentity(inMemoryWeakRef);
+  testValuesForEspressoTag(rawValueInspector);
+  testValuesForEspressoTag(inMemoryStrongRef);
+  testValuesForEspressoTag(inMemoryWeakRef);
+  Collection<ConfigKeyPath> inputs=new ArrayList<ConfigKeyPath>();
+  inputs.add(espressoTag);
+  inputs.add(identity);
+  Map<ConfigKeyPath,Config> resultMap=rawValueInspector.getOwnConfigs(inputs);
+  Assert.assertEquals(resultMap.size(),2);
+  testValuesForEspressoTagOwnConfig(resultMap.get(espressoTag));
+  checkValuesForIdentityOwnConfig(resultMap.get(identity));
+  resultMap=rawValueInspector.getResolvedConfigs(inputs);
+  Assert.assertEquals(resultMap.size(),2);
+  testValuesForEspressoTagResolvedConfig(resultMap.get(espressoTag));
+  checkValuesForIdentityResolvedConfig(resultMap.get(identity));
 }

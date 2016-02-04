@@ -1,0 +1,38 @@
+{
+  Map<String,String> rootMap=new HashMap<>();
+  rootMap.put("keyOf_Root","valueOf_Root");
+  rootMap.put("generalKey","generalValue_root");
+  when(mockConfigStore.getOwnConfig(SingleLinkedListConfigKeyPath.ROOT,version)).thenReturn(ConfigFactory.parseMap(rootMap));
+  Map<String,String> dataMap=new HashMap<>();
+  dataMap.put("keyOf_data","valueOf_data");
+  dataMap.put("generalKey","generalValue_data");
+  when(mockConfigStore.getOwnConfig(data,version)).thenReturn(ConfigFactory.parseMap(dataMap));
+  Map<String,String> databasesMap=new HashMap<>();
+  databasesMap.put("keyOf_databases","valueOf_databases");
+  databasesMap.put("generalKey","generalValue_data_databases");
+  when(mockConfigStore.getOwnConfig(databases,version)).thenReturn(ConfigFactory.parseMap(databasesMap));
+  Map<String,String> identityMap=new HashMap<>();
+  identityMap.put("keyOf_identity","valueOf_identity");
+  identityMap.put("generalKey","generalValue_data_databases_identity");
+  when(mockConfigStore.getOwnConfig(identity,version)).thenReturn(ConfigFactory.parseMap(identityMap));
+  Map<String,String> tagMap=new HashMap<>();
+  tagMap.put("keyOf_tag","valueOf_tag");
+  tagMap.put("generalKey","generalValue_tag");
+  when(mockConfigStore.getOwnConfig(tag,version)).thenReturn(ConfigFactory.parseMap(tagMap));
+  Map<String,String> espressoTagMap=new HashMap<>();
+  espressoTagMap.put("keyOf_espressoTag","valueOf_espressoTag");
+  espressoTagMap.put("generalKey","generalValue_tag_espressoTag");
+  when(mockConfigStore.getOwnConfig(espressoTag,version)).thenReturn(ConfigFactory.parseMap(espressoTagMap));
+  Map<String,String> highPriorityTagMap=new HashMap<>();
+  highPriorityTagMap.put("keyOf_highPriorityTag","valueOf_highPriorityTag");
+  highPriorityTagMap.put("generalKey","generalValue_tag_highPriorityTag");
+  when(mockConfigStore.getOwnConfig(highPriorityTag,version)).thenReturn(ConfigFactory.parseMap(highPriorityTagMap));
+  Map<String,String> tag2Map=new HashMap<>();
+  tag2Map.put("keyOf_tag2","valueOf_tag2");
+  tag2Map.put("generalKey","generalValue_tag2");
+  when(mockConfigStore.getOwnConfig(tag2,version)).thenReturn(ConfigFactory.parseMap(tag2Map));
+  Map<String,String> nertzTag2Map=new HashMap<>();
+  nertzTag2Map.put("keyOf_nertzTag2","valueOf_nertzTag2");
+  nertzTag2Map.put("generalKey","generalValue_tag2_nertzTag2");
+  when(mockConfigStore.getOwnConfig(nertzTag2,version)).thenReturn(ConfigFactory.parseMap(nertzTag2Map));
+}

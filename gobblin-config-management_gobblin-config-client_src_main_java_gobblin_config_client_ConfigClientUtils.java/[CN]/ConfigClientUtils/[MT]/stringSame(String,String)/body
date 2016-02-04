@@ -1,0 +1,9 @@
+{
+  if (l == null && r == null) {
+    return true;
+  }
+  if (l == null || r == null) {
+    return false;
+  }
+  return l.equals(r);
+}

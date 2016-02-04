@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(configKeyURI,"input can not be null");
+  Preconditions.checkNotNull(cs,"input can not be null");
+  Preconditions.checkArgument(configKeyURI.getScheme().equals(cs.getStoreURI().getScheme()),"Scheme name not match");
+  boolean authorityCheck=configKeyURI.getAuthority() == null || configKeyURI.getAuthority().equals(cs.getStoreURI().getAuthority());
+  Preconditions.checkArgument(authorityCheck,"Authority not match");
+}

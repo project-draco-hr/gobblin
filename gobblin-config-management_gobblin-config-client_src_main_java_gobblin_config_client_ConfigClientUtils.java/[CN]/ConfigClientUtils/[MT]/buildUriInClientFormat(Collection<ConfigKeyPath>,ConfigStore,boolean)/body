@@ -1,0 +1,7 @@
+{
+  Collection<URI> result=new ArrayList<>();
+  for (  ConfigKeyPath p : configKeyPaths) {
+    result.add(buildUriInClientFormat(p,cs,returnURIWithAuthority));
+  }
+  return result;
+}

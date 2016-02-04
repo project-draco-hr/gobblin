@@ -1,0 +1,3 @@
+Collection<ConfigKeyPath> configKeyPaths
+ConfigStore cs
+boolean returnURIWithAuthority
