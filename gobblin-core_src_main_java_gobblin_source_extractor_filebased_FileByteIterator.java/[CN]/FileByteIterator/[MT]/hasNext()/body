@@ -3,7 +3,6 @@
     return bufferedInputStream.available() > 0;
   }
  catch (  IOException e) {
-    Throwables.propagate(e);
-    return false;
+    throw Throwables.propagate(e);
   }
 }
