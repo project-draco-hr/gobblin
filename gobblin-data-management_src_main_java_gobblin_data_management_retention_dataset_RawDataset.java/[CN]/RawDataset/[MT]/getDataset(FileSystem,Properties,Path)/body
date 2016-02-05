@@ -1,6 +1,6 @@
 {
   try {
-    @SuppressWarnings("unchecked") Class<? extends DatasetBase<DatasetVersion>> clazz=(Class<? extends DatasetBase<DatasetVersion>>)Class.forName(DATASET_CLASS);
+    @SuppressWarnings("unchecked") Class<? extends CleanableDatasetBase<DatasetVersion>> clazz=(Class<? extends CleanableDatasetBase<DatasetVersion>>)Class.forName(DATASET_CLASS);
     return ConstructorUtils.invokeConstructor(clazz,fs,props,datasetRoot);
   }
  catch (  ReflectiveOperationException e) {
