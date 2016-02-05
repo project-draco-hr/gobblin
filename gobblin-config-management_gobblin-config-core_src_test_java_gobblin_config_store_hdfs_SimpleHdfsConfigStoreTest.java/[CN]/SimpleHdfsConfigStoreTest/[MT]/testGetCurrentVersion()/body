@@ -1,0 +1,14 @@
+{
+  Assert.assertEquals(this.simpleHDFSConfigStore.getCurrentVersion(),VERSION);
+  String newVersion="v1.1";
+  Path newVersionPath=PathUtils.combinePaths(CONFIG_DIR_NAME,SimpleHDFSConfigStore.CONFIG_STORE_NAME,newVersion);
+  try {
+    this.fs.mkdirs(newVersionPath);
+    Assert.assertEquals(this.simpleHDFSConfigStore.getCurrentVersion(),newVersion);
+  }
+  finally {
+    if (this.fs.exists(newVersionPath)) {
+      this.fs.delete(newVersionPath,true);
+    }
+  }
+}

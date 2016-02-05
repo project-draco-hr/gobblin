@@ -1,0 +1,32 @@
+{
+  if (Strings.isNullOrEmpty(configKey.getAuthority())) {
+    try {
+      Path defaultRootDir=getDefaultRootDir();
+      Path configStoreDir=new Path(defaultRootDir,SimpleHDFSConfigStore.CONFIG_STORE_NAME);
+      if (fs.exists(configStoreDir)) {
+        return fs.getUri().resolve(defaultRootDir.toUri());
+      }
+ else {
+        throw new ConfigStoreCreationException(configKey,String.format("Cannot find store root for default path \"%s\"",configStoreDir));
+      }
+    }
+ catch (    IOException e) {
+      throw new ConfigStoreCreationException(configKey,e);
+    }
+  }
+  Path path=new Path(configKey.getPath());
+  while (path != null) {
+    try {
+      for (      FileStatus fileStatus : fs.listStatus(path)) {
+        if (fileStatus.isDir() && fileStatus.getPath().getName().equals(SimpleHDFSConfigStore.CONFIG_STORE_NAME)) {
+          return fs.getUri().resolve(fileStatus.getPath().getParent().toUri());
+        }
+      }
+    }
+ catch (    IOException e) {
+      throw new ConfigStoreCreationException(configKey,e);
+    }
+    path=path.getParent();
+  }
+  throw new ConfigStoreCreationException(configKey,"Cannot find the store root!");
+}

@@ -1,0 +1,16 @@
+{
+  String datasetName="dataset-test-get-own-config";
+  Path datasetPath=new Path(CONFIG_DIR_PATH,datasetName);
+  try {
+    this.fs.mkdirs(datasetPath);
+    this.fs.create(new Path(datasetPath,"main.conf")).close();
+    ConfigKeyPath datasetConfigKey=SingleLinkedListConfigKeyPath.ROOT.createChild(datasetName);
+    Config config=this.simpleHDFSConfigStore.getOwnConfig(datasetConfigKey,VERSION);
+    Assert.assertTrue(config.isEmpty());
+  }
+  finally {
+    if (this.fs.exists(datasetPath)) {
+      this.fs.delete(datasetPath,true);
+    }
+  }
+}

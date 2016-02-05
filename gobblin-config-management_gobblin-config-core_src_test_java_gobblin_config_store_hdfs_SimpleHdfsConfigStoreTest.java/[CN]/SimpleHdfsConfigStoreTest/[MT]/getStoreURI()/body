@@ -1,0 +1,6 @@
+{
+  URI storeURI=this.simpleHDFSConfigStore.getStoreURI();
+  Assert.assertEquals(storeURI.getScheme(),SimpleHDFSConfigStoreFactory.SIMPLE_HDFS_SCHEME_PREFIX + "file");
+  Assert.assertNull(storeURI.getAuthority());
+  Assert.assertEquals(storeURI.getPath(),System.getProperty("user.dir") + File.separator + CONFIG_DIR_NAME);
+}

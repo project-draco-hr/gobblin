@@ -1,0 +1,23 @@
+{
+  Preconditions.checkNotNull(configKey,"configKey cannot be null!");
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(version),"version cannot be null or empty!");
+  Path datasetDir=getDatasetDirForKey(configKey,version);
+  Path mainConfFile=new Path(datasetDir,MAIN_CONF_FILE_NAME);
+  try {
+    if (!this.fs.exists(mainConfFile)) {
+      return ConfigFactory.empty();
+    }
+    FileStatus configFileStatus=this.fs.getFileStatus(mainConfFile);
+    if (!configFileStatus.isDir()) {
+      try (InputStream mainConfInputStream=this.fs.open(configFileStatus.getPath())){
+        return ConfigFactory.parseReader(new InputStreamReader(mainConfInputStream));
+      }
+     }
+ else {
+      return ConfigFactory.empty();
+    }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(String.format("Error while getting config for configKey: \"%s\"",configKey),e);
+  }
+}

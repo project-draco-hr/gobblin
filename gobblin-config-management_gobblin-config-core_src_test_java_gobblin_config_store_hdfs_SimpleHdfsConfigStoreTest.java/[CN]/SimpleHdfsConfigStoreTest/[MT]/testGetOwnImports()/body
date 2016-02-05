@@ -1,0 +1,24 @@
+{
+  String datasetName="dataset-test-get-own-imports";
+  String tagKey1="/path/to/tag1";
+  String tagKey2="/path/to/tag2";
+  Path datasetPath=new Path(CONFIG_DIR_PATH,datasetName);
+  try {
+    this.fs.mkdirs(datasetPath);
+    BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(this.fs.create(new Path(datasetPath,"includes.conf")),Charsets.UTF_8));
+    writer.write(tagKey1);
+    writer.newLine();
+    writer.write(tagKey2);
+    writer.close();
+    ConfigKeyPath datasetConfigKey=SingleLinkedListConfigKeyPath.ROOT.createChild(datasetName);
+    List<ConfigKeyPath> imports=this.simpleHDFSConfigStore.getOwnImports(datasetConfigKey,VERSION);
+    Assert.assertEquals(imports.size(),2);
+    Assert.assertEquals(imports.get(0).getAbsolutePathString(),tagKey1);
+    Assert.assertEquals(imports.get(1).getAbsolutePathString(),tagKey2);
+  }
+  finally {
+    if (this.fs.exists(datasetPath)) {
+      this.fs.delete(datasetPath,true);
+    }
+  }
+}
