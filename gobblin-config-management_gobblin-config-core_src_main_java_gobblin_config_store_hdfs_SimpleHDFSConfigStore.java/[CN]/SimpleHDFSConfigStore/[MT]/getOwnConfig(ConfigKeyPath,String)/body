@@ -10,7 +10,7 @@
     FileStatus configFileStatus=this.fs.getFileStatus(mainConfFile);
     if (!configFileStatus.isDir()) {
       try (InputStream mainConfInputStream=this.fs.open(configFileStatus.getPath())){
-        return ConfigFactory.parseReader(new InputStreamReader(mainConfInputStream));
+        return ConfigFactory.parseReader(new InputStreamReader(mainConfInputStream,Charsets.UTF_8));
       }
      }
  else {
