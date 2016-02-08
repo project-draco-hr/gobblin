@@ -1,0 +1,18 @@
+{
+  List<JobListener> jobListeners=Lists.newArrayList(this.mandatoryJobListeners);
+  jobListeners.add(jobListener);
+  Set<String> jobListenerClassNames=jobState.getPropAsSet(ConfigurationKeys.JOB_LISTENERS_KEY,StringUtils.EMPTY);
+  if (jobListenerClassNames != null) {
+    for (    String jobListenerClassName : jobListenerClassNames) {
+      try {
+        @SuppressWarnings("unchecked") Class<? extends JobListener> jobListenerClass=(Class<? extends JobListener>)Class.forName(jobListenerClassName);
+        Constructor<? extends JobListener> jobListenerConstructor=jobListenerClass.getConstructor();
+        jobListeners.add(jobListenerConstructor.newInstance());
+      }
+ catch (      ClassNotFoundException|NoSuchMethodException|InstantiationException|IllegalAccessException|InvocationTargetException e) {
+        LOG.warn("JobListener %s could not be created due to %s",jobListenerClassName,e.getMessage());
+      }
+    }
+  }
+  return JobListeners.parallelJobListener(jobListeners);
+}

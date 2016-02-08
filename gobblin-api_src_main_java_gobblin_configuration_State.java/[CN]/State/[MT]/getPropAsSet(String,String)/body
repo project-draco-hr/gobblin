@@ -1,0 +1,3 @@
+{
+  return Sets.newHashSet(Splitter.on(",").trimResults().omitEmptyStrings().splitToList(getProp(key,def)));
+}
