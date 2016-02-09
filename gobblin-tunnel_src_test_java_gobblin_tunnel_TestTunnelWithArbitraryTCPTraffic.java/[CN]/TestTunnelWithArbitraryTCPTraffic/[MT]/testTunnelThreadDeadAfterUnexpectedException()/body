@@ -1,20 +1,23 @@
 {
-  MockServer proxyServer=startConnectProxyServer();
+  MockServer proxyServer=startConnectProxyServer(false,false,8);
   Tunnel tunnel=Tunnel.build("localhost",doubleEchoServer.getServerSocketPort(),"localhost",proxyServer.getServerSocketPort());
+  String response="";
   try {
     int tunnelPort=tunnel.getPort();
     SocketChannel client=SocketChannel.open();
     client.connect(new InetSocketAddress("localhost",tunnelPort));
     client.write(ByteBuffer.wrap("Knock\n".getBytes()));
-    String response1=readFromSocket(client);
-    client.write(ByteBuffer.wrap("Hello\n".getBytes()));
-    String response2=readFromSocket(client);
+    response=readFromSocket(client);
+    LOG.info(response);
+    for (int i=0; i < 5; i++) {
+      client.write(ByteBuffer.wrap("Hello\n".getBytes()));
+      Thread.sleep(100);
+    }
     client.close();
-    assertEquals(response1,"Knock Knock\n");
-    assertEquals(response2,"Hello Hello\n");
-    assertEquals(proxyServer.getNumConnects(),1);
   }
   finally {
+    assertNotEquals(response,"Knock Knock\n");
+    assertEquals(proxyServer.getNumConnects(),1);
     proxyServer.stopServer();
     tunnel.close();
     assertFalse(tunnel.isTunnelThreadAlive());

@@ -18,6 +18,7 @@
   finally {
     proxyServer.stopServer();
     tunnel.close();
+    assertFalse(tunnel.isTunnelThreadAlive());
     assertEquals(proxyServer.getNumConnects(),1);
   }
 }

@@ -60,7 +60,26 @@
   }
 .startThread());
   try {
-    IOUtils.copy(proxyToServerIn,clientToProxyOut);
+    if (nBytesToCloseSocketAfter > 0) {
+      int leftToRead=nBytesToCloseSocketAfter;
+      byte[] buffer=new byte[leftToRead + 256];
+      while (true) {
+        int numRead=proxyToServerIn.read(buffer,0,leftToRead);
+        if (numRead < 0) {
+          break;
+        }
+        clientToProxyOut.write(buffer,0,numRead);
+        clientToProxyOut.flush();
+        leftToRead-=numRead;
+        if (leftToRead <= 0) {
+          LOG.warn("Cutting connection after " + nBytesToCloseSocketAfter + " bytes");
+          break;
+        }
+      }
+    }
+ else {
+      IOUtils.copy(proxyToServerIn,clientToProxyOut);
+    }
   }
  catch (  IOException e) {
     LOG.warn("Exception " + e.getMessage() + " on "+ getServerSocketPort());

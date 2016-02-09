@@ -82,6 +82,7 @@
     if (tunnel != null) {
       proxyServer.stopServer();
       tunnel.close();
+      assertFalse(tunnel.isTunnelThreadAlive());
       assertEquals(proxyServer.getNumConnects(),nclients);
     }
     Map<String,String> hashOfMsgsRecvdAtServer=new HashMap<String,String>();

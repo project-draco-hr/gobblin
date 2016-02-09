@@ -9,7 +9,10 @@ case WRITING:
 break;
 }
 }
- catch (IOException ioe) {
+ catch (CancelledKeyException e) {
+LOG.warn("Encountered canceled key while " + state,e);
+}
+catch (IOException ioe) {
 closeChannels();
 throw new IOException(String.format("Could not read/write between %s and %s",proxy,client),ioe);
 }

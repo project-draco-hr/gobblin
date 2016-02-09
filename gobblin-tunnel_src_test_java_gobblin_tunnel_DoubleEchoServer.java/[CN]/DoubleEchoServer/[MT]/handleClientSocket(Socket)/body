@@ -1,14 +1,20 @@
 {
-  BufferedReader in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-  PrintWriter out=new PrintWriter(clientSocket.getOutputStream());
-  String line=in.readLine();
-  while (line != null && isServerRunning()) {
-    if (delay > 0) {
-      sleepQuietly(delay);
+  try {
+    BufferedReader in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+    PrintWriter out=new PrintWriter(clientSocket.getOutputStream());
+    String line=in.readLine();
+    while (line != null && isServerRunning()) {
+      if (delay > 0) {
+        sleepQuietly(delay);
+      }
+      out.println(line + " " + line);
+      out.flush();
+      line=in.readLine();
     }
-    out.println(line + " " + line);
-    out.flush();
-    line=in.readLine();
   }
-  clientSocket.close();
+ catch (  IOException ignored) {
+  }
+ finally {
+    clientSocket.close();
+  }
 }
