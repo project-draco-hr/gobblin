@@ -1,6 +1,6 @@
 {
   if (contains(key)) {
-    setProp(key,Joiner.on(",").join(getProp(key),value));
+    setProp(key,LIST_JOINER.join(getProp(key),value));
   }
  else {
     setProp(key,value);
