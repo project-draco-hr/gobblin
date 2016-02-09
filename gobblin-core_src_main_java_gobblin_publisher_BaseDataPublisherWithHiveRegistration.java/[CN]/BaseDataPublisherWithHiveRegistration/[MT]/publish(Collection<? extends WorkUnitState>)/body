@@ -1,0 +1,4 @@
+{
+  super.publish(states);
+  this.hivePublisher.publish(states);
+}

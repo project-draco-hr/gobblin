@@ -1,6 +1,6 @@
 {
-  Preconditions.checkArgument(props.contains(HIVE_REGISTRATION_POLICY));
-  String policyType=props.getProp(HIVE_REGISTRATION_POLICY);
+  Preconditions.checkArgument(props.contains(ConfigurationKeys.HIVE_REGISTRATION_POLICY));
+  String policyType=props.getProp(ConfigurationKeys.HIVE_REGISTRATION_POLICY);
   try {
     return (HiveRegistrationPolicy)ConstructorUtils.invokeConstructor(Class.forName(policyType),props);
   }
