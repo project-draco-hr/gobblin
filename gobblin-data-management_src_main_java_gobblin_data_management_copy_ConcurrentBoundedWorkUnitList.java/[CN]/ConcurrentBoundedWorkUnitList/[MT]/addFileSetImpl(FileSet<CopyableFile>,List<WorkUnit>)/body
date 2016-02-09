@@ -1,0 +1,31 @@
+{
+  if (this.currentSize + workUnits.size() > this.maxSize) {
+    if (this.comparator.compare(this.workUnitsMap.lastKey(),fileSet) <= 0) {
+      return false;
+    }
+    int tmpSize=this.currentSize;
+    Set<FileSet<CopyableFile>> partitionsToDelete=Sets.newHashSet();
+    for (    FileSet<CopyableFile> existingFileSet : this.workUnitsMap.descendingKeySet()) {
+      if (this.comparator.compare(existingFileSet,fileSet) <= 0) {
+        return false;
+      }
+      tmpSize-=this.workUnitsMap.get(existingFileSet).size();
+      partitionsToDelete.add(existingFileSet);
+      if (tmpSize + workUnits.size() <= this.maxSize) {
+        break;
+      }
+    }
+    for (    FileSet<CopyableFile> fileSetToRemove : partitionsToDelete) {
+      List<WorkUnit> workUnitsRemoved=this.workUnitsMap.remove(fileSetToRemove);
+      this.currentSize-=workUnitsRemoved.size();
+    }
+  }
+  if (!this.workUnitsMap.containsKey(fileSet)) {
+    this.workUnitsMap.put(fileSet,workUnits);
+  }
+ else {
+    this.workUnitsMap.get(fileSet).addAll(workUnits);
+  }
+  this.currentSize+=workUnits.size();
+  return true;
+}

@@ -1,3 +1,0 @@
-{
-  return new Partition<T>(this.name,ImmutableList.copyOf(this.files));
-}
