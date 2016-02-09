@@ -1,3 +1,0 @@
-{
-  return Boolean.valueOf(properties.getProperty(ConfigurationKeys.ADMIN_SERVER_ENABLED_KEY,Boolean.FALSE.toString()));
-}
