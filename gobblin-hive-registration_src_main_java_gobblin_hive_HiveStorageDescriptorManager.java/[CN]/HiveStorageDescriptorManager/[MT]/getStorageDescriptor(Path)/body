@@ -1,0 +1,17 @@
+{
+  StorageDescriptor sd=new StorageDescriptor();
+  sd.setCols(Lists.<FieldSchema>newArrayList());
+  sd.setSortCols(Lists.<Order>newArrayList());
+  sd.setNumBuckets(-1);
+  sd.setInputFormat(this.serDeWrapper.getInputFormatClassName());
+  sd.setOutputFormat(this.serDeWrapper.getOutputFormatClassName());
+  sd.setLocation(path.toString());
+  SerDeInfo si=new SerDeInfo();
+  si.setName(this.tableName);
+  si.setParameters(Maps.<String,String>newHashMap());
+  setParameters(si);
+  si.setSerializationLib(this.serDeWrapper.getSerDe().getClass().getName());
+  HiveSchemaManager.getInstance(this.rowFormat,this.props).addSchemaProperties(si,path);
+  sd.setSerdeInfo(si);
+  return sd;
+}

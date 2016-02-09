@@ -1,0 +1,4 @@
+{
+  this.partition=Optional.of(partition);
+  return (T)this;
+}

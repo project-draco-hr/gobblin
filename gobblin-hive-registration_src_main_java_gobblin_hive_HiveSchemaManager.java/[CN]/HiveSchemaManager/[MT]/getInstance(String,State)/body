@@ -1,0 +1,15 @@
+{
+  Optional<Implementation> implementation=Enums.getIfPresent(Implementation.class,type.toUpperCase());
+  if (implementation.isPresent()) {
+    try {
+      return (HiveSchemaManager)ConstructorUtils.invokeConstructor(Class.forName(implementation.get().toString()),props);
+    }
+ catch (    ReflectiveOperationException e) {
+      throw new RuntimeException("Unable to instantiate " + HiveSchemaManager.class.getSimpleName() + " with type "+ type,e);
+    }
+  }
+ else {
+    log.info(String.format("%s with type %s does not exist. Using %s",HiveSchemaManager.class.getSimpleName(),type,HiveNopSchemaManager.class.getSimpleName()));
+    return new HiveNopSchemaManager(props);
+  }
+}

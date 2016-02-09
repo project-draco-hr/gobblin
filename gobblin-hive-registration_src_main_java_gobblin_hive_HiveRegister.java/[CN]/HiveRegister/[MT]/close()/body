@@ -1,0 +1,21 @@
+{
+  try {
+    for (    Future<Void> future : this.futures) {
+      future.get();
+    }
+  }
+ catch (  InterruptedException e) {
+    throw new IOException(e);
+  }
+catch (  ExecutionException e) {
+    throw new IOException(e.getCause());
+  }
+ finally {
+    try {
+      this.clientPool.close();
+    }
+  finally {
+      ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log));
+    }
+  }
+}

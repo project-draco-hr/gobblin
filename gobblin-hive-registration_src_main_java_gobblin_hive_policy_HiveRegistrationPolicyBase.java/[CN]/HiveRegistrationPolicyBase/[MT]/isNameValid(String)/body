@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(name);
+  name=name.toLowerCase();
+  return VALID_DB_TABLE_NAME_PATTERN_1.matcher(name).matches() && VALID_DB_TABLE_NAME_PATTERN_2.matcher(name).matches();
+}
