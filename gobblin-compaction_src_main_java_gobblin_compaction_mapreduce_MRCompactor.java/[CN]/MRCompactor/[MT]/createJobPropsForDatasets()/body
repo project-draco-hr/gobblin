@@ -1,5 +1,8 @@
 {
-  for (  Dataset dataset : datasets) {
-    createJobPropsForDataset(dataset);
+  final Set<Dataset> datasetsWithProps=Sets.newHashSet();
+  for (  Dataset dataset : this.datasets) {
+    datasetsWithProps.addAll(createJobPropsForDataset(dataset));
   }
+  this.datasets.clear();
+  this.datasets.addAll(datasetsWithProps);
 }
