@@ -13,6 +13,6 @@
       initialConfig=initialConfig.withFallback(this.getResolvedConfig(p));
     }
   }
-  initialConfig=initialConfig.withFallback(this.getResolvedConfig(configKey.getParent()));
+  initialConfig=initialConfig.withFallback(this.getResolvedConfig(configKey.getParent())).resolve();
   return initialConfig;
 }

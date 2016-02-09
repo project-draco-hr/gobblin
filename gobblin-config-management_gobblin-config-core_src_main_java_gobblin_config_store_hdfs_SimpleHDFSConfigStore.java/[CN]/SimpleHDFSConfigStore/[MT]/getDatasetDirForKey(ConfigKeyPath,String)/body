@@ -1,3 +1,5 @@
 {
-  return new Path(getVersionRoot(version),getDatasetFromConfigKey(configKey));
+  String datasetFromConfigKey=getDatasetFromConfigKey(configKey);
+  if (datasetFromConfigKey == null || datasetFromConfigKey.trim().equals(""))   return getVersionRoot(version);
+  return new Path(getVersionRoot(version),datasetFromConfigKey);
 }
