@@ -1,0 +1,5 @@
+{
+  this.ensureDatabaseExists(database);
+  DatabaseJobHistoryStoreSchemaManager schemaManager=DatabaseJobHistoryStoreSchemaManager.builder().setDataSource(getJdbcUrl(database).toString(),USER,PASSWORD).setVersion(version).build();
+  schemaManager.migrate();
+}

@@ -1,0 +1,17 @@
+{
+  if (!isLocked.get()) {
+synchronized (syncObject) {
+      if (!isLocked.get()) {
+        if (fileChannel == null) {
+          Path lockPath=Paths.get(System.getProperty("user.home")).resolve(".embedmysql.lock");
+          fileChannel=FileChannel.open(lockPath,StandardOpenOption.CREATE,StandardOpenOption.WRITE,StandardOpenOption.READ);
+        }
+        fileLock=fileChannel.lock();
+        isLocked.set(true);
+        return true;
+      }
+      return true;
+    }
+  }
+  return true;
+}

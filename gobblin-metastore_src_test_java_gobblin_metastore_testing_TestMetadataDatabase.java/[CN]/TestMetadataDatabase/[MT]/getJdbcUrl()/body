@@ -1,0 +1,3 @@
+{
+  return this.testMetastoreDatabaseServer.getJdbcUrl(this.database).toString();
+}

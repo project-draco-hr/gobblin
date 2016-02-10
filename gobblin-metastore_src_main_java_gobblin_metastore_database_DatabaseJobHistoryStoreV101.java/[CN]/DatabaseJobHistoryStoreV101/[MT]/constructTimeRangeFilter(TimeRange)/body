@@ -1,0 +1,21 @@
+{
+  StringBuilder sb=new StringBuilder();
+  if (!timeRange.hasTimeFormat()) {
+    LOGGER.warn("Skipping the time range filter as there is no time format in: " + timeRange);
+    return "";
+  }
+  DateFormat dateFormat=new SimpleDateFormat(timeRange.getTimeFormat());
+  boolean hasStartTime=timeRange.hasStartTime();
+  if (hasStartTime) {
+    Timestamp startTimestamp=new Timestamp(dateFormat.parse(timeRange.getStartTime()).getTime());
+    sb.append("start_time>'").append(startTimestamp.toString()).append("'");
+  }
+  if (timeRange.hasEndTime()) {
+    if (hasStartTime) {
+      sb.append(" AND ");
+    }
+    Timestamp endTimestamp=new Timestamp(dateFormat.parse(timeRange.getEndTime()).getTime());
+    sb.append("end_time<'").append(endTimestamp.toString()).append("'");
+  }
+  return sb.toString();
+}

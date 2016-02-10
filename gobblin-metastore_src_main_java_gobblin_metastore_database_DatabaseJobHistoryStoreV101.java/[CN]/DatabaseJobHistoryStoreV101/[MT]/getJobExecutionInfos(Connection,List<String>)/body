@@ -1,0 +1,19 @@
+{
+  Map<String,JobExecutionInfo> jobExecutionInfos=Maps.newLinkedHashMap();
+  if (jobIds != null && jobIds.size() > 0) {
+    String template=String.format(JOB_EXECUTION_QUERY_BY_JOB_ID_STATEMENT_TEMPLATE,getInPredicate(jobIds.size()));
+    int index=1;
+    try (PreparedStatement jobExecutionQueryStatement=connection.prepareStatement(template)){
+      for (      String jobId : jobIds) {
+        jobExecutionQueryStatement.setString(index++,jobId);
+      }
+      try (ResultSet jobRs=jobExecutionQueryStatement.executeQuery()){
+        while (jobRs.next()) {
+          JobExecutionInfo jobExecutionInfo=resultSetToJobExecutionInfo(jobRs);
+          jobExecutionInfos.put(jobExecutionInfo.getJobId(),jobExecutionInfo);
+        }
+      }
+     }
+   }
+  return jobExecutionInfos;
+}

@@ -1,0 +1,5 @@
+{
+  this.testMetastoreDatabaseServer=testMetastoreDatabaseServer;
+  this.database=String.format("gobblin_%s",UUID.randomUUID().toString().replace("-",StringUtils.EMPTY));
+  this.resetDatabase(version);
+}

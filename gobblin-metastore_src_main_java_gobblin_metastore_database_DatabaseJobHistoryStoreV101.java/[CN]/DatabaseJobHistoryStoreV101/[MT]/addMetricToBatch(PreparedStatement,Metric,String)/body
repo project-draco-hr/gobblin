@@ -1,0 +1,14 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+  Preconditions.checkArgument(metric.hasGroup());
+  Preconditions.checkArgument(metric.hasName());
+  Preconditions.checkArgument(metric.hasType());
+  Preconditions.checkArgument(metric.hasValue());
+  int index=0;
+  upsertStatement.setString(++index,id);
+  upsertStatement.setString(++index,metric.getGroup());
+  upsertStatement.setString(++index,metric.getName());
+  upsertStatement.setString(++index,metric.getType().name());
+  upsertStatement.setString(++index,metric.getValue());
+  upsertStatement.addBatch();
+}

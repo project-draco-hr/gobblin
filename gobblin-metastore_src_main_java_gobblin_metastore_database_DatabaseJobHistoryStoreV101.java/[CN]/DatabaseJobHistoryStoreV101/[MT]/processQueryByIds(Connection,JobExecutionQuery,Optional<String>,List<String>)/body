@@ -1,0 +1,7 @@
+{
+  Map<String,JobExecutionInfo> jobExecutionInfos=getJobExecutionInfos(connection,jobIds);
+  addMetricsToJobExecutions(connection,query,jobExecutionInfos);
+  addPropertiesToJobExecutions(connection,query,jobExecutionInfos);
+  addTasksToJobExecutions(connection,query,tableFilter,jobExecutionInfos);
+  return ImmutableList.copyOf(jobExecutionInfos.values());
+}

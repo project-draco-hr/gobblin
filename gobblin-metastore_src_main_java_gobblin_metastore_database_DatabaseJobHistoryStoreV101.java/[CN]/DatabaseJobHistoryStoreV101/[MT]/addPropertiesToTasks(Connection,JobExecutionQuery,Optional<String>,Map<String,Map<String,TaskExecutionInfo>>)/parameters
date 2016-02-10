@@ -1,0 +1,4 @@
+Connection connection
+JobExecutionQuery query
+Optional<String> tableFilter
+Map<String,Map<String,TaskExecutionInfo>> taskExecutionInfos

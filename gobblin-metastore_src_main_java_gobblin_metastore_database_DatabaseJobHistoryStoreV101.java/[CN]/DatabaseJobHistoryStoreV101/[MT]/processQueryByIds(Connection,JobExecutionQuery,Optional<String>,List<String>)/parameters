@@ -1,0 +1,4 @@
+Connection connection
+JobExecutionQuery query
+Optional<String> tableFilter
+List<String> jobIds

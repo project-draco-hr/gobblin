@@ -1,0 +1,18 @@
+{
+  Preconditions.checkArgument(info.hasJobName());
+  Preconditions.checkArgument(info.hasJobId());
+  try (PreparedStatement upsertStatement=connection.prepareStatement(JOB_EXECUTION_UPSERT_STATEMENT_TEMPLATE)){
+    int index=0;
+    upsertStatement.setString(++index,info.getJobName());
+    upsertStatement.setString(++index,info.getJobId());
+    upsertStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : null,getCalendarUTCInstance());
+    upsertStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : null,getCalendarUTCInstance());
+    upsertStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
+    upsertStatement.setString(++index,info.hasState() ? info.getState().name() : null);
+    upsertStatement.setInt(++index,info.hasLaunchedTasks() ? info.getLaunchedTasks() : -1);
+    upsertStatement.setInt(++index,info.hasCompletedTasks() ? info.getCompletedTasks() : -1);
+    upsertStatement.setString(++index,info.hasLauncherType() ? info.getLauncherType().name() : null);
+    upsertStatement.setString(++index,info.hasTrackingUrl() ? info.getTrackingUrl() : null);
+    upsertStatement.executeUpdate();
+  }
+ }

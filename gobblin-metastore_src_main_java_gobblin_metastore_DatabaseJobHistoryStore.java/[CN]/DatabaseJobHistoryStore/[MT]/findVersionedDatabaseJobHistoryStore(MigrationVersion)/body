@@ -1,0 +1,25 @@
+{
+  Class<?> foundClazz=null;
+  Class<?> defaultClazz=null;
+  MigrationVersion defaultVersion=MigrationVersion.EMPTY;
+  Reflections reflections=new Reflections("gobblin.metastore.database",effectiveClassPathUrls(DatabaseJobHistoryStore.class.getClassLoader()));
+  for (  Class<?> clazz : Sets.intersection(reflections.getTypesAnnotatedWith(SupportedDatabaseVersion.class),reflections.getSubTypesOf(VersionedDatabaseJobHistoryStore.class))) {
+    SupportedDatabaseVersion annotation=clazz.getAnnotation(SupportedDatabaseVersion.class);
+    String version=annotation.version();
+    MigrationVersion actualVersion=MigrationVersion.fromVersion(Strings.isNullOrEmpty(version) ? null : version);
+    if (annotation.isDefault() && actualVersion.compareTo(defaultVersion) > 0) {
+      defaultClazz=clazz;
+      defaultVersion=actualVersion;
+    }
+    if (actualVersion.compareTo(requiredVersion) == 0) {
+      foundClazz=clazz;
+    }
+  }
+  if (foundClazz == null) {
+    foundClazz=defaultClazz;
+  }
+  if (foundClazz == null) {
+    throw new ClassNotFoundException(String.format("Could not find an instance of %s which supports database " + "version %s.",VersionedDatabaseJobHistoryStore.class.getSimpleName(),requiredVersion.toString()));
+  }
+  return (VersionedDatabaseJobHistoryStore)foundClazz.newInstance();
+}

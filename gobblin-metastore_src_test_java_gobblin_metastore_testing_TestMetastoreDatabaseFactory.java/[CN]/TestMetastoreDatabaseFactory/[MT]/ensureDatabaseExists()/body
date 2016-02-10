@@ -1,0 +1,9 @@
+{
+  if (testMetastoreDatabaseServer == null) {
+    try (Mutex ignored=new Mutex()){
+      if (testMetastoreDatabaseServer == null) {
+        testMetastoreDatabaseServer=new TestMetastoreDatabaseServer();
+      }
+    }
+   }
+}

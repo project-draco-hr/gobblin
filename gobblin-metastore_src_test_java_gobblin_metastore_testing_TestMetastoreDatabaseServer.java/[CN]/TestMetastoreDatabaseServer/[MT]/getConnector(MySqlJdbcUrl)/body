@@ -1,0 +1,7 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(ConfigurationKeys.JOB_HISTORY_STORE_URL_KEY,jdbcUrl.toString());
+  Injector injector=Guice.createInjector(new MetaStoreModule(properties));
+  DataSource dataSource=injector.getInstance(DataSource.class);
+  return Optional.of(dataSource.getConnection());
+}

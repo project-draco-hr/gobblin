@@ -1,0 +1,45 @@
+{
+  if (jobExecutionInfos.size() > 0) {
+    Set<String> propertyKeys=null;
+    if (query.hasJobProperties()) {
+      propertyKeys=Sets.newHashSet(Iterables.filter(Arrays.asList(query.getJobProperties().split(",")),new Predicate<String>(){
+        @Override public boolean apply(        String input){
+          return !Strings.isNullOrEmpty(input);
+        }
+      }
+));
+    }
+    if (propertyKeys == null || propertyKeys.size() > 0) {
+      String template=String.format(JOB_PROPERTY_QUERY_STATEMENT_TEMPLATE,getInPredicate(jobExecutionInfos.size()));
+      if (propertyKeys != null && propertyKeys.size() > 0) {
+        template+=String.format(" AND property_key IN (%s)",getInPredicate(propertyKeys.size()));
+      }
+      int index=1;
+      try (PreparedStatement jobPropertiesQueryStatement=connection.prepareStatement(template)){
+        for (        String jobId : jobExecutionInfos.keySet()) {
+          jobPropertiesQueryStatement.setString(index++,jobId);
+        }
+        if (propertyKeys != null && propertyKeys.size() > 0) {
+          for (          String propertyKey : propertyKeys) {
+            jobPropertiesQueryStatement.setString(index++,propertyKey);
+          }
+        }
+        try (ResultSet jobPropertiesRs=jobPropertiesQueryStatement.executeQuery()){
+          while (jobPropertiesRs.next()) {
+            String jobId=jobPropertiesRs.getString("job_id");
+            JobExecutionInfo jobExecutionInfo=jobExecutionInfos.get(jobId);
+            StringMap jobProperties=jobExecutionInfo.getJobProperties(GetMode.NULL);
+            if (jobProperties == null) {
+              jobProperties=new StringMap(Maps.<String,String>newHashMap());
+              jobExecutionInfo.setJobProperties(jobProperties);
+            }
+            Map.Entry<String,String> property=resultSetToProperty(jobPropertiesRs);
+            if (propertyKeys == null || propertyKeys.contains(property.getKey())) {
+              jobProperties.put(property.getKey(),property.getValue());
+            }
+          }
+        }
+       }
+     }
+  }
+}

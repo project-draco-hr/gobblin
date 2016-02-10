@@ -1,0 +1,3 @@
+{
+  return getBaseJdbcUrl().setPath(INFORMATION_SCHEMA).setUser(ROOT_USER);
+}

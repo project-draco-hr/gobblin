@@ -1,3 +1,5 @@
 {
-  this.dataSource=dataSource;
+  MigrationVersion databaseVersion=getDatabaseVersion(dataSource);
+  this.versionedStore=findVersionedDatabaseJobHistoryStore(databaseVersion);
+  this.versionedStore.init(dataSource);
 }

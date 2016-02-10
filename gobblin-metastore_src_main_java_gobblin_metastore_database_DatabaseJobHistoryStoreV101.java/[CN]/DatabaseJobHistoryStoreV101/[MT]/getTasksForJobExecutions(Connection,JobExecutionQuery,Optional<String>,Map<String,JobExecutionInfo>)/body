@@ -1,0 +1,25 @@
+{
+  Map<String,Map<String,TaskExecutionInfo>> taskExecutionInfos=Maps.newLinkedHashMap();
+  if (query.isIncludeTaskExecutions() && jobExecutionInfos.size() > 0) {
+    String template=String.format(TASK_EXECUTION_QUERY_STATEMENT_TEMPLATE,getInPredicate(jobExecutionInfos.size()));
+    if (tableFilter.isPresent() && !Strings.isNullOrEmpty(tableFilter.get())) {
+      template+=" AND " + tableFilter.get();
+    }
+    int index=1;
+    try (PreparedStatement taskExecutionQueryStatement=connection.prepareStatement(template)){
+      for (      String jobId : jobExecutionInfos.keySet()) {
+        taskExecutionQueryStatement.setString(index++,jobId);
+      }
+      try (ResultSet taskRs=taskExecutionQueryStatement.executeQuery()){
+        while (taskRs.next()) {
+          TaskExecutionInfo taskExecutionInfo=resultSetToTaskExecutionInfo(taskRs);
+          if (!taskExecutionInfos.containsKey(taskExecutionInfo.getJobId())) {
+            taskExecutionInfos.put(taskExecutionInfo.getJobId(),Maps.<String,TaskExecutionInfo>newLinkedHashMap());
+          }
+          taskExecutionInfos.get(taskExecutionInfo.getJobId()).put(taskExecutionInfo.getTaskId(),taskExecutionInfo);
+        }
+      }
+     }
+   }
+  return taskExecutionInfos;
+}

@@ -1,8 +1,8 @@
 {
-  this.jobHistoryStore.close();
-  try {
-    DriverManager.getConnection("jdbc:derby:memory:gobblin;shutdown=true");
+  if (this.jobHistoryStore != null) {
+    this.jobHistoryStore.close();
   }
- catch (  SQLException se) {
+  if (this.testMetastoreDatabase != null) {
+    this.testMetastoreDatabase.close();
   }
 }

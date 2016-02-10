@@ -1,0 +1,3 @@
+{
+  return getBaseJdbcUrl().setPath(database).setUser(USER).setPassword(PASSWORD).setParameter("useLegacyDatetimeCode","false").setParameter("rewriteBatchedStatements","true");
+}

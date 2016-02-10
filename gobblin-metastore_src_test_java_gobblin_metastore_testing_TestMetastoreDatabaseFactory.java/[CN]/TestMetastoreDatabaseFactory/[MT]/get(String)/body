@@ -1,0 +1,8 @@
+{
+synchronized (syncObject) {
+    ensureDatabaseExists();
+    TestMetadataDatabase instance=new TestMetadataDatabase(testMetastoreDatabaseServer,version);
+    instances.add(instance);
+    return instance;
+  }
+}

@@ -1,0 +1,4 @@
+{
+  builder.setHost(host);
+  return this;
+}

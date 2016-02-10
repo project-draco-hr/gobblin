@@ -1,0 +1,39 @@
+{
+  Preconditions.checkArgument(query.hasId() && query.hasIdType());
+  Optional<Connection> connectionOptional=Optional.absent();
+  try {
+    connectionOptional=Optional.of(getConnection());
+    Connection connection=connectionOptional.get();
+switch (query.getIdType()) {
+case JOB_ID:
+      List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
+    JobExecutionInfo jobExecutionInfo=processQueryById(connection,query.getId().getString(),query,Optional.<String>absent());
+  if (jobExecutionInfo != null) {
+    jobExecutionInfos.add(jobExecutionInfo);
+  }
+return jobExecutionInfos;
+case JOB_NAME:
+return processQueryByJobName(connection,query.getId().getString(),query,Optional.<String>absent());
+case TABLE:
+return processQueryByTable(connection,query);
+case LIST_TYPE:
+return processListQuery(connection,query);
+default :
+throw new IOException("Unsupported query ID type: " + query.getIdType().name());
+}
+}
+ catch (SQLException se) {
+LOGGER.error("Failed to execute query: " + query,se);
+throw new IOException(se);
+}
+ finally {
+if (connectionOptional.isPresent()) {
+try {
+connectionOptional.get().close();
+}
+ catch (SQLException se) {
+LOGGER.error("Failed to close connection",se);
+}
+}
+}
+}

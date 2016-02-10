@@ -1,0 +1,39 @@
+{
+  JobExecutionInfo jobExecutionInfo=new JobExecutionInfo();
+  jobExecutionInfo.setJobName(rs.getString("job_name"));
+  jobExecutionInfo.setJobId(rs.getString("job_id"));
+  try {
+    Timestamp startTime=rs.getTimestamp("start_time");
+    if (startTime != null) {
+      jobExecutionInfo.setStartTime(startTime.getTime());
+    }
+  }
+ catch (  SQLException se) {
+    jobExecutionInfo.setStartTime(0);
+  }
+  try {
+    Timestamp endTime=rs.getTimestamp("end_time");
+    if (endTime != null) {
+      jobExecutionInfo.setEndTime(endTime.getTime());
+    }
+  }
+ catch (  SQLException se) {
+    jobExecutionInfo.setEndTime(0);
+  }
+  jobExecutionInfo.setDuration(rs.getLong("duration"));
+  String state=rs.getString("state");
+  if (!Strings.isNullOrEmpty(state)) {
+    jobExecutionInfo.setState(JobStateEnum.valueOf(state));
+  }
+  jobExecutionInfo.setLaunchedTasks(rs.getInt("launched_tasks"));
+  jobExecutionInfo.setCompletedTasks(rs.getInt("completed_tasks"));
+  String launcherType=rs.getString("launcher_type");
+  if (!Strings.isNullOrEmpty(launcherType)) {
+    jobExecutionInfo.setLauncherType(LauncherTypeEnum.valueOf(launcherType));
+  }
+  String trackingUrl=rs.getString("tracking_url");
+  if (!Strings.isNullOrEmpty(trackingUrl)) {
+    jobExecutionInfo.setTrackingUrl(trackingUrl);
+  }
+  return jobExecutionInfo;
+}

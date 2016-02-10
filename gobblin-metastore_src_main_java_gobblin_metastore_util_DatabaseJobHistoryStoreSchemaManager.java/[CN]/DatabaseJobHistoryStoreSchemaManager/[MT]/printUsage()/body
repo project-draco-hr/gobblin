@@ -1,0 +1,4 @@
+{
+  System.err.println("Usage: migrate|info [configuration file]");
+  System.exit(1);
+}

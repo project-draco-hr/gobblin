@@ -1,0 +1,3 @@
+{
+  this.testMetastoreDatabaseServer.prepareDatabase(database,version);
+}

@@ -1,0 +1,6 @@
+{
+  if (!url.startsWith(PREFIX)) {
+    throw new MalformedURLException();
+  }
+  builder=new URIBuilder(url.substring(PREFIX.length()));
+}

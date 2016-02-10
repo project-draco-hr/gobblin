@@ -1,0 +1,4 @@
+{
+  builder=new URIBuilder();
+  builder.setScheme("mysql");
+}

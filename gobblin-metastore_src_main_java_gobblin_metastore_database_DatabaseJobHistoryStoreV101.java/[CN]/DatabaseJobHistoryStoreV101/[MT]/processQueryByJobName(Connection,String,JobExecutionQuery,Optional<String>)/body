@@ -1,0 +1,31 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(jobName));
+  String jobIdByNameQuery=JOB_ID_QUERY_BY_JOB_NAME_STATEMENT_TEMPLATE;
+  if (query.hasTimeRange()) {
+    try {
+      String timeRangeFilter=constructTimeRangeFilter(query.getTimeRange());
+      if (!Strings.isNullOrEmpty(timeRangeFilter)) {
+        jobIdByNameQuery+=" AND " + timeRangeFilter;
+      }
+    }
+ catch (    ParseException pe) {
+      LOGGER.error("Failed to parse the query time range",pe);
+      throw new SQLException(pe);
+    }
+  }
+  jobIdByNameQuery+=" ORDER BY created_ts DESC";
+  List<String> jobIds=Lists.newArrayList();
+  try (PreparedStatement queryStatement=connection.prepareStatement(jobIdByNameQuery)){
+    int limit=query.getLimit();
+    if (limit > 0) {
+      queryStatement.setMaxRows(limit);
+    }
+    queryStatement.setString(1,jobName);
+    try (ResultSet rs=queryStatement.executeQuery()){
+      while (rs.next()) {
+        jobIds.add(rs.getString(1));
+      }
+    }
+   }
+   return processQueryByIds(connection,query,tableFilter,jobIds);
+}
