@@ -7,17 +7,19 @@ synchronized (this.cancellationRequest) {
     this.cancellationRequest.notify();
   }
 synchronized (this.cancellationExecution) {
-    try (CloseableJobListener parallelJobListener=getParallelCombinedJobListener(jobListener)){
+    try {
       while (!this.cancellationExecuted) {
         this.cancellationExecution.wait();
       }
-      parallelJobListener.onJobCancellation(this.jobContext.getJobState());
+      notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_CANCEL,new JobListenerAction(){
+        @Override public void apply(        JobListener jobListener,        JobContext jobContext) throws Exception {
+          jobListener.onJobCancellation(jobContext);
+        }
+      }
+);
     }
  catch (    InterruptedException ie) {
       Thread.currentThread().interrupt();
-    }
-catch (    IOException e) {
-      throw new JobException("Failed to execute all JobListeners",e);
     }
   }
 }

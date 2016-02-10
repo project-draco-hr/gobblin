@@ -10,6 +10,12 @@
       this.eventSubmitter.submit(gobblin.metrics.event.EventNames.LOCK_IN_USE);
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
     }
+    notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_PREPARE,new JobListenerAction(){
+      @Override public void apply(      JobListener jobListener,      JobContext jobContext) throws Exception {
+        jobListener.onJobPrepare(jobContext);
+      }
+    }
+);
     if (this.jobContext.getSemantics() == DeliverySemantics.EXACTLY_ONCE) {
       executeUnfinishedCommitSequences(jobState.getJobName());
     }
@@ -33,6 +39,12 @@
     jobState.setStartTime(startTime);
     jobState.setState(JobState.RunningState.RUNNING);
     LOG.info("Starting job " + jobId);
+    notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_START,new JobListenerAction(){
+      @Override public void apply(      JobListener jobListener,      JobContext jobContext) throws Exception {
+        jobListener.onJobStart(jobContext);
+      }
+    }
+);
     TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_PREPARATION);
     prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
     workUnitsPreparationTimer.stop();
@@ -77,17 +89,23 @@
       break;
     }
   }
-  try (CloseableJobListener parallelJobListener=getParallelCombinedJobListener(jobListener)){
-    parallelJobListener.onJobCompletion(jobState);
+  notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_COMPLETE,new JobListenerAction(){
+    @Override public void apply(    JobListener jobListener,    JobContext jobContext) throws Exception {
+      jobListener.onJobCompletion(jobContext);
+    }
   }
- catch (  IOException ioe) {
-    throw new JobException("Failed to execute all JobListeners",ioe);
-  }
+);
   if (this.jobContext.getJobMetricsOptional().isPresent()) {
     this.jobContext.getJobMetricsOptional().get().stopMetricsReporting();
     JobMetrics.remove(jobState);
   }
   if (jobState.getState() == JobState.RunningState.FAILED) {
+    notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_FAILED,new JobListenerAction(){
+      @Override public void apply(      JobListener jobListener,      JobContext jobContext) throws Exception {
+        jobListener.onJobFailure(jobContext);
+      }
+    }
+);
     throw new JobException(String.format("Job %s failed",jobId));
   }
 }

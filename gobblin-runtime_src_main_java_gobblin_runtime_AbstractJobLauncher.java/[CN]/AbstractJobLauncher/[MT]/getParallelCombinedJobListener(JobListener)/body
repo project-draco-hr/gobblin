@@ -1,5 +1,0 @@
-{
-  List<JobListener> jobListeners=Lists.newArrayList(this.mandatoryJobListeners);
-  jobListeners.add(jobListener);
-  return JobListeners.parallelJobListener(jobListeners);
-}

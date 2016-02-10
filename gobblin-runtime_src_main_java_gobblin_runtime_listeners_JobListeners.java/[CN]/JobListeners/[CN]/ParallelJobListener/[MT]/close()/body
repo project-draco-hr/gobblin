@@ -1,0 +1,36 @@
+{
+  try {
+    boolean wasInterrupted=false;
+    IOException exception=null;
+    for (int i=0; i < this.jobListeners.size(); i++) {
+      try {
+        if (wasInterrupted) {
+          this.completionService.take().cancel(true);
+        }
+ else {
+          this.completionService.take().get();
+        }
+      }
+ catch (      InterruptedException ie) {
+        wasInterrupted=true;
+        if (exception == null) {
+          exception=new IOException(ie);
+        }
+      }
+catch (      ExecutionException ee) {
+        if (exception == null) {
+          exception=new IOException(ee.getCause());
+        }
+      }
+    }
+    if (wasInterrupted) {
+      Thread.currentThread().interrupt();
+    }
+    if (exception != null) {
+      throw exception;
+    }
+  }
+  finally {
+    ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(LOGGER));
+  }
+}
