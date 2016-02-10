@@ -1,0 +1,9 @@
+{
+  if (this.recursiveImportMap.containsKey(configKey)) {
+    return this.recursiveImportMap.get(configKey);
+  }
+  if (configKey.isRootPath()) {
+    return Collections.emptyList();
+  }
+  return getImportsRecursivelyIncludePhantomFromCache(configKey.getParent());
+}

@@ -1,0 +1,8 @@
+{
+  for (  Annotation annotation : cs.getClass().getDeclaredAnnotations()) {
+    if (annotation instanceof ConfigStoreWithStableVersioning) {
+      return true;
+    }
+  }
+  return false;
+}
