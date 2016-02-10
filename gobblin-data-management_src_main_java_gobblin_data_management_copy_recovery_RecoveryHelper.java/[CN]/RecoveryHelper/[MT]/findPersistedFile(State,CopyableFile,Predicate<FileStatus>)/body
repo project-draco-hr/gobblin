@@ -1,0 +1,12 @@
+{
+  if (!this.persistDir.isPresent() || !this.fs.exists(this.persistDir.get())) {
+    return Optional.absent();
+  }
+  Path glob=new Path(this.persistDir.get(),computeGuid(state,file) + "_*");
+  for (  FileStatus fileStatus : this.fs.globStatus(glob)) {
+    if (filter.apply(fileStatus)) {
+      return Optional.of(fileStatus);
+    }
+  }
+  return Optional.absent();
+}

@@ -2,7 +2,7 @@
   List<FileStatus> files=FileListUtils.listFilesRecursively(this.fs,this.rootPath,this.pathFilter);
   List<CopyableFile> copyableFiles=Lists.newArrayList();
   for (  FileStatus file : files) {
-    copyableFiles.add(CopyableFile.builder(this.fs,file,this.rootPath,configuration).build());
+    copyableFiles.add(CopyableFile.builder(this.fs,file,this.rootPath,configuration).fileSet(file.getPath().getParent().toString()).build());
   }
   return copyableFileFilter.filter(this.fs,targetFs,copyableFiles);
 }

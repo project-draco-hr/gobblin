@@ -1,3 +1,11 @@
 {
   this.jdbcSource.close();
+  if (this.dataConnection != null) {
+    try {
+      this.dataConnection.close();
+    }
+ catch (    SQLException e) {
+      log.error("Failed to close connection ;error-" + e.getMessage(),e);
+    }
+  }
 }

@@ -1,0 +1,4 @@
+Path path
+String nameKey
+String regexKey
+Optional<Pattern> pattern

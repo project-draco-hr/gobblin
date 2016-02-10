@@ -1,0 +1,9 @@
+{
+  Configuration conf=new Configuration();
+  JobConfigurationUtils.putPropertiesIntoConfiguration(props,conf);
+  Path storePath=new Path(storeUrl);
+  FileSystem fs=storePath.getFileSystem(conf);
+  String storeRootDir=storePath.toUri().getPath();
+  this.jobStateStore=new FsDatasetStateStore(fs,storeRootDir);
+  this.keepConfig=keepConfig;
+}

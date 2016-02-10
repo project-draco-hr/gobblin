@@ -1,0 +1,12 @@
+{
+  State state=new State();
+  if (!contains(HIVE_TABLE_PROPS)) {
+    return state;
+  }
+  for (  String tableProp : getPropAsList(HIVE_TABLE_PROPS)) {
+    List<String> tokens=SPLITTER.splitToList(tableProp);
+    Preconditions.checkState(tokens.size() == 2,tableProp + " is not a valid Hive table property");
+    state.setProp(tokens.get(0),tokens.get(1));
+  }
+  return state;
+}

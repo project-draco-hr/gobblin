@@ -1,0 +1,6 @@
+{
+  for (  List<String> partitionValues : allPartitionValues) {
+    register.dropPartitionIfExists(this.dbName,tableName,partitionValues);
+  }
+  return true;
+}

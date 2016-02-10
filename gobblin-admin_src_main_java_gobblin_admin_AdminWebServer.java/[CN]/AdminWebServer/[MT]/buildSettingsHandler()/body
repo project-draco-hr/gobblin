@@ -1,0 +1,14 @@
+{
+  final String responseTemplate="var Gobblin = window.Gobblin || {};" + "Gobblin.settings = {restServerUrl:\"%s\"}";
+  return new AbstractHandler(){
+    @Override public void handle(    String target,    Request baseRequest,    HttpServletRequest request,    HttpServletResponse response) throws IOException, ServletException {
+      if (request.getRequestURI().equals("/js/settings.js")) {
+        response.setContentType("application/javascript");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().println(String.format(responseTemplate,restServerUri.toString()));
+        baseRequest.setHandled(true);
+      }
+    }
+  }
+;
+}

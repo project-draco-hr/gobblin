@@ -1,0 +1,51 @@
+{
+  final AtomicBoolean flag=new AtomicBoolean();
+  final CountDownLatch latch1=new CountDownLatch(1);
+  final CountDownLatch latch2=new CountDownLatch(1);
+  Path src1=new Path("/src/file1.txt");
+  Path src2=new Path("/src/file2.txt");
+  FileSystem fs=Mockito.mock(FileSystem.class);
+  Mockito.when(fs.exists(src1)).thenReturn(true);
+  Mockito.when(fs.delete(src1,true)).thenAnswer(new Answer<Boolean>(){
+    @Override public Boolean answer(    InvocationOnMock invocation) throws Throwable {
+      latch1.countDown();
+      return false;
+    }
+  }
+);
+  Mockito.when(fs.exists(src2)).thenReturn(true);
+  Mockito.when(fs.delete(src2,true)).thenAnswer(new Answer<Boolean>(){
+    @Override public Boolean answer(    InvocationOnMock invocation) throws Throwable {
+      latch1.await();
+      long end=System.currentTimeMillis() + 70000;
+      while (System.currentTimeMillis() < end) {
+        try {
+          Thread.sleep(Math.max(1,end - System.currentTimeMillis()));
+        }
+ catch (        Exception ignored) {
+        }
+      }
+      flag.set(true);
+      latch2.countDown();
+      return true;
+    }
+  }
+);
+  boolean caughtException=false;
+  ParallelRunner parallelRunner=new ParallelRunner(2,fs);
+  try {
+    parallelRunner.deletePath(src1,true);
+    parallelRunner.deletePath(src2,true);
+    System.out.println(System.currentTimeMillis() + ": START - ParallelRunner.close()");
+    parallelRunner.close();
+  }
+ catch (  IOException e) {
+    caughtException=true;
+  }
+  Assert.assertTrue(caughtException);
+  System.out.println(System.currentTimeMillis() + ": END   - ParallelRunner.close()");
+  System.out.println(System.currentTimeMillis() + ": Waiting for unkillable task to finish...");
+  latch2.await();
+  System.out.println(System.currentTimeMillis() + ": Unkillable task completed.");
+  Assert.assertTrue(flag.get());
+}

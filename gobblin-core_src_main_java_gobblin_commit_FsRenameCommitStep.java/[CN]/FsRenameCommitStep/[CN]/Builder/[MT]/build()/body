@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(this.srcPath);
+  Preconditions.checkNotNull(this.dstPath);
+  return new FsRenameCommitStep(this);
+}

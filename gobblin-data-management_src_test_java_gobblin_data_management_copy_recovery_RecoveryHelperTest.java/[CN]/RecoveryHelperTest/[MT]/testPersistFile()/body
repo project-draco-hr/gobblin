@@ -1,0 +1,27 @@
+{
+  String content="contents";
+  File stagingDir=Files.createTempDir();
+  stagingDir.deleteOnExit();
+  File file=new File(stagingDir,"file");
+  OutputStream os=new FileOutputStream(file);
+  IOUtils.write(content,os);
+  os.close();
+  Assert.assertEquals(stagingDir.listFiles().length,1);
+  State state=new State();
+  state.setProp(RecoveryHelper.PERSIST_DIR_KEY,this.tmpDir.getAbsolutePath());
+  File recoveryDir=new File(RecoveryHelper.getPersistDir(state).get().toUri().getPath());
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  CopyableFile copyableFile=CopyableFile.builder(fs,new FileStatus(0,false,0,0,0,new Path("/file")),new Path("/dataset"),CopyConfiguration.builder().targetRoot(new Path("/target")).preserve(PreserveAttributes.fromMnemonicString("")).build()).build();
+  CopySource.setWorkUnitGuid(state,Guid.fromHasGuid(copyableFile));
+  RecoveryHelper recoveryHelper=new RecoveryHelper(FileSystem.getLocal(new Configuration()),state);
+  recoveryHelper.persistFile(state,copyableFile,new Path(file.getAbsolutePath()));
+  Assert.assertEquals(stagingDir.listFiles().length,0);
+  Assert.assertEquals(recoveryDir.listFiles().length,1);
+  File fileInRecovery=recoveryDir.listFiles()[0];
+  Assert.assertEquals(IOUtils.readLines(new FileInputStream(fileInRecovery)).get(0),content);
+  Optional<FileStatus> fileToRecover=recoveryHelper.findPersistedFile(state,copyableFile,Predicates.<FileStatus>alwaysTrue());
+  Assert.assertTrue(fileToRecover.isPresent());
+  Assert.assertEquals(fileToRecover.get().getPath().toUri().getPath(),fileInRecovery.getAbsolutePath());
+  fileToRecover=recoveryHelper.findPersistedFile(state,copyableFile,Predicates.<FileStatus>alwaysFalse());
+  Assert.assertFalse(fileToRecover.isPresent());
+}

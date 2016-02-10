@@ -1,0 +1,7 @@
+{
+  State state=new State();
+  Assert.assertFalse(RecoveryHelper.getPersistDir(state).isPresent());
+  state.setProp(RecoveryHelper.PERSIST_DIR_KEY,this.tmpDir.getAbsolutePath());
+  Assert.assertTrue(RecoveryHelper.getPersistDir(state).isPresent());
+  Assert.assertTrue(RecoveryHelper.getPersistDir(state).get().toUri().getPath().startsWith(this.tmpDir.getAbsolutePath()));
+}

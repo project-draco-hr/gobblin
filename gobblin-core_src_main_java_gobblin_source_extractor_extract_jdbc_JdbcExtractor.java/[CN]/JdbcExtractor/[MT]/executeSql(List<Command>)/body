@@ -21,8 +21,8 @@ this.log.info("Executing query:" + query);
 ResultSet resultSet=null;
 try {
 this.jdbcSource=createJdbcSource();
-Connection connection=this.jdbcSource.getConnection();
-Statement statement=connection.createStatement();
+this.dataConnection=this.jdbcSource.getConnection();
+Statement statement=this.dataConnection.createStatement();
 if (fetchSize != 0 && this.getExpectedRecordCount() > 2000) {
 statement.setFetchSize(fetchSize);
 }

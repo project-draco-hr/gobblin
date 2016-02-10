@@ -6,5 +6,8 @@
       results.put(key,get(key));
     }
   }
+  ResourceContext rc=this.getContext();
+  rc.setResponseHeader("Access-Control-Allow-Origin","*");
+  this.setContext(rc);
   return results;
 }

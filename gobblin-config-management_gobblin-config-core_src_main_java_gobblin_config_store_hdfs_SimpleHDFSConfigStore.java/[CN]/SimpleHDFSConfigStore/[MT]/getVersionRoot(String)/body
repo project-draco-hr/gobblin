@@ -1,0 +1,8 @@
+{
+  try {
+    return this.versions.get(version,new VersionRootLoader(version));
+  }
+ catch (  ExecutionException e) {
+    throw new RuntimeException(String.format("Error while checking if version \"%s\" for store \"%s\" exists",version,getStoreURI()),e);
+  }
+}

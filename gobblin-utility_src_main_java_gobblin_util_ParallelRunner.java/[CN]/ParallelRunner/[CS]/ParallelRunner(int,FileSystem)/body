@@ -1,4 +1,3 @@
 {
-  this.executor=Executors.newFixedThreadPool(threads,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("ParallelRunner")));
-  this.fs=fs;
+  this(threads,fs,FailPolicy.FAIL_ONE_FAIL_ALL);
 }

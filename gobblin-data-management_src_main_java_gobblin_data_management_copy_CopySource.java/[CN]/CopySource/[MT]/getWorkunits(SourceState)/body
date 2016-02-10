@@ -1,34 +1,30 @@
 {
-  List<WorkUnit> workUnits=Lists.newArrayList();
   CopyContext copyContext=new CopyContext();
   try {
-    DatasetFinder<CopyableDataset> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),getSourceFileSystem(state),DEFAULT_DATASET_PROFILE_CLASS_KEY);
-    List<CopyableDataset> copyableDatasets=datasetFinder.findDatasets();
+    FileSystem sourceFs=getSourceFileSystem(state);
     FileSystem targetFs=getTargetFileSystem(state);
+    DatasetFinder<CopyableDataset> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY);
+    List<CopyableDataset> copyableDatasets=datasetFinder.findDatasets();
+    ConcurrentBoundedWorkUnitList workUnitList=new ConcurrentBoundedWorkUnitList(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED),new AllEqualComparator<FileSet<CopyableFile>>());
+    ExecutorService executor=ScalingThreadPoolExecutor.newScalingThreadPool(0,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("Dataset-cleaner-pool-%d")));
+    ListeningExecutorService service=MoreExecutors.listeningDecorator(executor);
+    List<ListenableFuture<?>> futures=Lists.newArrayList();
     for (    CopyableDataset copyableDataset : copyableDatasets) {
       Path targetRoot=getTargetRoot(state,datasetFinder,copyableDataset);
-      CopyConfiguration copyConfiguration=new CopyConfiguration(targetRoot,PreserveAttributes.fromMnemonicString(state.getProp(PRESERVE_ATTRIBUTES_KEY)),copyContext);
-      Collection<CopyableFile> files=copyableDataset.getCopyableFiles(targetFs,copyConfiguration);
-      Collection<Partition<CopyableFile>> partitions=partitionCopyableFiles(files);
-      for (      Partition<CopyableFile> partition : partitions) {
-        Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,COPY_PREFIX,partition.getName());
-        for (        CopyableFile copyableFile : partition.getFiles()) {
-          WorkUnit workUnit=new WorkUnit(extract);
-          workUnit.addAll(state);
-          serializeCopyableFiles(workUnit,Lists.newArrayList(copyableFile));
-          serializeCopyableDataset(workUnit,new CopyableDatasetMetadata(copyableDataset,targetRoot));
-          GobblinMetrics.addCustomTagToState(workUnit,new Tag<String>(CopyEventSubmitterHelper.DATASET_ROOT_METADATA_NAME,copyableDataset.datasetRoot().toString()));
-          workUnit.setProp(SlaEventKeys.DATASET_URN_KEY,copyableDataset.datasetRoot().toString());
-          workUnit.setProp(SlaEventKeys.PARTITION_KEY,copyableFile.getFileSet());
-          workUnit.setProp(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY,copyableFile.getFileStatus().getModificationTime());
-          workUnits.add(workUnit);
-        }
+      futures.add(service.submit(new DatasetWorkUnitGenerator(copyableDataset,sourceFs,targetFs,state,targetRoot,copyContext,workUnitList)));
+    }
+    for (    ListenableFuture<?> future : futures) {
+      try {
+        future.get();
+      }
+ catch (      ExecutionException|InterruptedException exc) {
+        throw new IOException("Failed to generate work units.",exc);
       }
     }
+    log.info(String.format("Created %s workunits ",workUnitList.getWorkUnits().size()));
+    return Lists.newArrayList(workUnitList.getWorkUnits());
   }
  catch (  IOException e) {
     throw new RuntimeException(e);
   }
-  log.info(String.format("Created %s workunits",workUnits.size()));
-  return workUnits;
 }

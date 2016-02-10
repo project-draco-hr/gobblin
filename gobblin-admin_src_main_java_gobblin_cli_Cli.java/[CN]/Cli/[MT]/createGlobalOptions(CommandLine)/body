@@ -1,0 +1,13 @@
+{
+  String host=parsedOpts.hasOption(HOST_OPT) ? parsedOpts.getOptionValue(HOST_OPT) : DEFAULT_REST_SERVER_HOST;
+  int port=DEFAULT_REST_SERVER_PORT;
+  try {
+    if (parsedOpts.hasOption(PORT_OPT)) {
+      port=Integer.parseInt(parsedOpts.getOptionValue(PORT_OPT));
+    }
+  }
+ catch (  NumberFormatException e) {
+    printHelpAndExit("The port must be a valid integer.");
+  }
+  return new GlobalOptions(host,port);
+}

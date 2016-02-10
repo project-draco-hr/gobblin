@@ -1,0 +1,4 @@
+{
+  this.dstFs=dstFs;
+  return (T)this;
+}

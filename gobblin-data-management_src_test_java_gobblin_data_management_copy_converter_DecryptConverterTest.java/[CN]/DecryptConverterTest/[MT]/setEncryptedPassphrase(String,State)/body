@@ -2,8 +2,8 @@
   String masterPassword=UUID.randomUUID().toString();
   createMasterPwdFile(masterPassword);
   state.setProp(ConfigurationKeys.ENCRYPT_KEY_LOC,this.masterPwdFile.toString());
-  state.setProp(ConfigurationKeys.ENCRYPT_USE_STRONG_ENCRYPTOR,true);
-  StrongTextEncryptor encryptor=new StrongTextEncryptor();
+  state.setProp(ConfigurationKeys.ENCRYPT_USE_STRONG_ENCRYPTOR,false);
+  BasicTextEncryptor encryptor=new BasicTextEncryptor();
   encryptor.setPassword(masterPassword);
   String encrypted=encryptor.encrypt(plainPassphrase);
   state.setProp("converter.decrypt.passphrase","ENC(" + encrypted + ")");

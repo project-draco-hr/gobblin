@@ -1,0 +1,7 @@
+{
+  @SuppressWarnings("rawtypes") ConfigStoreFactory csf=configStoreFactoryRegister.getConfigStoreFactory(configKeyUri.getScheme());
+  if (csf == null) {
+    throw new ConfigStoreFactoryDoesNotExistsException(configKeyUri.getScheme(),"scheme name does not exists");
+  }
+  return (ConfigStoreFactory<ConfigStore>)csf;
+}

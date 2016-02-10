@@ -1,0 +1,10 @@
+{
+  CloseableHttpClient client=HttpClients.createDefault();
+  HttpGet getReq=new HttpGet(String.format("http://localhost:%s/",portNumber));
+  try (CloseableHttpResponse response=client.execute(getReq)){
+    assertEquals(200,response.getStatusLine().getStatusCode());
+    HttpEntity body=response.getEntity();
+    String bodyString=EntityUtils.toString(body);
+    assertStringContains("JOB SUMMARY",bodyString);
+  }
+ }

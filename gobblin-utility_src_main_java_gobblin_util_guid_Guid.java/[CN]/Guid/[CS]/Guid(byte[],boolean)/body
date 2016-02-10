@@ -1,0 +1,8 @@
+{
+  if (isSha) {
+    this.sha=bytes;
+  }
+ else {
+    this.sha=computeGuid(bytes);
+  }
+}

@@ -1,9 +1,9 @@
 {
-  this.futures.add(this.executor.submit(new Callable<Void>(){
+  this.futures.add(new NamedFuture(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
       SerializationUtils.deserializeState(fs,inputFilePath,state);
       return null;
     }
   }
-));
+),"Deserialize state from " + inputFilePath));
 }

@@ -1,0 +1,6 @@
+{
+  Set<Map.Entry<String,ConfigValue>> entrySet=config.entrySet();
+  for (  Map.Entry<String,ConfigValue> entry : entrySet) {
+    System.out.println("key: " + entry.getKey() + ", value: "+ entry.getValue());
+  }
+}

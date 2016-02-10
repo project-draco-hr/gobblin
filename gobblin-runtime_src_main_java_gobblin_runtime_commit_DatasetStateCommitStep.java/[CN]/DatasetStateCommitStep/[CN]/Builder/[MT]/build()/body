@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(this.datasetUrn);
+  Preconditions.checkNotNull(this.datasetState);
+  return new DatasetStateCommitStep(this);
+}

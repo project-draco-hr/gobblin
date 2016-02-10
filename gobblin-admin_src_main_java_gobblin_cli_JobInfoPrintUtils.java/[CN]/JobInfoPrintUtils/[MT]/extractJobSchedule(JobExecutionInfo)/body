@@ -1,0 +1,12 @@
+{
+  if (jobInfo.hasJobProperties() && jobInfo.getJobProperties().size() > 0) {
+    StringMap props=jobInfo.getJobProperties();
+    if (props.containsKey(ConfigurationKeys.JOB_RUN_ONCE_KEY) || !props.containsKey(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
+      return "RUN_ONCE";
+    }
+ else     if (props.containsKey(ConfigurationKeys.JOB_SCHEDULE_KEY)) {
+      return props.get(ConfigurationKeys.JOB_SCHEDULE_KEY);
+    }
+  }
+  return "UNKNOWN";
+}

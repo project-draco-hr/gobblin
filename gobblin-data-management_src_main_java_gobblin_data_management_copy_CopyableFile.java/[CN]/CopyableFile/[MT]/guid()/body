@@ -1,0 +1,7 @@
+{
+  StringBuilder uniqueString=new StringBuilder();
+  uniqueString.append(getFileStatus().getModificationTime());
+  uniqueString.append(getFileStatus().getLen());
+  uniqueString.append(getFileStatus().getPath());
+  return Guid.fromStrings(uniqueString.toString());
+}

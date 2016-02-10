@@ -1,0 +1,6 @@
+{
+  mockConfigStore=mock(ConfigStore.class,Mockito.RETURNS_SMART_NULLS);
+  URI configStorURI=new URI("etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest");
+  when(mockConfigStore.getCurrentVersion()).thenReturn(version);
+  when(mockConfigStore.getStoreURI()).thenReturn(configStorURI);
+}

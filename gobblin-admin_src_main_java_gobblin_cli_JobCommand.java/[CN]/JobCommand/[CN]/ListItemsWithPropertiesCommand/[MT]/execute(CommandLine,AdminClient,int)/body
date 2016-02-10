@@ -1,0 +1,22 @@
+{
+  try {
+    if (parsedOpts.hasOption(ID_OPT)) {
+      JobInfoPrintUtils.printJobProperties(adminClient.queryByJobId(parsedOpts.getOptionValue(ID_OPT)));
+    }
+ else     if (parsedOpts.hasOption(NAME_OPT)) {
+      List<JobExecutionInfo> infos=adminClient.queryByJobName(parsedOpts.getOptionValue(NAME_OPT),1);
+      if (infos.size() == 0) {
+        System.out.println("No job by that name found");
+      }
+ else {
+        JobInfoPrintUtils.printJobProperties(Optional.of(infos.get(0)));
+      }
+    }
+ else {
+      throw new CommandException("Please specify a job id or name");
+    }
+  }
+ catch (  RemoteInvocationException e) {
+    throw new CommandException("Error talking to adminServer: " + e.getMessage());
+  }
+}

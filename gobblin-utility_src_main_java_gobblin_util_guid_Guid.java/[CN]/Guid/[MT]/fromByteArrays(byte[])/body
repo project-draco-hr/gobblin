@@ -1,0 +1,13 @@
+{
+  if (byteArrays == null || byteArrays.length == 0) {
+    throw new IOException("Attempting to compute guid for an empty array.");
+  }
+  if (byteArrays.length == 1) {
+    return new Guid(byteArrays[0]);
+  }
+  byte[] tmp=new byte[0];
+  for (  byte[] arr : byteArrays) {
+    tmp=ArrayUtils.addAll(tmp,arr);
+  }
+  return new Guid(tmp);
+}

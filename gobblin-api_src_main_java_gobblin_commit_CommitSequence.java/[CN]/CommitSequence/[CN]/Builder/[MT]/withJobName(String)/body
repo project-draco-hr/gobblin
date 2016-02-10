@@ -1,0 +1,4 @@
+{
+  this.jobName=jobName;
+  return this;
+}

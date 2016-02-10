@@ -1,0 +1,3 @@
+{
+  return GSON.fromJson(string,TYPE_OF_HASHMAP);
+}

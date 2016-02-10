@@ -1,0 +1,4 @@
+{
+  Path jobPath=new Path(this.rootPath,jobName);
+  return this.fs.exists(jobPath);
+}

@@ -1,19 +1,8 @@
 {
-  fileAwareInputStream.getInputStream();
-  Path stagingFile=getStagingFilePath(fileAwareInputStream.getFile());
   CopyableFile copyableFile=fileAwareInputStream.getFile();
+  Path stagingFile=getStagingFilePath(copyableFile);
+  this.actualProcessedCopyableFile=Optional.of(copyableFile);
   this.fs.mkdirs(stagingFile.getParent());
-  short replication=copyableFile.getPreserve().preserve(PreserveAttributes.Option.REPLICATION) ? copyableFile.getOrigin().getReplication() : fs.getDefaultReplication(stagingFile);
-  long blockSize=copyableFile.getPreserve().preserve(PreserveAttributes.Option.BLOCK_SIZE) ? copyableFile.getOrigin().getBlockSize() : fs.getDefaultBlockSize(stagingFile);
-  FSDataOutputStream os=this.fs.create(stagingFile,true,fs.getConf().getInt("io.file.buffer.size",4096),replication,blockSize);
-  try {
-    this.bytesWritten.addAndGet(StreamUtils.copy(fileAwareInputStream.getInputStream(),os));
-    log.info("bytes written: " + this.bytesWritten.get() + " for file "+ fileAwareInputStream.getFile());
-  }
-  finally {
-    os.close();
-    fileAwareInputStream.getInputStream().close();
-  }
+  writeImpl(fileAwareInputStream.getInputStream(),stagingFile,copyableFile);
   this.filesWritten.incrementAndGet();
-  setFilePermissions(fileAwareInputStream.getFile());
 }

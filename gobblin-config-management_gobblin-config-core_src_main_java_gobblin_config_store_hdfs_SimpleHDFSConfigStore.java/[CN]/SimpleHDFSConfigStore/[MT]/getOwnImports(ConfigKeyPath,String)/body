@@ -1,0 +1,22 @@
+{
+  Preconditions.checkNotNull(configKey,"configKey cannot be null!");
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(version),"version cannot be null or empty!");
+  List<ConfigKeyPath> configKeyPaths=new ArrayList<>();
+  Path datasetDir=getDatasetDirForKey(configKey,version);
+  Path includesFile=new Path(datasetDir,INCLUDES_CONF_FILE_NAME);
+  try {
+    if (!this.fs.exists(includesFile)) {
+      return configKeyPaths;
+    }
+    FileStatus includesFileStatus=this.fs.getFileStatus(includesFile);
+    if (!includesFileStatus.isDir()) {
+      try (InputStream includesConfInStream=this.fs.open(includesFileStatus.getPath())){
+        configKeyPaths.addAll(Lists.newArrayList(Iterables.transform(IOUtils.readLines(includesConfInStream,Charsets.UTF_8),new IncludesToConfigKey())));
+      }
+     }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(String.format("Error while getting imports for configKey: \"%s\"",configKey),e);
+  }
+  return configKeyPaths;
+}

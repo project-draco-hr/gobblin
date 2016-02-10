@@ -1,0 +1,4 @@
+{
+  super(String.format(MESSAGE_FORMAT,scheme,e.toString()),e);
+  this.scheme=scheme;
+}

@@ -1,0 +1,4 @@
+{
+  Cli cli=new Cli(args);
+  cli.parseAndExecuteCommand();
+}

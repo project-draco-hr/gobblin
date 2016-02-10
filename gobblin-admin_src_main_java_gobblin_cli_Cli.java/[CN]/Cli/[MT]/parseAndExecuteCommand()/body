@@ -1,0 +1,24 @@
+{
+  CommandLineParser parser=new DefaultParser();
+  try {
+    CommandLine parsedOpts=parser.parse(this.options,this.args,true);
+    GlobalOptions globalOptions=createGlobalOptions(parsedOpts);
+    String[] remainingArgs=parsedOpts.getArgs();
+    if (remainingArgs.length == 0) {
+      printHelpAndExit("Command not specified!");
+    }
+    String commandName=remainingArgs[0].toLowerCase();
+    remainingArgs=remainingArgs.length > 1 ? Arrays.copyOfRange(remainingArgs,1,remainingArgs.length) : new String[]{};
+    Command command=commandList.get(commandName);
+    if (command == null) {
+      System.out.println("Command " + commandName + " not known.");
+      printHelpAndExit();
+    }
+ else {
+      command.execute(globalOptions,remainingArgs);
+    }
+  }
+ catch (  ParseException e) {
+    printHelpAndExit("Ran into an error parsing args.");
+  }
+}

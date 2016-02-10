@@ -25,8 +25,8 @@ this.log.info("Executing query:" + query);
 ResultSet resultSet=null;
 try {
 this.jdbcSource=createJdbcSource();
-Connection connection=this.jdbcSource.getConnection();
-PreparedStatement statement=connection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
+this.dataConnection=this.jdbcSource.getConnection();
+PreparedStatement statement=this.dataConnection.prepareStatement(query,ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_READ_ONLY);
 int parameterPosition=1;
 if (queryParameters != null && queryParameters.size() > 0) {
 for (String parameter : queryParameters) {

@@ -1,5 +1,26 @@
 {
-  log.info(String.format("Committing data from %s to %s",this.stagingDir,this.outputDir));
-  HadoopUtils.renameRecursively(this.fs,this.stagingDir,this.outputDir);
-  this.fs.delete(this.stagingDir,true);
+  CopyableFile copyableFile=this.actualProcessedCopyableFile.get();
+  Path stagingFilePath=getStagingFilePath(copyableFile);
+  Path outputFilePath=getOutputFilePath(copyableFile,this.outputDir,copyableFile.getDatasetAndPartition(this.copyableDatasetMetadata));
+  log.info(String.format("Committing data from %s to %s",stagingFilePath,outputFilePath));
+  try {
+    setFilePermissions(copyableFile);
+    Iterator<OwnerAndPermission> ancestorOwnerAndPermissionIt=copyableFile.getAncestorsOwnerAndPermission() == null ? Iterators.<OwnerAndPermission>emptyIterator() : copyableFile.getAncestorsOwnerAndPermission().iterator();
+    ensureDirectoryExists(this.fs,outputFilePath.getParent(),ancestorOwnerAndPermissionIt);
+    if (!this.fs.rename(stagingFilePath,outputFilePath)) {
+      throw new IOException(String.format("Could not commit file %s.",outputFilePath));
+    }
+  }
+ catch (  IOException ioe) {
+    this.recoveryHelper.persistFile(this.state,copyableFile,stagingFilePath);
+    throw ioe;
+  }
+ finally {
+    try {
+      this.fs.delete(this.stagingDir,true);
+    }
+ catch (    IOException ioe) {
+      log.warn("Failed to delete staging path at " + this.stagingDir);
+    }
+  }
 }

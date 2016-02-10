@@ -1,0 +1,11 @@
+{
+  if (str.length() != 2 * GUID_LENGTH) {
+    throw new IOException("String is not an encoded guid.");
+  }
+  try {
+    return new Guid(Hex.decodeHex(str.toCharArray()),true);
+  }
+ catch (  DecoderException de) {
+    throw new IOException(de);
+  }
+}

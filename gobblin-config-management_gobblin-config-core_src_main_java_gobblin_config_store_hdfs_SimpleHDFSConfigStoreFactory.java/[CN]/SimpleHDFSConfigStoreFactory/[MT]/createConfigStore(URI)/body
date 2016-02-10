@@ -1,0 +1,6 @@
+{
+  FileSystem fs=createFileSystem(configKey);
+  URI physicalStoreRoot=getStoreRoot(fs,configKey);
+  URI logicalStoreRoot=URI.create(SIMPLE_HDFS_SCHEME_PREFIX + physicalStoreRoot);
+  return new SimpleHDFSConfigStore(fs,physicalStoreRoot,logicalStoreRoot);
+}

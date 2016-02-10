@@ -1,0 +1,5 @@
+{
+  String o1Token=Splitter.on("-").limit(1).split(o1.getName()).iterator().next();
+  String o2Token=Splitter.on("-").limit(1).split(o2.getName()).iterator().next();
+  return o1Token.compareTo(o2Token);
+}

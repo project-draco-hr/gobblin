@@ -12,5 +12,8 @@
   }
   JobExecutionQueryResult result=new JobExecutionQueryResult();
   result.setJobExecutions(jobExecutionInfos);
+  ResourceContext rc=this.getContext();
+  rc.setResponseHeader("Access-Control-Allow-Origin","*");
+  this.setContext(rc);
   return result;
 }

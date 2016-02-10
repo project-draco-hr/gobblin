@@ -1,0 +1,7 @@
+{
+  boolean addedWorkunits=addFileSetImpl(fileSet,workUnits);
+  if (!addedWorkunits) {
+    this.rejectedFileSet=true;
+  }
+  return addedWorkunits;
+}

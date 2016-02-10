@@ -1,4 +1,0 @@
-{
-  this.sysConfig=sysConfig;
-  this.jobConfig=jobConfig;
-}

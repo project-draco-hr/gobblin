@@ -1,0 +1,4 @@
+{
+  this.configStoreFactoryMap.put(factory.getScheme(),factory);
+  LOG.info("Registered the config store factory with scheme name " + factory.getScheme());
+}

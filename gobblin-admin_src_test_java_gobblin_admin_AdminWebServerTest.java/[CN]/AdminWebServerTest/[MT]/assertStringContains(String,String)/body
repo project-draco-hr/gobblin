@@ -1,0 +1,3 @@
+{
+  assertTrue(String.format("Expected %s to contain %s",container,expected),container.contains(expected));
+}

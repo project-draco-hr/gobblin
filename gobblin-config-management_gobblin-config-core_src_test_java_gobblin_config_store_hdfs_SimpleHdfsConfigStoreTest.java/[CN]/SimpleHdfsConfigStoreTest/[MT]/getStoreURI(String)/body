@@ -1,0 +1,3 @@
+{
+  return new URI(SimpleHDFSConfigStoreFactory.SIMPLE_HDFS_SCHEME_PREFIX + "file","localhost:8080",configDir,"","");
+}

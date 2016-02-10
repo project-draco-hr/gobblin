@@ -1,0 +1,16 @@
+{
+  ConcurrentBoundedWorkUnitList list=new ConcurrentBoundedWorkUnitList(10,new NameComparator());
+  Assert.assertTrue(addFiles(list,"z-1",10));
+  Assert.assertEquals(list.getWorkUnits().size(),10);
+  Assert.assertFalse(addFiles(list,"z-2",5));
+  Assert.assertTrue(addFiles(list,"y-1",5));
+  Assert.assertEquals(list.getWorkUnits().size(),5);
+  Assert.assertTrue(addFiles(list,"z-3",2));
+  Assert.assertEquals(list.getWorkUnits().size(),7);
+  Assert.assertTrue(addFiles(list,"z-4",2));
+  Assert.assertEquals(list.getWorkUnits().size(),9);
+  Assert.assertTrue(addFiles(list,"y-2",4));
+  Assert.assertEquals(list.getWorkUnits().size(),9);
+  Assert.assertTrue(addFiles(list,"x-1",4));
+  Assert.assertEquals(list.getWorkUnits().size(),9);
+}

@@ -1,0 +1,16 @@
+{
+  Map<String,String> parameters=Maps.newHashMap();
+  parameters.put("EXTERNAL",Boolean.TRUE.toString());
+  Table table=new Table();
+  table.setParameters(parameters);
+  table.setDbName(dbName);
+  table.setTableName(tableName);
+  Preconditions.checkArgument(this.hiveOwner.isPresent(),"Missing required property " + HiveRegProps.HIVE_OWNER);
+  table.setOwner(this.hiveOwner.get());
+  table.setTableType(TableType.EXTERNAL_TABLE.toString());
+  if (partition.isPresent()) {
+    table.setPartitionKeys(partition.get().getKeys());
+  }
+  table.setSd(sd);
+  return table;
+}

@@ -1,0 +1,38 @@
+{
+  ConfigStoreFactoryRegister mockConfigStoreFactoryRegister;
+  ConfigStoreFactory mockConfigStoreFactory;
+  URI relativeURI=new URI("etl-hdfs:///data/databases/identity");
+  URI absoluteURI=new URI("etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/data/databases/identity");
+  when(mockConfigStore.getStoreURI()).thenReturn(new URI("etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest"));
+  mockConfigStoreFactory=mock(ConfigStoreFactory.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStoreFactory.getScheme()).thenReturn("etl-hdfs");
+  when(mockConfigStoreFactory.createConfigStore(absoluteURI)).thenReturn(mockConfigStore);
+  when(mockConfigStoreFactory.createConfigStore(relativeURI)).thenReturn(mockConfigStore);
+  mockConfigStoreFactoryRegister=mock(ConfigStoreFactoryRegister.class,Mockito.RETURNS_SMART_NULLS);
+  when(mockConfigStoreFactoryRegister.getConfigStoreFactory("etl-hdfs")).thenReturn(mockConfigStoreFactory);
+  ConfigClient client=new ConfigClient(VersionStabilityPolicy.STRONG_LOCAL_STABILITY,mockConfigStoreFactoryRegister);
+  Config resolved=client.getConfig(relativeURI);
+  checkValuesForIdentity(resolved);
+  resolved=client.getConfig(absoluteURI);
+  checkValuesForIdentity(resolved);
+  String[] expectedImportedBy={"etl-hdfs:/tag/espressoTag","etl-hdfs:/data/databases/identity"};
+  URI nertzTagURI=new URI("etl-hdfs:///tag2/nertzTag2");
+  Collection<URI> importedBy=client.getImportedBy(nertzTagURI,false);
+  Assert.assertEquals(importedBy.size(),1);
+  Assert.assertEquals(importedBy.iterator().next().toString(),expectedImportedBy[0]);
+  importedBy=client.getImportedBy(nertzTagURI,true);
+  Assert.assertEquals(importedBy.size(),2);
+  for (  URI u : importedBy) {
+    Assert.assertTrue(u.toString().equals(expectedImportedBy[0]) || u.toString().equals(expectedImportedBy[1]));
+  }
+  String[] expectedImportedBy_abs={"etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/tag/espressoTag","etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/data/databases/identity"};
+  nertzTagURI=new URI("etl-hdfs://eat1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/tag2/nertzTag2");
+  importedBy=client.getImportedBy(nertzTagURI,false);
+  Assert.assertEquals(importedBy.size(),1);
+  Assert.assertEquals(importedBy.iterator().next().toString(),expectedImportedBy_abs[0]);
+  importedBy=client.getImportedBy(nertzTagURI,true);
+  Assert.assertEquals(importedBy.size(),2);
+  for (  URI u : importedBy) {
+    Assert.assertTrue(u.toString().equals(expectedImportedBy_abs[0]) || u.toString().equals(expectedImportedBy_abs[1]));
+  }
+}

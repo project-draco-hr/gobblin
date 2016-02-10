@@ -1,0 +1,8 @@
+{
+  ResourceHandler staticResourceHandler=new ResourceHandler();
+  staticResourceHandler.setDirectoriesListed(true);
+  staticResourceHandler.setWelcomeFiles(new String[]{"index.html"});
+  String staticDir=getClass().getClassLoader().getResource("static").toExternalForm();
+  staticResourceHandler.setResourceBase(staticDir);
+  return staticResourceHandler;
+}

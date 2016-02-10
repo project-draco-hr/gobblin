@@ -1,0 +1,13 @@
+{
+  for (  List<String> partitionValues : this.allPartitionValues) {
+    try {
+      if (register.existsPartition(this.dbName,this.tableName,partitionValues)) {
+        return false;
+      }
+    }
+ catch (    IOException e) {
+      throw Throwables.propagate(e);
+    }
+  }
+  return true;
+}

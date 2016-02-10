@@ -7,7 +7,7 @@
 switch (query.getIdType()) {
 case JOB_ID:
       List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
-    JobExecutionInfo jobExecutionInfo=processQueryById(connection,query.getId().getString(),Optional.<String>absent());
+    JobExecutionInfo jobExecutionInfo=processQueryById(connection,query.getId().getString(),query,Optional.<String>absent());
   if (jobExecutionInfo != null) {
     jobExecutionInfos.add(jobExecutionInfo);
   }
@@ -16,6 +16,8 @@ case JOB_NAME:
 return processQueryByJobName(connection,query.getId().getString(),query,Optional.<String>absent());
 case TABLE:
 return processQueryByTable(connection,query);
+case LIST_TYPE:
+return processListQuery(connection,query);
 default :
 throw new IOException("Unsupported query ID type: " + query.getIdType().name());
 }

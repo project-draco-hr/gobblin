@@ -1,0 +1,5 @@
+{
+  this.configStore=cs;
+  this.valueInspector=valueInspector;
+  this.topologyInspector=topologyInspector;
+}

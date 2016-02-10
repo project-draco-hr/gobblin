@@ -1,0 +1,4 @@
+{
+  URI clientURI=new URI("etl-hdfs://ltx1-nertznn01.grid.linkedin.com:9000/user/mitu/HdfsBasedConfigTest/datasets/a1/a2");
+  ConfigClientUtils.buildConfigKeyPath(clientURI,mockConfigStore);
+}

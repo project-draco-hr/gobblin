@@ -1,0 +1,3 @@
+{
+  return Strings.isNullOrEmpty(datasetUrn) ? DEFAULT_DATASET_URN : HadoopUtils.sanitizePath(datasetUrn,"_");
+}

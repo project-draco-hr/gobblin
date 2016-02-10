@@ -1,0 +1,3 @@
+CommandLine parsedArgs
+AdminClient adminClient
+int resultsLimit

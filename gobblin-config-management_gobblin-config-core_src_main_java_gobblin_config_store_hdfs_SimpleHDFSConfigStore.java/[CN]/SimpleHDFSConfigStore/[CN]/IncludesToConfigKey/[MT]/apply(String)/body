@@ -1,0 +1,10 @@
+{
+  if (input == null) {
+    return null;
+  }
+  ConfigKeyPath configKey=SingleLinkedListConfigKeyPath.ROOT;
+  for (  String file : Splitter.on(SingleLinkedListConfigKeyPath.PATH_DELIMETER).omitEmptyStrings().split(input)) {
+    configKey=configKey.createChild(file);
+  }
+  return configKey;
+}

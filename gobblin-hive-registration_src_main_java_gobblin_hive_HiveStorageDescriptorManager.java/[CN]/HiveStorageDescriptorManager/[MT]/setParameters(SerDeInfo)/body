@@ -1,0 +1,6 @@
+{
+  State tableProps=this.props.getTableProps();
+  for (  String tablePropName : tableProps.getPropertyNames()) {
+    si.putToParameters(tablePropName,tableProps.getProp(tablePropName));
+  }
+}

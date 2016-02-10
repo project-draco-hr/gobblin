@@ -1,0 +1,3 @@
+{
+  return fileStatus1.getPath().getName().compareTo(fileStatus2.getPath().getName());
+}
