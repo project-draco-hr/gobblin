@@ -16,10 +16,10 @@
     client.close();
   }
   finally {
-    assertNotEquals(response,"Knock Knock\n");
-    assertEquals(proxyServer.getNumConnects(),1);
     proxyServer.stopServer();
     tunnel.close();
+    assertNotEquals(response,"Knock Knock\n");
+    assertEquals(proxyServer.getNumConnects(),1);
     assertFalse(tunnel.isTunnelThreadAlive());
   }
 }
