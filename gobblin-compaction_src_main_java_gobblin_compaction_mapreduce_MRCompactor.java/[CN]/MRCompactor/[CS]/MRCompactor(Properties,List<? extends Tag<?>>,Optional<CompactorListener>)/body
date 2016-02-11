@@ -12,6 +12,7 @@
   this.stopwatch=Stopwatch.createStarted();
   this.gobblinMetrics=initializeMetrics();
   this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.state.getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  this.compactorListener=compactorListener;
   this.dataVerifTimeoutMinutes=getDataVerifTimeoutMinutes();
   this.compactionTimeoutMinutes=getCompactionTimeoutMinutes();
   this.shouldVerifDataCompl=shouldVerifyDataCompleteness();

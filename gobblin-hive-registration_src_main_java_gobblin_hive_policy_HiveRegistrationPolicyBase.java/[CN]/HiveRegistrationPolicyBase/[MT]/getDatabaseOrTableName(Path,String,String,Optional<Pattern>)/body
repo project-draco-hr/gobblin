@@ -1,5 +1,5 @@
 {
-  String name=null;
+  String name;
   if (this.props.contains(nameKey)) {
     name=this.props.getProp(nameKey);
   }
