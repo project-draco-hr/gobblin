@@ -1,9 +1,9 @@
 {
   Preconditions.checkArgument(!datasetWorkUnitStates.isEmpty(),"publishFileSet received an empty collection work units. This is an error in code.");
   CopyableDatasetMetadata metadata=CopyableDatasetMetadata.deserialize(datasetWorkUnitStates.iterator().next().getProp(CopySource.SERIALIZED_COPYABLE_DATASET));
-  Path datasetWriterOutputPath=new Path(new Path(writerOutputDir,datasetAndPartition.identifier()),PathUtils.withoutLeadingSeparator(metadata.getDatasetTargetRoot()));
+  Path datasetWriterOutputPath=new Path(this.writerOutputDir,datasetAndPartition.identifier());
   log.info(String.format("Publishing fileSet from %s to %s",datasetWriterOutputPath,metadata.getDatasetTargetRoot()));
-  HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,metadata.getDatasetTargetRoot());
+  HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,findPathRoot(metadata.getDatasetTargetRoot()));
   fs.delete(datasetWriterOutputPath,true);
   long datasetOriginTimestamp=Long.MAX_VALUE;
   long datasetUpstreamTimestamp=Long.MAX_VALUE;
