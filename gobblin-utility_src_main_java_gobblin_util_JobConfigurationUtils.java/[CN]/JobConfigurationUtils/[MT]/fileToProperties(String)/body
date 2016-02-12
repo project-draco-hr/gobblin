@@ -1,6 +1,13 @@
 {
-  Path filePath=new Path(fileName);
   PropertiesConfiguration propsConfig=new PropertiesConfiguration();
-  propsConfig.load(filePath.getFileSystem(new Configuration()).open(filePath));
+  Configuration conf=new Configuration();
+  Path filePath=new Path(fileName);
+  URI fileURI=filePath.toUri();
+  if (fileURI.getScheme() == null && fileURI.getAuthority() == null) {
+    propsConfig.load(FileSystem.getLocal(conf).open(filePath));
+  }
+ else {
+    propsConfig.load(filePath.getFileSystem(conf).open(filePath));
+  }
   return ConfigurationConverter.getProperties(propsConfig);
 }
