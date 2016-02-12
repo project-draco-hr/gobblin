@@ -1,0 +1,5 @@
+{
+  super(state);
+  this.hiveRegister=this.closer.register(new HiveRegister(state));
+  this.policy=HiveRegistrationPolicyBase.getPolicy(state);
+}

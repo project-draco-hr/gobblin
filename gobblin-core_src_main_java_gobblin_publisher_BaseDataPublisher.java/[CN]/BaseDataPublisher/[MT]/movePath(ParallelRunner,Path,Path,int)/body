@@ -1,4 +1,5 @@
 {
   LOG.info(String.format("Moving %s to %s",src,dst));
+  this.publisherOutputDirs.addAll(recordPublisherOutputDirs(src,dst,branchId));
   parallelRunner.movePath(src,this.publisherFileSystemByBranches.get(branchId),dst,this.publisherFinalDirOwnerGroupsByBranches.get(branchId));
 }

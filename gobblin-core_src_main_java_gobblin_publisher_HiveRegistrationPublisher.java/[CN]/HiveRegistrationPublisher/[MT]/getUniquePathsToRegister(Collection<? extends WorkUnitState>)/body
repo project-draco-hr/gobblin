@@ -1,0 +1,9 @@
+{
+  Set<String> paths=Sets.newHashSet();
+  for (  State state : states) {
+    if (state.contains(ConfigurationKeys.PUBLISHER_DIRS)) {
+      paths.addAll(state.getPropAsList(ConfigurationKeys.PUBLISHER_DIRS));
+    }
+  }
+  return paths;
+}
