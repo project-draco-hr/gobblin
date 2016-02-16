@@ -1,0 +1,3 @@
+{
+  return "KafkaRecord [offset=" + offset + ", key="+ key+ ", payload="+ payload+ "]";
+}
