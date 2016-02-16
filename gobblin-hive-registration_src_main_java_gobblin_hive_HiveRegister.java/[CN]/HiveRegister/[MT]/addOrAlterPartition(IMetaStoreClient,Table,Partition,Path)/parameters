@@ -1,4 +1,4 @@
 IMetaStoreClient client
 Table table
-HivePartition partition
+Partition partition
 Path partitionLocation

@@ -12,12 +12,11 @@
             activity.execute(HiveRegister.this);
           }
         }
-        String dbName=spec.getDbName();
-        String tableName=spec.getTableName();
-        createDbIfNotExists(client,dbName);
-        Optional<HivePartition> partition=spec.getPartition();
-        Table table=createOrAlterTable(client,dbName,tableName,partition,spec.getSd());
-        if (!table.getPartitionKeys().isEmpty()) {
+        Table table=spec.getTable();
+        createDbIfNotExists(client,table.getDbName());
+        Optional<Partition> partition=spec.getPartition();
+        createOrAlterTable(client,table);
+        if (partition.isPresent()) {
           addOrAlterPartition(client,table,partition.get(),spec.getPath());
         }
         if (spec instanceof HiveSpecWithPostActivities) {

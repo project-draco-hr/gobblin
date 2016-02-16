@@ -1,7 +1,6 @@
 {
   this.props=new HiveRegProps(state);
   this.hiveDbRootDir=this.props.getDbRootDir();
-  this.hiveOwner=this.props.getHiveOwner();
   GenericObjectPoolConfig config=new GenericObjectPoolConfig();
   config.setMaxTotal(this.props.getNumThreads());
   config.setMaxIdle(this.props.getNumThreads());

@@ -1,0 +1,3 @@
+{
+  return ImmutableList.<HiveSpec>of(new SimpleHiveSpec.Builder<>(path).withTable(getTable(path)).withPartition(getPartition(path)).build());
+}

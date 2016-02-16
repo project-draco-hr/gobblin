@@ -1,7 +1,5 @@
 {
   this.path=builder.path;
-  this.dbName=builder.dbName;
-  this.tableName=builder.tableName;
+  this.table=builder.table;
   this.partition=builder.partition;
-  this.sd=builder.sd;
 }

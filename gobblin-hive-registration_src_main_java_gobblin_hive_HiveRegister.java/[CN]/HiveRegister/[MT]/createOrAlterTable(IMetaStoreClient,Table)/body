@@ -1,26 +1,24 @@
 {
-  Table newTable=createTableWithoutRegistering(dbName,tableName,partition,sd);
+  String dbName=table.getDbName();
+  String tableName=table.getTableName();
   HiveLock lock=locks.getTableLock(dbName,tableName);
   lock.lock();
   try {
     if (client.tableExists(dbName,tableName)) {
       Table existingTable=client.getTable(dbName,tableName);
-      newTable.setCreateTime(existingTable.getCreateTime());
-      newTable.setLastAccessTime(existingTable.getLastAccessTime());
-      if (needToUpdateTable(existingTable,newTable)) {
-        client.alter_table(dbName,tableName,newTable);
+      table.setCreateTime(existingTable.getCreateTime());
+      table.setLastAccessTime(existingTable.getLastAccessTime());
+      if (needToUpdateTable(existingTable,table)) {
+        client.alter_table(dbName,tableName,table);
         log.info(String.format("updated Hive table %s in db %s",tableName,dbName));
-        return newTable;
       }
  else {
         log.info(String.format("Hive table %s in db %s exists and no need to update",tableName,dbName));
-        return existingTable;
       }
     }
  else {
-      client.createTable(newTable);
+      client.createTable(table);
       log.info(String.format("Created Hive table %s in db %s",tableName,dbName));
-      return newTable;
     }
   }
  catch (  TException e) {
