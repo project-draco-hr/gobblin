@@ -1,0 +1,5 @@
+{
+  State state=new State(properties);
+  this.hiveRegister=new HiveRegister(state);
+  this.hiveRegistrationPolicy=HiveRegistrationPolicyBase.getPolicy(state);
+}

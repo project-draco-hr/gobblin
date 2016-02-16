@@ -8,7 +8,7 @@
       if (dataset.state() == VERIFIED || dataset.state() == UNVERIFIED) {
         allDatasetsCompleted=false;
         if (jobRunner == null || jobRunner.status() == ABORTED) {
-          runCompactionForDataset(dataset,dataset.state() == VERIFIED ? true : false);
+          runCompactionForDataset(dataset,dataset.state() == VERIFIED);
         }
       }
  else       if (dataset.state() == GIVEN_UP) {
