@@ -19,4 +19,7 @@
 catch (  ConfigurationException ce) {
     throw new IOException(ce);
   }
+catch (  URISyntaxException use) {
+    throw new IOException(use);
+  }
 }
