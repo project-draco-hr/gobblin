@@ -1,7 +1,0 @@
-{
-  Preconditions.checkNotNull(keys);
-  Preconditions.checkNotNull(values);
-  Preconditions.checkArgument(keys.size() >= 1 && keys.size() == values.size());
-  this.keys=ImmutableList.copyOf(keys);
-  this.values=ImmutableList.copyOf(values);
-}

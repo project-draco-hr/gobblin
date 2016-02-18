@@ -2,7 +2,9 @@
   try (HiveRegister hiveRegister=new HiveRegister(state)){
     HiveRegistrationPolicy policy=HiveRegistrationPolicyBase.getPolicy(state);
     for (    String path : paths) {
-      hiveRegister.register(policy.getHiveSpec(new Path(path)));
+      for (      HiveSpec spec : policy.getHiveSpecs(new Path(path))) {
+        hiveRegister.register(spec);
+      }
     }
   }
  }
