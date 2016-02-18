@@ -12,5 +12,5 @@
     relativePath=getRandomPath();
   }
   Path destinationRelativePath=new Path(relativePath);
-  return new CopyableFile(status,new Path(destinationPath),destinationRelativePath,ownerAndPermission,null,null,PreserveAttributes.fromMnemonicString(""),"",0,0);
+  return new CopyableFile(status,new Path(destinationPath),ownerAndPermission,null,null,PreserveAttributes.fromMnemonicString(""),"",0,0,Maps.<String,Object>newHashMap());
 }

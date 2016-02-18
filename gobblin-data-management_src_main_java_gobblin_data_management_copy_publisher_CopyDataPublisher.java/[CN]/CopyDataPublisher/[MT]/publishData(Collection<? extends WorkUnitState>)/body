@@ -7,7 +7,7 @@
     }
  catch (    Throwable e) {
       CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,datasetAndPartition);
-      log.error("Failed to publish " + datasetAndPartition.getDataset().getDatasetTargetRoot(),e);
+      log.error("Failed to publish " + datasetAndPartition.getDataset().getDatasetURN(),e);
       allDatasetsPublished=false;
     }
   }

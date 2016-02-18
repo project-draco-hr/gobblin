@@ -1,10 +1,11 @@
 {
   State state=getTestState("testPublishMultipleDatasets");
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,"/");
   Path testMethodTempPath=new Path(testClassTempPath,"testPublishMultipleDatasets");
   CopyDataPublisher copyDataPublisher=closer.register(new CopyDataPublisher(state));
-  TestDatasetManager dataset1Manager=new TestDatasetManager(testMethodTempPath,state,"dataset1TargetPath",ImmutableList.of("a/b, a/c, d/e"));
+  TestDatasetManager dataset1Manager=new TestDatasetManager(testMethodTempPath,state,"dataset1TargetPath",ImmutableList.of("a/b","a/c","d/e"));
   dataset1Manager.createDatasetFiles();
-  TestDatasetManager dataset2Manager=new TestDatasetManager(testMethodTempPath,state,"dataset2TargetPath",ImmutableList.of("a/b, a/c, d/e"));
+  TestDatasetManager dataset2Manager=new TestDatasetManager(testMethodTempPath,state,"dataset2TargetPath",ImmutableList.of("a/b","a/c","d/e"));
   dataset2Manager.createDatasetFiles();
   dataset1Manager.verifyDoesntExist();
   dataset2Manager.verifyDoesntExist();

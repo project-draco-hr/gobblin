@@ -22,12 +22,14 @@
   ancestorOwnerAndPermissions.add(ownerAndPermission);
   ancestorOwnerAndPermissions.add(ownerAndPermission);
   ancestorOwnerAndPermissions.add(ownerAndPermission);
-  CopyableFile cf=CopyableFile.builder(this.fs,status,new Path("/dataset"),CopyConfiguration.builder().targetRoot(new Path("/target")).preserve(PreserveAttributes.fromMnemonicString("")).build()).destination(destination).destinationOwnerAndPermission(ownerAndPermission).ancestorsOwnerAndPermission(ancestorOwnerAndPermissions).build();
+  Properties properties=new Properties();
+  properties.setProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,"/publisher");
+  CopyableFile cf=CopyableFile.fromOriginAndDestination(this.fs,status,destination,CopyConfiguration.builder(FileSystem.getLocal(new Configuration()),properties).publishDir(new Path("/target")).preserve(PreserveAttributes.fromMnemonicString("")).build()).destinationOwnerAndPermission(ownerAndPermission).ancestorsOwnerAndPermission(ancestorOwnerAndPermissions).build();
   WorkUnitState state=new WorkUnitState();
   state.setProp(ConfigurationKeys.WRITER_STAGING_DIR,stagingDir.toUri().getPath());
   state.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,outputDir.toUri().getPath());
   state.setProp(ConfigurationKeys.WRITER_FILE_PATH,RandomStringUtils.randomAlphabetic(5));
-  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(new TestCopyableDataset(new Path("/source")),new Path("/"));
+  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(new TestCopyableDataset(new Path("/source")));
   CopySource.serializeCopyableFile(state,cf);
   CopySource.serializeCopyableDataset(state,metadata);
   FileAwareInputStreamDataWriter writer=new FileAwareInputStreamDataWriter(state,1,0);

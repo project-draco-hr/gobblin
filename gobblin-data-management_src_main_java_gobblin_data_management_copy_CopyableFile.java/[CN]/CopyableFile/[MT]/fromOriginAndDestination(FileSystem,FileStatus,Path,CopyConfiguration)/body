@@ -1,0 +1,3 @@
+{
+  return _hiddenBuilder().originFS(originFs).origin(origin).destination(destination).configuration(copyConfiguration).preserve(copyConfiguration.getPreserve());
+}

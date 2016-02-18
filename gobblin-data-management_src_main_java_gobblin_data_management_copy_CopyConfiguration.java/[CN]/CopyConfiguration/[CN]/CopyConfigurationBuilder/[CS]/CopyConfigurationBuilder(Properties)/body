@@ -1,5 +1,0 @@
-{
-  this.targetGroup=properties.containsKey(DESTINATION_GROUP_KEY) ? Optional.of(properties.getProperty(DESTINATION_GROUP_KEY)) : Optional.<String>absent();
-  this.preserve=PreserveAttributes.fromMnemonicString(properties.getProperty(PRESERVE_ATTRIBUTES_KEY));
-  this.copyContext=new CopyContext();
-}
