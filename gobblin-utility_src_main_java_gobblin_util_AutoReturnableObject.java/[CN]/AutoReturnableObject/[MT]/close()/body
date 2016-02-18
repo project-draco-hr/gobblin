@@ -1,0 +1,8 @@
+{
+  try {
+    this.pool.returnObject(this.object);
+  }
+ catch (  Exception exc) {
+    throw new IOException(exc);
+  }
+}

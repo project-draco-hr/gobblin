@@ -1,0 +1,23 @@
+{
+  List<CopyableFile> copyableFiles=Lists.newArrayList();
+  try (AutoReturnableObject<IMetaStoreClient> client=new AutoReturnableObject<>(this.clientPool)){
+    if (isPartitioned()) {
+      List<Partition> partitions=client.get().listPartitions(this.table.getDbName(),this.table.getTableName(),Short.MAX_VALUE);
+      for (      Partition partition : partitions) {
+        StorageDescriptor storage=partition.getSd();
+        for (        CopyableFile.Builder builder : getCopyableFilesFromStorageDescriptor(storage,configuration,Optional.of(partition))) {
+          copyableFiles.add(builder.fileSet(gson.toJson(partition.getValues())).build());
+        }
+      }
+    }
+ else {
+      for (      CopyableFile.Builder builder : getCopyableFilesFromStorageDescriptor(this.table.getSd(),configuration,Optional.<Partition>absent())) {
+        copyableFiles.add(builder.build());
+      }
+    }
+  }
+ catch (  TException te) {
+    throw new IOException(te);
+  }
+  return copyableFiles;
+}

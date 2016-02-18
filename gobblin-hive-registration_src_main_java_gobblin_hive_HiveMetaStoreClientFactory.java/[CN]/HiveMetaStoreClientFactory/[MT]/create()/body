@@ -1,6 +1,6 @@
 {
   try {
-    return new HiveMetaStoreClient(new HiveConf());
+    return new HiveMetaStoreClient(this.hiveConf);
   }
  catch (  MetaException e) {
     throw new RuntimeException("Unable to create " + IMetaStoreClient.class.getSimpleName(),e);

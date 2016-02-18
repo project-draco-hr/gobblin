@@ -1,0 +1,7 @@
+{
+  List<HiveDataset> datasets=Lists.newArrayList();
+  for (  Table table : getTables(this.db,this.tablePattern)) {
+    datasets.add(new HiveDataset(this.fs,this.clientPool,table,this.properties));
+  }
+  return datasets;
+}
