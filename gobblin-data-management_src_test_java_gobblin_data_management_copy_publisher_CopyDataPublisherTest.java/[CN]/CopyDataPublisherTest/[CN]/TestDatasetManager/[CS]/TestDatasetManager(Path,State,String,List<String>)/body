@@ -7,7 +7,7 @@
   this.targetPath=new Path(testMethodTempPath,datasetTargetPath);
   FileStatus file=new FileStatus(0,false,0,0,0,new Path("/file"));
   FileSystem fs=FileSystem.getLocal(new Configuration());
-  this.copyableFile=CopyableFile.fromOriginAndDestination(fs,file,new Path("/destination"),CopyConfiguration.builder(fs,state.getProperties()).preserve(PreserveAttributes.fromMnemonicString("")).build()).build();
+  this.copyEntity=CopyableFile.fromOriginAndDestination(fs,file,new Path("/destination"),CopyConfiguration.builder(fs,state.getProperties()).preserve(PreserveAttributes.fromMnemonicString("")).build()).build();
   fs.mkdirs(testMethodTempPath);
   log.info("Created a temp directory for test at " + testMethodTempPath);
 }

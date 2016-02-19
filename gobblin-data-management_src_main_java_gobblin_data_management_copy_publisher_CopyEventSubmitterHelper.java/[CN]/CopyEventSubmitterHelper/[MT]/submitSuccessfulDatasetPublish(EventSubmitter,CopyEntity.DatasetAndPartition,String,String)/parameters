@@ -1,0 +1,4 @@
+EventSubmitter eventSubmitter
+CopyEntity.DatasetAndPartition datasetAndPartition
+String originTimestamp
+String upstreamTimestamp

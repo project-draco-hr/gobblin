@@ -1,3 +1,0 @@
-StorageDescriptor storageDescriptor
-CopyConfiguration configuration
-Optional<Partition> partition

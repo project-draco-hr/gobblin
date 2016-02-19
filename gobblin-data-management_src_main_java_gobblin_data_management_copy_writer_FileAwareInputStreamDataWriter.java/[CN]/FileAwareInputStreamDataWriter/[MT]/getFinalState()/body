@@ -1,8 +1,9 @@
 {
   try {
     State state=new State();
-    CopySource.serializeCopyableFile(state,this.actualProcessedCopyableFile.get());
-    state.setProp("did.i.actually.write.props","yes");
+    if (this.actualProcessedCopyableFile.isPresent()) {
+      CopySource.serializeCopyEntity(state,this.actualProcessedCopyableFile.get());
+    }
     ConstructState constructState=new ConstructState();
     constructState.addOverwriteProperties(state);
     return constructState;

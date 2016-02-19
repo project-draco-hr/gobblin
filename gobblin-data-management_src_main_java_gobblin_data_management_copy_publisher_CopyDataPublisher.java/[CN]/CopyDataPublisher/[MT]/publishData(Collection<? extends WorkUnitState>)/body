@@ -1,7 +1,7 @@
 {
-  Multimap<CopyableFile.DatasetAndPartition,WorkUnitState> datasets=groupByFileSet(states);
+  Multimap<CopyEntity.DatasetAndPartition,WorkUnitState> datasets=groupByFileSet(states);
   boolean allDatasetsPublished=true;
-  for (  CopyableFile.DatasetAndPartition datasetAndPartition : datasets.keySet()) {
+  for (  CopyEntity.DatasetAndPartition datasetAndPartition : datasets.keySet()) {
     try {
       this.publishFileSet(datasetAndPartition,datasets.get(datasetAndPartition));
     }

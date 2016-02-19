@@ -4,7 +4,7 @@
     FileSystem targetFs=getTargetFileSystem(state);
     DatasetFinder<CopyableDataset> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY);
     List<CopyableDataset> copyableDatasets=datasetFinder.findDatasets();
-    ConcurrentBoundedWorkUnitList workUnitList=new ConcurrentBoundedWorkUnitList(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED),new AllEqualComparator<FileSet<CopyableFile>>());
+    ConcurrentBoundedWorkUnitList workUnitList=new ConcurrentBoundedWorkUnitList(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED),new AllEqualComparator<FileSet<CopyEntity>>());
     ExecutorService executor=ScalingThreadPoolExecutor.newScalingThreadPool(0,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("Dataset-cleaner-pool-%d")));
     ListeningExecutorService service=MoreExecutors.listeningDecorator(executor);
     List<ListenableFuture<?>> futures=Lists.newArrayList();

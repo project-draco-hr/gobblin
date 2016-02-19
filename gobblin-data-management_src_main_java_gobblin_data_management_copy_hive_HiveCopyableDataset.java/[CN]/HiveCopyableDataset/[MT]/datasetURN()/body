@@ -1,3 +1,0 @@
-{
-  return this.table.getDbName() + "." + this.table.getTableName();
-}

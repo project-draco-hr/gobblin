@@ -1,6 +1,0 @@
-{
-  for (  String partitionValue : partition.getValues()) {
-    path=new Path(path,partitionValue);
-  }
-  return path;
-}

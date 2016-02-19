@@ -12,4 +12,6 @@
   StateStore<JobState.DatasetState> datasetStateStore=new FsStateStore<>(this.launcherProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY),this.launcherProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY),JobState.DatasetState.class);
   this.jobLauncherTestHelper=new JobLauncherTestHelper(this.launcherProps,datasetStateStore);
   this.jobLauncherTestHelper.prepareJobHistoryStoreDatabase(this.launcherProps);
+  String outputDir=this.launcherProps.getProperty(ConfigurationKeys.WRITER_OUTPUT_DIR);
+  FileUtils.deleteDirectory(new File(outputDir));
 }

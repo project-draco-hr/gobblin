@@ -1,0 +1,3 @@
+{
+  return GSON.fromJson(serialized,CopyEntity.class);
+}
