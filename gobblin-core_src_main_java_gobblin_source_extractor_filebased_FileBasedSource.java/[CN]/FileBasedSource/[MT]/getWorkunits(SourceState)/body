@@ -16,7 +16,7 @@
   TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
   List<WorkUnitState> previousWorkunits=Lists.newArrayList(state.getPreviousWorkUnitStates());
   List<String> prevFsSnapshot=Lists.newArrayList();
-  if (!previousWorkunits.isEmpty() && previousWorkunits.get(0).getWorkunit().contains(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT)) {
+  if (!previousWorkunits.isEmpty() && previousWorkunits.get(0).getWorkunit().contains(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT) && state.getPropAsBoolean(ConfigurationKeys.SKIP_PREVIOUS_WATERMARK,ConfigurationKeys.DEFAULT_SKIP_PREVIOUS_WATERMARK)) {
     prevFsSnapshot=previousWorkunits.get(0).getWorkunit().getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT);
   }
   List<String> currentFsSnapshot=this.getcurrentFsSnapshot(state);
