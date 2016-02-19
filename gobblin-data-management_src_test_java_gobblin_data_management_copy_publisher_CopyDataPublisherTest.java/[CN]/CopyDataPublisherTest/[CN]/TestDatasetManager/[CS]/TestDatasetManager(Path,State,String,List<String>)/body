@@ -1,11 +1,13 @@
 {
   this.fs=FileSystem.getLocal(new Configuration());
   this.copyableDataset=new TestCopyableDataset(new Path("origin"));
-  this.metadata=new CopyableDatasetMetadata(this.copyableDataset,new Path(testMethodTempPath,datasetTargetPath));
+  this.metadata=new CopyableDatasetMetadata(this.copyableDataset);
   this.relativeFilePaths=relativeFilePaths;
   this.writerOutputPath=new Path(state.getProp(ConfigurationKeys.WRITER_OUTPUT_DIR));
+  this.targetPath=new Path(testMethodTempPath,datasetTargetPath);
   FileStatus file=new FileStatus(0,false,0,0,0,new Path("/file"));
-  this.copyableFile=CopyableFile.builder(FileSystem.getLocal(new Configuration()),file,new Path("/"),CopyConfiguration.builder().targetRoot(new Path("/")).preserve(PreserveAttributes.fromMnemonicString("")).build()).build();
+  FileSystem fs=FileSystem.getLocal(new Configuration());
+  this.copyableFile=CopyableFile.fromOriginAndDestination(fs,file,new Path("/destination"),CopyConfiguration.builder(fs,state.getProperties()).preserve(PreserveAttributes.fromMnemonicString("")).build()).build();
   fs.mkdirs(testMethodTempPath);
   log.info("Created a temp directory for test at " + testMethodTempPath);
 }

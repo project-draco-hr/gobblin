@@ -4,7 +4,7 @@
   DeletingCopyDataPublisher copyDataPublisher=closer.register(new DeletingCopyDataPublisher(state));
   WorkUnitState wus=new WorkUnitState();
   CopyableDataset copyableDataset=new TestCopyableDataset(new Path("origin"));
-  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset,new Path(testMethodTempPath,"testdataset"));
+  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset);
   CopyableFile cf=CopyableFileUtils.createTestCopyableFile(new Path(testMethodTempPath,"test.txt").toString());
   CopySource.serializeCopyableDataset(wus,metadata);
   CopySource.serializeCopyableFile(wus,cf);

@@ -1,4 +1,7 @@
 {
+  if (!this.destination.isAbsolute()) {
+    throw new IOException("Destination must be absolute: " + this.destination);
+  }
   if (this.destinationOwnerAndPermission == null) {
     String owner=this.preserve.preserve(Option.OWNER) ? this.origin.getOwner() : null;
     String group=null;
@@ -19,7 +22,7 @@
     this.checksum=checksumTmp == null ? new byte[0] : checksumTmp.getBytes();
   }
   if (this.fileSet == null) {
-    this.fileSet=this.rootPath.toString();
+    this.fileSet="";
   }
   if (this.originTimestamp == 0) {
     this.originTimestamp=origin.getModificationTime();
@@ -27,5 +30,5 @@
   if (this.upstreamTimestamp == 0) {
     this.upstreamTimestamp=origin.getModificationTime();
   }
-  return new CopyableFile(origin,destination,relativeDestination,destinationOwnerAndPermission,ancestorsOwnerAndPermission,checksum,preserve,fileSet,originTimestamp,upstreamTimestamp);
+  return new CopyableFile(this.origin,this.destination,this.destinationOwnerAndPermission,this.ancestorsOwnerAndPermission,this.checksum,this.preserve,this.fileSet,this.originTimestamp,this.upstreamTimestamp,this.additionalMetadata);
 }

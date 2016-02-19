@@ -3,4 +3,5 @@
   this.fs=fs;
   this.pathFilter=DatasetUtils.instantiatePathFilter(properties);
   this.copyableFileFilter=DatasetUtils.instantiateCopyableFileFilter(properties);
+  this.glob=glob;
 }

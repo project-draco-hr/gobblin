@@ -2,5 +2,5 @@
   Path originPath=new Path(ORIGIN_PATH,fileNumber + ".file");
   FileStatus origin=new FileStatus(0,false,0,0,0,originPath);
   Path targetPath=new Path(TARGET_PATH,fileNumber + ".file");
-  return new CopyableFile(origin,targetPath,targetPath,new OwnerAndPermission(null,null,null),Lists.<OwnerAndPermission>newArrayList(),null,PreserveAttributes.fromMnemonicString(""),"",0,0);
+  return new CopyableFile(origin,targetPath,new OwnerAndPermission(null,null,null),Lists.<OwnerAndPermission>newArrayList(),null,PreserveAttributes.fromMnemonicString(""),"",0,0,Maps.<String,Object>newHashMap());
 }

@@ -1,5 +1,6 @@
 {
-  Path relativePath=PathUtils.relativizePath(PathUtils.getPathWithoutSchemeAndAuthority(origin.getPath()),PathUtils.getPathWithoutSchemeAndAuthority(datasetRoot));
-  Path targetPath=new Path(copyConfiguration.getTargetRoot(),relativePath);
-  return _hiddenBuilder().originFS(originFs).rootPath(datasetRoot).origin(origin).destination(targetPath).relativeDestination(relativePath).preserve(copyConfiguration.getPreserve()).configuration(copyConfiguration);
+  Path relativePath=PathUtils.relativizePath(origin.getPath(),datasetRoot);
+  Path targetRoot=new Path(copyConfiguration.getPublishDir(),datasetRoot.getName());
+  Path targetPath=new Path(targetRoot,relativePath);
+  return _hiddenBuilder().originFS(originFs).origin(origin).destination(targetPath).preserve(copyConfiguration.getPreserve()).configuration(copyConfiguration);
 }

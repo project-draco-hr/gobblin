@@ -1,5 +1,5 @@
 {
-  CopyableFile copyableFile=new CopyableFile(null,null,new Path("/relative"),new OwnerAndPermission("owner","group",FsPermission.getDefault()),Lists.newArrayList(new OwnerAndPermission(null,"group2",FsPermission.getDefault())),"checksum".getBytes(),PreserveAttributes.fromMnemonicString(""),"",0,0);
+  CopyableFile copyableFile=new CopyableFile(null,null,new OwnerAndPermission("owner","group",FsPermission.getDefault()),Lists.newArrayList(new OwnerAndPermission(null,"group2",FsPermission.getDefault())),"checksum".getBytes(),PreserveAttributes.fromMnemonicString(""),"",0,0,Maps.<String,Object>newHashMap());
   String serialized=CopyableFile.serialize(copyableFile);
   CopyableFile deserialized=CopyableFile.deserialize(serialized);
   Assert.assertEquals(deserialized,copyableFile);

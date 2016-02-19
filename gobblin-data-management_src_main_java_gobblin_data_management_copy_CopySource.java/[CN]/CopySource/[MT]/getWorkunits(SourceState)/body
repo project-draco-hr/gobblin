@@ -1,5 +1,4 @@
 {
-  CopyContext copyContext=new CopyContext();
   try {
     FileSystem sourceFs=getSourceFileSystem(state);
     FileSystem targetFs=getTargetFileSystem(state);
@@ -9,9 +8,9 @@
     ExecutorService executor=ScalingThreadPoolExecutor.newScalingThreadPool(0,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("Dataset-cleaner-pool-%d")));
     ListeningExecutorService service=MoreExecutors.listeningDecorator(executor);
     List<ListenableFuture<?>> futures=Lists.newArrayList();
+    CopyConfiguration copyConfiguration=CopyConfiguration.builder(targetFs,state.getProperties()).build();
     for (    CopyableDataset copyableDataset : copyableDatasets) {
-      Path targetRoot=getTargetRoot(state,datasetFinder,copyableDataset);
-      futures.add(service.submit(new DatasetWorkUnitGenerator(copyableDataset,sourceFs,targetFs,state,targetRoot,copyContext,workUnitList)));
+      futures.add(service.submit(new DatasetWorkUnitGenerator(copyableDataset,sourceFs,targetFs,state,workUnitList,copyConfiguration)));
     }
     for (    ListenableFuture<?> future : futures) {
       try {
