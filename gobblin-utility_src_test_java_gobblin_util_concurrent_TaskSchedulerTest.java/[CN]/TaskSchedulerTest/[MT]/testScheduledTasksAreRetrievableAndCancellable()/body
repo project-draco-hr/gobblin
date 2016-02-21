@@ -1,0 +1,22 @@
+{
+  Task task1=new Task("foo");
+  Task task2=new Task("bar");
+  try (TaskScheduler<String,Task> taskScheduler=getTaskScheduler("TaskSchedulerTest")){
+    taskScheduler.schedule(task1,1,TimeUnit.SECONDS);
+    taskScheduler.schedule(task2,1,TimeUnit.SECONDS);
+    task1.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+    task2.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+    Optional<Task> foo=taskScheduler.getScheduledTask("foo");
+    Assert.assertTrue(foo.isPresent());
+    Iterable<Task> all=taskScheduler.getScheduledTasks();
+    Assert.assertEquals(Iterables.size(all),2);
+    taskScheduler.cancel(foo.get());
+    foo=taskScheduler.getScheduledTask("foo");
+    Assert.assertFalse(foo.isPresent());
+    all=taskScheduler.getScheduledTasks();
+    Assert.assertEquals(Iterables.size(all),1);
+    task2.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+  }
+   Assert.assertEquals(task1.getCount(),1);
+  Assert.assertEquals(task2.getCount(),2);
+}

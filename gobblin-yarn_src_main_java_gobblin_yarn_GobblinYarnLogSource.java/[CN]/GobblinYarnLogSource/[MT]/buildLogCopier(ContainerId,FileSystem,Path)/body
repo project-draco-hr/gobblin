@@ -1,3 +1,0 @@
-{
-  return LogCopier.newBuilder().useSrcFileSystem(FileSystem.getLocal(new Configuration())).useDestFileSystem(destFs).readFrom(getLocalLogDir()).writeTo(getHdfsLogDir(containerId,destFs,appWorkDir)).acceptsLogFileExtensions(ImmutableSet.of(ApplicationConstants.STDOUT,ApplicationConstants.STDERR)).useLogFileNamePrefix(containerId.toString()).build();
-}

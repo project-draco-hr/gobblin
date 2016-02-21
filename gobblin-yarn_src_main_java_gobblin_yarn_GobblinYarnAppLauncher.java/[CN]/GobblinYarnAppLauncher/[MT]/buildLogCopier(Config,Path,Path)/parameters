@@ -1,0 +1,3 @@
+Config config
+Path sinkLogDir
+Path appWorkDir

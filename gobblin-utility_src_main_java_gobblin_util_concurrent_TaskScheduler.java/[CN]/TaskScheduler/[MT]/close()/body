@@ -1,0 +1,6 @@
+{
+  if (isStarted) {
+    isStarted=false;
+    this.closeImpl();
+  }
+}

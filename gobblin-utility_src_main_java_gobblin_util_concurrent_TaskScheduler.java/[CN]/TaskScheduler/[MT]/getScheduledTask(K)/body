@@ -1,0 +1,7 @@
+{
+  CancellableTask<K,T> cancellableTask=this.cancellableTaskMap.getIfPresent(key);
+  if (cancellableTask != null) {
+    return Optional.of(cancellableTask.getScheduledTask());
+  }
+  return Optional.absent();
+}

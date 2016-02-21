@@ -1,0 +1,6 @@
+{
+synchronized (this.syncObject) {
+    this.state=true;
+    this.syncObject.notify();
+  }
+}
