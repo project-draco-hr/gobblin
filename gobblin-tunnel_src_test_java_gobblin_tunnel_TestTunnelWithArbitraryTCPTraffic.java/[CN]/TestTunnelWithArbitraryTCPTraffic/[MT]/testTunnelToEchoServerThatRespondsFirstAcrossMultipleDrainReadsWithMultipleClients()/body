@@ -1,0 +1,30 @@
+{
+  MockServer proxyServer=startConnectProxyServer(true,true);
+  Tunnel tunnel=Tunnel.build("localhost",talkFirstEchoServer.getServerSocketPort(),"localhost",proxyServer.getServerSocketPort());
+  try {
+    final int tunnelPort=tunnel.getPort();
+    List<EasyThread> threads=new ArrayList<EasyThread>();
+    for (int i=0; i < 5; i++) {
+      threads.add(new EasyThread(){
+        @Override void runQuietly() throws Exception {
+          try {
+            runClientToTalkFirstServer(tunnelPort);
+          }
+ catch (          IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+.startThread());
+    }
+    for (    Thread t : threads) {
+      t.join();
+    }
+    assertEquals(proxyServer.getNumConnects(),5);
+  }
+  finally {
+    proxyServer.stopServer();
+    tunnel.close();
+    assertFalse(tunnel.isTunnelThreadAlive());
+  }
+}

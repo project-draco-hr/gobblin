@@ -1,0 +1,4 @@
+{
+  this.nMsgs=nMsgs;
+  this.digestMsgsRecvdAtServer=digestMsgsRecvdAtServer;
+}

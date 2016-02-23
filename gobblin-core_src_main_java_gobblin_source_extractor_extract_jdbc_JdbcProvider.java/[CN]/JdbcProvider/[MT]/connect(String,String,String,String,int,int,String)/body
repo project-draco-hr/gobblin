@@ -1,9 +1,0 @@
-{
-  this.setDriverClassName(driver);
-  this.setUsername(user);
-  this.setPassword(password);
-  this.setUrl(connectionUrl);
-  this.setInitialSize(0);
-  this.setMaxIdle(numconn);
-  this.setMaxActive(timeout);
-}

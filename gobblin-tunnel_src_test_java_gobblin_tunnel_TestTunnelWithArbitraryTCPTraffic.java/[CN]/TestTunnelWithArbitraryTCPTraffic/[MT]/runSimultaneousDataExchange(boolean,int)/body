@@ -1,0 +1,105 @@
+{
+  long t0=System.currentTimeMillis();
+  final int nMsgs=50;
+  final Map<String,MessageDigest> digestMsgsRecvdAtServer=new HashMap<String,MessageDigest>();
+  final Map<String,MessageDigest> digestMsgsSentByClients=new HashMap<String,MessageDigest>();
+  final Map<String,MessageDigest> digestMsgsRecvdAtClients=new HashMap<String,MessageDigest>();
+  for (int c=0; c < nclients; c++) {
+    digestMsgsRecvdAtServer.put(Integer.toString(c),MessageDigest.getInstance("MD5"));
+    digestMsgsSentByClients.put(Integer.toString(c),MessageDigest.getInstance("MD5"));
+    digestMsgsRecvdAtClients.put(Integer.toString(c),MessageDigest.getInstance("MD5"));
+  }
+  final MessageDigest digestMsgsSentByServer=MessageDigest.getInstance("MD5");
+  for (int i=0; i < nMsgs; i++) {
+    digestMsgsSentByServer.update(TalkPastServer.generateMsgFromServer(i).getBytes());
+  }
+  String hashOfMsgsSentByServer=Hex.encodeHexString(digestMsgsSentByServer.digest());
+  MockServer talkPastServer=startTalkPastServer(nMsgs,digestMsgsRecvdAtServer);
+  int targetPort=talkPastServer.getServerSocketPort();
+  Tunnel tunnel=null;
+  MockServer proxyServer=null;
+  if (useTunnel) {
+    proxyServer=startConnectProxyServer();
+    tunnel=Tunnel.build("localhost",talkPastServer.getServerSocketPort(),"localhost",proxyServer.getServerSocketPort());
+    targetPort=tunnel.getPort();
+  }
+  try {
+    List<EasyThread> clientThreads=new ArrayList<EasyThread>();
+    final int portToUse=targetPort;
+    for (int c=0; c < nclients; c++) {
+      final int clientId=c;
+      clientThreads.add(new EasyThread(){
+        @Override void runQuietly() throws Exception {
+          long t=System.currentTimeMillis();
+          LOG.info("\t" + clientId + ": Client starting");
+          final MessageDigest digestMsgsRecvdAtClient=digestMsgsRecvdAtClients.get(Integer.toString(clientId));
+          final Socket client=new Socket();
+          client.connect(new InetSocketAddress("localhost",portToUse));
+          EasyThread serverReaderThread=new EasyThread(){
+            @Override public void runQuietly(){
+              try {
+                BufferedReader clientIn=new BufferedReader(new InputStreamReader(client.getInputStream()));
+                String line=clientIn.readLine();
+                while (line != null && !line.equals("Goodbye")) {
+                  digestMsgsRecvdAtClient.update(line.getBytes());
+                  digestMsgsRecvdAtClient.update("\n".getBytes());
+                  line=clientIn.readLine();
+                }
+              }
+ catch (              IOException e) {
+                e.printStackTrace();
+              }
+              LOG.info("\t" + clientId + ": Client done reading");
+            }
+          }
+.startThread();
+          MessageDigest hashMsgsFromClient=digestMsgsSentByClients.get(Integer.toString(clientId));
+          BufferedOutputStream clientOut=new BufferedOutputStream(client.getOutputStream());
+          for (int i=0; i < nMsgs; i++) {
+            String msg=clientId + ":" + i+ " "+ StringUtils.repeat("Blahhh Blahhh ",10000)+ "\n";
+            byte[] bytes=msg.getBytes();
+            hashMsgsFromClient.update(bytes);
+            clientOut.write(bytes);
+            MockServer.sleepQuietly(2);
+          }
+          clientOut.write(("Goodbye\n".getBytes()));
+          clientOut.flush();
+          LOG.info("\t" + clientId + ": Client done writing in "+ (System.currentTimeMillis() - t)+ " ms");
+          serverReaderThread.join();
+          LOG.info("\t" + clientId + ": Client done in "+ (System.currentTimeMillis() - t)+ " ms");
+          client.close();
+        }
+      }
+.startThread());
+    }
+    for (    Thread clientThread : clientThreads) {
+      clientThread.join();
+    }
+    LOG.info("All data transfer done in " + (System.currentTimeMillis() - t0) + " ms");
+  }
+  finally {
+    talkPastServer.stopServer();
+    if (tunnel != null) {
+      proxyServer.stopServer();
+      tunnel.close();
+      assertFalse(tunnel.isTunnelThreadAlive());
+      assertEquals(proxyServer.getNumConnects(),nclients);
+    }
+    Map<String,String> hashOfMsgsRecvdAtServer=new HashMap<String,String>();
+    Map<String,String> hashOfMsgsSentByClients=new HashMap<String,String>();
+    Map<String,String> hashOfMsgsRecvdAtClients=new HashMap<String,String>();
+    for (int c=0; c < nclients; c++) {
+      String client=Integer.toString(c);
+      hashOfMsgsRecvdAtServer.put(client,Hex.encodeHexString(digestMsgsRecvdAtServer.get(client).digest()));
+      hashOfMsgsSentByClients.put(client,Hex.encodeHexString(digestMsgsSentByClients.get(client).digest()));
+      hashOfMsgsRecvdAtClients.put(client,Hex.encodeHexString(digestMsgsRecvdAtClients.get(client).digest()));
+    }
+    LOG.info("\tComparing client sent to server received");
+    assertEquals(hashOfMsgsSentByClients,hashOfMsgsRecvdAtServer);
+    LOG.info("\tComparing server sent to client received");
+    for (    String hashOfMsgsRecvdAtClient : hashOfMsgsRecvdAtClients.values()) {
+      assertEquals(hashOfMsgsSentByServer,hashOfMsgsRecvdAtClient);
+    }
+    LOG.info("\tDone");
+  }
+}

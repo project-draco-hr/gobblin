@@ -1,0 +1,4 @@
+{
+  client.write(ByteBuffer.wrap(bytes));
+  client.socket().getOutputStream().flush();
+}

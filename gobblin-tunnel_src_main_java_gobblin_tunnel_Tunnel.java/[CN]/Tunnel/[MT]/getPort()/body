@@ -1,0 +1,16 @@
+{
+  SocketAddress localAddress=null;
+  try {
+    if (server != null && server.isOpen()) {
+      localAddress=server.getLocalAddress();
+    }
+    if (localAddress instanceof InetSocketAddress) {
+      return ((InetSocketAddress)localAddress).getPort();
+    }
+  }
+ catch (  IOException e) {
+    LOG.error("Failed to get tunnel port",e);
+    throw e;
+  }
+  return NON_EXISTENT_PORT;
+}

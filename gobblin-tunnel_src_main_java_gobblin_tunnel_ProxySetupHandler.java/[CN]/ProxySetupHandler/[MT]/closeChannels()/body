@@ -1,0 +1,18 @@
+{
+  if (proxy.isOpen()) {
+    try {
+      proxy.close();
+    }
+ catch (    IOException log) {
+      LOG.warn("Failed to close proxy channel {}",proxy,log);
+    }
+  }
+  if (client.isOpen()) {
+    try {
+      client.close();
+    }
+ catch (    IOException log) {
+      LOG.warn("Failed to close client channel {}",client,log);
+    }
+  }
+}

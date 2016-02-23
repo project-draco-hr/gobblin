@@ -1,0 +1,19 @@
+{
+  String extraHeader="";
+  if (largeResponse) {
+    for (int i=0; i < 260; i++) {
+      extraHeader+="a";
+    }
+  }
+  byte[] httpResponse=("HTTP/1.1 " + statusMessage + "\r\nContent-Length: 0\r\nServer: MockProxy"+ extraHeader+ "\r\n\r\n").getBytes();
+  if (initialServerResponse != null) {
+    byte[] mixedResponse=new byte[httpResponse.length + initialServerResponseSize];
+    System.arraycopy(httpResponse,0,mixedResponse,0,httpResponse.length);
+    System.arraycopy(initialServerResponse,0,mixedResponse,httpResponse.length,initialServerResponseSize);
+    out.write(mixedResponse);
+  }
+ else {
+    out.write(httpResponse);
+  }
+  out.flush();
+}

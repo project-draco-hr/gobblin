@@ -1,0 +1,14 @@
+{
+  LOG.info("Writing to client");
+  BufferedReader in=new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+  PrintWriter out=new PrintWriter(clientSocket.getOutputStream());
+  out.println("Hello");
+  out.flush();
+  String line=in.readLine();
+  while (line != null && isServerRunning()) {
+    out.println(line + " " + line);
+    out.flush();
+    line=in.readLine();
+  }
+  clientSocket.close();
+}
