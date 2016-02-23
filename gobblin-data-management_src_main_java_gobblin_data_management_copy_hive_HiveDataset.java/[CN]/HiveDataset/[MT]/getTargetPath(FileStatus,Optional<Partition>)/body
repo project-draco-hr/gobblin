@@ -14,7 +14,7 @@
   }
   if (this.targetTableRoot.isPresent()) {
     Preconditions.checkArgument(this.tableRootPath.isPresent(),"Cannot move paths to a new root unless table has exactly one location.");
-    Preconditions.checkArgument(PathUtils.isAncestor(this.tableRootPath.get(),status.getPath()),"When moving paths to a new root, all locations must be descendants of the table root location. " + "Table root location: %s, ");
+    Preconditions.checkArgument(PathUtils.isAncestor(this.tableRootPath.get(),status.getPath()),"When moving paths to a new root, all locations must be descendants of the table root location. " + "Table root location: %s, file location: %s.",this.tableRootPath,status);
     Path relativePath=PathUtils.relativizePath(status.getPath(),this.tableRootPath.get());
     return new Path(this.targetTableRoot.get(),relativePath);
   }

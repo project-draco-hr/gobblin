@@ -1,3 +1,3 @@
 {
-  return this.table.isSetPartitionKeys() && this.table.getPartitionKeys().size() > 0;
+  return this.table.isPartitioned();
 }
