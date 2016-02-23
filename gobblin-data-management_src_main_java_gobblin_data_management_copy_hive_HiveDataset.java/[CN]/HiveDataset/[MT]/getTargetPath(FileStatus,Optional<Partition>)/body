@@ -1,0 +1,24 @@
+{
+  if (this.relocateDataFiles) {
+    Preconditions.checkArgument(this.targetTableRoot.isPresent(),"Must define %s to relocate data files.",COPY_TARGET_TABLE_ROOT);
+    Path path=this.targetTableRoot.get();
+    if (partition.isPresent()) {
+      addPartitionToPath(path,partition.get());
+    }
+    if (status.isDir()) {
+      return path;
+    }
+ else {
+      return new Path(path,status.getPath().getName());
+    }
+  }
+  if (this.targetTableRoot.isPresent()) {
+    Preconditions.checkArgument(this.tableRootPath.isPresent(),"Cannot move paths to a new root unless table has exactly one location.");
+    Preconditions.checkArgument(PathUtils.isAncestor(this.tableRootPath.get(),status.getPath()),"When moving paths to a new root, all locations must be descendants of the table root location. " + "Table root location: %s, file location: %s.",this.tableRootPath,status);
+    Path relativePath=PathUtils.relativizePath(status.getPath(),this.tableRootPath.get());
+    return new Path(this.targetTableRoot.get(),relativePath);
+  }
+ else {
+    return PathUtils.getPathWithoutSchemeAndAuthority(status.getPath());
+  }
+}

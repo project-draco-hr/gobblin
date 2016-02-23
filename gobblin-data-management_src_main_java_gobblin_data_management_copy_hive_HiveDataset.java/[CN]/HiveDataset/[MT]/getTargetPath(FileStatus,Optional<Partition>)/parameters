@@ -1,0 +1,2 @@
+FileStatus status
+Optional<Partition> partition

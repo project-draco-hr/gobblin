@@ -1,0 +1,27 @@
+{
+  List<CopyableFile> copyableFiles=Lists.newArrayList();
+  try (AutoReturnableObject<IMetaStoreClient> client=new AutoReturnableObject<>(this.clientPool)){
+    if (isPartitioned()) {
+      List<Partition> partitions=Lists.newArrayList();
+      for (      org.apache.hadoop.hive.metastore.api.Partition p : client.get().listPartitions(this.table.getDbName(),this.table.getTableName(),(short)-1)) {
+        partitions.add(new Partition(this.table,p));
+      }
+      for (      Partition partition : partitions) {
+        InputFormat<?,?> inputFormat=getInputFormat(partition.getTPartition().getSd());
+        for (        CopyableFile.Builder builder : getCopyableFilesFromPaths(getPaths(inputFormat,partition.getLocation()),configuration,Optional.of(partition))) {
+          copyableFiles.add(builder.fileSet(gson.toJson(partition.getValues())).build());
+        }
+      }
+    }
+ else {
+      InputFormat<?,?> inputFormat=getInputFormat(this.table.getSd());
+      for (      CopyableFile.Builder builder : getCopyableFilesFromPaths(getPaths(inputFormat,this.table.getSd().getLocation()),configuration,Optional.<Partition>absent())) {
+        copyableFiles.add(builder.build());
+      }
+    }
+  }
+ catch (  TException|HiveException te) {
+    throw new IOException("Hive Error",te);
+  }
+  return copyableFiles;
+}

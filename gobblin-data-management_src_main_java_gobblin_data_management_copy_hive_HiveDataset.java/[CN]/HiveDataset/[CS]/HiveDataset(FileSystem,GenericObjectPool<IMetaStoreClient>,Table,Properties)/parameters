@@ -1,0 +1,4 @@
+FileSystem fs
+GenericObjectPool<IMetaStoreClient> clientPool
+Table table
+Properties properties
