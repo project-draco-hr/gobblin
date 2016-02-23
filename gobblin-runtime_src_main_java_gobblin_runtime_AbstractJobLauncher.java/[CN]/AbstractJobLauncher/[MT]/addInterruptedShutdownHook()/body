@@ -1,0 +1,9 @@
+{
+  final Thread mainThread=Thread.currentThread();
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      mainThread.interrupt();
+    }
+  }
+);
+}

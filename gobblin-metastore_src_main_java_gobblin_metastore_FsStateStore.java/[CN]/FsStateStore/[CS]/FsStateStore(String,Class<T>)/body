@@ -2,7 +2,7 @@
   this.conf=new Configuration();
   Path storePath=new Path(storeUrl);
   this.fs=storePath.getFileSystem(this.conf);
-  this.useTmpFileForPut=!FS_SCHEMES_NO_TMP_FILE_FOR_PUT.contains(this.fs.getUri().getScheme());
+  this.useTmpFileForPut=!FS_SCHEMES_NON_ATOMIC.contains(this.fs.getUri().getScheme());
   this.storeRootDir=storePath.toUri().getPath();
   this.stateClass=stateClass;
 }

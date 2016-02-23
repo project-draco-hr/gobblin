@@ -2,3 +2,5 @@ FileSystem srcFs
 Path src
 FileSystem dstFs
 Path dst
+boolean overwrite
+Configuration conf

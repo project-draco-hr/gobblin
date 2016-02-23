@@ -1,7 +1,7 @@
 {
   this.conf=new Configuration();
   this.fs=FileSystem.get(URI.create(fsUri),this.conf);
-  this.useTmpFileForPut=!FS_SCHEMES_NO_TMP_FILE_FOR_PUT.contains(this.fs.getUri().getScheme());
+  this.useTmpFileForPut=!FS_SCHEMES_NON_ATOMIC.contains(this.fs.getUri().getScheme());
   this.storeRootDir=storeRootDir;
   this.stateClass=stateClass;
 }
