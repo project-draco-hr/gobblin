@@ -1,0 +1,8 @@
+{
+  if (isPartitioned(sourceTable) != isPartitioned(targetTable)) {
+    throw new IOException(String.format("%s: Source table %s partitioned, target table %s partitioned. Tables are incompatible.",this.tableIdentifier,isPartitioned(sourceTable) ? "is" : "is not",isPartitioned(targetTable) ? "is" : "is not"));
+  }
+  if (sourceTable.isPartitioned() && sourceTable.getPartitionKeys() != targetTable.getPartitionKeys()) {
+    throw new IOException(String.format("%s: Source table has partition keys %s, target table has partition  keys %s. " + "Tables are incompatible.",this.tableIdentifier,gson.toJson(sourceTable.getPartitionKeys()),gson.toJson(targetTable.getPartitionKeys())));
+  }
+}

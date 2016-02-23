@@ -1,0 +1,4 @@
+Collection<Path> sourcePaths
+Collection<Path> targetExistingPaths
+Optional<Partition> partition
+FileSystem targetFs
