@@ -1,0 +1,9 @@
+{
+  if (this.metricFilter == null) {
+synchronized (this.syncObj) {
+      if (this.metricFilter == null) {
+        this.metricFilter=createMetricFilter(config);
+      }
+    }
+  }
+}
