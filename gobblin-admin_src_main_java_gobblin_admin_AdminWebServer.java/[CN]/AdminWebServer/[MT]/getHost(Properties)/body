@@ -1,0 +1,3 @@
+{
+  return properties.getProperty(ConfigurationKeys.ADMIN_SERVER_HOST_KEY,ConfigurationKeys.DEFAULT_ADMIN_SERVER_HOST);
+}

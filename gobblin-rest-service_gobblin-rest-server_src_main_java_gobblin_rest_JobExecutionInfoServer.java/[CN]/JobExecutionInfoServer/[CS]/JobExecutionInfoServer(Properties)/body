@@ -1,5 +1,6 @@
 {
   this.properties=properties;
-  port=Integer.parseInt(properties.getProperty(ConfigurationKeys.REST_SERVER_PORT_KEY,ConfigurationKeys.DEFAULT_REST_SERVER_PORT));
-  serverUri=URI.create(String.format("http://%s:%d",properties.getProperty(ConfigurationKeys.REST_SERVER_HOST_KEY,ConfigurationKeys.DEFAULT_REST_SERVER_HOST),port));
+  port=getPort(properties);
+  serverUri=getServiceUri(getHost(properties),port);
+  serverAdvertisedUri=getAdvertisedUri(properties);
 }

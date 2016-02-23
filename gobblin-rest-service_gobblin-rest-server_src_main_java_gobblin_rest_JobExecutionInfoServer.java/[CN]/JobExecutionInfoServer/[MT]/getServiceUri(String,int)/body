@@ -1,0 +1,3 @@
+{
+  return URI.create(String.format("http://%s:%d",host,port));
+}
