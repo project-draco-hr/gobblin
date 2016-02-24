@@ -3,7 +3,12 @@
   ImmutableList.Builder<RetentionPolicy<DatasetVersion>> builder=ImmutableList.builder();
   for (  String property : props.stringPropertyNames()) {
     if (property.startsWith(RETENTION_POLICIES_PREFIX)) {
-      builder.add(instantiateRetentionPolicy(props.getProperty(property),props));
+      try {
+        builder.add((RetentionPolicy<DatasetVersion>)ConstructorUtils.invokeConstructor(Class.forName(props.getProperty(property)),props));
+      }
+ catch (      NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+        throw new IllegalArgumentException(e);
+      }
     }
   }
   this.retentionPolicies=builder.build();

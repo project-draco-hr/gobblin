@@ -1,0 +1,3 @@
+{
+  this(config.getString(RETENTION_TIMEBASED_DURATION_KEY));
+}

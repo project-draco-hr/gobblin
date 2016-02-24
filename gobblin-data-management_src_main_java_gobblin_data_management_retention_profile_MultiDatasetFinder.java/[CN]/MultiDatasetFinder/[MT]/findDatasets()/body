@@ -1,0 +1,7 @@
+{
+  List<Dataset> datasets=Lists.newArrayList();
+  for (  DatasetsFinder<Dataset> df : this.datasetFinders) {
+    datasets.addAll(df.findDatasets());
+  }
+  return datasets;
+}
