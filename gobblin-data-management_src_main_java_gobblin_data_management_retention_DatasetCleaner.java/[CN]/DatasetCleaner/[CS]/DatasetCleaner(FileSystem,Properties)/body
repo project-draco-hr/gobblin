@@ -1,5 +1,4 @@
 {
-  Preconditions.checkArgument(props.containsKey(DATASET_PROFILE_CLASS_KEY));
   this.closer=Closer.create();
   try {
     FileSystem optionalRateControlledFs=fs;
@@ -7,25 +6,9 @@
       optionalRateControlledFs=this.closer.register(new RateControlledFileSystem(fs,Long.parseLong(props.getProperty(DATASET_CLEAN_HDFS_CALLS_PER_SECOND_LIMIT))));
       ((RateControlledFileSystem)optionalRateControlledFs).startRateControl();
     }
-    Class<?> datasetFinderClass=Class.forName(props.getProperty(DATASET_PROFILE_CLASS_KEY));
-    this.datasetFinder=(DatasetFinder)datasetFinderClass.getConstructor(FileSystem.class,Properties.class).newInstance(optionalRateControlledFs,props);
+    this.datasetFinder=new MultiCleanableDatasetFinder(optionalRateControlledFs,props);
   }
- catch (  ClassNotFoundException exception) {
-    throw new IOException(exception);
-  }
-catch (  NoSuchMethodException exception) {
-    throw new IOException(exception);
-  }
-catch (  InstantiationException exception) {
-    throw new IOException(exception);
-  }
-catch (  IllegalAccessException exception) {
-    throw new IOException(exception);
-  }
-catch (  InvocationTargetException exception) {
-    throw new IOException(exception);
-  }
-catch (  NumberFormatException exception) {
+ catch (  NumberFormatException exception) {
     throw new IOException(exception);
   }
 catch (  ExecutionException exception) {
