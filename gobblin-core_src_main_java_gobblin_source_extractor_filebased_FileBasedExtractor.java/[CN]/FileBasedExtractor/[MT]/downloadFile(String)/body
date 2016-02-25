@@ -1,14 +1,3 @@
 {
-  LOG.info("Beginning to download file: " + file);
-  try {
-    InputStream inputStream=this.closer.register(this.fsHelper.getFileStream(file));
-    Iterator<D> fileItr=(Iterator<D>)IOUtils.lineIterator(inputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
-    if (this.shouldSkipFirstRecord && fileItr.hasNext()) {
-      fileItr.next();
-    }
-    return fileItr;
-  }
- catch (  FileBasedHelperException e) {
-    throw new IOException("Exception while downloading file " + file + " with message "+ e.getMessage(),e);
-  }
+  return fileDownloader.downloadFile(file);
 }
