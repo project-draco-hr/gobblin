@@ -11,7 +11,7 @@
     FileStatus includesFileStatus=this.fs.getFileStatus(includesFile);
     if (!includesFileStatus.isDir()) {
       try (InputStream includesConfInStream=this.fs.open(includesFileStatus.getPath())){
-        configKeyPaths.addAll(Lists.newArrayList(Iterables.transform(IOUtils.readLines(includesConfInStream,Charsets.UTF_8),new IncludesToConfigKey())));
+        configKeyPaths.addAll(Lists.newArrayList(Iterables.transform(IOUtils.readLines(includesConfInStream,Charsets.UTF_8.name()),new IncludesToConfigKey())));
       }
      }
   }

@@ -1,3 +1,4 @@
 {
-  return new GsonBuilder().registerTypeHierarchyAdapter(clazz,new GsonInterfaceAdapter<T>()).create();
+  Gson gson=new GsonBuilder().registerTypeAdapterFactory(new GsonInterfaceAdapter(clazz)).create();
+  return gson;
 }

@@ -1,0 +1,3 @@
+{
+  this(fs,Lists.newArrayList(fs.getFileStatus(path)),properties);
+}

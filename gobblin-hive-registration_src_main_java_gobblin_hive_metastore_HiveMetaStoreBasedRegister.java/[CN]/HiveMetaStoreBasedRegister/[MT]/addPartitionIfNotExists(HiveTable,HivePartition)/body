@@ -1,22 +1,15 @@
 {
-  IMetaStoreClient client=borrowClient();
-  HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName());
-  lock.lock();
-  try {
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName())){
     try {
-      client.getPartition(table.getTableName(),table.getDbName(),partition.getValues());
+      client.get().getPartition(table.getTableName(),table.getDbName(),partition.getValues());
       return false;
     }
  catch (    NoSuchObjectException e) {
-      client.alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
+      client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
       return true;
     }
   }
  catch (  TException e) {
     throw new IOException(String.format("Unable to add partition %s in table %s in db %s",partition.getValues(),table.getTableName(),table.getDbName()),e);
-  }
- finally {
-    lock.unlock();
-    this.clientPool.returnObject(client);
   }
 }

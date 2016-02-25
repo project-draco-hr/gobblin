@@ -1,0 +1,25 @@
+{
+  try {
+    TypeToken<S> actualTypeToken;
+    if (jsonObject.isJsonNull()) {
+      return null;
+    }
+ else     if (jsonObject.has(OBJECT_TYPE)) {
+      String className=jsonObject.get(OBJECT_TYPE).getAsString();
+      Class<S> klazz=(Class<S>)Class.forName(className);
+      actualTypeToken=TypeToken.get(klazz);
+    }
+ else     if (defaultTypeToken != null) {
+      actualTypeToken=defaultTypeToken;
+    }
+ else {
+      throw new IOException("Could not determine TypeToken.");
+    }
+    TypeAdapter<S> delegate=this.gson.getDelegateAdapter(this.factory,actualTypeToken);
+    S value=delegate.fromJsonTree(jsonObject.get(OBJECT_DATA));
+    return value;
+  }
+ catch (  ClassNotFoundException cnfe) {
+    throw new IOException(cnfe);
+  }
+}

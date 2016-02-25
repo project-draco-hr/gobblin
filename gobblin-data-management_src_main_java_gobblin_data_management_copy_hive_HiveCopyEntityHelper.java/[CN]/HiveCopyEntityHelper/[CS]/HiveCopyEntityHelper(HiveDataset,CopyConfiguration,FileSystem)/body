@@ -1,0 +1,43 @@
+{
+  this.dataset=dataset;
+  this.configuration=configuration;
+  this.targetFs=targetFs;
+  this.relocateDataFiles=Boolean.valueOf(this.dataset.properties.getProperty(RELOCATE_DATA_FILES_KEY,DEFAULT_RELOCATE_DATA_FILES));
+  this.targetTableRoot=this.dataset.properties.containsKey(COPY_TARGET_TABLE_ROOT) ? Optional.of(resolvePath(this.dataset.properties.getProperty(COPY_TARGET_TABLE_ROOT),this.dataset.table.getDbName(),this.dataset.table.getTableName())) : Optional.<Path>absent();
+  this.hiveRegProps=new HiveRegProps(new State(this.dataset.properties));
+  this.targetURI=Optional.fromNullable(this.dataset.properties.getProperty(TARGET_METASTORE_URI_KEY));
+  this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.properties,this.targetURI);
+  this.targetDatabase=Optional.fromNullable(this.dataset.properties.getProperty(TARGET_DATABASE_KEY)).or(this.dataset.table.getDbName());
+  this.existingEntityPolicy=ExistingEntityPolicy.valueOf(this.dataset.properties.getProperty(EXISTING_ENTITY_POLICY_KEY,DEFAULT_EXISTING_ENTITY_POLICY).toUpperCase());
+  try (AutoReturnableObject<IMetaStoreClient> sourceClient=this.dataset.clientPool.getClient();AutoReturnableObject<IMetaStoreClient> targetClient=this.targetClientPool.getClient()){
+    if (targetClient.get().tableExists(targetDatabase,this.dataset.table.getTableName())) {
+      this.existingTargetTable=Optional.of(new Table(targetClient.get().getTable(targetDatabase,this.dataset.table.getTableName())));
+    }
+ else {
+      this.existingTargetTable=Optional.absent();
+    }
+    if (this.existingTargetTable.isPresent()) {
+      checkTableCompatibility(this.dataset.table,this.existingTargetTable.get());
+      this.targetTable=this.existingTargetTable.get();
+      this.tableRegistrationStep=Optional.absent();
+    }
+ else {
+      Path targetPath=getTargetLocation(dataset.fs,this.targetFs,dataset.tableLocations,Optional.<Partition>absent());
+      this.targetTable=getTargetTable(this.dataset.table,targetPath);
+      HiveSpec tableHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(this.targetTable.getTTable())).build();
+      CommitStep tableRegistrationStep=new HiveRegisterStep(targetURI,tableHiveSpec,this.hiveRegProps);
+      this.tableRegistrationStep=Optional.of(tableRegistrationStep);
+    }
+    if (HiveDataset.isPartitioned(this.dataset.table)) {
+      this.sourcePartitions=HiveDataset.getPartitions(sourceClient,this.dataset.table);
+      this.targetPartitions=this.existingTargetTable.isPresent() ? HiveDataset.getPartitions(targetClient,this.existingTargetTable.get()) : Maps.<List<String>,Partition>newHashMap();
+    }
+ else {
+      this.sourcePartitions=Maps.newHashMap();
+      this.targetPartitions=Maps.newHashMap();
+    }
+  }
+ catch (  TException te) {
+    throw new IOException("Failed to generate work units.",te);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  if (!getFS().exists(status.getPath())) {
+    return false;
+  }
+  FileStatus currentFileStatus=getFS().getFileStatus(status.getPath());
+  if (currentFileStatus.getLen() != status.getLen() || currentFileStatus.getModificationTime() > status.getModificationTime()) {
+    return false;
+  }
+  return true;
+}

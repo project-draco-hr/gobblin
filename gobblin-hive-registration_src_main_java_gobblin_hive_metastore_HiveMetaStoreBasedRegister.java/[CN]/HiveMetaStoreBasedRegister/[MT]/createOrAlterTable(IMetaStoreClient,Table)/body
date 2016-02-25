@@ -1,9 +1,7 @@
 {
   String dbName=table.getDbName();
   String tableName=table.getTableName();
-  HiveLock lock=locks.getTableLock(dbName,tableName);
-  lock.lock();
-  try {
+  try (HiveLock lock=locks.getTableLock(dbName,tableName)){
     if (client.tableExists(dbName,tableName)) {
       Table existingTable=client.getTable(dbName,tableName);
       table.setCreateTime(existingTable.getCreateTime());
@@ -23,8 +21,5 @@
   }
  catch (  TException e) {
     throw new IOException(String.format("Error in creating or altering Hive table %s in db %s",tableName,dbName),e);
-  }
- finally {
-    lock.unlock();
   }
 }

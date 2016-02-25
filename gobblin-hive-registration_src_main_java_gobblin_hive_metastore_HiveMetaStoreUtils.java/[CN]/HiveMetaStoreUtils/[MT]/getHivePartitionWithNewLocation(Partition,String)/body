@@ -1,0 +1,5 @@
+{
+  HivePartition hivePartition=getHivePartition(partition);
+  hivePartition.setStorageProp(HiveConstants.LOCATION,location);
+  return hivePartition;
+}

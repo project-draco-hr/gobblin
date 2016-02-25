@@ -1,0 +1,10 @@
+{
+  pattern=pattern.replace(databaseToken,database);
+  if (pattern.contains(tableToken)) {
+    pattern=pattern.replace(tableToken,table);
+    return new Path(pattern);
+  }
+ else {
+    return new Path(pattern,table);
+  }
+}

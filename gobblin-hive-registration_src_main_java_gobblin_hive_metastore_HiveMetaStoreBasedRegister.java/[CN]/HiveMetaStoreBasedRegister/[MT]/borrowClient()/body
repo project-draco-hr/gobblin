@@ -1,8 +1,0 @@
-{
-  try {
-    return this.clientPool.borrowObject();
-  }
- catch (  Exception e) {
-    throw new IOException("Unable to borrow " + IMetaStoreClient.class.getSimpleName());
-  }
-}

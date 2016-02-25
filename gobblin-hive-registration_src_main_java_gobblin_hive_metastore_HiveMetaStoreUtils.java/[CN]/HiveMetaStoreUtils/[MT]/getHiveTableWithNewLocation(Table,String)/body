@@ -1,0 +1,5 @@
+{
+  HiveTable hiveTable=getHiveTable(table);
+  hiveTable.setStorageProp(HiveConstants.LOCATION,location);
+  return hiveTable;
+}

@@ -1,7 +1,3 @@
 {
-  super(state);
-  GenericObjectPoolConfig config=new GenericObjectPoolConfig();
-  config.setMaxTotal(this.props.getNumThreads());
-  config.setMaxIdle(this.props.getNumThreads());
-  this.clientPool=new GenericObjectPool<>(new HiveMetaStoreClientFactory(),config);
+  this(state,Optional.<String>absent());
 }

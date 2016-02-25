@@ -1,39 +1,9 @@
 {
-  List<CopyEntity> copyableFiles=Lists.newArrayList();
-  HiveMetastoreClientPool targetClientPool=HiveMetastoreClientPool.get(this.properties,Optional.fromNullable(properties.getProperty(TARGET_METASTORE_URI_KEY)));
-  String targetDatabase=Optional.fromNullable(this.properties.getProperty(TARGET_DATABASE_KEY)).or(this.table.getDbName());
-  try (AutoReturnableObject<IMetaStoreClient> sourceClient=this.clientPool.getClient();AutoReturnableObject<IMetaStoreClient> targetClient=targetClientPool.getClient()){
-    Optional<Table> targetTable=Optional.absent();
-    if (targetClient.get().tableExists(targetDatabase,this.table.getTableName())) {
-      targetTable=Optional.of(new Table(targetClient.get().getTable(targetDatabase,this.table.getTableName())));
-    }
-    if (targetTable.isPresent()) {
-      try {
-        checkTableCompatibility(this.table,targetTable.get());
-      }
- catch (      IOException ioe) {
-        log.error("Source and target table are not compatible. Will not copy table.");
-        return Lists.newArrayList();
-      }
-    }
- else {
-      HiveSpec hiveSpec=new SimpleHiveSpec.Builder(this.table.getDataLocation()).withTable(HiveMetaStoreUtils.getHiveTable(this.table.getTTable())).build();
-    }
-    if (isPartitioned(this.table)) {
-      Map<List<String>,Partition> sourcePartitions=getPartitions(sourceClient,this.table);
-      Map<List<String>,Partition> targetPartitions=targetTable.isPresent() ? getPartitions(targetClient,targetTable.get()) : Maps.<List<String>,Partition>newHashMap();
-      for (      Map.Entry<List<String>,Partition> partitionEntry : sourcePartitions.entrySet()) {
-        copyableFiles.addAll(getCopyEntitiesForPartition(targetFs,targetTable,partitionEntry.getValue(),targetPartitions,configuration));
-      }
-      for (      Map.Entry<List<String>,Partition> partitionEntry : targetPartitions.entrySet()) {
-      }
-    }
- else {
-      copyableFiles.addAll(getCopyEntitiesForUnpartitionedTable(targetFs,targetTable,configuration));
-    }
+  try {
+    return new HiveCopyEntityHelper(this,configuration,targetFs).getCopyEntities();
   }
- catch (  TException te) {
-    throw new IOException("Hive Error",te);
+ catch (  IOException ioe) {
+    log.error("Failed to copy table " + this.table,ioe);
+    return Lists.newArrayList();
   }
-  return copyableFiles;
 }

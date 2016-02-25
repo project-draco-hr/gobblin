@@ -1,0 +1,10 @@
+{
+  if (ClassUtils.isPrimitiveOrWrapper(type.getRawType()) || type.getType() instanceof GenericArrayType || CharSequence.class.isAssignableFrom(type.getRawType())|| (type.getType() instanceof ParameterizedType && (Collection.class.isAssignableFrom(type.getRawType()) || Map.class.isAssignableFrom(type.getRawType())))) {
+    return null;
+  }
+  if (!this.baseClass.isAssignableFrom(type.getRawType())) {
+    return null;
+  }
+  TypeAdapter<R> adapter=new InterfaceAdapter<>(gson,this,type);
+  return adapter;
+}

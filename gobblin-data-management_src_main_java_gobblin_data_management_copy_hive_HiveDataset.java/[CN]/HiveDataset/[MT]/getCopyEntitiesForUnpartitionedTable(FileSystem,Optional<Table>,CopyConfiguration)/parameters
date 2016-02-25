@@ -1,3 +1,0 @@
-FileSystem targetFs
-Optional<Table> targetTable
-CopyConfiguration configuration

@@ -1,0 +1,7 @@
+{
+  List<FileStatus> fileStatuses=Lists.newArrayList();
+  for (  Path path : paths) {
+    fileStatuses.add(fs.getFileStatus(path));
+  }
+  return fileStatuses;
+}

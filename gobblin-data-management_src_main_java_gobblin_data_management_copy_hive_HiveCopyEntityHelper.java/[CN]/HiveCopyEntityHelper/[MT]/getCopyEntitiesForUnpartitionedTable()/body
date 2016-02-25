@@ -1,0 +1,16 @@
+{
+  int stepPriority=0;
+  String fileSet=this.dataset.table.getTableName();
+  List<CopyEntity> copyEntities=Lists.newArrayList();
+  stepPriority=addSharedSteps(copyEntities,fileSet,stepPriority);
+  InputFormat<?,?> inputFormat=HiveDataset.getInputFormat(this.dataset.table.getSd());
+  Collection<Path> sourcePaths=HiveDataset.getPaths(inputFormat,this.dataset.table.getSd().getLocation());
+  Collection<Path> targetExistingPaths=this.existingTargetTable.isPresent() ? HiveDataset.getPaths(inputFormat,this.existingTargetTable.get().getSd().getLocation()) : Sets.<Path>newHashSet();
+  DiffPathSet diffPathSet=diffSourceAndTargetPaths(sourcePaths,targetExistingPaths,Optional.<Partition>absent(),targetFs);
+  DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,this.dataset.properties);
+  copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
+  for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,configuration,Optional.<Partition>absent())) {
+    copyEntities.add(builder.build());
+  }
+  return copyEntities;
+}

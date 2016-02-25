@@ -1,0 +1,17 @@
+{
+  List<CopyEntity> copyableFiles=Lists.newArrayList();
+  if (HiveDataset.isPartitioned(this.dataset.table)) {
+    for (    Map.Entry<List<String>,Partition> partitionEntry : sourcePartitions.entrySet()) {
+      copyableFiles.addAll(new PartitionCopy(partitionEntry.getValue()).getCopyEntities());
+    }
+    String deregisterFileSet="deregister";
+    int priority=1;
+    for (    Map.Entry<List<String>,Partition> partitionEntry : targetPartitions.entrySet()) {
+      priority=addDeregisterSteps(copyableFiles,deregisterFileSet,priority,this.targetTable,partitionEntry.getValue());
+    }
+  }
+ else {
+    copyableFiles.addAll(getCopyEntitiesForUnpartitionedTable());
+  }
+  return copyableFiles;
+}

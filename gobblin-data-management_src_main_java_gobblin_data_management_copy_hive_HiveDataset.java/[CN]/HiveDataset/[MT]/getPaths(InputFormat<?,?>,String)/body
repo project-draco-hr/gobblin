@@ -1,5 +1,5 @@
 {
-  JobConf jobConf=new JobConf();
+  JobConf jobConf=new JobConf(getHadoopConfiguration());
   Set<Path> paths=Sets.newHashSet();
   FileInputFormat.addInputPaths(jobConf,location);
   InputSplit[] splits=inputFormat.getSplits(jobConf,1000);

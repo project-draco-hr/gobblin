@@ -1,18 +1,11 @@
 {
-  IMetaStoreClient client=borrowClient();
-  HiveLock lock=locks.getTableLock(dbName,tableName);
-  lock.lock();
-  try {
-    return Optional.of(HiveMetaStoreUtils.getHiveTable(client.getTable(dbName,tableName)));
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(dbName,tableName)){
+    return Optional.of(HiveMetaStoreUtils.getHiveTable(client.get().getTable(dbName,tableName)));
   }
  catch (  NoSuchObjectException e) {
     return Optional.<HiveTable>absent();
   }
 catch (  TException e) {
     throw new IOException("Unable to get table " + tableName + " in db "+ dbName,e);
-  }
- finally {
-    lock.unlock();
-    this.clientPool.returnObject(client);
   }
 }
