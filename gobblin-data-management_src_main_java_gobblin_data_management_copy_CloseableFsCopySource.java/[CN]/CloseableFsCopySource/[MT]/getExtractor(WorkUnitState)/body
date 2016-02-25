@@ -1,4 +1,4 @@
 {
-  CopyableFile copyableFile=deserializeCopyableFile(state);
-  return new CloseableFsFileAwareInputStreamExtractor(getSourceFileSystem(state),copyableFile);
+  CopyEntity copyEntity=deserializeCopyEntity(state);
+  return new CloseableFsFileAwareInputStreamExtractor(getSourceFileSystem(state),copyEntity);
 }

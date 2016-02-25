@@ -1,3 +1,0 @@
-{
-  return CopyableFile.deserialize(state.getProp(SERIALIZED_COPYABLE_FILE));
-}

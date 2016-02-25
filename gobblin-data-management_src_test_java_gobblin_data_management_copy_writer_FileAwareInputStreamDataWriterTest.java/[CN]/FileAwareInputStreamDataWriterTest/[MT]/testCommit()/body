@@ -30,7 +30,7 @@
   state.setProp(ConfigurationKeys.WRITER_OUTPUT_DIR,outputDir.toUri().getPath());
   state.setProp(ConfigurationKeys.WRITER_FILE_PATH,RandomStringUtils.randomAlphabetic(5));
   CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(new TestCopyableDataset(new Path("/source")));
-  CopySource.serializeCopyableFile(state,cf);
+  CopySource.serializeCopyEntity(state,cf);
   CopySource.serializeCopyableDataset(state,metadata);
   FileAwareInputStreamDataWriter writer=new FileAwareInputStreamDataWriter(state,1,0);
   Path writtenFile=writer.getStagingFilePath(cf);

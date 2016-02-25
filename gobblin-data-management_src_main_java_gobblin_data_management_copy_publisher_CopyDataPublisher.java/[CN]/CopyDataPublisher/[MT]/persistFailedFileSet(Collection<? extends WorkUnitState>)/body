@@ -3,12 +3,15 @@
   int filesPersisted=0;
   for (  WorkUnitState wu : workUnitStates) {
     if (wu.getWorkingState() == WorkingState.SUCCESSFUL) {
-      CopyableFile file=CopySource.deserializeCopyableFile(wu);
-      Path outputDir=FileAwareInputStreamDataWriter.getOutputDir(wu);
-      CopyableDatasetMetadata metadata=CopySource.deserializeCopyableDataset(wu);
-      Path outputPath=FileAwareInputStreamDataWriter.getOutputFilePath(file,outputDir,file.getDatasetAndPartition(metadata));
-      if (recoveryHelper.persistFile(wu,file,outputPath)) {
-        filesPersisted++;
+      CopyEntity entity=CopySource.deserializeCopyEntity(wu);
+      if (entity instanceof CopyableFile) {
+        CopyableFile file=(CopyableFile)entity;
+        Path outputDir=FileAwareInputStreamDataWriter.getOutputDir(wu);
+        CopyableDatasetMetadata metadata=CopySource.deserializeCopyableDataset(wu);
+        Path outputPath=FileAwareInputStreamDataWriter.getOutputFilePath(file,outputDir,file.getDatasetAndPartition(metadata));
+        if (recoveryHelper.persistFile(wu,file,outputPath)) {
+          filesPersisted++;
+        }
       }
     }
   }
