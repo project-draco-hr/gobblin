@@ -4,7 +4,9 @@
     ChannelSftp channel=getSftpChannel();
     Vector<LsEntry> vector=channel.ls(path);
     for (    LsEntry entry : vector) {
-      list.add(entry.getFilename());
+      SftpATTRS attrs=entry.getAttrs();
+      String modTime=attrs.getMtimeString().isEmpty() ? "0" : attrs.getMtimeString();
+      list.add(entry.getFilename() + ":::" + modTime);
     }
     channel.disconnect();
     return list;
