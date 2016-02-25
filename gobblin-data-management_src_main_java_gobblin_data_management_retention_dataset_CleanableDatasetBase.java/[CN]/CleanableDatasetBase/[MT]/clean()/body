@@ -1,4 +1,8 @@
 {
+  if (this.isDatasetBlacklisted) {
+    log.info("Dataset blacklisted. Cleanup skipped for " + datasetRoot());
+    return;
+  }
   RetentionPolicy<T> retentionPolicy=getRetentionPolicy();
   VersionFinder<? extends T> versionFinder=getVersionFinder();
   if (!retentionPolicy.versionClass().isAssignableFrom(versionFinder.versionClass())) {
