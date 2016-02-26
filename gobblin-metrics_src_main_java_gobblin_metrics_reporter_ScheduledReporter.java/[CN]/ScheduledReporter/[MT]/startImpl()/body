@@ -1,4 +1,7 @@
 {
+  this.executor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("metrics-" + name + "-scheduler")));
+  this.reportingPeriodSeconds=parsePeriodToSeconds(config.hasPath(REPORTING_INTERVAL) ? config.getString(REPORTING_INTERVAL) : DEFAULT_REPORTING_INTERVAL_PERIOD);
+  ensureMetricFilterIsInitialized(config);
   this.scheduledTask=Optional.<ScheduledFuture>of(this.executor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       report();
