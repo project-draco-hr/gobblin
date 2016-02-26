@@ -1,6 +1,0 @@
-{
-  super();
-  this.offset=offset;
-  this.key=key;
-  this.payload=payload;
-}
