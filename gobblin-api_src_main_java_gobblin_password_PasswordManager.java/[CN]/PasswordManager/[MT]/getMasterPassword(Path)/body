@@ -1,23 +1,9 @@
 {
-  Closer closer=Closer.create();
   try {
-    FileSystem fs=masterPwdLoc.getFileSystem(new Configuration());
-    if (!fs.exists(masterPwdLoc) || fs.getFileStatus(masterPwdLoc).isDir()) {
-      LOG.warn(masterPwdLoc + " does not exist or is not a file. Cannot decrypt any encrypted password.");
-      return Optional.absent();
-    }
-    InputStream in=closer.register(fs.open(masterPwdLoc));
-    return Optional.of(new LineReader(new InputStreamReader(in,Charsets.UTF_8)).readLine());
+    FileSystem fs=masterPasswordFile.getFileSystem(new Configuration());
+    return getMasterPassword(fs,masterPasswordFile);
   }
  catch (  IOException e) {
-    throw new RuntimeException("Failed to obtain master password from " + masterPwdLoc,e);
-  }
- finally {
-    try {
-      closer.close();
-    }
- catch (    IOException e) {
-      throw new RuntimeException("Failed to close inputstream for " + masterPwdLoc,e);
-    }
+    throw new RuntimeException("Failed to obtain master password from " + masterPasswordFile,e);
   }
 }

@@ -4,7 +4,13 @@
     return Optional.absent();
   }
   try {
-    return getMasterPassword(new Path(state.getProp(ConfigurationKeys.ENCRYPT_KEY_LOC)));
+    if (state.contains(ConfigurationKeys.ENCRYPT_KEY_FS_URI)) {
+      FileSystem fs=FileSystem.get(URI.create(state.getProp(ConfigurationKeys.ENCRYPT_KEY_FS_URI)),new Configuration());
+      return getMasterPassword(fs,new Path(state.getProp(ConfigurationKeys.ENCRYPT_KEY_LOC)));
+    }
+ else {
+      return getMasterPassword(new Path(state.getProp(ConfigurationKeys.ENCRYPT_KEY_LOC)));
+    }
   }
  catch (  Exception e) {
     throw new RuntimeException("Failed to obtain master password from " + state.getProp(ConfigurationKeys.ENCRYPT_KEY_LOC),e);
