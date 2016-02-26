@@ -11,7 +11,7 @@
     services.add(executionInfoServer);
     if (adminUiServerEnabled) {
       LOG.info("Starting the admin UI server since it is enabled");
-      services.add(new AdminWebServer(properties,executionInfoServer.getServerUri()));
+      services.add(new AdminWebServer(properties,executionInfoServer.getAdvertisedServerUri()));
     }
   }
  else   if (adminUiServerEnabled) {

@@ -1,0 +1,6 @@
+{
+  if (this.returned) {
+    throw new IOException(this.getClass().getCanonicalName() + " has already been closed.");
+  }
+  return this.object;
+}

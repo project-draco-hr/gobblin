@@ -1,0 +1,4 @@
+{
+  this.versionsRetained=versionsRetained;
+  LOGGER.info(String.format("%s will retain %d versions of each dataset.",NewestKRetentionPolicy.class.getName(),this.versionsRetained));
+}

@@ -1,0 +1,11 @@
+{
+  SocketChannel client=server.accept();
+  LOG.info("Accepted connection from {}",client.getRemoteAddress());
+  try {
+    new ProxySetupHandler(client,selector,config);
+  }
+ catch (  IOException ioe) {
+    client.close();
+  }
+  return HandlerState.ACCEPTING;
+}

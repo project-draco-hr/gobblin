@@ -1,5 +1,0 @@
-IMetaStoreClient client
-String dbName
-String tableName
-Optional<HivePartition> partition
-StorageDescriptor sd

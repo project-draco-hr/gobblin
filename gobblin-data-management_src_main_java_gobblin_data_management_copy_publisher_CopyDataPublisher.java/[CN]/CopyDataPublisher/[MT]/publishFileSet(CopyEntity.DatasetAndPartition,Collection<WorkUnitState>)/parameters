@@ -1,0 +1,2 @@
+CopyEntity.DatasetAndPartition datasetAndPartition
+Collection<WorkUnitState> datasetWorkUnitStates

@@ -1,0 +1,11 @@
+{
+  super(fileSet,additionalMetadata);
+  this.origin=origin;
+  this.destination=destination;
+  this.destinationOwnerAndPermission=destinationOwnerAndPermission;
+  this.ancestorsOwnerAndPermission=ancestorsOwnerAndPermission;
+  this.checksum=checksum;
+  this.preserve=preserve;
+  this.originTimestamp=originTimestamp;
+  this.upstreamTimestamp=upstreamTimestamp;
+}

@@ -1,0 +1,5 @@
+FileSystem fs
+Properties jobProps
+Path datasetRoot
+Config config
+Logger log

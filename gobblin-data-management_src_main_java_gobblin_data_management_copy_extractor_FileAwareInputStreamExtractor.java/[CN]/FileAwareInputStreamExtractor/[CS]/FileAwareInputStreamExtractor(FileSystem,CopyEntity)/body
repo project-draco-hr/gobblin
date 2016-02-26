@@ -1,0 +1,5 @@
+{
+  this.fs=fs;
+  this.file=file instanceof CopyableFile ? Optional.of((CopyableFile)file) : Optional.<CopyableFile>absent();
+  this.recordRead=!this.file.isPresent();
+}

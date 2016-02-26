@@ -1,5 +1,4 @@
 {
-  Path rootPathTmp=PathUtils.getPathWithoutSchemeAndAuthority(this.rootPath);
   List<OwnerAndPermission> ancestorOwnerAndPermissions=Lists.newArrayList();
   try {
     Path currentPath=PathUtils.getPathWithoutSchemeAndAuthority(path);

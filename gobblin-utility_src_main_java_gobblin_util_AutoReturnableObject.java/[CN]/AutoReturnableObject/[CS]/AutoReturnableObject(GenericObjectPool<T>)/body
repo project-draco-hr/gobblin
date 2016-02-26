@@ -1,0 +1,10 @@
+{
+  try {
+    this.pool=pool;
+    this.object=pool.borrowObject();
+    this.returned=false;
+  }
+ catch (  Exception exc) {
+    throw new IOException(exc);
+  }
+}

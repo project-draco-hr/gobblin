@@ -1,3 +1,3 @@
 {
-  return new Path(pathPrefix.toUri().relativize(fullPath.toUri()));
+  return new Path(getPathWithoutSchemeAndAuthority(pathPrefix).toUri().relativize(getPathWithoutSchemeAndAuthority(fullPath).toUri()));
 }

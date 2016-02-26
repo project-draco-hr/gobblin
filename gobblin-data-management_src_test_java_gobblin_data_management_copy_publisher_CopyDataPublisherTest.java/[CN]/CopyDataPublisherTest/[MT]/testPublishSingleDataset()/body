@@ -1,8 +1,9 @@
 {
   State state=getTestState("testPublishSingleDataset");
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,"/");
   Path testMethodTempPath=new Path(testClassTempPath,"testPublishSingleDataset");
   CopyDataPublisher copyDataPublisher=closer.register(new CopyDataPublisher(state));
-  TestDatasetManager datasetManager=new TestDatasetManager(testMethodTempPath,state,"datasetTargetPath",ImmutableList.of("a/b, a/c, d/e"));
+  TestDatasetManager datasetManager=new TestDatasetManager(testMethodTempPath,state,"datasetTargetPath",ImmutableList.of("a/b","a/c","d/e"));
   datasetManager.createDatasetFiles();
   datasetManager.verifyDoesntExist();
   copyDataPublisher.publishData(datasetManager.getWorkUnitStates());

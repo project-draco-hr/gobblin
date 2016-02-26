@@ -1,0 +1,19 @@
+{
+  this.config=config;
+  this.client=client;
+  this.selector=selector;
+  buffer=ByteBuffer.wrap(String.format("CONNECT %s:%d HTTP/1.1\r\nUser-Agent: GobblinTunnel\r\nservice-name: gobblin\r\n" + "Connection: keep-alive\r\nHost: %s:%d\r\n\r\n",config.getRemoteHost(),config.getRemotePort(),config.getRemoteHost(),config.getRemotePort()).getBytes());
+  proxy=SocketChannel.open();
+  proxy.configureBlocking(false);
+  connectStartTime=System.currentTimeMillis();
+  boolean connected=proxy.connect(new InetSocketAddress(this.config.getProxyHost(),this.config.getProxyPort()));
+  if (!connected) {
+    this.client.configureBlocking(false);
+    this.client.register(this.selector,SelectionKey.OP_READ,this);
+    proxy.register(this.selector,SelectionKey.OP_CONNECT,this);
+  }
+ else {
+    state=HandlerState.WRITING;
+    proxy.register(this.selector,SelectionKey.OP_WRITE,this);
+  }
+}

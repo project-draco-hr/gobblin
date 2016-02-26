@@ -1,0 +1,29 @@
+{
+  Preconditions.checkArgument(!datasetWorkUnitStates.isEmpty(),"publishFileSet received an empty collection work units. This is an error in code.");
+  CopyableDatasetMetadata metadata=CopyableDatasetMetadata.deserialize(datasetWorkUnitStates.iterator().next().getProp(CopySource.SERIALIZED_COPYABLE_DATASET));
+  Path datasetWriterOutputPath=new Path(this.writerOutputDir,datasetAndPartition.identifier());
+  log.info(String.format("Publishing fileSet from %s to %s",datasetWriterOutputPath,metadata.getDatasetURN()));
+  HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,new Path("/"));
+  fs.delete(datasetWriterOutputPath,true);
+  long datasetOriginTimestamp=Long.MAX_VALUE;
+  long datasetUpstreamTimestamp=Long.MAX_VALUE;
+  for (  WorkUnitState wus : datasetWorkUnitStates) {
+    if (wus.getWorkingState() == WorkingState.SUCCESSFUL) {
+      wus.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+    }
+    CopyEntity copyEntity=CopySource.deserializeCopyEntity(wus);
+    if (copyEntity instanceof CopyableFile) {
+      CopyableFile copyableFile=(CopyableFile)copyEntity;
+      if (wus.getWorkingState() == WorkingState.COMMITTED) {
+        CopyEventSubmitterHelper.submitSuccessfulFilePublish(eventSubmitter,copyableFile,wus);
+      }
+      if (datasetOriginTimestamp > copyableFile.getOriginTimestamp()) {
+        datasetOriginTimestamp=copyableFile.getOriginTimestamp();
+      }
+      if (datasetUpstreamTimestamp > copyableFile.getUpstreamTimestamp()) {
+        datasetUpstreamTimestamp=copyableFile.getUpstreamTimestamp();
+      }
+    }
+  }
+  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(eventSubmitter,datasetAndPartition,Long.toString(datasetOriginTimestamp),Long.toString(datasetUpstreamTimestamp));
+}

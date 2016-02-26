@@ -1,0 +1,3 @@
+{
+  config=new Config(remoteHost,remotePort,proxyHost,proxyPort);
+}

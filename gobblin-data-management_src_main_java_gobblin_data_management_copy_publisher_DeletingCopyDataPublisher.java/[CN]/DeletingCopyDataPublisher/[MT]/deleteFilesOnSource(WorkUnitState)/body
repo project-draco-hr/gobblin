@@ -1,5 +1,7 @@
 {
-  CopyableFile copyableFile=CopySource.deserializeCopyableFile(state);
-  HadoopUtils.deletePath(this.sourceFs,copyableFile.getOrigin().getPath(),true);
-  HadoopUtils.deletePath(this.sourceFs,PathUtils.addExtension(copyableFile.getOrigin().getPath(),ReadyCopyableFileFilter.READY_EXTENSION),true);
+  CopyEntity copyEntity=CopySource.deserializeCopyEntity(state);
+  if (copyEntity instanceof CopyableFile) {
+    HadoopUtils.deletePath(this.sourceFs,((CopyableFile)copyEntity).getOrigin().getPath(),true);
+    HadoopUtils.deletePath(this.sourceFs,PathUtils.addExtension(((CopyableFile)copyEntity).getOrigin().getPath(),ReadyCopyableFileFilter.READY_EXTENSION),true);
+  }
 }

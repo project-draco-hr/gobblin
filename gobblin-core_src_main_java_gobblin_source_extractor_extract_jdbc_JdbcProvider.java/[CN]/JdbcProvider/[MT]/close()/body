@@ -1,0 +1,6 @@
+{
+  super.close();
+  if (tunnel != null) {
+    tunnel.close();
+  }
+}

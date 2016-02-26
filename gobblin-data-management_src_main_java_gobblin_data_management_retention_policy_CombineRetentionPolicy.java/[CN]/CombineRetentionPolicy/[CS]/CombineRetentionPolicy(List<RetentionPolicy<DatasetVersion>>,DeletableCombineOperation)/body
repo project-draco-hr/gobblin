@@ -1,0 +1,4 @@
+{
+  this.combineOperation=combineOperation;
+  this.retentionPolicies=retentionPolicies;
+}

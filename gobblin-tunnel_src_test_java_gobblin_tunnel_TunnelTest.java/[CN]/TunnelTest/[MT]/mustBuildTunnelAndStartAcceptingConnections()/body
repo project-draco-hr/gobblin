@@ -1,0 +1,10 @@
+{
+  Tunnel tunnel=Tunnel.build("example.org",80,"localhost",PORT);
+  try {
+    int tunnelPort=tunnel.getPort();
+    assertTrue(tunnelPort > 0);
+  }
+  finally {
+    tunnel.close();
+  }
+}

@@ -1,0 +1,13 @@
+{
+  List<CopyableFile.Builder> builders=Lists.newArrayList();
+  List<SourceAndDestination> dataFiles=Lists.newArrayList();
+  for (  Path path : paths) {
+    FileStatus status=this.fs.getFileStatus(path);
+    dataFiles.add(new SourceAndDestination(status,getTargetPath(status,partition)));
+  }
+  for (  SourceAndDestination sourceAndDestination : dataFiles) {
+    FileSystem actualSourceFs=sourceAndDestination.getSource().getPath().getFileSystem(new Configuration());
+    builders.add(CopyableFile.fromOriginAndDestination(actualSourceFs,sourceAndDestination.getSource(),sourceAndDestination.getDestination(),configuration));
+  }
+  return builders;
+}

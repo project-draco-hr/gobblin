@@ -1,0 +1,10 @@
+{
+  List<Path> locations=Lists.newArrayList();
+  if (sdLocation == null) {
+    return locations;
+  }
+  for (  String location : this.splitter.split(sdLocation)) {
+    locations.add(new Path(location));
+  }
+  return locations;
+}

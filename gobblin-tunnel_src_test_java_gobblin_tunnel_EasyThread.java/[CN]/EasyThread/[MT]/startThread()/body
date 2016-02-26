@@ -1,0 +1,6 @@
+{
+  setDaemon(true);
+  start();
+  ALL_THREADS.add(this);
+  return this;
+}

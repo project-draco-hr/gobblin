@@ -1,0 +1,4 @@
+{
+  mockServer.when(HttpRequest.request().withMethod("CONNECT").withPath("example.org:80")).respond(HttpResponse.response().withStatusCode(200));
+  mockServer.when(HttpRequest.request().withMethod("GET").withPath("/")).respond(HttpResponse.response(IOUtils.toString(getClass().getResourceAsStream("/example.org.html"))));
+}

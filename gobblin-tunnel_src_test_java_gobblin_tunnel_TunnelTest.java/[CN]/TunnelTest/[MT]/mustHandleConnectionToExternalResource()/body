@@ -1,0 +1,11 @@
+{
+  mockExample();
+  Tunnel tunnel=Tunnel.build("example.org",80,"localhost",PORT);
+  try {
+    String content=fetchContent(tunnel.getPort());
+    assertNotNull(content);
+  }
+  finally {
+    tunnel.close();
+  }
+}

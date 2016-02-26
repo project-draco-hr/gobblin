@@ -4,10 +4,10 @@
   DeletingCopyDataPublisher copyDataPublisher=closer.register(new DeletingCopyDataPublisher(state));
   WorkUnitState wus=new WorkUnitState();
   CopyableDataset copyableDataset=new TestCopyableDataset(new Path("origin"));
-  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset,new Path(testMethodTempPath,"testdataset"));
-  CopyableFile cf=CopyableFileUtils.createTestCopyableFile(new Path(testMethodTempPath,"test.txt").toString());
+  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset);
+  CopyEntity cf=CopyableFileUtils.createTestCopyableFile(new Path(testMethodTempPath,"test.txt").toString());
   CopySource.serializeCopyableDataset(wus,metadata);
-  CopySource.serializeCopyableFile(wus,cf);
+  CopySource.serializeCopyEntity(wus,cf);
   Assert.assertTrue(fs.exists(new Path(testMethodTempPath,"test.txt")));
   wus.setWorkingState(WorkingState.SUCCESSFUL);
   copyDataPublisher.publishData(ImmutableList.of(wus));

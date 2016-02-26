@@ -1,0 +1,8 @@
+FileSystem fs
+Properties properties
+boolean simulate
+boolean skipTrash
+boolean deleteEmptyDirectories
+boolean deleteAsOwner
+boolean isDatasetBlacklisted
+Logger log

@@ -1,0 +1,5 @@
+{
+  return GSON.fromJson(serialized,new TypeToken<List<CopyEntity>>(){
+  }
+.getType());
+}

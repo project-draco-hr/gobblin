@@ -1,0 +1,3 @@
+Collection<Path> paths
+CopyConfiguration configuration
+Optional<Partition> partition

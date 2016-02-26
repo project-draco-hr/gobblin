@@ -1,0 +1,8 @@
+{
+  doubleEchoServer=startDoubleEchoServer();
+  LOG.info("Double Echo Server on " + doubleEchoServer.getServerSocketPort());
+  delayedDoubleEchoServer=startDoubleEchoServer(1000);
+  LOG.info("Delayed DoubleEchoServer on " + delayedDoubleEchoServer.getServerSocketPort());
+  talkFirstEchoServer=startTalkFirstEchoServer();
+  LOG.info("TalkFirstEchoServer on " + delayedDoubleEchoServer.getServerSocketPort());
+}

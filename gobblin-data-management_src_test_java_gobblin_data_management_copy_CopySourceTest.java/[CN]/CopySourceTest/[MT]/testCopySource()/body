@@ -9,9 +9,9 @@
   Assert.assertEquals(workunits.size(),TestCopyableDataset.FILE_COUNT);
   Extract extract=workunits.get(0).getExtract();
   for (  WorkUnit workUnit : workunits) {
-    CopyableFile copyableFile=CopySource.deserializeCopyableFile(workUnit);
-    Assert.assertTrue(copyableFile.getOrigin().getPath().toString().startsWith(TestCopyableDataset.ORIGIN_PREFIX));
-    Assert.assertEquals(copyableFile.getDestinationOwnerAndPermission(),TestCopyableDataset.OWNER_AND_PERMISSION);
+    CopyableFile file=(CopyableFile)CopySource.deserializeCopyEntity(workUnit);
+    Assert.assertTrue(file.getOrigin().getPath().toString().startsWith(TestCopyableDataset.ORIGIN_PREFIX));
+    Assert.assertEquals(file.getDestinationOwnerAndPermission(),TestCopyableDataset.OWNER_AND_PERMISSION);
     Assert.assertEquals(workUnit.getExtract(),extract);
   }
 }

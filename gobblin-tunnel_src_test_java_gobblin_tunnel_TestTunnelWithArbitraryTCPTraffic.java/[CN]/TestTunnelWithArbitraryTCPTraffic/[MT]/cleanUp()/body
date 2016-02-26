@@ -1,0 +1,14 @@
+{
+  doubleEchoServer.stopServer();
+  delayedDoubleEchoServer.stopServer();
+  talkFirstEchoServer.stopServer();
+  MockServer.sleepQuietly(100);
+  int nAlive=0;
+  for (  EasyThread t : EasyThread.ALL_THREADS) {
+    if (t.isAlive()) {
+      LOG.warn(t + " IS ALIVE!");
+      nAlive++;
+    }
+  }
+  LOG.warn("Threads left alive " + nAlive);
+}

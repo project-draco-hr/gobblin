@@ -1,0 +1,15 @@
+{
+  mockExample();
+  Tunnel tunnel=Tunnel.build("example.org",80,"localhost",PORT);
+  try {
+    int tunnelPort=tunnel.getPort();
+    SocketChannel client=SocketChannel.open();
+    client.connect(new InetSocketAddress("localhost",tunnelPort));
+    client.write(ByteBuffer.wrap("GET / HTTP/1.1%nUser-Agent: GobblinTunnel%nConnection:keep - alive %n%n".getBytes()));
+    client.close();
+    assertNotNull(fetchContent(tunnelPort));
+  }
+  finally {
+    tunnel.close();
+  }
+}

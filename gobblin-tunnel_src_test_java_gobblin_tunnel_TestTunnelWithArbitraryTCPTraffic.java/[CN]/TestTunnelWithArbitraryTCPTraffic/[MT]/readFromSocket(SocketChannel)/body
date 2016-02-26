@@ -1,0 +1,7 @@
+{
+  ByteBuffer readBuf=ByteBuffer.allocate(256);
+  LOG.info("Reading from client");
+  client.read(readBuf);
+  readBuf.flip();
+  return StandardCharsets.US_ASCII.decode(readBuf).toString();
+}

@@ -1,0 +1,4 @@
+String statusMessage
+OutputStream out
+byte[] initialServerResponse
+int initialServerResponseSize
