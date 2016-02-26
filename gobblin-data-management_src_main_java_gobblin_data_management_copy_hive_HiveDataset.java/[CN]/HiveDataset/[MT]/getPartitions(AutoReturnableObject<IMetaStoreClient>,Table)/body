@@ -1,0 +1,13 @@
+{
+  try {
+    Map<List<String>,Partition> partitions=Maps.newHashMap();
+    for (    org.apache.hadoop.hive.metastore.api.Partition p : client.get().listPartitions(table.getDbName(),table.getTableName(),(short)-1)) {
+      Partition partition=new Partition(this.table,p);
+      partitions.put(partition.getValues(),partition);
+    }
+    return partitions;
+  }
+ catch (  TException|HiveException te) {
+    throw new IOException("Hive Error",te);
+  }
+}

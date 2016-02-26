@@ -7,4 +7,5 @@
   this.tableRootPath=this.tableLocations.size() == 1 ? Optional.of(PathUtils.deepestNonGlobPath(this.tableLocations.get(0))) : Optional.<Path>absent();
   this.relocateDataFiles=Boolean.valueOf(properties.getProperty(RELOCATE_DATA_FILES_KEY,DEFAULT_RELOCATE_DATA_FILES));
   this.targetTableRoot=properties.containsKey(COPY_TARGET_TABLE_ROOT) ? Optional.of(resolvePath(properties.getProperty(COPY_TARGET_TABLE_ROOT))) : Optional.<Path>absent();
+  this.tableIdentifier=this.table.getDbName() + "." + this.table.getTableName();
 }

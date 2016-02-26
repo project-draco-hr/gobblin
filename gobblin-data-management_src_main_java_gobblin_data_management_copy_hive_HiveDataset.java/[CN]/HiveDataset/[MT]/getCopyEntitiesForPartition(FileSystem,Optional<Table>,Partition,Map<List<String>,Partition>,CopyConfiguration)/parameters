@@ -1,0 +1,5 @@
+FileSystem targetFs
+Optional<Table> targetTable
+Partition partition
+Map<List<String>,Partition> targetPartitions
+CopyConfiguration configuration

@@ -1,4 +1,4 @@
 FileSystem fs
-GenericObjectPool<IMetaStoreClient> clientPool
+HiveMetastoreClientPool clientPool
 Table table
 Properties properties

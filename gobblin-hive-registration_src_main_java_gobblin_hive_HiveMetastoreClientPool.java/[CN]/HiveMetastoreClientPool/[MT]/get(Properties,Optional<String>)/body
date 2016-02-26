@@ -1,0 +1,13 @@
+{
+  try {
+    return poolCache.get(metastoreURI,new Callable<HiveMetastoreClientPool>(){
+      @Override public HiveMetastoreClientPool call() throws Exception {
+        return new HiveMetastoreClientPool(properties,metastoreURI);
+      }
+    }
+);
+  }
+ catch (  ExecutionException ee) {
+    throw new IOException("Failed to get " + HiveMetastoreClientPool.class.getSimpleName(),ee.getCause());
+  }
+}

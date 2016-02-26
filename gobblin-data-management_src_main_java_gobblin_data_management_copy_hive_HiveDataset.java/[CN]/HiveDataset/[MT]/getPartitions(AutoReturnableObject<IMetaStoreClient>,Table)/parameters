@@ -1,0 +1,2 @@
+AutoReturnableObject<IMetaStoreClient> client
+Table table

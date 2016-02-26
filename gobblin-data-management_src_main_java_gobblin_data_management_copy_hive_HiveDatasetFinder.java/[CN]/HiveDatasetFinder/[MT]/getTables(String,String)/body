@@ -1,6 +1,6 @@
 {
   List<Table> tables=Lists.newArrayList();
-  try (AutoReturnableObject<IMetaStoreClient> client=new AutoReturnableObject<>(this.clientPool)){
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     List<String> tableNames=client.get().getTables(db,tablePattern);
     for (    String tableName : tableNames) {
       tables.add(client.get().getTable(db,tableName));
