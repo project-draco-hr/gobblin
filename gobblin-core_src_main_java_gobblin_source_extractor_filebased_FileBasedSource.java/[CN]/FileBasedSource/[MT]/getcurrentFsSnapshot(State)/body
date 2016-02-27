@@ -6,7 +6,7 @@
     results=this.fsHelper.ls(path);
     for (int i=0; i < results.size(); i++) {
       String filePath=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY) + "/" + results.get(i);
-      results.set(i,filePath + ":::" + this.fsHelper.getFileMTime(filePath));
+      results.set(i,filePath + splitPattern + this.fsHelper.getFileMTime(filePath));
     }
   }
  catch (  FileBasedHelperException e) {

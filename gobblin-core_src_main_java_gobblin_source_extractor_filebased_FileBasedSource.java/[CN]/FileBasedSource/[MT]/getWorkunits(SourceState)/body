@@ -25,7 +25,7 @@
   List<String> filesToPull=new ArrayList<String>();
   Iterator<String> it=filesWithTimeToPull.iterator();
   while (it.hasNext()) {
-    String filesWithoutTimeToPull[]=it.next().split(":::");
+    String filesWithoutTimeToPull[]=it.next().split(splitPattern);
     filesToPull.add(filesWithoutTimeToPull[0]);
   }
   List<WorkUnit> workUnits=Lists.newArrayList();
