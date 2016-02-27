@@ -1,0 +1,9 @@
+{
+  IMetaStoreClient client=borrowClient();
+  try {
+    return createDbIfNotExists(client,dbName);
+  }
+  finally {
+    this.clientPool.returnObject(client);
+  }
+}

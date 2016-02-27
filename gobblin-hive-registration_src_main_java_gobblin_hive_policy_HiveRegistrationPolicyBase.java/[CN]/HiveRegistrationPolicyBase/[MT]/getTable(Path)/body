@@ -1,0 +1,9 @@
+{
+  HiveTable table=new HiveTable.Builder().withDbName(getDatabaseName(path)).withTableName(getTableName(path)).withSerdeManaager(HiveSerDeManager.get(this.props)).build();
+  table.setLocation(path.toString());
+  table.setSerDeProps();
+  table.setProps(this.props.getTablePartitionProps());
+  table.setStorageProps(this.props.getStorageProps());
+  table.setSerDeProps(this.props.getSerdeProps());
+  return table;
+}

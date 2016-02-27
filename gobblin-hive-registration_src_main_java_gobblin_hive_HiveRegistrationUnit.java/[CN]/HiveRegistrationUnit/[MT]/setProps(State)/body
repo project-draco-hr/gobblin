@@ -1,0 +1,4 @@
+{
+  this.props.addAll(props);
+  populateTablePartitionFields();
+}

@@ -1,9 +1,5 @@
 {
   this.props=new HiveRegProps(state);
   this.hiveDbRootDir=this.props.getDbRootDir();
-  GenericObjectPoolConfig config=new GenericObjectPoolConfig();
-  config.setMaxTotal(this.props.getNumThreads());
-  config.setMaxIdle(this.props.getNumThreads());
-  this.clientPool=new GenericObjectPool<>(new HiveMetaStoreClientFactory(),config);
   this.executor=MoreExecutors.listeningDecorator(ScalingThreadPoolExecutor.newScalingThreadPool(0,this.props.getNumThreads(),TimeUnit.SECONDS.toMillis(10),ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of(getClass().getSimpleName()))));
 }

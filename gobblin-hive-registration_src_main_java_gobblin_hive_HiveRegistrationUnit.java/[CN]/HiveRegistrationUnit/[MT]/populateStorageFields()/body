@@ -1,0 +1,9 @@
+{
+  this.location=Optional.fromNullable(this.storageProps.getProp(HiveConstants.LOCATION));
+  this.inputFormat=Optional.fromNullable(this.storageProps.getProp(HiveConstants.INPUT_FORMAT));
+  this.outputFormat=Optional.fromNullable(this.storageProps.getProp(HiveConstants.OUTPUT_FORMAT));
+  this.isCompressed=this.storageProps.contains(HiveConstants.COMPRESSED) ? Optional.of(this.storageProps.getPropAsBoolean(HiveConstants.COMPRESSED)) : Optional.<Boolean>absent();
+  this.numBuckets=this.storageProps.contains(HiveConstants.NUM_BUCKETS) ? Optional.of(this.storageProps.getPropAsInt(HiveConstants.NUM_BUCKETS)) : Optional.<Integer>absent();
+  this.bucketColumns=this.storageProps.contains(HiveConstants.BUCKET_COLUMNS) ? Optional.of(this.storageProps.getPropAsList(HiveConstants.BUCKET_COLUMNS)) : Optional.<List<String>>absent();
+  this.isStoredAsSubDirs=this.storageProps.contains(HiveConstants.STORED_AS_SUB_DIRS) ? Optional.of(this.storageProps.getPropAsBoolean(HiveConstants.STORED_AS_SUB_DIRS)) : Optional.<Boolean>absent();
+}

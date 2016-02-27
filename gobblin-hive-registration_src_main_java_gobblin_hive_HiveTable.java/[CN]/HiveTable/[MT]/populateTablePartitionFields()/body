@@ -1,0 +1,6 @@
+{
+  super.populateTablePartitionFields();
+  this.owner=Optional.fromNullable(this.props.getProp(HiveConstants.OWNER));
+  this.tableType=Optional.fromNullable(this.props.getProp(HiveConstants.TABLE_TYPE));
+  this.retention=this.props.contains(HiveConstants.RETENTION) ? Optional.of(this.props.getPropAsLong(HiveConstants.RETENTION)) : Optional.<Long>absent();
+}

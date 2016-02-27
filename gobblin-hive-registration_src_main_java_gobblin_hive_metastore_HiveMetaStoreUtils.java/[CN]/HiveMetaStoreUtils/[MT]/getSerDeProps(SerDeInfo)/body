@@ -1,0 +1,10 @@
+{
+  State serDeProps=new State();
+  for (  Map.Entry<String,String> entry : si.getParameters().entrySet()) {
+    serDeProps.setProp(entry.getKey(),entry.getValue());
+  }
+  if (si.isSetSerializationLib()) {
+    serDeProps.setProp(HiveConstants.SERDE_TYPE,si.getSerializationLib());
+  }
+  return serDeProps;
+}

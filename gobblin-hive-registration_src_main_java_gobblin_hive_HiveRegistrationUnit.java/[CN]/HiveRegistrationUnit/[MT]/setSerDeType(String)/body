@@ -1,0 +1,3 @@
+{
+  this.serDeType=Optional.of(serDeType);
+}

@@ -1,10 +1,6 @@
 {
-  Closer closer=Closer.create();
-  try {
-    InputStream in=closer.register(fs.open(filePath));
+  Preconditions.checkArgument(fs.exists(filePath),filePath + " does not exist");
+  try (InputStream in=fs.open(filePath)){
     return new Schema.Parser().parse(in);
   }
-  finally {
-    closer.close();
-  }
-}
+ }

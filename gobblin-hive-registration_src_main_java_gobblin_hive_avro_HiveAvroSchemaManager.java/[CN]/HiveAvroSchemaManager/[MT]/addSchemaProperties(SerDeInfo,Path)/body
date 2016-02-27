@@ -1,5 +1,0 @@
-{
-  Schema schema=getSchema(path);
-  Preconditions.checkNotNull(schema);
-  si.getParameters().put(SCHEMA_LITERAL,schema.toString());
-}

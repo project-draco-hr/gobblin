@@ -1,0 +1,4 @@
+{
+  register.dropPartitionIfExists(this.dbName,this.tableName,this.partitionKeys,this.partitionValues);
+  return true;
+}

@@ -1,0 +1,4 @@
+{
+  this.storageProps=storageProps;
+  return (T)this;
+}

@@ -1,0 +1,4 @@
+{
+  this.createTime=this.props.contains(HiveConstants.CREATE_TIME) ? Optional.of(this.props.getPropAsLong(HiveConstants.CREATE_TIME)) : Optional.<Long>absent();
+  this.lastAccessTime=this.props.contains(HiveConstants.LAST_ACCESS_TIME) ? Optional.of(this.props.getPropAsLong(HiveConstants.LAST_ACCESS_TIME)) : Optional.<Long>absent();
+}

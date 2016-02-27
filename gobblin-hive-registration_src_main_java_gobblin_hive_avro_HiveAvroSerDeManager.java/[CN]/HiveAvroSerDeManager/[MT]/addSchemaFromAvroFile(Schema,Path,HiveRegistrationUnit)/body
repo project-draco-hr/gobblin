@@ -1,0 +1,11 @@
+{
+  Preconditions.checkNotNull(schema);
+  String schemaStr=schema.toString();
+  if (schemaStr.length() <= this.schemaLiteralLengthLimit) {
+    hiveUnit.setSerDeProp(SCHEMA_LITERAL,schema.toString());
+  }
+ else {
+    AvroUtils.writeSchemaToFile(schema,schemaFile,this.fs,true);
+    hiveUnit.setSerDeProp(SCHEMA_URL,schemaFile.toString());
+  }
+}

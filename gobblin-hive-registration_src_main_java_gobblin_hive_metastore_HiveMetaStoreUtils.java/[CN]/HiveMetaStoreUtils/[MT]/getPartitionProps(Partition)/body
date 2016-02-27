@@ -1,0 +1,13 @@
+{
+  State partitionProps=new State();
+  for (  Map.Entry<String,String> entry : partition.getParameters().entrySet()) {
+    partitionProps.setProp(entry.getKey(),entry.getValue());
+  }
+  if (partition.isSetCreateTime()) {
+    partitionProps.setProp(HiveConstants.CREATE_TIME,partition.getCreateTime());
+  }
+  if (partition.isSetLastAccessTime()) {
+    partitionProps.setProp(HiveConstants.LAST_ACCESS_TIME,partition.getCreateTime());
+  }
+  return partitionProps;
+}

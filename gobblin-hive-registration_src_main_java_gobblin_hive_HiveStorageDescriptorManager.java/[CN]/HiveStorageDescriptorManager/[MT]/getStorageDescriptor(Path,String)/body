@@ -1,5 +1,0 @@
-{
-  StorageDescriptor sd=getStorageDescriptor(path);
-  sd.setLocation(location);
-  return sd;
-}

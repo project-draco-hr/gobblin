@@ -1,0 +1,14 @@
+{
+  super.updateTablePartitionFields(key,value);
+switch (key) {
+case HiveConstants.OWNER:
+    this.owner=Optional.of((String)value);
+  break;
+case HiveConstants.TABLE_TYPE:
+this.tableType=Optional.of((String)value);
+break;
+case HiveConstants.RETENTION:
+this.retention=Optional.of((long)value);
+break;
+}
+}

@@ -1,0 +1,28 @@
+{
+  State storageProps=new State();
+  for (  Map.Entry<String,String> entry : sd.getParameters().entrySet()) {
+    storageProps.setProp(entry.getKey(),entry.getValue());
+  }
+  if (sd.isSetLocation()) {
+    storageProps.setProp(HiveConstants.LOCATION,sd.getLocation());
+  }
+  if (sd.isSetInputFormat()) {
+    storageProps.setProp(HiveConstants.INPUT_FORMAT,sd.getInputFormat());
+  }
+  if (sd.isSetOutputFormat()) {
+    storageProps.setProp(HiveConstants.OUTPUT_FORMAT,sd.getOutputFormat());
+  }
+  if (sd.isSetCompressed()) {
+    storageProps.setProp(HiveConstants.COMPRESSED,sd.isCompressed());
+  }
+  if (sd.isSetNumBuckets()) {
+    storageProps.setProp(HiveConstants.NUM_BUCKETS,sd.getNumBuckets());
+  }
+  if (sd.isSetBucketCols()) {
+    for (    String bucketColumn : sd.getBucketCols())     storageProps.appendToListProp(HiveConstants.BUCKET_COLUMNS,bucketColumn);
+  }
+  if (sd.isSetStoredAsSubDirectories()) {
+    storageProps.setProp(HiveConstants.STORED_AS_SUB_DIRS,sd.isStoredAsSubDirectories());
+  }
+  return storageProps;
+}

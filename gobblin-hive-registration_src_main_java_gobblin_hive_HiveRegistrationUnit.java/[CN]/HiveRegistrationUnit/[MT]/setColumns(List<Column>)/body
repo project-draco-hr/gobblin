@@ -1,0 +1,4 @@
+{
+  this.columns.clear();
+  this.columns.addAll(columns);
+}

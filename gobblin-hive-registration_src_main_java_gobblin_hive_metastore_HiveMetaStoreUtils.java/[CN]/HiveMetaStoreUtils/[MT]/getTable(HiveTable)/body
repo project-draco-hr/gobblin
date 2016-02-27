@@ -1,0 +1,31 @@
+{
+  State props=hiveTable.getProps();
+  Table table=new Table();
+  table.setDbName(hiveTable.getDbName());
+  table.setTableName(hiveTable.getTableName());
+  table.setParameters(getParameters(props));
+  if (hiveTable.getCreateTime().isPresent()) {
+    table.setCreateTime(Ints.checkedCast(hiveTable.getCreateTime().get()));
+  }
+  if (hiveTable.getLastAccessTime().isPresent()) {
+    table.setLastAccessTime(Ints.checkedCast(hiveTable.getLastAccessTime().get()));
+  }
+  if (hiveTable.getOwner().isPresent()) {
+    table.setOwner(hiveTable.getOwner().get());
+  }
+  if (hiveTable.getRetention().isPresent()) {
+    table.setRetention(Ints.checkedCast(hiveTable.getRetention().get()));
+  }
+  if (hiveTable.getTableType().isPresent()) {
+    table.setTableType(hiveTable.getTableType().get());
+  }
+ else {
+    table.setTableType(DEFAULT_TABLE_TYPE.toString());
+    if (table.getTableType() == TableType.EXTERNAL_TABLE.toString()) {
+      table.getParameters().put(EXTERNAL,Boolean.TRUE.toString());
+    }
+  }
+  table.setPartitionKeys(getFieldSchemas(hiveTable.getPartitionKeys()));
+  table.setSd(getStorageDescriptor(hiveTable));
+  return table;
+}

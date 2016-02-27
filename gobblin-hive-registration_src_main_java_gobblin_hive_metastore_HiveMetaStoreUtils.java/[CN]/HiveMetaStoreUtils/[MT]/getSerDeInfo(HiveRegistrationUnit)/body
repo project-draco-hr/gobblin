@@ -1,0 +1,10 @@
+{
+  State props=unit.getSerDeProps();
+  SerDeInfo si=new SerDeInfo();
+  si.setParameters(getParameters(props));
+  si.setName(unit.getTableName());
+  if (unit.getSerDeType().isPresent()) {
+    si.setSerializationLib(unit.getSerDeType().get());
+  }
+  return si;
+}

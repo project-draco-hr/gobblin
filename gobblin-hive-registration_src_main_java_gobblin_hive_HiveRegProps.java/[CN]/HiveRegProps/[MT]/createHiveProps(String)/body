@@ -1,0 +1,12 @@
+{
+  State state=new State();
+  if (!contains(propKey)) {
+    return state;
+  }
+  for (  String propValue : getPropAsList(propKey)) {
+    List<String> tokens=SPLITTER.splitToList(propValue);
+    Preconditions.checkState(tokens.size() == 2,propValue + " is not a valid Hive table/partition property");
+    state.setProp(tokens.get(0),tokens.get(1));
+  }
+  return state;
+}
