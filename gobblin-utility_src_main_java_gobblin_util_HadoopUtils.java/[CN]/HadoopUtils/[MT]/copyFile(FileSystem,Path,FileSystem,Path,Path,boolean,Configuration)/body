@@ -1,0 +1,27 @@
+{
+  Preconditions.checkArgument(srcFs.isFile(src),String.format("Cannot copy from %s to %s because src is not a file",src,dst));
+  if (FS_SCHEMES_NON_ATOMIC.contains(srcFs.getUri().getScheme()) || FS_SCHEMES_NON_ATOMIC.contains(dstFs.getUri().getScheme())) {
+    copyFile(srcFs,src,dstFs,dst,overwriteDst,conf);
+  }
+ else {
+    copyFile(srcFs,src,dstFs,tmp,overwriteDst,conf);
+    try {
+      boolean renamed=false;
+      if (overwriteDst && dstFs.exists(dst)) {
+        try {
+          deletePath(dstFs,dst,true);
+        }
+  finally {
+          renamePath(dstFs,tmp,dst);
+          renamed=true;
+        }
+      }
+      if (!renamed) {
+        renamePath(dstFs,tmp,dst);
+      }
+    }
+  finally {
+      deletePath(dstFs,tmp,true);
+    }
+  }
+}

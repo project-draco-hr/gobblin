@@ -1,5 +1,6 @@
 {
   Preconditions.checkArgument(jobProps.containsKey(ConfigurationKeys.JOB_NAME_KEY),"A job must have a job name specified by job.name");
+  addInterruptedShutdownHook();
   this.jobProps=new Properties();
   this.jobProps.putAll(jobProps);
   this.jobContext=new JobContext(this.jobProps,LOG);

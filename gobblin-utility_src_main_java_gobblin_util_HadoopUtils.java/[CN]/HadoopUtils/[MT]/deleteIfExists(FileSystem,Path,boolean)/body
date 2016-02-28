@@ -1,0 +1,5 @@
+{
+  if (fs.exists(path)) {
+    deletePath(fs,path,recursive);
+  }
+}

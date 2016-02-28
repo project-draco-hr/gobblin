@@ -1,0 +1,15 @@
+{
+  Preconditions.checkArgument(srcFs.isFile(src),String.format("Cannot copy from %s to %s because src is not a file",src,dst));
+  Preconditions.checkArgument(overwrite || !dstFs.exists(dst),String.format("Cannot copy from %s to %s because dst exists",src,dst));
+  try (InputStream in=srcFs.open(src);OutputStream out=dstFs.create(dst,overwrite)){
+    IOUtils.copyBytes(in,out,conf,false);
+  }
+ catch (  Throwable t1) {
+    try {
+      deleteIfExists(dstFs,dst,true);
+    }
+ catch (    Throwable t2) {
+    }
+    throw t1;
+  }
+}
