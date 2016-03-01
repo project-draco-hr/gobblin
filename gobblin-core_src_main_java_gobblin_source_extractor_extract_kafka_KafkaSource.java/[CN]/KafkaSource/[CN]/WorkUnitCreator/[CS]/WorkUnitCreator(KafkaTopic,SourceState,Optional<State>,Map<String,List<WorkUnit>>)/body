@@ -1,5 +1,4 @@
 {
-  this.kafkaSource=kafkaSource;
   this.topic=topic;
   this.state=state;
   this.topicSpecificState=topicSpecificState;

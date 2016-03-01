@@ -1,5 +1,5 @@
 {
-  if (this.doneGettingAllPreviousOffsets.get()) {
+  if (this.doneGettingAllPreviousOffsets) {
     return;
   }
   this.previousOffsets.clear();
@@ -13,5 +13,5 @@
       }
     }
   }
-  this.doneGettingAllPreviousOffsets.set(true);
+  this.doneGettingAllPreviousOffsets=true;
 }

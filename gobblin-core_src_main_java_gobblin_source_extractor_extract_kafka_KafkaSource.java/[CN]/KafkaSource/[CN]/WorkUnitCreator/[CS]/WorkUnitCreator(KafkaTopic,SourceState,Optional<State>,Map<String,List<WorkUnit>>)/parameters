@@ -1,5 +1,4 @@
 KafkaTopic topic
 SourceState state
 Optional<State> topicSpecificState
-KafkaSource<S,D> kafkaSource
 Map<String,List<WorkUnit>> workUnits

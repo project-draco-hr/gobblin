@@ -1,5 +1,5 @@
 {
-  if (!this.doneGettingAllPreviousOffsets.get()) {
+  if (!this.doneGettingAllPreviousOffsets) {
     getAllPreviousOffsets(state);
   }
   for (  Map.Entry<KafkaPartition,Long> entry : this.previousOffsets.entrySet()) {
