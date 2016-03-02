@@ -2,6 +2,7 @@
   LOG.info("Registering schema " + schema.toString());
   PostMethod post=new PostMethod(url);
   post.addParameter("schema",schema.toString());
+  HttpClient httpClient=this.borrowClient();
   try {
     LOG.debug("Loading: " + post.getURI());
     int statusCode=httpClient.executeMethod(post);
@@ -32,5 +33,6 @@
   }
  finally {
     post.releaseConnection();
+    this.httpClientPool.returnObject(httpClient);
   }
 }

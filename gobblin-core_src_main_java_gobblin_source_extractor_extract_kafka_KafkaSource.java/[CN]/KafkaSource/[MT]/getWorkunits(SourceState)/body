@@ -3,7 +3,7 @@
   this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
   List<KafkaTopic> topics=getFilteredTopics(state);
   Map<String,State> topicSpecificStateMap=getTopicSpecificState(topics,state);
-  int numOfThreads=state.getPropAsInt(KAFKA_SOURCE_WORK_UNITS_CREATION_THREADS,DEFAULT_THREAD_COUNT);
+  int numOfThreads=state.getPropAsInt(ConfigurationKeys.KAFKA_SOURCE_WORK_UNITS_CREATION_THREADS,ConfigurationKeys.KAFKA_SOURCE_WORK_UNITS_CREATION_DEFAULT_THREAD_COUNT);
   ExecutorService threadPool=Executors.newFixedThreadPool(numOfThreads,ExecutorsUtils.newThreadFactory(Optional.of(LOG)));
   long startTimeOfCreatingWorkUnits=System.currentTimeMillis();
   LOG.info("Begin using thread pool to create work units for topic size " + topics.size());
