@@ -1,0 +1,7 @@
+{
+  Set<ConfigStream> configStreams=Sets.newHashSet();
+  for (  String configPath : getDeployableConfigPaths()) {
+    configStreams.add(new ConfigStream(Optional.of(getConfigStream(configPath)),StringUtils.substringAfter(Strings.nullToEmpty(configPath),classpathRootName + "/")));
+  }
+  return configStreams;
+}

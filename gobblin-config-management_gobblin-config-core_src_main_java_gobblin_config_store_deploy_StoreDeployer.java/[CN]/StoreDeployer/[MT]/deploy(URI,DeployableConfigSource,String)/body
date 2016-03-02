@@ -1,0 +1,16 @@
+{
+  ServiceLoader<ConfigStoreFactory> loader=ServiceLoader.load(ConfigStoreFactory.class);
+  for (  ConfigStoreFactory storeFactory : loader) {
+    log.info("Found ConfigStore with scheme : " + storeFactory.getScheme());
+    if (storeUri.getScheme().equals(storeFactory.getScheme())) {
+      log.info("Using ConfigStore with scheme : " + storeFactory.getScheme());
+      ConfigStore configStore=storeFactory.createConfigStore(storeUri);
+      if (configStore instanceof Deployable<?,?>) {
+        ((Deployable)configStore).deploy(new FsDeploymentConfig(confgSource,version));
+      }
+ else {
+        log.error(String.format("Deployment failed. The store %s does not implement %s",storeFactory.getClass(),Deployable.class.getName()));
+      }
+    }
+  }
+}
