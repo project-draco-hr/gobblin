@@ -1,0 +1,3 @@
+DeployableConfigSource deployableConfigSource
+String version
+FsPermission storePermissions

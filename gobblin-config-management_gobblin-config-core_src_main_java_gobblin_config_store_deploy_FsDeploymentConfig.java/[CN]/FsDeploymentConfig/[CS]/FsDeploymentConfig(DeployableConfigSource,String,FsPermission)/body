@@ -1,0 +1,4 @@
+{
+  super(deployableConfigSource,version);
+  this.storePermissions=storePermissions;
+}

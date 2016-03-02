@@ -1,0 +1,29 @@
+{
+  log.info("Deploying with config : " + deploymentConfig);
+  Path hdfsconfigStoreRoot=new Path(this.physicalStoreRoot.getPath(),CONFIG_STORE_NAME);
+  if (!fs.exists(hdfsconfigStoreRoot)) {
+    throw new IOException("Config store root not present at " + this.physicalStoreRoot.getPath());
+  }
+  Path hdfsNewVersionPath=new Path(hdfsconfigStoreRoot,deploymentConfig.getNewVersion());
+  if (fs.exists(hdfsNewVersionPath)) {
+    log.warn(String.format("Version %s already exits at %s. Can not overwrite an existing version.",deploymentConfig.getNewVersion(),hdfsNewVersionPath));
+  }
+  Set<ConfigStream> confStreams=deploymentConfig.getDeployableConfigSource().getConfigStreams();
+  for (  ConfigStream confStream : confStreams) {
+    String confAtPath=confStream.getConfigPath();
+    log.info("Copying resource at : " + confAtPath);
+    Path hdsfConfPath=new Path(hdfsNewVersionPath,confAtPath);
+    if (!fs.exists(hdsfConfPath.getParent())) {
+      fs.mkdirs(hdsfConfPath.getParent());
+    }
+    if (confStream.getInputStream().isPresent()) {
+      try (SeekableFSInputStream inputStream=new SeekableFSInputStream(confStream.getInputStream().get());FSDataOutputStream os=this.fs.create(hdsfConfPath,false)){
+        StreamUtils.copy(inputStream,os);
+      }
+     }
+  }
+  for (  FileStatus fileStatus : FileListUtils.listPathsRecursively(this.fs,hdfsNewVersionPath,FileListUtils.NO_OP_PATH_FILTER)) {
+    this.fs.setPermission(fileStatus.getPath(),deploymentConfig.getStorePermissions());
+  }
+  log.info(String.format("New version %s of config store deployed at %s",deploymentConfig.getNewVersion(),hdfsconfigStoreRoot));
+}
