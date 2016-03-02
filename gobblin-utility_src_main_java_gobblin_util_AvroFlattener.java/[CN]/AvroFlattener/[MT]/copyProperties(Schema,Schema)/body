@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(oldSchema);
+  Preconditions.checkNotNull(newSchema);
+  Map<String,JsonNode> props=oldSchema.getJsonProps();
+  copyProperties(props,newSchema);
+}
