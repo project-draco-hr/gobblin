@@ -1,0 +1,18 @@
+{
+  Preconditions.checkNotNull(schema);
+  if (!Schema.Type.UNION.equals(schema.getType())) {
+    return Optional.<Schema>absent();
+  }
+  List<Schema> types=schema.getTypes();
+  if (null != types && types.size() == 2) {
+    Schema first=types.get(0);
+    Schema second=types.get(1);
+    if (Schema.Type.NULL.equals(first.getType()) && Schema.Type.RECORD.equals(second.getType())) {
+      return Optional.of(second);
+    }
+ else     if (Schema.Type.RECORD.equals(first.getType()) && Schema.Type.NULL.equals(second.getType())) {
+      return Optional.of(first);
+    }
+  }
+  return Optional.<Schema>absent();
+}
