@@ -1,0 +1,6 @@
+{
+  RootMetricContext.get().startReporting();
+  ContextStoreReporter reporter=new ContextStoreReporter("testReporter",ConfigFactory.empty());
+  Assert.assertTrue(reporter.isStarted());
+  RootMetricContext.get().stopReporting();
+}
