@@ -2,7 +2,7 @@
   this.config=config;
   this.client=client;
   this.selector=selector;
-  buffer=ByteBuffer.wrap(String.format("CONNECT %s:%d HTTP/1.1\r\nUser-Agent: GobblinTunnel\r\nservice-name: gobblin\r\n" + "Connection: keep-alive\r\nHost: %s:%d\r\n\r\n",config.getRemoteHost(),config.getRemotePort(),config.getRemoteHost(),config.getRemotePort()).getBytes());
+  buffer=ByteBuffer.wrap(String.format("CONNECT %s:%d HTTP/1.1\r%nUser-Agent: GobblinTunnel\r%nservice-name: gobblin\r%n" + "Connection: keep-alive\r%nHost: %s:%d\r%n\r%n",config.getRemoteHost(),config.getRemotePort(),config.getRemoteHost(),config.getRemotePort()).getBytes(ConfigurationKeys.DEFAULT_CHARSET_ENCODING));
   proxy=SocketChannel.open();
   proxy.configureBlocking(false);
   connectStartTime=System.currentTimeMillis();

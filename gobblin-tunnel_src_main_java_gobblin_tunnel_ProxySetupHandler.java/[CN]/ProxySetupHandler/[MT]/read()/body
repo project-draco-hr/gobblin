@@ -17,7 +17,7 @@
       }
     }
  else {
-      LOG.error("Got non-200 response from proxy: [" + new String(temp,0,OK_REPLY.limit()) + "], closing connection.");
+      LOG.error("Got non-200 response from proxy: [" + new String(temp,0,OK_REPLY.limit(),ConfigurationKeys.DEFAULT_CHARSET_ENCODING) + "], closing connection.");
       closeChannels();
     }
   }
