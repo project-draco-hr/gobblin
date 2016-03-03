@@ -1,0 +1,4 @@
+State state
+Configuration conf
+String userToProxy
+Credentials cred
