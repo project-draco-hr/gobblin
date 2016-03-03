@@ -1,0 +1,15 @@
+{
+  JobConf jobConf=new JobConf();
+  JobClient jobClient=new JobClient(jobConf);
+  LOG.info("Pre-fetching JT token from JobTracker");
+  Token<DelegationTokenIdentifier> mrdt=jobClient.getDelegationToken(getMRTokenRenewerInternal(jobConf));
+  if (mrdt == null) {
+    LOG.error("Failed to fetch JT token");
+    throw new IOException("Failed to fetch JT token for " + userToProxy);
+  }
+  LOG.info("Created JT token: " + mrdt.toString());
+  LOG.info("Token kind: " + mrdt.getKind());
+  LOG.info("Token id: " + mrdt.getIdentifier());
+  LOG.info("Token service: " + mrdt.getService());
+  cred.addToken(mrdt.getService(),mrdt);
+}

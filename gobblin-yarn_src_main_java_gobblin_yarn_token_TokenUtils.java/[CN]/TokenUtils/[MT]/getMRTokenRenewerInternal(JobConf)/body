@@ -1,0 +1,16 @@
+{
+  String servicePrincipal=jobConf.get(YARN_RESOURCEMANAGER_PRINCIPAL,jobConf.get(JTConfig.JT_USER_NAME));
+  Text renewer;
+  if (servicePrincipal != null) {
+    String target=jobConf.get(YARN_RESOURCEMANAGER_ADDRESS,jobConf.get(MAPREDUCE_JOBTRACKER_ADDRESS));
+    if (target == null) {
+      target=jobConf.get(MAPRED_JOB_TRACKER);
+    }
+    String addr=NetUtils.createSocketAddr(target).getHostName();
+    renewer=new Text(SecurityUtil.getServerPrincipal(servicePrincipal,addr));
+  }
+ else {
+    renewer=new Text("azkaban mr tokens");
+  }
+  return renewer;
+}
