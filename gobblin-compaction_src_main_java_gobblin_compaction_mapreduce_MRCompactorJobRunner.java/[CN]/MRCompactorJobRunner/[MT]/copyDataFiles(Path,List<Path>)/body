@@ -1,9 +1,29 @@
 {
-  for (  Path filePath : inputFilePaths) {
-    Path convertedFilePath=this.outputRecordCountProvider.convertPath(this.lateInputRecordCountProvider.restoreFilePath(filePath),this.inputRecordCountProvider);
-    String targetFileName=convertedFilePath.getName();
-    Path outPath=this.lateOutputRecordCountProvider.constructLateFilePath(targetFileName,this.fs,outputDirectory);
-    HadoopUtils.copyPath(this.fs,filePath,this.fs,outPath,this.fs.getConf());
-    LOG.info(String.format("Copied %s to %s.",filePath,outPath));
+  ExecutorService executor=ScalingThreadPoolExecutor.newScalingThreadPool(0,this.copyLateDataThreadPoolSize,100,ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of(this.dataset.getName() + "-copy-data")));
+  List<Future<?>> futures=Lists.newArrayList();
+  for (  final Path filePath : inputFilePaths) {
+    Future<Void> future=executor.submit(new Callable<Void>(){
+      @Override public Void call() throws Exception {
+        Path convertedFilePath=outputRecordCountProvider.convertPath(lateInputRecordCountProvider.restoreFilePath(filePath),inputRecordCountProvider);
+        String targetFileName=convertedFilePath.getName();
+        Path outPath=lateOutputRecordCountProvider.constructLateFilePath(targetFileName,fs,outputDirectory);
+        HadoopUtils.copyPath(fs,filePath,fs,outPath,fs.getConf());
+        LOG.info(String.format("Copied %s to %s.",filePath,outPath));
+        return null;
+      }
+    }
+);
+    futures.add(future);
+  }
+  try {
+    for (    Future<?> future : futures) {
+      future.get();
+    }
+  }
+ catch (  ExecutionException|InterruptedException e) {
+    throw new IOException("Failed to copy file.",e);
+  }
+ finally {
+    ExecutorsUtils.shutdownExecutorService(executor,Optional.of(LOG));
   }
 }
