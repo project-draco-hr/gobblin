@@ -7,6 +7,8 @@ case READING:
 case WRITING:
   write();
 break;
+default :
+throw new IllegalStateException("ReadWriteHandler should never be in state " + state);
 }
 }
  catch (CancelledKeyException e) {

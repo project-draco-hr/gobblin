@@ -10,6 +10,8 @@ break;
 case READING:
 read();
 break;
+default :
+throw new IllegalStateException("ProxySetupHandler should not be in state " + state);
 }
 }
  catch (IOException ioe) {
