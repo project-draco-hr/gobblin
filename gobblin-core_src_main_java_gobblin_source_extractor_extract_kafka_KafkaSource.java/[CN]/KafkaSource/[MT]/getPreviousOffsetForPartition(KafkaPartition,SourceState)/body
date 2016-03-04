@@ -1,7 +1,5 @@
 {
-  if (this.previousOffsets.isEmpty()) {
-    getAllPreviousOffsets(state);
-  }
+  getAllPreviousOffsets(state);
   if (this.previousOffsets.containsKey(partition)) {
     return this.previousOffsets.get(partition);
   }

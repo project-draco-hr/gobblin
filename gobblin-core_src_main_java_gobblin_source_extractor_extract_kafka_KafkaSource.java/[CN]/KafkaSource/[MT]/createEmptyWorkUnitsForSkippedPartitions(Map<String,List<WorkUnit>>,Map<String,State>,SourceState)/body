@@ -1,4 +1,5 @@
 {
+  getAllPreviousOffsets(state);
   for (  Map.Entry<KafkaPartition,Long> entry : this.previousOffsets.entrySet()) {
     KafkaPartition partition=entry.getKey();
     if (!this.partitionsToBeProcessed.contains(partition)) {
