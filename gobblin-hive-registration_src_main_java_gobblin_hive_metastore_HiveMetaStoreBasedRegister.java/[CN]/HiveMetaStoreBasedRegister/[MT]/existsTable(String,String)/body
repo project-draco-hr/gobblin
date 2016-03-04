@@ -1,0 +1,15 @@
+{
+  IMetaStoreClient client=borrowClient();
+  HiveLock lock=locks.getTableLock(dbName,tableName);
+  lock.lock();
+  try {
+    return client.tableExists(dbName,tableName);
+  }
+ catch (  TException e) {
+    throw new IOException(String.format("Unable to check existence of table %s in db %s",tableName,dbName),e);
+  }
+ finally {
+    lock.unlock();
+    this.clientPool.returnObject(client);
+  }
+}

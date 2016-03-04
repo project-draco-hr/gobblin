@@ -1,0 +1,4 @@
+{
+  this.serDeProps=serDeProps;
+  return (T)this;
+}

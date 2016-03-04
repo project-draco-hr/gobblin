@@ -19,7 +19,7 @@
     copyEntities.add(builder.fileSet(gson.toJson(partition.getValues())).build());
   }
   if (!targetPartition.isPresent()) {
-    HiveSpec partitionHiveSpec=new SimpleHiveSpec.Builder(this.table.getDataLocation()).withTable(this.table.getTTable()).withPartition(Optional.of(partition.getTPartition())).build();
+    HiveSpec partitionHiveSpec=new SimpleHiveSpec.Builder(this.table.getDataLocation()).withTable(HiveMetaStoreUtils.getHiveTable(this.table.getTTable())).withPartition(Optional.of(partition.getTPartition())).build();
   }
   return copyEntities;
 }

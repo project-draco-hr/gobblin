@@ -1,0 +1,3 @@
+{
+  this.isCompressed=Optional.of(isCompressed);
+}

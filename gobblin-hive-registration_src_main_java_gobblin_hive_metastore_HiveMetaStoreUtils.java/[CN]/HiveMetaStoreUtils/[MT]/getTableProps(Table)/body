@@ -1,0 +1,22 @@
+{
+  State tableProps=new State();
+  for (  Map.Entry<String,String> entry : table.getParameters().entrySet()) {
+    tableProps.setProp(entry.getKey(),entry.getValue());
+  }
+  if (table.isSetCreateTime()) {
+    tableProps.setProp(HiveConstants.CREATE_TIME,table.getCreateTime());
+  }
+  if (table.isSetLastAccessTime()) {
+    tableProps.setProp(HiveConstants.LAST_ACCESS_TIME,table.getCreateTime());
+  }
+  if (table.isSetOwner()) {
+    tableProps.setProp(HiveConstants.OWNER,table.getOwner());
+  }
+  if (table.isSetTableType()) {
+    tableProps.setProp(HiveConstants.TABLE_TYPE,table.getTableType());
+  }
+  if (table.isSetRetention()) {
+    tableProps.setProp(HiveConstants.RETENTION,table.getRetention());
+  }
+  return tableProps;
+}

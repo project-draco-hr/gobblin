@@ -3,12 +3,7 @@
   if (fs.exists(directory)) {
     getAllNestedAvroFiles(fs.getFileStatus(directory),files,fs);
     if (files.size() > 0) {
-      Collections.sort(files,new Comparator<FileStatus>(){
-        @Override public int compare(        FileStatus file1,        FileStatus file2){
-          return Longs.compare(Long.valueOf(file2.getModificationTime()),Long.valueOf(file1.getModificationTime()));
-        }
-      }
-);
+      Collections.sort(files,FileListUtils.LATEST_MOD_TIME_ORDER);
     }
   }
   return files;

@@ -1,0 +1,3 @@
+{
+  return get(props.getProp(HIVE_REGISTER_TYPE,DEFAULT_HIVE_REGISTER_TYPE),props);
+}

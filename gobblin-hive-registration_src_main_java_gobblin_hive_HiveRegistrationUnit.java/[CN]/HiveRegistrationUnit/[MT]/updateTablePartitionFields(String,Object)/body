@@ -1,0 +1,10 @@
+{
+switch (key) {
+case HiveConstants.CREATE_TIME:
+    this.createTime=Optional.of((long)value);
+  break;
+case HiveConstants.LAST_ACCESS_TIME:
+this.createTime=Optional.of((long)value);
+break;
+}
+}

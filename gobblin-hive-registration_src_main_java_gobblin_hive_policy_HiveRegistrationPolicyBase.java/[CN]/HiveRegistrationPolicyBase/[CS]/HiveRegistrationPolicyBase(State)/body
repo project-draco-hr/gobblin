@@ -1,6 +1,6 @@
 {
   Preconditions.checkNotNull(props);
-  this.props=props;
+  this.props=new HiveRegProps(props);
   this.sanitizeNameAllowed=props.getPropAsBoolean(HIVE_SANITIZE_INVALID_NAMES,true);
   this.dbNamePattern=props.contains(HIVE_DATABASE_REGEX) ? Optional.of(Pattern.compile(props.getProp(HIVE_DATABASE_REGEX))) : Optional.<Pattern>absent();
   this.tableNamePattern=props.contains(HIVE_TABLE_REGEX) ? Optional.of(Pattern.compile(props.getProp(HIVE_TABLE_REGEX))) : Optional.<Pattern>absent();

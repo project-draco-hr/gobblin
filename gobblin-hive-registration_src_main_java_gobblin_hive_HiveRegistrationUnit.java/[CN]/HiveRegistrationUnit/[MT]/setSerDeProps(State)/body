@@ -1,0 +1,4 @@
+{
+  this.serDeProps.addAll(serdeProps);
+  populateSerDeFields();
+}

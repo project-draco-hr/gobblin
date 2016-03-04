@@ -1,0 +1,7 @@
+{
+switch (key) {
+case HiveConstants.SERDE_TYPE:
+    this.serDeType=Optional.of((String)value);
+  break;
+}
+}

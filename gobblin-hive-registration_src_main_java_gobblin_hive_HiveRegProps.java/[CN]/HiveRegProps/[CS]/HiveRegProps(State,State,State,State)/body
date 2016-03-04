@@ -1,0 +1,6 @@
+{
+  super(props);
+  this.tablePartitionProps=tableProps;
+  this.storageProps=storageProps;
+  this.serdeProps=serdeProps;
+}

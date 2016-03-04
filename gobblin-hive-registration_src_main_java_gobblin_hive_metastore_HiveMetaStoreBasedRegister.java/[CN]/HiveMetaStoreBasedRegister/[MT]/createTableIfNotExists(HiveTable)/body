@@ -1,0 +1,19 @@
+{
+  IMetaStoreClient client=borrowClient();
+  HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName());
+  lock.lock();
+  try {
+    if (client.tableExists(table.getDbName(),table.getTableName())) {
+      return false;
+    }
+    client.createTable(HiveMetaStoreUtils.getTable(table));
+    return true;
+  }
+ catch (  TException e) {
+    throw new IOException(String.format("Error in creating or altering Hive table %s in db %s",table.getTableName(),table.getDbName()),e);
+  }
+ finally {
+    lock.unlock();
+    this.clientPool.returnObject(client);
+  }
+}

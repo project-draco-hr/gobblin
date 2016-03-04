@@ -1,0 +1,3 @@
+{
+  return AvroUtils.getDirectorySchema(directory,this.fs,true);
+}

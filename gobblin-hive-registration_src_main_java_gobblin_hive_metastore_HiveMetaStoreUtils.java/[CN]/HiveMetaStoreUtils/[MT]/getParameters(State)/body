@@ -1,0 +1,7 @@
+{
+  Map<String,String> parameters=Maps.newHashMap();
+  for (  String propKey : props.getPropertyNames()) {
+    parameters.put(propKey,props.getProp(propKey));
+  }
+  return parameters;
+}

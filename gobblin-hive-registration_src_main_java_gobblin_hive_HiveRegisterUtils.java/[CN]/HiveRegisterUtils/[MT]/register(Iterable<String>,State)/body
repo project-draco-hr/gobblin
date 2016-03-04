@@ -1,5 +1,5 @@
 {
-  try (HiveRegister hiveRegister=new HiveRegister(state)){
+  try (HiveRegister hiveRegister=HiveRegister.get(state)){
     HiveRegistrationPolicy policy=HiveRegistrationPolicyBase.getPolicy(state);
     for (    String path : paths) {
       for (      HiveSpec spec : policy.getHiveSpecs(new Path(path))) {

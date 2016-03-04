@@ -1,3 +1,0 @@
-{
-  return Optional.fromNullable(getProp(HIVE_OWNER));
-}

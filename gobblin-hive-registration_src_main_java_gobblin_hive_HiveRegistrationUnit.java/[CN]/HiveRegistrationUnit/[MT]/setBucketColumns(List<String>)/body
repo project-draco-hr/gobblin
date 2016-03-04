@@ -1,0 +1,3 @@
+{
+  this.bucketColumns=Optional.<List<String>>of(ImmutableList.<String>copyOf(bucketColumns));
+}

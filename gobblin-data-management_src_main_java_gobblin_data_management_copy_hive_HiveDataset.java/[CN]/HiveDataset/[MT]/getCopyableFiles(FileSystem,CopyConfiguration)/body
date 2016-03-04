@@ -17,7 +17,7 @@
       }
     }
  else {
-      HiveSpec hiveSpec=new SimpleHiveSpec.Builder(this.table.getDataLocation()).withTable(this.table.getTTable()).build();
+      HiveSpec hiveSpec=new SimpleHiveSpec.Builder(this.table.getDataLocation()).withTable(HiveMetaStoreUtils.getHiveTable(this.table.getTTable())).build();
     }
     if (isPartitioned(this.table)) {
       Map<List<String>,Partition> sourcePartitions=getPartitions(sourceClient,this.table);
