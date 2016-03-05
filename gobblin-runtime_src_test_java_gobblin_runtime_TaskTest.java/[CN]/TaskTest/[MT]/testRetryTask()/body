@@ -1,0 +1,20 @@
+{
+  TaskState taskState=new TaskState(new WorkUnitState(WorkUnit.create(new Extract(Extract.TableType.SNAPSHOT_ONLY,this.getClass().getName(),this.getClass().getSimpleName()))));
+  taskState.setProp(ConfigurationKeys.METRICS_ENABLED_KEY,Boolean.toString(false));
+  taskState.setTaskId("testRetryTaskId");
+  TaskContext mockTaskContext=mock(TaskContext.class);
+  when(mockTaskContext.getExtractor()).thenReturn(new FailOnceExtractor());
+  when(mockTaskContext.getForkOperator()).thenReturn(new IdentityForkOperator());
+  when(mockTaskContext.getTaskState()).thenReturn(taskState);
+  when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class),anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
+  TaskPublisher mockTaskPublisher=mock(TaskPublisher.class);
+  when(mockTaskPublisher.canPublish()).thenReturn(TaskPublisher.PublisherState.SUCCESS);
+  when(mockTaskContext.getTaskPublisher(any(TaskState.class),any(TaskLevelPolicyCheckResults.class),anyInt())).thenReturn(mockTaskPublisher);
+  TaskStateTracker mockTaskStateTracker=mock(TaskStateTracker.class);
+  TaskExecutor taskExecutor=new TaskExecutor(new Properties());
+  Task task=new Task(mockTaskContext,mockTaskStateTracker,taskExecutor,Optional.<CountDownLatch>absent());
+  task.run();
+  Assert.assertEquals(task.getTaskState().getWorkingState(),WorkUnitState.WorkingState.FAILED);
+  task.run();
+  Assert.assertEquals(task.getTaskState().getWorkingState(),WorkUnitState.WorkingState.SUCCESSFUL);
+}

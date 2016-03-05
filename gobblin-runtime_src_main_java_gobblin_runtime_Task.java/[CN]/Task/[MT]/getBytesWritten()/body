@@ -1,9 +1,7 @@
 {
   long bytesWritten=0;
-  for (  Optional<Fork> fork : this.forks) {
-    if (fork.isPresent()) {
-      bytesWritten+=fork.get().getBytesWritten();
-    }
+  for (  Optional<Fork> fork : this.forks.keySet()) {
+    bytesWritten+=fork.get().getBytesWritten();
   }
   return bytesWritten;
 }

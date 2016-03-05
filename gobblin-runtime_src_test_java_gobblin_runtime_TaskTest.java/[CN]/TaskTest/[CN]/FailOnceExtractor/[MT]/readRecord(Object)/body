@@ -1,0 +1,7 @@
+{
+  if (!HAS_FAILED.get()) {
+    HAS_FAILED.set(true);
+    throw new IOException();
+  }
+  return null;
+}

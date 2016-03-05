@@ -1,7 +1,11 @@
 {
   ConstructState state=new ConstructState();
-  state.addConstructState(Constructs.CONVERTER,new ConstructState(this.converter.getFinalState()));
-  state.addConstructState(Constructs.ROW_QUALITY_CHECKER,new ConstructState(this.rowLevelPolicyChecker.getFinalState()));
+  if (this.converter != null) {
+    state.addConstructState(Constructs.CONVERTER,new ConstructState(this.converter.getFinalState()));
+  }
+  if (this.rowLevelPolicyChecker != null) {
+    state.addConstructState(Constructs.ROW_QUALITY_CHECKER,new ConstructState(this.rowLevelPolicyChecker.getFinalState()));
+  }
   if (this.writer.isPresent() && this.writer.get() instanceof FinalState) {
     state.addConstructState(Constructs.WRITER,new ConstructState(((FinalState)this.writer.get()).getFinalState()));
   }

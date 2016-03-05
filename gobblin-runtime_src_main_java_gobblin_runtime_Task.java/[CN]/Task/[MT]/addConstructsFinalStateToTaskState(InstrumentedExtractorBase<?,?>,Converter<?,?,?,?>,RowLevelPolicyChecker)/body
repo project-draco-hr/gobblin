@@ -10,10 +10,8 @@
     constructState.addConstructState(Constructs.ROW_QUALITY_CHECKER,new ConstructState(rowChecker.getFinalState()));
   }
   int forkIdx=0;
-  for (  Optional<Fork> fork : this.forks) {
-    if (fork.isPresent()) {
-      constructState.addConstructState(Constructs.FORK_OPERATOR,new ConstructState(fork.get().getFinalState()),Integer.toString(forkIdx));
-    }
+  for (  Optional<Fork> fork : this.forks.keySet()) {
+    constructState.addConstructState(Constructs.FORK_OPERATOR,new ConstructState(fork.get().getFinalState()),Integer.toString(forkIdx));
     forkIdx++;
   }
   constructState.mergeIntoWorkUnitState(this.taskState);
