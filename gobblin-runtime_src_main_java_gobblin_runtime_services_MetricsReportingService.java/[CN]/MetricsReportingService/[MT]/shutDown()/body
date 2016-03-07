@@ -1,0 +1,3 @@
+{
+  GobblinMetrics.get(this.appId).stopMetricsReporting();
+}

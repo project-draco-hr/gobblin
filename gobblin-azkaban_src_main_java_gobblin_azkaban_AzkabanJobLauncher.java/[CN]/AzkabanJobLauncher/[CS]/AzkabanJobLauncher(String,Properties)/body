@@ -23,4 +23,5 @@
     this.props.setProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.MAPREDUCE.toString());
   }
   this.jobLauncher=this.closer.register(JobLauncherFactory.newJobLauncher(this.props,this.props));
+  this.applicationLauncher=this.closer.register(new ServiceBasedAppLauncher(this.props,"Azkaban-" + UUID.randomUUID()));
 }

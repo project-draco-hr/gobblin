@@ -1,10 +1,16 @@
 {
-  try {
-    if (isCurrentTimeInRange()) {
-      this.jobLauncher.launchJob(this.jobListener);
+  if (isCurrentTimeInRange()) {
+    try {
+      start();
+      launchJob(this.jobListener);
     }
-  }
   finally {
-    this.closer.close();
+      try {
+        stop();
+      }
+  finally {
+        close();
+      }
+    }
   }
 }

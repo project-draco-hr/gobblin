@@ -1,0 +1,4 @@
+{
+  String appIdSuffix=String.format("%s_%d",appName,System.currentTimeMillis());
+  return "app_" + appIdSuffix;
+}

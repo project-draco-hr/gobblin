@@ -1,0 +1,4 @@
+{
+  this.applicationLauncher=this.closer.register(new ServiceBasedAppLauncher(properties,properties.getProperty(ServiceBasedAppLauncher.APP_NAME,"CliLocalJob-" + UUID.randomUUID())));
+  this.localJobLauncher=this.closer.register(new LocalJobLauncher(properties));
+}

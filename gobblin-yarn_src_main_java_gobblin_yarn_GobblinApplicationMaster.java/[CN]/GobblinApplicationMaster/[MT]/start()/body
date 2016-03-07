@@ -1,10 +1,6 @@
 {
   LOGGER.info("Starting the Gobblin Yarn ApplicationMaster");
-  addShutdownHook();
   this.eventBus.register(this);
   connectHelixManager();
-  registerJvmMetrics();
-  this.jmxReporter.start();
-  this.serviceManager.startAsync();
-  this.serviceManager.awaitHealthy();
+  super.start();
 }

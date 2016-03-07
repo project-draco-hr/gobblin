@@ -1,22 +1,20 @@
 {
+  super(ConfigUtils.configToProperties(config),applicationName);
   String applicationId=containerId.getApplicationAttemptId().getApplicationId().toString();
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
   this.helixManager=buildHelixManager(config,zkConnectionString);
   FileSystem fs=buildFileSystem(config);
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
-  List<Service> services=Lists.newArrayList();
-  if (isLogSourcePresent()) {
-    services.add(buildLogCopier(config,containerId,fs,appWorkDir));
+  GobblinYarnLogSource gobblinYarnLogSource=new GobblinYarnLogSource();
+  if (gobblinYarnLogSource.isLogSourcePresent()) {
+    addService(gobblinYarnLogSource.buildLogCopier(config,containerId,fs,appWorkDir));
   }
-  services.add(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
-  services.add(buildGobblinHelixJobScheduler(config,appWorkDir,getMetadataTags(applicationName,applicationId)));
-  services.add(buildJobConfigurationManager(config));
+  addService(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
+  addService(buildGobblinHelixJobScheduler(config,appWorkDir,getMetadataTags(applicationName,applicationId)));
+  addService(buildJobConfigurationManager(config));
   if (UserGroupInformation.isSecurityEnabled()) {
     LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");
-    services.add(buildYarnContainerSecurityManager(config,fs));
+    addService(buildYarnContainerSecurityManager(config,fs));
   }
-  this.serviceManager=new ServiceManager(services);
-  this.metricRegistry=new MetricRegistry();
-  this.jmxReporter=JmxReporter.forRegistry(this.metricRegistry).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
 }

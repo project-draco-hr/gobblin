@@ -1,0 +1,31 @@
+{
+  if (this.hasStarted) {
+    LOG.warn("ApplicationLauncher has already started");
+    return;
+  }
+ else {
+    this.hasStarted=true;
+  }
+  this.serviceManager=new ServiceManager(this.services);
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    public void run(){
+      try {
+        ServiceBasedAppLauncher.this.stop();
+      }
+ catch (      ApplicationException e) {
+        LOG.error("Failed to shutdown application",e);
+      }
+ finally {
+        try {
+          ServiceBasedAppLauncher.this.close();
+        }
+ catch (        IOException e) {
+          LOG.error("Failed to close application",e);
+        }
+      }
+    }
+  }
+);
+  LOG.info("Starting the Gobblin application and all its associated Services");
+  this.serviceManager.startAsync();
+}

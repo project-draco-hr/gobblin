@@ -1,3 +1,5 @@
 {
   this.jobProperties=jobProperties;
+  this.applicationLauncher=this.closer.register(new ServiceBasedAppLauncher(jobProperties,jobProperties.getProperty(ServiceBasedAppLauncher.APP_NAME,"CliMRJob-" + UUID.randomUUID())));
+  this.mrJobLauncher=this.closer.register(new MRJobLauncher(jobProperties,getConf()));
 }

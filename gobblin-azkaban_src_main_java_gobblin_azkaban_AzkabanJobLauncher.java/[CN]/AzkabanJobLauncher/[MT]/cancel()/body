@@ -1,8 +1,13 @@
 {
   try {
-    this.jobLauncher.cancelJob(this.jobListener);
+    cancelJob(this.jobListener);
   }
   finally {
-    this.closer.close();
+    try {
+      stop();
+    }
+  finally {
+      close();
+    }
   }
 }

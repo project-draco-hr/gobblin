@@ -1,0 +1,16 @@
+{
+  boolean jobExecInfoServerEnabled=Boolean.valueOf(properties.getProperty(ConfigurationKeys.JOB_EXECINFO_SERVER_ENABLED_KEY,Boolean.FALSE.toString()));
+  boolean adminUiServerEnabled=Boolean.valueOf(properties.getProperty(ConfigurationKeys.ADMIN_SERVER_ENABLED_KEY,Boolean.FALSE.toString()));
+  if (jobExecInfoServerEnabled) {
+    LOG.info("Will launch the job execution info server");
+    JobExecutionInfoServer executionInfoServer=new JobExecutionInfoServer(properties);
+    addService(executionInfoServer);
+    if (adminUiServerEnabled) {
+      LOG.info("Will launch the admin UI server");
+      addService(new AdminWebServer(properties,executionInfoServer.getAdvertisedServerUri()));
+    }
+  }
+ else   if (adminUiServerEnabled) {
+    LOG.warn("Not launching the admin UI because the job execution info server is not enabled");
+  }
+}

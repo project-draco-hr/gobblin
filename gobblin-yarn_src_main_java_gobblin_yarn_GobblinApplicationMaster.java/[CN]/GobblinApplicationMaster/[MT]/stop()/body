@@ -6,13 +6,12 @@
   LOGGER.info("Stopping the Gobblin Yarn ApplicationMaster");
   sendShutdownRequest();
   try {
-    this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.MINUTES);
+    super.stop();
   }
- catch (  TimeoutException te) {
-    LOGGER.error("Timeout in stopping the service manager",te);
+ catch (  ApplicationException ae) {
+    LOGGER.error("Error while stopping ApplicationMaster",ae);
   }
  finally {
     disconnectHelixManager();
-    this.jmxReporter.stop();
   }
 }

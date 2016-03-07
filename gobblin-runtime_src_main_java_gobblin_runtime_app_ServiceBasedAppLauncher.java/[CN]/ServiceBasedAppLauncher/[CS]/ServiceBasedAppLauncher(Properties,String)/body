@@ -1,0 +1,8 @@
+{
+  this.appId=ApplicationLauncherUtils.newAppId(appName);
+  this.services=new ArrayList<>();
+  addJobExecutionServerAndAdminUI(properties);
+  addMetricsService(properties);
+  addJMXReportingService();
+  addInterruptedShutdownHook();
+}
