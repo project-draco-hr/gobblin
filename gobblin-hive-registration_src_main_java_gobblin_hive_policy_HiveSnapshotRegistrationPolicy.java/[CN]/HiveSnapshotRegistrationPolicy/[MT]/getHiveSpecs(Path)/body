@@ -1,0 +1,9 @@
+{
+  HiveTable table=getTable(path);
+  if (table == null) {
+    return ImmutableList.<HiveSpec>of();
+  }
+ else {
+    return ImmutableList.<HiveSpec>of(new SimpleHiveSpec.Builder<>(path).withTable(table).withPartition(getPartition(path)).build());
+  }
+}

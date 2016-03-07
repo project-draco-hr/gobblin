@@ -1,4 +1,5 @@
 {
-  this.serDeProps.addAll(serdeProps);
-  populateSerDeFields();
+  for (  String propKey : serdeProps.getPropertyNames()) {
+    setSerDeProp(propKey,serdeProps.getProp(propKey));
+  }
 }
