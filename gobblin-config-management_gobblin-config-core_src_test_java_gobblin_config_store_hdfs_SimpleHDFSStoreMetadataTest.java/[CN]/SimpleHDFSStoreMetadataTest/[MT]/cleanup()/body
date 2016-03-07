@@ -1,0 +1,3 @@
+{
+  this.localFs.delete(TEST_PATH,true);
+}

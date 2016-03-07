@@ -5,7 +5,7 @@
     if (storeUri.getScheme().equals(storeFactory.getScheme())) {
       log.info("Using ConfigStore with scheme : " + storeFactory.getScheme());
       ConfigStore configStore=storeFactory.createConfigStore(storeUri);
-      if (configStore instanceof Deployable<?,?>) {
+      if (configStore instanceof Deployable<?>) {
         ((Deployable)configStore).deploy(new FsDeploymentConfig(confgSource,version));
       }
  else {

@@ -4,4 +4,5 @@
   SimpleLocalHDFSConfigStoreFactory simpleHDFSConfigStoreConfigFactory=new SimpleLocalHDFSConfigStoreFactory();
   URI storeURI=getStoreURI(System.getProperty("user.dir") + File.separator + CONFIG_DIR_NAME);
   this.simpleHDFSConfigStore=simpleHDFSConfigStoreConfigFactory.createConfigStore(storeURI);
+  this.simpleHDFSConfigStore.deploy(new FsDeploymentConfig(new ClasspathConfigSource(new Properties()),VERSION));
 }

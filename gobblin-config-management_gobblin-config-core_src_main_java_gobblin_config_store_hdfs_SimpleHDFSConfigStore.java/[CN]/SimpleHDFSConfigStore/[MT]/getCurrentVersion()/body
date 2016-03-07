@@ -1,19 +1,9 @@
 {
-  Path configStoreDir=new Path(new Path(this.physicalStoreRoot),CONFIG_STORE_NAME);
   try {
-    if (!this.fs.exists(configStoreDir)) {
-      throw new VersionDoesNotExistException(getStoreURI(),"CURRENT","");
-    }
+    return storeMetadata.getCurrentVersion();
   }
  catch (  IOException e) {
-    throw new RuntimeException(String.format("Error while checking if the configStoreDir: \"%s\" exists",configStoreDir),e);
-  }
-  try {
-    FileStatus[] fileStatuses=Iterables.toArray(Iterables.filter(Arrays.asList(this.fs.listStatus(configStoreDir)),new FileStatusIsDir()),FileStatus.class);
-    Arrays.sort(fileStatuses,new FileStatusPathNameComparator());
-    return fileStatuses[fileStatuses.length - 1].getPath().getName();
-  }
- catch (  IOException e) {
+    Path configStoreDir=new Path(new Path(this.physicalStoreRoot),CONFIG_STORE_NAME);
     throw new RuntimeException(String.format("Error while checking current version for configStoreDir: \"%s\"",configStoreDir),e);
   }
 }
