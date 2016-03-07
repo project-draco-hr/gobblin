@@ -1,0 +1,8 @@
+{
+  if (!isStoreMetadataFilePresent()) {
+    throw new IOException("Store metadata file does not exist at " + this.storeMetadataFilePath);
+  }
+  try (InputStream storeMetadataInputStream=this.fs.open(this.storeMetadataFilePath)){
+    return ConfigFactory.parseReader(new InputStreamReader(storeMetadataInputStream,Charsets.UTF_8));
+  }
+ }

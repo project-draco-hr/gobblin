@@ -1,0 +1,3 @@
+{
+  this.localFs=FileSystem.get(URI.create(ConfigurationKeys.LOCAL_FS_URI),new Configuration());
+}

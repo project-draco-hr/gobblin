@@ -1,0 +1,3 @@
+{
+  return readMetadata().getString(CONFIG_STORE_METADATA_CURRENT_VERSION_KEY);
+}

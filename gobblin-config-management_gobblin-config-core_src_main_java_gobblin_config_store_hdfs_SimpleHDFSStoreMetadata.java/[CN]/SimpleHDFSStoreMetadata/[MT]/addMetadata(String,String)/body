@@ -1,0 +1,10 @@
+{
+  Config newConfig;
+  if (isStoreMetadataFilePresent()) {
+    newConfig=readMetadata().withValue(key,ConfigValueFactory.fromAnyRef(value));
+  }
+ else {
+    newConfig=ConfigFactory.empty().withValue(key,ConfigValueFactory.fromAnyRef(value));
+  }
+  writeMetadata(newConfig);
+}
