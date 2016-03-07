@@ -1,0 +1,26 @@
+{
+  FileStatus statuses[]=this.fs.listStatus(path,new PathFilter(){
+    @Override public boolean accept(    Path p){
+      try {
+        if (!HiveSnapshotRegistrationPolicy.this.fs.isDirectory(p)) {
+          return false;
+        }
+      }
+ catch (      IOException e) {
+        throw Throwables.propagate(e);
+      }
+      return !HiveSnapshotRegistrationPolicy.this.snapshotPathPattern.isPresent() || HiveSnapshotRegistrationPolicy.this.snapshotPathPattern.get().matcher(p.toString()).matches();
+    }
+  }
+);
+  if (statuses.length == 0) {
+    return null;
+  }
+  Arrays.sort(statuses,new Comparator<FileStatus>(){
+    @Override public int compare(    FileStatus o1,    FileStatus o2){
+      return o2.getPath().getName().compareTo(o1.getPath().getName());
+    }
+  }
+);
+  return statuses[0].getPath();
+}

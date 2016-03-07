@@ -1,4 +1,5 @@
 {
-  this.storageProps.addAll(storageProps);
-  populateStorageFields();
+  for (  String propKey : storageProps.getPropertyNames()) {
+    setStorageProp(propKey,storageProps.getProp(propKey));
+  }
 }

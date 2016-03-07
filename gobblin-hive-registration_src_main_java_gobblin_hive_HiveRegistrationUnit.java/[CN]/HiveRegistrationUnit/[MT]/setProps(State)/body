@@ -1,4 +1,5 @@
 {
-  this.props.addAll(props);
-  populateTablePartitionFields();
+  for (  String propKey : props.getPropertyNames()) {
+    setProp(propKey,props.getProp(propKey));
+  }
 }
