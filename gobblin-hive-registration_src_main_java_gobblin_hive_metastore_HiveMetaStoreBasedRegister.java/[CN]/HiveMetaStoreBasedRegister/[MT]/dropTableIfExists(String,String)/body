@@ -1,5 +1,5 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(dbName,tableName)){
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     if (client.get().tableExists(dbName,tableName)) {
       client.get().dropTable(dbName,tableName);
       log.info("Dropped table " + tableName + " in db "+ dbName);

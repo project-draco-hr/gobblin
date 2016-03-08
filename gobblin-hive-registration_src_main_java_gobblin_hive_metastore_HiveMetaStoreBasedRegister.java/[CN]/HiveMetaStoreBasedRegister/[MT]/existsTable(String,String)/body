@@ -1,5 +1,5 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(dbName,tableName)){
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     return client.get().tableExists(dbName,tableName);
   }
  catch (  TException e) {

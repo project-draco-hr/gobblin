@@ -1,0 +1,9 @@
+{
+  if (unit1.getSerDeProps().contains(HiveAvroSerDeManager.SCHEMA_LITERAL) && unit2.getSerDeProps().contains(HiveAvroSerDeManager.SCHEMA_LITERAL)) {
+    return unit1.getSerDeProps().getProp(HiveAvroSerDeManager.SCHEMA_LITERAL).equals(unit2.getSerDeProps().getProp(HiveAvroSerDeManager.SCHEMA_LITERAL));
+  }
+ else   if (unit1.getSerDeProps().contains(HiveAvroSerDeManager.SCHEMA_URL) && unit2.getSerDeProps().contains(HiveAvroSerDeManager.SCHEMA_URL)) {
+    return unit1.getSerDeProps().getProp(HiveAvroSerDeManager.SCHEMA_URL).equals(unit2.getSerDeProps().getProp(HiveAvroSerDeManager.SCHEMA_URL));
+  }
+  return false;
+}

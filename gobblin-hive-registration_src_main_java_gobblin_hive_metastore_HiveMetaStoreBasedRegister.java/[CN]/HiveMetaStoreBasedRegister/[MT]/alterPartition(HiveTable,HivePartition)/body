@@ -1,5 +1,5 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName())){
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
   }
  catch (  TException e) {

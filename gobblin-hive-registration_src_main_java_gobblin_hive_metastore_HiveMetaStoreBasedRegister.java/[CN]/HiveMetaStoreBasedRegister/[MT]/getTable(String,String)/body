@@ -1,5 +1,5 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(dbName,tableName)){
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     return Optional.of(HiveMetaStoreUtils.getHiveTable(client.get().getTable(dbName,tableName)));
   }
  catch (  NoSuchObjectException e) {

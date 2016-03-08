@@ -1,4 +1,4 @@
 {
   this.serDeProps.setProp(key,value);
-  updateSerDeFields(key,value);
+  updateSerDeFields(this.serDeProps,key,value);
 }

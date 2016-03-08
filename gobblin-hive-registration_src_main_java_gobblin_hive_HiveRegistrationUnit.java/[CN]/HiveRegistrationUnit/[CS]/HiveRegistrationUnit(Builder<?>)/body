@@ -8,7 +8,7 @@
   this.storageProps.addAll(builder.storageProps);
   this.serDeProps.addAll(builder.serDeProps);
   this.serDeManager=builder.serDeManager;
-  populateTablePartitionFields();
-  populateStorageFields();
-  populateSerDeFields();
+  populateTablePartitionFields(this.props);
+  populateStorageFields(this.storageProps);
+  populateSerDeFields(this.serDeProps);
 }

@@ -1,0 +1,17 @@
+{
+  if (source.getSerDeType().isPresent()) {
+    target.setSerDeType(source.getSerDeType().get());
+  }
+  if (source.getInputFormat().isPresent()) {
+    target.setInputFormat(source.getInputFormat().get());
+  }
+  if (source.getOutputFormat().isPresent()) {
+    target.setOutputFormat(source.getOutputFormat().get());
+  }
+  if (source.getSerDeProps().contains(SCHEMA_LITERAL)) {
+    target.setSerDeProp(SCHEMA_LITERAL,source.getSerDeProps().getProp(SCHEMA_LITERAL));
+  }
+  if (source.getSerDeProps().contains(SCHEMA_URL)) {
+    target.setSerDeProp(SCHEMA_URL,source.getSerDeProps().getProp(SCHEMA_URL));
+  }
+}

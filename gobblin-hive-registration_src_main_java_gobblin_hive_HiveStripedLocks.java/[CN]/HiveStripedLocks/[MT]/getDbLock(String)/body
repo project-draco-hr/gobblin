@@ -1,5 +1,0 @@
-{
-  Preconditions.checkArgument(!Strings.isNullOrEmpty(dbName));
-  Lock dbLock=locks.get(dbName);
-  return new HiveLock(dbLock);
-}

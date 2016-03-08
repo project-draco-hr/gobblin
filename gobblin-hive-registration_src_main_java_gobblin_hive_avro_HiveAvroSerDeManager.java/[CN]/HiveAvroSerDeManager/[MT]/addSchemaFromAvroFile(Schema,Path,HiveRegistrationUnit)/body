@@ -6,6 +6,7 @@
   }
  else {
     AvroUtils.writeSchemaToFile(schema,schemaFile,this.fs,true);
+    log.info("Using schema file " + schemaFile.toString());
     hiveUnit.setSerDeProp(SCHEMA_URL,schemaFile.toString());
   }
 }

@@ -1,4 +1,0 @@
-{
-  this.locks=Arrays.asList(locks);
-  this.lock();
-}

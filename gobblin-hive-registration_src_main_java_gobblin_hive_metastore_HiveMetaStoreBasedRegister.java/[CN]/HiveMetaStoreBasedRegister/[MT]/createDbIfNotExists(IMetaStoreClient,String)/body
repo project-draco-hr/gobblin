@@ -12,7 +12,7 @@ catch (  TException te) {
   }
   Preconditions.checkState(this.hiveDbRootDir.isPresent(),"Missing required property " + HiveRegProps.HIVE_DB_ROOT_DIR);
   db.setLocationUri(new Path(this.hiveDbRootDir.get(),dbName + HIVE_DB_EXTENSION).toString());
-  try (HiveLock lock=locks.getDbLock(dbName)){
+  try {
     client.createDatabase(db);
     log.info("Created database " + dbName);
     return true;
