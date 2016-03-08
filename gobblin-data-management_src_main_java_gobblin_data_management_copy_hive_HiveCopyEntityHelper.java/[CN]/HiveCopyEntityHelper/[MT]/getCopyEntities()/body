@@ -1,8 +1,14 @@
 {
   List<CopyEntity> copyableFiles=Lists.newArrayList();
-  if (HiveDataset.isPartitioned(this.dataset.table)) {
+  if (HiveUtils.isPartitioned(this.dataset.table)) {
     for (    Map.Entry<List<String>,Partition> partitionEntry : sourcePartitions.entrySet()) {
-      copyableFiles.addAll(new PartitionCopy(partitionEntry.getValue()).getCopyEntities());
+      try {
+        copyableFiles.addAll(new PartitionCopy(partitionEntry.getValue()).getCopyEntities());
+      }
+ catch (      IOException ioe) {
+        log.error("Could not generate work units to copy partition " + partitionEntry.getValue().getCompleteName(),ioe);
+      }
+      targetPartitions.remove(partitionEntry.getKey());
     }
     String deregisterFileSet="deregister";
     int priority=1;

@@ -3,8 +3,7 @@
   this.clientPool=clientPool;
   this.table=table;
   this.properties=properties;
-  this.tableLocations=parseLocationIntoPaths(this.table.getDataLocation());
-  this.tableRootPath=this.tableLocations.size() == 1 ? Optional.of(PathUtils.deepestNonGlobPath(this.tableLocations.get(0))) : Optional.<Path>absent();
+  this.tableRootPath=PathUtils.isGlob(this.table.getDataLocation()) ? Optional.<Path>absent() : Optional.of(this.table.getDataLocation());
   this.tableIdentifier=this.table.getDbName() + "." + this.table.getTableName();
   log.info("Created Hive dataset for table " + tableIdentifier);
 }

@@ -2,7 +2,7 @@
   List<CopyableFile.Builder> builders=Lists.newArrayList();
   List<SourceAndDestination> dataFiles=Lists.newArrayList();
   for (  FileStatus status : paths) {
-    dataFiles.add(new SourceAndDestination(status,getTargetPath(status,this.targetFs,partition)));
+    dataFiles.add(new SourceAndDestination(status,getTargetPath(status.getPath(),this.targetFs,partition,true)));
   }
   for (  SourceAndDestination sourceAndDestination : dataFiles) {
     FileSystem actualSourceFs=sourceAndDestination.getSource().getPath().getFileSystem(new Configuration());

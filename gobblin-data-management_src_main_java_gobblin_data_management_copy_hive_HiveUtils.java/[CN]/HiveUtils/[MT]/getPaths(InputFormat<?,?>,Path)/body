@@ -1,0 +1,14 @@
+{
+  JobConf jobConf=new JobConf(getHadoopConfiguration());
+  Set<Path> paths=Sets.newHashSet();
+  FileInputFormat.addInputPaths(jobConf,location.toString());
+  InputSplit[] splits=inputFormat.getSplits(jobConf,1000);
+  for (  InputSplit split : splits) {
+    if (!(split instanceof FileSplit)) {
+      throw new IOException("Not a file split. Found " + split.getClass().getName());
+    }
+    FileSplit fileSplit=(FileSplit)split;
+    paths.add(fileSplit.getPath());
+  }
+  return paths;
+}

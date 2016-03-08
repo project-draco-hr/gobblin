@@ -1,12 +1,12 @@
 {
-  Path targetLocation=getTargetLocation(this.dataset.fs,this.targetFs,HiveDataset.parseLocationIntoPaths(sourceTable.getDataLocation()),Optional.<Partition>absent());
-  if (targetLocation != targetTable.getDataLocation()) {
+  Path targetLocation=getTargetLocation(this.dataset.fs,this.targetFs,sourceTable.getDataLocation(),Optional.<Partition>absent());
+  if (!targetLocation.equals(targetTable.getDataLocation())) {
     throw new IOException(String.format("Computed target location %s and already registered target location %s do not agree.",targetLocation,targetTable.getDataLocation()));
   }
-  if (HiveDataset.isPartitioned(sourceTable) != HiveDataset.isPartitioned(targetTable)) {
-    throw new IOException(String.format("%s: Source table %s partitioned, target table %s partitioned. Tables are incompatible.",this.dataset.tableIdentifier,HiveDataset.isPartitioned(sourceTable) ? "is" : "is not",HiveDataset.isPartitioned(targetTable) ? "is" : "is not"));
+  if (HiveUtils.isPartitioned(sourceTable) != HiveUtils.isPartitioned(targetTable)) {
+    throw new IOException(String.format("%s: Source table %s partitioned, target table %s partitioned. Tables are incompatible.",this.dataset.tableIdentifier,HiveUtils.isPartitioned(sourceTable) ? "is" : "is not",HiveUtils.isPartitioned(targetTable) ? "is" : "is not"));
   }
-  if (sourceTable.isPartitioned() && sourceTable.getPartitionKeys() != targetTable.getPartitionKeys()) {
+  if (sourceTable.isPartitioned() && !sourceTable.getPartitionKeys().equals(targetTable.getPartitionKeys())) {
     throw new IOException(String.format("%s: Source table has partition keys %s, target table has partition  keys %s. " + "Tables are incompatible.",this.dataset.tableIdentifier,gson.toJson(sourceTable.getPartitionKeys()),gson.toJson(targetTable.getPartitionKeys())));
   }
 }

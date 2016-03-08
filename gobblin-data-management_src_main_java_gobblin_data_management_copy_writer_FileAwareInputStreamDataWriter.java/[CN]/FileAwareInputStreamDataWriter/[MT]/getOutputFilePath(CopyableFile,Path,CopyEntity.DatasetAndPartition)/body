@@ -1,3 +1,4 @@
 {
-  return new Path(getPartitionOutputRoot(outputDir,datasetAndPartition),PathUtils.withoutLeadingSeparator(file.getDestination()));
+  Path destinationWithoutSchemeAndAuthority=PathUtils.getPathWithoutSchemeAndAuthority(file.getDestination());
+  return new Path(getPartitionOutputRoot(outputDir,datasetAndPartition),PathUtils.withoutLeadingSeparator(destinationWithoutSchemeAndAuthority));
 }

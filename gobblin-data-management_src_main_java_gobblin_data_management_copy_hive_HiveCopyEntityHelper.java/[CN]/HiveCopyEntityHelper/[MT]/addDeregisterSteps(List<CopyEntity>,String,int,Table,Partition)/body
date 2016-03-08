@@ -1,7 +1,7 @@
 {
   int stepPriority=initialPriority;
-  InputFormat<?,?> inputFormat=HiveDataset.getInputFormat(partition.getTPartition().getSd());
-  Collection<Path> partitionPaths=HiveDataset.getPaths(inputFormat,partition.getLocation());
+  InputFormat<?,?> inputFormat=HiveUtils.getInputFormat(partition.getTPartition().getSd());
+  Collection<Path> partitionPaths=HiveUtils.getPaths(inputFormat,partition.getDataLocation());
   DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(targetFs,partitionPaths,this.dataset.properties);
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
   PartitionDeregisterStep deregister=new PartitionDeregisterStep(table.getTTable(),partition.getTPartition(),targetURI,hiveRegProps);

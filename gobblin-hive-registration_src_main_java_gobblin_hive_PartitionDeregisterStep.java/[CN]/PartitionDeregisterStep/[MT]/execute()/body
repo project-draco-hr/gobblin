@@ -1,5 +1,5 @@
 {
   HiveTable hiveTable=HiveMetaStoreUtils.getHiveTable(this.table);
-  HiveRegister hiveRegister=new HiveMetaStoreBasedRegister(this.props,this.metastoreURI);
+  HiveRegister hiveRegister=HiveRegister.get(this.props,this.metastoreURI);
   hiveRegister.dropPartitionIfExists(this.partition.getDbName(),this.partition.getTableName(),hiveTable.getPartitionKeys(),this.partition.getValues());
 }

@@ -1,3 +1,0 @@
-FileStatus status
-FileSystem targetFs
-Optional<Partition> partition
