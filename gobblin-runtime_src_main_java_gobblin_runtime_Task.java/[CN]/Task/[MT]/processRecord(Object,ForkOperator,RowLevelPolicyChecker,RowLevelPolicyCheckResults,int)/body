@@ -13,20 +13,23 @@
   boolean[] succeededPuts=new boolean[branches];
   while (!allPutsSucceeded) {
     allPutsSucceeded=true;
-    for (int i=0; i < branches; i++) {
-      if (succeededPuts[i]) {
+    int branch=0;
+    for (    Optional<Fork> fork : this.forks.keySet()) {
+      if (succeededPuts[branch]) {
+        branch++;
         continue;
       }
-      if (this.forks.get(i).isPresent() && forkedRecords.get(i)) {
-        boolean succeeded=this.forks.get(i).get().putRecord(convertedRecord instanceof Copyable ? ((Copyable)convertedRecord).copy() : convertedRecord);
-        succeededPuts[i]=succeeded;
+      if (fork.isPresent() && forkedRecords.get(branch)) {
+        boolean succeeded=fork.get().putRecord(convertedRecord instanceof Copyable ? ((Copyable)convertedRecord).copy() : convertedRecord);
+        succeededPuts[branch]=succeeded;
         if (!succeeded) {
           allPutsSucceeded=false;
         }
       }
  else {
-        succeededPuts[i]=true;
+        succeededPuts[branch]=true;
       }
+      branch++;
     }
   }
 }

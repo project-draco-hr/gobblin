@@ -25,11 +25,10 @@
     for (int i=0; i < branches; i++) {
       if (forkedSchemas.get(i)) {
         Fork fork=closer.register(new Fork(this.taskContext,schema instanceof Copyable ? ((Copyable)schema).copy() : schema,branches,i));
-        this.forkCompletionService.submit(fork,fork);
-        this.forks.add(Optional.of(fork));
+        this.forks.put(Optional.of(fork),Optional.<Future<?>>of(this.taskExecutor.submit(fork)));
       }
  else {
-        this.forks.add(Optional.<Fork>absent());
+        this.forks.put(Optional.<Fork>absent(),Optional.<Future<?>>absent());
       }
     }
     rowChecker=closer.register(this.taskContext.getRowLevelPolicyChecker());
@@ -46,15 +45,15 @@
     LOG.info("Row quality checker finished with results: " + rowResults.getResults());
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXTRACTED,recordsPulled);
     this.taskState.setProp(ConfigurationKeys.EXTRACTOR_ROWS_EXPECTED,extractor.getExpectedRecordCount());
-    for (    Optional<Fork> fork : this.forks) {
+    for (    Optional<Fork> fork : this.forks.keySet()) {
       if (fork.isPresent()) {
         fork.get().markParentTaskDone();
       }
     }
-    for (    Optional<Fork> fork : this.forks) {
-      if (fork.isPresent()) {
+    for (    Optional<Future<?>> forkFuture : this.forks.values()) {
+      if (forkFuture.isPresent()) {
         try {
-          this.forkCompletionService.take();
+          forkFuture.get().get();
         }
  catch (        InterruptedException ie) {
           Thread.currentThread().interrupt();
@@ -62,7 +61,7 @@
       }
     }
     boolean allForksSucceeded=true;
-    for (    Optional<Fork> fork : this.forks) {
+    for (    Optional<Fork> fork : this.forks.keySet()) {
       if (fork.isPresent()) {
         if (fork.get().isSucceeded()) {
           if (!fork.get().commit()) {
@@ -94,6 +93,16 @@
     }
  catch (    Throwable t) {
       LOG.error("Failed to close all open resources",t);
+    }
+    for (    Map.Entry<Optional<Fork>,Optional<Future<?>>> forkAndFuture : this.forks.entrySet()) {
+      if (forkAndFuture.getKey().isPresent() && forkAndFuture.getValue().isPresent()) {
+        try {
+          forkAndFuture.getValue().get().cancel(true);
+        }
+ catch (        Throwable t) {
+          LOG.error(String.format("Failed to cancel Fork \"%s\"",forkAndFuture.getKey().get()),t);
+        }
+      }
     }
     try {
       if (shouldPublishDataInTask()) {
