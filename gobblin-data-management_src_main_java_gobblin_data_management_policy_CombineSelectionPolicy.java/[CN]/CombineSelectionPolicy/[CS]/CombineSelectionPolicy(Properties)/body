@@ -1,0 +1,19 @@
+{
+  Preconditions.checkArgument(props.containsKey(VERSION_SELECTION_POLICIES_PREFIX),"Combine operation not specified.");
+  ImmutableList.Builder<VersionSelectionPolicy<FileSystemDatasetVersion>> builder=ImmutableList.builder();
+  for (  String property : props.stringPropertyNames()) {
+    if (property.startsWith(VERSION_SELECTION_POLICIES_PREFIX)) {
+      try {
+        builder.add((VersionSelectionPolicy<FileSystemDatasetVersion>)ConstructorUtils.invokeConstructor(Class.forName(props.getProperty(property)),props));
+      }
+ catch (      NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+        throw new IllegalArgumentException(e);
+      }
+    }
+  }
+  this.selectionPolicies=builder.build();
+  if (this.selectionPolicies.size() == 0) {
+    throw new IOException("No selection policies specified for " + CombineSelectionPolicy.class.getCanonicalName());
+  }
+  this.combineOperation=CombineOperation.valueOf(props.getProperty(VERSION_SELECTION_COMBINE_OPERATION).toUpperCase());
+}

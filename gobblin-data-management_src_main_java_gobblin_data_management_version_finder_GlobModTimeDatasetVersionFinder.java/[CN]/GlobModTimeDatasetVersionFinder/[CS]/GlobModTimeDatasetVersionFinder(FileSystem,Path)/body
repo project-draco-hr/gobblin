@@ -1,0 +1,4 @@
+{
+  super(fs);
+  this.globPattern=globPattern;
+}

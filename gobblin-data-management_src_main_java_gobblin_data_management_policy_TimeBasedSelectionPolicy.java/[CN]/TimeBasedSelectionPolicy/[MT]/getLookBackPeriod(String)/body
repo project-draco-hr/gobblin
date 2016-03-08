@@ -1,0 +1,4 @@
+{
+  PeriodFormatter periodFormatter=new PeriodFormatterBuilder().appendMonths().appendSuffix("M").appendDays().appendSuffix("d").appendHours().appendSuffix("h").appendMinutes().appendSuffix("m").toFormatter();
+  return periodFormatter.parsePeriod(lookbackTime);
+}

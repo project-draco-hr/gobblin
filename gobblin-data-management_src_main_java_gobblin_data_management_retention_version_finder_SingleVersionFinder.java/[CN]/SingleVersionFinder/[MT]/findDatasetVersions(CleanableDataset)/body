@@ -1,3 +1,0 @@
-{
-  return Lists.newArrayList(new FileStatusDatasetVersion(this.fs.getFileStatus(dataset.datasetRoot())));
-}

@@ -1,0 +1,3 @@
+{
+  this.lookBackPeriod=this.getLookBackPeriod(props.getProperty(TIME_BASED_SELECTION_LOOK_BACK_TIME_KEY,DEFAULT_LOOK_BACK_TIME));
+}

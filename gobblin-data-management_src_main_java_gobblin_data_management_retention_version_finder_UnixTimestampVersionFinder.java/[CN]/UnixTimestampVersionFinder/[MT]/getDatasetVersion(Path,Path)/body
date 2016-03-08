@@ -1,18 +1,3 @@
 {
-  StringDatasetVersion version=this.embeddedFinder.getDatasetVersion(pathRelativeToDatasetRoot,fullPath);
-  if (version == null) {
-    return null;
-  }
-  try {
-    Long timestamp=Long.parseLong(version.getVersion());
-    return new TimestampedDatasetVersion(new DateTime(timestamp),fullPath);
-  }
- catch (  NumberFormatException nfe) {
-    LOGGER.warn(String.format("Could not parse long from dataset version %s. Skipping.",pathRelativeToDatasetRoot));
-    return null;
-  }
-catch (  IllegalArgumentException iae) {
-    LOGGER.warn(String.format("Could not parse unix datetime for dataset version %s. Skipping.",pathRelativeToDatasetRoot));
-    return null;
-  }
+  return new TimestampedDatasetVersion(this.realVersionFinder.getDatasetVersion(pathRelativeToDatasetRoot,fullPath));
 }
