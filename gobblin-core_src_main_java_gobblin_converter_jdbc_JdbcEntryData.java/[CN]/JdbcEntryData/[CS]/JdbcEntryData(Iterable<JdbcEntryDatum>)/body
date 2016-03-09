@@ -1,0 +1,8 @@
+{
+  Objects.requireNonNull(jdbcEntryDatumEntries);
+  ImmutableMap.Builder<String,JdbcEntryDatum> builder=ImmutableMap.builder();
+  for (  JdbcEntryDatum datum : jdbcEntryDatumEntries) {
+    builder.put(datum.getColumnName(),datum);
+  }
+  jdbcEntryData=builder.build();
+}

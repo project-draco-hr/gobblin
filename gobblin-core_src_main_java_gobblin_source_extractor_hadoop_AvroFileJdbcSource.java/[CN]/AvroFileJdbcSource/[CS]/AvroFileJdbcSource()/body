@@ -1,0 +1,5 @@
+{
+  this.avroFileSource=new AvroFileSource();
+  this.createdStagingTables=Sets.newHashSet();
+  this.passedStagingTables=Sets.newHashSet();
+}

@@ -1,0 +1,28 @@
+{
+  if (!AVRO_SUPPORTED_TYPES.contains(schema.getType())) {
+    throw new SchemaConversionException(schema.getType() + " is not supported");
+  }
+  if (!Type.UNION.equals(schema.getType())) {
+    return schema.getType();
+  }
+  List<Schema> schemas=schema.getTypes();
+  if (schemas.size() > 2) {
+    throw new SchemaConversionException("More than two types are not supported " + schemas);
+  }
+  Type t=null;
+  for (  Schema s : schemas) {
+    if (Type.NULL.equals(s.getType())) {
+      continue;
+    }
+    if (t == null) {
+      t=s.getType();
+    }
+ else {
+      throw new SchemaConversionException("Union type of " + schemas + " is not supported.");
+    }
+  }
+  if (t != null) {
+    return t;
+  }
+  throw new SchemaConversionException("Cannot determine type of " + schema);
+}

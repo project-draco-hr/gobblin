@@ -1,0 +1,16 @@
+{
+  this.state=builder.destination.getProperties();
+  this.state.appendToListProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,Integer.toString(builder.branch));
+  this.columnNames=Lists.newArrayList(builder.schema.getColumnNames());
+  try {
+    this.conn=createConnection();
+    conn.setAutoCommit(false);
+    String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,builder.branches,builder.branch);
+    String stagingTable=Objects.requireNonNull(state.getProp(stagingTableKey),"Staging table is missing with key " + stagingTableKey);
+    this.insertPstmt=conn.prepareStatement(createPrepareStatementStr(stagingTable,columnNames));
+    LOG.info("Created " + insertPstmt.getClass().getSimpleName() + " with "+ insertPstmt);
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+}

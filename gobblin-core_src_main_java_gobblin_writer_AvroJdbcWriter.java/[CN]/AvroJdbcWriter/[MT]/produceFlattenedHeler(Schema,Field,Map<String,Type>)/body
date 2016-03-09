@@ -1,0 +1,20 @@
+{
+  if (!SUPPORTED_TYPES.contains(schema.getType())) {
+    throw new IllegalArgumentException(schema.getType() + " is not supported");
+  }
+  if (Type.RECORD.equals(schema.getType())) {
+    for (    Field f : schema.getFields()) {
+      produceFlattenedHeler(f.schema(),f,flattened);
+    }
+  }
+ else {
+    Type t=determineType(schema);
+    if (field == null) {
+      throw new IllegalArgumentException("Invalid Avro schema, no name has been assigned to " + schema);
+    }
+    Type existing=flattened.put(field.name(),t);
+    if (existing != null) {
+      throw new IllegalArgumentException("Duplicate name detected in Avro schema.");
+    }
+  }
+}

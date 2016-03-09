@@ -1,0 +1,5 @@
+{
+  if (StringUtils.isEmpty(s)) {
+    throw new IllegalArgumentException(name + " should not be empty.");
+  }
+}

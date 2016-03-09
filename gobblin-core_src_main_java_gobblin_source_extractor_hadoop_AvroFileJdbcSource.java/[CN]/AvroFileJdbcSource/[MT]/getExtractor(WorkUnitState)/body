@@ -1,0 +1,3 @@
+{
+  return avroFileSource.getExtractor(state);
+}

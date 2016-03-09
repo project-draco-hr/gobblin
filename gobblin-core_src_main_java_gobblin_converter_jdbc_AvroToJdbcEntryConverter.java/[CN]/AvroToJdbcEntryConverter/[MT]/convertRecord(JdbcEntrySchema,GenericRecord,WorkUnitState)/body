@@ -1,0 +1,49 @@
+{
+  LOG.info("Converting " + record);
+  List<JdbcEntryDatum> jdbcEntryData=Lists.newArrayList();
+  for (  JdbcEntryMetaDatum entry : outputSchema) {
+    final String colName=entry.getColumnName();
+    final JDBCType jdbcType=entry.getJdbcType();
+    final Object val=record.get(colName);
+    if (val == null) {
+      jdbcEntryData.add(new JdbcEntryDatum(colName,val));
+    }
+    if (!JDBC_SUPPORTED_TYPES.contains(jdbcType)) {
+      throw new DataConversionException("Unsupported JDBC type detected " + jdbcType);
+    }
+switch (jdbcType) {
+case VARCHAR:
+      jdbcEntryData.add(new JdbcEntryDatum(colName,val.toString()));
+    continue;
+case INTEGER:
+  jdbcEntryData.add(new JdbcEntryDatum(colName,Integer.valueOf((int)val)));
+continue;
+case BOOLEAN:
+jdbcEntryData.add(new JdbcEntryDatum(colName,Boolean.valueOf((boolean)val)));
+continue;
+case BIGINT:
+jdbcEntryData.add(new JdbcEntryDatum(colName,Long.valueOf((long)val)));
+continue;
+case FLOAT:
+jdbcEntryData.add(new JdbcEntryDatum(colName,Float.valueOf((float)val)));
+continue;
+case DOUBLE:
+jdbcEntryData.add(new JdbcEntryDatum(colName,Double.valueOf((double)val)));
+continue;
+case DATE:
+jdbcEntryData.add(new JdbcEntryDatum(colName,new Date(TimeUnit.SECONDS.toMillis(Long.valueOf((long)val)))));
+continue;
+case TIME:
+jdbcEntryData.add(new JdbcEntryDatum(colName,new Time(TimeUnit.SECONDS.toMillis(Long.valueOf((long)val)))));
+continue;
+case TIMESTAMP:
+jdbcEntryData.add(new JdbcEntryDatum(colName,new Timestamp(TimeUnit.SECONDS.toMillis(Long.valueOf((long)val)))));
+continue;
+default :
+throw new DataConversionException(jdbcType + " is not supported");
+}
+}
+JdbcEntryData converted=new JdbcEntryData(jdbcEntryData);
+LOG.info("Converted data into " + converted);
+return new SingleRecordIterable<JdbcEntryData>(converted);
+}

@@ -1,0 +1,48 @@
+{
+  final String STAGING_TABLE_FORMAT="stage_%s_%d";
+  final String CREATE_TABLE_SQL_FORMAT="CREATE TABLE %s SELECT * FROM %s WHERE 1=2";
+  final int NAMING_STAGING_TABLE_COUNT=10;
+  final Random r=new Random();
+  String destTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
+  String destinationTable=state.getProp(destTableKey);
+  if (StringUtils.isEmpty(destinationTable)) {
+    throw new IllegalArgumentException(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " is required for " + this.getClass().getSimpleName()+ " for branch "+ branchId);
+  }
+  String stagingTable=null;
+  for (int i=0; i < NAMING_STAGING_TABLE_COUNT; i++) {
+    String tmp=String.format(STAGING_TABLE_FORMAT,destinationTable,System.nanoTime());
+    LOG.info("Check if staging table " + tmp + " exists.");
+    ResultSet res=conn.getMetaData().getTables(null,null,tmp,new String[]{"TABLE"});
+    if (!res.next()) {
+      LOG.info("Staging table " + tmp + " does not exist. Creating.");
+      String sql=String.format(CREATE_TABLE_SQL_FORMAT,tmp,destinationTable);
+      PreparedStatement createPstmt=conn.prepareStatement(sql);
+      LOG.info("Executing SQL " + createPstmt);
+      try {
+        createPstmt.execute();
+        LOG.info("Test if staging table can be dropped. Test by dropping and Creating staging table.");
+        dropTable(conn,tmp);
+        LOG.info("Creating again by executing SQL " + createPstmt);
+        createPstmt.execute();
+        stagingTable=tmp;
+        break;
+      }
+ catch (      SQLException e) {
+        LOG.warn("Failed to create table using SQL " + createPstmt,e);
+      }
+    }
+ else {
+      LOG.info("Staging table " + tmp + " exists.");
+    }
+    try {
+      TimeUnit.MILLISECONDS.sleep(r.nextInt(1000));
+    }
+ catch (    InterruptedException e) {
+      LOG.info("Sleep has been interrupted.",e);
+    }
+  }
+  if (!StringUtils.isEmpty(stagingTable)) {
+    return stagingTable;
+  }
+  throw new RuntimeException("Failed to create staging table");
+}

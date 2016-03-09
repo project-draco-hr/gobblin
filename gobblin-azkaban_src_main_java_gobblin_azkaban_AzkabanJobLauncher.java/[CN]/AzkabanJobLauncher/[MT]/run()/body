@@ -1,10 +1,19 @@
 {
   try {
-    if (isCurrentTimeInRange()) {
-      this.jobLauncher.launchJob(this.jobListener);
+    try {
+      LOG.info("Launching Azkaban job");
+      if (isCurrentTimeInRange()) {
+        this.jobLauncher.launchJob(this.jobListener);
+      }
+      LOG.info("Completed launching Azkaban job");
+    }
+  finally {
+      LOG.info("Closing launcher resources.");
+      this.closer.close();
     }
   }
-  finally {
-    this.closer.close();
+ catch (  Exception e) {
+    LOG.error("Azkaban Job failed: ",e);
+    throw e;
   }
 }

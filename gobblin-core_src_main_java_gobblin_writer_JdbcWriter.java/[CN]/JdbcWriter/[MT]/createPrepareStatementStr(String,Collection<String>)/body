@@ -1,0 +1,3 @@
+{
+  return String.format(INSERT_STATEMENT_FORMAT,tableName,Joiner.on(',').join(columnNames),Joiner.on(',').useForNull("?").join(new String[columnNames.size()]));
+}

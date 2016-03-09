@@ -1,0 +1,1 @@
+PartitionAwareDataWriterBuilder<JdbcEntrySchema,JdbcEntryData>

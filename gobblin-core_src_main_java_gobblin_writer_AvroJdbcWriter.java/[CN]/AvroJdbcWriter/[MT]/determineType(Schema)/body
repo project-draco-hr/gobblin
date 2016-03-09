@@ -1,0 +1,25 @@
+{
+  if (!Type.UNION.equals(schema.getType())) {
+    return schema.getType();
+  }
+  List<Schema> schemas=schema.getTypes();
+  if (schemas.size() > 2) {
+    throw new IllegalArgumentException("More than two types are not supported " + schemas);
+  }
+  Type t=null;
+  for (  Schema s : schemas) {
+    if (Type.NULL.equals(s.getType())) {
+      continue;
+    }
+    if (t == null) {
+      t=s.getType();
+    }
+ else {
+      throw new IllegalArgumentException("Union type of " + schemas + " is not supported.");
+    }
+  }
+  if (t != null) {
+    return t;
+  }
+  throw new IllegalArgumentException("Cannot determine type of " + schema);
+}

@@ -1,0 +1,14 @@
+{
+  Map<String,List<WorkUnitState>> stagingTables=Maps.newHashMap();
+  for (  WorkUnitState workUnitState : states) {
+    String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,branches,i);
+    String stagingTable=Objects.requireNonNull(workUnitState.getProp(stagingTableKey));
+    List<WorkUnitState> existing=stagingTables.get(stagingTable);
+    if (existing == null) {
+      existing=Lists.newArrayList();
+      stagingTables.put(stagingTable,existing);
+    }
+    existing.add(workUnitState);
+  }
+  return stagingTables;
+}

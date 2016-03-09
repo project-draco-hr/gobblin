@@ -1,0 +1,3 @@
+{
+  return String.format("JdbcEntry [columnName=%s, val=%s]",columnName,val);
+}

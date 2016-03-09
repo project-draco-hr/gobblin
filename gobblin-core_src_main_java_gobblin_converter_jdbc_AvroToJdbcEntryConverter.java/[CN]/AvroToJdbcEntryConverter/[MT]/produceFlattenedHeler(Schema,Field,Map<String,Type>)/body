@@ -1,0 +1,13 @@
+{
+  if (Type.RECORD.equals(schema.getType())) {
+    throw new SchemaConversionException(Type.RECORD + " is only allowed for first level.");
+  }
+  Type t=determineType(schema);
+  if (field == null) {
+    throw new IllegalArgumentException("Invalid Avro schema, no name has been assigned to " + schema);
+  }
+  Type existing=flattened.put(field.name(),t);
+  if (existing != null) {
+    throw new IllegalArgumentException("Duplicate name detected in Avro schema.");
+  }
+}

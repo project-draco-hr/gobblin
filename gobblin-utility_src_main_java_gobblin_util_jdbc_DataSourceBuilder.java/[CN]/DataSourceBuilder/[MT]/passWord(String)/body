@@ -1,0 +1,4 @@
+{
+  this.passWord=passWord;
+  return this;
+}

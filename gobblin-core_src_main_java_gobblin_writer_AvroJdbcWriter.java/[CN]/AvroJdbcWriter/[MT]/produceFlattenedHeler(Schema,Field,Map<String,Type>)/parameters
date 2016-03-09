@@ -1,0 +1,3 @@
+Schema schema
+Field field
+Map<String,Type> flattened

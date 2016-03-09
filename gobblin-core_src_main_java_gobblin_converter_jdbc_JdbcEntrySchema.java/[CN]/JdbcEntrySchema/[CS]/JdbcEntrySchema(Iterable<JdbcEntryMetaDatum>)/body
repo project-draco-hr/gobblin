@@ -1,0 +1,8 @@
+{
+  Objects.requireNonNull(jdbcMetaDatumEntries);
+  ImmutableMap.Builder<String,JdbcEntryMetaDatum> builder=ImmutableMap.builder();
+  for (  JdbcEntryMetaDatum datum : jdbcMetaDatumEntries) {
+    builder.put(datum.getColumnName(),datum);
+  }
+  jdbcMetaData=builder.build();
+}

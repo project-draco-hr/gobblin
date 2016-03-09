@@ -1,0 +1,10 @@
+{
+  Map<String,Type> flattened=new LinkedHashMap<>();
+  if (!Type.RECORD.equals(schema.getType())) {
+    throw new SchemaConversionException(Type.RECORD + " is expected for the first level element in Avro schema " + schema);
+  }
+  for (  Field f : schema.getFields()) {
+    produceFlattenedHeler(f.schema(),f,flattened);
+  }
+  return flattened;
+}

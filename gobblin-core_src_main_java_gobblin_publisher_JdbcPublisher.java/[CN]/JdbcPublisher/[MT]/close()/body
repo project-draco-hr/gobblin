@@ -1,0 +1,14 @@
+{
+  try {
+    if (failed) {
+      LOG.info("Rolling back transaction as failed publishing.");
+      conn.rollback();
+    }
+ else {
+      conn.commit();
+    }
+  }
+ catch (  SQLException e) {
+    throw new IOException(e);
+  }
+}

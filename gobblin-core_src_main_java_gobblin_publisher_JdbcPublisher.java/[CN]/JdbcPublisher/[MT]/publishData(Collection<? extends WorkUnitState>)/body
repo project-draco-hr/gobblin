@@ -1,0 +1,43 @@
+{
+  LOG.info("Start publishing data");
+  LOG.info("WorkUnitStates: " + states);
+  int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  Set<String> truncatedDestinationTables=Sets.newHashSet();
+  for (int i=0; i < branches; i++) {
+    String destinationTable=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,i));
+    Objects.requireNonNull(destinationTable);
+    if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,i),false) && !truncatedDestinationTables.contains(destinationTable)) {
+      String deleteSql=String.format(DELETE_STATEMENT_FORMAT,destinationTable);
+      LOG.info("Deleting table " + destinationTable + " , SQL: "+ deleteSql);
+      try {
+        conn.prepareStatement(deleteSql).execute();
+        truncatedDestinationTables.add(destinationTable);
+      }
+ catch (      SQLException e) {
+        for (        WorkUnitState workUnitState : states) {
+          workUnitState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+        }
+        throw new RuntimeException("Failed to delete destination table " + destinationTable,e);
+      }
+    }
+    Map<String,List<WorkUnitState>> stagingTables=getStagingTables(states,branches,i);
+    for (    Map.Entry<String,List<WorkUnitState>> entry : stagingTables.entrySet()) {
+      String stagingTable=entry.getKey();
+      String sql=String.format(INSERT_STATEMENT_FORMAT,destinationTable,stagingTable);
+      LOG.info("Copying data from staging table + " + stagingTable + " into destination table "+ destinationTable+ " , SQL: "+ sql);
+      try {
+        conn.prepareStatement(sql).execute();
+        for (        WorkUnitState workUnitState : entry.getValue()) {
+          workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+        }
+      }
+ catch (      Exception e) {
+        LOG.error("Failed copying data from staging to destination table. SQL: " + sql,e);
+        failed=true;
+        for (        WorkUnitState workUnitState : entry.getValue()) {
+          workUnitState.setWorkingState(WorkUnitState.WorkingState.FAILED);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  validate();
+  LOG.info("Building DataSource with " + this);
+  Properties properties=new Properties();
+  if (state != null) {
+    properties=state.getProperties();
+  }
+  properties.setProperty(DataSourceProvider.CONN_URL,url);
+  properties.setProperty(DataSourceProvider.USERNAME,userName);
+  properties.setProperty(DataSourceProvider.PASSWORD,passWord);
+  properties.setProperty(DataSourceProvider.CONN_DRIVER,driver);
+  if (!StringUtils.isEmpty(cryptoKeyLocation)) {
+    properties.setProperty(ConfigurationKeys.ENCRYPT_KEY_LOC,cryptoKeyLocation);
+  }
+  if (maxIdleConnections != null) {
+    properties.setProperty(DataSourceProvider.MAX_IDLE_CONNS,maxIdleConnections.toString());
+  }
+  if (maxActiveConnections != null) {
+    properties.setProperty(DataSourceProvider.MAX_ACTIVE_CONNS,maxActiveConnections.toString());
+  }
+  if (useStrongEncryption != null) {
+    properties.setProperty(ConfigurationKeys.ENCRYPT_USE_STRONG_ENCRYPTOR,useStrongEncryption.toString());
+  }
+  LOG.info("Building DataSource with properties " + properties);
+  return new DataSourceProvider(properties).get();
+}

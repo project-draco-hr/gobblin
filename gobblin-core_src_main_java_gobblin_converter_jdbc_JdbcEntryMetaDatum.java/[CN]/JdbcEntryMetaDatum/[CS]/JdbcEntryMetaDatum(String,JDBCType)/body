@@ -1,0 +1,4 @@
+{
+  this.columnName=Objects.requireNonNull(columnName);
+  this.jdbcType=Objects.requireNonNull(jdbcType);
+}
