@@ -1,0 +1,17 @@
+{
+  JobLock jobLock;
+  if (properties.containsKey(ConfigurationKeys.JOB_LOCK_TYPE)) {
+    try {
+      Class<?> jobLockClass=Class.forName(properties.getProperty(ConfigurationKeys.JOB_LOCK_TYPE,FileBasedJobLock.class.getSimpleName()));
+      jobLock=(JobLock)jobLockClass.newInstance();
+    }
+ catch (    ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+      jobLock=new FileBasedJobLock();
+    }
+  }
+ else {
+    jobLock=new FileBasedJobLock();
+  }
+  jobLock.initialize(properties,jobLockEventListener);
+  return jobLock;
+}

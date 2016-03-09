@@ -3,7 +3,6 @@
   additionalJobDataMap.put(HELIX_MANAGER_KEY,this.helixManager);
   additionalJobDataMap.put(APPLICATION_WORK_DIR_KEY,this.appWorkDir);
   additionalJobDataMap.put(METADATA_TAGS,this.metadataTags);
-  additionalJobDataMap.put(FILE_SYSTEM,this.fs);
   try {
     scheduleJob(jobProps,jobListener,additionalJobDataMap,GobblinHelixJob.class);
   }

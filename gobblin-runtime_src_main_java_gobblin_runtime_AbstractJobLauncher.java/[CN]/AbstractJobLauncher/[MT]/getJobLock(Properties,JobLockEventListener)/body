@@ -1,0 +1,3 @@
+{
+  return JobLockFactory.getJobLock(properties,jobLockEventListener);
+}

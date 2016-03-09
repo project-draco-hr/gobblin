@@ -1,0 +1,8 @@
+{
+  try {
+    return this.fs.createNewFile(this.lockFile);
+  }
+ catch (  IOException e) {
+    throw new JobLockException(e);
+  }
+}

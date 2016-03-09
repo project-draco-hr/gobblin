@@ -1,0 +1,8 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(ZookeeperBasedJobLock.CONNECTION_STRING,testingServer.getConnectString());
+  properties.setProperty(ConfigurationKeys.JOB_NAME_KEY,"ZookeeperBasedJobLockTest-" + System.currentTimeMillis());
+  ZookeeperBasedJobLock lock=new ZookeeperBasedJobLock();
+  lock.initialize(properties,new JobLockEventListener());
+  return lock;
+}

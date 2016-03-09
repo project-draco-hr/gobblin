@@ -1,0 +1,36 @@
+{
+  if (curatorFramework == null) {
+    CuratorFramework newCuratorFramework=CuratorFrameworkFactory.builder().connectString(properties.getProperty(CONNECTION_STRING,CONNECTION_STRING_DEFAULT)).connectionTimeoutMs(getMilliseconds(properties,CONNECTION_TIMEOUT_SECONDS,CONNECTION_TIMEOUT_SECONDS_DEFAULT)).sessionTimeoutMs(getMilliseconds(properties,SESSION_TIMEOUT_SECONDS,SESSION_TIMEOUT_SECONDS_DEFAULT)).retryPolicy(new ExponentialBackoffRetry(getMilliseconds(properties,RETRY_BACKOFF_SECONDS,RETRY_BACKOFF_SECONDS_DEFAULT),getInt(properties,MAX_RETRY_COUNT,MAX_RETRY_COUNT_DEFAULT))).build();
+    newCuratorFramework.getConnectionStateListenable().addListener(new ConnectionStateListener(){
+      @Override public void stateChanged(      CuratorFramework curatorFramework,      ConnectionState connectionState){
+switch (connectionState) {
+case LOST:
+case SUSPENDED:
+          log.warn("Lost connection with zookeeper");
+        for (        Map.Entry<String,JobLockEventListener> lockEventListener : lockEventListeners.entrySet()) {
+          log.warn("Informing job %s that lock was lost",lockEventListener.getKey());
+          lockEventListener.getValue().onLost();
+        }
+      break;
+case CONNECTED:
+case RECONNECTED:
+    log.warn("Regained connection with zookeeper");
+  break;
+}
+}
+}
+);
+newCuratorFramework.start();
+curatorFramework=newCuratorFramework;
+}
+if (locksReaper == null) {
+ChildReaper newLocksReaper=new ChildReaper(curatorFramework,LOCKS_ROOT_PATH,Reaper.Mode.REAP_UNTIL_GONE,Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of(LOCKS_CHILD_REAPER_THREAD_NAME))),getMilliseconds(properties,LOCKS_CHILD_REAPER_THRESHOLD_SECONDS,LOCKS_CHILD_REAPER_THRESHOLD_SECONDS_DEFAULT),LOCKS_CHILD_REAPER_LEADER_PATH);
+try {
+newLocksReaper.start();
+locksReaper=newLocksReaper;
+}
+ catch (Exception e) {
+log.warn("Locks child reaper failed to start",e);
+}
+}
+}

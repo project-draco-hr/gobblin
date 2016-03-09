@@ -5,6 +5,4 @@
   this.eventBus=eventBus;
   this.appWorkDir=appWorkDir;
   this.metadataTags=metadataTags;
-  URI fsUri=URI.create(properties.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
-  this.fs=FileSystem.get(fsUri,new Configuration());
 }
