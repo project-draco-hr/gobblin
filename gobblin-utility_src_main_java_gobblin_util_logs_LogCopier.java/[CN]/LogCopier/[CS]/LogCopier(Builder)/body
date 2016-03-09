@@ -13,5 +13,5 @@
   this.excludingRegexPatterns=Optional.fromNullable(builder.excludingRegexPatterns);
   this.logFileNamePrefix=Optional.fromNullable(builder.logFileNamePrefix);
   this.linesWrittenBeforeFlush=builder.linesWrittenBeforeFlush;
-  this.logCopyExecutor=Executors.newScheduledThreadPool(0,ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("LogCopyExecutor")));
+  this.scheduler=TaskSchedulerFactory.get(builder.schedulerName,Optional.<String>absent());
 }

@@ -1,0 +1,10 @@
+{
+  try {
+    TaskScheduler<K,T> taskScheduler=(TaskScheduler<K,T>)type.getTaskSchedulerClass().newInstance();
+    taskScheduler.start(name);
+    return taskScheduler;
+  }
+ catch (  InstantiationException|IllegalAccessException e) {
+    throw new RuntimeException("Unable to instantiate task scheduler '" + name + "'.",e);
+  }
+}

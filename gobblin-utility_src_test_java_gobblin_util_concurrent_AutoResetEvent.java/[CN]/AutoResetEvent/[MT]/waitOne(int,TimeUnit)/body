@@ -1,0 +1,20 @@
+{
+  long waitTime=timeUnit.toNanos(timeout);
+  long startTime=System.nanoTime();
+synchronized (this.syncObject) {
+    while (!this.state) {
+      long remainingTimeoutNs=waitTime - (System.nanoTime() - startTime);
+      if (remainingTimeoutNs <= 0) {
+        return false;
+      }
+      long remainingTimeoutMs=0;
+      if (remainingTimeoutNs > 999999) {
+        remainingTimeoutMs=remainingTimeoutNs / 1000000;
+        remainingTimeoutNs=remainingTimeoutNs % 1000000;
+      }
+      this.syncObject.wait(remainingTimeoutMs,(int)remainingTimeoutNs);
+    }
+    this.state=false;
+    return true;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  Task task=new Task("foo");
+  try (TaskScheduler<String,Task> taskScheduler=getTaskScheduler("TaskSchedulerTest")){
+    taskScheduler.schedule(task,1,TimeUnit.SECONDS);
+    task.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+  }
+   task.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+  Assert.assertEquals(task.getCount(),1);
+}
