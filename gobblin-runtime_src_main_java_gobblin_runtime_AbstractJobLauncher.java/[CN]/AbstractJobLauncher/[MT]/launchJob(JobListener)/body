@@ -1,2 +1,119 @@
 {
+  String jobId=this.jobContext.getJobId();
+  JobState jobState=this.jobContext.getJobState();
+  try {
+    TimingEvent launchJobTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.FULL_JOB_EXECUTION);
+    try {
+      if (!tryLockJob()) {
+        this.eventSubmitter.submit(gobblin.metrics.event.EventNames.LOCK_IN_USE);
+        throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
+      }
+      try {
+        notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_PREPARE,new JobListenerAction(){
+          @Override public void apply(          JobListener jobListener,          JobContext jobContext) throws Exception {
+            jobListener.onJobPrepare(jobContext);
+          }
+        }
+);
+        if (this.jobContext.getSemantics() == DeliverySemantics.EXACTLY_ONCE) {
+          executeUnfinishedCommitSequences(jobState.getJobName());
+        }
+        TimingEvent workUnitsCreationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_CREATION);
+        Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
+        workUnitsCreationTimer.stop();
+        if (!workUnits.isPresent()) {
+          this.eventSubmitter.submit(gobblin.metrics.event.EventNames.WORK_UNITS_MISSING);
+          jobState.setState(JobState.RunningState.FAILED);
+          throw new JobException("Failed to get work units for job " + jobId);
+        }
+        if (workUnits.get().isEmpty()) {
+          this.eventSubmitter.submit(gobblin.metrics.event.EventNames.WORK_UNITS_EMPTY);
+          LOG.warn("No work units have been created for job " + jobId);
+          return;
+        }
+        TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_STAGING_DATA_CLEAN);
+        cleanLeftoverStagingData(workUnits.get(),jobState);
+        stagingDataCleanTimer.stop();
+        long startTime=System.currentTimeMillis();
+        jobState.setStartTime(startTime);
+        jobState.setState(JobState.RunningState.RUNNING);
+        try {
+          LOG.info("Starting job " + jobId);
+          notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_START,new JobListenerAction(){
+            @Override public void apply(            JobListener jobListener,            JobContext jobContext) throws Exception {
+              jobListener.onJobStart(jobContext);
+            }
+          }
+);
+          TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.WORK_UNITS_PREPARATION);
+          prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
+          workUnitsPreparationTimer.stop();
+          this.jobContext.storeJobExecutionInfo();
+          TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_RUN);
+          runWorkUnits(workUnits.get());
+          jobRunTimer.stop();
+          this.eventSubmitter.submit(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,"JOB_" + jobState.getState()));
+          if (jobState.getState() == JobState.RunningState.CANCELLED) {
+            LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
+            return;
+          }
+          TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_COMMIT);
+          this.jobContext.finalizeJobStateBeforeCommit();
+          this.jobContext.commit();
+          postProcessJobState(jobState);
+          jobCommitTimer.stop();
+        }
+  finally {
+          long endTime=System.currentTimeMillis();
+          jobState.setEndTime(endTime);
+          jobState.setDuration(endTime - jobState.getStartTime());
+        }
+      }
+ catch (      Throwable t) {
+        jobState.setState(JobState.RunningState.FAILED);
+        String errMsg="Failed to launch and run job " + jobId;
+        LOG.error(errMsg + ": " + t,t);
+      }
+ finally {
+        try {
+          TimingEvent jobCleanupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.JOB_CLEANUP);
+          cleanupStagingData(jobState);
+          jobCleanupTimer.stop();
+          this.jobContext.storeJobExecutionInfo();
+        }
+  finally {
+          unlockJob();
+        }
+      }
+    }
+  finally {
+      launchJobTimer.stop();
+    }
+    for (    JobState.DatasetState datasetState : this.jobContext.getDatasetStatesByUrns().values()) {
+      if (datasetState.getState() == JobState.RunningState.FAILED) {
+        jobState.setState(JobState.RunningState.FAILED);
+        break;
+      }
+    }
+    notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_COMPLETE,new JobListenerAction(){
+      @Override public void apply(      JobListener jobListener,      JobContext jobContext) throws Exception {
+        jobListener.onJobCompletion(jobContext);
+      }
+    }
+);
+    if (jobState.getState() == JobState.RunningState.FAILED) {
+      notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_FAILED,new JobListenerAction(){
+        @Override public void apply(        JobListener jobListener,        JobContext jobContext) throws Exception {
+          jobListener.onJobFailure(jobContext);
+        }
+      }
+);
+      throw new JobException(String.format("Job %s failed",jobId));
+    }
+  }
+  finally {
+    if (this.jobContext.getJobMetricsOptional().isPresent()) {
+      JobMetrics.remove(jobState);
+    }
+  }
 }

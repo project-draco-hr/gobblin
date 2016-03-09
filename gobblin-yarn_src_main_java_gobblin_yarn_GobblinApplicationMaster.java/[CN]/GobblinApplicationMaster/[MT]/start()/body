@@ -2,5 +2,5 @@
   LOGGER.info("Starting the Gobblin Yarn ApplicationMaster");
   this.eventBus.register(this);
   connectHelixManager();
-  super.start();
+  this.applicationLauncher.start();
 }

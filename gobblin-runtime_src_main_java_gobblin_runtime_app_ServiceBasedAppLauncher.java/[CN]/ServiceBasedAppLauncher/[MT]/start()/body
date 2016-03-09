@@ -3,9 +3,7 @@
     LOG.warn("ApplicationLauncher has already started");
     return;
   }
- else {
-    this.hasStarted=true;
-  }
+  this.hasStarted=true;
   this.serviceManager=new ServiceManager(this.services);
   Runtime.getRuntime().addShutdownHook(new Thread(){
     public void run(){
@@ -27,5 +25,5 @@
   }
 );
   LOG.info("Starting the Gobblin application and all its associated Services");
-  this.serviceManager.startAsync();
+  this.serviceManager.startAsync().awaitHealthy();
 }

@@ -6,7 +6,7 @@
   LOGGER.info("Stopping the Gobblin Yarn ApplicationMaster");
   sendShutdownRequest();
   try {
-    super.stop();
+    this.applicationLauncher.stop();
   }
  catch (  ApplicationException ae) {
     LOGGER.error("Error while stopping ApplicationMaster",ae);
