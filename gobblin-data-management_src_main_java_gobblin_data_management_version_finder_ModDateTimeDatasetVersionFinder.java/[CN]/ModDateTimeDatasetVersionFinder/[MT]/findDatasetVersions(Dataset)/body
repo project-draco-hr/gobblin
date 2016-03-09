@@ -1,0 +1,5 @@
+{
+  FileSystemDataset fsDataset=(FileSystemDataset)dataset;
+  FileStatus status=this.fs.getFileStatus(fsDataset.datasetRoot());
+  return Lists.newArrayList(new TimestampedDatasetVersion(new DateTime(status.getModificationTime()),fsDataset.datasetRoot()));
+}

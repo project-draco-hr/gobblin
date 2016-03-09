@@ -1,3 +1,3 @@
 {
-  this.fs=fs;
+  this.realVersionFinder=new gobblin.data.management.version.finder.ModDateTimeDatasetVersionFinder(fs,props);
 }

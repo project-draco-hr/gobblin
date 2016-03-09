@@ -1,0 +1,7 @@
+{
+  List<TimestampedDatasetVersion> timestampedVersions=Lists.newArrayList();
+  for (  gobblin.data.management.version.TimestampedDatasetVersion realVersion : realVersions) {
+    timestampedVersions.add(new TimestampedDatasetVersion(realVersion));
+  }
+  return timestampedVersions;
+}

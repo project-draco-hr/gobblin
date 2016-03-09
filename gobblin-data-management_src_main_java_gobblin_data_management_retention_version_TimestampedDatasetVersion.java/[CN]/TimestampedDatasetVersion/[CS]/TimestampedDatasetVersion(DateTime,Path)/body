@@ -1,4 +1,3 @@
 {
-  this.version=version;
-  this.path=path;
+  super(version,path);
 }

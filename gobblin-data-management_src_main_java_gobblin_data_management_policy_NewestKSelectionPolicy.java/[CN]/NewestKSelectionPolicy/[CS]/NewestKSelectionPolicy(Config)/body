@@ -1,0 +1,3 @@
+{
+  this(Integer.parseInt(config.getString(NEWEST_K_VERSIONS_SELECTED_KEY)));
+}

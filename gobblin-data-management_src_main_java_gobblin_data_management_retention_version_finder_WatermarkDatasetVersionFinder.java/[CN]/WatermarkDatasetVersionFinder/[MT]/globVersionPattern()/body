@@ -1,3 +1,3 @@
 {
-  return new Path("*");
+  return this.realVersionFinder.globVersionPattern();
 }

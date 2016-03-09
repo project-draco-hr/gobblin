@@ -1,4 +1,0 @@
-{
-  FileStatus status=this.fs.getFileStatus(dataset.datasetRoot());
-  return Lists.newArrayList(new TimestampedDatasetVersion(new DateTime(status.getModificationTime()),dataset.datasetRoot()));
-}

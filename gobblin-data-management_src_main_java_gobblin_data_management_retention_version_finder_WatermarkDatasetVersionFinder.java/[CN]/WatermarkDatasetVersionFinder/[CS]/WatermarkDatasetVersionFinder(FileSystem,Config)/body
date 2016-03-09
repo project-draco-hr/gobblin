@@ -1,9 +1,4 @@
 {
   super(fs);
-  if (config.hasPath(WATERMARK_REGEX_KEY)) {
-    initPattern(config.getString(WATERMARK_REGEX_KEY));
-  }
- else {
-    this.pattern=Optional.absent();
-  }
+  this.realVersionFinder=new gobblin.data.management.version.finder.WatermarkDatasetVersionFinder(fs,config);
 }
