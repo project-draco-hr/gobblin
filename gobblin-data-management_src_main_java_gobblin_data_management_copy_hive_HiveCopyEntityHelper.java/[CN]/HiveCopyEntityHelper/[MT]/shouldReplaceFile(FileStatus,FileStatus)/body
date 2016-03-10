@@ -1,0 +1,3 @@
+{
+  return replacementFile.getLen() != referencePath.getLen() || referencePath.getModificationTime() < replacementFile.getModificationTime();
+}

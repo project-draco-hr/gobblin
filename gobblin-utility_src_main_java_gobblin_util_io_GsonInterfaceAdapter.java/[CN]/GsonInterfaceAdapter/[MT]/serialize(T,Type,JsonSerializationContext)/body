@@ -1,6 +1,0 @@
-{
-  JsonObject wrapper=new JsonObject();
-  wrapper.addProperty(OBJECT_TYPE,object.getClass().getName());
-  wrapper.add(OBJECT_DATA,PURE_GSON.toJsonTree(object));
-  return wrapper;
-}

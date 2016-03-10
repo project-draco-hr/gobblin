@@ -1,0 +1,16 @@
+{
+  if (Optional.class.isAssignableFrom(typeToken.getRawType())) {
+    Optional opt=(Optional)value;
+    if (opt != null && opt.isPresent()) {
+      Object actualValue=opt.get();
+      writeObject(actualValue,out);
+    }
+ else {
+      out.beginObject();
+      out.endObject();
+    }
+  }
+ else {
+    writeObject(value,out);
+  }
+}

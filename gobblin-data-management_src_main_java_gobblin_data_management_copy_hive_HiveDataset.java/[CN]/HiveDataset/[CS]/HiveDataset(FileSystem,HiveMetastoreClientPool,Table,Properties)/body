@@ -3,9 +3,7 @@
   this.clientPool=clientPool;
   this.table=table;
   this.properties=properties;
-  this.tableLocations=parseLocationIntoPaths(this.table.getSd().getLocation());
-  this.tableRootPath=this.tableLocations.size() == 1 ? Optional.of(PathUtils.deepestNonGlobPath(this.tableLocations.get(0))) : Optional.<Path>absent();
-  this.relocateDataFiles=Boolean.valueOf(properties.getProperty(RELOCATE_DATA_FILES_KEY,DEFAULT_RELOCATE_DATA_FILES));
-  this.targetTableRoot=properties.containsKey(COPY_TARGET_TABLE_ROOT) ? Optional.of(resolvePath(properties.getProperty(COPY_TARGET_TABLE_ROOT))) : Optional.<Path>absent();
+  this.tableRootPath=PathUtils.isGlob(this.table.getDataLocation()) ? Optional.<Path>absent() : Optional.of(this.table.getDataLocation());
   this.tableIdentifier=this.table.getDbName() + "." + this.table.getTableName();
+  log.info("Created Hive dataset for table " + tableIdentifier);
 }

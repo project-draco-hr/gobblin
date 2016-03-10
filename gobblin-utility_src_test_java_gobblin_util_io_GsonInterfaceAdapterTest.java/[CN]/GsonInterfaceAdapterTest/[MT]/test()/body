@@ -1,0 +1,9 @@
+{
+  Gson gson=GsonInterfaceAdapter.getGson(Object.class);
+  TestClass test=new TestClass();
+  test.absent=Optional.absent();
+  Assert.assertNotEquals(test,new TestClass());
+  String ser=gson.toJson(test);
+  BaseClass deser=gson.fromJson(ser,BaseClass.class);
+  Assert.assertEquals(test,deser);
+}

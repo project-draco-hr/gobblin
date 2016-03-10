@@ -1,0 +1,4 @@
+Path sourcePath
+FileSystem targetFs
+Optional<Partition> partition
+boolean isConcreteFile

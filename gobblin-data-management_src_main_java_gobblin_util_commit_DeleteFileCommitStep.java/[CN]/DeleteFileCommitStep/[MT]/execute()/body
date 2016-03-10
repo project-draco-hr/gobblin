@@ -1,0 +1,8 @@
+{
+  Trash trash=TrashFactory.createTrash(getFS(),this.properties);
+  for (  FileStatus pathToDelete : this.pathsToDelete) {
+    if (existsAndIsExpectedFile(pathToDelete)) {
+      trash.moveToTrash(pathToDelete.getPath());
+    }
+  }
+}

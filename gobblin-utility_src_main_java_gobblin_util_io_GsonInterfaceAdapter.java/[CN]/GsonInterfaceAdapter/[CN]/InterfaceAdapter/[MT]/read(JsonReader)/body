@@ -1,0 +1,21 @@
+{
+  JsonElement element=Streams.parse(in);
+  if (element.isJsonNull()) {
+    return readNull();
+  }
+  JsonObject jsonObject=element.getAsJsonObject();
+  if (typeToken.getRawType() == Optional.class) {
+    if (jsonObject.has(OBJECT_TYPE)) {
+      return (R)Optional.of(readValue(jsonObject,null));
+    }
+ else     if (jsonObject.entrySet().isEmpty()) {
+      return (R)Optional.absent();
+    }
+ else {
+      throw new IOException("No class found for Optional value.");
+    }
+  }
+ else {
+    return this.readValue(jsonObject,this.typeToken);
+  }
+}

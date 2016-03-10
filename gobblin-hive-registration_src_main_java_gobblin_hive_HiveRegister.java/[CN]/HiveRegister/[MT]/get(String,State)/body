@@ -1,8 +1,0 @@
-{
-  try {
-    return (HiveRegister)ConstructorUtils.invokeConstructor(Class.forName(hiveRegisterType),props);
-  }
- catch (  ReflectiveOperationException e) {
-    throw Throwables.propagate(e);
-  }
-}

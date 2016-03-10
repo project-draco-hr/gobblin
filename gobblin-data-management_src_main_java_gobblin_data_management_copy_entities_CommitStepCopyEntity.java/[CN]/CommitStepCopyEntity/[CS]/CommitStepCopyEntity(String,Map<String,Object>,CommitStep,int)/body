@@ -1,0 +1,5 @@
+{
+  super(fileSet,additionalMetadata);
+  this.step=step;
+  this.priority=priority;
+}

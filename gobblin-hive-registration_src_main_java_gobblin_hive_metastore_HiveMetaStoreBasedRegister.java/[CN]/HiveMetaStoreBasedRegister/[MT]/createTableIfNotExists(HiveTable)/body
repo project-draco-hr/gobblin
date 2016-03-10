@@ -1,19 +1,12 @@
 {
-  IMetaStoreClient client=borrowClient();
-  HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName());
-  lock.lock();
-  try {
-    if (client.tableExists(table.getDbName(),table.getTableName())) {
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName())){
+    if (client.get().tableExists(table.getDbName(),table.getTableName())) {
       return false;
     }
-    client.createTable(HiveMetaStoreUtils.getTable(table));
+    client.get().createTable(HiveMetaStoreUtils.getTable(table));
     return true;
   }
  catch (  TException e) {
     throw new IOException(String.format("Error in creating or altering Hive table %s in db %s",table.getTableName(),table.getDbName()),e);
-  }
- finally {
-    lock.unlock();
-    this.clientPool.returnObject(client);
   }
 }

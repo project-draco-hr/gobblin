@@ -1,7 +1,7 @@
 {
-  if (!this.recordRead && this.file.isPresent()) {
+  if (!this.recordRead) {
     this.recordRead=true;
-    return new FileAwareInputStream(this.file.get(),fs.open(this.file.get().getFileStatus().getPath()));
+    return new FileAwareInputStream(this.file,fs.open(this.file.getFileStatus().getPath()));
   }
  else {
     return null;

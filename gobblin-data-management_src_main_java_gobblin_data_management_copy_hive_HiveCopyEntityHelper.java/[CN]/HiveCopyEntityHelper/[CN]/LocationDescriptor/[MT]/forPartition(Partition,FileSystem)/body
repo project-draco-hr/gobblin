@@ -1,0 +1,3 @@
+{
+  return new LocationDescriptor(partition.getDataLocation(),HiveUtils.getInputFormat(partition.getTPartition().getSd()),fs);
+}

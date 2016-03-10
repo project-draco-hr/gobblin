@@ -1,0 +1,8 @@
+{
+  if (this.typeToken.getRawType() == Optional.class) {
+    return (S)Optional.absent();
+  }
+ else {
+    return null;
+  }
+}

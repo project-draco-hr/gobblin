@@ -1,8 +1,6 @@
 {
   Preconditions.checkArgument(table.getPartitionKeysSize() == partition.getValues().size(),String.format("Partition key size is %s but partition value size is %s",table.getPartitionKeys().size(),partition.getValues().size()));
-  HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName());
-  lock.lock();
-  try {
+  try (HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName())){
     try {
       Partition existingPartition=client.getPartition(table.getTableName(),table.getDbName(),partition.getValues());
       partition.setCreateTime(existingPartition.getCreateTime());
@@ -25,8 +23,5 @@
 catch (  TException e) {
     log.error(String.format("Unable to add partition %s to table %s with location %s",partition,table.getTableName(),partition.getSd().getLocation()),e);
     throw e;
-  }
- finally {
-    lock.unlock();
   }
 }

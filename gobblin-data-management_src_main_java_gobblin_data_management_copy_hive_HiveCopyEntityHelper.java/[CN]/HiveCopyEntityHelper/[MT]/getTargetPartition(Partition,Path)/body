@@ -1,0 +1,12 @@
+{
+  try {
+    Partition targetPartition=new Partition(this.targetTable,originPartition.getTPartition().deepCopy());
+    targetPartition.getTable().setDbName(this.targetDatabase);
+    targetPartition.getTPartition().setDbName(this.targetDatabase);
+    targetPartition.setLocation(targetLocation.toString());
+    return targetPartition;
+  }
+ catch (  HiveException he) {
+    throw new IOException(he);
+  }
+}
