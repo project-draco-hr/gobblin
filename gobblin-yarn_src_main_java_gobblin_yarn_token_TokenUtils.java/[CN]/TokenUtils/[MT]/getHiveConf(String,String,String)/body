@@ -1,8 +1,0 @@
-{
-  HiveConf hiveConf=new HiveConf();
-  hiveConf.set(HiveConf.ConfVars.METASTOREURIS.varname,metastoreUri);
-  hiveConf.set(HADOOP_SECURITY_AUTHENTICATION,KERBEROS);
-  UserGroupInformation.setConfiguration(hiveConf);
-  UserGroupInformation.loginUserFromKeytab(keytabUser,keytabLocation);
-  return hiveConf;
-}

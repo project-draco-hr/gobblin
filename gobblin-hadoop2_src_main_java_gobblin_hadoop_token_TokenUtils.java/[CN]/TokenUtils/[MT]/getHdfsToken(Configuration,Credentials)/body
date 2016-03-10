@@ -1,0 +1,14 @@
+{
+  FileSystem fs=FileSystem.get(conf);
+  LOG.info("Getting DFS token from " + fs.getUri());
+  Token<?> fsToken=fs.getDelegationToken(getMRTokenRenewerInternal(new JobConf()).toString());
+  if (fsToken == null) {
+    LOG.error("Failed to fetch DFS token for ");
+    throw new IOException("Failed to fetch DFS token.");
+  }
+  LOG.info("Created DFS token: " + fsToken.toString());
+  LOG.info("Token kind: " + fsToken.getKind());
+  LOG.info("Token id: " + fsToken.getIdentifier());
+  LOG.info("Token service: " + fsToken.getService());
+  cred.addToken(fsToken.getService(),fsToken);
+}

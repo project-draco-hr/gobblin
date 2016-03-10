@@ -1,0 +1,8 @@
+{
+  if (log.isDebugEnabled()) {
+    return partition.toString();
+  }
+ else {
+    return Arrays.toString(partition.getValues().toArray());
+  }
+}

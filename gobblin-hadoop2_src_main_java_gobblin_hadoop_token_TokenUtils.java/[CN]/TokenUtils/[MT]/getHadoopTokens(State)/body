@@ -1,0 +1,17 @@
+{
+  Preconditions.checkArgument(state.contains(KEYTAB_USER),"Missing required property " + KEYTAB_USER);
+  Preconditions.checkArgument(state.contains(KEYTAB_LOCATION),"Missing required property " + KEYTAB_LOCATION);
+  Configuration configuration=new Configuration();
+  configuration.set(HADOOP_SECURITY_AUTHENTICATION,KERBEROS);
+  UserGroupInformation.setConfiguration(configuration);
+  UserGroupInformation.loginUserFromKeytab(state.getProp(KEYTAB_USER),state.getProp(KEYTAB_LOCATION));
+  final Optional<String> userToProxy=Strings.isNullOrEmpty(state.getProp(USER_TO_PROXY)) ? Optional.<String>absent() : Optional.fromNullable(state.getProp(USER_TO_PROXY));
+  final Configuration conf=new Configuration();
+  final Credentials cred=new Credentials();
+  LOG.info("Getting tokens for " + userToProxy);
+  getJhToken(conf,cred);
+  getFsAndJtTokens(state,conf,userToProxy,cred);
+  File tokenFile=File.createTempFile("mr-azkaban",".token");
+  persistTokens(cred,tokenFile);
+  return tokenFile;
+}
