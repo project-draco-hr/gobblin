@@ -1,0 +1,53 @@
+{
+  Path testRoot=new Path("testCopyableFileGenerator");
+  Path srcRoot=new Path(testRoot,"datasetRoot");
+  String versionDir="dummyversion";
+  Path versionPath=new Path(srcRoot,versionDir);
+  Path targetDir=new Path(testRoot,"target");
+  if (this.localFs.exists(testRoot)) {
+    this.localFs.delete(testRoot,true);
+  }
+  this.localFs.mkdirs(versionPath);
+  Path srcfile=new Path(versionPath,"file1");
+  this.localFs.create(srcfile);
+  this.localFs.mkdirs(targetDir);
+  Properties props=new Properties();
+  props.put(TimestampBasedCopyableDataset.COPY_POLICY,TimeBasedCopyPolicyForTest.class.getName());
+  props.put(TimestampBasedCopyableDataset.DATASET_VERSION_FINDER,TimestampedDatasetVersionFinderForTest.class.getName());
+  Path datasetRootPath=this.localFs.getFileStatus(srcRoot).getPath();
+  TimestampBasedCopyableDataset copyabledataset=new TimestampBasedCopyableDataset(localFs,props,datasetRootPath);
+  TimestampedDatasetVersion srcVersion=new TimestampedDatasetVersion(new DateTime(),versionPath);
+class SimpleCopyableFileGenerator extends TimestampBasedCopyableDataset.CopyableFileGenerator {
+    public SimpleCopyableFileGenerator(    TimestampBasedCopyableDataset copyableDataset,    FileSystem srcFs,    FileSystem targetFs,    CopyConfiguration configuration,    TimestampedDatasetVersion copyableVersion,    ConcurrentLinkedQueue<CopyableFile> copyableFileList){
+      copyableDataset.super(srcFs,targetFs,configuration,copyableDataset.datasetRoot(),configuration.getPublishDir(),copyableVersion.getDateTime(),copyableVersion.getPaths(),copyableFileList,copyableDataset.copyableFileFilter());
+    }
+    @Override protected CopyableFile generateCopyableFile(    FileStatus singleFile,    Path targetPath,    long timestampFromPath,    Path locationToCopy) throws IOException {
+      CopyableFile mockCopyableFile=mock(CopyableFile.class);
+      when(mockCopyableFile.getFileSet()).thenReturn(singleFile.getPath().toString());
+      return mockCopyableFile;
+    }
+  }
+  CopyConfiguration configuration1=mock(CopyConfiguration.class);
+  when(configuration1.getPublishDir()).thenReturn(localFs.getFileStatus(targetDir).getPath());
+  ConcurrentLinkedQueue<CopyableFile> copyableFileList1=new ConcurrentLinkedQueue<>();
+  TimestampBasedCopyableDataset.CopyableFileGenerator copyFileGenerator1=new SimpleCopyableFileGenerator(copyabledataset,localFs,localFs,configuration1,srcVersion,copyableFileList1);
+  copyFileGenerator1.run();
+  Assert.assertEquals(copyableFileList1.size(),1);
+  Assert.assertEquals(copyableFileList1.poll().getFileSet(),localFs.getFileStatus(srcfile).getPath().toString());
+  String noNeedToCopyFile="file2";
+  Path oldSrcFile=new Path(versionPath,noNeedToCopyFile);
+  this.localFs.create(oldSrcFile);
+  Thread.sleep(100);
+  Path newTargetfile=new Path(targetDir,new Path(versionDir,noNeedToCopyFile));
+  this.localFs.create(newTargetfile);
+  copyFileGenerator1.run();
+  Assert.assertEquals(copyableFileList1.size(),1);
+  Assert.assertEquals(copyableFileList1.poll().getFileSet(),localFs.getFileStatus(srcfile).getPath().toString());
+  CopyConfiguration configuration2=mock(CopyConfiguration.class);
+  when(configuration2.getPublishDir()).thenReturn(localFs.getFileStatus(datasetRootPath).getPath());
+  ConcurrentLinkedQueue<CopyableFile> copyableFileList2=new ConcurrentLinkedQueue<>();
+  TimestampBasedCopyableDataset.CopyableFileGenerator copyFileGenerator2=new SimpleCopyableFileGenerator(copyabledataset,localFs,localFs,configuration2,srcVersion,copyableFileList2);
+  copyFileGenerator2.run();
+  Assert.assertEquals(copyableFileList2.size(),0);
+  this.localFs.delete(testRoot,true);
+}

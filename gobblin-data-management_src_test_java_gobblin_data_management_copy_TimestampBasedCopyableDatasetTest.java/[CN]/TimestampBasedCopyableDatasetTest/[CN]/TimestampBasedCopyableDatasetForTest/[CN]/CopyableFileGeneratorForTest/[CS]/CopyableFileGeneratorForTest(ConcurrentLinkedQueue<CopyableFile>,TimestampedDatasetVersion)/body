@@ -1,0 +1,5 @@
+{
+  super(null,null,null,null,null,null,null,null,null);
+  this.copyableFileList=copyableFileList;
+  this.copyableVersion=copyableVersion;
+}

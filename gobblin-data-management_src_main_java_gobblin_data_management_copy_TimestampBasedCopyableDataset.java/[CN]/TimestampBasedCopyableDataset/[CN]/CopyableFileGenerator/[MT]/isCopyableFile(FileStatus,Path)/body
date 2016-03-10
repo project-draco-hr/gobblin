@@ -1,0 +1,11 @@
+{
+  if (!this.targetFs.exists(targetPath)) {
+    return true;
+  }
+ else   if (srcFileStatus.getModificationTime() > this.targetFs.getFileStatus(targetPath).getModificationTime()) {
+    return true;
+  }
+ else {
+    return false;
+  }
+}

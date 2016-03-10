@@ -1,0 +1,14 @@
+{
+  Random ran=new Random();
+  Path dummyPath=new Path("dummy");
+  DateTime dt1=start.plusDays(ran.nextInt(range));
+  Path path1=new Path(dummyPath,Long.toString(dt1.getMillis()));
+  TimestampedDatasetVersion version1=new TimestampedDatasetVersion(dt1,path1);
+  DateTime dt2=dt1.plusDays(ran.nextInt(range));
+  Path path2=new Path(dummyPath,Long.toString(dt2.getMillis()));
+  TimestampedDatasetVersion version2=new TimestampedDatasetVersion(dt2,path2);
+  DateTime dt3=dt2.plusDays(ran.nextInt(range));
+  Path path3=new Path(dummyPath,Long.toString(dt3.getMillis()));
+  TimestampedDatasetVersion version3=new TimestampedDatasetVersion(dt3,path3);
+  return Lists.newArrayList(version1,version2,version3);
+}

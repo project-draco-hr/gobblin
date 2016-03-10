@@ -1,0 +1,16 @@
+{
+  Properties props=new Properties();
+  props.put(TimestampBasedCopyableDataset.COPY_POLICY,TimeBasedCopyPolicyForTest.class.getName());
+  props.put(TimestampBasedCopyableDataset.DATASET_VERSION_FINDER,TimestampedDatasetVersionFinderForTest.class.getName());
+  TimestampBasedCopyableDataset copyabledataset=new TimestampBasedCopyableDatasetForTest(localFs,props,new Path("/data/tracking/PVE"));
+  Collection<CopyableFile> copyableFiles=copyabledataset.getCopyableFiles(localFs,null);
+  Assert.assertEquals(copyableFiles.size(),6);
+  Pattern pattern=Pattern.compile("dummy/[\\d]*/file[12]");
+  Set<String> resultFilesets=Sets.newHashSet();
+  for (  CopyableFile copyableFile : copyableFiles) {
+    String copyableFileset=copyableFile.getFileSet();
+    Assert.assertTrue(pattern.matcher(copyableFileset).matches());
+    resultFilesets.add(copyableFileset);
+  }
+  Assert.assertEquals(resultFilesets.size(),6);
+}

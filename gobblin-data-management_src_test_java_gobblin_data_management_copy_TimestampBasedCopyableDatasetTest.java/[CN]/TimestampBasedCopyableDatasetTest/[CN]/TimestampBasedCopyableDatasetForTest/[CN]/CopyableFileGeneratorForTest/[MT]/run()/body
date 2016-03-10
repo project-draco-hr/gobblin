@@ -1,0 +1,16 @@
+{
+  CopyableFile mockCopyableFile1=mock(CopyableFile.class);
+  String file1=new Path(copyableVersion.getPaths().iterator().next(),"file1").toString();
+  when(mockCopyableFile1.getFileSet()).thenReturn(file1);
+  CopyableFile mockCopyableFile2=mock(CopyableFile.class);
+  String file2=new Path(copyableVersion.getPaths().iterator().next(),"file2").toString();
+  when(mockCopyableFile2.getFileSet()).thenReturn(file2);
+  try {
+    Thread.sleep(new Random().nextInt(3000));
+  }
+ catch (  InterruptedException e) {
+    e.printStackTrace();
+  }
+  copyableFileList.add(mockCopyableFile1);
+  copyableFileList.add(mockCopyableFile2);
+}

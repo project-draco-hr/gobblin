@@ -1,0 +1,21 @@
+{
+  for (  Path locationToCopy : locationsToCopy) {
+    long timestampFromPath=this.versionDatetime.getMillis();
+    try {
+      for (      FileStatus singleFile : this.srcFs.listStatus(locationToCopy,this.filter)) {
+        Path singleFilePath=singleFile.getPath();
+        log.debug("Checking if it is a copyable file: " + singleFilePath);
+        Path relativePath=PathUtils.relativizePath(singleFilePath,datasetRoot);
+        Path targetPath=new Path(targetRoot,relativePath);
+        if (this.isCopyableFile(singleFile,targetPath)) {
+          log.debug("Will create workunit for: " + singleFilePath);
+          copyableFileList.add(this.generateCopyableFile(singleFile,targetPath,timestampFromPath,locationToCopy));
+        }
+      }
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException("Failed to get copyable files for " + locationToCopy,e);
+    }
+  }
+}

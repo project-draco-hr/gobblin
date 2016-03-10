@@ -1,0 +1,14 @@
+{
+  this.srcFs=fs;
+  this.datasetRoot=datasetRoot;
+  try {
+    Class<?> copyPolicyClass=Class.forName(props.getProperty(COPY_POLICY,DEFAULT_COPY_POLICY));
+    this.versionSelectionPolicy=(VersionSelectionPolicy<TimestampedDatasetVersion>)copyPolicyClass.getConstructor(Properties.class).newInstance(props);
+    Class<?> timestampedDatasetVersionFinderClass=Class.forName(props.getProperty(DATASET_VERSION_FINDER,DEFAULT_DATASET_VERSION_FINDER));
+    this.datasetVersionFinder=(VersionFinder<TimestampedDatasetVersion>)timestampedDatasetVersionFinderClass.getConstructor(FileSystem.class,Properties.class).newInstance(this.srcFs,props);
+  }
+ catch (  ClassNotFoundException|NoSuchMethodException|InstantiationException|IllegalAccessException|InvocationTargetException exception) {
+    throw new RuntimeException(exception);
+  }
+  this.executor=ScalingThreadPoolExecutor.newScalingThreadPool(0,Integer.parseInt(props.getProperty(THREADPOOL_SIZE_TO_GET_COPYABLE_FILES,DEFAULT_THREADPOOL_SIZE_TO_GET_COPYABLE_FILES)),100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of(getClass().getSimpleName())));
+}

@@ -1,0 +1,12 @@
+{
+  Properties props=new Properties();
+  props.put(TimestampBasedCopyableDataset.COPY_POLICY,TimeBasedCopyPolicyForTest.class.getName());
+  props.put(TimestampBasedCopyableDataset.DATASET_VERSION_FINDER,TimestampedDatasetVersionFinderForTest.class.getName());
+  TimestampBasedCopyableDataset copyabledataset1=new TimestampBasedCopyableDataset(localFs,props,new Path("dummy"));
+  Assert.assertEquals(copyabledataset1.getDatasetVersionFinder().getClass().getName(),TimestampedDatasetVersionFinderForTest.class.getName());
+  Assert.assertEquals(copyabledataset1.getVersionSelectionPolicy().getClass().getName(),TimeBasedCopyPolicyForTest.class.getName());
+  props.put(TimestampBasedCopyableDataset.DATASET_VERSION_FINDER,VersionFinderDoNothingForTest.class.getName());
+  TimestampBasedCopyableDataset copyabledataset2=new TimestampBasedCopyableDataset(localFs,props,new Path("dummy"));
+  Assert.assertEquals(copyabledataset2.getDatasetVersionFinder().getClass().getName(),VersionFinderDoNothingForTest.class.getName());
+  Assert.assertEquals(copyabledataset2.getVersionSelectionPolicy().getClass().getName(),TimeBasedCopyPolicyForTest.class.getName());
+}
