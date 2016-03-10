@@ -2,6 +2,6 @@
   boolean preserveFileName=workUnitState.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.SOURCE_FILEBASED_PRESERVE_FILE_NAME,this.numBranches,branchId),false);
   for (  FileStatus status : this.writerFileSystemByBranches.get(branchId).listStatus(writerOutputDir)) {
     Path finalOutputPath=preserveFileName ? new Path(publisherOutputDir,workUnitState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_NAME,this.numBranches,branchId))) : new Path(publisherOutputDir,status.getPath().getName());
-    movePath(parallelRunner,status.getPath(),finalOutputPath,branchId);
+    movePath(parallelRunner,workUnitState,status.getPath(),finalOutputPath,branchId);
   }
 }

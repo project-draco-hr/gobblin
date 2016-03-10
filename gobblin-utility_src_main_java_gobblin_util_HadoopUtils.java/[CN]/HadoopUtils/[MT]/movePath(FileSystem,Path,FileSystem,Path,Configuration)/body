@@ -1,8 +1,3 @@
 {
-  if (srcFs.getUri().getScheme().equals(dstFs.getUri().getScheme()) && !FS_SCHEMES_NON_ATOMIC.contains(srcFs.getUri().getScheme()) && !FS_SCHEMES_NON_ATOMIC.contains(dstFs.getUri().getScheme())) {
-    renamePath(srcFs,src,dst);
-  }
- else {
-    copyPath(srcFs,src,dstFs,dst,conf);
-  }
+  movePath(srcFs,src,dstFs,dst,false,conf);
 }
