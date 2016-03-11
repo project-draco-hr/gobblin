@@ -16,6 +16,9 @@ catch (  ExecutionException exception) {
   }
   ExecutorService executor=ScalingThreadPoolExecutor.newScalingThreadPool(0,Integer.parseInt(props.getProperty(MAX_CONCURRENT_DATASETS_CLEANED,DEFAULT_MAX_CONCURRENT_DATASETS_CLEANED)),100,ExecutorsUtils.newThreadFactory(Optional.of(LOG),Optional.of("Dataset-cleaner-pool-%d")));
   this.service=MoreExecutors.listeningDecorator(executor);
-  this.metricContext=this.closer.register(Instrumented.getMetricContext(new State(props),DatasetCleaner.class));
+  List<Tag<?>> tags=Lists.newArrayList();
+  tags.addAll(Tag.fromMap(AzkabanTags.getAzkabanTags()));
+  this.metricContext=this.closer.register(Instrumented.getMetricContext(new State(props),DatasetCleaner.class,tags));
   this.isMetricEnabled=GobblinMetrics.isEnabled(props);
+  this.eventSubmitter=new EventSubmitter.Builder(metricContext,RetentionEvents.NAMESPACE).build();
 }
