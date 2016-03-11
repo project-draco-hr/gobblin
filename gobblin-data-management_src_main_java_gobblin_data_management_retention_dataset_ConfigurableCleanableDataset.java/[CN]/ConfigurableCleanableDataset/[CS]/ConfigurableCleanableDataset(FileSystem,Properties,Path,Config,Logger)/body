@@ -4,8 +4,8 @@
   Preconditions.checkArgument(config.hasPath(VERSION_FINDER_CLASS_KEY),"Missing property " + VERSION_FINDER_CLASS_KEY);
   Preconditions.checkArgument(config.hasPath(RETENTION_POLICY_CLASS_KEY),"Missing property " + RETENTION_POLICY_CLASS_KEY);
   try {
-    this.versionFinder=(VersionFinder<? extends T>)ConstructorUtils.invokeConstructor(Class.forName(config.getString(VERSION_FINDER_CLASS_KEY)),this.fs,config);
-    this.retentionPolicy=(RetentionPolicy<T>)ConstructorUtils.invokeConstructor(Class.forName(config.getString(RETENTION_POLICY_CLASS_KEY)),config);
+    this.versionFinder=(VersionFinder<? extends T>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(config.getString(VERSION_FINDER_CLASS_KEY)),ImmutableList.<Object>of(this.fs,config),ImmutableList.<Object>of(this.fs,jobProps));
+    this.retentionPolicy=(RetentionPolicy<T>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(config.getString(RETENTION_POLICY_CLASS_KEY)),ImmutableList.<Object>of(config),ImmutableList.<Object>of(jobProps));
   }
  catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
     throw new IllegalArgumentException(e);

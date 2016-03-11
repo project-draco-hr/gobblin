@@ -1,0 +1,3 @@
+{
+  GobblinConstructorUtils.invokeFirstConstructor(ConstructorTestClass.class,ImmutableList.<Object>of(),ImmutableList.<Object>of(Integer.valueOf(3),Integer.valueOf(3)));
+}

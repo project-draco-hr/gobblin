@@ -1,0 +1,13 @@
+{
+  ConstructorTestClass ctc=GobblinConstructorUtils.invokeFirstConstructor(ConstructorTestClass.class,ImmutableList.<Object>of(Integer.valueOf(3),new Properties()),ImmutableList.<Object>of(Integer.valueOf(3),"test1"));
+  Assert.assertNotNull(ctc.id);
+  Assert.assertNotNull(ctc.props);
+  Assert.assertEquals(ctc.id,Integer.valueOf(3));
+  Assert.assertNull(ctc.str);
+  ctc=GobblinConstructorUtils.invokeFirstConstructor(ConstructorTestClass.class,ImmutableList.<Object>of(Integer.valueOf(3),"test1"),ImmutableList.<Object>of(Integer.valueOf(3),new Properties()));
+  Assert.assertNotNull(ctc.id);
+  Assert.assertNotNull(ctc.str);
+  Assert.assertEquals(ctc.id,Integer.valueOf(3));
+  Assert.assertEquals(ctc.str,"test1");
+  Assert.assertNull(ctc.props);
+}
