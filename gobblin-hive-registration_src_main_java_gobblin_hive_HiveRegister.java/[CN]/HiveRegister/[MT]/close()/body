@@ -11,11 +11,6 @@ catch (  ExecutionException e) {
     throw new IOException(e.getCause());
   }
  finally {
-    try {
-      this.clientPool.close();
-    }
-  finally {
-      ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log));
-    }
+    ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log));
   }
 }

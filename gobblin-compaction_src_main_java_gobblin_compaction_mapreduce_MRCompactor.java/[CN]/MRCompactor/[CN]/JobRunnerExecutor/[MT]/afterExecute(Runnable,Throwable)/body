@@ -14,6 +14,14 @@
  else {
         jobRunner.getDataset().setState(COMPACTION_COMPLETE);
       }
+      if (MRCompactor.this.compactorListener.isPresent()) {
+        try {
+          MRCompactor.this.compactorListener.get().onDatasetCompactionCompletion(jobRunner.getDataset());
+        }
+ catch (        Exception e) {
+          t=e;
+        }
+      }
     }
  else     if (jobRunner.getDataset().state() == GIVEN_UP && !MRCompactor.this.shouldPublishDataIfCannotVerifyCompl) {
       LOG.info(String.format("Dataset %s will not be compacted, since data completeness cannot be verified",jobRunner.getDataset()));
@@ -23,7 +31,7 @@
       jobRunner.getDataset().reducePriority();
     }
   }
- else {
+  if (t != null) {
     afterExecuteWithThrowable(jobRunner,t);
   }
 }

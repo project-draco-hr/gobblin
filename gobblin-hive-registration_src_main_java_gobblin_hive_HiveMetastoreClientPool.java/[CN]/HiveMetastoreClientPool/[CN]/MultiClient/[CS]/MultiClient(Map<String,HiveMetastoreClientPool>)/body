@@ -1,0 +1,21 @@
+{
+  this.clients=Maps.newHashMap();
+  this.closer=Closer.create();
+  Map<HiveMetastoreClientPool,Integer> requiredClientsPerPool=Maps.newHashMap();
+  for (  Map.Entry<String,HiveMetastoreClientPool> entry : namedPools.entrySet()) {
+    if (requiredClientsPerPool.containsKey(entry.getValue())) {
+      requiredClientsPerPool.put(entry.getValue(),requiredClientsPerPool.get(entry.getValue()) + 1);
+    }
+ else {
+      requiredClientsPerPool.put(entry.getValue(),1);
+    }
+  }
+  for (  Map.Entry<HiveMetastoreClientPool,Integer> entry : requiredClientsPerPool.entrySet()) {
+    if (entry.getKey().pool.getMaxTotal() < entry.getValue()) {
+      throw new IOException(String.format("Not enough clients available in the pool. Required %d, max available %d.",entry.getValue(),entry.getKey().pool.getMaxTotal()));
+    }
+  }
+  for (  Map.Entry<String,HiveMetastoreClientPool> entry : namedPools.entrySet()) {
+    this.clients.put(entry.getKey(),this.closer.register(entry.getValue().getClient()));
+  }
+}

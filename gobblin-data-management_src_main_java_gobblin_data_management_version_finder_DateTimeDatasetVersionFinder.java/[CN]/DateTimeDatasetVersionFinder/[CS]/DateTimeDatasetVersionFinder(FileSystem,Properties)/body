@@ -1,0 +1,22 @@
+{
+  super(fs,props);
+  Preconditions.checkArgument(props.containsKey(DATE_TIME_PATTERN_KEY) || props.containsKey(RETENTION_DATE_TIME_PATTERN_KEY));
+  String pattern;
+  if (props.containsKey(DATE_TIME_PATTERN_KEY)) {
+    pattern=props.getProperty(DATE_TIME_PATTERN_KEY);
+  }
+ else {
+    pattern=props.getProperty(RETENTION_DATE_TIME_PATTERN_KEY);
+  }
+  this.globPattern=new Path(pattern.replaceAll("[^/]+","*"));
+  LOGGER.debug(String.format("Setting timezone for patthern: %s. By default it is %s",pattern,DEFAULT_DATE_TIME_PATTERN_TIMEZONE));
+  if (props.containsKey(DATE_TIME_PATTERN_TIMEZONE_KEY)) {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(props.getProperty(DATE_TIME_PATTERN_TIMEZONE_KEY)));
+  }
+ else   if (props.containsKey(RETENTION_DATE_TIME_PATTERN_TIMEZONE_KEY)) {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(props.getProperty(RETENTION_DATE_TIME_PATTERN_TIMEZONE_KEY)));
+  }
+ else {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(DEFAULT_DATE_TIME_PATTERN_TIMEZONE));
+  }
+}

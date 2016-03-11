@@ -1,0 +1,5 @@
+{
+  Schema originalSchema=readSchemaFromJsonFile("recordWithinUnionWithinRecord_original.json");
+  Schema expectedSchema=readSchemaFromJsonFile("recordWithinUnionWithinRecord_flattened.json");
+  Assert.assertEquals(new AvroFlattener().flatten(originalSchema),expectedSchema);
+}

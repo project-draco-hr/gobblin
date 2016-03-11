@@ -1,0 +1,10 @@
+{
+  TaskScheduler<Object,ScheduledTask<Object>> taskScheduler=TaskSchedulerFactory.get("",Optional.<String>absent());
+  Assert.assertTrue(Matchers.instanceOf(ScheduledExecutorServiceTaskScheduler.class).matches(taskScheduler));
+  taskScheduler=TaskSchedulerFactory.get(StringUtils.EMPTY,Optional.<String>absent());
+  Assert.assertTrue(Matchers.instanceOf(ScheduledExecutorServiceTaskScheduler.class).matches(taskScheduler));
+  taskScheduler=TaskSchedulerFactory.get("ScheduledExecutorService",Optional.<String>absent());
+  Assert.assertTrue(Matchers.instanceOf(ScheduledExecutorServiceTaskScheduler.class).matches(taskScheduler));
+  taskScheduler=TaskSchedulerFactory.get("HashedWheelTimer",Optional.<String>absent());
+  Assert.assertTrue(Matchers.instanceOf(HashedWheelTimerTaskScheduler.class).matches(taskScheduler));
+}

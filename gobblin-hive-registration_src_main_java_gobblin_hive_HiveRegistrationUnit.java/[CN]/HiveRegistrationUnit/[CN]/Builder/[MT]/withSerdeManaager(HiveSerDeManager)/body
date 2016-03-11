@@ -1,0 +1,4 @@
+{
+  this.serDeManager=Optional.of(serDeManager);
+  return (T)this;
+}

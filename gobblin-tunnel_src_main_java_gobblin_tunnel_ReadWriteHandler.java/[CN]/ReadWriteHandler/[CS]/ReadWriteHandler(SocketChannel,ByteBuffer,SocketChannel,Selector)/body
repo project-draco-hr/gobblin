@@ -1,0 +1,15 @@
+{
+  this.proxy=proxy;
+  this.client=client;
+  this.selector=selector;
+  if (mixedServerResponseBuffer.limit() > mixedServerResponseBuffer.position()) {
+    this.client.configureBlocking(true);
+    OutputStream clientOut=this.client.socket().getOutputStream();
+    clientOut.write(mixedServerResponseBuffer.array(),mixedServerResponseBuffer.position(),mixedServerResponseBuffer.limit() - mixedServerResponseBuffer.position());
+    clientOut.flush();
+  }
+  this.proxy.configureBlocking(false);
+  this.client.configureBlocking(false);
+  this.client.register(this.selector,OP_READ,this);
+  this.proxy.register(this.selector,OP_READ,this);
+}

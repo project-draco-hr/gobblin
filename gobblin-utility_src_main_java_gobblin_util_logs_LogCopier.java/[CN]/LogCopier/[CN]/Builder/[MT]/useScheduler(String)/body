@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(schedulerName),"Invalid scheduler name: " + schedulerName);
+  this.schedulerName=schedulerName;
+  return this;
+}

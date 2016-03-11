@@ -1,0 +1,4 @@
+{
+  state.setProp(SERIALIZED_COPYABLE_FILE,CopyEntity.serialize(copyEntity));
+  state.setProp(COPY_ENTITY_CLASS,copyEntity.getClass().getName());
+}

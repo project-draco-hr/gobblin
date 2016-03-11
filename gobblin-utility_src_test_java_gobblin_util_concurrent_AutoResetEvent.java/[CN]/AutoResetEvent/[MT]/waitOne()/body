@@ -1,0 +1,8 @@
+{
+synchronized (this.syncObject) {
+    while (!this.state) {
+      this.syncObject.wait();
+    }
+    this.state=false;
+  }
+}

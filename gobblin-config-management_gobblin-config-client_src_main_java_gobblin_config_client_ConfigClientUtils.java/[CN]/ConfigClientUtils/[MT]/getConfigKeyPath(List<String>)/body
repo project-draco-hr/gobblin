@@ -1,0 +1,7 @@
+{
+  List<ConfigKeyPath> result=new ArrayList<ConfigKeyPath>();
+  for (  String s : input) {
+    result.add(getConfigKeyPath(s));
+  }
+  return result;
+}

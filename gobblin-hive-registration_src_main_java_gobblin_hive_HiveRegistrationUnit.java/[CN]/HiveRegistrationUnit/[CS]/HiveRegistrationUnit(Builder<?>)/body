@@ -1,0 +1,14 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(builder.dbName));
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(builder.tableName));
+  this.dbName=builder.dbName;
+  this.tableName=builder.tableName;
+  this.columns.addAll(builder.columns);
+  this.props.addAll(builder.props);
+  this.storageProps.addAll(builder.storageProps);
+  this.serDeProps.addAll(builder.serDeProps);
+  this.serDeManager=builder.serDeManager;
+  populateTablePartitionFields();
+  populateStorageFields();
+  populateSerDeFields();
+}

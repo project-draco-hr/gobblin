@@ -1,0 +1,3 @@
+{
+  this(deployableConfigSource,version,DEFAULT_STORE_PERMISSIONS);
+}

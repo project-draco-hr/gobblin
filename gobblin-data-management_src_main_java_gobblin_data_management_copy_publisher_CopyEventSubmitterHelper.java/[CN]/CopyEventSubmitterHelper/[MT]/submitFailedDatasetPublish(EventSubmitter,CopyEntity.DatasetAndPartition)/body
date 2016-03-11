@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(DATASET_PUBLISHED_FAILED_EVENT_NAME,ImmutableMap.of(DATASET_ROOT_METADATA_NAME,datasetAndPartition.getDataset().getDatasetURN()));
+}

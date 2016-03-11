@@ -1,0 +1,8 @@
+{
+  try {
+    return compactorFactory.createCompactor(this.properties,Tag.fromMap(AzkabanTags.getAzkabanTags()),compactorListener);
+  }
+ catch (  CompactorCreationException e) {
+    throw new RuntimeException("Unable to create compactor",e);
+  }
+}

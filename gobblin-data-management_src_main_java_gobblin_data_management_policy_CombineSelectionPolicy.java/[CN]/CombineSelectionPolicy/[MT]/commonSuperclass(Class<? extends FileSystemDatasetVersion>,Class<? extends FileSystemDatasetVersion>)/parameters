@@ -1,0 +1,2 @@
+Class<? extends FileSystemDatasetVersion> classA
+Class<? extends FileSystemDatasetVersion> classB

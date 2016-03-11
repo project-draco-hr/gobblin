@@ -1,7 +1,5 @@
 {
-  Preconditions.checkState(this.path != null);
-  Preconditions.checkState(!Strings.isNullOrEmpty(this.dbName));
-  Preconditions.checkState(!Strings.isNullOrEmpty(this.tableName));
-  Preconditions.checkState(this.sd != null);
+  Preconditions.checkNotNull(this.path);
+  Preconditions.checkNotNull(this.table);
   return new SimpleHiveSpec(this);
 }

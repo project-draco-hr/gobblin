@@ -1,0 +1,7 @@
+{
+  List<FieldSchema> fieldSchemas=Lists.newArrayListWithCapacity(columns.size());
+  for (  Column column : columns) {
+    fieldSchemas.add(new FieldSchema(column.getName(),column.getType(),column.getComment()));
+  }
+  return fieldSchemas;
+}

@@ -1,5 +1,0 @@
-{
-  FileSystem rawLocalFs=this.closer.register(new RawLocalFileSystem());
-  rawLocalFs.initialize(URI.create(ConfigurationKeys.LOCAL_FS_URI),new Configuration());
-  return LogCopier.newBuilder().useSrcFileSystem(this.fs).useDestFileSystem(rawLocalFs).readFrom(getHdfsLogDir(appWorkDir)).writeTo(sinkLogDir).acceptsLogFileExtensions(ImmutableSet.of(ApplicationConstants.STDOUT,ApplicationConstants.STDERR)).build();
-}

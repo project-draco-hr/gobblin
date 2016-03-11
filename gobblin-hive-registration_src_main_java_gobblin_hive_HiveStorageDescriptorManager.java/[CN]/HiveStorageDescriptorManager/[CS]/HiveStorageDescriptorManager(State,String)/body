@@ -1,7 +1,0 @@
-{
-  Preconditions.checkArgument(props.contains(HIVE_ROW_FORMAT),"Missing required property " + HIVE_ROW_FORMAT);
-  this.props=new HiveRegProps(props);
-  this.rowFormat=this.props.getProp(HIVE_ROW_FORMAT);
-  this.serDeWrapper=HiveSerDeWrapper.get(this.rowFormat);
-  this.tableName=tableName;
-}

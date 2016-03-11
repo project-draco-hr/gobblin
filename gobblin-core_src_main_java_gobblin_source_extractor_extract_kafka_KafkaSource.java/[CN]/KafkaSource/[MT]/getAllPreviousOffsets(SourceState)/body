@@ -1,4 +1,7 @@
 {
+  if (this.doneGettingAllPreviousOffsets) {
+    return;
+  }
   this.previousOffsets.clear();
   for (  WorkUnitState workUnitState : state.getPreviousWorkUnitStates()) {
     List<KafkaPartition> partitions=KafkaUtils.getPartitions(workUnitState);
@@ -10,4 +13,5 @@
       }
     }
   }
+  this.doneGettingAllPreviousOffsets=true;
 }

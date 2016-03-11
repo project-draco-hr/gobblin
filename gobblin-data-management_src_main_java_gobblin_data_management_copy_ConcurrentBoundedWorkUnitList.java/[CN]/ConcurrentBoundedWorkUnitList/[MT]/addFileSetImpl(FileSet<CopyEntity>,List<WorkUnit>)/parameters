@@ -1,0 +1,2 @@
+FileSet<CopyEntity> fileSet
+List<WorkUnit> workUnits

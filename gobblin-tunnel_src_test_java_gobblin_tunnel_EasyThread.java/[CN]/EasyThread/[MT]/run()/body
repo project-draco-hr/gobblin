@@ -1,0 +1,8 @@
+{
+  try {
+    runQuietly();
+  }
+ catch (  Exception e) {
+    LOG.info("Exception in EasyThread#run",e);
+  }
+}

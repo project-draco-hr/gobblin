@@ -1,0 +1,10 @@
+{
+  super(props);
+  if (props.contains(HiveRegistrationPolicyBase.HIVE_FS_URI)) {
+    this.fs=FileSystem.get(URI.create(props.getProp(HiveRegistrationPolicyBase.HIVE_FS_URI)),new Configuration());
+  }
+ else {
+    this.fs=FileSystem.get(new Configuration());
+  }
+  this.snapshotPathPattern=props.contains(SNAPSHOT_PATH_PATTERN) ? Optional.of(Pattern.compile(props.getProp(SNAPSHOT_PATH_PATTERN))) : Optional.<Pattern>absent();
+}

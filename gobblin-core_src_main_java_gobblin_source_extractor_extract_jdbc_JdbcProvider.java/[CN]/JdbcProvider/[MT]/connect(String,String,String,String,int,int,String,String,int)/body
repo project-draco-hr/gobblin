@@ -1,0 +1,26 @@
+{
+  if (proxyHost != null && proxyPort > 0) {
+    String remoteHost="";
+    int remotePort=0;
+    int hostStart=connectionUrl.indexOf("://") + 3;
+    int portStart=connectionUrl.indexOf(":",hostStart);
+    remoteHost=connectionUrl.substring(hostStart,portStart);
+    remotePort=Integer.decode(connectionUrl.substring(portStart + 1,connectionUrl.indexOf("/",portStart)));
+    try {
+      tunnel=Tunnel.build(remoteHost,remotePort,proxyHost,proxyPort);
+      int tunnelPort=tunnel.getPort();
+      String newConnectionUrl=connectionUrl.replaceFirst(remoteHost,"127.0.0.1").replaceFirst(":" + remotePort,":" + tunnelPort);
+      connectionUrl=newConnectionUrl;
+    }
+ catch (    IOException ioe) {
+      throw new IllegalStateException("Failed to open tunnel to remote host " + remoteHost + ":"+ remotePort+ " via proxy "+ proxyHost+ ":"+ proxyPort,ioe);
+    }
+  }
+  this.setDriverClassName(driver);
+  this.setUsername(user);
+  this.setPassword(password);
+  this.setUrl(connectionUrl);
+  this.setInitialSize(0);
+  this.setMaxIdle(numconn);
+  this.setMaxWait(timeout);
+}

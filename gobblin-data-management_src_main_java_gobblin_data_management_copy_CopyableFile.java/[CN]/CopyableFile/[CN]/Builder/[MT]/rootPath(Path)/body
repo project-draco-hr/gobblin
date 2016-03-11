@@ -1,4 +1,0 @@
-{
-  this.rootPath=rootPath;
-  return this;
-}

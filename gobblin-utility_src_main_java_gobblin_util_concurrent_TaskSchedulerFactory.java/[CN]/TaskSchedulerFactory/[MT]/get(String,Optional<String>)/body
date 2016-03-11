@@ -1,0 +1,4 @@
+{
+  TaskSchedulerType taskSchedulerType=TaskSchedulerType.parse(type);
+  return get(taskSchedulerType,name);
+}

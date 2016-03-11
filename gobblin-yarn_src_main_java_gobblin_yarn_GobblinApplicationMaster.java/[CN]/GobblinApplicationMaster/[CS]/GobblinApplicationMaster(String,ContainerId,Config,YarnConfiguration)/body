@@ -7,7 +7,7 @@
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
   List<Service> services=Lists.newArrayList();
   if (isLogSourcePresent()) {
-    services.add(buildLogCopier(containerId,fs,appWorkDir));
+    services.add(buildLogCopier(config,containerId,fs,appWorkDir));
   }
   services.add(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
   services.add(buildGobblinHelixJobScheduler(config,appWorkDir,getMetadataTags(applicationName,applicationId)));

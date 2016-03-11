@@ -1,0 +1,7 @@
+FileSystem srcFs
+Path src
+FileSystem dstFs
+Path dst
+Path tmp
+boolean overwriteDst
+Configuration conf

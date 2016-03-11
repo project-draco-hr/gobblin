@@ -1,0 +1,11 @@
+{
+  mockServer.when(HttpRequest.request().withMethod("CONNECT").withPath("www.us.apache.org:80")).respond(HttpResponse.response().withStatusCode(200));
+  mockServer.when(HttpRequest.request().withMethod("GET").withPath("/dist//httpcomponents/httpclient/binary/httpcomponents-client-4.5.1-bin.tar.gz")).forward(HttpForward.forward().withHost("www.us.apache.org").withPort(80));
+  Tunnel tunnel=Tunnel.build("www.us.apache.org",80,"localhost",PORT);
+  try {
+    IOUtils.copyLarge((InputStream)new URL("http://localhost:" + tunnel.getPort() + "/dist//httpcomponents/httpclient/binary/httpcomponents-client-4.5.1-bin.tar.gz").getContent(new Class[]{InputStream.class}),new FileOutputStream(File.createTempFile("httpcomponents-client-4.5.1-bin","tar.gz")));
+  }
+  finally {
+    tunnel.close();
+  }
+}

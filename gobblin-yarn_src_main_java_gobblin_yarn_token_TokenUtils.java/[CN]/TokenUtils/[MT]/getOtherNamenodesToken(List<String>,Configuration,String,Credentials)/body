@@ -1,0 +1,9 @@
+{
+  LOG.info(OTHER_NAMENODES + ": " + otherNamenodes);
+  Path[] ps=new Path[otherNamenodes.size()];
+  for (int i=0; i < ps.length; i++) {
+    ps[i]=new Path(otherNamenodes.get(i).trim());
+  }
+  TokenCache.obtainTokensForNamenodes(cred,ps,conf);
+  LOG.info("Successfully fetched tokens for: " + otherNamenodes);
+}

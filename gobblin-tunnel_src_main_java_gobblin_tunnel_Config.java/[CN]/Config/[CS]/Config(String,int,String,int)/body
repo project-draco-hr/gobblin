@@ -1,0 +1,6 @@
+{
+  this.remoteHost=remoteHost;
+  this.remotePort=remotePort;
+  this.proxyHost=proxyHost;
+  this.proxyPort=proxyPort;
+}

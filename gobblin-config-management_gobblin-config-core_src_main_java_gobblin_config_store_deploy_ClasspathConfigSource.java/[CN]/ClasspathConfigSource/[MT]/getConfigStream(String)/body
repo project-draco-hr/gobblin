@@ -1,0 +1,3 @@
+{
+  return ClasspathConfigSource.class.getClassLoader().getResourceAsStream(configPath);
+}

@@ -1,0 +1,7 @@
+{
+  super(state);
+  GenericObjectPoolConfig config=new GenericObjectPoolConfig();
+  config.setMaxTotal(this.props.getNumThreads());
+  config.setMaxIdle(this.props.getNumThreads());
+  this.clientPool=HiveMetastoreClientPool.get(this.props.getProperties(),metastoreURI);
+}

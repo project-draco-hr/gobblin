@@ -1,0 +1,23 @@
+{
+  List<CopyEntity> copyableFiles=Lists.newArrayList();
+  if (HiveUtils.isPartitioned(this.dataset.table)) {
+    for (    Map.Entry<List<String>,Partition> partitionEntry : sourcePartitions.entrySet()) {
+      try {
+        copyableFiles.addAll(new PartitionCopy(partitionEntry.getValue()).getCopyEntities());
+      }
+ catch (      IOException ioe) {
+        log.error("Could not generate work units to copy partition " + partitionEntry.getValue().getCompleteName(),ioe);
+      }
+      targetPartitions.remove(partitionEntry.getKey());
+    }
+    String deregisterFileSet="deregister";
+    int priority=1;
+    for (    Map.Entry<List<String>,Partition> partitionEntry : targetPartitions.entrySet()) {
+      priority=addDeregisterSteps(copyableFiles,deregisterFileSet,priority,this.targetTable,partitionEntry.getValue());
+    }
+  }
+ else {
+    copyableFiles.addAll(getCopyEntitiesForUnpartitionedTable());
+  }
+  return copyableFiles;
+}

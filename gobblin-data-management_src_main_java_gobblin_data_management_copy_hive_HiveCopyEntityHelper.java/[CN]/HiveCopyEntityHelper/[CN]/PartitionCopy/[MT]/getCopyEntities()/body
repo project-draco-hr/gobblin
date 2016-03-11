@@ -1,0 +1,44 @@
+{
+  log.info("Getting copy entities for partition " + this.partition.getCompleteName());
+  int stepPriority=0;
+  String fileSet=gson.toJson(this.partition.getValues());
+  List<CopyEntity> copyEntities=Lists.newArrayList();
+  stepPriority=addSharedSteps(copyEntities,fileSet,stepPriority);
+  Optional<Partition> existingTargetPartition=Optional.fromNullable(targetPartitions.get(partition.getValues()));
+  Partition targetPartition;
+  if (existingTargetPartition.isPresent()) {
+    targetPartitions.remove(partition.getValues());
+    targetPartition=existingTargetPartition.get();
+    try {
+      checkPartitionCompatibility(partition,existingTargetPartition.get());
+    }
+ catch (    IOException ioe) {
+      if (existingEntityPolicy != ExistingEntityPolicy.REPLACE_PARTITIONS) {
+        log.error("Source and target partitions are not compatible. Aborting copy of partition " + this.partition);
+        return Lists.newArrayList();
+      }
+      log.warn("Source and target partitions are not compatible. Will override target partition.");
+      stepPriority=addDeregisterSteps(copyEntities,fileSet,stepPriority,targetTable,existingTargetPartition.get());
+      existingTargetPartition=Optional.absent();
+    }
+  }
+ else {
+    Path targetPath=getTargetLocation(dataset.fs,targetFs,this.partition.getDataLocation(),Optional.of(this.partition));
+    targetPartition=getTargetPartition(this.partition,targetPath);
+    HiveSpec partitionHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(targetTable.getTTable())).withPartition(Optional.of(HiveMetaStoreUtils.getHivePartition(targetPartition.getTPartition()))).build();
+    HiveRegisterStep register=new HiveRegisterStep(targetURI,partitionHiveSpec,hiveRegProps);
+    copyEntities.add(new PostPublishStep(fileSet,Maps.<String,Object>newHashMap(),register,stepPriority++));
+  }
+  LocationDescriptor sourceLocation=LocationDescriptor.forPartition(this.partition,dataset.fs);
+  LocationDescriptor desiredTargetLocation=LocationDescriptor.forPartition(targetPartition,targetFs);
+  Optional<LocationDescriptor> existingTargetLocation=existingTargetPartition.isPresent() ? Optional.of(LocationDescriptor.forPartition(existingTargetPartition.get(),targetFs)) : Optional.<LocationDescriptor>absent();
+  DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent());
+  if (diffPathSet.pathsToDelete.size() > 0) {
+    DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,dataset.properties);
+    copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
+  }
+  for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,configuration,Optional.of(partition))) {
+    copyEntities.add(builder.fileSet(fileSet).build());
+  }
+  return copyEntities;
+}

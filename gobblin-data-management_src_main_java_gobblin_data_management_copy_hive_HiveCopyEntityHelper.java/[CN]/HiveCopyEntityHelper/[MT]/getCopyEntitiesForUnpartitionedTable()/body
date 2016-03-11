@@ -1,0 +1,16 @@
+{
+  int stepPriority=0;
+  String fileSet=this.dataset.table.getTableName();
+  List<CopyEntity> copyEntities=Lists.newArrayList();
+  stepPriority=addSharedSteps(copyEntities,fileSet,stepPriority);
+  LocationDescriptor sourceLocation=LocationDescriptor.forTable(this.dataset.table,this.dataset.fs);
+  LocationDescriptor desiredTargetLocation=LocationDescriptor.forTable(this.targetTable,this.targetFs);
+  Optional<LocationDescriptor> existingTargetLocation=this.existingTargetTable.isPresent() ? Optional.of(LocationDescriptor.forTable(this.existingTargetTable.get(),this.targetFs)) : Optional.<LocationDescriptor>absent();
+  DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent());
+  DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,this.dataset.properties);
+  copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
+  for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,configuration,Optional.<Partition>absent())) {
+    copyEntities.add(builder.build());
+  }
+  return copyEntities;
+}

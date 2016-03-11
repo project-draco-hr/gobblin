@@ -1,0 +1,3 @@
+{
+  return Integer.parseInt(properties.getProperty(ConfigurationKeys.REST_SERVER_PORT_KEY,ConfigurationKeys.DEFAULT_REST_SERVER_PORT));
+}

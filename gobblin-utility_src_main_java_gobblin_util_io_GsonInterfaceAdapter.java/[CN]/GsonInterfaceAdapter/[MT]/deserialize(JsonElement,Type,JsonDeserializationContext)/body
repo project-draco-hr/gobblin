@@ -1,7 +1,0 @@
-{
-  JsonObject wrapper=(JsonObject)elem;
-  JsonElement typeName=get(wrapper,OBJECT_TYPE);
-  JsonElement data=get(wrapper,OBJECT_DATA);
-  Type actualType=typeForName(typeName);
-  return context.deserialize(data,actualType);
-}

@@ -1,0 +1,6 @@
+{
+  if (!this.clients.containsKey(name)) {
+    throw new IOException("There is no client with name " + name);
+  }
+  return this.clients.get(name).get();
+}

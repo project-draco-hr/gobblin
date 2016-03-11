@@ -1,0 +1,4 @@
+{
+  this.retention=parseDuration(duration);
+  log.info(String.format("%s will delete dataset versions older than %s.",TimeBasedRetentionPolicy.class.getName(),duration));
+}

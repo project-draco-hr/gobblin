@@ -1,0 +1,8 @@
+{
+  return ImmutableList.copyOf(Iterables.transform(this.scheduler.getScheduledTasks(),new Function<LogCopyTask,Path>(){
+    @Override public Path apply(    LogCopyTask input){
+      return input.getKey();
+    }
+  }
+));
+}

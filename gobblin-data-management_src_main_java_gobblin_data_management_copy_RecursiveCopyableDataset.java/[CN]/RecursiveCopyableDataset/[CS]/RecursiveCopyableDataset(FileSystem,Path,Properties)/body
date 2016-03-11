@@ -1,6 +1,0 @@
-{
-  this.rootPath=PathUtils.getPathWithoutSchemeAndAuthority(rootPath);
-  this.fs=fs;
-  this.pathFilter=DatasetUtils.instantiatePathFilter(properties);
-  this.copyableFileFilter=DatasetUtils.instantiateCopyableFileFilter(properties);
-}

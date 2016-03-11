@@ -1,0 +1,3 @@
+String keytabUser
+String keytabLocation
+String metastoreUri

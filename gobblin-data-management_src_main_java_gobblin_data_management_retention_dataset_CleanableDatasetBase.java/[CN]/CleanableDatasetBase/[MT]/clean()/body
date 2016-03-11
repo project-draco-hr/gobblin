@@ -1,4 +1,8 @@
 {
+  if (this.isDatasetBlacklisted) {
+    log.info("Dataset blacklisted. Cleanup skipped for " + datasetRoot());
+    return;
+  }
   RetentionPolicy<T> retentionPolicy=getRetentionPolicy();
   VersionFinder<? extends T> versionFinder=getVersionFinder();
   if (!retentionPolicy.versionClass().isAssignableFrom(versionFinder.versionClass())) {
@@ -12,33 +16,5 @@
   }
   Collections.sort(versions,Collections.reverseOrder());
   Collection<T> deletableVersions=getRetentionPolicy().listDeletableVersions(versions);
-  if (deletableVersions.isEmpty()) {
-    this.log.warn("No deletable dataset version can be found. Ignoring.");
-    return;
-  }
-  Set<Path> possiblyEmptyDirectories=new HashSet<Path>();
-  for (  DatasetVersion versionToDelete : deletableVersions) {
-    this.log.info("Deleting dataset version " + versionToDelete);
-    Set<Path> pathsToDelete=versionToDelete.getPathsToDelete();
-    this.log.info("Deleting paths: " + Arrays.toString(pathsToDelete.toArray()));
-    boolean deletedAllPaths=true;
-    for (    Path path : pathsToDelete) {
-      boolean successfullyDeleted=this.deleteAsOwner ? this.trash.moveToTrashAsOwner(path) : this.trash.moveToTrash(path);
-      if (successfullyDeleted) {
-        possiblyEmptyDirectories.add(path.getParent());
-      }
- else {
-        this.log.error("Failed to delete path " + path + " in dataset version "+ versionToDelete);
-        deletedAllPaths=false;
-      }
-    }
-    if (!deletedAllPaths) {
-      this.log.error("Failed to delete some paths in dataset version " + versionToDelete);
-    }
-  }
-  if (this.deleteEmptyDirectories) {
-    for (    Path parentDirectory : possiblyEmptyDirectories) {
-      deleteEmptyParentDirectories(datasetRoot(),parentDirectory);
-    }
-  }
+  cleanImpl(deletableVersions);
 }

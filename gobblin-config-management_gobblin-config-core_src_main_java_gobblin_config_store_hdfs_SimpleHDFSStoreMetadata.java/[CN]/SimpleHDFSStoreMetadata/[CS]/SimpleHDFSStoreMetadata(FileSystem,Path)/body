@@ -1,0 +1,4 @@
+{
+  this.storeMetadataFilePath=new Path(configStoreDir,CONFIG_STORE_METADATA_FILENAME);
+  this.fs=fs;
+}

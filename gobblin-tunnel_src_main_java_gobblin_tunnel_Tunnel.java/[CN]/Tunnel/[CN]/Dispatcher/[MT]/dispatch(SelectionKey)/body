@@ -1,0 +1,9 @@
+{
+  Callable<?> attachment=(Callable<?>)selectionKey.attachment();
+  try {
+    attachment.call();
+  }
+ catch (  Exception e) {
+    LOG.error("exception handling event on {}",selectionKey.channel(),e);
+  }
+}

@@ -1,0 +1,5 @@
+{
+  if (!createTableIfNotExists(table)) {
+    alterTable(table);
+  }
+}

@@ -1,7 +1,7 @@
 {
   CopyableDataset copyableDataset=new TestCopyableDataset();
   Path target=new Path("/target");
-  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset,target);
+  CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(copyableDataset);
   String serialized=metadata.serialize();
   CopyableDatasetMetadata deserialized=CopyableDatasetMetadata.deserialize(serialized);
   CopyableDatasetMetadata deserialized2=CopyableDatasetMetadata.deserialize(serialized);

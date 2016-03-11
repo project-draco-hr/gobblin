@@ -1,4 +1,7 @@
 {
+  if (!this.actualProcessedCopyableFile.isPresent()) {
+    return;
+  }
   CopyableFile copyableFile=this.actualProcessedCopyableFile.get();
   Path stagingFilePath=getStagingFilePath(copyableFile);
   Path outputFilePath=getOutputFilePath(copyableFile,this.outputDir,copyableFile.getDatasetAndPartition(this.copyableDatasetMetadata));

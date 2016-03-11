@@ -1,3 +1,0 @@
-{
-  return new Path(getPartitionOutputRoot(outputDir,datasetAndPartition),PathUtils.withoutLeadingSeparator(file.getDestination()));
-}

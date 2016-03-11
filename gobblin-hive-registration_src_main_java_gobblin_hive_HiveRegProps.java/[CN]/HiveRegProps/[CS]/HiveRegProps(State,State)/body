@@ -1,4 +1,0 @@
-{
-  super(props);
-  this.tableProps=tableProps;
-}

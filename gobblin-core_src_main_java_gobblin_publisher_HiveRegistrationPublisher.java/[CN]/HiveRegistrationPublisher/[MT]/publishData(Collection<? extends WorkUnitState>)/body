@@ -2,6 +2,8 @@
   Set<String> pathsToRegister=getUniquePathsToRegister(states);
   log.info("Number of paths to be registered in Hive: " + pathsToRegister.size());
   for (  String path : pathsToRegister) {
-    this.hiveRegister.register(this.policy.getHiveSpec(new Path(path)));
+    for (    HiveSpec spec : this.policy.getHiveSpecs(new Path(path))) {
+      this.hiveRegister.register(spec);
+    }
   }
 }

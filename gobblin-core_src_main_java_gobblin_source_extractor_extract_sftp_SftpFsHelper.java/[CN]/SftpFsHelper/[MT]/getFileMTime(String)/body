@@ -1,0 +1,9 @@
+{
+  try {
+    ChannelSftp channelSftp=getSftpChannel();
+    return channelSftp.lstat(filePath).getMTime();
+  }
+ catch (  SftpException e) {
+    throw new FileBasedHelperException(String.format("Failed to get modified timestamp for file at path %s due to error %s",filePath,e.getMessage()),e);
+  }
+}

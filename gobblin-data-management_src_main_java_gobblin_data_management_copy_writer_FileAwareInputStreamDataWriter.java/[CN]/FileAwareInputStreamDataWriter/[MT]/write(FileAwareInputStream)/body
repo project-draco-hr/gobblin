@@ -1,6 +1,9 @@
 {
   CopyableFile copyableFile=fileAwareInputStream.getFile();
   Path stagingFile=getStagingFilePath(copyableFile);
+  if (this.actualProcessedCopyableFile.isPresent()) {
+    throw new IOException(this.getClass().getCanonicalName() + " can only process one file.");
+  }
   this.actualProcessedCopyableFile=Optional.of(copyableFile);
   this.fs.mkdirs(stagingFile.getParent());
   writeImpl(fileAwareInputStream.getInputStream(),stagingFile,copyableFile);

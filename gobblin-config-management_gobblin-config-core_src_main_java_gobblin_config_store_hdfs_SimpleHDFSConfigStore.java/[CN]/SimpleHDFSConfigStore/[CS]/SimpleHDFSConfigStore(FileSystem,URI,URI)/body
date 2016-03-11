@@ -9,4 +9,5 @@
   this.physicalStoreRoot=physicalStoreRoot;
   this.logicalStoreRoot=logicalStoreRoot;
   this.versions=CacheBuilder.newBuilder().build();
+  this.storeMetadata=new SimpleHDFSStoreMetadata(fs,new Path(new Path(this.physicalStoreRoot),CONFIG_STORE_NAME));
 }

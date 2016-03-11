@@ -1,8 +1,0 @@
-{
-  try {
-    return Class.forName(typeElem.getAsString());
-  }
- catch (  ClassNotFoundException e) {
-    throw new JsonParseException(e);
-  }
-}

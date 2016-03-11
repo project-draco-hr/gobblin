@@ -1,0 +1,2 @@
+List<VersionSelectionPolicy<FileSystemDatasetVersion>> selectionPolicies
+CombineOperation combineOperation

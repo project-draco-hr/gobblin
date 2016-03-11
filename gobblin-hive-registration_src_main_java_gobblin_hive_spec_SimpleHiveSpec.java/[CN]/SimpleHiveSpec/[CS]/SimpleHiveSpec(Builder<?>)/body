@@ -1,7 +1,8 @@
 {
   this.path=builder.path;
-  this.dbName=builder.dbName;
-  this.tableName=builder.tableName;
-  this.partition=builder.partition;
-  this.sd=builder.sd;
+  this.table=builder.table;
+  this.partition=builder.partition != null ? builder.partition : Optional.<HivePartition>absent();
+  this.preActivities=builder.preActivities;
+  this.postActivities=builder.postActivities;
+  this.predicates=builder.predicates;
 }

@@ -1,0 +1,24 @@
+{
+  int lastBytes=0;
+  while ((lastBytes=proxy.read(buffer)) > 0) {
+    totalBytesRead+=lastBytes;
+  }
+  if (totalBytesRead >= OK_REPLY.limit()) {
+    byte[] temp=buffer.array();
+    buffer.flip();
+    if (OK_REPLIES.contains(ByteBuffer.wrap(temp,0,OK_REPLY.limit()))) {
+      for (int i=OK_REPLY.limit(); i <= (buffer.limit() - 4); i++) {
+        if (((temp[i] == '\n') && (temp[i + 1] == '\n')) || ((temp[i + 1] == '\n') && (temp[i + 2] == '\n')) || ((temp[i + 2] == '\n') && (temp[i + 3] == '\n'))|| ((temp[i] == '\r') && (temp[i + 1] == '\n') && (temp[i + 2] == '\r')&& (temp[i + 3] == '\n'))) {
+          state=null;
+          buffer.position(i + 4);
+          new ReadWriteHandler(proxy,buffer,client,selector);
+          return;
+        }
+      }
+    }
+ else {
+      LOG.error("Got non-200 response from proxy: [" + new String(temp,0,OK_REPLY.limit(),ConfigurationKeys.DEFAULT_CHARSET_ENCODING) + "], closing connection.");
+      closeChannels();
+    }
+  }
+}

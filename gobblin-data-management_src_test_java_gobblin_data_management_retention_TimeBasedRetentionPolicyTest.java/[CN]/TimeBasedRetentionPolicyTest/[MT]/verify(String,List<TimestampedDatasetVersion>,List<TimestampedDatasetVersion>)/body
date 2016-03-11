@@ -1,0 +1,6 @@
+{
+  @SuppressWarnings("unchecked") List<TimestampedDatasetVersion> allVersions=ListUtils.union(toBeRetained,toBeDeleted);
+  List<TimestampedDatasetVersion> deletableVersions=Lists.newArrayList(new TimeBasedRetentionPolicy(duration).listDeletableVersions(allVersions));
+  assertThat(deletableVersions,Matchers.containsInAnyOrder(toBeDeleted.toArray()));
+  assertThat(deletableVersions,Matchers.not(Matchers.containsInAnyOrder(toBeRetained.toArray())));
+}

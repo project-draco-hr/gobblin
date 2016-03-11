@@ -1,0 +1,9 @@
+String driver
+String connectionUrl
+String user
+String password
+int numconn
+int timeout
+String type
+String proxyHost
+int proxyPort

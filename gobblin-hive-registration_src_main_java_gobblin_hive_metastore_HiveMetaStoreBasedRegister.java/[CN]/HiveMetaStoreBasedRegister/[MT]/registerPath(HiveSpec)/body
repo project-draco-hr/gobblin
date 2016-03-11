@@ -1,0 +1,14 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    Table table=HiveMetaStoreUtils.getTable(spec.getTable());
+    createDbIfNotExists(client.get(),table.getDbName());
+    Optional<HivePartition> partition=spec.getPartition();
+    createOrAlterTable(client.get(),table);
+    if (partition.isPresent()) {
+      addOrAlterPartition(client.get(),table,HiveMetaStoreUtils.getPartition(partition.get()),spec.getPath());
+    }
+  }
+ catch (  TException e) {
+    throw new IOException(e);
+  }
+}

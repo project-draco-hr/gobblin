@@ -1,3 +1,0 @@
-{
-  return GSON.fromJson(serialized,CopyableFile.class);
-}

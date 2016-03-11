@@ -1,0 +1,6 @@
+{
+  Path targetLocation=getTargetLocation(this.dataset.fs,this.targetFs,sourcePartition.getDataLocation(),Optional.<Partition>absent());
+  if (!targetLocation.equals(targetPartition.getDataLocation())) {
+    throw new IOException(String.format("Computed target location %s and already registered target location %s do not agree.",targetLocation,targetPartition.getDataLocation()));
+  }
+}

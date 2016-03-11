@@ -1,0 +1,3 @@
+Properties properties
+List<Tag<String>> tags
+Optional<CompactorListener> compactorListener

@@ -1,0 +1,12 @@
+{
+  if (value != null) {
+    JsonObject jsonObject=new JsonObject();
+    jsonObject.add(OBJECT_TYPE,new JsonPrimitive(value.getClass().getName()));
+    TypeAdapter<S> delegate=(TypeAdapter<S>)gson.getDelegateAdapter(this.factory,TypeToken.get(value.getClass()));
+    jsonObject.add(OBJECT_DATA,delegate.toJsonTree(value));
+    Streams.write(jsonObject,out);
+  }
+ else {
+    out.nullValue();
+  }
+}

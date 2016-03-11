@@ -1,0 +1,5 @@
+{
+  for (  CompactorListener compactorListener : this.listeners) {
+    compactorListener.onDatasetCompactionCompletion(dataset);
+  }
+}

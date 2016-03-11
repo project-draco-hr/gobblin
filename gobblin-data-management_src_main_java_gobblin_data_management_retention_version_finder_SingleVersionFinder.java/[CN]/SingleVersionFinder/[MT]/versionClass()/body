@@ -1,3 +1,3 @@
 {
-  return StringDatasetVersion.class;
+  return FileStatusDatasetVersion.class;
 }

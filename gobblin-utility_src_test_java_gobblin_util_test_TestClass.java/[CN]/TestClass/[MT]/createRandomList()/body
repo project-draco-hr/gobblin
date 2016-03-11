@@ -1,0 +1,8 @@
+{
+  List<String> list=Lists.newArrayList();
+  int size=random.nextInt(5);
+  for (int i=0; i < size; i++) {
+    list.add("value" + random.nextInt());
+  }
+  return list;
+}

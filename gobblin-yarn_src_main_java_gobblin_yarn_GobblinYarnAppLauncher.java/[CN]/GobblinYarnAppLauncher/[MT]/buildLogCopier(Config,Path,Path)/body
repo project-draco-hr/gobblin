@@ -1,0 +1,9 @@
+{
+  FileSystem rawLocalFs=this.closer.register(new RawLocalFileSystem());
+  rawLocalFs.initialize(URI.create(ConfigurationKeys.LOCAL_FS_URI),new Configuration());
+  LogCopier.Builder builder=LogCopier.newBuilder().useSrcFileSystem(this.fs).useDestFileSystem(rawLocalFs).readFrom(getHdfsLogDir(appWorkDir)).writeTo(sinkLogDir).acceptsLogFileExtensions(ImmutableSet.of(ApplicationConstants.STDOUT,ApplicationConstants.STDERR));
+  if (config.hasPath(GobblinYarnConfigurationKeys.LOG_COPIER_SCHEDULER)) {
+    builder.useScheduler(config.getString(GobblinYarnConfigurationKeys.LOG_COPIER_SCHEDULER));
+  }
+  return builder.build();
+}

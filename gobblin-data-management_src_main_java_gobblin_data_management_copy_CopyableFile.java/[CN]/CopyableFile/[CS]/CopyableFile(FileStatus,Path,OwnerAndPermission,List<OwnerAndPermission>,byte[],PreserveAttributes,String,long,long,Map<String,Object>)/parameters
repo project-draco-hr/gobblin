@@ -1,0 +1,10 @@
+FileStatus origin
+Path destination
+OwnerAndPermission destinationOwnerAndPermission
+List<OwnerAndPermission> ancestorsOwnerAndPermission
+byte[] checksum
+PreserveAttributes preserve
+String fileSet
+long originTimestamp
+long upstreamTimestamp
+Map<String,Object> additionalMetadata

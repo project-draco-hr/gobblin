@@ -17,7 +17,7 @@
     previousOffsetNotFound=true;
   }
   if (failedToGetKafkaOffsets) {
-    this.failToGetOffsetCount++;
+    this.failToGetOffsetCount.incrementAndGet();
     LOG.warn(String.format("Failed to retrieve earliest and/or latest offset for partition %s. This partition will be skipped.",partition));
     return previousOffsetNotFound ? null : createEmptyWorkUnit(partition,previousOffset,topicSpecificState);
   }
@@ -46,10 +46,10 @@
     }
  catch (    StartOffsetOutOfRangeException e) {
       if (offsets.getStartOffset() <= offsets.getLatestOffset()) {
-        this.offsetTooEarlyCount++;
+        this.offsetTooEarlyCount.incrementAndGet();
       }
  else {
-        this.offsetTooLateCount++;
+        this.offsetTooLateCount.incrementAndGet();
       }
       String offsetOutOfRangeMsg=String.format("Start offset for partition %s is out of range. Start offset = %d, earliest offset = %d, latest offset = %d.",partition,offsets.getStartOffset(),offsets.getEarliestOffset(),offsets.getLatestOffset());
       String offsetOption=state.getProp(RESET_ON_OFFSET_OUT_OF_RANGE,DEFAULT_RESET_ON_OFFSET_OUT_OF_RANGE).toLowerCase();

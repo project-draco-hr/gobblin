@@ -1,0 +1,4 @@
+{
+  super(fs);
+  this.realVersionFinder=new gobblin.data.management.version.finder.GlobModTimeDatasetVersionFinder(fs,globPattern);
+}

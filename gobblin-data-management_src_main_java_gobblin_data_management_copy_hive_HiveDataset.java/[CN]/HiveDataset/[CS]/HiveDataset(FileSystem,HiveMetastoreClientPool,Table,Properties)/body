@@ -1,0 +1,9 @@
+{
+  this.fs=fs;
+  this.clientPool=clientPool;
+  this.table=table;
+  this.properties=properties;
+  this.tableRootPath=PathUtils.isGlob(this.table.getDataLocation()) ? Optional.<Path>absent() : Optional.of(this.table.getDataLocation());
+  this.tableIdentifier=this.table.getDbName() + "." + this.table.getTableName();
+  log.info("Created Hive dataset for table " + tableIdentifier);
+}

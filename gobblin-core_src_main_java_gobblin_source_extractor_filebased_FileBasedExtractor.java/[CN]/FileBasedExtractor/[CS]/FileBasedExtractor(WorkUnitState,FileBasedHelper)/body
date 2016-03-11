@@ -17,5 +17,16 @@
  catch (  FileBasedHelperException e) {
     throw new RuntimeException(e);
   }
+  if (workUnitState.contains(ConfigurationKeys.SOURCE_FILEBASED_OPTIONAL_DOWNLOADER_CLASS)) {
+    try {
+      this.fileDownloader=(FileDownloader<D>)ConstructorUtils.invokeConstructor(Class.forName(workUnitState.getProp(ConfigurationKeys.SOURCE_FILEBASED_OPTIONAL_DOWNLOADER_CLASS)),this);
+    }
+ catch (    NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+      throw new RuntimeException(e);
+    }
+  }
+ else {
+    this.fileDownloader=new SingleFileDownloader<D>(this);
+  }
   this.counters.initialize(getMetricContext(),CounterNames.class,this.getClass());
 }

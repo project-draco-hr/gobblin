@@ -1,0 +1,13 @@
+{
+  try {
+    return CONFIG_CLIENTS_CACHE.get(policy,new Callable<ConfigClient>(){
+      @Override public ConfigClient call() throws Exception {
+        return ConfigClient.createConfigClient(policy);
+      }
+    }
+);
+  }
+ catch (  ExecutionException e) {
+    throw new RuntimeException("Failed to get Config client",e);
+  }
+}

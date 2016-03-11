@@ -1,0 +1,11 @@
+{
+  try {
+    Table targetTable=originTable.copy();
+    targetTable.setDbName(this.targetDatabase);
+    targetTable.setDataLocation(targetLocation);
+    return targetTable;
+  }
+ catch (  HiveException he) {
+    throw new IOException(he);
+  }
+}

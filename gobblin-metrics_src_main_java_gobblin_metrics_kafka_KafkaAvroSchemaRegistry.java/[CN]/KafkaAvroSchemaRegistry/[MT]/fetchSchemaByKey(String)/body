@@ -3,8 +3,9 @@
   GetMethod get=new GetMethod(schemaUrl);
   int statusCode;
   String schemaString;
+  HttpClient httpClient=this.borrowClient();
   try {
-    statusCode=this.httpClient.executeMethod(get);
+    statusCode=httpClient.executeMethod(get);
     schemaString=get.getResponseBodyAsString();
   }
  catch (  IOException e) {
@@ -12,6 +13,7 @@
   }
  finally {
     get.releaseConnection();
+    this.httpClientPool.returnObject(httpClient);
   }
   if (statusCode != HttpStatus.SC_OK) {
     throw new SchemaRegistryException(String.format("Schema with key %s cannot be retrieved, statusCode = %d",key,statusCode));

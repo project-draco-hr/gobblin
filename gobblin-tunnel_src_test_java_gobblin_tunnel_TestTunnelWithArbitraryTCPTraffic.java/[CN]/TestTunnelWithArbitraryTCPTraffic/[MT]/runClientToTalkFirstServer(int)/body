@@ -1,0 +1,16 @@
+{
+  SocketChannel client=SocketChannel.open();
+  client.connect(new InetSocketAddress("localhost",tunnelPort));
+  String response0=readFromSocket(client);
+  LOG.info(response0);
+  client.write(ByteBuffer.wrap("Knock\n".getBytes()));
+  String response1=readFromSocket(client);
+  LOG.info(response1);
+  client.write(ByteBuffer.wrap("Hello\n".getBytes()));
+  String response2=readFromSocket(client);
+  LOG.info(response2);
+  client.close();
+  assertEquals(response0,"Hello\n");
+  assertEquals(response1,"Knock Knock\n");
+  assertEquals(response2,"Hello Hello\n");
+}

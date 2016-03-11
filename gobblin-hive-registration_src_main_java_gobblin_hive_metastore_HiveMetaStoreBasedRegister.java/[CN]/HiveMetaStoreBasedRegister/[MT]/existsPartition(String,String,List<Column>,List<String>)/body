@@ -1,0 +1,12 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(dbName,tableName)){
+    client.get().getPartition(tableName,dbName,partitionValues);
+    return true;
+  }
+ catch (  NoSuchObjectException e) {
+    return false;
+  }
+catch (  TException e) {
+    throw new IOException(String.format("Unable to check existence of partition %s in table %s in db %s",partitionValues,tableName,dbName),e);
+  }
+}

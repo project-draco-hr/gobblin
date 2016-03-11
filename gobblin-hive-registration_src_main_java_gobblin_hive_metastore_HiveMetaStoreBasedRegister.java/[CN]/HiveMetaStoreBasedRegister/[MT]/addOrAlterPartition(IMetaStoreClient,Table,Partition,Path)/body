@@ -1,0 +1,27 @@
+{
+  Preconditions.checkArgument(table.getPartitionKeysSize() == partition.getValues().size(),String.format("Partition key size is %s but partition value size is %s",table.getPartitionKeys().size(),partition.getValues().size()));
+  try (HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName())){
+    try {
+      Partition existingPartition=client.getPartition(table.getTableName(),table.getDbName(),partition.getValues());
+      partition.setCreateTime(existingPartition.getCreateTime());
+      partition.setLastAccessTime(existingPartition.getLastAccessTime());
+      if (needToUpdatePartition(existingPartition,partition)) {
+        client.alter_partition(table.getDbName(),table.getTableName(),partition);
+        log.info(String.format("Updated partition %s in table %s with location %s",partition,table.getTableName(),partition.getSd().getLocation()));
+      }
+ else {
+        log.info(String.format("Partition %s in table %s with location %s already exists and no need to update",partition,table.getTableName(),partition.getSd().getLocation()));
+      }
+    }
+ catch (    NoSuchObjectException e) {
+      client.add_partition(partition);
+      log.info(String.format("Added partition %s to table %s with location %s",partition,table.getTableName(),partition.getSd().getLocation()));
+    }
+  }
+ catch (  AlreadyExistsException e) {
+  }
+catch (  TException e) {
+    log.error(String.format("Unable to add partition %s to table %s with location %s",partition,table.getTableName(),partition.getSd().getLocation()),e);
+    throw e;
+  }
+}

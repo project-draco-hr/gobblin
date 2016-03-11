@@ -1,11 +1,11 @@
 {
-  FileSet.Builder<CopyableFile> partitionBuilder=new FileSet.Builder<>(fileSetName,new DummyDataset(new Path("/path")));
+  FileSet.Builder<CopyEntity> partitionBuilder=new FileSet.Builder<>(fileSetName,new DummyDataset(new Path("/path")));
   List<WorkUnit> workUnits=Lists.newArrayList();
   for (int i=0; i < fileNumber; i++) {
-    CopyableFile cf=createCopyableFile(i);
+    CopyEntity cf=createCopyableFile(i);
     partitionBuilder.add(cf);
     WorkUnit workUnit=new WorkUnit();
-    CopySource.serializeCopyableFile(workUnit,cf);
+    CopySource.serializeCopyEntity(workUnit,cf);
     workUnits.add(workUnit);
   }
   return list.addFileSet(partitionBuilder.build(),workUnits);

@@ -1,0 +1,3 @@
+List<CopyEntity> copyEntities
+String fileSet
+int initialPriority

@@ -1,0 +1,32 @@
+{
+  SelectionKey proxyKey=proxy.keyFor(selector);
+  SelectionKey clientKey=client.keyFor(selector);
+  SocketChannel readChannel=null;
+  SocketChannel writeChannel=null;
+  SelectionKey readKey=null;
+  if (selector.selectedKeys().contains(proxyKey) && proxyKey.isReadable()) {
+    readChannel=proxy;
+    writeChannel=client;
+    readKey=proxyKey;
+  }
+ else   if (selector.selectedKeys().contains(clientKey) && clientKey.isReadable()) {
+    readChannel=client;
+    writeChannel=proxy;
+    readKey=clientKey;
+  }
+  if (readKey != null) {
+    int lastRead, totalRead=0;
+    while ((lastRead=readChannel.read(buffer)) > 0) {
+      totalRead+=lastRead;
+    }
+    LOG.debug("{} bytes read from {}",totalRead,readChannel == proxy ? "proxy" : "client");
+    if (totalRead > 0) {
+      readKey.cancel();
+      writeChannel.register(selector,SelectionKey.OP_WRITE,this);
+      state=HandlerState.WRITING;
+    }
+    if (lastRead == -1) {
+      readChannel.close();
+    }
+  }
+}
