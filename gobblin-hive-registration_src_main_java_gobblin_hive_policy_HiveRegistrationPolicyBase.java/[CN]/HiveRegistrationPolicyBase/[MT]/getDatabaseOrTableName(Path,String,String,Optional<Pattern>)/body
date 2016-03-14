@@ -9,12 +9,5 @@
  else {
     throw new IllegalStateException("Missing required property " + nameKey + " or "+ regexKey);
   }
-  name=name.toLowerCase();
-  if (this.sanitizeNameAllowed && !isNameValid(name)) {
-    name=sanitizeName(name);
-  }
-  if (isNameValid(name)) {
-    return name;
-  }
-  throw new IllegalStateException(name + " is not a valid Hive database or table name");
+  return sanitizeAndValidateName(name);
 }

@@ -1,0 +1,12 @@
+{
+  name=name.toLowerCase();
+  if (this.sanitizeNameAllowed && !isNameValid(name)) {
+    name=sanitizeName(name);
+  }
+  if (isNameValid(name)) {
+    return name;
+  }
+ else {
+    throw new IllegalStateException(name + " is not a valid Hive database or table name");
+  }
+}
