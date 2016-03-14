@@ -1,7 +1,7 @@
 {
-  Files.copy(new File(SUB_DIR2,"test21.PULL"),new File(SUB_DIR2,"test21.PULL.done"));
+  Files.copy(new File(this.subDir2,"test21.PULL"),new File(this.subDir2,"test21.PULL.done"));
   Properties properties=new Properties();
-  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,JOB_CONF_ROOT_DIR.getAbsolutePath());
+  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,this.jobConfigDir.getAbsolutePath());
   List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
   Assert.assertEquals(jobConfigs.size(),3);
   Properties jobProps1=getJobConfigForFile(jobConfigs,"test111.pull");
