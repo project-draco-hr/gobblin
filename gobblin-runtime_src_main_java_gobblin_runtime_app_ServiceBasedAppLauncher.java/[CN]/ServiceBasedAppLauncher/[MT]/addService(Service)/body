@@ -1,0 +1,6 @@
+{
+  if (this.hasStarted) {
+    throw new IllegalArgumentException("Cannot add a service while the application is running!");
+  }
+  this.services.add(service);
+}

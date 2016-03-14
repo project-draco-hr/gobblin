@@ -1,22 +1,24 @@
 {
+  Properties properties=ConfigUtils.configToProperties(config);
+  if (!properties.contains(ServiceBasedAppLauncher.APP_STOP_TIME_SECONDS)) {
+    properties.setProperty(ServiceBasedAppLauncher.APP_STOP_TIME_SECONDS,Long.toString(300));
+  }
+  this.applicationLauncher=new ServiceBasedAppLauncher(properties,applicationName);
   String applicationId=containerId.getApplicationAttemptId().getApplicationId().toString();
   String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
   this.helixManager=buildHelixManager(config,zkConnectionString);
   FileSystem fs=buildFileSystem(config);
   Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
-  List<Service> services=Lists.newArrayList();
-  if (isLogSourcePresent()) {
-    services.add(buildLogCopier(config,containerId,fs,appWorkDir));
+  GobblinYarnLogSource gobblinYarnLogSource=new GobblinYarnLogSource();
+  if (gobblinYarnLogSource.isLogSourcePresent()) {
+    this.applicationLauncher.addService(gobblinYarnLogSource.buildLogCopier(config,containerId,fs,appWorkDir));
   }
-  services.add(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
-  services.add(buildGobblinHelixJobScheduler(config,appWorkDir,getMetadataTags(applicationName,applicationId)));
-  services.add(buildJobConfigurationManager(config));
+  this.applicationLauncher.addService(buildYarnService(config,applicationName,applicationId,yarnConfiguration,fs));
+  this.applicationLauncher.addService(buildGobblinHelixJobScheduler(config,appWorkDir,getMetadataTags(applicationName,applicationId)));
+  this.applicationLauncher.addService(buildJobConfigurationManager(config));
   if (UserGroupInformation.isSecurityEnabled()) {
     LOGGER.info("Adding YarnContainerSecurityManager since security is enabled");
-    services.add(buildYarnContainerSecurityManager(config,fs));
+    this.applicationLauncher.addService(buildYarnContainerSecurityManager(config,fs));
   }
-  this.serviceManager=new ServiceManager(services);
-  this.metricRegistry=new MetricRegistry();
-  this.jmxReporter=JmxReporter.forRegistry(this.metricRegistry).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
 }

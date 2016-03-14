@@ -1,9 +1,6 @@
 {
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
-  if (this.jobContext.getJobMetricsOptional().isPresent()) {
-    this.jobContext.getJobMetricsOptional().get().startMetricReporting(this.jobProps);
-  }
   try {
     TimingEvent launchJobTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.FULL_JOB_EXECUTION);
     try {
@@ -116,7 +113,6 @@
   }
   finally {
     if (this.jobContext.getJobMetricsOptional().isPresent()) {
-      this.jobContext.getJobMetricsOptional().get().stopMetricsReporting();
       JobMetrics.remove(jobState);
     }
   }

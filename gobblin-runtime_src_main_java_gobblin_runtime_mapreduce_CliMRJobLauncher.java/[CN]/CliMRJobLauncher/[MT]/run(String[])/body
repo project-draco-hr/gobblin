@@ -1,10 +1,15 @@
 {
-  try (JobLauncher launcher=new MRJobLauncher(jobProperties,getConf())){
-    launcher.launchJob(null);
+  try {
+    start();
+    launchJob(null);
   }
- catch (  Exception e) {
-    LOG.error("Failed to launch the job!",e);
-    return 1;
+  finally {
+    try {
+      stop();
+    }
+  finally {
+      close();
+    }
   }
   return 0;
 }

@@ -4,7 +4,6 @@
   }
   this.stopInProgress=true;
   LOGGER.info("Stopping the Gobblin Yarn WorkUnit runner");
-  this.jmxReporter.stop();
   if (this.containerMetrics.isPresent()) {
     this.containerMetrics.get().stopMetricsReporting();
   }
