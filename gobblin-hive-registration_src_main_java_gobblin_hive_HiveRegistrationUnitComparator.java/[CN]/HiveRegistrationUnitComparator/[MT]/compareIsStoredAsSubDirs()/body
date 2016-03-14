@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    compare(this.existingUnit.getIsStoredAsSubDirs(),this.newUnit.getIsStoredAsSubDirs());
+  }
+  return (T)this;
+}

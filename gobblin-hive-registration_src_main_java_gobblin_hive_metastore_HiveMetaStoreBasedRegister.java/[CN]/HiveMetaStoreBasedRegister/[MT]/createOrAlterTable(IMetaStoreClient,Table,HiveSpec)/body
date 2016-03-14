@@ -1,0 +1,20 @@
+{
+  String dbName=table.getDbName();
+  String tableName=table.getTableName();
+  try {
+    if (client.tableExists(dbName,tableName)) {
+      HiveTable existingTable=HiveMetaStoreUtils.getHiveTable(client.getTable(dbName,tableName));
+      if (needToUpdateTable(existingTable,spec.getTable())) {
+        client.alter_table(dbName,tableName,table);
+        log.info(String.format("updated Hive table %s in db %s",tableName,dbName));
+      }
+    }
+ else {
+      client.createTable(table);
+      log.info(String.format("Created Hive table %s in db %s",tableName,dbName));
+    }
+  }
+ catch (  TException e) {
+    throw new IOException(String.format("Error in creating or altering Hive table %s in db %s",tableName,dbName),e);
+  }
+}

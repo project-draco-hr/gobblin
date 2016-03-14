@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    this.result|=(!new Path(existingUnit.getLocation().get()).toUri().getRawPath().equals(new Path(newUnit.getLocation().get()).toUri().getRawPath()));
+  }
+  return (T)this;
+}

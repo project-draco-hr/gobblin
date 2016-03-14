@@ -2,4 +2,5 @@
   super(state);
   this.hiveRegister=this.closer.register(HiveRegister.get(state));
   this.policy=HiveRegistrationPolicyBase.getPolicy(state);
+  this.hivePolicyExecutor=Executors.newFixedThreadPool(new HiveRegProps(state).getNumThreads(),ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("HivePolicyExecutor-%d")));
 }

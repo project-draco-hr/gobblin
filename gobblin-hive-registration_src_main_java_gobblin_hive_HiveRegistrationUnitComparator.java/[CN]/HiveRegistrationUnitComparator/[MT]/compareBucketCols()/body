@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    compare(this.existingUnit.getBucketColumns(),this.newUnit.getBucketColumns());
+  }
+  return (T)this;
+}

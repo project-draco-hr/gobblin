@@ -1,0 +1,12 @@
+{
+  super.populateTablePartitionFields(state);
+  this.owner=populateField(state,HiveConstants.OWNER,new TypeToken<String>(){
+  }
+);
+  this.tableType=populateField(state,HiveConstants.TABLE_TYPE,new TypeToken<String>(){
+  }
+);
+  this.retention=populateField(state,HiveConstants.RETENTION,new TypeToken<Long>(){
+  }
+);
+}

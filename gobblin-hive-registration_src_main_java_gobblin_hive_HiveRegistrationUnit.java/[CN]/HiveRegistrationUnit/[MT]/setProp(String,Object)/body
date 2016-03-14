@@ -1,4 +1,4 @@
 {
   this.props.setProp(key,value);
-  updateTablePartitionFields(key,value);
+  updateTablePartitionFields(this.props,key,value);
 }

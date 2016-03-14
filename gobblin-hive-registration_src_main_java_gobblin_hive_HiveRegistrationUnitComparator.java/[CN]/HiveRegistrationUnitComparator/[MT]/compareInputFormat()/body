@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    compare(this.existingUnit.getInputFormat(),this.newUnit.getInputFormat());
+  }
+  return (T)this;
+}

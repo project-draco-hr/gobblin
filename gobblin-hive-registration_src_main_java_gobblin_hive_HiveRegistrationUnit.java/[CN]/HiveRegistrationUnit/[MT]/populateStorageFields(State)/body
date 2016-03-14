@@ -1,0 +1,23 @@
+{
+  this.location=populateField(state,HiveConstants.LOCATION,new TypeToken<String>(){
+  }
+);
+  this.inputFormat=populateField(state,HiveConstants.INPUT_FORMAT,new TypeToken<String>(){
+  }
+);
+  this.outputFormat=populateField(state,HiveConstants.OUTPUT_FORMAT,new TypeToken<String>(){
+  }
+);
+  this.isCompressed=populateField(state,HiveConstants.COMPRESSED,new TypeToken<Boolean>(){
+  }
+);
+  this.numBuckets=populateField(state,HiveConstants.NUM_BUCKETS,new TypeToken<Integer>(){
+  }
+);
+  this.bucketColumns=populateField(state,HiveConstants.BUCKET_COLUMNS,new TypeToken<List<String>>(){
+  }
+);
+  this.isStoredAsSubDirs=populateField(state,HiveConstants.STORED_AS_SUB_DIRS,new TypeToken<Boolean>(){
+  }
+);
+}

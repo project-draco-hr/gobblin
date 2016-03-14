@@ -1,5 +1,0 @@
-{
-  for (  Lock lock : this.locks) {
-    lock.lock();
-  }
-}

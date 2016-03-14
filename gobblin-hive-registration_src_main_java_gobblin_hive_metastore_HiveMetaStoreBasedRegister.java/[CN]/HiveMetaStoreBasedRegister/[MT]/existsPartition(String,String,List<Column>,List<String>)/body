@@ -1,6 +1,6 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(dbName,tableName)){
-    client.get().getPartition(tableName,dbName,partitionValues);
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    client.get().getPartition(dbName,tableName,partitionValues);
     return true;
   }
  catch (  NoSuchObjectException e) {

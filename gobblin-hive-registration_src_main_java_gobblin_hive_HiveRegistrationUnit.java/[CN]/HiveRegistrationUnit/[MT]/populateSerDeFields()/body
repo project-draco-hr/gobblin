@@ -1,3 +1,0 @@
-{
-  this.serDeType=Optional.fromNullable(this.serDeProps.getProp(HiveConstants.SERDE_TYPE));
-}

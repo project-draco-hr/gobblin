@@ -1,0 +1,8 @@
+{
+  this.createTime=populateField(state,HiveConstants.CREATE_TIME,new TypeToken<Long>(){
+  }
+);
+  this.lastAccessTime=populateField(state,HiveConstants.LAST_ACCESS_TIME,new TypeToken<Long>(){
+  }
+);
+}

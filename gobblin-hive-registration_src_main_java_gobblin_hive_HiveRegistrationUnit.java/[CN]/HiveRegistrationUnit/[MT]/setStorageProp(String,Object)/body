@@ -1,4 +1,4 @@
 {
   this.storageProps.setProp(key,value);
-  updateStorageFields(key,value);
+  updateStorageFields(this.storageProps,key,value);
 }

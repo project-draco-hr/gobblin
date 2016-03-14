@@ -1,7 +1,0 @@
-{
-  Preconditions.checkArgument(!Strings.isNullOrEmpty(dbName));
-  Preconditions.checkArgument(!Strings.isNullOrEmpty(tableName));
-  Lock dbLock=locks.get(dbName);
-  Lock tableLock=locks.get(dbName + "." + tableName);
-  return new HiveLock(dbLock,tableLock);
-}

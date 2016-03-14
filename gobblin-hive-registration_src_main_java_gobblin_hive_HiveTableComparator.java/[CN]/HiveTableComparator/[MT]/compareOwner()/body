@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    compare(((HiveTable)this.existingUnit).getOwner(),((HiveTable)this.newUnit).getOwner());
+  }
+  return (T)this;
+}

@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    compare(Optional.of(((HivePartition)this.existingUnit).getValues()),Optional.of(((HivePartition)this.newUnit).getValues()));
+  }
+  return (T)this;
+}

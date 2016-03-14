@@ -1,0 +1,6 @@
+{
+  if (!this.result) {
+    compare(this.existingUnit.getIsCompressed(),this.newUnit.getIsCompressed());
+  }
+  return (T)this;
+}

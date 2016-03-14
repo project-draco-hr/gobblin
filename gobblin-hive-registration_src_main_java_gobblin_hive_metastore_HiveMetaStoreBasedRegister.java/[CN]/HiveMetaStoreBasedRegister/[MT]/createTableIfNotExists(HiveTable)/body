@@ -1,12 +1,5 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();HiveLock lock=locks.getTableLock(table.getDbName(),table.getTableName())){
-    if (client.get().tableExists(table.getDbName(),table.getTableName())) {
-      return false;
-    }
-    client.get().createTable(HiveMetaStoreUtils.getTable(table));
-    return true;
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    return createTableIfNotExists(client.get(),HiveMetaStoreUtils.getTable(table));
   }
- catch (  TException e) {
-    throw new IOException(String.format("Error in creating or altering Hive table %s in db %s",table.getTableName(),table.getDbName()),e);
-  }
-}
+ }
