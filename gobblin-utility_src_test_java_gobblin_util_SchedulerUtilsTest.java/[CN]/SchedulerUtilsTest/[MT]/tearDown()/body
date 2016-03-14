@@ -1,3 +1,5 @@
 {
-  FileUtil.fullyDelete(JOB_CONF_ROOT_DIR);
+  if (this.jobConfigDir != null) {
+    FileUtils.forceDelete(this.jobConfigDir);
+  }
 }
