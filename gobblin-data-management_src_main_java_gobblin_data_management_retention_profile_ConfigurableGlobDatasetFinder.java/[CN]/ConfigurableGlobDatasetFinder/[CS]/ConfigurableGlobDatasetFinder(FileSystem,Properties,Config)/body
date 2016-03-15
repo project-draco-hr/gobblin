@@ -10,7 +10,7 @@
   }
   this.fs=fs;
   Path tmpDatasetPattern;
-  if (config.getString(DATASET_FINDER_PATTERN_KEY) != null) {
+  if (config.hasPath(DATASET_FINDER_PATTERN_KEY)) {
     tmpDatasetPattern=new Path(config.getString(DATASET_FINDER_PATTERN_KEY));
   }
  else {

@@ -1,4 +1,5 @@
 {
+  this.jobProps=jobProps;
   try {
     this.datasetFinders=Lists.newArrayList();
     if (jobProps.containsKey(datasetFinderClassKey())) {
