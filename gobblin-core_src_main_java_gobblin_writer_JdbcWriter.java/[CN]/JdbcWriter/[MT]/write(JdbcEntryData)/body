@@ -1,16 +1,10 @@
 {
   LOG.info("Writing " + record);
   try {
-    int i=1;
-    for (    String columnName : columnNames) {
-      insertPstmt.setObject(i++,record.getVal(columnName));
-    }
-    LOG.info("Executing " + insertPstmt);
-    insertPstmt.executeUpdate();
-    insertPstmt.clearParameters();
+    commands.insert(conn,table,record);
+    count++;
   }
  catch (  Exception e) {
-    failed=true;
     throw new RuntimeException(e);
   }
 }

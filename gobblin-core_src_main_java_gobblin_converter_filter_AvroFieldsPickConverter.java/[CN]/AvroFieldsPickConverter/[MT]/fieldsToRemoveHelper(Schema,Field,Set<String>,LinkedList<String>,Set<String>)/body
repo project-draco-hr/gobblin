@@ -1,0 +1,21 @@
+{
+  if (Type.RECORD.equals(schema.getType())) {
+    fqn.addLast(schema.getFullName());
+    for (    Field f : schema.getFields()) {
+      fieldsToRemoveHelper(f.schema(),f,requiredFields,fqn,fieldsToRemove);
+    }
+    fqn.removeLast();
+    return fieldsToRemove;
+  }
+  fqn.addLast(Objects.requireNonNull(field).name());
+  String fqnStr=JOINER_ON_DOT.join(fqn);
+  boolean isRequiredField=requiredFields.remove(fqnStr);
+  if (!isRequiredField) {
+    boolean isFirstRemoval=fieldsToRemove.add(fqnStr);
+    if (!isFirstRemoval) {
+      throw new SchemaConversionException("Duplicate name " + fqnStr + " is not allowed");
+    }
+  }
+  fqn.removeLast();
+  return fieldsToRemove;
+}

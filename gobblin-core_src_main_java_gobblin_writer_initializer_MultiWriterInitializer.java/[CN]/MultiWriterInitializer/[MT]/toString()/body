@@ -1,0 +1,3 @@
+{
+  return String.format("MultiWriterInitializer [writerInitializers=%s]",writerInitializers);
+}

@@ -1,0 +1,8 @@
+{
+  MutableInt count=new MutableInt();
+  Schema removed=removeFields(schema,Maps.<String,Schema>newHashMap(),count);
+  if (fieldsToRemove.size() != count.getValue()) {
+    throw new SchemaConversionException("Failed to delete fields from schema. Fields to remove: " + fieldsToRemove + "Removed "+ count.getValue()+ " fields from Schema "+ schema);
+  }
+  return removed;
+}

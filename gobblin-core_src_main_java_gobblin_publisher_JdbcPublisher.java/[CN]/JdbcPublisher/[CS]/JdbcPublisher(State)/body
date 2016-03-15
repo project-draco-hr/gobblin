@@ -1,11 +1,4 @@
 {
   super(state);
   validate(getState());
-  try {
-    conn=createConnection();
-    conn.setAutoCommit(false);
-  }
- catch (  Exception e) {
-    throw new RuntimeException(e);
-  }
 }

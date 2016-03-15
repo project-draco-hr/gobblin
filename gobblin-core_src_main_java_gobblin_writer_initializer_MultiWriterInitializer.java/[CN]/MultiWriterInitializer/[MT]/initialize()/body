@@ -1,0 +1,5 @@
+{
+  for (  WriterInitializer wi : writerInitializers) {
+    wi.initialize();
+  }
+}

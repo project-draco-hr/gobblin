@@ -1,0 +1,5 @@
+Schema schema
+Field field
+Set<String> requiredFields
+LinkedList<String> fqn
+Set<String> fieldsToRemove

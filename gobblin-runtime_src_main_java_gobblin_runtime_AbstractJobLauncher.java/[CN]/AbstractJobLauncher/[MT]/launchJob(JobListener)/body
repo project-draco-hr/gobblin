@@ -5,7 +5,7 @@
   TimingEvent launchJobTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.LauncherTimings.FULL_JOB_EXECUTION);
   String jobId=this.jobContext.getJobId();
   JobState jobState=this.jobContext.getJobState();
-  try {
+  try (Closer closer=Closer.create()){
     if (!tryLockJob()) {
       this.eventSubmitter.submit(gobblin.metrics.event.EventNames.LOCK_IN_USE);
       throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
@@ -23,6 +23,9 @@
       LOG.warn("No work units have been created for job " + jobId);
       return;
     }
+    WriterInitializer writerInitializer=WriterInitializerFactory.newInstace(jobState,workUnits.get());
+    closer.register(writerInitializer);
+    writerInitializer.initialize();
     TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_STAGING_DATA_CLEAN);
     cleanLeftoverStagingData(workUnits.get(),jobState);
     stagingDataCleanTimer.stop();

@@ -1,0 +1,8 @@
+{
+switch (destinationType) {
+case MYSQL:
+    return new MySqlWriterCommands();
+default :
+  throw new IllegalArgumentException(destinationType + " is not supported");
+}
+}

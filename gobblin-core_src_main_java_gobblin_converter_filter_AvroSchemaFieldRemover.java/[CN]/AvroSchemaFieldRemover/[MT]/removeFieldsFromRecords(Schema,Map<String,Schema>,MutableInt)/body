@@ -1,0 +1,22 @@
+{
+  Schema newRecord=Schema.createRecord(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.isError());
+  schemaMap.put(schema.getFullName(),newRecord);
+  List<Field> newFields=Lists.newArrayList();
+  for (  Field field : schema.getFields()) {
+    if (!this.shouldRemove(field)) {
+      Field newField;
+      if (this.children.containsKey(field.name())) {
+        newField=new Field(field.name(),this.children.get(field.name()).removeFields(field.schema(),schemaMap,count),field.doc(),field.defaultValue());
+      }
+ else {
+        newField=new Field(field.name(),DO_NOTHING_INSTANCE.removeFields(field.schema(),schemaMap,count),field.doc(),field.defaultValue());
+      }
+      newFields.add(newField);
+    }
+ else {
+      count.increment();
+    }
+  }
+  newRecord.setFields(newFields);
+  return newRecord;
+}

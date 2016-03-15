@@ -1,0 +1,15 @@
+{
+  Set<String> copiedRequiredFields=Sets.newHashSet(requiredFields);
+  Set<String> fieldsToRemove=Sets.newHashSet();
+  if (!Type.RECORD.equals(schema.getType())) {
+    throw new SchemaConversionException("First entry of Avro schema should be a Record type " + schema);
+  }
+  LinkedList<String> fqn=Lists.<String>newLinkedList();
+  for (  Field f : schema.getFields()) {
+    fieldsToRemoveHelper(f.schema(),f,copiedRequiredFields,fqn,fieldsToRemove);
+  }
+  if (!copiedRequiredFields.isEmpty()) {
+    throw new SchemaConversionException("Failed to pick field(s) as some field(s) " + copiedRequiredFields + " does not exist in Schema "+ schema);
+  }
+  return fieldsToRemove;
+}

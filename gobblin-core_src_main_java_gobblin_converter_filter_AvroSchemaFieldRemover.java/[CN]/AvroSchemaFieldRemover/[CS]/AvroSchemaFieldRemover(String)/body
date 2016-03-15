@@ -1,3 +1,4 @@
 {
-  this.addChildren(fieldNames);
+  this.fieldsToRemove=SPLITTER_ON_COMMA.splitToList(fieldNames);
+  this.addChildren(fieldsToRemove);
 }

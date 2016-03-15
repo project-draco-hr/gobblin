@@ -1,0 +1,13 @@
+{
+  List<String> columnNames=Lists.newArrayList();
+  List<Object> vals=Lists.newArrayList();
+  for (  JdbcEntryDatum datum : jdbcEntryData) {
+    columnNames.add(datum.getColumnName());
+    vals.add(datum.getVal());
+  }
+  PreparedStatement pstmt=conn.prepareStatement(createPrepareStatementStr(table,columnNames));
+  for (int i=0; i < vals.size(); i++) {
+    pstmt.setObject(i + 1,vals.get(i));
+  }
+  execute(pstmt);
+}

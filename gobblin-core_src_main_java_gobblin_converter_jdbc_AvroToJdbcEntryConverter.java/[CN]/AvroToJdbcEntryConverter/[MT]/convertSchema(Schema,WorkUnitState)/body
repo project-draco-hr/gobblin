@@ -2,7 +2,9 @@
   LOG.info("Converting schema " + inputSchema);
   try (Connection conn=createConnection(workUnit)){
     Map<String,Type> avroColumnType=flat(inputSchema);
-    Map<String,JDBCType> dateColumnMapping=retrieveDateColumns(workUnit,conn);
+    String table=Objects.requireNonNull(workUnit.getProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME));
+    JdbcWriterCommands commands=JdbcWriterCommandsFactory.newInstance(workUnit);
+    Map<String,JDBCType> dateColumnMapping=commands.retrieveDataColumns(conn,table);
     LOG.info("Date column mapping: " + dateColumnMapping);
     List<JdbcEntryMetaDatum> jdbcEntryMetaData=Lists.newArrayList();
     for (    Map.Entry<String,Type> avroEntry : avroColumnType.entrySet()) {

@@ -1,0 +1,11 @@
+{
+  int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  if (branches == 1) {
+    return newSingleInstance(state,workUnits,branches,0);
+  }
+  List<WriterInitializer> wis=Lists.newArrayList();
+  for (int branchId=0; branchId < branches; branchId++) {
+    wis.add(newSingleInstance(state,workUnits,branches,branchId));
+  }
+  return NOOP;
+}

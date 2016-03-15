@@ -1,4 +1,9 @@
 {
   DataSource dataSource=DataSourceBuilder.builder().url(state.getProp(ConfigurationKeys.JDBC_PUBLISHER_URL)).driver(state.getProp(ConfigurationKeys.JDBC_PUBLISHER_DRIVER)).userName(state.getProp(ConfigurationKeys.JDBC_PUBLISHER_USERNAME)).passWord(state.getProp(ConfigurationKeys.JDBC_PUBLISHER_PASSWORD)).maxActiveConnections(1).maxIdleConnections(1).state(state).build();
-  return dataSource.getConnection();
+  try {
+    return dataSource.getConnection();
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
 }

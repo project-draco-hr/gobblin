@@ -1,0 +1,16 @@
+{
+  LOG.info("Closing " + this.getClass().getSimpleName());
+  try (Connection conn=createConnection()){
+    if (createdStagingTable != null) {
+      LOG.info("Dropping staging table " + createdStagingTable);
+      commands.drop(conn,createdStagingTable);
+    }
+    if (userCreatedStagingTable != null) {
+      LOG.info("Truncating staging table " + userCreatedStagingTable);
+      commands.drop(conn,userCreatedStagingTable);
+    }
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException("Failed to close",e);
+  }
+}

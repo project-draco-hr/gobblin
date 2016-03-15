@@ -1,0 +1,4 @@
+{
+  String sql=String.format(TRUNCATE_TABLE_FORMAT,table);
+  execute(conn.prepareStatement(sql));
+}

@@ -1,0 +1,24 @@
+{
+  int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  Set<String> publishTables=Sets.newHashSet();
+  for (int branchId=0; branchId < branches; branchId++) {
+    String publishTable=Objects.requireNonNull(getProp(state,ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId),ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " should not be null.");
+    if (publishTables.contains(publishTable)) {
+      throw new IllegalArgumentException("Duplicate " + ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " is not allowed across branches");
+    }
+    publishTables.add(publishTable);
+  }
+  Set<String> stagingTables=Sets.newHashSet();
+  for (int branchId=0; branchId < branches; branchId++) {
+    String stagingTable=getProp(state,ConfigurationKeys.WRITER_STAGING_TABLE,branches,branchId);
+    if (!StringUtils.isEmpty(stagingTable) && stagingTables.contains(stagingTable)) {
+      throw new IllegalArgumentException("Duplicate " + ConfigurationKeys.WRITER_STAGING_TABLE + " is not allowed across branches");
+    }
+    stagingTables.add(stagingTable);
+  }
+  JobCommitPolicy policy=JobCommitPolicy.getCommitPolicy(state);
+  boolean isPublishJobLevel=state.getPropAsBoolean(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL);
+  if (!JobCommitPolicy.COMMIT_ON_FULL_SUCCESS.equals(policy) && isPublishJobLevel) {
+    throw new IllegalArgumentException("Cannot publish on job level when commit policy is " + policy + " To skip staging table set "+ ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL+ " to false");
+  }
+}

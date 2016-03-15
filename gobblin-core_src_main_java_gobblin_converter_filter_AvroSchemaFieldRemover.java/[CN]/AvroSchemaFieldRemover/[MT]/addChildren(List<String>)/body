@@ -1,0 +1,8 @@
+{
+  for (  String fieldName : fields) {
+    List<String> fieldNameComponents=SPLITTER_ON_DOT.splitToList(fieldName);
+    if (!fieldNameComponents.isEmpty()) {
+      this.addChildren(fieldNameComponents,0);
+    }
+  }
+}
