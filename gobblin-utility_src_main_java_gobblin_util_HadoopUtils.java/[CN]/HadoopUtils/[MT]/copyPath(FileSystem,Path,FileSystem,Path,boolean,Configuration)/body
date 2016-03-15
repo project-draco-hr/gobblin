@@ -1,0 +1,3 @@
+{
+  copyPath(srcFs,src,dstFs,dst,false,overwrite,conf);
+}

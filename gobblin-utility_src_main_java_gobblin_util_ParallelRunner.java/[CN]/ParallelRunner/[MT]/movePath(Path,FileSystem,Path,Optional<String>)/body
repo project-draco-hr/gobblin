@@ -1,25 +1,3 @@
 {
-  this.futures.add(new NamedFuture(this.executor.submit(new Callable<Void>(){
-    @Override public Void call() throws Exception {
-      Lock lock=locks.get(src.toString());
-      lock.lock();
-      try {
-        if (fs.exists(src)) {
-          HadoopUtils.movePath(fs,src,dstFs,dst,dstFs.getConf());
-          if (group.isPresent()) {
-            HadoopUtils.setGroup(dstFs,dst,group.get());
-          }
-        }
-        return null;
-      }
- catch (      FileAlreadyExistsException e) {
-        LOGGER.warn(String.format("Failed to move %s to %s: dst already exists",src,dst),e);
-        return null;
-      }
- finally {
-        lock.unlock();
-      }
-    }
-  }
-),"Move " + src + " to "+ dst));
+  movePath(src,dstFs,dst,false,group);
 }

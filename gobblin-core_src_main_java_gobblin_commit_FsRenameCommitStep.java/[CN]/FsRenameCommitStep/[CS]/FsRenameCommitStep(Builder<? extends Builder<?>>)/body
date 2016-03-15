@@ -6,4 +6,5 @@
   this.srcFsUri=this.srcFs.getUri().toString();
   this.dstFs=builder.dstFs != null ? builder.dstFs : getFileSystem(this.props.getProp(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI));
   this.dstFsUri=this.dstFs.getUri().toString();
+  this.overwrite=builder.overwrite;
 }
