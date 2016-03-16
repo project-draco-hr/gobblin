@@ -1,0 +1,23 @@
+{
+  FileOutputStream fos=null;
+  DataOutputStream dos=null;
+  try {
+    fos=new FileOutputStream(tokenFile);
+    dos=new DataOutputStream(fos);
+    cred.writeTokenStorageToStream(dos);
+  }
+  finally {
+    if (dos != null) {
+      try {
+        dos.close();
+      }
+ catch (      Throwable t) {
+        LOG.error("encountered exception while closing DataOutputStream of the tokenFile",t);
+      }
+    }
+    if (fos != null) {
+      fos.close();
+    }
+  }
+  LOG.info("Tokens loaded in " + tokenFile.getAbsolutePath());
+}

@@ -1,0 +1,3 @@
+List<String> otherNamenodes
+Configuration conf
+Credentials cred

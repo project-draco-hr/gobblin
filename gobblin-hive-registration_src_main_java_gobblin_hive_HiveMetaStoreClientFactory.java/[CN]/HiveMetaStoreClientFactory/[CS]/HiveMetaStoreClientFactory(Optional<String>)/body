@@ -1,6 +1,3 @@
 {
-  this.hiveConf=new HiveConf();
-  if (hcatURI.isPresent()) {
-    hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,hcatURI.get());
-  }
+  this(getHiveConf(hcatURI));
 }

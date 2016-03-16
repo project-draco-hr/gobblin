@@ -1,0 +1,14 @@
+{
+  if (userToProxy.isPresent()) {
+    UserGroupInformation.createProxyUser(userToProxy.get(),UserGroupInformation.getLoginUser()).doAs(new PrivilegedExceptionAction<Void>(){
+      @Override public Void run() throws Exception {
+        getFsAndJtTokensImpl(state,conf,cred);
+        return null;
+      }
+    }
+);
+  }
+ else {
+    getFsAndJtTokensImpl(state,conf,cred);
+  }
+}

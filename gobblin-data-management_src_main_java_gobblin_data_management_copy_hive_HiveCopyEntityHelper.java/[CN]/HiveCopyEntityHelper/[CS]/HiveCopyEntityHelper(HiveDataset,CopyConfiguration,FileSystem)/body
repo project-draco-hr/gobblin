@@ -10,6 +10,7 @@
   this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.properties,this.targetURI);
   this.targetDatabase=Optional.fromNullable(this.dataset.properties.getProperty(TARGET_DATABASE_KEY)).or(this.dataset.table.getDbName());
   this.existingEntityPolicy=ExistingEntityPolicy.valueOf(this.dataset.properties.getProperty(EXISTING_ENTITY_POLICY_KEY,DEFAULT_EXISTING_ENTITY_POLICY).toUpperCase());
+  this.partitionFilter=Optional.fromNullable(this.dataset.properties.getProperty(COPY_PARTITIONS_FILTER));
   Map<String,HiveMetastoreClientPool> namedPools=ImmutableMap.of(source_client,this.dataset.clientPool,target_client,this.targetClientPool);
   try (HiveMetastoreClientPool.MultiClient multiClient=HiveMetastoreClientPool.safeGetClients(namedPools)){
     if (multiClient.getClient(target_client).tableExists(targetDatabase,this.dataset.table.getTableName())) {
@@ -31,8 +32,8 @@
       this.tableRegistrationStep=Optional.of(tableRegistrationStep);
     }
     if (HiveUtils.isPartitioned(this.dataset.table)) {
-      this.sourcePartitions=HiveUtils.getPartitionsMap(multiClient.getClient(source_client),this.dataset.table);
-      this.targetPartitions=this.existingTargetTable.isPresent() ? HiveUtils.getPartitionsMap(multiClient.getClient(target_client),this.existingTargetTable.get()) : Maps.<List<String>,Partition>newHashMap();
+      this.sourcePartitions=HiveUtils.getPartitionsMap(multiClient.getClient(source_client),this.dataset.table,this.partitionFilter);
+      this.targetPartitions=this.existingTargetTable.isPresent() ? HiveUtils.getPartitionsMap(multiClient.getClient(target_client),this.existingTargetTable.get(),this.partitionFilter) : Maps.<List<String>,Partition>newHashMap();
     }
  else {
       this.sourcePartitions=Maps.newHashMap();

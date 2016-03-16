@@ -1,4 +1,0 @@
-List<String> otherNamenodes
-Configuration conf
-String userToProxy
-Credentials cred

@@ -1,0 +1,7 @@
+{
+  getHdfsToken(conf,cred);
+  if (state.contains(OTHER_NAMENODES)) {
+    getOtherNamenodesToken(state.getPropAsList(OTHER_NAMENODES),conf,cred);
+  }
+  getJtToken(cred);
+}
