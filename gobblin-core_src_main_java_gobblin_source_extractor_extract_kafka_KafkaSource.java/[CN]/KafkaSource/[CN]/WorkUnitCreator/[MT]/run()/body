@@ -1,13 +1,9 @@
 {
   try {
-    long curTime=System.currentTimeMillis();
-    LOG.info("Using thread pool to create work units for topic " + this.topic.getName());
-    List<WorkUnit> oneTopicWorkUnits=KafkaSource.this.getWorkUnitsForTopic(this.topic,this.state,topicSpecificState);
-    this.allTopicWorkUnits.put(this.topic.getName(),oneTopicWorkUnits);
-    LOG.info("Done creating work unit for " + this.topic.getName() + ", created work unit size is "+ oneTopicWorkUnits.size()+ ". Total time used for creating this topic is "+ (System.currentTimeMillis() - curTime)+ " milliseconds");
+    this.allTopicWorkUnits.put(this.topic.getName(),KafkaSource.this.getWorkUnitsForTopic(this.topic,this.state,topicSpecificState));
   }
  catch (  Throwable t) {
-    LOG.error("Caught error in creating work unit for " + this.topic.getName() + " : "+ t.getMessage(),t);
+    LOG.error("Caught error in creating work unit for " + this.topic.getName(),t);
     throw t;
   }
 }
