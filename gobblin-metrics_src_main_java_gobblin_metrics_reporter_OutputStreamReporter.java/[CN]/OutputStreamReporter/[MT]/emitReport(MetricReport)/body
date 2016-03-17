@@ -1,3 +1,0 @@
-{
-  throw new UnsupportedOperationException("This method should never be directly invoked, use the report() method instead!");
-}

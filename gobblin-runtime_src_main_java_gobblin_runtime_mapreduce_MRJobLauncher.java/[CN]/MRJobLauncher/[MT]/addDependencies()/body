@@ -1,5 +1,5 @@
 {
-  TimingEvent distributedCacheSetupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_DISTRIBUTED_CACHE_SETUP);
+  TimingEvent distributedCacheSetupTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_DISTRIBUTED_CACHE_SETUP);
   Path jarFileDir=new Path(this.mrJobDir,JARS_DIR_NAME);
   if (this.jobProps.containsKey(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY)) {
     addJars(jarFileDir,this.jobProps.getProperty(ConfigurationKeys.FRAMEWORK_JAR_FILES_KEY));

@@ -1,0 +1,4 @@
+{
+  this.influxDB=builder.influxDB;
+  this.database=builder.database;
+}

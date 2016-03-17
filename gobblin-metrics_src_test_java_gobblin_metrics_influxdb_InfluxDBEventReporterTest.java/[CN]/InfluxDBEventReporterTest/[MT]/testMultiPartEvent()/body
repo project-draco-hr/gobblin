@@ -1,0 +1,31 @@
+{
+  try (MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".testInfluxDBReporter2").build();InfluxDBEventReporter influxEventReporter=getBuilder(metricContext).build()){
+    Map<String,String> metadata=Maps.newHashMap();
+    metadata.put(EventSubmitter.EVENT_TYPE,"JobStateEvent");
+    metadata.put(JobEvent.METADATA_JOB_START_TIME,"1457736710521");
+    metadata.put(JobEvent.METADATA_JOB_END_TIME,"1457736710734");
+    metadata.put(JobEvent.METADATA_JOB_LAUNCHED_TASKS,"3");
+    metadata.put(JobEvent.METADATA_JOB_COMPLETED_TASKS,"2");
+    metadata.put(JobEvent.METADATA_JOB_STATE,"FAILED");
+    metricContext.submitEvent(GobblinTrackingEvent.newBuilder().setName(MultiPartEvent.JOBSTATE_EVENT.getEventName()).setNamespace(NAMESPACE).setMetadata(metadata).build());
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    influxEventReporter.report();
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    String prefix="gobblin.metrics.influxdb.InfluxDBEventReporterTest.testInfluxDBReporter2.events.JobStateEvent";
+    Assert.assertEquals(influxDB.getMetric(prefix + ".jobBeginTime").getValue(),"1457736710521.0");
+    Assert.assertEquals(influxDB.getMetric(prefix + ".jobEndTime").getValue(),"1457736710734.0");
+    Assert.assertEquals(influxDB.getMetric(prefix + ".jobLaunchedTasks").getValue(),"3.0");
+    Assert.assertEquals(influxDB.getMetric(prefix + ".jobCompletedTasks").getValue(),"2.0");
+    Assert.assertEquals(influxDB.getMetric(prefix + ".jobState").getValue(),"\"FAILED\"");
+  }
+ }

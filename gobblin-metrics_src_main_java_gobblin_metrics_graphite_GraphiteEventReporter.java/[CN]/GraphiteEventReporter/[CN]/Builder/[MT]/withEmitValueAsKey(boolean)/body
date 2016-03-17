@@ -1,0 +1,4 @@
+{
+  this.emitValueAsKey=emitValueAsKey;
+  return self();
+}

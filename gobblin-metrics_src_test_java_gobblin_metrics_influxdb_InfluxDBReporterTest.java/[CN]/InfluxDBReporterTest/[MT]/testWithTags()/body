@@ -1,0 +1,8 @@
+{
+  try (MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".testGraphiteReporter").addTag(new Tag<String>("taskId","task_testjob_123")).addTag(new Tag<String>("forkBranchName","fork_1")).build();InfluxDBReporter influxDBReporter=InfluxDBReporter.Factory.newBuilder().withInfluxDBPusher(influxDBPusher).withMetricContextName(CONTEXT_NAME).build(new Properties())){
+    Counter counter=metricContext.counter(MetricRegistry.name(METRIC_PREFIX,COUNTER));
+    counter.inc(5l);
+    influxDBReporter.report(new TreeMap<String,Gauge>(),metricContext.getCounters(),new TreeMap<String,Histogram>(),new TreeMap<String,Meter>(),new TreeMap<String,Timer>(),metricContext.getTagMap());
+    Assert.assertEquals(getMetricValue("task_testjob_123.fork_1." + METRIC_PREFIX,COUNTER,Measurements.COUNT),Float.toString(5f));
+  }
+ }

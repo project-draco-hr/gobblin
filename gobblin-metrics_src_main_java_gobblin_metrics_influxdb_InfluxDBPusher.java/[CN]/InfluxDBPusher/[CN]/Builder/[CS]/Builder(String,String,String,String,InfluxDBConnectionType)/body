@@ -1,0 +1,4 @@
+{
+  this.influxDB=connectionType.createConnection(url,username,password);
+  this.database=database;
+}

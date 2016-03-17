@@ -1,0 +1,5 @@
+{
+  BatchPoints batchPoints=BatchPoints.database(database).retentionPolicy(retentionPolicy).build();
+  batchPoints.point(point);
+  this.write(batchPoints);
+}

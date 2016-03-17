@@ -10,7 +10,7 @@
     if (!jobState.contains(ConfigurationKeys.JOB_TRACKING_URL_KEY)) {
       jobState.setProp(ConfigurationKeys.JOB_TRACKING_URL_KEY,this.job.getTrackingURL());
     }
-    TimingEvent mrJobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_JOB_RUN);
+    TimingEvent mrJobRunTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_JOB_RUN);
     LOG.info(String.format("Waiting for Hadoop MR job %s to complete",this.job.getJobID()));
     this.job.waitForCompletion(true);
     mrJobRunTimer.stop(ImmutableMap.of("hadoopMRJobId",this.job.getJobID().toString()));

@@ -1,0 +1,7 @@
+{
+  this.closer=Closer.create();
+  this.graphiteSender=this.closer.register(connectionType.createConnection(hostname,port));
+  if (this.graphiteSender != null && !this.graphiteSender.isConnected()) {
+    this.graphiteSender.connect();
+  }
+}

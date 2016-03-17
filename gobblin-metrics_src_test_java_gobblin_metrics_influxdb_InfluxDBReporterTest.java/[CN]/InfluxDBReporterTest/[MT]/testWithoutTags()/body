@@ -1,0 +1,56 @@
+{
+  try (MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".testInfluxDBReporter").build();InfluxDBReporter influxDBReporter=InfluxDBReporter.Factory.newBuilder().withInfluxDBPusher(influxDBPusher).withMetricContextName(CONTEXT_NAME).build(new Properties())){
+    ContextAwareGauge<Long> contextAwareGauge=metricContext.newContextAwareGauge("com.linkedin.example.gauge",new Gauge<Long>(){
+      @Override public Long getValue(){
+        return 1000l;
+      }
+    }
+);
+    metricContext.register(MetricRegistry.name(METRIC_PREFIX,GAUGE),contextAwareGauge);
+    Counter counter=metricContext.counter(MetricRegistry.name(METRIC_PREFIX,COUNTER));
+    Meter meter=metricContext.meter(MetricRegistry.name(METRIC_PREFIX,METER));
+    Histogram histogram=metricContext.histogram(MetricRegistry.name(METRIC_PREFIX,HISTOGRAM));
+    Timer timer=metricContext.timer(MetricRegistry.name(METRIC_PREFIX,TIMER));
+    counter.inc(3l);
+    meter.mark(1l);
+    meter.mark(2l);
+    meter.mark(3l);
+    histogram.update(1);
+    histogram.update(1);
+    histogram.update(2);
+    timer.update(1,TimeUnit.SECONDS);
+    timer.update(2,TimeUnit.SECONDS);
+    timer.update(3,TimeUnit.SECONDS);
+    influxDBReporter.report(metricContext.getGauges(),metricContext.getCounters(),metricContext.getHistograms(),metricContext.getMeters(),metricContext.getTimers(),metricContext.getTagMap());
+    Assert.assertEquals(getMetricValue(COUNTER,Measurements.COUNT),Float.toString(3f));
+    Assert.assertEquals(getMetricValue(GAUGE,null),Float.toString(1000l));
+    Assert.assertTrue(getMetricTimestamp(GAUGE,null) <= System.currentTimeMillis());
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.PERCENTILE_75TH),Float.toString(2f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.PERCENTILE_98TH),Float.toString(2f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.PERCENTILE_99TH),Float.toString(2f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.PERCENTILE_999TH),Float.toString(2f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.COUNT),Float.toString(3f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.MIN),Float.toString(1f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.MAX),Float.toString(2f));
+    Assert.assertEquals(getMetricValue(HISTOGRAM,Measurements.MEDIAN),Float.toString(1f));
+    Assert.assertTrue(Double.valueOf(getMetricValue(HISTOGRAM,Measurements.MEAN)) > 1f);
+    Assert.assertTrue(Double.valueOf(getMetricValue(HISTOGRAM,Measurements.STDDEV)) < 0.5f);
+    Assert.assertEquals(getMetricValue(METER,Measurements.RATE_1MIN),Float.toString(0f));
+    Assert.assertEquals(getMetricValue(METER,Measurements.RATE_5MIN),Float.toString(0f));
+    Assert.assertEquals(getMetricValue(METER,Measurements.COUNT),Float.toString(6f));
+    Assert.assertTrue(Double.valueOf(getMetricValue(METER,Measurements.MEAN_RATE)) > 0f);
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.RATE_1MIN),Float.toString(0f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.RATE_5MIN),Float.toString(0f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.PERCENTILE_75TH),Float.toString(3000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.PERCENTILE_98TH),Float.toString(3000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.PERCENTILE_99TH),Float.toString(3000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.PERCENTILE_999TH),Float.toString(3000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.COUNT),Float.toString(3f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.MIN),Float.toString(1000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.MAX),Float.toString(3000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.MEAN),Float.toString(2000f));
+    Assert.assertEquals(getMetricValue(TIMER,Measurements.MEDIAN),Float.toString(2000f));
+    Assert.assertTrue(Double.valueOf(getMetricValue(TIMER,Measurements.MEAN_RATE)) > 0f);
+    Assert.assertTrue(Double.valueOf(getMetricValue(TIMER,Measurements.STDDEV)) > 0f);
+  }
+ }

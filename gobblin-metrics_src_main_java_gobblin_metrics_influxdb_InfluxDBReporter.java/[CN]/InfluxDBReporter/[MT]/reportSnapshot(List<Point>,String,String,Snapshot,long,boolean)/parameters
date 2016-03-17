@@ -1,0 +1,6 @@
+List<Point> points
+String prefix
+String name
+Snapshot snapshot
+long timestamp
+boolean convertDuration

@@ -1,0 +1,11 @@
+{
+  super(builder);
+  if (builder.graphitePusher.isPresent()) {
+    this.graphitePusher=builder.graphitePusher.get();
+  }
+ else {
+    this.graphitePusher=this.closer.register(new GraphitePusher(builder.hostname,builder.port,builder.connectionType));
+  }
+  this.metricPrefix=builder.metricPrefix;
+  this.emitValueAsKey=builder.emitValueAsKey;
+}

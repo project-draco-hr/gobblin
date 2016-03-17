@@ -7,14 +7,14 @@
   allTags.putAll(tags);
   allTags.putAll(this.tags);
   if (!allTags.isEmpty()) {
-    printWithBanner("-- Tags",'-');
+    printWithBanner(TAGS_SECTION,'-');
     for (    Map.Entry<String,Object> entry : allTags.entrySet()) {
       this.outputBufferPrintStream.println(String.format("%s=%s",entry.getKey(),entry.getValue()));
     }
     this.outputBufferPrintStream.println();
   }
   if (!gauges.isEmpty()) {
-    printWithBanner("-- Gauges",'-');
+    printWithBanner(GAUGES_SECTION,'-');
     for (    Map.Entry<String,Gauge> entry : gauges.entrySet()) {
       this.outputBufferPrintStream.println(entry.getKey());
       printGauge(entry);
@@ -22,7 +22,7 @@
     this.outputBufferPrintStream.println();
   }
   if (!counters.isEmpty()) {
-    printWithBanner("-- Counters",'-');
+    printWithBanner(COUNTERS_SECTION,'-');
     for (    Map.Entry<String,Counter> entry : counters.entrySet()) {
       this.outputBufferPrintStream.println(entry.getKey());
       printCounter(entry);
@@ -30,7 +30,7 @@
     this.outputBufferPrintStream.println();
   }
   if (!histograms.isEmpty()) {
-    printWithBanner("-- Histograms",'-');
+    printWithBanner(HISTOGRAMS_SECTION,'-');
     for (    Map.Entry<String,Histogram> entry : histograms.entrySet()) {
       this.outputBufferPrintStream.println(entry.getKey());
       printHistogram(entry.getValue());
@@ -38,7 +38,7 @@
     this.outputBufferPrintStream.println();
   }
   if (!meters.isEmpty()) {
-    printWithBanner("-- Meters",'-');
+    printWithBanner(METERS_SECTION,'-');
     for (    Map.Entry<String,Meter> entry : meters.entrySet()) {
       this.outputBufferPrintStream.println(entry.getKey());
       printMeter(entry.getValue());
@@ -46,7 +46,7 @@
     this.outputBufferPrintStream.println();
   }
   if (!timers.isEmpty()) {
-    printWithBanner("-- Timers",'-');
+    printWithBanner(TIMERS_SECTION,'-');
     for (    Map.Entry<String,Timer> entry : timers.entrySet()) {
       this.outputBufferPrintStream.println(entry.getKey());
       printTimer(entry.getValue());

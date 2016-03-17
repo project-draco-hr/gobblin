@@ -11,7 +11,7 @@ synchronized (this.cancellationExecution) {
       while (!this.cancellationExecuted) {
         this.cancellationExecution.wait();
       }
-      notifyListeners(this.jobContext,jobListener,TimingEventNames.LauncherTimings.JOB_CANCEL,new JobListenerAction(){
+      notifyListeners(this.jobContext,jobListener,TimingEvent.LauncherTimings.JOB_CANCEL,new JobListenerAction(){
         @Override public void apply(        JobListener jobListener,        JobContext jobContext) throws Exception {
           jobListener.onJobCancellation(jobContext);
         }

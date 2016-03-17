@@ -1,0 +1,3 @@
+{
+  return GraphiteEventReporter.Factory.forContext(metricContext).withGraphitePusher(graphitePusher);
+}

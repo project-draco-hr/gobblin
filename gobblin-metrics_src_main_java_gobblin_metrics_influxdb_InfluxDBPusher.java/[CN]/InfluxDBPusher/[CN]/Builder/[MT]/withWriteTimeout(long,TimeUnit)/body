@@ -1,0 +1,4 @@
+{
+  influxDB.setWriteTimeout(writeTimeout,timeUnit);
+  return this;
+}

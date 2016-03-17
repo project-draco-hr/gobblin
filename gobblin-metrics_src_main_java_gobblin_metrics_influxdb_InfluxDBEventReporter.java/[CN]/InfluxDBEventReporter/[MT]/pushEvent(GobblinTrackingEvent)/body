@@ -1,0 +1,17 @@
+{
+  Map<String,String> metadata=event.getMetadata();
+  String name=JOINER.join(metricPrefix,metadata.get(METADATA_TASK_ID),EVENTS_QUALIFIER,event.getName());
+  long timestamp=Long.valueOf(event.getTimestamp());
+  MultiPartEvent multiPartEvent=MultiPartEvent.getEvent(metadata.get(EventSubmitter.EVENT_TYPE));
+  if (multiPartEvent == null) {
+    influxDBPusher.push(buildEventAsPoint(name,EMTPY_VALUE,timestamp));
+  }
+ else {
+    List<Point> points=Lists.newArrayList();
+    for (    String field : multiPartEvent.getMetadataFields()) {
+      Point point=buildEventAsPoint(JOINER.join(name,field),convertValue(field,metadata.get(field)),timestamp);
+      points.add(point);
+    }
+    influxDBPusher.push(points);
+  }
+}

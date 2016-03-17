@@ -1,0 +1,13 @@
+{
+  String baseMetricName=getKey(prefix,name);
+  pushMetric(getKey(baseMetricName,MIN),snapshot.getMin(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,MAX),snapshot.getMax(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,MEAN),snapshot.getMean(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,STDDEV),snapshot.getStdDev(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,MEDIAN),snapshot.getMedian(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,PERCENTILE_75TH),snapshot.get75thPercentile(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,PERCENTILE_95TH),snapshot.get95thPercentile(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,PERCENTILE_98TH),snapshot.get98thPercentile(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,PERCENTILE_99TH),snapshot.get99thPercentile(),convertDuration,timestamp);
+  pushMetric(getKey(baseMetricName,PERCENTILE_999TH),snapshot.get999thPercentile(),convertDuration,timestamp);
+}

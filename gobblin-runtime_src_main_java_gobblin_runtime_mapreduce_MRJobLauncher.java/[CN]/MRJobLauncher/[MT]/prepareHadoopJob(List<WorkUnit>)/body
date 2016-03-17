@@ -1,5 +1,5 @@
 {
-  TimingEvent mrJobSetupTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_JOB_SETUP);
+  TimingEvent mrJobSetupTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_JOB_SETUP);
   this.job.setJarByClass(MRJobLauncher.class);
   this.job.setMapperClass(TaskRunner.class);
   this.job.setNumReduceTasks(0);

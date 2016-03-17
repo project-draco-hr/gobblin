@@ -1,0 +1,4 @@
+{
+  this.graphitePusher=Optional.of(pusher);
+  return self();
+}
