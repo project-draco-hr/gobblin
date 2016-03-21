@@ -8,7 +8,7 @@
         String targetFileName=convertedFilePath.getName();
         Path outPath=lateOutputRecordCountProvider.constructLateFilePath(targetFileName,fs,outputDirectory);
         HadoopUtils.copyPath(fs,filePath,fs,outPath,fs.getConf());
-        LOG.info(String.format("Copied %s to %s.",filePath,outPath));
+        LOG.debug(String.format("Copied %s to %s.",filePath,outPath));
         return null;
       }
     }
