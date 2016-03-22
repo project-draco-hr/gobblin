@@ -10,7 +10,7 @@
     threadPool.submit(new WorkUnitCreator(topic,state,Optional.fromNullable(topicSpecificStateMap.get(topic.getName())),workUnits));
   }
   ExecutorsUtils.shutdownExecutorService(threadPool,Optional.of(LOG),1L,TimeUnit.HOURS);
-  LOG.info(String.format("Created %s workunits in %d seconds",workUnits.size(),createWorkUnitStopwatch.elapsed(TimeUnit.SECONDS)));
+  LOG.info(String.format("Created workunits for %d topics in %d seconds",workUnits.size(),createWorkUnitStopwatch.elapsed(TimeUnit.SECONDS)));
   createEmptyWorkUnitsForSkippedPartitions(workUnits,topicSpecificStateMap,state);
   int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
   return KafkaWorkUnitPacker.getInstance(this,state).pack(workUnits,numOfMultiWorkunits);
