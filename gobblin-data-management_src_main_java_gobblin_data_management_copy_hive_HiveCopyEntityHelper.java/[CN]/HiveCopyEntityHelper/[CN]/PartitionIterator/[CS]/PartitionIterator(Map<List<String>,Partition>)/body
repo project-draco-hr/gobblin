@@ -1,0 +1,3 @@
+{
+  this.partitionIterator=partitionMap.entrySet().iterator();
+}

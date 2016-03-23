@@ -3,10 +3,9 @@
     return null;
   }
   try {
-    Collection<? extends CopyEntity> files=this.copyableDataset.getCopyableFiles(this.targetFs,this.copyConfiguration);
-    List<FileSet<CopyEntity>> fileSets=partitionCopyableFiles(this.copyableDataset,files);
-    Collections.sort(fileSets,this.workUnitList.getComparator());
-    for (    FileSet<CopyEntity> fileSet : fileSets) {
+    Iterator<FileSet<CopyEntity>> fileSets=this.copyableDataset.getFileSetIterator(this.targetFs,this.copyConfiguration);
+    while (fileSets.hasNext() && !this.workUnitList.hasRejectedFileSet()) {
+      FileSet<CopyEntity> fileSet=fileSets.next();
       Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,CopyConfiguration.COPY_PREFIX,fileSet.getName());
       List<WorkUnit> workUnitsForPartition=Lists.newArrayList();
       for (      CopyEntity copyEntity : fileSet.getFiles()) {
