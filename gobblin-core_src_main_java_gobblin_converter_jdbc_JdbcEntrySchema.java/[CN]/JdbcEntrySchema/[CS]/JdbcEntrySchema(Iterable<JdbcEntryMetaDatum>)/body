@@ -1,6 +1,6 @@
 {
   Objects.requireNonNull(jdbcMetaDatumEntries);
-  ImmutableMap.Builder<String,JdbcEntryMetaDatum> builder=ImmutableMap.builder();
+  ImmutableMap.Builder<String,JdbcEntryMetaDatum> builder=ImmutableSortedMap.naturalOrder();
   for (  JdbcEntryMetaDatum datum : jdbcMetaDatumEntries) {
     builder.put(datum.getColumnName(),datum);
   }

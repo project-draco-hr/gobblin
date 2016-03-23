@@ -1,0 +1,4 @@
+{
+  usedBufferSize=0;
+  pendingInserts.clear();
+}

@@ -1,5 +1,8 @@
 {
   try {
+    LOG.info("Flushing pending insert.");
+    commands.flush(conn);
+    LOG.info("Commiting transaction.");
     conn.commit();
   }
  catch (  Exception e) {

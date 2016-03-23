@@ -1,0 +1,8 @@
+{
+  this.batchSize=state.getPropAsInt(ConfigurationKeys.WRITER_JDBC_INSERT_BATCH_SIZE,ConfigurationKeys.DEFAULT_WRITER_JDBC_INSERT_BATCH_SIZE);
+  this.maxBufferSize=state.getPropAsInt(ConfigurationKeys.WRITER_JDBC_INSERT_BUFFER_SIZE,ConfigurationKeys.DEFAULT_WRITER_JDBC_INSERT_BUFFER_SIZE);
+  if (batchSize < 1) {
+    throw new IllegalArgumentException(ConfigurationKeys.WRITER_JDBC_INSERT_BATCH_SIZE + " should be a positive number");
+  }
+  this.maxParamSize=state.getPropAsInt(ConfigurationKeys.WRITER_JDBC_MAX_PARAM_SIZE,ConfigurationKeys.DEFAULT_WRITER_JDBC_MAX_PARAM_SIZE);
+}

@@ -1,4 +1,4 @@
 {
-  super(state);
+  this(state,new JdbcWriterCommandsFactory());
   validate(getState());
 }

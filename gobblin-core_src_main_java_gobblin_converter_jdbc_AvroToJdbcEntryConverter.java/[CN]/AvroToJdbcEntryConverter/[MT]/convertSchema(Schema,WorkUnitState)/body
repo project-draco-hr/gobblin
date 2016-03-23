@@ -1,14 +1,13 @@
 {
   LOG.info("Converting schema " + inputSchema);
   try (Connection conn=createConnection(workUnit)){
-    Map<String,Type> avroColumnType=flat(inputSchema);
+    Map<String,Type> avroColumnType=flatten(inputSchema);
     String table=Objects.requireNonNull(workUnit.getProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME));
-    JdbcWriterCommands commands=JdbcWriterCommandsFactory.newInstance(workUnit);
-    Map<String,JDBCType> dateColumnMapping=commands.retrieveDataColumns(conn,table);
+    Map<String,JDBCType> dateColumnMapping=commands.retrieveDateColumns(conn,table);
     LOG.info("Date column mapping: " + dateColumnMapping);
     List<JdbcEntryMetaDatum> jdbcEntryMetaData=Lists.newArrayList();
     for (    Map.Entry<String,Type> avroEntry : avroColumnType.entrySet()) {
-      String colName=avroEntry.getKey();
+      String colName=tryConvertColumn(avroEntry.getKey(),avroToJdbcColPairs);
       JDBCType jdbcType=dateColumnMapping.get(colName);
       if (jdbcType == null) {
         jdbcType=AVRO_TYPE_JDBC_TYPE_MAPPING.get(avroEntry.getValue());

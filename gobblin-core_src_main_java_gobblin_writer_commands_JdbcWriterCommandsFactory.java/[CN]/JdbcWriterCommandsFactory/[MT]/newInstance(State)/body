@@ -1,5 +1,5 @@
 {
   String destType=state.getProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY);
   Objects.requireNonNull(destType,ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY + " is required for underlying JDBC product name");
-  return newInstance(DestinationType.valueOf(destType.toUpperCase()));
+  return newInstance(Destination.of(DestinationType.valueOf(destType.toUpperCase()),state));
 }

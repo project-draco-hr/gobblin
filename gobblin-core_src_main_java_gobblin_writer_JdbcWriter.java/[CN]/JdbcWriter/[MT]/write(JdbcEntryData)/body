@@ -1,10 +1,13 @@
 {
-  LOG.info("Writing " + record);
+  if (LOG.isDebugEnabled()) {
+    LOG.debug("Writing " + record);
+  }
   try {
-    commands.insert(conn,table,record);
-    count++;
+    commands.insert(conn,tableName,record);
+    recordWrittenCount++;
   }
  catch (  Exception e) {
+    failed=true;
     throw new RuntimeException(e);
   }
 }

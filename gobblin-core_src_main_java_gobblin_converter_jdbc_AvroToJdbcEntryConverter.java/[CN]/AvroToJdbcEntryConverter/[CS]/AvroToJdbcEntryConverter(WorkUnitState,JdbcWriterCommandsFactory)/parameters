@@ -1,0 +1,2 @@
+WorkUnitState workUnit
+JdbcWriterCommandsFactory jdbcWriterCommandsFactory

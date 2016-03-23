@@ -8,6 +8,6 @@
   }
   Type existing=flattened.put(field.name(),t);
   if (existing != null) {
-    throw new IllegalArgumentException("Duplicate name detected in Avro schema.");
+    throw new SchemaConversionException("Duplicate name detected in Avro schema. " + field.name());
   }
 }

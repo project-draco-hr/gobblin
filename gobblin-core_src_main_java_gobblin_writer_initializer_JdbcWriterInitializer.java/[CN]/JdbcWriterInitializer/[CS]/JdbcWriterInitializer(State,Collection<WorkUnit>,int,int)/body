@@ -4,5 +4,6 @@
   this.workUnits=Lists.newArrayList(workUnits);
   this.branches=branches;
   this.branchId=branchId;
-  this.commands=JdbcWriterCommandsFactory.newInstance(state);
+  this.commands=new JdbcWriterCommandsFactory().newInstance(state);
+  this.createdStagingTables=Sets.newHashSet();
 }

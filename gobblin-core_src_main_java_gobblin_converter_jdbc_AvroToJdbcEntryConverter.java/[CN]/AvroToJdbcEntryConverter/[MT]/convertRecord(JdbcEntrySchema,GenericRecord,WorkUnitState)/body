@@ -1,10 +1,12 @@
 {
-  LOG.info("Converting " + record);
+  if (LOG.isDebugEnabled()) {
+    LOG.debug("Converting " + record);
+  }
   List<JdbcEntryDatum> jdbcEntryData=Lists.newArrayList();
   for (  JdbcEntryMetaDatum entry : outputSchema) {
     final String colName=entry.getColumnName();
     final JDBCType jdbcType=entry.getJdbcType();
-    final Object val=record.get(colName);
+    final Object val=record.get(tryConvertColumn(colName,jdbcToAvroColPairs));
     if (val == null) {
       jdbcEntryData.add(new JdbcEntryDatum(colName,val));
     }
@@ -44,6 +46,8 @@ throw new DataConversionException(jdbcType + " is not supported");
 }
 }
 JdbcEntryData converted=new JdbcEntryData(jdbcEntryData);
-LOG.info("Converted data into " + converted);
+if (LOG.isDebugEnabled()) {
+LOG.debug("Converted data into " + converted);
+}
 return new SingleRecordIterable<JdbcEntryData>(converted);
 }

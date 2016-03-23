@@ -1,0 +1,7 @@
+{
+  if (!mapping.isPresent()) {
+    return key;
+  }
+  String converted=mapping.get().get(key);
+  return converted != null ? converted : key;
+}

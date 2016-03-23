@@ -1,6 +1,5 @@
 {
   validate();
-  LOG.info("Building DataSource with " + this);
   Properties properties=new Properties();
   if (state != null) {
     properties=state.getProperties();
@@ -21,6 +20,8 @@
   if (useStrongEncryption != null) {
     properties.setProperty(ConfigurationKeys.ENCRYPT_USE_STRONG_ENCRYPTOR,useStrongEncryption.toString());
   }
-  LOG.info("Building DataSource with properties " + properties);
+  if (LOG.isDebugEnabled()) {
+    LOG.debug("Building DataSource with properties " + properties);
+  }
   return new DataSourceProvider(properties).get();
 }

@@ -1,0 +1,15 @@
+{
+  Connection conn=mock(Connection.class);
+  PreparedStatement pstmt=mock(PreparedStatement.class);
+  when(conn.prepareStatement(any(String.class))).thenReturn(pstmt);
+  ResultSet rs=createMockResultSet();
+  when(pstmt.executeQuery()).thenReturn(rs);
+  MySqlWriterCommands writerCommands=new MySqlWriterCommands(new State());
+  Map<String,JDBCType> actual=writerCommands.retrieveDateColumns(conn,"users");
+  ImmutableMap.Builder<String,JDBCType> builder=ImmutableMap.builder();
+  builder.put("date_of_birth",JDBCType.DATE);
+  builder.put("last_modified",JDBCType.TIME);
+  builder.put("created",JDBCType.TIMESTAMP);
+  Map<String,JDBCType> expected=builder.build();
+  Assert.assertEquals(expected,actual);
+}

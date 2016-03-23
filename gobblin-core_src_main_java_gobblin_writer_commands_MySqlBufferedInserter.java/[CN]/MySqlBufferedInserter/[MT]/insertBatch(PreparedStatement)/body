@@ -1,0 +1,25 @@
+{
+  Callable<Boolean> insertCall=new Callable<Boolean>(){
+    @Override public Boolean call() throws Exception {
+      int i=0;
+      pstmt.clearParameters();
+      for (      JdbcEntryData pendingEntry : pendingInserts) {
+        for (        JdbcEntryDatum datum : pendingEntry) {
+          pstmt.setObject(++i,datum.getVal());
+        }
+      }
+      if (LOG.isDebugEnabled()) {
+        LOG.debug("Executing SQL " + pstmt);
+      }
+      return pstmt.execute();
+    }
+  }
+;
+  try {
+    retryer.wrap(insertCall).call();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to insert.",e);
+  }
+  resetBatch();
+}

@@ -1,20 +1,18 @@
 {
   LOG.info("Start publishing data");
-  LOG.info("WorkUnitStates: " + states);
   int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
-  Set<String> truncatedDestinationTables=Sets.newHashSet();
-  JdbcWriterCommands commands=JdbcWriterCommandsFactory.newInstance(state);
+  Set<String> emptiedDestTables=Sets.newHashSet();
+  JdbcWriterCommands commands=jdbcWriterCommandsFactory.newInstance(state);
   Connection conn=createConnection();
-  boolean isFailed=false;
   try {
     conn.setAutoCommit(false);
     for (int i=0; i < branches; i++) {
       String destinationTable=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,i));
       Objects.requireNonNull(destinationTable);
-      if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,i),false) && !truncatedDestinationTables.contains(destinationTable)) {
+      if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,i),false) && !emptiedDestTables.contains(destinationTable)) {
         LOG.info("Deleting table " + destinationTable);
         commands.deleteAll(conn,destinationTable);
-        truncatedDestinationTables.add(destinationTable);
+        emptiedDestTables.add(destinationTable);
       }
       Map<String,List<WorkUnitState>> stagingTables=getStagingTables(states,branches,i);
       for (      Map.Entry<String,List<WorkUnitState>> entry : stagingTables.entrySet()) {
@@ -26,10 +24,10 @@
         }
       }
     }
-    commands.flush(conn);
+    LOG.info("Commit publish data");
+    conn.commit();
   }
  catch (  Exception e) {
-    isFailed=true;
     try {
       LOG.error("Failed publishing. Rolling back.");
       conn.rollback();
@@ -40,15 +38,6 @@
     throw new RuntimeException("Failed publishing",e);
   }
  finally {
-    try {
-      if (!isFailed) {
-        LOG.info("Commit publish data");
-        conn.commit();
-      }
-    }
- catch (    SQLException se) {
-      throw new RuntimeException("Failed to commit",se);
-    }
     try {
       conn.close();
     }

@@ -1,13 +1,13 @@
 {
   if (Type.RECORD.equals(schema.getType())) {
-    fqn.addLast(schema.getFullName());
+    fqn.addLast(schema.getName());
     for (    Field f : schema.getFields()) {
       fieldsToRemoveHelper(f.schema(),f,requiredFields,fqn,fieldsToRemove);
     }
     fqn.removeLast();
     return fieldsToRemove;
   }
-  fqn.addLast(Objects.requireNonNull(field).name());
+  fqn.addLast(field.name());
   String fqnStr=JOINER_ON_DOT.join(fqn);
   boolean isRequiredField=requiredFields.remove(fqnStr);
   if (!isRequiredField) {

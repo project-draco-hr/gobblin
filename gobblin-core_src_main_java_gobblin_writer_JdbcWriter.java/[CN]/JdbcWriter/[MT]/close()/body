@@ -12,6 +12,6 @@
     }
   }
  catch (  SQLException e) {
-    throw new IOException(e);
+    throw new RuntimeException(e);
   }
 }

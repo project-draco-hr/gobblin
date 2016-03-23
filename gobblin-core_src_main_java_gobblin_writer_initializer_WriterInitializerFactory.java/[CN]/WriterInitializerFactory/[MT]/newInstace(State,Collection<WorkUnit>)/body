@@ -7,5 +7,5 @@
   for (int branchId=0; branchId < branches; branchId++) {
     wis.add(newSingleInstance(state,workUnits,branches,branchId));
   }
-  return NOOP;
+  return new MultiWriterInitializer(wis);
 }

@@ -1,0 +1,4 @@
+{
+  this.jdbcWriterCommandsFactory=jdbcWriterCommandsFactory;
+  init(workUnit);
+}

@@ -1,0 +1,21 @@
+{
+  this.commands=jdbcWriterCommandsFactory.newInstance(workUnit);
+  String avroToJdbcFieldsPairJsonStr=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS);
+  if (!StringUtils.isEmpty(avroToJdbcFieldsPairJsonStr)) {
+    if (!avroToJdbcColPairs.isPresent()) {
+      ImmutableMap.Builder<String,String> avroToJdbcBuilder=ImmutableMap.builder();
+      ImmutableMap.Builder<String,String> jdbcToAvroBuilder=ImmutableMap.builder();
+      JsonObject json=new JsonParser().parse(avroToJdbcFieldsPairJsonStr).getAsJsonObject();
+      for (      Map.Entry<String,JsonElement> entry : json.entrySet()) {
+        if (!entry.getValue().isJsonPrimitive()) {
+          throw new IllegalArgumentException("Json value should be a primitive String. " + ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS + " : "+ avroToJdbcFieldsPairJsonStr);
+        }
+        avroToJdbcBuilder.put(entry.getKey(),entry.getValue().getAsString());
+        jdbcToAvroBuilder.put(entry.getValue().getAsString(),entry.getKey());
+      }
+      avroToJdbcColPairs=Optional.of((Map<String,String>)avroToJdbcBuilder.build());
+      jdbcToAvroColPairs=Optional.of((Map<String,String>)jdbcToAvroBuilder.build());
+    }
+  }
+  return this;
+}

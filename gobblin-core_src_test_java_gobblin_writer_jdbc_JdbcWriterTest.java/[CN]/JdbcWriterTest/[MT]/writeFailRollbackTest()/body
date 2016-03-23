@@ -1,0 +1,20 @@
+{
+  final String table="users";
+  JdbcWriterCommands writerCommands=mock(JdbcWriterCommands.class);
+  Connection conn=mock(Connection.class);
+  doThrow(RuntimeException.class).when(writerCommands).insert(any(Connection.class),anyString(),any(JdbcEntryData.class));
+  JdbcWriter writer=new JdbcWriter(writerCommands,new State(),table,conn);
+  try {
+    writer.write(null);
+    Assert.fail("Test case didn't throw Exception.");
+  }
+ catch (  RuntimeException e) {
+    Assert.assertTrue(e instanceof RuntimeException);
+  }
+  writer.close();
+  verify(writerCommands,times(1)).insert(any(Connection.class),anyString(),any(JdbcEntryData.class));
+  verify(conn,times(1)).rollback();
+  verify(conn,never()).commit();
+  verify(conn,times(1)).close();
+  Assert.assertEquals(writer.recordsWritten(),0L);
+}

@@ -2,8 +2,8 @@
   this.state=builder.destination.getProperties();
   this.state.appendToListProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,Integer.toString(builder.branch));
   String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,builder.branches,builder.branch);
-  this.table=Objects.requireNonNull(state.getProp(stagingTableKey),"Staging table is missing with key " + stagingTableKey);
-  this.commands=JdbcWriterCommandsFactory.newInstance(state);
+  this.tableName=Objects.requireNonNull(state.getProp(stagingTableKey),"Staging table is missing with key " + stagingTableKey);
+  this.commands=new JdbcWriterCommandsFactory().newInstance(state);
   try {
     this.conn=createConnection();
     conn.setAutoCommit(false);

@@ -1,0 +1,3 @@
+{
+  return String.format("MySqlWriterCommands [bufferedWriter=%s]",jdbcBufferedWriter);
+}

@@ -1,0 +1,11 @@
+{
+  if (this == obj)   return true;
+  if (obj == null)   return false;
+  if (getClass() != obj.getClass())   return false;
+  JdbcEntrySchema other=(JdbcEntrySchema)obj;
+  if (jdbcMetaData == null) {
+    if (other.jdbcMetaData != null)     return false;
+  }
+ else   if (!jdbcMetaData.equals(other.jdbcMetaData))   return false;
+  return true;
+}

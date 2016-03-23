@@ -1,0 +1,4 @@
+JdbcWriterCommands commands
+State state
+String table
+Connection conn
