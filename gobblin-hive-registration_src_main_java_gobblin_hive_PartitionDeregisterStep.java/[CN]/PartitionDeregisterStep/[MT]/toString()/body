@@ -1,0 +1,3 @@
+{
+  return String.format("Deregister partition %s.%s %s on Hive metastore %s.",this.partition.getDbName(),this.partition.getTableName(),Arrays.toString(this.partition.getValues().toArray()),this.metastoreURI.isPresent() ? this.metastoreURI.get() : "default");
+}
