@@ -1,0 +1,11 @@
+{
+  if (!isHiveTableAvroType(targetTable)) {
+    return;
+  }
+  String oldAvroSchemaURL=targetTable.getTTable().getSd().getSerdeInfo().getParameters().get(HIVE_TABLE_AVRO_SCHEMA_URL);
+  if (oldAvroSchemaURL != null) {
+    String newAvroSchemaURL=hiveHelper.getTargetPath(new Path(oldAvroSchemaURL),hiveHelper.getTargetFileSystem(),Optional.<Partition>absent(),true).toString();
+    targetTable.getTTable().getSd().getSerdeInfo().getParameters().put(HIVE_TABLE_AVRO_SCHEMA_URL,newAvroSchemaURL);
+    log.info(String.format("For table %s, change %s from %s to %s",targetTable.getCompleteName(),HIVE_TABLE_AVRO_SCHEMA_URL,oldAvroSchemaURL,newAvroSchemaURL));
+  }
+}

@@ -1,0 +1,4 @@
+HiveLocationDescriptor sourceLocation
+HiveLocationDescriptor desiredTargetLocation
+Optional<HiveLocationDescriptor> currentTargetLocation
+Optional<Partition> partition

@@ -1,0 +1,12 @@
+{
+  Set<Path> result=HiveUtils.getPaths(this.inputFormat,this.location);
+  boolean useHiveLocationDescriptorWithAdditionalData=Boolean.valueOf(this.properties.getProperty(HIVE_DATASET_COPY_ADDITIONAL_PATHS_RECURSIVELY_ENABLED,"true"));
+  if (useHiveLocationDescriptorWithAdditionalData) {
+    if (PathUtils.isGlob(location)) {
+      throw new RuntimeException("can not get additional data for glob pattern path " + location);
+    }
+    RecursivePathFinder finder=new RecursivePathFinder(fileSystem,location,properties);
+    result.addAll(finder.getPaths());
+  }
+  return result;
+}

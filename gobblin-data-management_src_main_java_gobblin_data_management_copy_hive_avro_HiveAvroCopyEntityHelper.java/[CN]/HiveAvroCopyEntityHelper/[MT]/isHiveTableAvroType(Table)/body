@@ -1,0 +1,6 @@
+{
+  String serializationLib=targetTable.getTTable().getSd().getSerdeInfo().getSerializationLib();
+  String inputFormat=targetTable.getTTable().getSd().getInputFormat();
+  String outputFormat=targetTable.getTTable().getSd().getOutputFormat();
+  return inputFormat.endsWith("AvroContainerInputFormat") || outputFormat.endsWith("AvroContainerOutputFormat") || serializationLib.endsWith("AvroSerDe");
+}

@@ -1,3 +1,0 @@
-{
-  return HiveUtils.getPaths(this.inputFormat,this.location);
-}

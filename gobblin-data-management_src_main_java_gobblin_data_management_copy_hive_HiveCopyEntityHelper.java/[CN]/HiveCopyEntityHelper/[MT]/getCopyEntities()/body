@@ -3,7 +3,7 @@
   if (HiveUtils.isPartitioned(this.dataset.table)) {
     for (    Map.Entry<List<String>,Partition> partitionEntry : sourcePartitions.entrySet()) {
       try {
-        copyableFiles.addAll(new PartitionCopy(partitionEntry.getValue()).getCopyEntities());
+        copyableFiles.addAll(new PartitionCopy(partitionEntry.getValue(),this.dataset.properties).getCopyEntities());
       }
  catch (      IOException ioe) {
         log.error("Could not generate work units to copy partition " + partitionEntry.getValue().getCompleteName(),ioe);
