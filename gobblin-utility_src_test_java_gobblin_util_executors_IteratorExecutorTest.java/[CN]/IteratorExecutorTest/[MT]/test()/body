@@ -1,0 +1,32 @@
+{
+  TestIterator iterator=new TestIterator(5);
+  final IteratorExecutor<Void> executor=new IteratorExecutor<>(iterator,2,new ThreadFactoryBuilder().build());
+  ExecutorService singleThread=Executors.newSingleThreadExecutor();
+  Future future=singleThread.submit(new Runnable(){
+    @Override public void run(){
+      try {
+        executor.execute();
+      }
+ catch (      InterruptedException ie) {
+        throw new RuntimeException(ie);
+      }
+    }
+  }
+);
+  verify(2,0);
+  Assert.assertFalse(future.isDone());
+  Assert.assertTrue(iterator.hasNext());
+  iterator.endOneCallable();
+  verify(3,1);
+  Assert.assertFalse(future.isDone());
+  Assert.assertTrue(iterator.hasNext());
+  iterator.endOneCallable();
+  iterator.endOneCallable();
+  verify(5,3);
+  Assert.assertFalse(future.isDone());
+  Assert.assertFalse(iterator.hasNext());
+  iterator.endOneCallable();
+  iterator.endOneCallable();
+  verify(5,5);
+  Assert.assertTrue(future.isDone());
+}

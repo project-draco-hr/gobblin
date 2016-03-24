@@ -4,7 +4,7 @@
     this.datasetFinders=Lists.newArrayList();
     if (jobProps.containsKey(datasetFinderClassKey())) {
       try {
-        this.datasetFinders.add((DatasetFinder)ConstructorUtils.invokeConstructor(Class.forName(jobProps.getProperty(datasetFinderClassKey())),fs,jobProps));
+        this.datasetFinders.add((DatasetsFinder)ConstructorUtils.invokeConstructor(Class.forName(jobProps.getProperty(datasetFinderClassKey())),fs,jobProps));
         log.info(String.format("Instantiated datasetfinder %s ",jobProps.getProperty(datasetFinderClassKey())));
       }
  catch (      NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
@@ -17,7 +17,7 @@
       for (      URI importedBy : importedBys) {
         Config datasetClassConfig=client.getConfig(importedBy);
         try {
-          this.datasetFinders.add((DatasetFinder)ConstructorUtils.invokeConstructor(Class.forName(datasetClassConfig.getString(datasetFinderClassKey())),fs,jobProps,datasetClassConfig));
+          this.datasetFinders.add((DatasetsFinder)ConstructorUtils.invokeConstructor(Class.forName(datasetClassConfig.getString(datasetFinderClassKey())),fs,jobProps,datasetClassConfig));
           log.info(String.format("Instantiated datasetfinder %s for %s.",datasetClassConfig.getString(datasetFinderClassKey()),importedBy));
         }
  catch (        InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException|NoSuchMethodException|SecurityException|ClassNotFoundException e) {

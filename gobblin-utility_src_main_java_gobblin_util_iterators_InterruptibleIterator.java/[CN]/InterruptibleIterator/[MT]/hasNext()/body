@@ -1,0 +1,12 @@
+{
+  try {
+    if (this.promisedNext || (this.iterator.hasNext() && !this.interrupt.call())) {
+      this.promisedNext=true;
+      return true;
+    }
+    return false;
+  }
+ catch (  Exception exception) {
+    throw new RuntimeException(exception);
+  }
+}

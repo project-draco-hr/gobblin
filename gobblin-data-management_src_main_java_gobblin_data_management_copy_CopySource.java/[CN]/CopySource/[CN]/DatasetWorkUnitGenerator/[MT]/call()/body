@@ -1,6 +1,6 @@
 {
-  if (workUnitList.hasRejectedFileSet()) {
-    return;
+  if (shouldStopGeneratingWorkUnits(this.workUnitList)) {
+    return null;
   }
   try {
     Collection<? extends CopyEntity> files=this.copyableDataset.getCopyableFiles(this.targetFs,this.copyConfiguration);
@@ -29,4 +29,5 @@
  catch (  IOException ioe) {
     throw new RuntimeException("Failed to generate work units for dataset " + this.copyableDataset.datasetURN(),ioe);
   }
+  return null;
 }
