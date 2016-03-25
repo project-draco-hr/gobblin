@@ -1,0 +1,6 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(dbName));
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(tableName));
+  Preconditions.checkArgument(partitionValues.iterator().hasNext());
+  return new AutoCloseableLock(this.locks.get(JOINER.join(dbName,tableName,JOINER.join(partitionValues))));
+}

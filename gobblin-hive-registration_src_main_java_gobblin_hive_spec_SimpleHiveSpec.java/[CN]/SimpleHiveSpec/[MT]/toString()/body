@@ -1,0 +1,3 @@
+{
+  return Objects.toStringHelper(this).omitNullValues().add("path",this.path.toString()).add("db",this.table.getDbName()).add("table",this.table.getTableName()).add("partition",this.partition.orNull()).toString();
+}

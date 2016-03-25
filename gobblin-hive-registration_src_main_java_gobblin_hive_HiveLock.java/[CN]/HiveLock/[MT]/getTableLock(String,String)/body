@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(dbName));
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(tableName));
+  return new AutoCloseableLock(this.locks.get(JOINER.join(dbName,tableName)));
+}
