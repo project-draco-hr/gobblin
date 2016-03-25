@@ -1,2 +1,2 @@
-FileSystem fs
+FileSystem targetFs
 Properties properties

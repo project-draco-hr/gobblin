@@ -1,0 +1,15 @@
+{
+  List<OwnerAndPermission> ancestorOwnerAndPermissions=Lists.newArrayList();
+  Path currentOriginPath=originPath.getParent();
+  Path currentTargetPath=destinationPath.getParent();
+  while (currentOriginPath != null && currentTargetPath != null && currentOriginPath.getName().equals(currentTargetPath.getName())) {
+    Optional<FileStatus> targetFileStatus=this.configuration.getCopyContext().getFileStatus(targetFs,currentTargetPath);
+    if (targetFileStatus.isPresent()) {
+      return ancestorOwnerAndPermissions;
+    }
+    ancestorOwnerAndPermissions.add(resolveReplicatedOwnerAndPermission(originFs,currentOriginPath,this.configuration));
+    currentOriginPath=currentOriginPath.getParent();
+    currentTargetPath=currentTargetPath.getParent();
+  }
+  return ancestorOwnerAndPermissions;
+}

@@ -1,0 +1,18 @@
+{
+  try {
+    return this.fileStatusCache.get(fs.makeQualified(path),new Callable<Optional<FileStatus>>(){
+      @Override public Optional<FileStatus> call() throws Exception {
+        try {
+          return Optional.of(fs.getFileStatus(path));
+        }
+ catch (        FileNotFoundException fnfe) {
+          return Optional.absent();
+        }
+      }
+    }
+);
+  }
+ catch (  ExecutionException ee) {
+    throw new IOException(ee.getCause());
+  }
+}

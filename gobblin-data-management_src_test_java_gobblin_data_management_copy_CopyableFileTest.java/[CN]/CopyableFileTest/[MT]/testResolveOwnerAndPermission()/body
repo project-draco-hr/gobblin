@@ -1,0 +1,30 @@
+{
+  Path path=new Path("/test/path");
+  FileStatus fileStatus=new FileStatus(1,false,0,0,0,0,FsPermission.getDefault(),"owner","group",path);
+  FileSystem fs=Mockito.mock(FileSystem.class);
+  Mockito.doReturn(fileStatus).when(fs).getFileStatus(path);
+  Mockito.doReturn(path).when(fs).makeQualified(path);
+  Mockito.doReturn(new URI("hdfs://uri")).when(fs).getUri();
+  Properties properties=new Properties();
+  properties.put(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,"/final/dir");
+  OwnerAndPermission ownerAndPermission=CopyableFile.resolveReplicatedOwnerAndPermission(fs,path,new CopyConfiguration.CopyConfigurationBuilder(fs,properties).build());
+  Assert.assertEquals(ownerAndPermission.getOwner(),null);
+  Assert.assertEquals(ownerAndPermission.getGroup(),null);
+  Assert.assertEquals(ownerAndPermission.getFsPermission(),null);
+  ownerAndPermission=CopyableFile.resolveReplicatedOwnerAndPermission(fs,path,new CopyConfiguration.CopyConfigurationBuilder(fs,properties).targetGroup(Optional.of("target")).build());
+  Assert.assertEquals(ownerAndPermission.getOwner(),null);
+  Assert.assertEquals(ownerAndPermission.getGroup(),"target");
+  Assert.assertEquals(ownerAndPermission.getFsPermission(),null);
+  ownerAndPermission=CopyableFile.resolveReplicatedOwnerAndPermission(fs,path,new CopyConfiguration.CopyConfigurationBuilder(fs,properties).targetGroup(Optional.of("target")).preserve(PreserveAttributes.fromMnemonicString("ug")).build());
+  Assert.assertEquals(ownerAndPermission.getOwner(),"owner");
+  Assert.assertEquals(ownerAndPermission.getGroup(),"target");
+  Assert.assertEquals(ownerAndPermission.getFsPermission(),null);
+  ownerAndPermission=CopyableFile.resolveReplicatedOwnerAndPermission(fs,path,new CopyConfiguration.CopyConfigurationBuilder(fs,properties).preserve(PreserveAttributes.fromMnemonicString("ug")).build());
+  Assert.assertEquals(ownerAndPermission.getOwner(),"owner");
+  Assert.assertEquals(ownerAndPermission.getGroup(),"group");
+  Assert.assertEquals(ownerAndPermission.getFsPermission(),null);
+  ownerAndPermission=CopyableFile.resolveReplicatedOwnerAndPermission(fs,path,new CopyConfiguration.CopyConfigurationBuilder(fs,properties).preserve(PreserveAttributes.fromMnemonicString("ugp")).build());
+  Assert.assertEquals(ownerAndPermission.getOwner(),"owner");
+  Assert.assertEquals(ownerAndPermission.getGroup(),"group");
+  Assert.assertEquals(ownerAndPermission.getFsPermission(),FsPermission.getDefault());
+}
