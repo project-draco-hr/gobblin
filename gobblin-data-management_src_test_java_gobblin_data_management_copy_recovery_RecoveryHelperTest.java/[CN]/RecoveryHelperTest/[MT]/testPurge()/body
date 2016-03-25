@@ -1,0 +1,23 @@
+{
+  String content="contents";
+  File persistDirBase=Files.createTempDir();
+  persistDirBase.deleteOnExit();
+  State state=new State();
+  state.setProp(RecoveryHelper.PERSIST_DIR_KEY,persistDirBase.getAbsolutePath());
+  state.setProp(RecoveryHelper.PERSIST_RETENTION_KEY,"1");
+  RecoveryHelper recoveryHelper=new RecoveryHelper(FileSystem.getLocal(new Configuration()),state);
+  File persistDir=new File(RecoveryHelper.getPersistDir(state).get().toString());
+  persistDir.mkdir();
+  File file=new File(persistDir,"file1");
+  OutputStream os=new FileOutputStream(file);
+  IOUtils.write(content,os);
+  os.close();
+  file.setLastModified(System.currentTimeMillis() - TimeUnit.HOURS.toMillis(2));
+  File file2=new File(persistDir,"file2");
+  OutputStream os2=new FileOutputStream(file2);
+  IOUtils.write(content,os2);
+  os2.close();
+  Assert.assertEquals(persistDir.listFiles().length,2);
+  recoveryHelper.purgeOldPersistedFile();
+  Assert.assertEquals(persistDir.listFiles().length,1);
+}

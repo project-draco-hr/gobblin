@@ -11,5 +11,11 @@
   }
   Path targetPath=new Path(persistDir.get(),nameBuilder.toString());
   log.info(String.format("Persisting file %s with guid %s to location %s.",path,guid,targetPath));
-  return this.fs.rename(path,targetPath);
+  if (this.fs.rename(path,targetPath)) {
+    this.fs.setTimes(targetPath,System.currentTimeMillis(),-1);
+    return true;
+  }
+ else {
+    return false;
+  }
 }
