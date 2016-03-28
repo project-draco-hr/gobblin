@@ -1,0 +1,3 @@
+{
+  return (path.isAbsolute() && path.toUri().getScheme() == null && path.toUri().getAuthority() == null);
+}
