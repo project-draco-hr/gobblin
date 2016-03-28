@@ -1,0 +1,15 @@
+{
+  if (!this.persistDir.isPresent() || !this.fs.exists(this.persistDir.get())) {
+    log.info("No persist directory to clean.");
+    return;
+  }
+  long retentionMillis=TimeUnit.HOURS.toMillis(this.retentionHours);
+  long now=System.currentTimeMillis();
+  for (  FileStatus fileStatus : this.fs.listStatus(this.persistDir.get())) {
+    if (now - fileStatus.getModificationTime() > retentionMillis) {
+      if (!this.fs.delete(fileStatus.getPath(),true)) {
+        log.warn("Failed to delete path " + fileStatus.getPath());
+      }
+    }
+  }
+}
