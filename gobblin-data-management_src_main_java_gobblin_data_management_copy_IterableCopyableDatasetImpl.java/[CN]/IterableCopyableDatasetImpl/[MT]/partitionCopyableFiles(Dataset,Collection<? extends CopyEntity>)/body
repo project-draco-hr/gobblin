@@ -6,10 +6,10 @@
     }
     partitionBuildersMaps.get(file.getFileSet()).add(file);
   }
-  return Lists.newArrayList(Iterables.transform(partitionBuildersMaps.values(),new Function<FileSet.Builder<CopyEntity>,FileSet<CopyEntity>>(){
+  return Iterators.transform(partitionBuildersMaps.values().iterator(),new Function<FileSet.Builder<CopyEntity>,FileSet<CopyEntity>>(){
     @Nullable @Override public FileSet<CopyEntity> apply(    FileSet.Builder<CopyEntity> input){
       return input.build();
     }
   }
-));
+);
 }
