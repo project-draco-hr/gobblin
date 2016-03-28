@@ -1,4 +1,0 @@
-State state
-Collection<WorkUnit> workUnits
-int branches
-int branchId

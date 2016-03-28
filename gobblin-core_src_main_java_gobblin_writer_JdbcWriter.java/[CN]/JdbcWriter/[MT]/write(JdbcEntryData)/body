@@ -3,7 +3,7 @@
     LOG.debug("Writing " + record);
   }
   try {
-    commands.insert(conn,tableName,record);
+    commands.insert(conn,databaseName,tableName,record);
     recordWrittenCount++;
   }
  catch (  Exception e) {

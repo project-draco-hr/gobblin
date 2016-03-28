@@ -1,4 +1,0 @@
-{
-  String forkedKey=ForkOperatorUtils.getPropertyNameForBranch(key,branches,branchId);
-  return state.getProp(forkedKey);
-}

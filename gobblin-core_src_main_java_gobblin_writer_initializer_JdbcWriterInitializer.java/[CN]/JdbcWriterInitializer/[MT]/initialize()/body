@@ -5,10 +5,9 @@
     if (isSkipStaging) {
       LOG.info("Writer will write directly to destination table as JobCommitPolicy is " + jobCommitPolicy);
     }
-    int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
     final String publishTable=getProp(state,ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
     final String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,branches,branchId);
-    userCreatedStagingTable=state.getProp(stagingTableKey);
+    String stagingTable=state.getProp(stagingTableKey);
     int i=-1;
     for (    WorkUnit wu : workUnits) {
       i++;
@@ -23,26 +22,27 @@
         }
         continue;
       }
-      if (!StringUtils.isEmpty(userCreatedStagingTable)) {
-        LOG.info("Staging table for branch " + branchId + " from user: "+ userCreatedStagingTable);
-        wu.setProp(stagingTableKey,userCreatedStagingTable);
+      if (!StringUtils.isEmpty(stagingTable)) {
+        LOG.info("Staging table for branch " + branchId + " from user: "+ stagingTable);
+        wu.setProp(stagingTableKey,stagingTable);
         if (i == 0) {
           if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_TRUNCATE_STAGING_TABLE,branches,branchId),false)) {
-            LOG.info("Truncating staging table " + userCreatedStagingTable + " as requested.");
-            commands.truncate(conn,userCreatedStagingTable);
+            LOG.info("Truncating staging table " + stagingTable + " as requested.");
+            commands.truncate(conn,stagingTable);
           }
-          if (!commands.isEmpty(conn,userCreatedStagingTable)) {
-            LOG.error("Staging table " + userCreatedStagingTable + " is not empty. Failing.");
-            throw new IllegalArgumentException("Staging table " + userCreatedStagingTable + " should be empty.");
+          if (!commands.isEmpty(conn,stagingTable)) {
+            LOG.error("Staging table " + stagingTable + " is not empty. Failing.");
+            throw new IllegalArgumentException("Staging table " + stagingTable + " should be empty.");
           }
+          userCreatedStagingTable=stagingTable;
         }
         continue;
       }
       LOG.info("Staging table has not been passed from user for branch " + branchId + " workunit "+ i+ " . Creating.");
-      String stagingTable=createStagingTable(conn);
-      wu.setProp(stagingTableKey,stagingTable);
-      createdStagingTables.add(stagingTable);
-      LOG.info("Staging table " + stagingTable + " has been created for branchId "+ branchId+ " workunit "+ i);
+      String createdStagingTable=createStagingTable(conn);
+      wu.setProp(stagingTableKey,createdStagingTable);
+      createdStagingTables.add(createdStagingTable);
+      LOG.info("Staging table " + createdStagingTable + " has been created for branchId "+ branchId+ " workunit "+ i);
     }
   }
  catch (  SQLException e) {

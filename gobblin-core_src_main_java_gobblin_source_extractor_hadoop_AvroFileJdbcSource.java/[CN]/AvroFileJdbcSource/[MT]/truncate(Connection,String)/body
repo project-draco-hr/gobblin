@@ -1,6 +1,0 @@
-{
-  final String TRUNCATE_TABLE_FORMAT="TRUNCATE TABLE %s";
-  String sql=String.format(TRUNCATE_TABLE_FORMAT,publishTable);
-  LOG.info("Truncating table " + publishTable + " , SQL: "+ sql);
-  conn.prepareStatement(sql).execute();
-}

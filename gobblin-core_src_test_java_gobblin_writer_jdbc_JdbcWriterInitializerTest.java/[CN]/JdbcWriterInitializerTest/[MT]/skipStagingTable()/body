@@ -1,0 +1,10 @@
+{
+  state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
+  state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
+  initializer.initialize();
+  initializer.close();
+  Assert.assertEquals(DEST_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
+  verify(commands,never()).createTableStructure(any(Connection.class),anyString(),anyString());
+  verify(commands,never()).truncate(any(Connection.class),anyString());
+  verify(commands,never()).drop(any(Connection.class),anyString());
+}

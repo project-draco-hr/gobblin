@@ -1,9 +1,0 @@
-{
-  List<WorkUnit> workUnits=avroFileSource.getWorkunits(state);
-  if (workUnits == null || workUnits.isEmpty()) {
-    LOG.info("No work unit");
-    return workUnits;
-  }
-  initializeForWriterPublisher(state,workUnits);
-  return workUnits;
-}

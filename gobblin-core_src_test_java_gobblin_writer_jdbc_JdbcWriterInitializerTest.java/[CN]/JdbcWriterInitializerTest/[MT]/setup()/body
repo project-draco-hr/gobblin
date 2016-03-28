@@ -1,0 +1,15 @@
+{
+  state=new State();
+  state.setProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());
+  state.setProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,DEST_TABLE);
+  workUnit=WorkUnit.createEmpty();
+  workUnits=Lists.newArrayList();
+  workUnits.add(workUnit);
+  factory=mock(JdbcWriterCommandsFactory.class);
+  commands=mock(JdbcWriterCommands.class);
+  doReturn(commands).when(factory).newInstance(any(Destination.class));
+  initializer=new JdbcWriterInitializer(state,workUnits,factory,1,0);
+  initializer=spy(initializer);
+  conn=mock(Connection.class);
+  doReturn(conn).when(initializer).createConnection();
+}

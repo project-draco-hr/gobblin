@@ -1,0 +1,4 @@
+Connection conn
+String databaseName
+String table
+JdbcEntryData jdbcEntryData

@@ -1,4 +1,0 @@
-Connection conn
-SourceState state
-int branches
-int branchId

@@ -1,6 +1,7 @@
 {
   state=new State();
   state.setProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,destinationTable);
+  state.setProp(ConfigurationKeys.JDBC_PUBLISHER_DATABASE_NAME,database);
   commands=mock(JdbcWriterCommands.class);
   factory=mock(JdbcWriterCommandsFactory.class);
   when(factory.newInstance(any(State.class))).thenReturn(commands);

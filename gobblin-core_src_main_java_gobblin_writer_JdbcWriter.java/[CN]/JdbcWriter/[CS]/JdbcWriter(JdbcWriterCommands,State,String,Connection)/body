@@ -1,6 +1,0 @@
-{
-  this.commands=commands;
-  this.state=state;
-  this.tableName=table;
-  this.conn=conn;
-}

@@ -1,5 +1,5 @@
 {
-  doThrow(RuntimeException.class).when(commands).copyTable(conn,stagingTable,destinationTable);
+  doThrow(RuntimeException.class).when(commands).copyTable(conn,database,stagingTable,destinationTable);
   try {
     publisher.publish(workUnitStates);
     Assert.fail("Test case didn't throw Exception.");
@@ -9,7 +9,7 @@
   }
   InOrder inOrder=inOrder(conn,commands,workUnitState);
   inOrder.verify(conn,times(1)).setAutoCommit(false);
-  inOrder.verify(commands,times(1)).copyTable(conn,stagingTable,destinationTable);
+  inOrder.verify(commands,times(1)).copyTable(conn,database,stagingTable,destinationTable);
   inOrder.verify(conn,times(1)).rollback();
   inOrder.verify(conn,times(1)).close();
   verify(conn,never()).commit();

@@ -1,0 +1,16 @@
+{
+  if (columnNames == null) {
+    initializeForBatch(conn,databaseName,table,jdbcEntryData);
+  }
+  pendingInserts.add(jdbcEntryData);
+  usedBufferSize+=jdbcEntryData.byteSize();
+  if (pendingInserts.size() == batchSize) {
+    insertBatch(insertPstmtForFixedBatch);
+    return;
+  }
+  if (usedBufferSize >= maxBufferSize) {
+    LOG.info("Try to reduce batch size for better performance. Inserting as it reached buffer limit. Buffer size: " + usedBufferSize + " , Threshold: "+ maxBufferSize+ " , # of entries in batch: "+ pendingInserts.size());
+    PreparedStatement pstmt=conn.prepareStatement(createPrepareStatementStr(insertStmtPrefix,pendingInserts.size()));
+    insertBatch(pstmt);
+  }
+}

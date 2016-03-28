@@ -1,4 +1,5 @@
 {
+  final String db="db";
   final String table="stg";
   final int colNums=20;
   final int batchSize=100;
@@ -16,7 +17,7 @@
   when(conn.prepareStatement(anyString())).thenReturn(pstmt);
   List<JdbcEntryData> jdbcEntries=createJdbcEntries(colNums,colSize,entryCount);
   for (  JdbcEntryData entry : jdbcEntries) {
-    inserter.insert(conn,table,entry);
+    inserter.insert(conn,db,table,entry);
   }
   inserter.flush(conn);
   int expectedBatchSize=(int)(batchSize * bufferRatio);

@@ -1,0 +1,7 @@
+{
+  this.commands=commands;
+  this.state=state;
+  this.databaseName=databaseName;
+  this.tableName=table;
+  this.conn=conn;
+}

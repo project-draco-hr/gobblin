@@ -1,8 +1,0 @@
-{
-  LOG.info("Dropping table " + table);
-  final String DROP_TABLE_SQL_FORMAT="DROP TABLE %s";
-  String sql=String.format(DROP_TABLE_SQL_FORMAT,table);
-  PreparedStatement pstmt=conn.prepareStatement(sql);
-  LOG.info("Executing SQL " + pstmt);
-  pstmt.execute();
-}
