@@ -1,0 +1,6 @@
+{
+  doTest("datePartition","P1D","YYYY-MM-dd-HH","datePartition >= \"2016-03-14-10\"");
+  doTest("datePartition","P2D","YYYY-MM-dd-HH","datePartition >= \"2016-03-13-10\"");
+  doTest("datePartition","PT4H","YYYY-MM-dd-HH","datePartition >= \"2016-03-15-06\"");
+  doTest("myColumn","PT4H","YYYY-MM-dd-HH","myColumn >= \"2016-03-15-06\"");
+}

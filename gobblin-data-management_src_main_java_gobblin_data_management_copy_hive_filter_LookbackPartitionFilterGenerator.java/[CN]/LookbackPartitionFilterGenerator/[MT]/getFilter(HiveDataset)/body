@@ -1,0 +1,4 @@
+{
+  DateTime limitDate=(new DateTime()).minus(this.lookback);
+  return String.format("%s >= \"%s\"",this.partitionColumn,this.formatter.print(limitDate));
+}
