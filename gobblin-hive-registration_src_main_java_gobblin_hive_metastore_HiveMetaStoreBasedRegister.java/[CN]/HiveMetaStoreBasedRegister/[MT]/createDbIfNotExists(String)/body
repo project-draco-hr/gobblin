@@ -1,0 +1,5 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    return createDbIfNotExists(client.get(),dbName);
+  }
+ }

@@ -4,8 +4,9 @@
   GetMethod get=new GetMethod(schemaUrl);
   int statusCode;
   String schemaString;
+  HttpClient httpClient=this.borrowClient();
   try {
-    statusCode=KafkaAvroSchemaRegistry.this.httpClient.executeMethod(get);
+    statusCode=httpClient.executeMethod(get);
     schemaString=get.getResponseBodyAsString();
   }
  catch (  HttpException e) {
@@ -16,6 +17,7 @@ catch (  IOException e) {
   }
  finally {
     get.releaseConnection();
+    this.httpClientPool.returnObject(httpClient);
   }
   if (statusCode != HttpStatus.SC_OK) {
     throw new SchemaRegistryException(String.format("Latest schema for topic %s cannot be retrieved. Status code = %d",topic,statusCode));

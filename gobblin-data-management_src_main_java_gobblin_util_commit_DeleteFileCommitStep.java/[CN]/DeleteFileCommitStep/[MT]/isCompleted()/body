@@ -1,0 +1,8 @@
+{
+  for (  FileStatus pathToDelete : this.pathsToDelete) {
+    if (existsAndIsExpectedFile(pathToDelete)) {
+      return false;
+    }
+  }
+  return true;
+}

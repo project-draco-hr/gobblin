@@ -1,0 +1,6 @@
+{
+  closer=Closer.create();
+  URI serverUri=URI.create(String.format("http://%s:%d/",host,port));
+  client=new JobExecutionInfoClient(serverUri.toString());
+  closer.register(client);
+}

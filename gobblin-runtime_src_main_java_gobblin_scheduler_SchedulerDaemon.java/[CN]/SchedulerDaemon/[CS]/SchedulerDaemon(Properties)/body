@@ -1,0 +1,4 @@
+{
+  super(properties,getAppName(properties));
+  addService(new JobScheduler(properties));
+}

@@ -1,12 +1,18 @@
 {
-  this.taskState.addFinalConstructState(Constructs.EXTRACTOR.toString().toLowerCase(),extractor.getFinalState());
-  this.taskState.addFinalConstructState(Constructs.CONVERTER.toString().toLowerCase(),converter.getFinalState());
-  this.taskState.addFinalConstructState(Constructs.ROW_QUALITY_CHECKER.toString().toLowerCase(),rowChecker.getFinalState());
+  ConstructState constructState=new ConstructState();
+  if (extractor != null) {
+    constructState.addConstructState(Constructs.EXTRACTOR,new ConstructState(extractor.getFinalState()));
+  }
+  if (converter != null) {
+    constructState.addConstructState(Constructs.CONVERTER,new ConstructState(converter.getFinalState()));
+  }
+  if (rowChecker != null) {
+    constructState.addConstructState(Constructs.ROW_QUALITY_CHECKER,new ConstructState(rowChecker.getFinalState()));
+  }
   int forkIdx=0;
-  for (  Optional<Fork> fork : this.forks) {
-    if (fork.isPresent()) {
-      this.taskState.addFinalConstructState(RuntimeConstructs.FORK.toString().toLowerCase() + "." + forkIdx,fork.get().getFinalState());
-    }
+  for (  Optional<Fork> fork : this.forks.keySet()) {
+    constructState.addConstructState(Constructs.FORK_OPERATOR,new ConstructState(fork.get().getFinalState()),Integer.toString(forkIdx));
     forkIdx++;
   }
+  constructState.mergeIntoWorkUnitState(this.taskState);
 }

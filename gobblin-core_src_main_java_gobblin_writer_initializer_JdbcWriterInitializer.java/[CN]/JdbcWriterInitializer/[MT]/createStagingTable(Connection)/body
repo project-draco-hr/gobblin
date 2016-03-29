@@ -6,7 +6,7 @@
   }
   String stagingTable=null;
   for (int i=0; i < NAMING_STAGING_TABLE_TRIAL; i++) {
-    String tmp=String.format(STAGING_TABLE_FORMAT,destinationTable,System.nanoTime());
+    String tmp=String.format(STAGING_TABLE_FORMAT,System.nanoTime());
     LOG.info("Check if staging table " + tmp + " exists.");
     ResultSet res=conn.getMetaData().getTables(null,null,tmp,new String[]{"TABLE"});
     if (!res.next()) {

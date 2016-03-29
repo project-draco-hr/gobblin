@@ -1,3 +1,3 @@
 {
-  return Splitter.on(",").trimResults().omitEmptyStrings().splitToList(getProperty(key));
+  return LIST_SPLITTER.splitToList(getProperty(key));
 }

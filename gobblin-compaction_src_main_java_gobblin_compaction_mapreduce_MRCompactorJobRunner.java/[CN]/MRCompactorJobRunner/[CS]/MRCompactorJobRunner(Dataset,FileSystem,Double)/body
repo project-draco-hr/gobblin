@@ -8,6 +8,7 @@
   this.outputDeduplicated=this.dataset.jobProps().getPropAsBoolean(MRCompactor.COMPACTION_OUTPUT_DEDUPLICATED,MRCompactor.DEFAULT_COMPACTION_OUTPUT_DEDUPLICATED);
   this.usePrimeReducers=this.dataset.jobProps().getPropAsBoolean(COMPACTION_JOB_USE_PRIME_REDUCERS,DEFAULT_COMPACTION_JOB_USE_PRIME_REDUCERS);
   this.eventSubmitter=new EventSubmitter.Builder(GobblinMetrics.get(this.dataset.jobProps().getProp(ConfigurationKeys.JOB_NAME_KEY)).getMetricContext(),MRCompactor.COMPACTION_TRACKING_EVENTS_NAMESPACE).build();
+  this.copyLateDataThreadPoolSize=this.dataset.jobProps().getPropAsInt(COMPACTION_COPY_LATE_DATA_THREAD_POOL_SIZE,DEFAULT_COMPACTION_COPY_LATE_DATA_THREAD_POOL_SIZE);
   try {
     this.inputRecordCountProvider=(RecordCountProvider)Class.forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_INPUT_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_INPUT_RECORD_COUNT_PROVIDER)).newInstance();
     this.outputRecordCountProvider=(RecordCountProvider)Class.forName(this.dataset.jobProps().getProp(MRCompactor.COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER,MRCompactor.DEFAULT_COMPACTION_OUTPUT_RECORD_COUNT_PROVIDER)).newInstance();

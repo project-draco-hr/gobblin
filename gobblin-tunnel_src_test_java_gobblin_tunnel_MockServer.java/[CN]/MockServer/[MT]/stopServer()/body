@@ -1,0 +1,10 @@
+{
+  _serverRunning=false;
+  IOUtils.closeQuietly(_server);
+  for (  Socket socket : _sockets) {
+    IOUtils.closeQuietly(socket);
+  }
+  for (  EasyThread thread : _threads) {
+    thread.interrupt();
+  }
+}

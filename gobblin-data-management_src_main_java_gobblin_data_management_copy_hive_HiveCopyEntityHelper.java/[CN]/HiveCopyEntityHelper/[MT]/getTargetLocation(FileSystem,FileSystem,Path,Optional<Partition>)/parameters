@@ -1,0 +1,4 @@
+FileSystem sourceFs
+FileSystem targetFs
+Path path
+Optional<Partition> partition

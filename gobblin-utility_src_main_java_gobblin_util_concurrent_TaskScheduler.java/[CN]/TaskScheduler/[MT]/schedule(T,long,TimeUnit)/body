@@ -1,0 +1,17 @@
+{
+  Preconditions.checkArgument(isStarted,"TaskScheduler is not started");
+  try {
+    CancellableTask<K,T> cancellableTask=this.cancellableTaskMap.get(task.getKey(),new Callable<CancellableTask<K,T>>(){
+      @Override public CancellableTask<K,T> call(){
+        return scheduleImpl(task,period,unit);
+      }
+    }
+);
+    if (cancellableTask.getScheduledTask() != task) {
+      throw new IOException("Failed to schedule task with duplicate key");
+    }
+  }
+ catch (  ExecutionException e) {
+    throw new IOException("Failed to schedule task",e);
+  }
+}

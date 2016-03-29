@@ -1,0 +1,8 @@
+{
+  Preconditions.checkNotNull(schema);
+  if (null != props) {
+    for (    Map.Entry<String,JsonNode> prop : props.entrySet()) {
+      schema.addProp(prop.getKey(),prop.getValue());
+    }
+  }
+}

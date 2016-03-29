@@ -1,0 +1,6 @@
+{
+  this.path=path;
+  this.preActivities=Lists.newArrayList();
+  this.postActivities=Lists.newArrayList();
+  this.predicates=Lists.newArrayList();
+}

@@ -1,0 +1,8 @@
+{
+  try {
+    return this.getFileSystem().getFileStatus(new Path(filePath)).getModificationTime();
+  }
+ catch (  IOException e) {
+    throw new FileBasedHelperException(String.format("Failed to get last modified time for file at path %s due to error %s",filePath,e.getMessage()),e);
+  }
+}

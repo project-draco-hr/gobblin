@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(this.path);
+  Preconditions.checkNotNull(this.table);
+  return new SimpleHiveSpec(this);
+}

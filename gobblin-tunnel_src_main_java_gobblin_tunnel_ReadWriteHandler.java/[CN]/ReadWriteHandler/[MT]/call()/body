@@ -1,0 +1,31 @@
+{
+  try {
+switch (state) {
+case READING:
+      read();
+    break;
+case WRITING:
+  write();
+break;
+default :
+throw new IllegalStateException("ReadWriteHandler should never be in state " + state);
+}
+}
+ catch (CancelledKeyException e) {
+LOG.warn("Encountered canceled key while " + state,e);
+}
+catch (IOException ioe) {
+closeChannels();
+throw new IOException(String.format("Could not read/write between %s and %s",proxy,client),ioe);
+}
+catch (Exception e) {
+LOG.error("Unexpected exception",e);
+try {
+closeChannels();
+}
+  finally {
+throw e;
+}
+}
+return state;
+}

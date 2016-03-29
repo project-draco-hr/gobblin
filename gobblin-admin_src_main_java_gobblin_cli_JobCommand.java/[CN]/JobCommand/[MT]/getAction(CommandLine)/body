@@ -1,0 +1,9 @@
+{
+  for (  Map.Entry<String,SubCommand> entry : subCommandMap.entrySet()) {
+    if (parsedOpts.hasOption(entry.getKey())) {
+      return entry.getValue();
+    }
+  }
+  printHelpAndExit("Unknown subcommand");
+  throw new IllegalStateException("unreached...");
+}

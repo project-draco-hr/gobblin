@@ -1,0 +1,9 @@
+{
+  try {
+    return storeMetadata.getCurrentVersion();
+  }
+ catch (  IOException e) {
+    Path configStoreDir=new Path(new Path(this.physicalStoreRoot),CONFIG_STORE_NAME);
+    throw new RuntimeException(String.format("Error while checking current version for configStoreDir: \"%s\"",configStoreDir),e);
+  }
+}

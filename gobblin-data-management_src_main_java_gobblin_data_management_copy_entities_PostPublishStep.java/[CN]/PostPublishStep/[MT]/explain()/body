@@ -1,0 +1,3 @@
+{
+  return String.format("Post publish step with priority %s: %s",this.getPriority(),getStep().toString());
+}

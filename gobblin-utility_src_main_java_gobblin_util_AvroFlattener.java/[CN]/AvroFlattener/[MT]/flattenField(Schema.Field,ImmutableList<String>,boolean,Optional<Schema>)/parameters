@@ -1,0 +1,4 @@
+Schema.Field f
+ImmutableList<String> parentLineage
+boolean shouldPopulateLineage
+Optional<Schema> shouldWrapInOption

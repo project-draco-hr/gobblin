@@ -1,0 +1,18 @@
+{
+  try {
+    if (!returnURIWithAuthority) {
+      return new URI(cs.getStoreURI().getScheme(),null,configKeyPath.getAbsolutePathString(),null,null);
+    }
+ else {
+      URI storeRoot=cs.getStoreURI();
+      if (configKeyPath.isRootPath()) {
+        return storeRoot;
+      }
+      Path absPath=new Path(storeRoot.getPath(),configKeyPath.getAbsolutePathString().substring(1));
+      return new URI(storeRoot.getScheme(),storeRoot.getAuthority(),absPath.toString(),null,null);
+    }
+  }
+ catch (  URISyntaxException e) {
+    throw new RuntimeException("Can not build URI based on " + configKeyPath);
+  }
+}

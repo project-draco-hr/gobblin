@@ -1,6 +1,6 @@
 {
   for (  String fileRelativePath : relativeFilePaths) {
-    Path filePublishPath=new Path(metadata.getDatasetTargetRoot(),fileRelativePath);
+    Path filePublishPath=new Path(this.targetPath,fileRelativePath);
     Assert.assertEquals(fs.exists(filePublishPath),false);
   }
 }

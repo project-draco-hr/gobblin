@@ -1,0 +1,5 @@
+{
+  if (!addPartitionIfNotExists(table,partition)) {
+    alterPartition(table,partition);
+  }
+}

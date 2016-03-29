@@ -1,0 +1,6 @@
+{
+  ConfigurationBuilder cb=new ConfigurationBuilder().setUrls(ClasspathHelper.forClassLoader()).setScanners(new ResourcesScanner()).filterInputsBy(new FilterBuilder().include(String.format(".*%s.*",this.classpathRootName)));
+  Reflections reflections=new Reflections(cb);
+  Pattern pattern=Pattern.compile(".*");
+  return reflections.getResources(pattern);
+}

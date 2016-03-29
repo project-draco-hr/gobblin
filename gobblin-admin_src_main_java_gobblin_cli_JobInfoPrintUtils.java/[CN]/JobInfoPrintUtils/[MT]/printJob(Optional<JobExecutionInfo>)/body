@@ -1,0 +1,20 @@
+{
+  if (!jobExecutionInfoOptional.isPresent()) {
+    System.err.println("Job id not found.");
+    return;
+  }
+  JobExecutionInfo jobExecutionInfo=jobExecutionInfoOptional.get();
+  List<List<String>> data=new ArrayList<>();
+  List<String> flags=Arrays.asList("","-");
+  data.add(Arrays.asList("Job Name",jobExecutionInfo.getJobName()));
+  data.add(Arrays.asList("Job Id",jobExecutionInfo.getJobId()));
+  data.add(Arrays.asList("State",jobExecutionInfo.getState().toString()));
+  data.add(Arrays.asList("Completed/Launched Tasks",String.format("%d/%d",jobExecutionInfo.getCompletedTasks(),jobExecutionInfo.getLaunchedTasks())));
+  data.add(Arrays.asList("Start Time",dateTimeFormatter.print(jobExecutionInfo.getStartTime())));
+  data.add(Arrays.asList("End Time",dateTimeFormatter.print(jobExecutionInfo.getEndTime())));
+  data.add(Arrays.asList("Duration",jobExecutionInfo.getState() == JobStateEnum.COMMITTED ? periodFormatter.print(new Period(jobExecutionInfo.getDuration().longValue())) : "-"));
+  data.add(Arrays.asList("Tracking URL",jobExecutionInfo.getTrackingUrl()));
+  data.add(Arrays.asList("Launcher Type",jobExecutionInfo.getLauncherType().name()));
+  new CliTablePrinter.Builder().data(data).flags(flags).delimiterWidth(2).build().printTable();
+  JobInfoPrintUtils.printMetrics(jobExecutionInfo.getMetrics());
+}

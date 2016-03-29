@@ -1,5 +1,6 @@
 {
   State state=getTestState("testPublishDatasetFailure");
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,"/");
   Path testMethodTempPath=new Path(testClassTempPath,"testPublishDatasetFailure");
   CopyDataPublisher copyDataPublisher=closer.register(new CopyDataPublisher(state));
   TestDatasetManager successDatasetManager=new TestDatasetManager(testMethodTempPath,state,"successTargetPath",ImmutableList.of("a/b"));

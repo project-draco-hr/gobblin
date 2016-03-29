@@ -1,0 +1,3 @@
+{
+  return getTableComparator(existingTable,newTable).compareAll().result();
+}

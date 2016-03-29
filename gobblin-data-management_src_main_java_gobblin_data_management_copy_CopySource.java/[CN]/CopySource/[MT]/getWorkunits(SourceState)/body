@@ -1,34 +1,64 @@
 {
-  List<WorkUnit> workUnits=Lists.newArrayList();
-  CopyContext copyContext=new CopyContext();
   try {
-    DatasetFinder<CopyableDataset> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),getSourceFileSystem(state),DEFAULT_DATASET_PROFILE_CLASS_KEY);
-    List<CopyableDataset> copyableDatasets=datasetFinder.findDatasets();
-    FileSystem targetFs=getTargetFileSystem(state);
-    for (    CopyableDataset copyableDataset : copyableDatasets) {
-      Path targetRoot=getTargetRoot(state,datasetFinder,copyableDataset);
-      CopyConfiguration copyConfiguration=new CopyConfiguration(targetRoot,PreserveAttributes.fromMnemonicString(state.getProp(PRESERVE_ATTRIBUTES_KEY)),copyContext);
-      Collection<CopyableFile> files=copyableDataset.getCopyableFiles(targetFs,copyConfiguration);
-      Collection<Partition<CopyableFile>> partitions=partitionCopyableFiles(files);
-      for (      Partition<CopyableFile> partition : partitions) {
-        Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,COPY_PREFIX,partition.getName());
-        for (        CopyableFile copyableFile : partition.getFiles()) {
-          WorkUnit workUnit=new WorkUnit(extract);
-          workUnit.addAll(state);
-          serializeCopyableFile(workUnit,copyableFile);
-          serializeCopyableDataset(workUnit,new CopyableDatasetMetadata(copyableDataset,targetRoot));
-          GobblinMetrics.addCustomTagToState(workUnit,new Tag<>(CopyEventSubmitterHelper.DATASET_ROOT_METADATA_NAME,copyableDataset.datasetRoot().toString()));
-          workUnit.setProp(SlaEventKeys.DATASET_URN_KEY,copyableDataset.datasetRoot().toString());
-          workUnit.setProp(SlaEventKeys.PARTITION_KEY,copyableFile.getFileSet());
-          computeAndSetWorkUnitGuid(workUnit);
-          workUnits.add(workUnit);
+    final FileSystem sourceFs=getSourceFileSystem(state);
+    final FileSystem targetFs=getTargetFileSystem(state);
+    final ConcurrentBoundedWorkUnitList workUnitList=new ConcurrentBoundedWorkUnitList(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED),new AllEqualComparator<FileSet<CopyEntity>>());
+    final CopyConfiguration copyConfiguration=CopyConfiguration.builder(targetFs,state.getProperties()).build();
+    DatasetsFinder<CopyableDatasetBase> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY);
+    IterableDatasetFinder<CopyableDatasetBase> iterableDatasetFinder=datasetFinder instanceof IterableDatasetFinder ? (IterableDatasetFinder<CopyableDatasetBase>)datasetFinder : new IterableDatasetFinderImpl<>(datasetFinder);
+    Iterator<CopyableDatasetBase> copyableDatasets=new InterruptibleIterator<>(iterableDatasetFinder.getDatasetsIterator(),new Callable<Boolean>(){
+      @Override public Boolean call() throws Exception {
+        return shouldStopGeneratingWorkUnits(workUnitList);
+      }
+    }
+);
+    Iterator<Callable<Void>> callableIterator=Iterators.transform(copyableDatasets,new Function<CopyableDatasetBase,Callable<Void>>(){
+      @Nullable @Override public Callable<Void> apply(      @Nullable CopyableDatasetBase copyableDataset){
+        IterableCopyableDataset iterableCopyableDataset;
+        if (copyableDataset instanceof IterableCopyableDataset) {
+          iterableCopyableDataset=(IterableCopyableDataset)copyableDataset;
+        }
+ else         if (copyableDataset instanceof CopyableDataset) {
+          iterableCopyableDataset=new IterableCopyableDatasetImpl((CopyableDataset)copyableDataset);
+        }
+ else {
+          throw new RuntimeException(String.format("Cannot process %s, can only copy %s or %s.",copyableDataset.getClass().getName(),CopyableDataset.class.getName(),IterableCopyableDataset.class.getName()));
+        }
+        return new DatasetWorkUnitGenerator(iterableCopyableDataset,sourceFs,targetFs,state,workUnitList,copyConfiguration);
+      }
+    }
+);
+    try {
+      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("Dataset-cleaner-pool-%d"))).execute();
+      for (      Future<Void> future : futures) {
+        try {
+          future.get();
+        }
+ catch (        ExecutionException exc) {
+          log.error("Failed to get work units for dataset.",exc.getCause());
         }
       }
     }
+ catch (    InterruptedException ie) {
+      log.error("Retrieval of work units was interrupted. Aborting.");
+      return Lists.newArrayList();
+    }
+    log.info(String.format("Created %s workunits ",workUnitList.getWorkUnits().size()));
+    if (state.contains(SIMULATE) && state.getPropAsBoolean(SIMULATE)) {
+      Map<FileSet<CopyEntity>,List<WorkUnit>> copyEntitiesMap=workUnitList.getRawWorkUnitMap();
+      log.info("Simulate mode enabled. Will not execute the copy.");
+      for (      Map.Entry<FileSet<CopyEntity>,List<WorkUnit>> entry : copyEntitiesMap.entrySet()) {
+        log.info(String.format("Actions for dataset %s file set %s.",entry.getKey().getDataset().datasetURN(),entry.getKey().getName()));
+        for (        WorkUnit workUnit : entry.getValue()) {
+          CopyEntity copyEntity=deserializeCopyEntity(workUnit);
+          log.info(copyEntity.explain());
+        }
+      }
+      return Lists.newArrayList();
+    }
+    return Lists.newArrayList(workUnitList.getWorkUnits());
   }
  catch (  IOException e) {
     throw new RuntimeException(e);
   }
-  log.info(String.format("Created %s workunits",workUnits.size()));
-  return workUnits;
 }

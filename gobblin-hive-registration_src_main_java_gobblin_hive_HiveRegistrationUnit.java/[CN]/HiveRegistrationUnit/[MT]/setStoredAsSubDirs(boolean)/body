@@ -1,0 +1,3 @@
+{
+  this.isStoredAsSubDirs=Optional.of(isStoredAsSubDirs);
+}

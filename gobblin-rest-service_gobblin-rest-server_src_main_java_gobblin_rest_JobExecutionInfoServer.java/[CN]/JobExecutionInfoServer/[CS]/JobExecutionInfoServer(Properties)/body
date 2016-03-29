@@ -1,3 +1,6 @@
 {
   this.properties=properties;
+  port=getPort(properties);
+  serverUri=getServiceUri(getHost(properties),port);
+  serverAdvertisedUri=getAdvertisedUri(properties);
 }

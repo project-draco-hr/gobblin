@@ -1,0 +1,9 @@
+{
+  log.info(String.format("Creating CommitStep for moving %s to %s",src,dst));
+  boolean overwrite=state.getPropAsBoolean(ConfigurationKeys.DATA_PUBLISHER_OVERWRITE_ENABLED,false);
+  FsRenameCommitStep.Builder builder=this.commitSequenceBuilder.get().beginStep(FsRenameCommitStep.Builder.class).withProps(this.state).from(src).withSrcFs(this.writerFileSystemByBranches.get(branchId)).to(dst).withDstFs(this.publisherFileSystemByBranches.get(branchId));
+  if (overwrite) {
+    builder.overwrite();
+  }
+  builder.endStep();
+}

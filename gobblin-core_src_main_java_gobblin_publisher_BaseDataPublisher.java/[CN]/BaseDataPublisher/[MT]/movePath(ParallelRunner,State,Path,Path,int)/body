@@ -1,0 +1,6 @@
+{
+  LOG.info(String.format("Moving %s to %s",src,dst));
+  boolean overwrite=state.getPropAsBoolean(ConfigurationKeys.DATA_PUBLISHER_OVERWRITE_ENABLED,false);
+  this.publisherOutputDirs.addAll(recordPublisherOutputDirs(src,dst,branchId));
+  parallelRunner.movePath(src,this.publisherFileSystemByBranches.get(branchId),dst,overwrite,this.publisherFinalDirOwnerGroupsByBranches.get(branchId));
+}

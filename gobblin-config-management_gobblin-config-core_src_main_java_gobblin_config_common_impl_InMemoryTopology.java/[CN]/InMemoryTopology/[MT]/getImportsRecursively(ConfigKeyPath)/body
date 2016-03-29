@@ -9,6 +9,6 @@
   }
  catch (  UnsupportedOperationException uoe) {
     loadRawTopologyFromFallBack();
-    return this.recursiveImportMap.get(configKey);
+    return this.getImportsRecursivelyIncludePhantomFromCache(configKey);
   }
 }

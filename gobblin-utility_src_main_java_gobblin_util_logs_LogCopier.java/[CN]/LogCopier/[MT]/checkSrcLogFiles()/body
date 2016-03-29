@@ -13,16 +13,18 @@
   for (  FileStatus srcLogFile : srcLogFiles) {
     newLogFiles.add(srcLogFile.getPath());
   }
-  Set<Path> deletedLogFiles=Sets.newHashSet(this.logCopyTaskMap.keySet());
+  HashSet<Path> deletedLogFiles=Sets.newHashSet(getSourceFiles());
   deletedLogFiles.removeAll(newLogFiles);
-  newLogFiles.removeAll(this.logCopyTaskMap.keySet());
+  newLogFiles.removeAll(getSourceFiles());
   for (  final Path srcLogFile : newLogFiles) {
     String destLogFileName=this.logFileNamePrefix.isPresent() ? this.logFileNamePrefix.get() + "." + srcLogFile.getName() : srcLogFile.getName();
     final Path destLogFile=new Path(this.destLogDir,destLogFileName);
-    ScheduledFuture<?> copyFuture=this.logCopyExecutor.scheduleAtFixedRate(new LogCopyTask(srcLogFile,destLogFile),0,this.copyInterval,this.timeUnit);
-    this.logCopyTaskMap.put(srcLogFile,copyFuture);
+    this.scheduler.schedule(new LogCopyTask(srcLogFile,destLogFile),this.copyInterval,this.timeUnit);
   }
   for (  Path deletedLogFile : deletedLogFiles) {
-    this.logCopyTaskMap.remove(deletedLogFile).cancel(true);
+    Optional<LogCopyTask> logCopyTask=this.scheduler.getScheduledTask(deletedLogFile);
+    if (logCopyTask.isPresent()) {
+      this.scheduler.cancel(logCopyTask.get());
+    }
   }
 }

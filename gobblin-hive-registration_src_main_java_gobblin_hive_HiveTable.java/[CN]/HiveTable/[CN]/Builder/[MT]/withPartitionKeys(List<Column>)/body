@@ -1,0 +1,4 @@
+{
+  this.partitionKeys=partitionKeys;
+  return this;
+}

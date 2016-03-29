@@ -1,0 +1,3 @@
+HiveDataset dataset
+CopyConfiguration configuration
+FileSystem targetFs

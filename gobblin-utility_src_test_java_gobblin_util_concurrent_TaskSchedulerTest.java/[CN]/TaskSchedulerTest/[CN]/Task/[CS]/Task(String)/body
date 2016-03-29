@@ -1,0 +1,5 @@
+{
+  this.key=key;
+  this.autoResetEvent=new AutoResetEvent(false);
+  ;
+}

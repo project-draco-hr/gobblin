@@ -1,0 +1,15 @@
+{
+  String dbName=table.getDbName();
+  String tableName=table.getTableName();
+  try {
+    if (client.tableExists(table.getDbName(),table.getTableName())) {
+      return false;
+    }
+    client.createTable(table);
+    log.info(String.format("Created Hive table %s in db %s",tableName,dbName));
+    return true;
+  }
+ catch (  TException e) {
+    throw new IOException(String.format("Error in creating or altering Hive table %s in db %s",table.getTableName(),table.getDbName()),e);
+  }
+}

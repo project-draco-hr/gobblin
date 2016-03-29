@@ -1,0 +1,4 @@
+String fileSet
+Map<String,Object> additionalMetadata
+CommitStep step
+int priority

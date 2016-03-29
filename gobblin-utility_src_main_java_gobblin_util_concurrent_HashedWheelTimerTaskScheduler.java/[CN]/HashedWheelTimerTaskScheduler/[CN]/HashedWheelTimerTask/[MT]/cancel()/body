@@ -1,0 +1,7 @@
+{
+  if (future != null) {
+    future.cancel();
+    future=null;
+  }
+  return true;
+}

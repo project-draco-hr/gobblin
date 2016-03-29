@@ -1,0 +1,10 @@
+{
+  long offset=messageAndOffset.offset();
+  byte[] keyBytes=getBytes(messageAndOffset.message().key());
+  String key=(keyBytes == null) ? "" : new String(keyBytes,CHARSET);
+  byte[] payloadBytes=getBytes(messageAndOffset.message().payload());
+  String payload=(payloadBytes == null) ? "" : new String(payloadBytes,CHARSET);
+  KafkaRecord record=new KafkaRecord(offset,key,payload);
+  byte[] decodedRecord=gson.toJson(record).getBytes(CHARSET);
+  return decodedRecord;
+}

@@ -1,0 +1,5 @@
+{
+  if (GobblinMetrics.isEnabled(properties)) {
+    addService(new MetricsReportingService(properties,this.appId));
+  }
+}

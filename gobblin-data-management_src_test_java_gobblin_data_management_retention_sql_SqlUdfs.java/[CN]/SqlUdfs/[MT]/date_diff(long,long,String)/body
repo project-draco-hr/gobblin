@@ -1,0 +1,10 @@
+{
+  try {
+    TimeUnit unit=TimeUnit.valueOf(TimeUnit.class,StringUtils.upperCase(unitString));
+    return unit.convert(timestamp1 - timestamp2,TimeUnit.MILLISECONDS);
+  }
+ catch (  IllegalArgumentException e) {
+    log.error("Valid input for unitString is java.util.concurrent.TimeUnit",e);
+  }
+  return 0l;
+}

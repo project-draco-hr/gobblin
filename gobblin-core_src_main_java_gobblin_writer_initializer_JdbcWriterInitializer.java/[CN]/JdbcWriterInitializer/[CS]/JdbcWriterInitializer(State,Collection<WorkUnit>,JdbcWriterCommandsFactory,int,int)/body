@@ -9,4 +9,5 @@
   Destination dest=Destination.of(DestinationType.valueOf(destType.toUpperCase()),state);
   this.commands=jdbcWriterCommandsFactory.newInstance(dest);
   this.createdStagingTables=Sets.newHashSet();
+  state.setProp(ConfigurationKeys.CLEANUP_STAGING_DATA_BY_INITIALIZER,Boolean.toString(true));
 }

@@ -1,0 +1,10 @@
+{
+  try {
+    this.task.runOneIteration();
+  }
+  finally {
+    if (future != null) {
+      future=this.timer.newTimeout(this,this.period,this.unit);
+    }
+  }
+}

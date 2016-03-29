@@ -1,0 +1,12 @@
+{
+  try {
+    InputFormat<?,?> inputFormat=ConstructorUtils.invokeConstructor((Class<? extends InputFormat>)Class.forName(sd.getInputFormat()));
+    if (inputFormat instanceof JobConfigurable) {
+      ((JobConfigurable)inputFormat).configure(new JobConf(getHadoopConfiguration()));
+    }
+    return inputFormat;
+  }
+ catch (  ReflectiveOperationException re) {
+    throw new IOException("Failed to instantiate input format.",re);
+  }
+}

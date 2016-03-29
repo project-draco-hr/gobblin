@@ -1,0 +1,4 @@
+{
+  Path datasetPath=new Path(new Path(this.rootPath,jobName),sanitizeDatasetUrn(datasetUrn));
+  return this.fs.exists(datasetPath);
+}

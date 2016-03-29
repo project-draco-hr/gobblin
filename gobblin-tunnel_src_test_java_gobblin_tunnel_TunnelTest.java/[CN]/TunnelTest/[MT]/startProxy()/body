@@ -1,0 +1,4 @@
+{
+  mockServer=ClientAndServer.startClientAndServer(0);
+  PORT=mockServer.getPort();
+}

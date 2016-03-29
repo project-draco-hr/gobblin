@@ -1,0 +1,8 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
+  }
+ catch (  TException e) {
+    throw new IOException(String.format("Unable to alter partition %s in table %s in db %s",partition.getValues(),table.getTableName(),table.getDbName()),e);
+  }
+}

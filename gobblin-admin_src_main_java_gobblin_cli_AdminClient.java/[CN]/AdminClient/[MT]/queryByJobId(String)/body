@@ -1,0 +1,8 @@
+{
+  JobExecutionQuery query=new JobExecutionQuery();
+  query.setIdType(QueryIdTypeEnum.JOB_ID);
+  query.setId(JobExecutionQuery.Id.create(id));
+  query.setLimit(1);
+  List<JobExecutionInfo> results=executeQuery(query);
+  return getFirstFromQueryResults(results);
+}

@@ -1,0 +1,3 @@
+{
+  this.mrJobLauncher.cancelJob(jobListener);
+}

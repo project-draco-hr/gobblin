@@ -1,0 +1,14 @@
+{
+  if (this.hasStopped) {
+    LOG.warn("ApplicationLauncher has already stopped");
+    return;
+  }
+  this.hasStopped=true;
+  LOG.info("Shutting down the application");
+  try {
+    this.serviceManager.stopAsync().awaitStopped(this.stopTime,TimeUnit.SECONDS);
+  }
+ catch (  TimeoutException te) {
+    LOG.error("Timeout in stopping the service manager",te);
+  }
+}

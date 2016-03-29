@@ -18,7 +18,7 @@
   }
   JobCommitPolicy policy=JobCommitPolicy.getCommitPolicy(state);
   boolean isPublishJobLevel=state.getPropAsBoolean(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL);
-  if (!JobCommitPolicy.COMMIT_ON_FULL_SUCCESS.equals(policy) && isPublishJobLevel) {
-    throw new IllegalArgumentException("Cannot publish on job level when commit policy is " + policy + " To skip staging table set "+ ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL+ " to false");
+  if (JobCommitPolicy.COMMIT_ON_FULL_SUCCESS.equals(policy) ^ isPublishJobLevel) {
+    throw new IllegalArgumentException("Job commit policy should be only " + JobCommitPolicy.COMMIT_ON_FULL_SUCCESS + " when "+ ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL+ " is true."+ " Or Job commit policy should not be "+ JobCommitPolicy.COMMIT_ON_FULL_SUCCESS+ " and "+ ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL+ " is false.");
   }
 }

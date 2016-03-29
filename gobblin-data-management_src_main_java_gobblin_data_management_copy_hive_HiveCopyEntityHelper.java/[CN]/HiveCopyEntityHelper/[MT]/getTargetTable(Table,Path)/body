@@ -1,0 +1,12 @@
+{
+  try {
+    Table targetTable=originTable.copy();
+    targetTable.setDbName(this.targetDatabase);
+    targetTable.setDataLocation(targetLocation);
+    HiveAvroCopyEntityHelper.updateTableAttributesIfAvro(targetTable,this);
+    return targetTable;
+  }
+ catch (  HiveException he) {
+    throw new IOException(he);
+  }
+}

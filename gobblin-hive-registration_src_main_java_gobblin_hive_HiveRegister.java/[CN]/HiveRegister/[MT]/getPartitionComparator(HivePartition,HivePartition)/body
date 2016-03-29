@@ -1,0 +1,10 @@
+{
+  try {
+    Class<?> clazz=Class.forName(this.props.getProp(HIVE_PARTITION_COMPARATOR_TYPE,DEFAULT_HIVE_PARTITION_COMPARATOR_TYPE));
+    return (HiveRegistrationUnitComparator<?>)ConstructorUtils.invokeConstructor(clazz,existingPartition,newPartition);
+  }
+ catch (  ReflectiveOperationException e) {
+    log.error("Unable to instantiate Hive partition comparator",e);
+    throw Throwables.propagate(e);
+  }
+}

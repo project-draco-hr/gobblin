@@ -1,0 +1,3 @@
+{
+  this.outputFormat=Optional.of(outputFormat);
+}

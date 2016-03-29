@@ -1,0 +1,23 @@
+{
+  if (configKeyUris == null || configKeyUris.size() == 0)   return Collections.emptyMap();
+  Map<URI,Config> result=new HashMap<>();
+  Multimap<ConfigStoreAccessor,ConfigKeyPath> partitionedAccessor=ArrayListMultimap.create();
+  Map<ConfigStoreAccessor,Map<ConfigKeyPath,URI>> reverseMap=new HashMap<>();
+  for (  URI u : configKeyUris) {
+    ConfigStoreAccessor accessor=this.getConfigStoreAccessor(u);
+    ConfigKeyPath configKeypath=ConfigClientUtils.buildConfigKeyPath(u,accessor.configStore);
+    partitionedAccessor.put(accessor,configKeypath);
+    if (!reverseMap.containsKey(accessor)) {
+      reverseMap.put(accessor,new HashMap<ConfigKeyPath,URI>());
+    }
+    reverseMap.get(accessor).put(configKeypath,u);
+  }
+  for (  Map.Entry<ConfigStoreAccessor,Collection<ConfigKeyPath>> entry : partitionedAccessor.asMap().entrySet()) {
+    Map<ConfigKeyPath,Config> batchResult=entry.getKey().valueInspector.getResolvedConfigs(entry.getValue());
+    for (    Map.Entry<ConfigKeyPath,Config> resultEntry : batchResult.entrySet()) {
+      URI orgURI=reverseMap.get(entry.getKey()).get(resultEntry.getKey());
+      result.put(orgURI,resultEntry.getValue());
+    }
+  }
+  return result;
+}

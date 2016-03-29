@@ -1,0 +1,4 @@
+KafkaTopic topic
+SourceState state
+Optional<State> topicSpecificState
+Map<String,List<WorkUnit>> workUnits

@@ -1,0 +1,7 @@
+{
+  super(props);
+  this.fs=FileSystem.get(HadoopUtils.getConfFromState(props));
+  this.useSchemaFile=props.getPropAsBoolean(USE_SCHEMA_FILE,DEFAULT_USE_SCHEMA_FILE);
+  this.schemaFileName=props.getProp(SCHEMA_FILE_NAME,DEFAULT_SCHEMA_FILE_NAME);
+  this.schemaLiteralLengthLimit=props.getPropAsInt(SCHEMA_LITERAL_LENGTH_LIMIT,DEFAULT_SCHEMA_LITERAL_LENGTH_LIMIT);
+}

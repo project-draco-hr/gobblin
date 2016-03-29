@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(properties);
+  Preconditions.checkNotNull(restServerUri);
+  this.restServerUri=restServerUri;
+  int port=getPort(properties);
+  serverUri=URI.create(String.format("http://%s:%d",getHost(properties),port));
+}

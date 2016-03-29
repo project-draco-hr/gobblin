@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(props.contains(ConfigurationKeys.HIVE_REGISTRATION_POLICY));
+  String policyType=props.getProp(ConfigurationKeys.HIVE_REGISTRATION_POLICY);
+  try {
+    return (HiveRegistrationPolicy)ConstructorUtils.invokeConstructor(Class.forName(policyType),props);
+  }
+ catch (  ReflectiveOperationException e) {
+    throw new RuntimeException("Unable to instantiate " + HiveRegistrationPolicy.class.getSimpleName() + " with type "+ policyType,e);
+  }
+}

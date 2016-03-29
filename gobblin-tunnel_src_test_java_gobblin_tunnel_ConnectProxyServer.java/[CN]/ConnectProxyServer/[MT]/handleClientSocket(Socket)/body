@@ -1,0 +1,89 @@
+{
+  final InputStream clientToProxyIn=clientSocket.getInputStream();
+  BufferedReader clientToProxyReader=new BufferedReader(new InputStreamReader(clientToProxyIn));
+  final OutputStream clientToProxyOut=clientSocket.getOutputStream();
+  String line=clientToProxyReader.readLine();
+  String connectRequest="";
+  while (line != null && isServerRunning()) {
+    connectRequest+=line + "\r\n";
+    if (connectRequest.endsWith("\r\n\r\n")) {
+      break;
+    }
+    line=clientToProxyReader.readLine();
+  }
+  Matcher matcher=hostPortPattern.matcher(connectRequest);
+  if (!matcher.find()) {
+    try {
+      sendConnectResponse("400 Bad Request",clientToProxyOut,null,0);
+    }
+  finally {
+      clientSocket.close();
+      stopServer();
+    }
+    return;
+  }
+  String host=matcher.group(1);
+  int port=Integer.decode(matcher.group(2));
+  Socket serverSocket=new Socket();
+  try {
+    serverSocket.connect(new InetSocketAddress(host,port));
+    addSocket(serverSocket);
+    byte[] initialServerResponse=null;
+    int nbytes=0;
+    if (mixServerAndProxyResponse) {
+      initialServerResponse=new byte[64];
+      nbytes=serverSocket.getInputStream().read(initialServerResponse);
+    }
+    sendConnectResponse("200 OK",clientToProxyOut,initialServerResponse,nbytes);
+  }
+ catch (  IOException e) {
+    try {
+      sendConnectResponse("404 Not Found",clientToProxyOut,null,0);
+    }
+  finally {
+      clientSocket.close();
+      stopServer();
+    }
+    return;
+  }
+  final InputStream proxyToServerIn=serverSocket.getInputStream();
+  final OutputStream proxyToServerOut=serverSocket.getOutputStream();
+  _threads.add(new EasyThread(){
+    @Override void runQuietly() throws Exception {
+      try {
+        IOUtils.copy(clientToProxyIn,proxyToServerOut);
+      }
+ catch (      IOException e) {
+        LOG.warn("Exception " + e.getMessage() + " on "+ getServerSocketPort());
+      }
+    }
+  }
+.startThread());
+  try {
+    if (nBytesToCloseSocketAfter > 0) {
+      int leftToRead=nBytesToCloseSocketAfter;
+      byte[] buffer=new byte[leftToRead + 256];
+      while (true) {
+        int numRead=proxyToServerIn.read(buffer,0,leftToRead);
+        if (numRead < 0) {
+          break;
+        }
+        clientToProxyOut.write(buffer,0,numRead);
+        clientToProxyOut.flush();
+        leftToRead-=numRead;
+        if (leftToRead <= 0) {
+          LOG.warn("Cutting connection after " + nBytesToCloseSocketAfter + " bytes");
+          break;
+        }
+      }
+    }
+ else {
+      IOUtils.copy(proxyToServerIn,clientToProxyOut);
+    }
+  }
+ catch (  IOException e) {
+    LOG.warn("Exception " + e.getMessage() + " on "+ getServerSocketPort());
+  }
+  clientSocket.close();
+  serverSocket.close();
+}

@@ -1,0 +1,5 @@
+{
+  this.serDeType=populateField(state,HiveConstants.SERDE_TYPE,new TypeToken<String>(){
+  }
+);
+}

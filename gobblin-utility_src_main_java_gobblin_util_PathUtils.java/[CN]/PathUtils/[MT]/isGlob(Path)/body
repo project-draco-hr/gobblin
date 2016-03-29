@@ -1,0 +1,3 @@
+{
+  return GLOB_TOKENS.matcher(path.toString()).find();
+}

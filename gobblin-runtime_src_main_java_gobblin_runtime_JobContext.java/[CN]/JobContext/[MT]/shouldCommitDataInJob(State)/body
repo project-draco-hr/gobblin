@@ -1,0 +1,6 @@
+{
+  boolean jobCommitPolicyIsFull=JobCommitPolicy.getCommitPolicy(state.getProperties()) == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS;
+  boolean publishDataAtJobLevel=state.getPropAsBoolean(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL);
+  boolean jobDataPublisherSpecified=state.contains(ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE);
+  return jobCommitPolicyIsFull || publishDataAtJobLevel || jobDataPublisherSpecified;
+}

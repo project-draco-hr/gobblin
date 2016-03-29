@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(newUnit.getSerDeProps().contains(SCHEMA_LITERAL) || newUnit.getSerDeProps().contains(SCHEMA_URL));
+  if (newUnit.getSerDeProps().contains(SCHEMA_LITERAL)) {
+    existingUnit.setSerDeProp(SCHEMA_LITERAL,newUnit.getSerDeProps().getProp(SCHEMA_LITERAL));
+  }
+ else {
+    existingUnit.setSerDeProp(SCHEMA_URL,newUnit.getSerDeProps().getProp(SCHEMA_URL));
+  }
+}

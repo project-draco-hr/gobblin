@@ -1,0 +1,6 @@
+{
+  System.out.println(errorMsg);
+  HelpFormatter hf=new HelpFormatter();
+  hf.printHelp("gobblin-admin.sh jobs [options]",this.options);
+  System.exit(1);
+}

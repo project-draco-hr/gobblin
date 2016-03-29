@@ -1,6 +1,4 @@
 {
   super(name,config);
-  this.executor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("metrics-" + name + "-scheduler")));
-  this.reportingPeriodSeconds=parsePeriodToSeconds(config.hasPath(REPORTING_INTERVAL) ? config.getString(REPORTING_INTERVAL) : DEFAULT_REPORTING_INTERVAL_PERIOD);
-  this.metricFilter=createMetricFilter(this.config);
+  ensureMetricFilterIsInitialized(config);
 }

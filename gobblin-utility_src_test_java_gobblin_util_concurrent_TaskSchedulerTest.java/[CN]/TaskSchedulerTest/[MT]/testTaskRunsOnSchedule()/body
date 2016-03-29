@@ -1,0 +1,15 @@
+{
+  long startTime;
+  long endTime;
+  Task task=new Task("foo");
+  try (TaskScheduler<String,Task> taskScheduler=getTaskScheduler("TaskSchedulerTest")){
+    startTime=System.currentTimeMillis();
+    taskScheduler.schedule(task,1,TimeUnit.SECONDS);
+    task.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+    task.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+    task.getAutoResetEvent().waitOne(2,TimeUnit.SECONDS);
+    endTime=System.currentTimeMillis();
+  }
+   Assert.assertEquals(task.getCount(),3);
+  Assert.assertTrue(endTime - startTime >= (scheduleFiresImmediately ? 2000 : 3000));
+}

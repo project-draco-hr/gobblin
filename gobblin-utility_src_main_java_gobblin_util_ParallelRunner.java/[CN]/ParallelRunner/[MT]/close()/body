@@ -1,16 +1,38 @@
 {
   try {
-    for (    Future<?> future : this.futures) {
-      future.get();
+    boolean wasInterrupted=false;
+    IOException exception=null;
+    for (    NamedFuture future : this.futures) {
+      try {
+        if (wasInterrupted) {
+          future.getFuture().cancel(true);
+        }
+ else {
+          future.getFuture().get();
+        }
+      }
+ catch (      InterruptedException ie) {
+        LOGGER.warn("Task was interrupted: " + future.getName());
+        wasInterrupted=true;
+        if (exception == null) {
+          exception=new IOException(ie);
+        }
+      }
+catch (      ExecutionException ee) {
+        LOGGER.warn("Task failed: " + future.getName(),ee.getCause());
+        if (exception == null) {
+          exception=new IOException(ee.getCause());
+        }
+      }
+    }
+    if (wasInterrupted) {
+      Thread.currentThread().interrupt();
+    }
+    if (exception != null && this.failPolicy == FailPolicy.FAIL_ONE_FAIL_ALL) {
+      throw exception;
     }
   }
- catch (  InterruptedException ie) {
-    throw new IOException(ie);
-  }
-catch (  ExecutionException ee) {
-    throw new IOException(ee.getCause());
-  }
- finally {
+  finally {
     ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(LOGGER));
   }
 }

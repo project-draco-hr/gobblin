@@ -1,0 +1,5 @@
+{
+  Assert.assertEquals(HiveCopyEntityHelper.resolvePath("/data/$DB/$TABLE","db","table"),new Path("/data/db/table"));
+  Assert.assertEquals(HiveCopyEntityHelper.resolvePath("/data/$TABLE","db","table"),new Path("/data/table"));
+  Assert.assertEquals(HiveCopyEntityHelper.resolvePath("/data","db","table"),new Path("/data/table"));
+}

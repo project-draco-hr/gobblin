@@ -1,0 +1,10 @@
+{
+  boolean different;
+  if (!newValue.isPresent()) {
+    different=false;
+  }
+ else {
+    different=!existingValue.isPresent() || !existingValue.get().equals(newValue.get());
+  }
+  this.result|=different;
+}

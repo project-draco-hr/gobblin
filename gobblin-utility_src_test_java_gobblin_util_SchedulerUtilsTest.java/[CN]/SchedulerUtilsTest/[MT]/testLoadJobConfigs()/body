@@ -1,6 +1,6 @@
 {
   Properties properties=new Properties();
-  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,JOB_CONF_ROOT_DIR.getAbsolutePath());
+  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,this.jobConfigDir.getAbsolutePath());
   List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
   Assert.assertEquals(jobConfigs.size(),4);
   Properties jobProps1=getJobConfigForFile(jobConfigs,"test111.pull");

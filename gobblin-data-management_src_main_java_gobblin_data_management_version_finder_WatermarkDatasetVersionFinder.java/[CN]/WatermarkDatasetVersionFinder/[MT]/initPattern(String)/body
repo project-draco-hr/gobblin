@@ -1,0 +1,8 @@
+{
+  this.pattern=Optional.of(patternString).transform(new Function<String,Pattern>(){
+    @Nullable @Override public Pattern apply(    String input){
+      return Pattern.compile(input);
+    }
+  }
+);
+}

@@ -1,0 +1,5 @@
+{
+  Schema originalSchema=readSchemaFromJsonFile("recordWithinMapWithinMap_original.json");
+  Schema expectedSchema=readSchemaFromJsonFile("recordWithinMapWithinMap_flattened.json");
+  Assert.assertEquals(new AvroFlattener().flatten(originalSchema),expectedSchema);
+}

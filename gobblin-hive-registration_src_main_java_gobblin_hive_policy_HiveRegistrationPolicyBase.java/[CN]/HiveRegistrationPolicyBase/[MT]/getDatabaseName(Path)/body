@@ -1,0 +1,3 @@
+{
+  return this.dbNamePrefix + getDatabaseOrTableName(path,HIVE_DATABASE_NAME,HIVE_DATABASE_REGEX,this.dbNamePattern) + this.dbNameSuffix;
+}

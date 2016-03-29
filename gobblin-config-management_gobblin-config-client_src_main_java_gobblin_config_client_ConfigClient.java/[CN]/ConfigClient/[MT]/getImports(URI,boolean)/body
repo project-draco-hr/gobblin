@@ -1,0 +1,12 @@
+{
+  ConfigStoreAccessor accessor=this.getConfigStoreAccessor(configKeyUri);
+  ConfigKeyPath configKeypath=ConfigClientUtils.buildConfigKeyPath(configKeyUri,accessor.configStore);
+  Collection<ConfigKeyPath> result;
+  if (!recursive) {
+    result=accessor.topologyInspector.getOwnImports(configKeypath);
+  }
+ else {
+    result=accessor.topologyInspector.getImportsRecursively(configKeypath);
+  }
+  return ConfigClientUtils.buildUriInClientFormat(result,accessor.configStore,configKeyUri.getAuthority() != null);
+}

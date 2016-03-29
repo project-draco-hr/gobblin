@@ -1,0 +1,20 @@
+{
+  if (this.isDatasetBlacklisted) {
+    log.info("Dataset blacklisted. Cleanup skipped for " + datasetRoot());
+    return;
+  }
+  RetentionPolicy<T> retentionPolicy=getRetentionPolicy();
+  VersionFinder<? extends T> versionFinder=getVersionFinder();
+  if (!retentionPolicy.versionClass().isAssignableFrom(versionFinder.versionClass())) {
+    throw new IOException("Incompatible dataset version classes.");
+  }
+  this.log.info("Cleaning dataset " + this);
+  List<T> versions=Lists.newArrayList(getVersionFinder().findDatasetVersions(this));
+  if (versions.isEmpty()) {
+    this.log.warn("No dataset version can be found. Ignoring.");
+    return;
+  }
+  Collections.sort(versions,Collections.reverseOrder());
+  Collection<T> deletableVersions=getRetentionPolicy().listDeletableVersions(versions);
+  cleanImpl(deletableVersions);
+}

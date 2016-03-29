@@ -1,0 +1,5 @@
+FileSystem srcFs
+Path src
+FileSystem dstFs
+Path dst
+Configuration conf

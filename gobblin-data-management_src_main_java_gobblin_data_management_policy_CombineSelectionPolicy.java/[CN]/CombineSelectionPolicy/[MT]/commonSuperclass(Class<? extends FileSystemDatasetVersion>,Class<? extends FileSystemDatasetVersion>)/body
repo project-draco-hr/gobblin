@@ -1,0 +1,17 @@
+{
+  if (classA.isAssignableFrom(classB)) {
+    return classA;
+  }
+ else {
+    Class<?> klazz=classA;
+    while (!klazz.isAssignableFrom(classB)) {
+      klazz=klazz.getSuperclass();
+    }
+    if (FileSystemDatasetVersion.class.isAssignableFrom(klazz)) {
+      return (Class<? extends FileSystemDatasetVersion>)klazz;
+    }
+ else {
+      return FileSystemDatasetVersion.class;
+    }
+  }
+}

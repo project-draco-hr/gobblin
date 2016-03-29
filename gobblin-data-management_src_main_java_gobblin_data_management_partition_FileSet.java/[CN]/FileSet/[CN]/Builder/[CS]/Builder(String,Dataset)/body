@@ -1,0 +1,8 @@
+{
+  if (name == null) {
+    throw new RuntimeException("Name cannot be null.");
+  }
+  this.name=name;
+  this.files=Lists.newArrayList();
+  this.dataset=dataset;
+}

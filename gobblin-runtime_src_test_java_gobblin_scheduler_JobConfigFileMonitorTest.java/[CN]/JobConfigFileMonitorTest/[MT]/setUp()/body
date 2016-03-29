@@ -1,0 +1,13 @@
+{
+  this.jobConfigDir=Files.createTempDirectory(String.format("gobblin-test_%s_job-conf",this.getClass().getSimpleName())).toString();
+  FileUtils.forceDeleteOnExit(new File(this.jobConfigDir));
+  FileUtils.copyDirectory(new File(JOB_CONFIG_FILE_DIR),new File(jobConfigDir));
+  Properties properties=new Properties();
+  properties.load(new FileReader("gobblin-test/resource/gobblin.test.properties"));
+  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,jobConfigDir);
+  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL_KEY,"1000");
+  properties.setProperty(ConfigurationKeys.METRICS_ENABLED_KEY,"false");
+  this.jobScheduler=new JobScheduler(properties);
+  this.serviceManager=new ServiceManager(Lists.newArrayList(this.jobScheduler));
+  this.serviceManager.startAsync();
+}

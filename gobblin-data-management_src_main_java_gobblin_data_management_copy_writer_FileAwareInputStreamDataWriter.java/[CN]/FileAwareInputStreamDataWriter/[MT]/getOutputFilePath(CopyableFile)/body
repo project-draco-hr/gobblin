@@ -1,3 +1,0 @@
-{
-  return new Path(getPartitionOutputRoot(file),PathUtils.withoutLeadingSeparator(file.getDestination()));
-}

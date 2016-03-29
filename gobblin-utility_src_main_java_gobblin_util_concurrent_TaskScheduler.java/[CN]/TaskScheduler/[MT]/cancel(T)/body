@@ -1,0 +1,8 @@
+{
+  CancellableTask<K,T> cancellableTask=this.cancellableTaskMap.getIfPresent(task.getKey());
+  if (cancellableTask != null && cancellableTask.getScheduledTask() == task && cancellableTask.cancel()) {
+    this.cancellableTaskMap.invalidate(task.getKey());
+    return true;
+  }
+  return false;
+}

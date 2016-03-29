@@ -1,0 +1,8 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    return client.get().tableExists(dbName,tableName);
+  }
+ catch (  TException e) {
+    throw new IOException(String.format("Unable to check existence of table %s in db %s",tableName,dbName),e);
+  }
+}

@@ -1,0 +1,5 @@
+{
+  Assert.assertTrue(config.entrySet().size() == 2);
+  Assert.assertTrue(config.getString("keyOf_espressoTag").equals("valueOf_espressoTag"));
+  Assert.assertTrue(config.getString("generalKey").equals("valueOf_generalKey_espressoTag"));
+}

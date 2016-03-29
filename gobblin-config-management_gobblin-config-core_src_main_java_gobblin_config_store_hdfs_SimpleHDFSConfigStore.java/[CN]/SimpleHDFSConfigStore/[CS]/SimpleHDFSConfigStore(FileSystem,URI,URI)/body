@@ -1,0 +1,13 @@
+{
+  Preconditions.checkNotNull(fs,"fs cannot be null!");
+  Preconditions.checkNotNull(physicalStoreRoot,"physicalStoreRoot cannot be null!");
+  Preconditions.checkNotNull(logicalStoreRoot,"logicalStoreRoot cannot be null!");
+  this.fs=fs;
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(physicalStoreRoot.getScheme()),"The physicalStoreRoot must have a valid scheme!");
+  Preconditions.checkArgument(physicalStoreRoot.getScheme().equals(fs.getUri().getScheme()),"The scheme of the physicalStoreRoot and the filesystem must match!");
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(physicalStoreRoot.getPath()),"The path of the physicalStoreRoot must be valid as it is the root of the store!");
+  this.physicalStoreRoot=physicalStoreRoot;
+  this.logicalStoreRoot=logicalStoreRoot;
+  this.versions=CacheBuilder.newBuilder().build();
+  this.storeMetadata=new SimpleHDFSStoreMetadata(fs,new Path(new Path(this.physicalStoreRoot),CONFIG_STORE_NAME));
+}

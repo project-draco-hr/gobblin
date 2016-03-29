@@ -15,7 +15,7 @@
   Path appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : YarnHelixUtils.getAppWorkDirPath(fs,applicationName,applicationId);
   List<Service> services=Lists.newArrayList();
   if (isLogSourcePresent()) {
-    services.add(buildLogCopier(this.containerId,fs,appWorkDir));
+    services.add(buildLogCopier(config,this.containerId,fs,appWorkDir));
   }
   services.add(taskExecutor);
   services.add(taskStateTracker);
@@ -23,12 +23,11 @@
     LOGGER.info("Adding YarnContainerSecurityManager since login is keytab based");
     services.add(new YarnContainerSecurityManager(config,fs,this.eventBus));
   }
+  services.add(new JMXReportingService());
   this.serviceManager=new ServiceManager(services);
   this.containerMetrics=buildContainerMetrics(this.config,properties,applicationName,containerId);
   Map<String,TaskFactory> taskFactoryMap=Maps.newHashMap();
   taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(this.containerMetrics,taskExecutor,taskStateTracker,fs,appWorkDir));
   this.taskStateModelFactory=new TaskStateModelFactory(this.helixManager,taskFactoryMap);
   this.helixManager.getStateMachineEngine().registerStateModelFactory("Task",this.taskStateModelFactory);
-  this.metricRegistry=new MetricRegistry();
-  this.jmxReporter=JmxReporter.forRegistry(this.metricRegistry).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build();
 }

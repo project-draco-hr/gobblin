@@ -1,0 +1,6 @@
+{
+  if (jobConfigDir != null) {
+    FileUtils.forceDelete(new File(jobConfigDir));
+  }
+  this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
+}

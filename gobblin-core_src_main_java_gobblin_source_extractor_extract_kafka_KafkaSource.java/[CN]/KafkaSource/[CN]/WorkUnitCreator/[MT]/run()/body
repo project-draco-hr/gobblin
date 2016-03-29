@@ -1,0 +1,9 @@
+{
+  try {
+    this.allTopicWorkUnits.put(this.topic.getName(),KafkaSource.this.getWorkUnitsForTopic(this.topic,this.state,topicSpecificState));
+  }
+ catch (  Throwable t) {
+    LOG.error("Caught error in creating work unit for " + this.topic.getName(),t);
+    throw t;
+  }
+}

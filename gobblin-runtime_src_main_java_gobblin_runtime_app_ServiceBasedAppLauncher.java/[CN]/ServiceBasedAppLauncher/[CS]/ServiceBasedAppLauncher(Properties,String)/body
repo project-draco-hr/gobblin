@@ -1,0 +1,10 @@
+{
+  this.stopTime=Integer.parseInt(properties.getProperty(APP_STOP_TIME_SECONDS,DEFAULT_APP_STOP_TIME_SECONDS));
+  this.appId=ApplicationLauncherUtils.newAppId(appName);
+  this.services=new ArrayList<>();
+  addJobExecutionServerAndAdminUI(properties);
+  addMetricsService(properties);
+  addJMXReportingService();
+  addServicesFromProperties(properties);
+  addInterruptedShutdownHook();
+}

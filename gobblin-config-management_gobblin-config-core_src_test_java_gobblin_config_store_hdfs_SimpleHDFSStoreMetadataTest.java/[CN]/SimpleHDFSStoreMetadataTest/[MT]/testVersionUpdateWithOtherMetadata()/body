@@ -1,0 +1,11 @@
+{
+  Path testVersionUpdateWithOtherMetadataPath=new Path(TEST_PATH,"testVersionUpdateWithOtherMetadata");
+  this.localFs.mkdirs(testVersionUpdateWithOtherMetadataPath);
+  SimpleHDFSStoreMetadata simpleHDFSStoreMetadata=new SimpleHDFSStoreMetadata(this.localFs,testVersionUpdateWithOtherMetadataPath);
+  Config conf=ConfigFactory.parseMap(ImmutableMap.of("test.name","test1","test.type","unittest"));
+  simpleHDFSStoreMetadata.writeMetadata(conf);
+  simpleHDFSStoreMetadata.setCurrentVersion("1.2");
+  Assert.assertEquals(simpleHDFSStoreMetadata.getCurrentVersion(),"1.2");
+  Assert.assertEquals(simpleHDFSStoreMetadata.readMetadata().getString("test.name"),"test1");
+  Assert.assertEquals(simpleHDFSStoreMetadata.readMetadata().getString("test.type"),"unittest");
+}

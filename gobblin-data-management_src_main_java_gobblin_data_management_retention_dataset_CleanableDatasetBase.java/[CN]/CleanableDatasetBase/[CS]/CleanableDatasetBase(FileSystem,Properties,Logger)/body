@@ -1,0 +1,3 @@
+{
+  this(fs,props,ConfigFactory.parseMap(ImmutableMap.<String,String>of(IS_DATASET_BLACKLISTED_KEY,IS_DATASET_BLACKLISTED_DEFAULT)),log);
+}

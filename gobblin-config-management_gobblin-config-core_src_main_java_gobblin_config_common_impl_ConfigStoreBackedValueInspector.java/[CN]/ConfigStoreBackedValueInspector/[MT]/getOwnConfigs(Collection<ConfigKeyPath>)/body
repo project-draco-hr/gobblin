@@ -1,0 +1,11 @@
+{
+  if (this.cs instanceof ConfigStoreWithBatchFetches) {
+    ConfigStoreWithBatchFetches batchStore=(ConfigStoreWithBatchFetches)this.cs;
+    return batchStore.getOwnConfigs(configKeys,version);
+  }
+  Map<ConfigKeyPath,Config> result=new HashMap<>();
+  for (  ConfigKeyPath configKey : configKeys) {
+    result.put(configKey,this.cs.getOwnConfig(configKey,version));
+  }
+  return result;
+}

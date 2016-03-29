@@ -1,0 +1,4 @@
+{
+  registerJvmMetrics();
+  this.jmxReporter.start();
+}

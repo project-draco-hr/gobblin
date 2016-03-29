@@ -1,0 +1,16 @@
+{
+  List<Set<FileSystemDatasetVersion>> candidateDeletableVersions=Lists.newArrayList(Iterables.transform(this.selectionPolicies,new Function<VersionSelectionPolicy<FileSystemDatasetVersion>,Set<FileSystemDatasetVersion>>(){
+    @Nullable @Override public Set<FileSystemDatasetVersion> apply(    VersionSelectionPolicy<FileSystemDatasetVersion> input){
+      return Sets.newHashSet(input.listSelectedVersions(allVersions));
+    }
+  }
+));
+switch (this.combineOperation) {
+case INTERSECT:
+    return intersectDatasetVersions(candidateDeletableVersions);
+case UNION:
+  return unionDatasetVersions(candidateDeletableVersions);
+default :
+throw new RuntimeException("Combine operation " + this.combineOperation + " not recognized.");
+}
+}

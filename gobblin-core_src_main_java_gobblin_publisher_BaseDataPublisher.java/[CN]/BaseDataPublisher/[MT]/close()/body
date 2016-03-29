@@ -1,3 +1,10 @@
 {
-  this.closer.close();
+  try {
+    for (    Path path : this.publisherOutputDirs) {
+      this.state.appendToSetProp(ConfigurationKeys.PUBLISHER_DIRS,path.toString());
+    }
+  }
+  finally {
+    this.closer.close();
+  }
 }

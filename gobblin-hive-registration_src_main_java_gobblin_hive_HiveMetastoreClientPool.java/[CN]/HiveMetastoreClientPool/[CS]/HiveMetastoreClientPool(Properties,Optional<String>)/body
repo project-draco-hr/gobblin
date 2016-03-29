@@ -1,0 +1,9 @@
+{
+  this.hiveRegProps=new HiveRegProps(new State(properties));
+  GenericObjectPoolConfig config=new GenericObjectPoolConfig();
+  config.setMaxTotal(this.hiveRegProps.getNumThreads());
+  config.setMaxIdle(this.hiveRegProps.getNumThreads());
+  this.factory=new HiveMetaStoreClientFactory(metastoreURI);
+  this.pool=new GenericObjectPool<>(this.factory,config);
+  this.hiveConf=this.factory.getHiveConf();
+}

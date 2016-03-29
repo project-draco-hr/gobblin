@@ -1,5 +1,5 @@
 {
-  for (  Optional<Fork> fork : this.forks) {
+  for (  Optional<Fork> fork : this.forks.keySet()) {
     if (fork.isPresent()) {
       fork.get().updateRecordMetrics();
     }

@@ -1,0 +1,7 @@
+{
+  Properties combinedProperties=new Properties();
+  for (  Properties props : properties) {
+    combinedProperties.putAll(props);
+  }
+  return combinedProperties;
+}

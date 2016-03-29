@@ -1,0 +1,3 @@
+{
+  return getPartitionComparator(existingPartition,newPartition).compareAll().result();
+}

@@ -1,0 +1,29 @@
+{
+  State props=unit.getStorageProps();
+  StorageDescriptor sd=new StorageDescriptor();
+  sd.setParameters(getParameters(props));
+  sd.setCols(getFieldSchemas(unit.getColumns()));
+  if (unit.getLocation().isPresent()) {
+    sd.setLocation(unit.getLocation().get());
+  }
+  if (unit.getInputFormat().isPresent()) {
+    sd.setInputFormat(unit.getInputFormat().get());
+  }
+  if (unit.getOutputFormat().isPresent()) {
+    sd.setOutputFormat(unit.getOutputFormat().get());
+  }
+  if (unit.getIsCompressed().isPresent()) {
+    sd.setCompressed(unit.getIsCompressed().get());
+  }
+  if (unit.getNumBuckets().isPresent()) {
+    sd.setNumBuckets(unit.getNumBuckets().get());
+  }
+  if (unit.getBucketColumns().isPresent()) {
+    sd.setBucketCols(unit.getBucketColumns().get());
+  }
+  if (unit.getIsStoredAsSubDirs().isPresent()) {
+    sd.setStoredAsSubDirectories(unit.getIsStoredAsSubDirs().get());
+  }
+  sd.setSerdeInfo(getSerDeInfo(unit));
+  return sd;
+}

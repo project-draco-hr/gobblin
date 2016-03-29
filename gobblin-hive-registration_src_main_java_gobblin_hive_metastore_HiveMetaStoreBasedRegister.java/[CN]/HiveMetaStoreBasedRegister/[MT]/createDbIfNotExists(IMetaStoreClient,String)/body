@@ -1,0 +1,26 @@
+{
+  Database db=new Database();
+  db.setName(dbName);
+  try {
+    client.getDatabase(db.getName());
+    return false;
+  }
+ catch (  NoSuchObjectException nsoe) {
+  }
+catch (  TException te) {
+    throw new IOException(te);
+  }
+  Preconditions.checkState(this.hiveDbRootDir.isPresent(),"Missing required property " + HiveRegProps.HIVE_DB_ROOT_DIR);
+  db.setLocationUri(new Path(this.hiveDbRootDir.get(),dbName + HIVE_DB_EXTENSION).toString());
+  try {
+    client.createDatabase(db);
+    log.info("Created database " + dbName);
+    return true;
+  }
+ catch (  AlreadyExistsException e) {
+    return false;
+  }
+catch (  TException e) {
+    throw new IOException("Unable to create Hive database " + dbName,e);
+  }
+}

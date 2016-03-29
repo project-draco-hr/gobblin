@@ -5,7 +5,7 @@
   }
   try {
     Class<?> datasetFinderClass=Class.forName(className);
-    return (DatasetFinder<T>)datasetFinderClass.getConstructor(FileSystem.class,Properties.class).newInstance(fs,props);
+    return (DatasetsFinder<T>)datasetFinderClass.getConstructor(FileSystem.class,Properties.class).newInstance(fs,props);
   }
  catch (  ClassNotFoundException exception) {
     throw new IOException(exception);

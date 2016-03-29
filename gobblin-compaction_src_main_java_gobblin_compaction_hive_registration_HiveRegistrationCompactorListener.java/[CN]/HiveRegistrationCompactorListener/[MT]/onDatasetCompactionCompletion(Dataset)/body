@@ -1,0 +1,5 @@
+{
+  for (  HiveSpec spec : this.hiveRegistrationPolicy.getHiveSpecs(dataset.outputPath())) {
+    this.hiveRegister.register(spec);
+  }
+}

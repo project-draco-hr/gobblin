@@ -1,0 +1,13 @@
+{
+  String name;
+  if (this.props.contains(nameKey)) {
+    name=this.props.getProp(nameKey);
+  }
+ else   if (pattern.isPresent()) {
+    name=pattern.get().matcher(path.toString()).group();
+  }
+ else {
+    throw new IllegalStateException("Missing required property " + nameKey + " or "+ regexKey);
+  }
+  return sanitizeAndValidateName(name);
+}

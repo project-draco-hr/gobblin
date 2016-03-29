@@ -1,0 +1,13 @@
+{
+  FileSystemDataset fsDataset=(FileSystemDataset)dataset;
+  Path versionGlobStatus=new Path(fsDataset.datasetRoot(),globVersionPattern());
+  FileStatus[] dataSetVersionPaths=this.fs.globStatus(versionGlobStatus);
+  List<T> dataSetVersions=Lists.newArrayList();
+  for (  FileStatus dataSetVersionPath : dataSetVersionPaths) {
+    T datasetVersion=getDatasetVersion(PathUtils.relativizePath(dataSetVersionPath.getPath(),fsDataset.datasetRoot()),dataSetVersionPath.getPath());
+    if (datasetVersion != null) {
+      dataSetVersions.add(datasetVersion);
+    }
+  }
+  return dataSetVersions;
+}

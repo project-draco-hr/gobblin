@@ -1,0 +1,3 @@
+{
+  return this.partitionIterator.hasNext() || !targetPartitions.isEmpty();
+}

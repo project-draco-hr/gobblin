@@ -1,0 +1,9 @@
+{
+  if (datasetState.contains(ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE)) {
+    return (Class<? extends DataPublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE));
+  }
+ else {
+    LOG.warn("Property " + ConfigurationKeys.JOB_DATA_PUBLISHER_TYPE + " not specified");
+    return (Class<? extends DataPublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+  }
+}

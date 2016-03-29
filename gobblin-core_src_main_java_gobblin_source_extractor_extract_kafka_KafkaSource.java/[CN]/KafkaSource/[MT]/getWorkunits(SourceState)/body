@@ -1,12 +1,17 @@
 {
-  Map<String,List<WorkUnit>> workUnits=Maps.newHashMap();
+  Map<String,List<WorkUnit>> workUnits=Maps.newConcurrentMap();
   this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
   List<KafkaTopic> topics=getFilteredTopics(state);
   Map<String,State> topicSpecificStateMap=getTopicSpecificState(topics,state);
+  int numOfThreads=state.getPropAsInt(ConfigurationKeys.KAFKA_SOURCE_WORK_UNITS_CREATION_THREADS,ConfigurationKeys.KAFKA_SOURCE_WORK_UNITS_CREATION_DEFAULT_THREAD_COUNT);
+  ExecutorService threadPool=Executors.newFixedThreadPool(numOfThreads,ExecutorsUtils.newThreadFactory(Optional.of(LOG)));
+  Stopwatch createWorkUnitStopwatch=Stopwatch.createStarted();
   for (  KafkaTopic topic : topics) {
-    workUnits.put(topic.getName(),getWorkUnitsForTopic(topic,state,Optional.fromNullable(topicSpecificStateMap.get(topic.getName()))));
+    threadPool.submit(new WorkUnitCreator(topic,state,Optional.fromNullable(topicSpecificStateMap.get(topic.getName())),workUnits));
   }
-  createEmptyWorkUnitsForSkippedPartitions(workUnits,topicSpecificStateMap);
+  ExecutorsUtils.shutdownExecutorService(threadPool,Optional.of(LOG),1L,TimeUnit.HOURS);
+  LOG.info(String.format("Created workunits for %d topics in %d seconds",workUnits.size(),createWorkUnitStopwatch.elapsed(TimeUnit.SECONDS)));
+  createEmptyWorkUnitsForSkippedPartitions(workUnits,topicSpecificStateMap,state);
   int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
   return KafkaWorkUnitPacker.getInstance(this,state).pack(workUnits,numOfMultiWorkunits);
 }

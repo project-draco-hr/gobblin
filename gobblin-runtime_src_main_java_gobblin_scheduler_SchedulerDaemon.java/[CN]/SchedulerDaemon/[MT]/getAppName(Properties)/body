@@ -1,0 +1,3 @@
+{
+  return properties.getProperty(ServiceBasedAppLauncher.APP_NAME,"SchedulerDaemon-" + UUID.randomUUID());
+}

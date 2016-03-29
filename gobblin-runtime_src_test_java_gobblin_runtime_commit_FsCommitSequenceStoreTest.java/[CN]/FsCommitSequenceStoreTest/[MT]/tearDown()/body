@@ -1,0 +1,3 @@
+{
+  this.store.delete(this.jobName);
+}

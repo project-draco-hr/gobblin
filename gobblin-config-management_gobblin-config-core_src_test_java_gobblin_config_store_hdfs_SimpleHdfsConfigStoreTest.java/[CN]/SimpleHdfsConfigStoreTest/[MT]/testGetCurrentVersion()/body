@@ -1,0 +1,6 @@
+{
+  Assert.assertEquals(this.simpleHDFSConfigStore.getCurrentVersion(),VERSION);
+  String newVersion="v1.1";
+  this.simpleHDFSConfigStore.deploy(new FsDeploymentConfig(new ClasspathConfigSource(new Properties()),newVersion));
+  Assert.assertEquals(this.simpleHDFSConfigStore.getCurrentVersion(),newVersion);
+}

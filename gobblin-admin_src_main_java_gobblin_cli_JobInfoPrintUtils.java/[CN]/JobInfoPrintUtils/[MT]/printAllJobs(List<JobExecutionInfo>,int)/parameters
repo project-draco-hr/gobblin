@@ -1,0 +1,2 @@
+List<JobExecutionInfo> jobExecutionInfos
+int resultsLimit

@@ -1,0 +1,11 @@
+{
+  Preconditions.checkNotNull(props);
+  this.props=new HiveRegProps(props);
+  this.sanitizeNameAllowed=props.getPropAsBoolean(HIVE_SANITIZE_INVALID_NAMES,true);
+  this.dbNamePattern=props.contains(HIVE_DATABASE_REGEX) ? Optional.of(Pattern.compile(props.getProp(HIVE_DATABASE_REGEX))) : Optional.<Pattern>absent();
+  this.tableNamePattern=props.contains(HIVE_TABLE_REGEX) ? Optional.of(Pattern.compile(props.getProp(HIVE_TABLE_REGEX))) : Optional.<Pattern>absent();
+  this.dbNamePrefix=props.getProp(HIVE_DATABASE_NAME_PREFIX,StringUtils.EMPTY);
+  this.dbNameSuffix=props.getProp(HIVE_DATABASE_NAME_SUFFIX,StringUtils.EMPTY);
+  this.tableNamePrefix=props.getProp(HIVE_TABLE_NAME_PREFIX,StringUtils.EMPTY);
+  this.tableNameSuffix=props.getProp(HIVE_TABLE_NAME_SUFFIX,StringUtils.EMPTY);
+}

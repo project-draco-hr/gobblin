@@ -1,0 +1,5 @@
+{
+  ConfigStoreAccessor accessor=this.getConfigStoreAccessor(configKeyUri);
+  ConfigKeyPath configKeypath=ConfigClientUtils.buildConfigKeyPath(configKeyUri,accessor.configStore);
+  return accessor.valueInspector.getResolvedConfig(configKeypath);
+}

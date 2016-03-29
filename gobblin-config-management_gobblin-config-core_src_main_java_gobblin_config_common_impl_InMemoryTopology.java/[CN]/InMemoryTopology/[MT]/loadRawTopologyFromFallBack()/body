@@ -1,4 +1,7 @@
 {
+  if (this.initialedTopologyFromFallBack) {
+    return;
+  }
   Collection<ConfigKeyPath> currentLevel=this.getChildren(SingleLinkedListConfigKeyPath.ROOT);
   List<ConfigKeyPath> rootImports=this.getOwnImports(SingleLinkedListConfigKeyPath.ROOT);
   Preconditions.checkArgument(rootImports == null || rootImports.size() == 0,"Root can not import other nodes, otherwise circular dependency will happen");
@@ -29,4 +32,5 @@
       }
     }
   }
+  this.initialedTopologyFromFallBack=true;
 }

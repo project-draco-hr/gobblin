@@ -1,0 +1,15 @@
+{
+  String type=props.getProp(HIVE_ROW_FORMAT,Implementation.AVRO.name());
+  Optional<Implementation> implementation=Enums.getIfPresent(Implementation.class,type.toUpperCase());
+  try {
+    if (implementation.isPresent()) {
+      return (HiveSerDeManager)ConstructorUtils.invokeConstructor(Class.forName(implementation.get().toString()),props);
+    }
+ else {
+      return (HiveSerDeManager)ConstructorUtils.invokeConstructor(Class.forName(type),props);
+    }
+  }
+ catch (  ReflectiveOperationException e) {
+    throw new RuntimeException("Unable to instantiate " + HiveSerDeManager.class.getSimpleName() + " with type "+ type,e);
+  }
+}

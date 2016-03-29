@@ -1,0 +1,38 @@
+{
+  DiffPathSet.DiffPathSetBuilder builder=DiffPathSet.builder();
+  Set<Path> sourcePaths=sourceLocation.getPaths();
+  Set<Path> targetExistingPaths=currentTargetLocation.isPresent() ? currentTargetLocation.get().getPaths() : Sets.<Path>newHashSet();
+  Set<Path> desiredTargetExistingPaths;
+  try {
+    desiredTargetExistingPaths=desiredTargetLocation.getPaths();
+  }
+ catch (  InvalidInputException ioe) {
+    desiredTargetExistingPaths=Sets.newHashSet();
+  }
+  for (  Path sourcePath : sourcePaths) {
+    Path newPath=getTargetPath(sourcePath,desiredTargetLocation.getFileSystem(),partition,true);
+    boolean shouldCopy=true;
+    FileStatus originStatus=sourceLocation.getFileSystem().getFileStatus(sourcePath);
+    if (desiredTargetExistingPaths.contains(newPath)) {
+      FileStatus existingTargetStatus=desiredTargetLocation.getFileSystem().getFileStatus(newPath);
+      if (!shouldReplaceFile(existingTargetStatus,originStatus)) {
+        shouldCopy=false;
+      }
+    }
+    if (shouldCopy) {
+      builder.copyFile(originStatus);
+    }
+ else {
+      targetExistingPaths.remove(newPath);
+      desiredTargetExistingPaths.remove(newPath);
+    }
+  }
+  for (  Path delete : targetExistingPaths) {
+    builder.deleteFile(delete);
+    desiredTargetExistingPaths.remove(delete);
+  }
+  if (desiredTargetExistingPaths.size() > 0) {
+    throw new IOException(String.format("New table / partition would pick up existing, undesired files in target file system. " + "%s, files %s.",partition.isPresent() ? partition.get().getCompleteName() : dataset.table.getCompleteName(),Arrays.toString(desiredTargetExistingPaths.toArray())));
+  }
+  return builder.build();
+}

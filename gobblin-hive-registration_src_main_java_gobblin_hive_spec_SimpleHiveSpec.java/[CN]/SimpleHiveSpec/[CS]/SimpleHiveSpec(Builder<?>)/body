@@ -1,0 +1,8 @@
+{
+  this.path=builder.path;
+  this.table=builder.table;
+  this.partition=builder.partition != null ? builder.partition : Optional.<HivePartition>absent();
+  this.preActivities=builder.preActivities;
+  this.postActivities=builder.postActivities;
+  this.predicates=builder.predicates;
+}

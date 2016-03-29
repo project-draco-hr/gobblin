@@ -1,0 +1,22 @@
+{
+  for (  String property : requiredProperties()) {
+    Preconditions.checkArgument(config.hasPath(property) || config.hasPath(DEPRECATIONS.get(property)));
+  }
+  if (config.hasPath(DATASET_BLACKLIST_KEY)) {
+    this.blacklist=Optional.of(Pattern.compile(config.getString(DATASET_BLACKLIST_KEY)));
+  }
+ else {
+    this.blacklist=Optional.absent();
+  }
+  this.fs=fs;
+  Path tmpDatasetPattern;
+  if (config.hasPath(DATASET_FINDER_PATTERN_KEY)) {
+    tmpDatasetPattern=new Path(config.getString(DATASET_FINDER_PATTERN_KEY));
+  }
+ else {
+    tmpDatasetPattern=new Path(config.getString(DATASET_PATTERN_KEY));
+  }
+  this.datasetPattern=tmpDatasetPattern.isAbsolute() ? tmpDatasetPattern : new Path(this.fs.getWorkingDirectory(),tmpDatasetPattern);
+  this.commonRoot=PathUtils.deepestNonGlobPath(this.datasetPattern);
+  this.props=jobProps;
+}

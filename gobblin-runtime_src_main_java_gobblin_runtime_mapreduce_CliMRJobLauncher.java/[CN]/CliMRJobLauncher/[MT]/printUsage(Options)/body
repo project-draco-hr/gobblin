@@ -1,3 +1,0 @@
-{
-  new HelpFormatter().printHelp(CliMRJobLauncher.class.getSimpleName(),options);
-}

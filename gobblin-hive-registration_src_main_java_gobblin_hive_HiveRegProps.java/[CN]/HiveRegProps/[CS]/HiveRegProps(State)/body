@@ -1,0 +1,6 @@
+{
+  super(props);
+  this.tablePartitionProps=createHiveProps(HIVE_TABLE_PARTITION_PROPS);
+  this.storageProps=createHiveProps(HIVE_STORAGE_PROPS);
+  this.serdeProps=createHiveProps(HIVE_SERDE_PROPS);
+}

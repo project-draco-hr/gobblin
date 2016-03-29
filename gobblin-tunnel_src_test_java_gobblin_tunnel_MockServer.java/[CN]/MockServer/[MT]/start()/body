@@ -1,0 +1,13 @@
+{
+  _server=new ServerSocket();
+  _server.setSoTimeout(5000);
+  _server.bind(new InetSocketAddress("localhost",0));
+  _serverSocketPort=_server.getLocalPort();
+  _threads.add(new EasyThread(){
+    @Override void runQuietly() throws Exception {
+      runServer();
+    }
+  }
+.startThread());
+  return this;
+}

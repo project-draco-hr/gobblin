@@ -1,0 +1,12 @@
+{
+  super.publish(states);
+  if (!states.isEmpty()) {
+    String jobName=Iterables.get(states,0).getProp(ConfigurationKeys.JOB_NAME_KEY);
+    String datasetUrn=Iterables.get(states,0).getProp(ConfigurationKeys.DATASET_URN_KEY,ConfigurationKeys.DEFAULT_DATASET_URN);
+    this.commitSequenceBuilder.get().withJobName(jobName).withDatasetUrn(datasetUrn);
+  }
+ else {
+    log.warn("No workunitstate to publish");
+    this.commitSequenceBuilder=Optional.<CommitSequence.Builder>absent();
+  }
+}

@@ -1,0 +1,3 @@
+{
+  this.serDeManager.get().addSerDeProperties(path,this);
+}

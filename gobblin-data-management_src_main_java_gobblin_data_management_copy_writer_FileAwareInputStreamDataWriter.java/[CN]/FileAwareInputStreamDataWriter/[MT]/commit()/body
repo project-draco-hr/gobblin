@@ -1,14 +1,15 @@
 {
+  if (!this.actualProcessedCopyableFile.isPresent()) {
+    return;
+  }
   CopyableFile copyableFile=this.actualProcessedCopyableFile.get();
   Path stagingFilePath=getStagingFilePath(copyableFile);
-  Path outputFilePath=getOutputFilePath(copyableFile);
+  Path outputFilePath=getOutputFilePath(copyableFile,this.outputDir,copyableFile.getDatasetAndPartition(this.copyableDatasetMetadata));
   log.info(String.format("Committing data from %s to %s",stagingFilePath,outputFilePath));
   try {
     setFilePermissions(copyableFile);
     Iterator<OwnerAndPermission> ancestorOwnerAndPermissionIt=copyableFile.getAncestorsOwnerAndPermission() == null ? Iterators.<OwnerAndPermission>emptyIterator() : copyableFile.getAncestorsOwnerAndPermission().iterator();
-    if (!ensureDirectoryExists(this.fs,outputFilePath.getParent(),ancestorOwnerAndPermissionIt)) {
-      throw new IOException(String.format("Could not create ancestors for %s",outputFilePath));
-    }
+    ensureDirectoryExists(this.fs,outputFilePath.getParent(),ancestorOwnerAndPermissionIt);
     if (!this.fs.rename(stagingFilePath,outputFilePath)) {
       throw new IOException(String.format("Could not commit file %s.",outputFilePath));
     }

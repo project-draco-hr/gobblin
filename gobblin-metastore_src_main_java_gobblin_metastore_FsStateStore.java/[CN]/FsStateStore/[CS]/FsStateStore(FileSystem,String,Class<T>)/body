@@ -1,5 +1,6 @@
 {
   this.fs=fs;
+  this.useTmpFileForPut=!FS_SCHEMES_NON_ATOMIC.contains(this.fs.getUri().getScheme());
   this.conf=this.fs.getConf();
   this.storeRootDir=storeRootDir;
   this.stateClass=stateClass;

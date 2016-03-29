@@ -1,0 +1,3 @@
+{
+  return new HiveLocationDescriptor(table.getDataLocation(),HiveUtils.getInputFormat(table.getTTable().getSd()),fs,properties);
+}

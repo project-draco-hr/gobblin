@@ -1,0 +1,11 @@
+{
+  Preconditions.checkNotNull(descendant,"input can not be null");
+  Preconditions.checkNotNull(ancestor,"input can not be null");
+  if (!stringSame(descendant.getScheme(),ancestor.getScheme())) {
+    return false;
+  }
+  if (!stringSame(descendant.getAuthority(),ancestor.getAuthority())) {
+    return false;
+  }
+  return isAncestorOrSame(getConfigKeyPath(descendant.getPath()),getConfigKeyPath(ancestor.getPath()));
+}

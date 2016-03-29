@@ -1,0 +1,11 @@
+{
+  for (int i=0; i < 20; i++) {
+    if (nextCallCount.get() >= retrieved || completedCount.get() >= completed) {
+      break;
+    }
+    Thread.sleep(100);
+  }
+  Thread.sleep(100);
+  Assert.assertEquals(nextCallCount.get(),retrieved);
+  Assert.assertEquals(completedCount.get(),completed);
+}

@@ -1,4 +1,5 @@
 {
+  Option sysConfigOption=OptionBuilder.withArgName("system configuration file").withDescription("Gobblin system configuration file").withLongOpt("sysconfig").hasArgs().create("sc");
   Option storeUrlOption=OptionBuilder.withArgName("gobblin state store URL").withDescription("Gobblin state store root path URL").withLongOpt("storeurl").hasArgs().isRequired().create('u');
   Option jobNameOption=OptionBuilder.withArgName("gobblin job name").withDescription("Gobblin job name").withLongOpt("name").hasArgs().isRequired().create('n');
   Option jobIdOption=OptionBuilder.withArgName("gobblin job id").withDescription("Gobblin job id").withLongOpt("id").hasArgs().create('i');
@@ -6,6 +7,7 @@
   Option keepConfigOption=OptionBuilder.withDescription("Whether to keep all configuration properties").withLongOpt("keepConfig").create("kc");
   Option outputToFile=OptionBuilder.withArgName("output file name").withDescription("Output file name").withLongOpt("toFile").hasArgs().create("t");
   Options options=new Options();
+  options.addOption(sysConfigOption);
   options.addOption(storeUrlOption);
   options.addOption(jobNameOption);
   options.addOption(jobIdOption);
@@ -22,7 +24,11 @@
     formatter.printHelp("JobStateToJsonConverter",options);
     System.exit(1);
   }
-  JobStateToJsonConverter converter=new JobStateToJsonConverter(cmd.getOptionValue('u'),cmd.hasOption("kc"));
+  Properties sysConfig=new Properties();
+  if (cmd.hasOption(sysConfigOption.getLongOpt())) {
+    sysConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(sysConfigOption.getLongOpt()));
+  }
+  JobStateToJsonConverter converter=new JobStateToJsonConverter(sysConfig,cmd.getOptionValue('u'),cmd.hasOption("kc"));
   StringWriter stringWriter=new StringWriter();
   if (cmd.hasOption('i')) {
     converter.convert(cmd.getOptionValue('n'),cmd.getOptionValue('i'),stringWriter);

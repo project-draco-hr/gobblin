@@ -1,0 +1,20 @@
+{
+  super.updateTablePartitionFields(state,key,value);
+  boolean isExistingField=true;
+switch (key) {
+case HiveConstants.OWNER:
+    this.owner=Optional.of((String)value);
+  break;
+case HiveConstants.TABLE_TYPE:
+this.tableType=Optional.of((String)value);
+break;
+case HiveConstants.RETENTION:
+this.retention=Optional.of((long)value);
+break;
+default :
+isExistingField=false;
+}
+if (isExistingField) {
+state.removeProp(key);
+}
+}

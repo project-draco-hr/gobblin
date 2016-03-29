@@ -1,0 +1,16 @@
+{
+  insertDailyPartition(new Path("/data/tracking/MetricEvent/daily/2015/11/25"));
+  insertDailyPartition(new Path("/data/tracking/MetricEvent/daily/2015/12/01"));
+  insertDailyPartition(new Path("/data/tracking/MetricEvent/daily/2014/11/21"));
+  insertDailyPartition(new Path("/data/tracking/MetricEvent/daily/2014/01/22"));
+  insertDailyPartition(new Path("/data/tracking/MetricEvent/daily/2013/01/25"));
+  Timestamp currentTimestamp=new Timestamp(DateTimeFormat.forPattern(DAILY_PARTITION_PATTERN).parseDateTime("2016/01/25").getMillis());
+  PreparedStatement statement=connection.prepareStatement("SELECT path FROM Daily_Partitions WHERE TIMESTAMP_DIFF(?, ts, 'Days') > ?");
+  statement.setTimestamp(1,currentTimestamp);
+  statement.setLong(2,TWO_YEARS_IN_DAYS);
+  ResultSet rs=statement.executeQuery();
+  rs.next();
+  Assert.assertEquals(rs.getString(1),"/data/tracking/MetricEvent/daily/2014/01/22");
+  rs.next();
+  Assert.assertEquals(rs.getString(1),"/data/tracking/MetricEvent/daily/2013/01/25");
+}

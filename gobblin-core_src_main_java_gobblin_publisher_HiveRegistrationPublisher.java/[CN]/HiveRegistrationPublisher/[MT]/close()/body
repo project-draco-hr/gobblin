@@ -1,0 +1,8 @@
+{
+  try {
+    ExecutorsUtils.shutdownExecutorService(this.hivePolicyExecutor,Optional.of(log));
+  }
+  finally {
+    this.closer.close();
+  }
+}

@@ -1,0 +1,16 @@
+{
+  State state=new State(properties);
+  if (Strings.isNullOrEmpty(state.getProp(COMPACTOR_LISTENERS))) {
+    return Optional.absent();
+  }
+  List<CompactorListener> listeners=new ArrayList<>();
+  for (  String listenerClassName : state.getPropAsList(COMPACTOR_LISTENERS)) {
+    try {
+      listeners.add((CompactorListener)ConstructorUtils.invokeConstructor(Class.forName(listenerClassName),properties));
+    }
+ catch (    ReflectiveOperationException e) {
+      throw new CompactorListenerCreationException(String.format("Unable to create CompactorListeners from key \"%s\" with value \"%s\"",COMPACTOR_LISTENERS,properties.getProperty(COMPACTOR_LISTENERS)),e);
+    }
+  }
+  return Optional.<CompactorListener>of(new SerialCompactorListener(listeners));
+}

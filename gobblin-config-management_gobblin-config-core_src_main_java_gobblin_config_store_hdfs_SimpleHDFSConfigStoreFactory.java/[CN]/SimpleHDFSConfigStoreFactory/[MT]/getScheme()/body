@@ -1,0 +1,3 @@
+{
+  return SIMPLE_HDFS_SCHEME_PREFIX + getPhysicalScheme();
+}

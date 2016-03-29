@@ -1,0 +1,5 @@
+{
+  lock.lock();
+  condition.signal();
+  lock.unlock();
+}

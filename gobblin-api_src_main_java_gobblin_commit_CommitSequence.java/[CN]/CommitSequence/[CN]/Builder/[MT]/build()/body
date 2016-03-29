@@ -1,0 +1,6 @@
+{
+  Preconditions.checkState(!Strings.isNullOrEmpty(this.jobName),"Job name not specified for commit sequence");
+  Preconditions.checkState(!Strings.isNullOrEmpty(this.datasetUrn),"Dataset URN not specified for commit sequence");
+  Preconditions.checkState(!this.steps.isEmpty(),"No commit steps specified for the commit sequence");
+  return new CommitSequence(this);
+}

@@ -1,6 +1,6 @@
 {
-  List<CopyableFile> copyableFiles=ImmutableList.of(CopyableFileUtils.getTestCopyableFile(),CopyableFileUtils.getTestCopyableFile(),CopyableFileUtils.getTestCopyableFile());
-  String serialized=CopyableFile.serializeList(copyableFiles);
-  List<CopyableFile> deserialized=CopyableFile.deserializeList(serialized);
-  Assert.assertEquals(deserialized,copyableFiles);
+  List<CopyEntity> copyEntities=ImmutableList.<CopyEntity>of(CopyableFileUtils.getTestCopyableFile(),CopyableFileUtils.getTestCopyableFile(),CopyableFileUtils.getTestCopyableFile());
+  String serialized=CopyEntity.serializeList(copyEntities);
+  List<CopyEntity> deserialized=CopyEntity.deserializeList(serialized);
+  Assert.assertEquals(deserialized,copyEntities);
 }

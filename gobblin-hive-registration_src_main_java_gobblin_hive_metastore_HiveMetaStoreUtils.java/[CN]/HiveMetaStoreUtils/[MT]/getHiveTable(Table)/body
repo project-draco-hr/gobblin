@@ -1,0 +1,13 @@
+{
+  State tableProps=getTableProps(table);
+  State storageProps=getStorageProps(table.getSd());
+  State serDeProps=getSerDeProps(table.getSd().getSerdeInfo());
+  HiveTable hiveTable=new HiveTable.Builder().withDbName(table.getDbName()).withTableName(table.getTableName()).withPartitionKeys(getColumns(table.getPartitionKeys())).withProps(tableProps).withStorageProps(storageProps).withSerdeProps(serDeProps).build();
+  if (table.getSd().getCols() != null) {
+    hiveTable.setColumns(getColumns(table.getSd().getCols()));
+  }
+  if (table.getSd().getBucketCols() != null) {
+    hiveTable.setBucketColumns(table.getSd().getBucketCols());
+  }
+  return hiveTable;
+}

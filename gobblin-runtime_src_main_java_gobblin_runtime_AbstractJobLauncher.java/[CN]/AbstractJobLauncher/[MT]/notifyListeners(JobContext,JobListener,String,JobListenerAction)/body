@@ -1,0 +1,12 @@
+{
+  TimingEvent timer=this.eventSubmitter.getTimingEvent(timerEventName);
+  try (CloseableJobListener parallelJobListener=getParallelCombinedJobListener(this.jobContext.getJobState(),jobListener)){
+    action.apply(parallelJobListener,jobContext);
+  }
+ catch (  Exception e) {
+    throw new JobException("Failed to execute all JobListeners",e);
+  }
+ finally {
+    timer.stop();
+  }
+}

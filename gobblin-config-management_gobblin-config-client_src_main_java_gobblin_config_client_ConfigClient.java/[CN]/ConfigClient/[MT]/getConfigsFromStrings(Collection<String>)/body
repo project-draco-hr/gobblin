@@ -1,0 +1,8 @@
+{
+  if (configKeyStrs == null || configKeyStrs.size() == 0)   return Collections.emptyMap();
+  Collection<URI> configKeyUris=new ArrayList<>();
+  for (  String s : configKeyStrs) {
+    configKeyUris.add(new URI(s));
+  }
+  return getConfigs(configKeyUris);
+}

@@ -1,0 +1,3 @@
+CopyableFile file
+Path outputDir
+CopyEntity.DatasetAndPartition datasetAndPartition

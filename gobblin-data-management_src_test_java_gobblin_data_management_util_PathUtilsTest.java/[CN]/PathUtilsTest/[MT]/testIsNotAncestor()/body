@@ -1,0 +1,4 @@
+{
+  Path ancestor=new Path("/user/gobblin/hourly");
+  Assert.assertFalse(PathUtils.isAncestor(ancestor,new Path("hdfs://clus-nn01.company.com:10000/user/gobblin/")));
+}

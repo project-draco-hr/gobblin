@@ -1,0 +1,5 @@
+{
+  for (  String propKey : props.getPropertyNames()) {
+    setProp(propKey,props.getProp(propKey));
+  }
+}

@@ -1,0 +1,25 @@
+{
+  ListenableFuture<Void> future=this.executor.submit(new Callable<Void>(){
+    @Override public Void call() throws Exception {
+      if (spec instanceof HiveSpecWithPredicates && !evaluatePredicates((HiveSpecWithPredicates)spec)) {
+        log.info("Skipping " + spec + " since predicates return false");
+        return null;
+      }
+      if (spec instanceof HiveSpecWithPreActivities) {
+        for (        Activity activity : ((HiveSpecWithPreActivities)spec).getPreActivities()) {
+          activity.execute(HiveRegister.this);
+        }
+      }
+      registerPath(spec);
+      if (spec instanceof HiveSpecWithPostActivities) {
+        for (        Activity activity : ((HiveSpecWithPostActivities)spec).getPostActivities()) {
+          activity.execute(HiveRegister.this);
+        }
+      }
+      return null;
+    }
+  }
+);
+  this.futures.add(future);
+  return future;
+}

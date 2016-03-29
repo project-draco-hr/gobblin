@@ -1,0 +1,8 @@
+{
+  if (this.writerFileSystemByBranches.get(branchId).getFileStatus(src).isDir()) {
+    return ImmutableList.<Path>of(dst);
+  }
+ else {
+    return ImmutableList.<Path>of(dst.getParent());
+  }
+}

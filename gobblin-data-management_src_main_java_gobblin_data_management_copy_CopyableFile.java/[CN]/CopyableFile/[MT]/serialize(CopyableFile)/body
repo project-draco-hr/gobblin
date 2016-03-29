@@ -1,3 +1,0 @@
-{
-  return GSON.toJson(copyableFile);
-}

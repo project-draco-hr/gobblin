@@ -1,11 +1,12 @@
 {
-  Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
-  if (!this.fs.exists(tablePath) && !create(storeName,tableName)) {
-    throw new IOException("Failed to create a state file for table " + tableName);
+  String tmpTableName=this.useTmpFileForPut ? TMP_FILE_PREFIX + tableName : tableName;
+  Path tmpTablePath=new Path(new Path(this.storeRootDir,storeName),tmpTableName);
+  if (!this.fs.exists(tmpTablePath) && !create(storeName,tmpTableName)) {
+    throw new IOException("Failed to create a state file for table " + tmpTableName);
   }
   Closer closer=Closer.create();
   try {
-    SequenceFile.Writer writer=closer.register(SequenceFile.createWriter(this.fs,this.conf,tablePath,Text.class,this.stateClass,SequenceFile.CompressionType.BLOCK,new DefaultCodec()));
+    SequenceFile.Writer writer=closer.register(SequenceFile.createWriter(this.fs,this.conf,tmpTablePath,Text.class,this.stateClass,SequenceFile.CompressionType.BLOCK,new DefaultCodec()));
     for (    T state : states) {
       writer.append(new Text(Strings.nullToEmpty(state.getId())),state);
     }
@@ -15,5 +16,9 @@
   }
  finally {
     closer.close();
+  }
+  if (this.useTmpFileForPut) {
+    Path tablePath=new Path(new Path(this.storeRootDir,storeName),tableName);
+    HadoopUtils.renamePath(this.fs,tmpTablePath,tablePath);
   }
 }

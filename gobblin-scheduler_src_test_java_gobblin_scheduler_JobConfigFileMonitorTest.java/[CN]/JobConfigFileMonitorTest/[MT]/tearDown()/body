@@ -1,4 +1,0 @@
-{
-  if (null != this.newJobConfigFile)   this.newJobConfigFile.delete();
-  this.serviceManager.stopAsync().awaitStopped(5,TimeUnit.SECONDS);
-}

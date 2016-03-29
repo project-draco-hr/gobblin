@@ -1,8 +1,11 @@
 {
+  Path nonGlobSearchPath=PathUtils.deepestNonGlobPath(this.glob);
   List<FileStatus> files=FileListUtils.listFilesRecursively(this.fs,this.rootPath,this.pathFilter);
   List<CopyableFile> copyableFiles=Lists.newArrayList();
   for (  FileStatus file : files) {
-    copyableFiles.add(CopyableFile.builder(this.fs,file,this.rootPath,configuration).build());
+    Path filePathRelativeToSearchPath=PathUtils.relativizePath(file.getPath(),nonGlobSearchPath);
+    Path targetPath=new Path(configuration.getPublishDir(),filePathRelativeToSearchPath);
+    copyableFiles.add(CopyableFile.fromOriginAndDestination(this.fs,file,targetPath,configuration).fileSet(file.getPath().getParent().toString()).build());
   }
   return copyableFileFilter.filter(this.fs,targetFs,copyableFiles);
 }

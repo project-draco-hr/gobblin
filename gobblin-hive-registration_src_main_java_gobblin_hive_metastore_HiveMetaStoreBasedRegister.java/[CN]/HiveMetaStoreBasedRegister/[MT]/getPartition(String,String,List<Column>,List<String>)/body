@@ -1,0 +1,11 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    return Optional.of(HiveMetaStoreUtils.getHivePartition(client.get().getPartition(dbName,tableName,partitionValues)));
+  }
+ catch (  NoSuchObjectException e) {
+    return Optional.<HivePartition>absent();
+  }
+catch (  TException e) {
+    throw new IOException("Unable to get partition " + partitionValues + " from table "+ tableName+ " in db "+ dbName,e);
+  }
+}

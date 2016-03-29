@@ -1,0 +1,6 @@
+{
+  Config config=valueInspector.getOwnConfig(this.espressoTag);
+  testValuesForEspressoTagOwnConfig(config);
+  config=valueInspector.getResolvedConfig(this.espressoTag);
+  testValuesForEspressoTagResolvedConfig(config);
+}

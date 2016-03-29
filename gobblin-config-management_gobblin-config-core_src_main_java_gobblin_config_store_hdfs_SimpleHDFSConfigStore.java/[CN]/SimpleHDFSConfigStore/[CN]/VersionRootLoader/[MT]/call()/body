@@ -1,0 +1,9 @@
+{
+  Path versionRootPath=PathUtils.combinePaths(physicalStoreRoot.toString(),CONFIG_STORE_NAME,version);
+  if (fs.isDirectory(versionRootPath)) {
+    return versionRootPath;
+  }
+ else {
+    throw new VersionDoesNotExistException(getStoreURI(),version,String.format("Cannot find specified version under root %s",versionRootPath));
+  }
+}

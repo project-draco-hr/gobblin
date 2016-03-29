@@ -1,4 +1,10 @@
 {
-  CopyableFile copyableFile=deserializeCopyableFile(state);
-  return new FileAwareInputStreamExtractor(getSourceFileSystem(state),copyableFile);
+  Class<?> copyEntityClass=getCopyEntityClass(state);
+  if (CopyableFile.class.isAssignableFrom(copyEntityClass)) {
+    CopyableFile copyEntity=(CopyableFile)deserializeCopyEntity(state);
+    return extractorForCopyableFile(getSourceFileSystem(state),copyEntity);
+  }
+ else {
+    return new EmptyExtractor<>("empty");
+  }
 }

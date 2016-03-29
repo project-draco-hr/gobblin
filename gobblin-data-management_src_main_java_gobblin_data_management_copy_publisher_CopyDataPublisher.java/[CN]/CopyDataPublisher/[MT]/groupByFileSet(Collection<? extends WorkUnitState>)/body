@@ -1,8 +1,8 @@
 {
-  Multimap<CopyableFile.DatasetAndPartition,WorkUnitState> datasetRoots=ArrayListMultimap.create();
+  Multimap<CopyEntity.DatasetAndPartition,WorkUnitState> datasetRoots=ArrayListMultimap.create();
   for (  WorkUnitState workUnitState : states) {
-    CopyableFile file=CopySource.deserializeCopyableFile(workUnitState);
-    CopyableFile.DatasetAndPartition datasetAndPartition=file.getDatasetAndPartition(CopyableDatasetMetadata.deserialize(workUnitState.getProp(CopySource.SERIALIZED_COPYABLE_DATASET)));
+    CopyEntity file=CopySource.deserializeCopyEntity(workUnitState);
+    CopyEntity.DatasetAndPartition datasetAndPartition=file.getDatasetAndPartition(CopyableDatasetMetadata.deserialize(workUnitState.getProp(CopySource.SERIALIZED_COPYABLE_DATASET)));
     datasetRoots.put(datasetAndPartition,workUnitState);
   }
   return datasetRoots;

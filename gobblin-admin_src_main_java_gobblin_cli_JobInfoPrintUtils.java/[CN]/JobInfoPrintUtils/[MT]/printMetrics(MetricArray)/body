@@ -1,0 +1,13 @@
+{
+  System.out.println();
+  if (metrics.size() == 0) {
+    System.out.println("No metrics found.");
+    return;
+  }
+  List<List<String>> data=new ArrayList<>();
+  List<String> flags=Arrays.asList("","-");
+  for (  Metric metric : metrics) {
+    data.add(Arrays.asList(metric.getName(),metric.getValue()));
+  }
+  new CliTablePrinter.Builder().data(data).flags(flags).delimiterWidth(2).build().printTable();
+}

@@ -1,0 +1,9 @@
+{
+  ConcurrentBoundedWorkUnitList list=new ConcurrentBoundedWorkUnitList(10,new AllEqualComparator<FileSet<CopyEntity>>());
+  Assert.assertTrue(addFiles(list,"fs",6));
+  Assert.assertFalse(list.hasRejectedFileSet());
+  Assert.assertFalse(addFiles(list,"fs",5));
+  Assert.assertTrue(list.hasRejectedFileSet());
+  Assert.assertTrue(addFiles(list,"fs",4));
+  Assert.assertFalse(addFiles(list,"fs",1));
+}

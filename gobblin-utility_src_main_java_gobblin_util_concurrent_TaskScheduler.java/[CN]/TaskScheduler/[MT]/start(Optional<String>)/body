@@ -1,0 +1,6 @@
+{
+  if (!this.isStarted) {
+    this.startImpl(name);
+    this.isStarted=true;
+  }
+}

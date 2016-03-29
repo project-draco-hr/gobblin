@@ -2,5 +2,10 @@
   super(props);
   Preconditions.checkArgument(props.containsKey(KAFKA_SCHEMA_REGISTRY_URL),String.format("Property %s not provided.",KAFKA_SCHEMA_REGISTRY_URL));
   this.url=props.getProperty(KAFKA_SCHEMA_REGISTRY_URL);
-  this.httpClient=new HttpClient(new MultiThreadedHttpConnectionManager());
+  int objPoolSize=Integer.parseInt(props.getProperty(ConfigurationKeys.KAFKA_SOURCE_WORK_UNITS_CREATION_THREADS,"" + ConfigurationKeys.KAFKA_SOURCE_WORK_UNITS_CREATION_DEFAULT_THREAD_COUNT));
+  LOG.info("Create HttpClient pool with size " + objPoolSize);
+  GenericObjectPoolConfig config=new GenericObjectPoolConfig();
+  config.setMaxTotal(objPoolSize);
+  config.setMaxIdle(objPoolSize);
+  this.httpClientPool=new GenericObjectPool<>(new HttpClientFactory(),config);
 }

@@ -1,0 +1,32 @@
+{
+  if (this.currentSize + workUnits.size() > this.maxSize) {
+    if (this.comparator.compare(this.workUnitsMap.lastKey(),fileSet) <= 0) {
+      return false;
+    }
+    int tmpSize=this.currentSize;
+    Set<FileSet<CopyEntity>> partitionsToDelete=Sets.newHashSet();
+    for (    FileSet<CopyEntity> existingFileSet : this.workUnitsMap.descendingKeySet()) {
+      if (this.comparator.compare(existingFileSet,fileSet) <= 0) {
+        return false;
+      }
+      tmpSize-=this.workUnitsMap.get(existingFileSet).size();
+      partitionsToDelete.add(existingFileSet);
+      if (tmpSize + workUnits.size() <= this.maxSize) {
+        break;
+      }
+    }
+    for (    FileSet<CopyEntity> fileSetToRemove : partitionsToDelete) {
+      List<WorkUnit> workUnitsRemoved=this.workUnitsMap.remove(fileSetToRemove);
+      this.currentSize-=workUnitsRemoved.size();
+    }
+  }
+  if (!this.workUnitsMap.containsKey(fileSet)) {
+    this.workUnitsMap.put(fileSet,workUnits);
+  }
+ else {
+    this.workUnitsMap.get(fileSet).addAll(workUnits);
+  }
+  this.currentSize+=workUnits.size();
+  log.info(String.format("Added %d work units to bounded list. Total size: %d, limit: %d.",workUnits.size(),this.currentSize,this.maxSize));
+  return true;
+}

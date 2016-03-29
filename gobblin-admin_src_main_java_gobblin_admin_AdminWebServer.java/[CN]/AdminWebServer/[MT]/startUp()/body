@@ -1,0 +1,9 @@
+{
+  LOGGER.info("Starting the admin web server");
+  server=new Server(new InetSocketAddress(serverUri.getHost(),serverUri.getPort()));
+  HandlerCollection handlerCollection=new HandlerCollection();
+  handlerCollection.addHandler(buildSettingsHandler());
+  handlerCollection.addHandler(buildStaticResourceHandler());
+  server.setHandler(handlerCollection);
+  server.start();
+}

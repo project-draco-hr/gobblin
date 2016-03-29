@@ -2,8 +2,6 @@
   LOGGER.info(String.format("Starting %s in container %s",this.helixInstanceName,this.containerId));
   addShutdownHook();
   connectHelixManager();
-  registerJvmMetrics();
-  this.jmxReporter.start();
   if (this.containerMetrics.isPresent()) {
     this.containerMetrics.get().startMetricReportingWithFileSuffix(ConfigUtils.configToState(this.config),this.containerId.toString());
   }

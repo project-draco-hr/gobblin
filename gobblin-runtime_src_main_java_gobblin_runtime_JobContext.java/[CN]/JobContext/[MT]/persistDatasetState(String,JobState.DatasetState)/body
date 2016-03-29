@@ -1,12 +1,4 @@
 {
-  for (  TaskState taskState : datasetState.getTaskStates()) {
-    if (taskState.getWorkingState() != WorkUnitState.WorkingState.COMMITTED) {
-      taskState.backoffActualHighWatermark();
-      if (this.jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS) {
-        datasetState.setState(JobState.RunningState.FAILED);
-      }
-    }
-  }
-  datasetState.setId(datasetUrn);
+  LOG.info("Persisting dataset state for dataset " + datasetUrn);
   this.datasetStateStore.persistDatasetState(datasetUrn,datasetState);
 }

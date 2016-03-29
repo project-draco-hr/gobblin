@@ -1,0 +1,3 @@
+{
+  return "Fork: TaskId = \"" + this.taskId + "\" Index: \""+ this.index+ "\" State: \""+ this.forkState+ "\"";
+}

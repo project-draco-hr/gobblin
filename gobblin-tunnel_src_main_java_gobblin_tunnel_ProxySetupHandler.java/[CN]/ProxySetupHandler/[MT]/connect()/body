@@ -1,0 +1,16 @@
+{
+  if (proxy.isOpen()) {
+    if (proxy.finishConnect()) {
+      proxy.register(selector,SelectionKey.OP_WRITE,this);
+      SelectionKey clientKey=client.keyFor(selector);
+      if (clientKey != null) {
+        clientKey.cancel();
+      }
+      state=HandlerState.WRITING;
+    }
+ else     if (connectStartTime + Config.PROXY_CONNECT_TIMEOUT_MS < System.currentTimeMillis()) {
+      LOG.warn("Proxy connect timed out for client {}",client);
+      closeChannels();
+    }
+  }
+}

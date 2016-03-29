@@ -1,0 +1,11 @@
+{
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    if (!client.get().tableExists(table.getDbName(),table.getTableName())) {
+      throw new IOException("Table " + table.getTableName() + " in db "+ table.getDbName()+ " does not exist");
+    }
+    client.get().alter_table(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getTable(table));
+  }
+ catch (  TException e) {
+    throw new IOException("Unable to alter table " + table.getTableName() + " in db "+ table.getDbName(),e);
+  }
+}

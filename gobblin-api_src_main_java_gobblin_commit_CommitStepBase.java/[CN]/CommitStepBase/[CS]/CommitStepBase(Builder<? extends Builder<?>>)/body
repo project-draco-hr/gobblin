@@ -1,0 +1,4 @@
+{
+  Preconditions.checkNotNull(builder.props);
+  this.props=builder.props;
+}

@@ -1,4 +1,4 @@
 {
   super(dataset,fs,priority);
-  this.useSingleInputSchema=this.dataset.jobProps().getPropAsBoolean(COMPACTION_JOB_AVRO_SINGLE_INPUT_SCHEMA,false);
+  this.useSingleInputSchema=this.dataset.jobProps().getPropAsBoolean(COMPACTION_JOB_AVRO_SINGLE_INPUT_SCHEMA,true);
 }

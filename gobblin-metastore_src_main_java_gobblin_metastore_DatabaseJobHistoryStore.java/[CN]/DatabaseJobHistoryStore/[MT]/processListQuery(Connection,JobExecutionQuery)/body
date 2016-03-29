@@ -1,0 +1,35 @@
+{
+  Preconditions.checkArgument(query.getId().isQueryListType());
+  QueryListType queryType=query.getId().getQueryListType();
+  String listJobExecutionsQuery="";
+  if (queryType == QueryListType.DISTINCT) {
+    listJobExecutionsQuery=LIST_DISTINCT_JOB_EXECUTION_QUERY_TEMPLATE;
+    if (query.hasTimeRange()) {
+      try {
+        String timeRangeFilter=constructTimeRangeFilter(query.getTimeRange());
+        if (!Strings.isNullOrEmpty(timeRangeFilter)) {
+          listJobExecutionsQuery+=" AND " + timeRangeFilter;
+        }
+      }
+ catch (      ParseException pe) {
+        LOGGER.error("Failed to parse the query time range",pe);
+        throw new SQLException(pe);
+      }
+    }
+  }
+ else {
+    listJobExecutionsQuery=LIST_RECENT_JOB_EXECUTION_QUERY_TEMPLATE;
+  }
+  listJobExecutionsQuery+=" ORDER BY last_modified_ts DESC";
+  PreparedStatement queryStatement=connection.prepareStatement(listJobExecutionsQuery);
+  int limit=query.getLimit();
+  if (limit > 0) {
+    queryStatement.setMaxRows(limit);
+  }
+  ResultSet rs=queryStatement.executeQuery();
+  List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
+  while (rs.next()) {
+    jobExecutionInfos.add(processQueryById(connection,rs.getString(1),query,Optional.<String>absent()));
+  }
+  return jobExecutionInfos;
+}

@@ -1,0 +1,25 @@
+{
+  CompletionService<Collection<HiveSpec>> completionService=new ExecutorCompletionService<>(this.hivePolicyExecutor);
+  Set<String> pathsToRegister=getUniquePathsToRegister(states);
+  log.info("Number of paths to be registered in Hive: " + pathsToRegister.size());
+  for (  final String path : pathsToRegister) {
+    completionService.submit(new Callable<Collection<HiveSpec>>(){
+      @Override public Collection<HiveSpec> call() throws Exception {
+        return HiveRegistrationPublisher.this.policy.getHiveSpecs(new Path(path));
+      }
+    }
+);
+  }
+  for (int i=0; i < pathsToRegister.size(); i++) {
+    try {
+      for (      HiveSpec spec : completionService.take().get()) {
+        this.hiveRegister.register(spec);
+      }
+    }
+ catch (    InterruptedException|ExecutionException e) {
+      log.info("Failed to generate HiveSpec",e);
+      throw new IOException(e);
+    }
+  }
+  log.info("Finished generating all HiveSpecs");
+}

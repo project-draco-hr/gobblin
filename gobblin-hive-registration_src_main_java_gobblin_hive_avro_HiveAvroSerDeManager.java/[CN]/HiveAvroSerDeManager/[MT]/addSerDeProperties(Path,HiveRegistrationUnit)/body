@@ -1,0 +1,6 @@
+{
+  hiveUnit.setSerDeType(this.serDeWrapper.getSerDe().getClass().getName());
+  hiveUnit.setInputFormat(this.serDeWrapper.getInputFormatClassName());
+  hiveUnit.setOutputFormat(this.serDeWrapper.getOutputFormatClassName());
+  addSchemaProperties(path,hiveUnit);
+}

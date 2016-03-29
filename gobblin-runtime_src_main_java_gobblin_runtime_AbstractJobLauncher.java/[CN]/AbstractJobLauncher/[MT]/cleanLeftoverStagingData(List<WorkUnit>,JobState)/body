@@ -1,4 +1,16 @@
 {
+  if (jobState.getPropAsBoolean(ConfigurationKeys.CLEANUP_STAGING_DATA_BY_INITIALIZER,false)) {
+    return;
+  }
+  try {
+    if (!canCleanStagingData(jobState)) {
+      LOG.error("Job " + jobState.getJobName() + " has unfinished commit sequences. Will not clean up staging data.");
+      return;
+    }
+  }
+ catch (  IOException e) {
+    throw new JobException("Failed to check unfinished commit sequences",e);
+  }
   try {
     if (this.jobContext.shouldCleanupStagingDataPerTask()) {
       Closer closer=Closer.create();

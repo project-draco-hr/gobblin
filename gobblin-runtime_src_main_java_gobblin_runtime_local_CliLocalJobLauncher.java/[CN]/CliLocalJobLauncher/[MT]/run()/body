@@ -1,0 +1,14 @@
+{
+  try {
+    start();
+    launchJob(null);
+  }
+  finally {
+    try {
+      stop();
+    }
+  finally {
+      close();
+    }
+  }
+}
