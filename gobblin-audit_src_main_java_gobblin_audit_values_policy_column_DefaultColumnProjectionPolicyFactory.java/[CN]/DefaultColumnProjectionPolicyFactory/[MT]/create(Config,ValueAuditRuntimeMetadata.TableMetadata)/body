@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(config.hasPath(COLUMN_PROJECTION_POLICY_CLASS_NAME_KEY));
+  log.info("Using column projection class name/alias " + config.getString(COLUMN_PROJECTION_POLICY_CLASS_NAME_KEY));
+  try {
+    return (ColumnProjectionPolicy)ConstructorUtils.invokeConstructor(Class.forName(this.aliasResolver.resolve(config.getString(COLUMN_PROJECTION_POLICY_CLASS_NAME_KEY))),config,tableMetadata);
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new RuntimeException(e);
+  }
+}

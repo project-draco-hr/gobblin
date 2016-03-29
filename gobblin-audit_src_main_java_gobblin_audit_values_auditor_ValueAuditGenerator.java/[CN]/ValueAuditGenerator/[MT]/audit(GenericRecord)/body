@@ -1,0 +1,5 @@
+{
+  if (this.rowSelectionPolicy.shouldSelectRow(inputRecord)) {
+    auditSink.write(columnProjectionPolicy.project(inputRecord));
+  }
+}

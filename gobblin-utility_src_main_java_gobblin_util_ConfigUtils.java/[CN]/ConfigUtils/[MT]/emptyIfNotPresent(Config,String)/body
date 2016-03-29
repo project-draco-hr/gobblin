@@ -1,0 +1,3 @@
+{
+  return getString(config,path,StringUtils.EMPTY);
+}

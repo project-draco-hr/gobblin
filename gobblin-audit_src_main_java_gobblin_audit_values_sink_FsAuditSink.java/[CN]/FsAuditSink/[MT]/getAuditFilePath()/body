@@ -1,0 +1,5 @@
+{
+  StringBuilder auditFileNameBuilder=new StringBuilder();
+  auditFileNameBuilder.append("P=").append(auditMetadata.getPhase()).append(FILE_NAME_DELIMITTER).append("C=").append(auditMetadata.getCluster()).append(FILE_NAME_DELIMITTER).append("E=").append(auditMetadata.getExtractId()).append(FILE_NAME_DELIMITTER).append("S=").append(auditMetadata.getSnapshotId()).append(FILE_NAME_DELIMITTER).append("D=").append(auditMetadata.getDeltaId());
+  return new Path(auditDirPath,PathUtils.combinePaths(auditMetadata.getTableMetadata().getDatabase(),auditMetadata.getTableMetadata().getTable(),auditFileNameBuilder.toString(),auditMetadata.getPartFileName()));
+}

@@ -1,0 +1,28 @@
+{
+  Schema testSchema=SchemaBuilder.record("test").fields().name("f1").type().stringType().noDefault().endRecord();
+  GenericRecord r=new GenericRecordBuilder(testSchema).set("f1","v1").build();
+  ValueAuditRuntimeMetadata auditMetadata=ValueAuditRuntimeMetadata.builder("db","tb",testSchema).snapshotId(RandomStringUtils.randomAlphanumeric(5)).partFileName("part-1.avro").build();
+  File auditFile=null;
+  Path auditDir=null;
+  try (FsAuditSink auditSink=new FsAuditSink(ConfigFactory.empty(),auditMetadata)){
+    auditFile=new File(auditSink.getAuditFilePath().toString());
+    auditDir=auditSink.getAuditDirPath();
+    auditSink.write(r);
+  }
+ catch (  Exception e) {
+    FileSystem.get(new Configuration()).delete(auditDir,true);
+    throw e;
+  }
+  GenericDatumReader<GenericRecord> reader=new GenericDatumReader<>(testSchema);
+  try (DataFileReader<GenericRecord> dataFileReader=new DataFileReader<>(auditFile,reader)){
+    while (dataFileReader.hasNext()) {
+      GenericRecord recRead=dataFileReader.next();
+      Assert.assertEquals(recRead,r);
+      break;
+    }
+    Assert.assertEquals(dataFileReader.hasNext(),false);
+  }
+  finally {
+    FileSystem.get(new Configuration()).delete(auditDir,true);
+  }
+}
