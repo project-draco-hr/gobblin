@@ -1,5 +1,6 @@
 {
   log.info("Finding copy entities for table " + dataset.table.getCompleteName());
+  this.startTime=System.currentTimeMillis();
   this.dataset=dataset;
   this.configuration=configuration;
   this.targetFs=targetFs;
@@ -24,7 +25,7 @@
     this.partitionFilter=Optional.fromNullable(this.dataset.properties.getProperty(COPY_PARTITIONS_FILTER_CONSTANT));
   }
   try {
-    this.fastPartitionSkip=this.dataset.properties.containsKey(FAST_PARTITION_SKIP_PREDICATE) ? Optional.of(GobblinConstructorUtils.invokeFirstConstructor((Class<Predicate<Partition>>)Class.forName(this.dataset.properties.getProperty(FAST_PARTITION_SKIP_PREDICATE)),Lists.<Object>newArrayList(this),Lists.newArrayList())) : Optional.<Predicate<Partition>>absent();
+    this.fastPartitionSkip=this.dataset.properties.containsKey(FAST_PARTITION_SKIP_PREDICATE) ? Optional.of(GobblinConstructorUtils.invokeFirstConstructor((Class<Predicate<PartitionCopy>>)Class.forName(this.dataset.properties.getProperty(FAST_PARTITION_SKIP_PREDICATE)),Lists.<Object>newArrayList(this),Lists.newArrayList())) : Optional.<Predicate<PartitionCopy>>absent();
   }
  catch (  ReflectiveOperationException roe) {
     throw new IOException(roe);
@@ -37,17 +38,13 @@
  else {
       this.existingTargetTable=Optional.absent();
     }
+    Path targetPath=getTargetLocation(dataset.fs,this.targetFs,dataset.table.getDataLocation(),Optional.<Partition>absent());
+    this.targetTable=getTargetTable(this.dataset.table,targetPath);
+    HiveSpec tableHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(this.targetTable.getTTable())).build();
+    CommitStep tableRegistrationStep=new HiveRegisterStep(targetURI,tableHiveSpec,this.hiveRegProps);
+    this.tableRegistrationStep=Optional.of(tableRegistrationStep);
     if (this.existingTargetTable.isPresent()) {
-      checkTableCompatibility(this.dataset.table,this.existingTargetTable.get());
-      this.targetTable=this.existingTargetTable.get();
-      this.tableRegistrationStep=Optional.absent();
-    }
- else {
-      Path targetPath=getTargetLocation(dataset.fs,this.targetFs,dataset.table.getDataLocation(),Optional.<Partition>absent());
-      this.targetTable=getTargetTable(this.dataset.table,targetPath);
-      HiveSpec tableHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(this.targetTable.getTTable())).build();
-      CommitStep tableRegistrationStep=new HiveRegisterStep(targetURI,tableHiveSpec,this.hiveRegProps);
-      this.tableRegistrationStep=Optional.of(tableRegistrationStep);
+      checkTableCompatibility(this.targetTable,this.existingTargetTable.get());
     }
     if (HiveUtils.isPartitioned(this.dataset.table)) {
       this.sourcePartitions=HiveUtils.getPartitionsMap(multiClient.getClient(source_client),this.dataset.table,this.partitionFilter);
