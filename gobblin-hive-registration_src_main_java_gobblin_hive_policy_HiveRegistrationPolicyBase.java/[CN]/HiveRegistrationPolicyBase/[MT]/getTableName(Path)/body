@@ -1,3 +1,6 @@
 {
-  return this.tableNamePrefix + getDatabaseOrTableName(path,HIVE_TABLE_NAME,HIVE_TABLE_REGEX,this.tableNamePattern) + this.tableNameSuffix;
+  if (!this.props.contains(HIVE_TABLE_NAME) && !this.props.contains(HIVE_TABLE_REGEX)) {
+    return Optional.<String>absent();
+  }
+  return Optional.<String>of(this.tableNamePrefix + getDatabaseOrTableName(path,HIVE_TABLE_NAME,HIVE_TABLE_REGEX,this.tableNamePattern) + this.tableNameSuffix);
 }

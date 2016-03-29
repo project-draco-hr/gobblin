@@ -1,0 +1,3 @@
+HiveSpec spec
+String dbName
+String tableName

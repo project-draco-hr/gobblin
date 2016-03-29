@@ -1,0 +1,14 @@
+{
+  List<String> databaseNames=Lists.newArrayList();
+  Optional<String> databaseName;
+  if ((databaseName=getDatabaseName(path)).isPresent()) {
+    databaseNames.add(databaseName.get());
+  }
+  if (!Strings.isNullOrEmpty(this.props.getProp(ADDITIONAL_HIVE_DATABASE_NAMES))) {
+    for (    String additionalDbName : this.props.getPropAsList(ADDITIONAL_HIVE_DATABASE_NAMES)) {
+      databaseNames.add(this.dbNamePrefix + additionalDbName + this.dbNameSuffix);
+    }
+  }
+  Preconditions.checkState(!databaseNames.isEmpty(),"Hive database name not specified");
+  return databaseNames;
+}
