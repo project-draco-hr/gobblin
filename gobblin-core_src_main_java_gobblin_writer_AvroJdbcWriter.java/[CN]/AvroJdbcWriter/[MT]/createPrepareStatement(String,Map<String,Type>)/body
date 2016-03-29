@@ -1,3 +1,0 @@
-{
-  return String.format(INSERT_STATEMENT_FORMAT,tableName,Joiner.on(',').join(flattened.keySet()),Joiner.on(',').useForNull("?").join(new String[flattened.size()]));
-}

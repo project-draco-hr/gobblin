@@ -1,4 +1,0 @@
-{
-  String key=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,builder.branches,builder.branch);
-  return Objects.requireNonNull(state.getProp(key));
-}

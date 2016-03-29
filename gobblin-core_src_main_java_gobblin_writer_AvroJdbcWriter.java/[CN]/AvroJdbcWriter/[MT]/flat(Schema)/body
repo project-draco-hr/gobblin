@@ -1,5 +1,0 @@
-{
-  Map<String,Type> flattened=new LinkedHashMap<>();
-  produceFlattenedHeler(schema,null,flattened);
-  return flattened;
-}

@@ -33,7 +33,6 @@
   if (!this.props.containsKey(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY)) {
     this.props.setProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherFactory.JobLauncherType.MAPREDUCE.toString());
   }
-  LOG.info("Properties: " + this.props);
   this.jobLauncher=this.closer.register(JobLauncherFactory.newJobLauncher(this.props,this.props));
   this.applicationLauncher=this.closer.register(new ServiceBasedAppLauncher(this.props,"Azkaban-" + UUID.randomUUID()));
 }
