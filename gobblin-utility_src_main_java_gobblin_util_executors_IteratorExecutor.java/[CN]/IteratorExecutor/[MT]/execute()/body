@@ -1,4 +1,7 @@
 {
+  if (this.executed) {
+    throw new RuntimeException(String.format("This %s has already been executed.",IteratorExecutor.class.getSimpleName()));
+  }
   List<Future<T>> futures=Lists.newArrayList();
   int activeTasks=0;
   while (this.iterator.hasNext()) {
@@ -14,5 +17,7 @@
     activeTasks--;
   }
   this.completionService.poll();
+  ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log),10,TimeUnit.SECONDS);
+  this.executed=true;
   return futures;
 }
