@@ -1,12 +1,25 @@
 {
-  Set<Path> result=HiveUtils.getPaths(this.inputFormat,this.location);
-  boolean useHiveLocationDescriptorWithAdditionalData=Boolean.valueOf(this.properties.getProperty(HIVE_DATASET_COPY_ADDITIONAL_PATHS_RECURSIVELY_ENABLED,"true"));
-  if (useHiveLocationDescriptorWithAdditionalData) {
-    if (PathUtils.isGlob(location)) {
-      throw new RuntimeException("can not get additional data for glob pattern path " + location);
+  PathFindingMethod pathFindingMethod=PathFindingMethod.valueOf(this.properties.getProperty(HIVE_LOCATION_LISTING_METHOD,DEFAULT_HIVE_LOCATION_LISTING_METHOD).toUpperCase());
+  if (pathFindingMethod == PathFindingMethod.INPUT_FORMAT) {
+    Set<Path> result=HiveUtils.getPaths(this.inputFormat,this.location);
+    boolean useHiveLocationDescriptorWithAdditionalData=Boolean.valueOf(this.properties.getProperty(HIVE_DATASET_COPY_ADDITIONAL_PATHS_RECURSIVELY_ENABLED,"true"));
+    if (useHiveLocationDescriptorWithAdditionalData) {
+      if (PathUtils.isGlob(this.location)) {
+        throw new IOException("can not get additional data for glob pattern path " + this.location);
+      }
+      RecursivePathFinder finder=new RecursivePathFinder(this.fileSystem,this.location,this.properties);
+      result.addAll(finder.getPaths());
     }
-    RecursivePathFinder finder=new RecursivePathFinder(fileSystem,location,properties);
-    result.addAll(finder.getPaths());
+    return result;
   }
-  return result;
+ else   if (pathFindingMethod == PathFindingMethod.RECURSIVE) {
+    if (PathUtils.isGlob(this.location)) {
+      throw new IOException("Cannot use recursive listing for globbed locations.");
+    }
+    RecursivePathFinder finder=new RecursivePathFinder(this.fileSystem,this.location,this.properties);
+    return finder.getPaths();
+  }
+ else {
+    throw new IOException("Hive location listing method not recognized: " + pathFindingMethod);
+  }
 }

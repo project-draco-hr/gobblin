@@ -1,4 +1,8 @@
 {
+  if (fastPartitionSkip.isPresent() && fastPartitionSkip.get().apply(this.partition)) {
+    log.info(String.format("Skipping copy of partition %s due to fast partition skip predicate.",this.partition.getCompleteName()));
+    return Lists.newArrayList();
+  }
   log.info("Getting copy entities for partition " + this.partition.getCompleteName());
   int stepPriority=0;
   String fileSet=gson.toJson(this.partition.getValues());
@@ -14,10 +18,10 @@
     }
  catch (    IOException ioe) {
       if (existingEntityPolicy != ExistingEntityPolicy.REPLACE_PARTITIONS) {
-        log.error("Source and target partitions are not compatible. Aborting copy of partition " + this.partition);
+        log.error("Source and target partitions are not compatible. Aborting copy of partition " + this.partition,ioe);
         return Lists.newArrayList();
       }
-      log.warn("Source and target partitions are not compatible. Will override target partition.");
+      log.warn("Source and target partitions are not compatible. Will override target partition.",ioe);
       stepPriority=addDeregisterSteps(copyEntities,fileSet,stepPriority,targetTable,existingTargetPartition.get());
       existingTargetPartition=Optional.absent();
     }
