@@ -1,0 +1,20 @@
+{
+  Closer closer=Closer.create();
+  try {
+    TestingServer testingServer=closer.register(new TestingServer(11111));
+    Properties properties=new Properties();
+    properties.setProperty(ConfigurationKeys.JOB_NAME_KEY,"JobLockFactoryTest-" + System.currentTimeMillis());
+    properties.setProperty(ConfigurationKeys.JOB_LOCK_TYPE,ZookeeperBasedJobLock.class.getName());
+    properties.setProperty(ZookeeperBasedJobLock.CONNECTION_STRING,testingServer.getConnectString());
+    properties.setProperty(ZookeeperBasedJobLock.MAX_RETRY_COUNT,"1");
+    properties.setProperty(ZookeeperBasedJobLock.LOCKS_ACQUIRE_TIMEOUT_MILLISECONDS,"1000");
+    properties.setProperty(ZookeeperBasedJobLock.RETRY_BACKOFF_SECONDS,"1");
+    properties.setProperty(ZookeeperBasedJobLock.SESSION_TIMEOUT_SECONDS,"180");
+    properties.setProperty(ZookeeperBasedJobLock.CONNECTION_TIMEOUT_SECONDS,"30");
+    JobLock jobLock=closer.register(JobLockFactory.getJobLock(properties,new JobLockEventListener()));
+    MatcherAssert.assertThat(jobLock,Matchers.instanceOf(ZookeeperBasedJobLock.class));
+  }
+  finally {
+    closer.close();
+  }
+}

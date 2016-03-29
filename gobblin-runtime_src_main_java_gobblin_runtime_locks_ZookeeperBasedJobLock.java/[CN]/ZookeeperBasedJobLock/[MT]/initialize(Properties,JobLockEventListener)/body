@@ -3,6 +3,6 @@
   this.lockAcquireTimeoutMilliseconds=getLong(properties,LOCKS_ACQUIRE_TIMEOUT_MILLISECONDS,LOCKS_ACQUIRE_TIMEOUT_MILLISECONDS_DEFAULT);
   this.lockPath=Paths.get(LOCKS_ROOT_PATH,jobName).toString();
   lockEventListeners.putIfAbsent(this.lockPath,jobLockEventListener);
-  ensureCuratorFrameworkExists(properties);
+  initializeCuratorFramework(properties);
   lock=new InterProcessSemaphoreMutex(curatorFramework,lockPath);
 }

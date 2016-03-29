@@ -1,4 +1,8 @@
 {
+  if (curatorFrameworkShutdownHook == null) {
+    curatorFrameworkShutdownHook=new CuratorFrameworkShutdownHook();
+    Runtime.getRuntime().addShutdownHook(curatorFrameworkShutdownHook);
+  }
   if (curatorFramework == null) {
     CuratorFramework newCuratorFramework=CuratorFrameworkFactory.builder().connectString(properties.getProperty(CONNECTION_STRING,CONNECTION_STRING_DEFAULT)).connectionTimeoutMs(getMilliseconds(properties,CONNECTION_TIMEOUT_SECONDS,CONNECTION_TIMEOUT_SECONDS_DEFAULT)).sessionTimeoutMs(getMilliseconds(properties,SESSION_TIMEOUT_SECONDS,SESSION_TIMEOUT_SECONDS_DEFAULT)).retryPolicy(new ExponentialBackoffRetry(getMilliseconds(properties,RETRY_BACKOFF_SECONDS,RETRY_BACKOFF_SECONDS_DEFAULT),getInt(properties,MAX_RETRY_COUNT,MAX_RETRY_COUNT_DEFAULT))).build();
     newCuratorFramework.getConnectionStateListenable().addListener(new ConnectionStateListener(){
@@ -13,24 +17,24 @@ case SUSPENDED:
         }
       break;
 case CONNECTED:
-case RECONNECTED:
-    log.warn("Regained connection with zookeeper");
+    log.info("Connected with zookeeper");
   break;
+case RECONNECTED:
+log.warn("Regained connection with zookeeper");
+break;
 }
 }
 }
 );
 newCuratorFramework.start();
-curatorFramework=newCuratorFramework;
-}
-if (locksReaper == null) {
-ChildReaper newLocksReaper=new ChildReaper(curatorFramework,LOCKS_ROOT_PATH,Reaper.Mode.REAP_UNTIL_GONE,Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of(LOCKS_CHILD_REAPER_THREAD_NAME))),getMilliseconds(properties,LOCKS_CHILD_REAPER_THRESHOLD_SECONDS,LOCKS_CHILD_REAPER_THRESHOLD_SECONDS_DEFAULT),LOCKS_CHILD_REAPER_LEADER_PATH);
 try {
-newLocksReaper.start();
-locksReaper=newLocksReaper;
+if (!newCuratorFramework.blockUntilConnected(getInt(properties,CONNECTION_TIMEOUT_SECONDS,CONNECTION_TIMEOUT_SECONDS_DEFAULT),TimeUnit.SECONDS)) {
+throw new RuntimeException("Time out while waiting to connect to zookeeper");
 }
- catch (Exception e) {
-log.warn("Locks child reaper failed to start",e);
 }
+ catch (InterruptedException e) {
+throw new RuntimeException("Interrupted while waiting to connect to zookeeper");
+}
+curatorFramework=newCuratorFramework;
 }
 }
