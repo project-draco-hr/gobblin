@@ -1,0 +1,8 @@
+{
+  this.auditDirPath=new Path(ConfigUtils.getString(config,FS_SINK_AUDIT_OUTPUT_PATH_KEY,FS_SINK_AUDIT_OUTPUT_DEFAULT_PATH));
+  this.fs=this.auditDirPath.getFileSystem(new Configuration());
+  this.auditMetadata=auditMetadata;
+  this.auditFileOutputStream=closer.register(fs.create(getAuditFilePath()));
+  DataFileWriter<GenericRecord> dataFileWriter=this.closer.register(new DataFileWriter<GenericRecord>(new GenericDatumWriter<GenericRecord>()));
+  this.writer=this.closer.register(dataFileWriter.create(this.auditMetadata.getTableMetadata().getTableSchema(),this.auditFileOutputStream));
+}

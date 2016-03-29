@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(config.hasPath(ROW_SELECTION_POLICY_CLASS_NAME_KEY));
+  log.info("Using row selection class name/alias " + config.getString(ROW_SELECTION_POLICY_CLASS_NAME_KEY));
+  try {
+    return (RowSelectionPolicy)ConstructorUtils.invokeConstructor(Class.forName(this.aliasResolver.resolve(config.getString(ROW_SELECTION_POLICY_CLASS_NAME_KEY))),config,tableMetadata,columnProjectionPolicy);
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new RuntimeException(e);
+  }
+}

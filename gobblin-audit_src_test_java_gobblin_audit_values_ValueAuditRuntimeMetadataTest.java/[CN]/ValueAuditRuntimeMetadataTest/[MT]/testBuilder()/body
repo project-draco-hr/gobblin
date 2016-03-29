@@ -1,0 +1,13 @@
+{
+  Schema mockSchema=mock(Schema.class,Mockito.RETURNS_SMART_NULLS);
+  ValueAuditRuntimeMetadata runtimeMetadata=ValueAuditRuntimeMetadata.builder("db","t",mockSchema).cluster("c").deltaId("d").extractId("e").partFileName("p").phase(Phase.AVRO_CONV).snapshotId("s").build();
+  Assert.assertEquals(runtimeMetadata.getTableMetadata().getDatabase(),"db");
+  Assert.assertEquals(runtimeMetadata.getTableMetadata().getTable(),"t");
+  Assert.assertEquals(runtimeMetadata.getTableMetadata().getTableSchema(),mockSchema);
+  Assert.assertEquals(runtimeMetadata.getCluster(),"c");
+  Assert.assertEquals(runtimeMetadata.getDeltaId(),"d");
+  Assert.assertEquals(runtimeMetadata.getExtractId(),"e");
+  Assert.assertEquals(runtimeMetadata.getPartFileName(),"p");
+  Assert.assertEquals(runtimeMetadata.getSnapshotId(),"s");
+  Assert.assertEquals(runtimeMetadata.getPhase(),Phase.AVRO_CONV);
+}
