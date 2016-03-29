@@ -1,3 +1,7 @@
 {
-  return ImmutableList.<HiveSpec>of(new SimpleHiveSpec.Builder<>(path).withTable(getTable(path)).withPartition(getPartition(path)).build());
+  List<HiveSpec> specs=Lists.newArrayList();
+  for (  HiveTable table : getTables(path)) {
+    specs.add(new SimpleHiveSpec.Builder<>(path).withTable(table).withPartition(getPartition(path,table)).build());
+  }
+  return specs;
 }

@@ -1,0 +1,14 @@
+{
+  List<String> tableNames=Lists.newArrayList();
+  Optional<String> tableName;
+  if ((tableName=getTableName(path)).isPresent()) {
+    tableNames.add(tableName.get());
+  }
+  if (!Strings.isNullOrEmpty(this.props.getProp(ADDITIONAL_HIVE_TABLE_NAMES))) {
+    for (    String additionalTableName : this.props.getPropAsList(ADDITIONAL_HIVE_TABLE_NAMES)) {
+      tableNames.add(this.tableNamePrefix + additionalTableName + this.tableNameSuffix);
+    }
+  }
+  Preconditions.checkState(!tableNames.isEmpty(),"Hive table name not specified");
+  return tableNames;
+}
