@@ -15,7 +15,7 @@
   converter=spy(converter);
   doReturn(null).when(converter).createConnection(workUnitState);
   when(converter.createConnection(workUnitState)).thenReturn(null);
-  Schema inputSchema=new Schema.Parser().parse(new File(PATH_PREFIX + "/converter/user.avsc"));
+  Schema inputSchema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/user.avsc"));
   List<JdbcEntryMetaDatum> jdbcEntryMetaData=new ArrayList<>();
   jdbcEntryMetaData.add(new JdbcEntryMetaDatum("user_id",JDBCType.VARCHAR));
   jdbcEntryMetaData.add(new JdbcEntryMetaDatum("member_id",JDBCType.BIGINT));
