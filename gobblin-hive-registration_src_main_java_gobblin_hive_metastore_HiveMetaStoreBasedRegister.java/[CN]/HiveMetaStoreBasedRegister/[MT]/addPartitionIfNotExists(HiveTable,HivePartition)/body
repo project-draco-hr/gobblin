@@ -1,5 +1,5 @@
 {
-  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient();AutoCloseableLock lock=this.locks.getTableLock(table.getDbName(),table.getTableName())){
     try {
       client.get().getPartition(table.getDbName(),table.getTableName(),partition.getValues());
       return false;

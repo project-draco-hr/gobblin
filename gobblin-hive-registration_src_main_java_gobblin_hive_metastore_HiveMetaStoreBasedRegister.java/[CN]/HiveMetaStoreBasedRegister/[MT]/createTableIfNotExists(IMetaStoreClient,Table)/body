@@ -1,7 +1,7 @@
 {
   String dbName=table.getDbName();
   String tableName=table.getTableName();
-  try {
+  try (AutoCloseableLock lock=this.locks.getTableLock(dbName,tableName)){
     if (client.tableExists(table.getDbName(),table.getTableName())) {
       return false;
     }

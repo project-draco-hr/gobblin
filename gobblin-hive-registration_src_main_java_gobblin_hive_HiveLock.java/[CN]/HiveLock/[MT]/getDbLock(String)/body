@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(dbName));
+  return new AutoCloseableLock(this.locks.get(dbName));
+}
