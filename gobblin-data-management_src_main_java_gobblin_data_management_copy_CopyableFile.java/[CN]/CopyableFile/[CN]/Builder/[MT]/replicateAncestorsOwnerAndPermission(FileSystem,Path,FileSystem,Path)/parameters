@@ -1,0 +1,4 @@
+FileSystem originFs
+Path originPath
+FileSystem targetFs
+Path destinationPath

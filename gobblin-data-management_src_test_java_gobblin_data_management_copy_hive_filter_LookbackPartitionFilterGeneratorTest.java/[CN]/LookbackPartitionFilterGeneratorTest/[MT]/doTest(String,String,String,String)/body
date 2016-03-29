@@ -1,0 +1,7 @@
+{
+  Properties properties=new Properties();
+  properties.put(LookbackPartitionFilterGenerator.PARTITION_COLUMN,column);
+  properties.put(LookbackPartitionFilterGenerator.LOOKBACK,lookback);
+  properties.put(LookbackPartitionFilterGenerator.DATETIME_FORMAT,format);
+  Assert.assertEquals(new LookbackPartitionFilterGenerator(properties).getFilter(null),expected);
+}

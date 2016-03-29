@@ -10,7 +10,19 @@
   this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.properties,this.targetURI);
   this.targetDatabase=Optional.fromNullable(this.dataset.properties.getProperty(TARGET_DATABASE_KEY)).or(this.dataset.table.getDbName());
   this.existingEntityPolicy=ExistingEntityPolicy.valueOf(this.dataset.properties.getProperty(EXISTING_ENTITY_POLICY_KEY,DEFAULT_EXISTING_ENTITY_POLICY).toUpperCase());
-  this.partitionFilter=Optional.fromNullable(this.dataset.properties.getProperty(COPY_PARTITIONS_FILTER));
+  if (this.dataset.properties.containsKey(COPY_PARTITION_FILTER_GENERATOR)) {
+    try {
+      PartitionFilterGenerator generator=GobblinConstructorUtils.invokeFirstConstructor((Class<PartitionFilterGenerator>)Class.forName(this.dataset.properties.getProperty(COPY_PARTITION_FILTER_GENERATOR)),Lists.<Object>newArrayList(this.dataset.properties),Lists.newArrayList());
+      this.partitionFilter=Optional.of(generator.getFilter(this.dataset));
+      log.info(String.format("Dynamic partition filter for table %s: %s.",this.dataset.table.getCompleteName(),this.partitionFilter.get()));
+    }
+ catch (    ReflectiveOperationException roe) {
+      throw new IOException(roe);
+    }
+  }
+ else {
+    this.partitionFilter=Optional.fromNullable(this.dataset.properties.getProperty(COPY_PARTITIONS_FILTER_CONSTANT));
+  }
   Map<String,HiveMetastoreClientPool> namedPools=ImmutableMap.of(source_client,this.dataset.clientPool,target_client,this.targetClientPool);
   try (HiveMetastoreClientPool.MultiClient multiClient=HiveMetastoreClientPool.safeGetClients(namedPools)){
     if (multiClient.getClient(target_client).tableExists(targetDatabase,this.dataset.table.getTableName())) {

@@ -15,7 +15,7 @@
     this.destinationOwnerAndPermission=new OwnerAndPermission(owner,group,permission);
   }
   if (this.ancestorsOwnerAndPermission == null) {
-    this.ancestorsOwnerAndPermission=replicateOwnerAndPermission(this.originFs,this.origin.getPath(),this.preserve);
+    this.ancestorsOwnerAndPermission=replicateAncestorsOwnerAndPermission(this.originFs,this.origin.getPath(),this.configuration.getTargetFs(),this.destination);
   }
   if (this.checksum == null) {
     FileChecksum checksumTmp=this.originFs.getFileChecksum(origin.getPath());
