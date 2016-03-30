@@ -5,7 +5,7 @@
   this.branches=branches;
   this.branchId=branchId;
   String destKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,branches,branchId);
-  String destType=Objects.requireNonNull(state.getProp(destKey),destKey + " is required for underlying JDBC product name");
+  String destType=Preconditions.checkNotNull(state.getProp(destKey),destKey + " is required for underlying JDBC product name");
   Destination dest=Destination.of(DestinationType.valueOf(destType.toUpperCase()),state);
   this.commands=jdbcWriterCommandsFactory.newInstance(dest);
   this.createdStagingTables=Sets.newHashSet();

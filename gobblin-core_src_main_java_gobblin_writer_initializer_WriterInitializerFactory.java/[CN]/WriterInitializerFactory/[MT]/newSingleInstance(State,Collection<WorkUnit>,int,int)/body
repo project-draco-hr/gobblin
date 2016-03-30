@@ -1,5 +1,5 @@
 {
-  Objects.requireNonNull(state);
+  Preconditions.checkNotNull(state);
   String writerBuilderKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS,branches,branchId);
   String writerBuilderClass=state.getProp(writerBuilderKey,ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS);
   if (JdbcWriterBuilder.class.getName().equals(writerBuilderClass)) {

@@ -1,6 +1,6 @@
 {
-  Map<String,JDBCType> dateColums=new HashMap<>();
-  dateColums.put("last_updated",JDBCType.TIMESTAMP);
+  Map<String,JdbcType> dateColums=new HashMap<>();
+  dateColums.put("last_updated",JdbcType.TIMESTAMP);
   final String table="users";
   JdbcWriterCommands mockWriterCommands=mock(JdbcWriterCommands.class);
   when(mockWriterCommands.retrieveDateColumns(mock(Connection.class),table)).thenReturn(dateColums);
@@ -17,16 +17,16 @@
   when(converter.createConnection(workUnitState)).thenReturn(null);
   Schema inputSchema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/user.avsc"));
   List<JdbcEntryMetaDatum> jdbcEntryMetaData=new ArrayList<>();
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("user_id",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("member_id",JDBCType.BIGINT));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("business_unit",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("level",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("geo_region",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("super_region",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("sub_region",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("currency",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("segment",JDBCType.VARCHAR));
-  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("vertical",JDBCType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("user_id",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("member_id",JdbcType.BIGINT));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("business_unit",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("level",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("geo_region",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("super_region",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("sub_region",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("currency",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("segment",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("vertical",JdbcType.VARCHAR));
   JdbcEntrySchema expected=new JdbcEntrySchema(jdbcEntryMetaData);
   JdbcEntrySchema actual=converter.convertSchema(inputSchema,workUnitState);
   Assert.assertEquals(expected,actual);

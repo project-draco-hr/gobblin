@@ -1,5 +1,5 @@
 {
-  Objects.requireNonNull(jdbcEntryDatumEntries);
+  Preconditions.checkNotNull(jdbcEntryDatumEntries);
   ImmutableMap.Builder<String,JdbcEntryDatum> builder=ImmutableSortedMap.naturalOrder();
   int byteCount=0;
   for (  JdbcEntryDatum datum : jdbcEntryDatumEntries) {

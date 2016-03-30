@@ -2,7 +2,7 @@
   int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
   Set<String> publishTables=Sets.newHashSet();
   for (int branchId=0; branchId < branches; branchId++) {
-    String publishTable=Objects.requireNonNull(getProp(state,ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId),ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " should not be null.");
+    String publishTable=Preconditions.checkNotNull(getProp(state,ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId),ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " should not be null.");
     if (publishTables.contains(publishTable)) {
       throw new IllegalArgumentException("Duplicate " + ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " is not allowed across branches");
     }

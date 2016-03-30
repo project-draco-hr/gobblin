@@ -5,7 +5,7 @@
   List<JdbcEntryDatum> jdbcEntryData=Lists.newArrayList();
   for (  JdbcEntryMetaDatum entry : outputSchema) {
     final String colName=entry.getColumnName();
-    final JDBCType jdbcType=entry.getJdbcType();
+    final JdbcType jdbcType=entry.getJdbcType();
     final Object val=record.get(tryConvertColumn(colName,jdbcToAvroColPairs));
     if (val == null) {
       jdbcEntryData.add(new JdbcEntryDatum(colName,val));

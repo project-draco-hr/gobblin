@@ -9,7 +9,7 @@
     for (int i=0; i < branches; i++) {
       final String destinationTable=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,i));
       final String databaseName=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_DATABASE_NAME,branches,i));
-      Objects.requireNonNull(destinationTable);
+      Preconditions.checkNotNull(destinationTable);
       if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,i),false) && !emptiedDestTables.contains(destinationTable)) {
         LOG.info("Deleting table " + destinationTable);
         commands.deleteAll(conn,destinationTable);

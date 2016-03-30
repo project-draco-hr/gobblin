@@ -1,2 +1,2 @@
 String columnName
-JDBCType jdbcType
+JdbcType jdbcType

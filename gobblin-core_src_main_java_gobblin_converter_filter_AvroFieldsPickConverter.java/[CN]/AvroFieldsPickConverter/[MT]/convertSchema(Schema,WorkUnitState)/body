@@ -1,7 +1,7 @@
 {
   LOG.info("Converting schema " + inputSchema);
   String fieldsStr=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS);
-  Objects.requireNonNull(fieldsStr,ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS + " is required for converter " + this.getClass().getSimpleName());
+  Preconditions.checkNotNull(fieldsStr,ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS + " is required for converter " + this.getClass().getSimpleName());
   LOG.info("Converting schema to selected fields: " + fieldsStr);
   List<String> fields=SPLITTER_ON_COMMA.splitToList(fieldsStr);
   Set<String> fieldsToRemove=fieldsToRemove(inputSchema,fields);
