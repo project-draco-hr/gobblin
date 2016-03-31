@@ -1,0 +1,6 @@
+{
+  CodecFactory codecFactory=WriterUtils.getCodecFactory(Optional.of("SNAPPY"),Optional.<String>absent());
+  Assert.assertEquals(codecFactory.toString(),"snappy");
+  codecFactory=WriterUtils.getCodecFactory(Optional.of("snappy"),Optional.<String>absent());
+  Assert.assertEquals(codecFactory.toString(),"snappy");
+}
