@@ -12,7 +12,8 @@
   NLineInputFormat.addInputPath(this.job,jobInputFile);
   SequenceFileOutputFormat.setOutputPath(this.job,this.jobOutputPath);
   Path jobStateFilePath=new Path(this.mrJobDir,JOB_STATE_FILE_NAME);
-  SerializationUtils.serializeState(this.fs,jobStateFilePath,this.jobContext.getJobState(),100);
+  int jobStateRF=this.conf.getInt("dfs.replication.max",20);
+  SerializationUtils.serializeState(this.fs,jobStateFilePath,this.jobContext.getJobState(),jobStateRF);
   job.getConfiguration().set(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY,jobStateFilePath.toString());
   if (this.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
     int maxMappers=Integer.parseInt(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY));
