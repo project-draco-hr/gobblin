@@ -1,4 +1,4 @@
 FileSystem fs
 Path jobStateFilePath
 T state
-int replication
+short replication
