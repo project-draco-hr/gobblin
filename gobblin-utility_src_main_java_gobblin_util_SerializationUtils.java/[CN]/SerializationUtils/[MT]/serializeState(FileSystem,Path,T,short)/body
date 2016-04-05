@@ -1,7 +1,7 @@
 {
   Closer closer=Closer.create();
   try {
-    OutputStream os=closer.register(fs.create(jobStateFilePath,true,replication));
+    OutputStream os=closer.register(fs.create(jobStateFilePath,replication));
     DataOutputStream dataOutputStream=closer.register(new DataOutputStream(os));
     state.write(dataOutputStream);
   }
