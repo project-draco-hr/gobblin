@@ -1,0 +1,8 @@
+{
+  try {
+    this.fs.delete(testClassTempPath,true);
+  }
+ catch (  Exception e) {
+    log.error("Failed to cleanup test files",e);
+  }
+}
