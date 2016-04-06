@@ -1,0 +1,16 @@
+{
+  if (this.setupConfig.hasPath(TEST_CURRENT_TIME_KEY)) {
+    DateTimeUtils.setCurrentMillisProvider(new FixedThreadLocalMillisProvider(FORMATTER.parseDateTime(setupConfig.getString(TEST_CURRENT_TIME_KEY)).getMillis()));
+  }
+  List<? extends Config> createConfigs=setupConfig.getConfigList(TEST_DATA_CREATE_KEY);
+  for (  Config fileToCreate : createConfigs) {
+    Path fullFilePath=new Path(testTempDirPath,PathUtils.withoutLeadingSeparator(new Path(fileToCreate.getString(TEST_DATA_PATH_LOCAL_KEY))));
+    if (!this.fs.createNewFile(fullFilePath)) {
+      throw new RuntimeException("Failed to create test file " + fullFilePath);
+    }
+    if (fileToCreate.hasPath(TEST_DATA_MOD_TIME_LOCAL_KEY)) {
+      File file=new File(PathUtils.getPathWithoutSchemeAndAuthority(fullFilePath).toString());
+      file.setLastModified(FORMATTER.parseMillis(fileToCreate.getString(TEST_DATA_MOD_TIME_LOCAL_KEY)));
+    }
+  }
+}

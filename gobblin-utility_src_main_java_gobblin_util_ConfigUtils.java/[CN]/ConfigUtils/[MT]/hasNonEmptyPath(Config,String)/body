@@ -1,0 +1,3 @@
+{
+  return config.hasPath(key) && StringUtils.isNotBlank(config.getString(key));
+}

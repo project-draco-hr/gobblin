@@ -1,0 +1,4 @@
+{
+  super(fs,jobProps,config);
+  this.client=client;
+}

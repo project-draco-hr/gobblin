@@ -1,0 +1,7 @@
+{
+  Path testNameTempPath=new Path(testClassTempPath,testName);
+  RetentionTestDataGenerator dataGenerator=new RetentionTestDataGenerator(testNameTempPath,PathUtils.combinePaths(TEST_PACKAGE_RESOURCE_NAME,testName,SETUP_VALIDATE_CONFIG_CLASSPATH_FILENAME),fs);
+  dataGenerator.setup();
+  clean(fs,PathUtils.combinePaths(TEST_PACKAGE_RESOURCE_NAME,testName,testConfFileName),testNameTempPath);
+  dataGenerator.validate();
+}

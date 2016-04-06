@@ -1,0 +1,26 @@
+{
+  if (retentionConfigClasspathResource.getName().endsWith(".job")) {
+    Properties jobProps=new Properties();
+    try (final InputStream stream=RetentionIntegrationTest.class.getClassLoader().getResourceAsStream(retentionConfigClasspathResource.toString())){
+      jobProps.load(stream);
+      for (      Entry<Object,Object> entry : jobProps.entrySet()) {
+        jobProps.put(entry.getKey(),StringUtils.replace((String)entry.getValue(),"${testNameTempPath}",testNameTempPath.toString()));
+      }
+    }
+     MultiCleanableDatasetFinder finder=new MultiCleanableDatasetFinder(fs,jobProps);
+    for (    Dataset dataset : finder.findDatasets()) {
+      ((CleanableDataset)dataset).clean();
+    }
+  }
+ else {
+    Config testConfig=ConfigFactory.parseResources(retentionConfigClasspathResource.toString()).withFallback(ConfigFactory.parseMap(ImmutableMap.of("testNameTempPath",PathUtils.getPathWithoutSchemeAndAuthority(testNameTempPath).toString()))).resolve();
+    ConfigClient client=mock(ConfigClient.class);
+    when(client.getConfig(any(String.class))).thenReturn(testConfig);
+    Properties jobProps=new Properties();
+    jobProps.setProperty(CleanableDatasetBase.SKIP_TRASH_KEY,Boolean.toString(true));
+    ManagedCleanableDatasetFinder finder=new ManagedCleanableDatasetFinder(fs,jobProps,testConfig,client);
+    for (    CleanableDataset dataset : finder.findDatasets()) {
+      dataset.clean();
+    }
+  }
+}
