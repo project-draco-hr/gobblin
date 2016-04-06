@@ -1,5 +1,5 @@
 {
-  boolean resultCopy=result;
+  boolean resultCopy=this.result;
   this.result=false;
   return resultCopy;
 }
