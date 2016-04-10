@@ -1,8 +1,6 @@
 {
   Preconditions.checkNotNull(this.conn,"The Hive connection must be set before any queries can be run");
-  PreparedStatement preparedStatement=null;
-  try {
-    preparedStatement=this.conn.prepareStatement("set ?=?");
+  try (PreparedStatement preparedStatement=this.conn.prepareStatement("set ?=?")){
     Enumeration<?> enumeration=props.propertyNames();
     while (enumeration.hasMoreElements()) {
       String propertyName=(String)enumeration.nextElement();
@@ -13,9 +11,4 @@
       }
     }
   }
-  finally {
-    if (preparedStatement != null) {
-      preparedStatement.close();
-    }
-  }
-}
+ }

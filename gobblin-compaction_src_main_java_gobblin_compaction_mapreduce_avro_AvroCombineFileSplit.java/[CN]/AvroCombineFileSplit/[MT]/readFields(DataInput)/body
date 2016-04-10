@@ -1,4 +1,4 @@
 {
   super.readFields(in);
-  schema=new Schema.Parser().parse(fromBase64(Text.readString(in)));
+  this.schema=new Schema.Parser().parse(fromBase64(Text.readString(in)));
 }

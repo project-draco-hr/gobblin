@@ -1,4 +1,4 @@
 {
-  CompactionSlaEventHelper.populateState(this.dataset,Optional.of(job),fs);
+  CompactionSlaEventHelper.populateState(this.dataset,Optional.of(job),this.fs);
   new SlaEventSubmitter(this.eventSubmitter,"CompactionCompleted",this.dataset.jobProps().getProperties()).submit();
 }

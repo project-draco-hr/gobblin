@@ -1,16 +1,7 @@
 {
-  Closer closer=Closer.create();
-  try {
-    ByteArrayOutputStream bos=closer.register(new ByteArrayOutputStream());
-    ObjectOutputStream oos=closer.register(new ObjectOutputStream(bos));
+  try (ByteArrayOutputStream bos=new ByteArrayOutputStream();ObjectOutputStream oos=new ObjectOutputStream(bos)){
     oos.writeObject(obj);
     oos.flush();
     return enc.encode(bos.toByteArray());
   }
- catch (  Throwable e) {
-    throw closer.rethrow(e);
-  }
- finally {
-    closer.close();
-  }
-}
+ }

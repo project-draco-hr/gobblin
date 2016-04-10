@@ -5,7 +5,7 @@
   for (  List<WorkUnit> workUnitsForTopic : workUnitsByTopic.values()) {
     double estimatedDataSizeForTopic=calcTotalEstSizeForTopic(workUnitsForTopic);
     if (estimatedDataSizeForTopic < avgGroupSize) {
-      MultiWorkUnit mwuGroup=new MultiWorkUnit();
+      MultiWorkUnit mwuGroup=MultiWorkUnit.createEmpty();
       addWorkUnitsToMultiWorkUnit(workUnitsForTopic,mwuGroup);
       mwuGroups.add(mwuGroup);
     }
@@ -13,6 +13,6 @@
       mwuGroups.addAll(bestFitDecreasingBinPacking(workUnitsForTopic,avgGroupSize));
     }
   }
-  List<WorkUnit> groups=squeezeMultiWorkUnits(mwuGroups,state);
+  List<WorkUnit> groups=squeezeMultiWorkUnits(mwuGroups,this.state);
   return worstFitDecreasingBinPacking(groups,numContainers);
 }

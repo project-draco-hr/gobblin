@@ -6,15 +6,15 @@
     return false;
   }
   HiveAttribute other=(HiveAttribute)obj;
-  if (name == null) {
+  if (this.name == null) {
     if (other.name != null) {
       return false;
     }
   }
- else   if (!name.equals(other.name)) {
+ else   if (!this.name.equals(other.name)) {
     return false;
   }
-  if (type != other.type) {
+  if (this.type != other.type) {
     return false;
   }
   return true;

@@ -1,3 +1,3 @@
 {
-  return super.toString() + " Schema: " + schema.toString();
+  return super.toString() + " Schema: " + this.schema.toString();
 }
