@@ -1,14 +1,8 @@
 {
-  Closer closer=Closer.create();
-  try {
-    ByteArrayInputStream bis=closer.register(new ByteArrayInputStream(enc.decode(serialized)));
-    ObjectInputStream ois=closer.register(new ObjectInputStream(bis));
+  try (ByteArrayInputStream bis=new ByteArrayInputStream(enc.decode(serialized));ObjectInputStream ois=new ObjectInputStream(bis)){
     return clazz.cast(ois.readObject());
   }
- catch (  Throwable e) {
-    throw closer.rethrow(e);
-  }
- finally {
-    closer.close();
+ catch (  ClassNotFoundException e) {
+    throw new IOException(e);
   }
 }

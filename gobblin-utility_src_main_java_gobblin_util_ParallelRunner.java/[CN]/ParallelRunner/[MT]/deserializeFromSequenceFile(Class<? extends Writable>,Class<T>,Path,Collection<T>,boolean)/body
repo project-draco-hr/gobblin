@@ -1,9 +1,7 @@
 {
   this.futures.add(new NamedFuture(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
-      Closer closer=Closer.create();
-      try {
-        @SuppressWarnings("deprecation") SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(fs,inputFilePath,fs.getConf()));
+      try (@SuppressWarnings("deprecation") SequenceFile.Reader reader=new SequenceFile.Reader(ParallelRunner.this.fs,inputFilePath,ParallelRunner.this.fs.getConf())){
         Writable key=keyClass.newInstance();
         T state=stateClass.newInstance();
         while (reader.next(key,state)) {
@@ -11,16 +9,10 @@
           state=stateClass.newInstance();
         }
         if (deleteAfter) {
-          HadoopUtils.deletePath(fs,inputFilePath,false);
+          HadoopUtils.deletePath(ParallelRunner.this.fs,inputFilePath,false);
         }
       }
- catch (      Throwable t) {
-        throw closer.rethrow(t);
-      }
- finally {
-        closer.close();
-      }
-      return null;
+       return null;
     }
   }
 ),"Deserialize state from file " + inputFilePath));

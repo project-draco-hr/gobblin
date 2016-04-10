@@ -1,7 +1,7 @@
 {
   this.futures.add(new NamedFuture(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
-      SerializationUtils.deserializeState(fs,inputFilePath,state);
+      SerializationUtils.deserializeState(ParallelRunner.this.fs,inputFilePath,state);
       return null;
     }
   }

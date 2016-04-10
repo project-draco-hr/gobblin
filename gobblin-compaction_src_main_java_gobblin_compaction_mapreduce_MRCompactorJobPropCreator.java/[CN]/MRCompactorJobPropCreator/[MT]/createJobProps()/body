@@ -8,7 +8,5 @@
     setCompactionSLATimestamp(datasetWithJobProps.get());
     return ImmutableList.<Dataset>of(datasetWithJobProps.get());
   }
- else {
-    return ImmutableList.<Dataset>of();
-  }
+  return ImmutableList.<Dataset>of();
 }

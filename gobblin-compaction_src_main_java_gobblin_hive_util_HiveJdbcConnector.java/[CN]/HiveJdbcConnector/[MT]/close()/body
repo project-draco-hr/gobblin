@@ -9,7 +9,7 @@
   }
   if (this.conn != null) {
     try {
-      conn.close();
+      this.conn.close();
     }
  catch (    SQLException e) {
       LOG.error("Failed to close JDBC connection",e);

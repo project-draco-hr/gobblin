@@ -2,7 +2,7 @@
   HiveJdbcConnector hiveJdbcConnector=new HiveJdbcConnector();
   hiveJdbcConnector.withHiveServerVersion(Integer.parseInt(compactRunProps.getProperty(HIVESERVER_VERSION,DEFAULT_HIVESERVER_VERSION)));
   if (compactRunProps.containsKey(HIVESITE_DIR)) {
-    hiveJdbcConnector.addHiveSiteDirToClasspath(compactRunProps.getProperty(HIVESITE_DIR));
+    HiveJdbcConnector.addHiveSiteDirToClasspath(compactRunProps.getProperty(HIVESITE_DIR));
   }
   if (compactRunProps.containsKey(HIVESERVER_CONNECTION_STRING)) {
     hiveJdbcConnector.withHiveConnectionFromUrl(compactRunProps.getProperty(HIVESERVER_CONNECTION_STRING));

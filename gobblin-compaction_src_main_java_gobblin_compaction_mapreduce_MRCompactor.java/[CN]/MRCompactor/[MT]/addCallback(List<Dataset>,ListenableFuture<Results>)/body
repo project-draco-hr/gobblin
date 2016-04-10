@@ -29,6 +29,8 @@ if (shouldGiveUpVerification()) {
   datasetsToBeVerifiedAgain.add(result.dataset());
 }
 break;
+default :
+throw new IllegalStateException("Unrecognized result status: " + result.status());
 }
 }
 if (!datasetsToBeVerifiedAgain.isEmpty()) {

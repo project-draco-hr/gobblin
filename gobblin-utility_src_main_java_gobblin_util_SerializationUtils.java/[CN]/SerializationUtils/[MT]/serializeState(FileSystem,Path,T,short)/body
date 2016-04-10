@@ -1,14 +1,5 @@
 {
-  Closer closer=Closer.create();
-  try {
-    OutputStream os=closer.register(fs.create(jobStateFilePath,replication));
-    DataOutputStream dataOutputStream=closer.register(new DataOutputStream(os));
+  try (OutputStream os=fs.create(jobStateFilePath,replication);DataOutputStream dataOutputStream=new DataOutputStream(os)){
     state.write(dataOutputStream);
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-}
+ }

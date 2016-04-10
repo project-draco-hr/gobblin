@@ -2,7 +2,7 @@
   setWorkUnitEstSizes(workUnitsByTopic);
   List<WorkUnit> workUnits=Lists.newArrayList();
   for (  List<WorkUnit> workUnitsForTopic : workUnitsByTopic.values()) {
-    MultiWorkUnit zeroSizeWorkUnit=new MultiWorkUnit();
+    MultiWorkUnit zeroSizeWorkUnit=MultiWorkUnit.createEmpty();
     for (    WorkUnit workUnit : workUnitsForTopic) {
       if (DoubleMath.fuzzyEquals(getWorkUnitEstSize(workUnit),0.0,EPS)) {
         addWorkUnitToMultiWorkUnit(workUnit,zeroSizeWorkUnit);
@@ -13,7 +13,7 @@
       }
     }
     if (!zeroSizeWorkUnit.getWorkUnits().isEmpty()) {
-      workUnits.add(squeezeMultiWorkUnit(zeroSizeWorkUnit,state));
+      workUnits.add(squeezeMultiWorkUnit(zeroSizeWorkUnit,this.state));
     }
   }
   return worstFitDecreasingBinPacking(workUnits,numContainers);

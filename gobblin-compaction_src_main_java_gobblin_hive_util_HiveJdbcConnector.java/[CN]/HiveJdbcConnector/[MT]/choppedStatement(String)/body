@@ -2,7 +2,5 @@
   if (statement.length() <= MAX_OUTPUT_STMT_LENGTH) {
     return statement;
   }
- else {
-    return statement.substring(0,MAX_OUTPUT_STMT_LENGTH) + "...... (" + (statement.length() - MAX_OUTPUT_STMT_LENGTH)+ " characters ommitted)";
-  }
+  return statement.substring(0,MAX_OUTPUT_STMT_LENGTH) + "...... (" + (statement.length() - MAX_OUTPUT_STMT_LENGTH)+ " characters ommitted)";
 }
