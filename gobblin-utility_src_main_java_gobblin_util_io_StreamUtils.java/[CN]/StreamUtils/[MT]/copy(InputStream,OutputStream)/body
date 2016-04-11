@@ -1,8 +1,6 @@
 {
-  final ReadableByteChannel inputChannel=Channels.newChannel(is);
-  final WritableByteChannel outputChannel=Channels.newChannel(os);
-  long totalBytesCopied=copy(inputChannel,outputChannel);
-  inputChannel.close();
-  outputChannel.close();
-  return totalBytesCopied;
-}
+  try (final ReadableByteChannel inputChannel=Channels.newChannel(is);final WritableByteChannel outputChannel=Channels.newChannel(os)){
+    long totalBytesCopied=copy(inputChannel,outputChannel);
+    return totalBytesCopied;
+  }
+ }

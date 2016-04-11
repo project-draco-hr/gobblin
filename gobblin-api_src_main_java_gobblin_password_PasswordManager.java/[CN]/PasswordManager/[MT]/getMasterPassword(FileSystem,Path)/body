@@ -1,6 +1,5 @@
 {
-  Closer closer=Closer.create();
-  try {
+  try (Closer closer=Closer.create()){
     if (!fs.exists(masterPasswordFile) || fs.getFileStatus(masterPasswordFile).isDir()) {
       LOG.warn(masterPasswordFile + " does not exist or is not a file. Cannot decrypt any encrypted password.");
       return Optional.absent();
@@ -10,13 +9,5 @@
   }
  catch (  IOException e) {
     throw new RuntimeException("Failed to obtain master password from " + masterPasswordFile,e);
-  }
- finally {
-    try {
-      closer.close();
-    }
- catch (    IOException e) {
-      throw new RuntimeException("Failed to close inputstream for " + masterPasswordFile,e);
-    }
   }
 }

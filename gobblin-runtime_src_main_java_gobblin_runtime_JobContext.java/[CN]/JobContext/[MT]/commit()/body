@@ -54,7 +54,7 @@ catch (    IOException ioe) {
       try {
         finalizeDatasetState(datasetState,datasetUrn);
         if (this.commitSequenceBuilder.isPresent()) {
-          buildAndExecuteCommitSequence(commitSequenceBuilder.get(),datasetState,datasetUrn);
+          buildAndExecuteCommitSequence(this.commitSequenceBuilder.get(),datasetState,datasetUrn);
           datasetState.setState(JobState.RunningState.COMMITTED);
         }
  else {
@@ -71,7 +71,5 @@ catch (    IOException ioe) {
     this.jobState.setState(JobState.RunningState.FAILED);
     throw new IOException("Failed to commit dataset state for some dataset(s) of job " + this.jobId);
   }
- else {
-    this.jobState.setState(JobState.RunningState.COMMITTED);
-  }
+  this.jobState.setState(JobState.RunningState.COMMITTED);
 }

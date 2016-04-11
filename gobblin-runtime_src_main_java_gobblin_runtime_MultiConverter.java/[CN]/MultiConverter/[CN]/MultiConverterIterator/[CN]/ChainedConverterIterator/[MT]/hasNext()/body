@@ -4,7 +4,7 @@
   }
   while (this.prevIterator.hasNext()) {
     try {
-      this.currentIterator=converter.convertRecord(convertedSchemaMap.get(converter),this.prevIterator.next(),workUnitState).iterator();
+      this.currentIterator=this.converter.convertRecord(MultiConverter.this.convertedSchemaMap.get(this.converter),this.prevIterator.next(),MultiConverterIterator.this.workUnitState).iterator();
     }
  catch (    DataConversionException e) {
       Throwables.propagate(e);

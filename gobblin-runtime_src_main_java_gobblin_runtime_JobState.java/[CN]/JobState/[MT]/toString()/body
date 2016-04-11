@@ -1,8 +1,7 @@
 {
   StringWriter stringWriter=new StringWriter();
-  JsonWriter jsonWriter=new JsonWriter(stringWriter);
-  jsonWriter.setIndent("\t");
-  try {
+  try (JsonWriter jsonWriter=new JsonWriter(stringWriter)){
+    jsonWriter.setIndent("\t");
     this.toJson(jsonWriter,false);
   }
  catch (  IOException ioe) {

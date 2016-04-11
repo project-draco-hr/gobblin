@@ -1,10 +1,5 @@
 {
   if (!this.writer.isPresent()) {
-    try {
-      this.writer=Optional.of(this.closer.register(buildWriter()));
-    }
- catch (    SchemaConversionException sce) {
-      throw new IOException("Failed to build writer for fork " + this.index,sce);
-    }
+    this.writer=Optional.of(this.closer.register(buildWriter()));
   }
 }

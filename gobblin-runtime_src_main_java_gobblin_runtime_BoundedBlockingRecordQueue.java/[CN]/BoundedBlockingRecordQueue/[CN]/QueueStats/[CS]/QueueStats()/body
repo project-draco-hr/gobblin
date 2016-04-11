@@ -1,13 +1,13 @@
 {
   this.queueSizeGauge=new Gauge<Integer>(){
     @Override public Integer getValue(){
-      return blockingQueue.size();
+      return BoundedBlockingRecordQueue.this.blockingQueue.size();
     }
   }
 ;
   this.fillRatioGauge=new Gauge<Double>(){
     @Override public Double getValue(){
-      return (double)blockingQueue.size() / capacity;
+      return (double)BoundedBlockingRecordQueue.this.blockingQueue.size() / BoundedBlockingRecordQueue.this.capacity;
     }
   }
 ;

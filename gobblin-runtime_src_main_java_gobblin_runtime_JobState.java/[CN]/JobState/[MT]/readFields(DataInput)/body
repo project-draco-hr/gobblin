@@ -4,7 +4,7 @@
   this.jobName=text.toString();
   text.readFields(in);
   this.jobId=text.toString();
-  this.setId(jobId);
+  this.setId(this.jobId);
   this.startTime=in.readLong();
   this.endTime=in.readLong();
   this.duration=in.readLong();

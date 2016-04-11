@@ -14,6 +14,8 @@ case MONTH:
 assembler=assembler.name(Granularity.MONTH.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
 case YEAR:
 assembler=assembler.name(Granularity.YEAR.toString()).type(Schema.create(Schema.Type.STRING)).noDefault();
+default :
+break;
 }
 if (!Strings.isNullOrEmpty(this.writerPartitionPrefix)) {
 assembler=assembler.name(PREFIX).type(Schema.create(Schema.Type.STRING)).noDefault();
