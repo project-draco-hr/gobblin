@@ -1,6 +1,6 @@
 {
   super.close();
-  if (tunnel != null) {
-    tunnel.close();
+  if (this.tunnel != null) {
+    this.tunnel.close();
   }
 }

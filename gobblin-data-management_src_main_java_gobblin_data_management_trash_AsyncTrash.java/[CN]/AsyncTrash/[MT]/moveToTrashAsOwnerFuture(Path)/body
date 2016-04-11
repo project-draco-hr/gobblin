@@ -1,7 +1,7 @@
 {
   return this.executor.submit(new Callable<Boolean>(){
     @Override public Boolean call() throws IOException {
-      return innerTrash.moveToTrashAsOwner(path);
+      return AsyncTrash.this.innerTrash.moveToTrashAsOwner(path);
     }
   }
 );

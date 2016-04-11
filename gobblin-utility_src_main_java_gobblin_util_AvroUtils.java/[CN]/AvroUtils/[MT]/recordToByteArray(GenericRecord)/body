@@ -1,7 +1,7 @@
 {
   try (ByteArrayOutputStream out=new ByteArrayOutputStream()){
     Encoder encoder=EncoderFactory.get().directBinaryEncoder(out,null);
-    DatumWriter<GenericRecord> writer=new GenericDatumWriter<GenericRecord>(record.getSchema());
+    DatumWriter<GenericRecord> writer=new GenericDatumWriter<>(record.getSchema());
     writer.write(record,encoder);
     byte[] byteArray=out.toByteArray();
     return byteArray;

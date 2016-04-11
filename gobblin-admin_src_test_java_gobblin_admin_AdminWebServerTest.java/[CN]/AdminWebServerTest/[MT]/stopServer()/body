@@ -1,6 +1,6 @@
 {
   try {
-    server.shutDown();
+    this.server.shutDown();
   }
  catch (  Exception e) {
   }

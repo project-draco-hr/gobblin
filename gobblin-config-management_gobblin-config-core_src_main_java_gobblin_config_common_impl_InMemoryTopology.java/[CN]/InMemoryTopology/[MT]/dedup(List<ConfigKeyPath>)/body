@@ -1,6 +1,6 @@
 {
-  List<ConfigKeyPath> result=new ArrayList<ConfigKeyPath>();
-  Set<ConfigKeyPath> alreadySeen=new HashSet<ConfigKeyPath>();
+  List<ConfigKeyPath> result=new ArrayList<>();
+  Set<ConfigKeyPath> alreadySeen=new HashSet<>();
   for (  ConfigKeyPath u : input) {
     if (!alreadySeen.contains(u)) {
       result.add(u);

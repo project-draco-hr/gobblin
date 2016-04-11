@@ -1,5 +1,5 @@
 {
-  Collection<ConfigKeyPath> configKeysNotInCache=new ArrayList<ConfigKeyPath>();
+  Collection<ConfigKeyPath> configKeysNotInCache=new ArrayList<>();
   Map<ConfigKeyPath,Config> result=new HashMap<>();
   for (  ConfigKeyPath configKey : configKeys) {
     Config cachedValue=this.recursiveConfigCache.getIfPresent(configKey);

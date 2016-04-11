@@ -1,6 +1,6 @@
 {
   try {
-    return new SingleRecordIterable<GenericRecord>(AvroUtils.convertRecordSchema(inputRecord,outputSchema));
+    return new SingleRecordIterable<>(AvroUtils.convertRecordSchema(inputRecord,outputSchema));
   }
  catch (  IOException e) {
     throw new DataConversionException(e);

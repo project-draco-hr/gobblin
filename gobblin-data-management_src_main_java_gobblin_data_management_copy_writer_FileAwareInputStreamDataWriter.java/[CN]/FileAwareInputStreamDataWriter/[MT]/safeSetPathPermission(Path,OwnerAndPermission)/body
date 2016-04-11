@@ -1,7 +1,7 @@
 {
   try {
     if (ownerAndPermission.getFsPermission() != null) {
-      fs.setPermission(path,ownerAndPermission.getFsPermission());
+      this.fs.setPermission(path,ownerAndPermission.getFsPermission());
     }
   }
  catch (  IOException ioe) {

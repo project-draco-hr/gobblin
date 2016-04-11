@@ -6,7 +6,7 @@
   List<ConfigKeyPath> rootImports=this.getOwnImports(SingleLinkedListConfigKeyPath.ROOT);
   Preconditions.checkArgument(rootImports == null || rootImports.size() == 0,"Root can not import other nodes, otherwise circular dependency will happen");
   while (!currentLevel.isEmpty()) {
-    Collection<ConfigKeyPath> nextLevel=new ArrayList<ConfigKeyPath>();
+    Collection<ConfigKeyPath> nextLevel=new ArrayList<>();
     for (    ConfigKeyPath configKeyPath : currentLevel) {
       List<ConfigKeyPath> ownImports=this.getOwnImports(configKeyPath);
       for (      ConfigKeyPath p : ownImports) {
@@ -24,7 +24,7 @@
     }
  else {
       recursiveImports=this.buildImportsRecursiveFromCache(configKey);
-      this.addToListMapForListValue(recursiveImportMap,configKey,recursiveImports);
+      this.addToListMapForListValue(this.recursiveImportMap,configKey,recursiveImports);
     }
     if (recursiveImports != null) {
       for (      ConfigKeyPath p : recursiveImports) {

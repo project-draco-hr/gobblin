@@ -6,7 +6,7 @@
   WorkUnit wu2=createAndSetWorkUnit("wu2");
   WorkUnit wu3=createAndSetWorkUnit("wu3");
   WorkUnit wu4=createAndSetWorkUnit("wu4");
-  MultiWorkUnit mwu1=new MultiWorkUnit();
+  MultiWorkUnit mwu1=MultiWorkUnit.createEmpty();
   mwu1.setProp(ConfigurationKeys.TASK_ID_KEY,System.nanoTime());
   mwu1.addWorkUnits(Arrays.asList(wu3,wu4));
   Path inputDir=new Path(new Path(OUTPUT_PATH,JOB_NAME),"input");

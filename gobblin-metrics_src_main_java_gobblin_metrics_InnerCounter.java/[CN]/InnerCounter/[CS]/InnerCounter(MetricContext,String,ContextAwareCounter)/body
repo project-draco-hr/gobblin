@@ -8,5 +8,5 @@
  else {
     this.parentCounter=Optional.absent();
   }
-  this.contextAwareCounter=new WeakReference<ContextAwareCounter>(counter);
+  this.contextAwareCounter=new WeakReference<>(counter);
 }
