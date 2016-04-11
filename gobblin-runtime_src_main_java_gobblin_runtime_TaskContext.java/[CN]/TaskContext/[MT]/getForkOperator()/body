@@ -1,7 +1,7 @@
 {
   try {
     ForkOperator fork=ForkOperator.class.cast(Class.forName(this.workUnit.getProp(ConfigurationKeys.FORK_OPERATOR_CLASS_KEY,ConfigurationKeys.DEFAULT_FORK_OPERATOR_CLASS)).newInstance());
-    return new InstrumentedForkOperatorDecorator(fork);
+    return new InstrumentedForkOperatorDecorator<>(fork);
   }
  catch (  ClassNotFoundException cnfe) {
     throw new RuntimeException(cnfe);

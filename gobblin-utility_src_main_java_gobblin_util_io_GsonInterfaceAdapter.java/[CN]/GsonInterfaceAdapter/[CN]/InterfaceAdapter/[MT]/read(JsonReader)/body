@@ -4,7 +4,7 @@
     return readNull();
   }
   JsonObject jsonObject=element.getAsJsonObject();
-  if (typeToken.getRawType() == Optional.class) {
+  if (this.typeToken.getRawType() == Optional.class) {
     if (jsonObject.has(OBJECT_TYPE)) {
       return (R)Optional.of(readValue(jsonObject,null));
     }
@@ -15,7 +15,5 @@
       throw new IOException("No class found for Optional value.");
     }
   }
- else {
-    return this.readValue(jsonObject,this.typeToken);
-  }
+  return this.readValue(jsonObject,this.typeToken);
 }

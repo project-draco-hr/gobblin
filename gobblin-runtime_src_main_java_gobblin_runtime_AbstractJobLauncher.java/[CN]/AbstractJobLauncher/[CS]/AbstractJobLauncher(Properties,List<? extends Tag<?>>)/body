@@ -13,7 +13,7 @@
 );
   metadataTags=addClusterNameTags(metadataTags);
   this.eventSubmitter=buildEventSubmitter(metadataTags);
-  JobMetrics.addCustomTagToState(this.jobContext.getJobState(),metadataTags);
+  GobblinMetrics.addCustomTagToState(this.jobContext.getJobState(),metadataTags);
   JobExecutionEventSubmitter jobExecutionEventSubmitter=new JobExecutionEventSubmitter(this.eventSubmitter);
   this.mandatoryJobListeners.add(new JobExecutionEventSubmitterListener(jobExecutionEventSubmitter));
 }

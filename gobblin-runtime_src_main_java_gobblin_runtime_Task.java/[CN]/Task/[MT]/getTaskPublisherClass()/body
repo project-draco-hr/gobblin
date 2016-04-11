@@ -2,7 +2,5 @@
   if (this.taskState.contains(ConfigurationKeys.TASK_DATA_PUBLISHER_TYPE)) {
     return (Class<? extends DataPublisher>)Class.forName(this.taskState.getProp(ConfigurationKeys.TASK_DATA_PUBLISHER_TYPE));
   }
- else {
-    return (Class<? extends DataPublisher>)Class.forName(this.taskState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
-  }
+  return (Class<? extends DataPublisher>)Class.forName(this.taskState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
 }

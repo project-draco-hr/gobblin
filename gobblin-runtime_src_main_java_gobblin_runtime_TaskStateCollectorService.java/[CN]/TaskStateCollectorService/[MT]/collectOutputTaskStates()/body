@@ -14,7 +14,7 @@
     return;
   }
   Queue<TaskState> taskStateQueue=Queues.newConcurrentLinkedQueue();
-  try (ParallelRunner stateSerDeRunner=new ParallelRunner(stateSerDeRunnerThreads,this.fs)){
+  try (ParallelRunner stateSerDeRunner=new ParallelRunner(this.stateSerDeRunnerThreads,this.fs)){
     for (    FileStatus status : fileStatuses) {
       LOGGER.debug("Found output task state file " + status.getPath());
       stateSerDeRunner.deserializeFromSequenceFile(Text.class,TaskState.class,status.getPath(),taskStateQueue,true);

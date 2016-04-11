@@ -1,6 +1,6 @@
 {
   if (this.jobState.contains(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY)) {
-    String taskDataRootDirWithJobId=new Path(this.jobState.getProp(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY),jobId).toString();
+    String taskDataRootDirWithJobId=new Path(this.jobState.getProp(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY),this.jobId).toString();
     this.jobState.setProp(ConfigurationKeys.TASK_DATA_ROOT_DIR_KEY,taskDataRootDirWithJobId);
     setTaskStagingDir();
     setTaskOutputDir();

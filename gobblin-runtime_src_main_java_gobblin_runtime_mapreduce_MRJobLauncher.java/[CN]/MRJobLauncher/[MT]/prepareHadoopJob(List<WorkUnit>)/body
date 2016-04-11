@@ -9,8 +9,8 @@
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);
   Path jobInputFile=prepareJobInput(workUnits);
-  NLineInputFormat.addInputPath(this.job,jobInputFile);
-  SequenceFileOutputFormat.setOutputPath(this.job,this.jobOutputPath);
+  FileInputFormat.addInputPath(this.job,jobInputFile);
+  FileOutputFormat.setOutputPath(this.job,this.jobOutputPath);
   serializeJobState(this.fs,this.mrJobDir,this.conf,this.jobContext.getJobState(),this.job);
   if (this.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
     int maxMappers=Integer.parseInt(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY));

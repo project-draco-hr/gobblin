@@ -2,9 +2,9 @@
   this.converter=converter;
   this.prevIterator=prevIterator;
   if (this.prevIterator.hasNext()) {
-    this.currentIterator=converter.convertRecord(convertedSchemaMap.get(converter),this.prevIterator.next(),workUnitState).iterator();
+    this.currentIterator=converter.convertRecord(MultiConverter.this.convertedSchemaMap.get(converter),this.prevIterator.next(),MultiConverterIterator.this.workUnitState).iterator();
   }
  else {
-    this.currentIterator=new EmptyIterable<Object>().iterator();
+    this.currentIterator=new EmptyIterable<>().iterator();
   }
 }

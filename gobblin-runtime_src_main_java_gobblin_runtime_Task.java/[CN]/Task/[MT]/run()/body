@@ -8,7 +8,7 @@
   InstrumentedExtractorBase extractor=null;
   RowLevelPolicyChecker rowChecker=null;
   try {
-    extractor=closer.register(new InstrumentedExtractorDecorator(this.taskState,this.taskContext.getExtractor()));
+    extractor=closer.register(new InstrumentedExtractorDecorator<>(this.taskState,this.taskContext.getExtractor()));
     converter=closer.register(new MultiConverter(this.taskContext.getConverters()));
     ForkOperator forkOperator=closer.register(this.taskContext.getForkOperator());
     forkOperator.init(this.taskState);
