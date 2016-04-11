@@ -4,7 +4,7 @@
   Class<? extends DataPublisher> dataPublisherClass=null;
   try (Closer closer=Closer.create()){
     dataPublisherClass=getJobDataPublisherClass(datasetState).or((Class<? extends DataPublisher>)Class.forName(ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
-    success=checkForUnpublishedWUHandling(datasetUrn,datasetState,success,dataPublisherClass,closer);
+    success=checkForUnpublishedWUHandling(datasetUrn,datasetState,dataPublisherClass,closer);
   }
  catch (  ReflectiveOperationException roe) {
     this.logger.warn("Unable to find publisher class: " + roe,roe);

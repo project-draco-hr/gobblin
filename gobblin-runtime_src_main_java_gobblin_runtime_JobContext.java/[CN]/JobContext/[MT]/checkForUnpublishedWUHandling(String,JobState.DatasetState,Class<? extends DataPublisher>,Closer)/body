@@ -1,4 +1,5 @@
 {
+  boolean success=true;
   if (!canCommitDataset(datasetState)) {
     this.logger.warn(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
     if (UnpublishedHandling.class.isAssignableFrom(dataPublisherClass)) {
