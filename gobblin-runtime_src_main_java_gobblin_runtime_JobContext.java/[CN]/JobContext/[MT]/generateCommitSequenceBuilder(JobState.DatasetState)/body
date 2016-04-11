@@ -3,7 +3,7 @@
     Class<? extends CommitSequencePublisher> dataPublisherClass=(Class<? extends CommitSequencePublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
     CommitSequencePublisher publisher=(CommitSequencePublisher)closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
     publisher.publish(datasetState.getTaskStates());
-    this.commitSequenceBuilder=publisher.getCommitSequenceBuilder();
+    return publisher.getCommitSequenceBuilder();
   }
  catch (  Throwable t) {
     LOG.error("Failed to generate commit sequence",t);

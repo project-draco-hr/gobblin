@@ -1,0 +1,5 @@
+String datasetUrn
+JobState.DatasetState datasetState
+boolean success
+Class<? extends DataPublisher> dataPublisherClass
+Closer closer
