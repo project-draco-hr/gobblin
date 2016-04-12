@@ -7,7 +7,7 @@
     this.logger.info("Job will not commit data since data are committed by tasks.");
   }
   for (  Map.Entry<String,JobState.DatasetState> entry : this.datasetStatesByUrns.get().entrySet()) {
-    allDatasetsCommit=processDatasetCommit(shouldCommitDataInJob,deliverySemantics,entry.getKey(),entry.getValue()) & allDatasetsCommit;
+    allDatasetsCommit&=processDatasetCommit(shouldCommitDataInJob,deliverySemantics,entry.getKey(),entry.getValue()) & allDatasetsCommit;
   }
   if (!allDatasetsCommit) {
     this.jobState.setState(JobState.RunningState.FAILED);
