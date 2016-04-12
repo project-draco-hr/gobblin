@@ -1,8 +1,0 @@
-{
-  return Lists.newArrayList(Collections2.filter(allVersions,new Predicate<FileSystemDatasetVersion>(){
-    @Override public boolean apply(    FileSystemDatasetVersion version){
-      return ((TimestampedDatasetVersion)version).getDateTime().plus(lookBackPeriod).isAfterNow();
-    }
-  }
-));
-}

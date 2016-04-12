@@ -15,6 +15,7 @@
       @Override public void onFailure(      Throwable throwable){
         finishCleanSignal.get().countDown();
         LOG.warn("Exception caught when cleaning " + dataset.datasetURN() + ".",throwable);
+        throwables.add(throwable);
         Instrumented.markMeter(datasetsCleanFailureMeter);
         eventSubmitter.submit(RetentionEvents.CleanFailed.EVENT_NAME,ImmutableMap.of(RetentionEvents.CleanFailed.FAILURE_CONTEXT_METADATA_KEY,ExceptionUtils.getFullStackTrace(throwable),RetentionEvents.DATASET_URN_METADATA_KEY,dataset.datasetURN()));
       }

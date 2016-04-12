@@ -1,6 +1,6 @@
 {
   try {
-    return new ConfigurableCleanableDataset<>(this.fs,this.props,path,this.client.getConfig(this.props.getProperty(CONFIG_MANAGEMENT_STORE_URI) + path.toString()),LoggerFactory.getLogger(ConfigurableCleanableDataset.class));
+    return new ConfigurableCleanableDataset<FileSystemDatasetVersion>(this.fs,this.props,path,this.client.getConfig(this.props.getProperty(CONFIG_MANAGEMENT_STORE_URI) + path.toString()),LoggerFactory.getLogger(ConfigurableCleanableDataset.class));
   }
  catch (  VersionDoesNotExistException|ConfigStoreFactoryDoesNotExistsException|ConfigStoreCreationException|URISyntaxException e) {
     throw new IllegalArgumentException(e);

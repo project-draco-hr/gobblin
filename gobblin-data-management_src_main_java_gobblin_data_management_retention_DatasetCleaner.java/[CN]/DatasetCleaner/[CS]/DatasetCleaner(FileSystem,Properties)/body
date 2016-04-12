@@ -21,4 +21,5 @@ catch (  ExecutionException exception) {
   this.metricContext=this.closer.register(Instrumented.getMetricContext(new State(props),DatasetCleaner.class,tags));
   this.isMetricEnabled=GobblinMetrics.isEnabled(props);
   this.eventSubmitter=new EventSubmitter.Builder(metricContext,RetentionEvents.NAMESPACE).build();
+  this.throwables=Lists.newArrayList();
 }

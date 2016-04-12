@@ -1,3 +1,3 @@
 {
-  this(fs,props,Boolean.valueOf(props.getProperty(SIMULATE_KEY,SIMULATE_DEFAULT)),Boolean.valueOf(props.getProperty(SKIP_TRASH_KEY,SKIP_TRASH_DEFAULT)),Boolean.valueOf(props.getProperty(DELETE_EMPTY_DIRECTORIES_KEY,DELETE_EMPTY_DIRECTORIES_DEFAULT)),Boolean.valueOf(props.getProperty(DELETE_AS_OWNER_KEY,DELETE_AS_OWNER_DEFAULT)),config.getBoolean(IS_DATASET_BLACKLISTED_KEY),log);
+  super(fs,props,config,log);
 }

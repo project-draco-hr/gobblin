@@ -1,0 +1,3 @@
+{
+  this(fs,config.hasPath(VERSION_FINDER_GLOB_PATTERN_KEY) ? new Path(config.getString(VERSION_FINDER_GLOB_PATTERN_KEY)) : new Path("*"));
+}

@@ -1,6 +1,0 @@
-{
-  super(fs,props,log);
-  this.datasetRoot=datasetRoot;
-  this.embeddedDataset=getDataset(fs,props,datasetRoot);
-  this.retentionPolicy=getRetentionPolicy(fs);
-}

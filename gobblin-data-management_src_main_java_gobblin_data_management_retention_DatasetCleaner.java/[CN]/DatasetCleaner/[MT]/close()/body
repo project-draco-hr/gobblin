@@ -3,6 +3,12 @@
     if (this.finishCleanSignal.isPresent()) {
       finishCleanSignal.get().await();
     }
+    if (!this.throwables.isEmpty()) {
+      for (      Throwable t : throwables) {
+        LOG.error("Failed clean due to ",t);
+      }
+      throw new RuntimeException("Clean failed for one or more datasets");
+    }
   }
  catch (  InterruptedException e) {
     Thread.currentThread().interrupt();

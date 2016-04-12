@@ -9,4 +9,5 @@
     Path fullFilePath=new Path(testTempDirPath,PathUtils.withoutLeadingSeparator(new Path(retainedConfig.getString(TEST_DATA_PATH_LOCAL_KEY))));
     Assert.assertFalse(this.fs.exists(fullFilePath),String.format("%s should be deleted",fullFilePath.toString()));
   }
+  this.cleanup();
 }

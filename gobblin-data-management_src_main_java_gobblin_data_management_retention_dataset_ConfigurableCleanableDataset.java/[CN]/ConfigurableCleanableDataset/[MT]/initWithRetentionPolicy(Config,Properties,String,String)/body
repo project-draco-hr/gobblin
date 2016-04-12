@@ -1,0 +1,3 @@
+{
+  this.versionFindersAndPolicies.add(new VersionFinderAndPolicy<>(createRetentionPolicy(config.getString(retentionPolicyKey),config,jobProps),createVersionFinder(config.getString(versionFinderKey),config,jobProps)));
+}

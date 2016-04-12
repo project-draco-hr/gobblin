@@ -1,6 +1,6 @@
 {
   this.fs=FileSystem.get(new Configuration());
-  testClassTempPath=new Path(RetentionIntegrationTest.class.getClassLoader().getResource("").getFile(),TEST_PACKAGE_RESOURCE_NAME);
+  testClassTempPath=new Path(RetentionIntegrationTest.class.getClassLoader().getResource("").getFile(),TEST_DATA_DIR_NAME);
   if (!fs.mkdirs(testClassTempPath)) {
     throw new RuntimeException("Failed to create temp directory for the test at " + testClassTempPath.toString());
   }
