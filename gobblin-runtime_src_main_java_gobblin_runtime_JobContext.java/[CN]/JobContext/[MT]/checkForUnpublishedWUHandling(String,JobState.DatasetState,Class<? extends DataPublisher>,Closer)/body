@@ -1,13 +1,7 @@
 {
-  boolean success=true;
-  if (!canCommitDataset(datasetState)) {
-    this.logger.warn(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
-    if (UnpublishedHandling.class.isAssignableFrom(dataPublisherClass)) {
-      DataPublisher publisher=closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
-      this.logger.info(String.format("Calling publisher to handle unpublished work units for dataset %s of job %s.",datasetUrn,this.jobId));
-      ((UnpublishedHandling)publisher).handleUnpublishedWorkUnits(datasetState.getTaskStatesAsWorkUnitStates());
-    }
-    success=false;
+  if (UnpublishedHandling.class.isAssignableFrom(dataPublisherClass)) {
+    DataPublisher publisher=closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
+    this.logger.info(String.format("Calling publisher to handle unpublished work units for dataset %s of job %s.",datasetUrn,this.jobId));
+    ((UnpublishedHandling)publisher).handleUnpublishedWorkUnits(datasetState.getTaskStatesAsWorkUnitStates());
   }
-  return success;
 }

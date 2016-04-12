@@ -4,7 +4,11 @@
   Class<? extends DataPublisher> dataPublisherClass=null;
   try (Closer closer=Closer.create()){
     dataPublisherClass=getJobDataPublisherClass(datasetState).or((Class<? extends DataPublisher>)Class.forName(ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
-    success=checkForUnpublishedWUHandling(datasetUrn,datasetState,dataPublisherClass,closer);
+    if (!canCommitDataset(datasetState)) {
+      this.logger.warn(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",datasetUrn,this.jobId,this.jobCommitPolicy,datasetState.getState()));
+      checkForUnpublishedWUHandling(datasetUrn,datasetState,dataPublisherClass,closer);
+      success=false;
+    }
   }
  catch (  ReflectiveOperationException roe) {
     this.logger.warn("Unable to find publisher class: " + roe,roe);
