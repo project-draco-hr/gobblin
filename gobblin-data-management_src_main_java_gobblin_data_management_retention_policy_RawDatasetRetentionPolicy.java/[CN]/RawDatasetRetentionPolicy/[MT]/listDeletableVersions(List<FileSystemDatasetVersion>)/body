@@ -1,0 +1,4 @@
+{
+  Collection<FileSystemDatasetVersion> deletableVersions=this.embeddedRetentionPolicy.listDeletableVersions(allVersions);
+  return listQualifiedRawFileSystemDatasetVersions(deletableVersions);
+}

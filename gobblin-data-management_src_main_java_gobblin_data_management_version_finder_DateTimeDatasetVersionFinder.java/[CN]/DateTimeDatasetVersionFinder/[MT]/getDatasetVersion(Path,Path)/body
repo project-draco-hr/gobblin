@@ -1,6 +1,7 @@
 {
   try {
-    return new TimestampedDatasetVersion(this.formatter.parseDateTime(pathRelativeToDatasetRoot.toString()),fullPath);
+    String dateTimeString=StringUtils.substring(pathRelativeToDatasetRoot.toString(),pathRelativeToDatasetRoot.toString().length() - this.datePartitionPattern.length());
+    return new TimestampedDatasetVersion(this.formatter.parseDateTime(dateTimeString),fullPath);
   }
  catch (  IllegalArgumentException exception) {
     LOGGER.warn("Candidate dataset version at " + pathRelativeToDatasetRoot + " does not match expected pattern. Ignoring.");

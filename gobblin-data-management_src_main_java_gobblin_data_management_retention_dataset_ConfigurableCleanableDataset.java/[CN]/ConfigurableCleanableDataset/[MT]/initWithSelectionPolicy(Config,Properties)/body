@@ -1,0 +1,10 @@
+{
+  String selectionPolicyKey=StringUtils.substringAfter(SELECTION_POLICY_CLASS_KEY,CONFIGURATION_KEY_PREFIX);
+  String versionFinderKey=StringUtils.substringAfter(VERSION_FINDER_CLASS_KEY,CONFIGURATION_KEY_PREFIX);
+  if (config.hasPath(selectionPolicyKey) && config.hasPath(versionFinderKey)) {
+    this.versionFindersAndPolicies.add(new VersionFinderAndPolicy<>(createSelectionPolicy(config.getString(selectionPolicyKey),config,jobProps),createVersionFinder(config.getString(versionFinderKey),config,jobProps)));
+  }
+ else {
+    log.warn(String.format("Version finder and policy not initialized for partition. Set version finder at %s and Selection policy at %s",VERSION_FINDER_CLASS_KEY,SELECTION_POLICY_CLASS_KEY));
+  }
+}

@@ -1,0 +1,19 @@
+{
+  super(fs);
+  Preconditions.checkArgument(config.hasPath(DATE_TIME_PATTERN_KEY),"Missing required property " + DATE_TIME_PATTERN_KEY);
+  String pattern=config.getString(DATE_TIME_PATTERN_KEY);
+  if (config.hasPath(OPTIONAL_GLOB_PATTERN_TIMEZONE_KEY)) {
+    this.globPattern=new Path(config.getString(OPTIONAL_GLOB_PATTERN_TIMEZONE_KEY));
+  }
+ else {
+    this.globPattern=new Path(pattern.replaceAll("[^/]+","*"));
+  }
+  LOGGER.debug(String.format("Setting timezone for patthern: %s. By default it is %s",pattern,DEFAULT_DATE_TIME_PATTERN_TIMEZONE));
+  if (config.hasPath(DATE_TIME_PATTERN_TIMEZONE_KEY)) {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(config.getString(DATE_TIME_PATTERN_TIMEZONE_KEY)));
+  }
+ else {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(DEFAULT_DATE_TIME_PATTERN_TIMEZONE));
+  }
+  this.datePartitionPattern=pattern;
+}

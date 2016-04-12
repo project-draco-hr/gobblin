@@ -1,0 +1,3 @@
+{
+  return ImmutableList.<VersionFinderAndPolicy<T>>of(new VersionFinderAndPolicy<T>(getRetentionPolicy(),getVersionFinder()));
+}

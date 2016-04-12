@@ -1,0 +1,3 @@
+{
+  return (Class<? extends FileSystemDatasetVersion>)this.embeddedRetentionPolicy.versionClass();
+}
