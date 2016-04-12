@@ -1,5 +1,5 @@
 {
-  List<String> conditions=new ArrayList<String>();
+  List<String> conditions=new ArrayList<>();
   for (  Predicate predicate : predicateList) {
     conditions.add(predicate.getCondition());
   }

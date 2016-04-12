@@ -1,5 +1,5 @@
 {
-  List<Boolean> output=new ArrayList<Boolean>();
+  List<Boolean> output=new ArrayList<>();
   output.add(true);
   output.add(false);
   output.add(true);

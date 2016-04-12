@@ -8,5 +8,5 @@
  else {
     this.parentHistogram=Optional.absent();
   }
-  this.contextAwareHistogram=new WeakReference<ContextAwareHistogram>(contextAwareHistogram);
+  this.contextAwareHistogram=new WeakReference<>(contextAwareHistogram);
 }

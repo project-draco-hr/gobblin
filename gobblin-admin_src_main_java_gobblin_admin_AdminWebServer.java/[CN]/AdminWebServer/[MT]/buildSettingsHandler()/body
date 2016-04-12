@@ -5,7 +5,7 @@
       if (request.getRequestURI().equals("/js/settings.js")) {
         response.setContentType("application/javascript");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().println(String.format(responseTemplate,restServerUri.toString()));
+        response.getWriter().println(String.format(responseTemplate,AdminWebServer.this.restServerUri.toString()));
         baseRequest.setHandled(true);
       }
     }

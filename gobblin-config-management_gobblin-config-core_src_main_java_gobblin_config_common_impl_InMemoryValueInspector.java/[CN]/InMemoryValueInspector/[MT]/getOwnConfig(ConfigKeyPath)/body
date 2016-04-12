@@ -2,7 +2,7 @@
   try {
     return this.ownConfigCache.get(configKey,new Callable<Config>(){
       @Override public Config call(){
-        return valueFallback.getOwnConfig(configKey);
+        return InMemoryValueInspector.this.valueFallback.getOwnConfig(configKey);
       }
     }
 );

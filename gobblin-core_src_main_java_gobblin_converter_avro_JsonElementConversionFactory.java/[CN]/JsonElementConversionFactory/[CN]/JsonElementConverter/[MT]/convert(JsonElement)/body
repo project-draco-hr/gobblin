@@ -1,6 +1,6 @@
 {
   if (value.isJsonNull()) {
-    if (nullable) {
+    if (this.nullable) {
       return null;
     }
  else {

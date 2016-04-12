@@ -2,7 +2,7 @@
   Gson gson=new Gson();
   JsonElement element=gson.fromJson(inputRecord,JsonElement.class);
   Map<String,Object> fields=gson.fromJson(element,FIELD_ENTRY_TYPE);
-  GenericRecord outputRecord=new GenericData.Record(schema);
+  GenericRecord outputRecord=new GenericData.Record(this.schema);
   for (  Map.Entry<String,Object> entry : fields.entrySet()) {
     outputRecord.put(entry.getKey(),entry.getValue());
   }

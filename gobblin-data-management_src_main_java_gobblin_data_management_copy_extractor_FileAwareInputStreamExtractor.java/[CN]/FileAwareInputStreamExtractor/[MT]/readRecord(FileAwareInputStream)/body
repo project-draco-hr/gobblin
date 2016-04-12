@@ -3,7 +3,5 @@
     this.recordRead=true;
     return new FileAwareInputStream(this.file,fs.open(this.file.getFileStatus().getPath()));
   }
- else {
-    return null;
-  }
+  return null;
 }

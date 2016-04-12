@@ -1,3 +1,3 @@
 {
-  return new GenericData.EnumSymbol(schema,value.getAsString());
+  return new GenericData.EnumSymbol(this.schema,value.getAsString());
 }

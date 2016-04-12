@@ -7,5 +7,5 @@
  else {
     this.parentTimer=Optional.absent();
   }
-  this.timer=new WeakReference<ContextAwareTimer>(contextAwareTimer);
+  this.timer=new WeakReference<>(contextAwareTimer);
 }

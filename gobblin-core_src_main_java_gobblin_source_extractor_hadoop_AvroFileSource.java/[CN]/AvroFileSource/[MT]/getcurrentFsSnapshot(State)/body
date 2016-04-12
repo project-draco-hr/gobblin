@@ -1,5 +1,5 @@
 {
-  List<String> results=new ArrayList<String>();
+  List<String> results=Lists.newArrayList();
   String path=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_DATA_DIRECTORY);
   try {
     LOGGER.info("Running ls command with input " + path);

@@ -16,7 +16,7 @@
     URI publisherUri=URI.create(this.getState().getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FILE_SYSTEM_URI,this.numBranches,i),writerUri.toString()));
     this.publisherFileSystemByBranches.add(FileSystem.get(publisherUri,conf));
     this.publisherFinalDirOwnerGroupsByBranches.add(Optional.fromNullable(this.getState().getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR_GROUP,this.numBranches,i))));
-    this.permissions.add(new FsPermission(state.getPropAsShortWithRadix(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_PERMISSIONS,numBranches,i),FsPermission.getDefault().toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX)));
+    this.permissions.add(new FsPermission(state.getPropAsShortWithRadix(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.DATA_PUBLISHER_PERMISSIONS,this.numBranches,i),FsPermission.getDefault().toShort(),ConfigurationKeys.PERMISSION_PARSING_RADIX)));
   }
   this.parallelRunnerThreads=state.getPropAsInt(ParallelRunner.PARALLEL_RUNNER_THREADS_KEY,ParallelRunner.DEFAULT_PARALLEL_RUNNER_THREADS);
   this.parallelRunnerCloser=Closer.create();

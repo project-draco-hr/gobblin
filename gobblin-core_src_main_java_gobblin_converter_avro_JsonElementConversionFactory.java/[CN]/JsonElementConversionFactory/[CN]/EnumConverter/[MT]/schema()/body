@@ -1,5 +1,5 @@
 {
-  schema=Schema.createEnum(enumName,"","",enumSet);
-  schema.addProp("source.type","enum");
-  return schema;
+  this.schema=Schema.createEnum(this.enumName,"","",this.enumSet);
+  this.schema.addProp("source.type","enum");
+  return this.schema;
 }

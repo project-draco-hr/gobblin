@@ -1,6 +1,6 @@
 {
   if (!reader.isPresent()) {
-    reader=Optional.of(new SpecificDatumReader<GobblinTrackingEvent>(GobblinTrackingEvent.class));
+    reader=Optional.of(new SpecificDatumReader<>(GobblinTrackingEvent.class));
   }
   Closer closer=Closer.create();
   try {

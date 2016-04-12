@@ -1,5 +1,5 @@
 {
-  Map<String,Object> map=new HashMap<String,Object>();
+  Map<String,Object> map=new HashMap<>();
   for (  Map.Entry<String,JsonElement> entry : ((JsonObject)value).entrySet()) {
     map.put(entry.getKey(),getElementConverter().convertField(entry.getValue()));
   }

@@ -1,5 +1,5 @@
 {
-  Set<String> activeSet=new HashSet<String>();
+  Set<String> activeSet=new HashSet<>();
   String activeTopLevel="";
   for (  String line : lines) {
     System.out.println(line);
@@ -11,7 +11,7 @@
         metrics.remove(activeTopLevel);
       }
  else {
-        activeSet=new HashSet<String>();
+        activeSet=new HashSet<>();
       }
     }
  else     if (line.contains("=")) {

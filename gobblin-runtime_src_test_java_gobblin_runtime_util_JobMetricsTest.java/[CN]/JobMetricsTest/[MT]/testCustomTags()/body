@@ -1,12 +1,12 @@
 {
   Properties testProperties=new Properties();
-  Tag<String> expectedPropertyTag=new Tag<String>("key1","value1");
-  JobMetrics.addCustomTagToProperties(testProperties,expectedPropertyTag);
+  Tag<String> expectedPropertyTag=new Tag<>("key1","value1");
+  GobblinMetrics.addCustomTagToProperties(testProperties,expectedPropertyTag);
   State testState=new State(testProperties);
-  List<Tag<?>> tags=JobMetrics.getCustomTagsFromState(testState);
+  List<Tag<?>> tags=GobblinMetrics.getCustomTagsFromState(testState);
   Assert.assertEquals(Iterables.getFirst(tags,null),expectedPropertyTag);
-  Tag<String> expectedStateTag=new Tag<String>("key2","value2");
-  JobMetrics.addCustomTagToState(testState,expectedStateTag);
-  tags=JobMetrics.getCustomTagsFromState(testState);
+  Tag<String> expectedStateTag=new Tag<>("key2","value2");
+  GobblinMetrics.addCustomTagToState(testState,expectedStateTag);
+  tags=GobblinMetrics.getCustomTagsFromState(testState);
   Assert.assertTrue(tags.containsAll(ImmutableList.of(expectedPropertyTag,expectedStateTag)));
 }

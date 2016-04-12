@@ -1,15 +1,15 @@
 {
-  Tag<?> tag1=new Tag<String>("tag1","value1");
+  Tag<?> tag1=new Tag<>("tag1","value1");
   MetricContext context=MetricContext.builder("context").addTag(tag1).build();
   Counter counter=context.counter("com.linkedin.example.counter");
-  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().outputTo(stream).build(new Properties());
+  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().outputTo(this.stream).build(new Properties());
   counter.inc();
   reporter.report();
-  Assert.assertTrue(stream.toString().contains("tag1=value1"));
-  String[] lines=stream.toString().split("\n");
-  Map<String,Set<String>> expected=new HashMap<String,Set<String>>();
+  Assert.assertTrue(this.stream.toString().contains("tag1=value1"));
+  String[] lines=this.stream.toString().split("\n");
+  Map<String,Set<String>> expected=new HashMap<>();
   expectMetrics(expected,lines);
-  Set<String> counterSubMetrics=new HashSet<String>();
+  Set<String> counterSubMetrics=new HashSet<>();
   counterSubMetrics.add("count");
   expected.put("com.linkedin.example.counter",counterSubMetrics);
   reporter.close();
