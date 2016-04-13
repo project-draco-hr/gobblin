@@ -8,10 +8,10 @@
       klazz=klazz.getSuperclass();
     }
     if (DatasetVersion.class.isAssignableFrom(klazz)) {
-      return (Class<? extends DatasetVersion>)klazz;
+      return (Class<T>)klazz;
     }
  else {
-      return DatasetVersion.class;
+      return (Class<T>)DatasetVersion.class;
     }
   }
 }
