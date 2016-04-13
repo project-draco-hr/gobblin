@@ -1,0 +1,7 @@
+{
+  if (UnpublishedHandling.class.isAssignableFrom(dataPublisherClass)) {
+    DataPublisher publisher=closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
+    this.logger.info(String.format("Calling publisher to handle unpublished work units for dataset %s of job %s.",datasetUrn,this.jobId));
+    ((UnpublishedHandling)publisher).handleUnpublishedWorkUnits(datasetState.getTaskStatesAsWorkUnitStates());
+  }
+}
