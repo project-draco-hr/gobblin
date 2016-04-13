@@ -2,5 +2,5 @@
   super(fs,props,log);
   this.datasetRoot=datasetRoot;
   this.versionFinder=new WatermarkDatasetVersionFinder(fs,props);
-  this.retentionPolicy=new NewestKRetentionPolicy(props);
+  this.retentionPolicy=new NewestKRetentionPolicy<FileSystemDatasetVersion>(props);
 }

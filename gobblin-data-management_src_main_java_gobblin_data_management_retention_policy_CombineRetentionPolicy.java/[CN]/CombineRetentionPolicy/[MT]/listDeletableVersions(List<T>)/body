@@ -1,6 +1,6 @@
 {
-  List<Set<DatasetVersion>> candidateDeletableVersions=Lists.newArrayList(Iterables.transform(this.retentionPolicies,new Function<RetentionPolicy<DatasetVersion>,Set<DatasetVersion>>(){
-    @Nullable @Override public Set<DatasetVersion> apply(    RetentionPolicy<DatasetVersion> input){
+  List<Set<T>> candidateDeletableVersions=Lists.newArrayList(Iterables.transform(this.retentionPolicies,new Function<RetentionPolicy<T>,Set<T>>(){
+    @SuppressWarnings("deprecation") @Nullable @Override public Set<T> apply(    RetentionPolicy<T> input){
       return Sets.newHashSet(input.listDeletableVersions(allVersions));
     }
   }
