@@ -1,7 +1,7 @@
 {
   int newerVersions=0;
-  List<FileSystemDatasetVersion> selectedVersions=Lists.newArrayList();
-  for (  FileSystemDatasetVersion datasetVersion : allVersions) {
+  List<T> selectedVersions=Lists.newArrayList();
+  for (  T datasetVersion : allVersions) {
     if (newerVersions < this.versionsSelected) {
       selectedVersions.add(datasetVersion);
     }
