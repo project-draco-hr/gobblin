@@ -3,7 +3,7 @@
     theMap.get(key).add(value);
   }
  else {
-    List<ConfigKeyPath> list=new ArrayList<ConfigKeyPath>();
+    List<ConfigKeyPath> list=new ArrayList<>();
     list.add(value);
     theMap.put(key,list);
   }

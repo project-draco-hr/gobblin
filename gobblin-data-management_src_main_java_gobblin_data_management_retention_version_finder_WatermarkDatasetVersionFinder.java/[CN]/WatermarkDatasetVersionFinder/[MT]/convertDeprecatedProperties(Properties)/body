@@ -1,0 +1,8 @@
+{
+  if (props.containsKey(DEPRECATED_WATERMARK_REGEX_KEY)) {
+    log.info(String.format("Found deprecated key %s. Replacing it with %s",DEPRECATED_WATERMARK_REGEX_KEY,gobblin.data.management.version.finder.WatermarkDatasetVersionFinder.WATERMARK_REGEX_KEY));
+    props.setProperty(gobblin.data.management.version.finder.WatermarkDatasetVersionFinder.WATERMARK_REGEX_KEY,props.getProperty(DEPRECATED_WATERMARK_REGEX_KEY));
+    props.remove(DEPRECATED_WATERMARK_REGEX_KEY);
+  }
+  return props;
+}

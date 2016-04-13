@@ -1,1 +1,1 @@
-ConfigurableGlobDatasetFinder<ConfigurableCleanableDataset<DatasetVersion>>
+ConfigurableGlobDatasetFinder<ConfigurableCleanableDataset<FileSystemDatasetVersion>>

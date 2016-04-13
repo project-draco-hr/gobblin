@@ -2,7 +2,5 @@
   if (log.isDebugEnabled()) {
     return partition.toString();
   }
- else {
-    return Arrays.toString(partition.getValues().toArray());
-  }
+  return Arrays.toString(partition.getValues().toArray());
 }

@@ -9,23 +9,23 @@
     return false;
   }
   KafkaRecord other=(KafkaRecord)obj;
-  if (key == null) {
+  if (this.key == null) {
     if (other.key != null) {
       return false;
     }
   }
- else   if (!key.equals(other.key)) {
+ else   if (!this.key.equals(other.key)) {
     return false;
   }
-  if (offset != other.offset) {
+  if (this.offset != other.offset) {
     return false;
   }
-  if (payload == null) {
+  if (this.payload == null) {
     if (other.payload != null) {
       return false;
     }
   }
- else   if (!payload.equals(other.payload)) {
+ else   if (!this.payload.equals(other.payload)) {
     return false;
   }
   return true;

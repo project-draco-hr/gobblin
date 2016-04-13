@@ -1,0 +1,4 @@
+{
+  this.tableMetadata=tableMetadata;
+  this.columnProjectionPolicy=columnProjectionPolicy;
+}

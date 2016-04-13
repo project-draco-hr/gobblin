@@ -34,7 +34,5 @@
   if ((workUnitRetryPolicy == WorkUnitRetryPolicy.ON_COMMIT_ON_PARTIAL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_PARTIAL_SUCCESS) || (workUnitRetryPolicy == WorkUnitRetryPolicy.ON_COMMIT_ON_FULL_SUCCESS && jobCommitPolicy == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS)) {
     return previousWorkUnitStates;
   }
- else {
-    return ImmutableList.of();
-  }
+  return ImmutableList.of();
 }

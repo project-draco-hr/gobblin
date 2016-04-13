@@ -2,7 +2,7 @@
   this.state=new State();
   this.state.addAll(props);
   this.tags=tags;
-  this.conf=HadoopUtils.getConfFromState(state);
+  this.conf=HadoopUtils.getConfFromState(this.state);
   this.tmpOutputDir=getTmpOutputDir();
   this.fs=getFileSystem();
   this.datasets=getDatasetsFinder().findDistinctDatasets();

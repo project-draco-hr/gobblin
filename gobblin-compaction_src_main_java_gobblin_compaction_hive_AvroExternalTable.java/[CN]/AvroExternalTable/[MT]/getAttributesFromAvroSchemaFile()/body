@@ -1,11 +1,6 @@
 {
-  Closer closer=Closer.create();
-  try {
-    InputStream schemaInputStream=closer.register(new HdfsReader(this.schemaLocationInHdfs).getInputStream());
+  try (InputStream schemaInputStream=new HdfsReader(this.schemaLocationInHdfs).getInputStream()){
     Schema schema=new Schema.Parser().parse(schemaInputStream);
     return parseSchema(schema);
   }
-  finally {
-    closer.close();
-  }
-}
+ }

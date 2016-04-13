@@ -1,9 +1,9 @@
 {
   Properties properties=new Properties();
-  properties.put(ConfigurationKeys.ADMIN_SERVER_PORT_KEY,portNumber);
-  server=new AdminWebServer(properties,URI.create("http://foobar:3333"));
+  properties.put(ConfigurationKeys.ADMIN_SERVER_PORT_KEY,this.portNumber);
+  this.server=new AdminWebServer(properties,URI.create("http://foobar:3333"));
   try {
-    server.startUp();
+    this.server.startUp();
   }
  catch (  Exception e) {
     fail(String.format("Exception starting server: %s",e.toString()));

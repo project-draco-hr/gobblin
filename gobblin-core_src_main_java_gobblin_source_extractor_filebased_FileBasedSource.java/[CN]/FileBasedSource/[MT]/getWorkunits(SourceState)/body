@@ -20,12 +20,12 @@
     prevFsSnapshot=previousWorkunits.get(0).getWorkunit().getPropAsList(ConfigurationKeys.SOURCE_FILEBASED_FS_SNAPSHOT);
   }
   List<String> currentFsSnapshot=this.getcurrentFsSnapshot(state);
-  HashSet<String> filesWithTimeToPull=new HashSet<String>(currentFsSnapshot);
+  HashSet<String> filesWithTimeToPull=new HashSet<>(currentFsSnapshot);
   filesWithTimeToPull.removeAll(prevFsSnapshot);
-  List<String> filesToPull=new ArrayList<String>();
+  List<String> filesToPull=new ArrayList<>();
   Iterator<String> it=filesWithTimeToPull.iterator();
   while (it.hasNext()) {
-    String filesWithoutTimeToPull[]=it.next().split(splitPattern);
+    String filesWithoutTimeToPull[]=it.next().split(this.splitPattern);
     filesToPull.add(filesWithoutTimeToPull[0]);
   }
   List<WorkUnit> workUnits=Lists.newArrayList();

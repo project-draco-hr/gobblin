@@ -1,0 +1,8 @@
+{
+  Preconditions.checkArgument(properties.containsKey(PARTITION_COLUMN),ERROR_MESSAGE);
+  Preconditions.checkArgument(properties.containsKey(LOOKBACK),ERROR_MESSAGE);
+  Preconditions.checkArgument(properties.containsKey(DATETIME_FORMAT),ERROR_MESSAGE);
+  this.partitionColumn=properties.getProperty(PARTITION_COLUMN);
+  this.lookback=Period.parse(properties.getProperty(LOOKBACK));
+  this.formatter=DateTimeFormat.forPattern(properties.getProperty(DATETIME_FORMAT));
+}

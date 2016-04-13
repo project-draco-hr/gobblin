@@ -1,0 +1,7 @@
+{
+  if (hasNext()) {
+    this.promisedNext=false;
+    return this.iterator.next();
+  }
+  throw new NoSuchElementException();
+}

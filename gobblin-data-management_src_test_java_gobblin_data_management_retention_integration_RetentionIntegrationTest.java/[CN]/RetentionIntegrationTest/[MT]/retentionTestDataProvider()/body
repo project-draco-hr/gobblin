@@ -1,0 +1,3 @@
+{
+  return new Object[][]{{"testTimeBasedRetention","retention.conf"},{"testTimeBasedRetention","selection.conf"},{"testNewestKRetention","retention.conf"},{"testNewestKRetention","selection.conf"},{"testHourlyPatternRetention","hourly-retention.job"},{"testDailyPatternRetention","daily-retention.job"},{"testMultiVersionRetention","daily-hourly-retention.conf"},{"testCombinePolicy","retention.job"},{"testCombinePolicy","selection.conf"}};
+}

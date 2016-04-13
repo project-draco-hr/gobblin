@@ -4,8 +4,9 @@
   this.preserve=PreserveAttributes.fromMnemonicString(properties.getProperty(PRESERVE_ATTRIBUTES_KEY));
   Path publishDirTmp=new Path(properties.getProperty(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR));
   if (!publishDirTmp.isAbsolute()) {
-    publishDirTmp=new Path(fs.getWorkingDirectory(),publishDirTmp);
+    publishDirTmp=new Path(targetFs.getWorkingDirectory(),publishDirTmp);
   }
   this.publishDir=publishDirTmp;
   this.copyContext=new CopyContext();
+  this.targetFs=targetFs;
 }

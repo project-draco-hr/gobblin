@@ -1,0 +1,6 @@
+{
+  Path jobStateFilePath=new Path(mrJobDir,JOB_STATE_FILE_NAME);
+  short jobStateRF=(short)conf.getInt("dfs.replication.max",20);
+  SerializationUtils.serializeState(fs,jobStateFilePath,jobState,jobStateRF);
+  job.getConfiguration().set(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY,jobStateFilePath.toString());
+}

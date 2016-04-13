@@ -1,4 +1,4 @@
 {
-  register.dropTableIfExists(this.dbName,tableName);
+  register.dropTableIfExists(this.dbName,this.tableName);
   return true;
 }

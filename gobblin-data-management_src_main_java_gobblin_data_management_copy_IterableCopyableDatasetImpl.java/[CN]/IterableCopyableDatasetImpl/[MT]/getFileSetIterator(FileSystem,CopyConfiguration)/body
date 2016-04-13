@@ -1,0 +1,3 @@
+{
+  return partitionCopyableFiles(this.dataset,this.dataset.getCopyableFiles(targetFs,configuration));
+}

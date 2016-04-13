@@ -2,7 +2,7 @@
   try {
     return this.recursiveConfigCache.get(configKey,new Callable<Config>(){
       @Override public Config call(){
-        return valueFallback.getResolvedConfig(configKey);
+        return InMemoryValueInspector.this.valueFallback.getResolvedConfig(configKey);
       }
     }
 );

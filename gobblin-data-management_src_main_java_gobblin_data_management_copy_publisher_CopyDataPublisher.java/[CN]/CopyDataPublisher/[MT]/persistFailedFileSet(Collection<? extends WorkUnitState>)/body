@@ -1,5 +1,4 @@
 {
-  RecoveryHelper recoveryHelper=new RecoveryHelper(this.fs,this.state);
   int filesPersisted=0;
   for (  WorkUnitState wu : workUnitStates) {
     if (wu.getWorkingState() == WorkingState.SUCCESSFUL) {
@@ -9,7 +8,7 @@
         Path outputDir=FileAwareInputStreamDataWriter.getOutputDir(wu);
         CopyableDatasetMetadata metadata=CopySource.deserializeCopyableDataset(wu);
         Path outputPath=FileAwareInputStreamDataWriter.getOutputFilePath(file,outputDir,file.getDatasetAndPartition(metadata));
-        if (recoveryHelper.persistFile(wu,file,outputPath)) {
+        if (this.recoveryHelper.persistFile(wu,file,outputPath)) {
           filesPersisted++;
         }
       }

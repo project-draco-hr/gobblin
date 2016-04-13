@@ -1,4 +1,5 @@
 {
   this.fs=fs;
   this.persistDir=getPersistDir(state);
+  this.retentionHours=state.getPropAsInt(PERSIST_RETENTION_KEY,DEFAULT_PERSIST_RETENTION);
 }

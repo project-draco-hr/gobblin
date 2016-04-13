@@ -3,9 +3,9 @@
   String fileSet=this.dataset.table.getTableName();
   List<CopyEntity> copyEntities=Lists.newArrayList();
   stepPriority=addSharedSteps(copyEntities,fileSet,stepPriority);
-  LocationDescriptor sourceLocation=LocationDescriptor.forTable(this.dataset.table,this.dataset.fs);
-  LocationDescriptor desiredTargetLocation=LocationDescriptor.forTable(this.targetTable,this.targetFs);
-  Optional<LocationDescriptor> existingTargetLocation=this.existingTargetTable.isPresent() ? Optional.of(LocationDescriptor.forTable(this.existingTargetTable.get(),this.targetFs)) : Optional.<LocationDescriptor>absent();
+  HiveLocationDescriptor sourceLocation=HiveLocationDescriptor.forTable(this.dataset.table,this.dataset.fs,this.dataset.properties);
+  HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forTable(this.targetTable,this.targetFs,this.dataset.properties);
+  Optional<HiveLocationDescriptor> existingTargetLocation=this.existingTargetTable.isPresent() ? Optional.of(HiveLocationDescriptor.forTable(this.existingTargetTable.get(),this.targetFs,this.dataset.properties)) : Optional.<HiveLocationDescriptor>absent();
   DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent());
   DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,this.dataset.properties);
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));

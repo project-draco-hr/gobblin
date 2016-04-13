@@ -1,0 +1,9 @@
+{
+  Config config=ConfigFactory.parseMap(ImmutableMap.of("columnProjection.class",ProjectAllColumnProjectionPolicy.class.getCanonicalName(),"rowSelection.class",SelectAllRowSelectionPolicy.class.getCanonicalName(),"auditSink.class",MockSink.class.getCanonicalName()));
+  ValueAuditRuntimeMetadata runtimeMetadata=mock(ValueAuditRuntimeMetadata.class,Mockito.RETURNS_SMART_NULLS);
+  ValueAuditGenerator auditGenerator=ValueAuditGenerator.create(config,runtimeMetadata);
+  auditGenerator.audit(mock(GenericRecord.class,Mockito.RETURNS_SMART_NULLS));
+  Assert.assertEquals(auditGenerator.getRowSelectionPolicy().getClass().getCanonicalName(),SelectAllRowSelectionPolicy.class.getCanonicalName());
+  Assert.assertEquals(auditGenerator.getColumnProjectionPolicy().getClass().getCanonicalName(),ProjectAllColumnProjectionPolicy.class.getCanonicalName());
+  Assert.assertEquals(auditGenerator.getAuditSink().getClass().getCanonicalName(),MockSink.class.getCanonicalName());
+}

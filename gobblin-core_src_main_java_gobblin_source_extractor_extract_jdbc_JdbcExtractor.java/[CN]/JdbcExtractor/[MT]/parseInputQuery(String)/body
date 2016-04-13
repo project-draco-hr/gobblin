@@ -1,5 +1,5 @@
 {
-  List<String> projectedColumns=new ArrayList<String>();
+  List<String> projectedColumns=new ArrayList<>();
   if (StringUtils.isNotBlank(query)) {
     String queryLowerCase=query.toLowerCase();
     int startIndex=queryLowerCase.indexOf("select ") + 7;

@@ -1,3 +1,0 @@
-FileSystem fs
-Class<? extends DatasetVersion> versionClass
-RetentionPolicy<DatasetVersion> retentionPolicy

@@ -1,0 +1,7 @@
+{
+  Path latestSnapshot=getLatestSnapshot(path);
+  if (latestSnapshot == null) {
+    return ImmutableList.<HiveTable>of();
+  }
+  return super.getTables(latestSnapshot);
+}

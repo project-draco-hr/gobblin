@@ -1,0 +1,13 @@
+{
+  String sinkClassName=DEFAULT_AUDIT_SINK_CLASS;
+  if (config.hasPath(AUDIT_SINK_CLASS_NAME_KEY)) {
+    sinkClassName=config.getString(AUDIT_SINK_CLASS_NAME_KEY);
+  }
+  log.info("Using audit sink class name/alias " + sinkClassName);
+  try {
+    return (AuditSink)ConstructorUtils.invokeConstructor(Class.forName(this.aliasResolver.resolve(sinkClassName)),config,auditRuntimeMetadata);
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new RuntimeException(e);
+  }
+}

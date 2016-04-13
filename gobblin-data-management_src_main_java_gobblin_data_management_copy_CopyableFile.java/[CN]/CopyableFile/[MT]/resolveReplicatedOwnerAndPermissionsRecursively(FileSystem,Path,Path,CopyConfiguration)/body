@@ -1,0 +1,12 @@
+{
+  if (!PathUtils.isAncestor(toPath,fromPath)) {
+    throw new IOException(String.format("toPath %s must be an ancestor of fromPath %s.",toPath,fromPath));
+  }
+  List<OwnerAndPermission> ownerAndPermissions=Lists.newArrayList();
+  Path currentPath=fromPath;
+  while (PathUtils.isAncestor(toPath,currentPath.getParent())) {
+    ownerAndPermissions.add(resolveReplicatedOwnerAndPermission(fs,currentPath,copyConfiguration));
+    currentPath=currentPath.getParent();
+  }
+  return ownerAndPermissions;
+}

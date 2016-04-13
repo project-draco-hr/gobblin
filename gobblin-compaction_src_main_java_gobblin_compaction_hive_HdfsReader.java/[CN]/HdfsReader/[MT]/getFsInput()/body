@@ -1,5 +1,5 @@
 {
-  Path path=new Path(filePathInHdfs);
+  Path path=new Path(this.filePathInHdfs);
   Configuration conf=getConfiguration();
   return new FsInput(path,conf);
 }

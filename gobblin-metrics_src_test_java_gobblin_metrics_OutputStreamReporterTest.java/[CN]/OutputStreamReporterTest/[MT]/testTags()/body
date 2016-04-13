@@ -1,18 +1,18 @@
 {
   MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName()).build();
   Counter counter=metricContext.counter("com.linkedin.example.counter");
-  Map<String,String> tags=new HashMap<String,String>();
+  Map<String,String> tags=new HashMap<>();
   tags.put("testKey","testValue");
   tags.put("key2","value2");
-  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().withTags(tags).outputTo(stream).build(new Properties());
+  OutputStreamReporter reporter=OutputStreamReporter.Factory.newBuilder().withTags(tags).outputTo(this.stream).build(new Properties());
   counter.inc();
   reporter.report();
-  Assert.assertTrue(stream.toString().contains("key2=value2"));
-  Assert.assertTrue(stream.toString().contains("testKey=testValue"));
-  String[] lines=stream.toString().split("\n");
-  Map<String,Set<String>> expected=new HashMap<String,Set<String>>();
+  Assert.assertTrue(this.stream.toString().contains("key2=value2"));
+  Assert.assertTrue(this.stream.toString().contains("testKey=testValue"));
+  String[] lines=this.stream.toString().split("\n");
+  Map<String,Set<String>> expected=new HashMap<>();
   expectMetrics(expected,lines);
-  Set<String> counterSubMetrics=new HashSet<String>();
+  Set<String> counterSubMetrics=new HashSet<>();
   counterSubMetrics.add("count");
   expected.put("com.linkedin.example.counter",counterSubMetrics);
   reporter.close();

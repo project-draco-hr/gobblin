@@ -1,0 +1,6 @@
+{
+  ColumnProjectionPolicy columnProjectionPolicy=DefaultColumnProjectionPolicyFactory.getInstance().create(config.getConfig(COLUMN_PROJECTION_CONFIG_SCOPE),runtimeAuditMetadata.getTableMetadata());
+  RowSelectionPolicy rowSelectionPolicy=DefaultRowSelectionPolicyFactory.getInstance().create(config.getConfig(ROW_SELECTION_CONFIG_SCOPE),runtimeAuditMetadata.getTableMetadata(),columnProjectionPolicy);
+  AuditSink auditSink=DefaultAuditSinkFactory.getInstance().create(config.getConfig(AUDIT_SINK_CONFIG_SCOPE),runtimeAuditMetadata);
+  return new ValueAuditGenerator(columnProjectionPolicy,rowSelectionPolicy,auditSink);
+}

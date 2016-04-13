@@ -1,4 +1,0 @@
-LocationDescriptor sourceLocation
-LocationDescriptor desiredTargetLocation
-Optional<LocationDescriptor> currentTargetLocation
-Optional<Partition> partition

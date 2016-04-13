@@ -1,12 +1,3 @@
 {
-  super(fs,props);
-  if (props.containsKey(WATERMARK_REGEX_KEY)) {
-    initPattern(props.getProperty(WATERMARK_REGEX_KEY));
-  }
- else   if (props.containsKey(RETENTION_WATERMARK_REGEX_KEY)) {
-    initPattern(props.getProperty(RETENTION_WATERMARK_REGEX_KEY));
-  }
- else {
-    this.pattern=Optional.absent();
-  }
+  this(fs,ConfigFactory.parseProperties(props));
 }

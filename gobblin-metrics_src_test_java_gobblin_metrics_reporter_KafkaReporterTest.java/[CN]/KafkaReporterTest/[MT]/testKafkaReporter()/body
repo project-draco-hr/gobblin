@@ -17,7 +17,7 @@
  catch (  InterruptedException ex) {
     Thread.currentThread().interrupt();
   }
-  Map<String,Double> expected=new HashMap<String,Double>();
+  Map<String,Double> expected=new HashMap<>();
   expected.put("com.linkedin.example.counter." + Measurements.COUNT,1.0);
   expected.put("com.linkedin.example.meter." + Measurements.COUNT,2.0);
   expected.put("com.linkedin.example.histogram." + Measurements.COUNT,3.0);
@@ -30,7 +30,7 @@
  catch (  InterruptedException ex) {
     Thread.currentThread().interrupt();
   }
-  Set<String> expectedSet=new HashSet<String>();
+  Set<String> expectedSet=new HashSet<>();
   expectedSet.add("com.linkedin.example.counter." + Measurements.COUNT);
   expectedSet.add("com.linkedin.example.meter." + Measurements.COUNT);
   expectedSet.add("com.linkedin.example.meter." + Measurements.MEAN_RATE);

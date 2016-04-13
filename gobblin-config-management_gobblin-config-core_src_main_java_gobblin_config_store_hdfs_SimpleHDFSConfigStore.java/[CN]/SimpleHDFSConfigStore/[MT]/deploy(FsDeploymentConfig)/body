@@ -25,6 +25,9 @@
       this.fs.setPermission(fileStatus.getPath(),deploymentConfig.getStorePermissions());
     }
   }
+ else {
+    log.warn(String.format("STORE WITH VERSION %s ALREADY EXISTS. NEW RESOURCES WILL NOT BE COPIED. ONLY STORE MEATADATA FILE WILL BE UPDATED TO %s",deploymentConfig.getNewVersion(),deploymentConfig.getNewVersion()));
+  }
   storeMetadata.setCurrentVersion(deploymentConfig.getNewVersion());
   log.info(String.format("New version %s of config store deployed at %s",deploymentConfig.getNewVersion(),hdfsconfigStoreRoot));
 }

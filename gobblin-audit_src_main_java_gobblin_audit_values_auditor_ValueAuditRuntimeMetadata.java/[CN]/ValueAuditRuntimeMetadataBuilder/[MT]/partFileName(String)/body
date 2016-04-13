@@ -1,0 +1,4 @@
+{
+  this.partFileName=partFileName;
+  return this;
+}

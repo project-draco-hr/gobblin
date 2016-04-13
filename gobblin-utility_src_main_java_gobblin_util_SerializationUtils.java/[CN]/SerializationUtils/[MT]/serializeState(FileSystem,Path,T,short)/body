@@ -1,0 +1,5 @@
+{
+  try (OutputStream os=fs.create(jobStateFilePath,replication);DataOutputStream dataOutputStream=new DataOutputStream(os)){
+    state.write(dataOutputStream);
+  }
+ }

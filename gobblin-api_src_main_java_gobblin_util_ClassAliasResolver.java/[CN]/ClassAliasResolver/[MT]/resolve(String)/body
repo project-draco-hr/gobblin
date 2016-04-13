@@ -1,0 +1,6 @@
+{
+  if (aliasToClassCache.containsKey(possibleAlias)) {
+    return aliasToClassCache.get(possibleAlias).getCanonicalName();
+  }
+  return possibleAlias;
+}

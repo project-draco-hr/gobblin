@@ -3,7 +3,7 @@
     return Lists.newArrayList();
   }
   List<Path> paths=Lists.newArrayList();
-  for (  FileStatus fileStatus : FileListUtils.listFilesRecursively(fs,dataDir,new PathFilter(){
+  for (  FileStatus fileStatus : FileListUtils.listFilesRecursively(this.fs,dataDir,new PathFilter(){
     @Override public boolean accept(    Path path){
       for (      String validExtention : getApplicableFileExtensions()) {
         if (path.getName().endsWith(validExtention)) {

@@ -1,9 +1,0 @@
-{
-  try {
-    return new HiveCopyEntityHelper(this,configuration,targetFs).getCopyEntities();
-  }
- catch (  IOException ioe) {
-    log.error("Failed to copy table " + this.table,ioe);
-    return Lists.newArrayList();
-  }
-}

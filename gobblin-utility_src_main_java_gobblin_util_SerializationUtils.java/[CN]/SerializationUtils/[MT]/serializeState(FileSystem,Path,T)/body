@@ -1,14 +1,3 @@
 {
-  Closer closer=Closer.create();
-  try {
-    OutputStream os=closer.register(fs.create(jobStateFilePath));
-    DataOutputStream dataOutputStream=closer.register(new DataOutputStream(os));
-    state.write(dataOutputStream);
-  }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
+  serializeState(fs,jobStateFilePath,state,fs.getDefaultReplication(jobStateFilePath));
 }

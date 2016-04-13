@@ -1,10 +1,10 @@
 {
   Preconditions.checkArgument(props.containsKey(DELETE_SETS_COMBINE_OPERATION),"Combine operation not specified.");
-  ImmutableList.Builder<RetentionPolicy<DatasetVersion>> builder=ImmutableList.builder();
+  ImmutableList.Builder<RetentionPolicy<T>> builder=ImmutableList.builder();
   for (  String property : props.stringPropertyNames()) {
     if (property.startsWith(RETENTION_POLICIES_PREFIX)) {
       try {
-        builder.add((RetentionPolicy<DatasetVersion>)ConstructorUtils.invokeConstructor(Class.forName(props.getProperty(property)),props));
+        builder.add((RetentionPolicy<T>)ConstructorUtils.invokeConstructor(Class.forName(props.getProperty(property)),props));
       }
  catch (      NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
         throw new IllegalArgumentException(e);

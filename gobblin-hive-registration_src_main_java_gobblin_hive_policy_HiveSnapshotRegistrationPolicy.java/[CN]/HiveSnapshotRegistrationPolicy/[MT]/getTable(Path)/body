@@ -1,7 +1,0 @@
-{
-  Path latestSnapshot=getLatestSnapshot(path);
-  if (latestSnapshot == null) {
-    return null;
-  }
-  return super.getTable(latestSnapshot);
-}

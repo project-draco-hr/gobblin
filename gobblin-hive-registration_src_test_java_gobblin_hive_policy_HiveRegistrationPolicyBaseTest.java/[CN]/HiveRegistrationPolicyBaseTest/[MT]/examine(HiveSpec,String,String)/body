@@ -1,0 +1,5 @@
+{
+  Assert.assertEquals(spec.getClass(),SimpleHiveSpec.class);
+  Assert.assertEquals(spec.getTable().getDbName(),dbName);
+  Assert.assertEquals(spec.getTable().getTableName(),tableName);
+}

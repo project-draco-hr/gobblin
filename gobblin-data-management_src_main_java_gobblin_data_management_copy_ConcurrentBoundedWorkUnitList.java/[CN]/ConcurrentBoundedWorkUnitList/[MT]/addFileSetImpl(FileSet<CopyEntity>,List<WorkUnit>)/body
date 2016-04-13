@@ -27,5 +27,6 @@
     this.workUnitsMap.get(fileSet).addAll(workUnits);
   }
   this.currentSize+=workUnits.size();
+  log.info(String.format("Added %d work units to bounded list. Total size: %d, limit: %d.",workUnits.size(),this.currentSize,this.maxSize));
   return true;
 }

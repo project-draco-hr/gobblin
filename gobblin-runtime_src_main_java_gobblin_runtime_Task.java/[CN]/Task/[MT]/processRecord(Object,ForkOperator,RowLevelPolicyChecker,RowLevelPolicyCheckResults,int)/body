@@ -20,7 +20,7 @@
         continue;
       }
       if (fork.isPresent() && forkedRecords.get(branch)) {
-        boolean succeeded=fork.get().putRecord(convertedRecord instanceof Copyable ? ((Copyable)convertedRecord).copy() : convertedRecord);
+        boolean succeeded=fork.get().putRecord(convertedRecord instanceof Copyable ? ((Copyable<?>)convertedRecord).copy() : convertedRecord);
         succeededPuts[branch]=succeeded;
         if (!succeeded) {
           allPutsSucceeded=false;

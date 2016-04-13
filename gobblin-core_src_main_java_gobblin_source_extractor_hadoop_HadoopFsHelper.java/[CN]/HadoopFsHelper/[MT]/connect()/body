@@ -1,5 +1,5 @@
 {
-  String uri=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI);
+  String uri=this.state.getProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI);
   try {
     if (Strings.isNullOrEmpty(uri)) {
       throw new FileBasedHelperException(ConfigurationKeys.SOURCE_FILEBASED_FS_URI + " has not been configured");

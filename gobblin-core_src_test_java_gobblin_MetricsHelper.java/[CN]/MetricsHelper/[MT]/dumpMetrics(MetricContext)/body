@@ -1,5 +1,5 @@
 {
-  Map<String,Long> output=new HashMap<String,Long>();
+  Map<String,Long> output=new HashMap<>();
   for (  Map.Entry<String,Meter> entry : context.getMeters().entrySet()) {
     output.put(entry.getKey(),entry.getValue().getCount());
   }
