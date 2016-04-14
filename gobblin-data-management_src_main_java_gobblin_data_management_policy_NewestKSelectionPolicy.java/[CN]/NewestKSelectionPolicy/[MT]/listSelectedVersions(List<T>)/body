@@ -1,0 +1,14 @@
+{
+  int newerVersions=0;
+  List<T> selectedVersions=Lists.newArrayList();
+  for (  T datasetVersion : allVersions) {
+    if (newerVersions < this.versionsSelected) {
+      selectedVersions.add(datasetVersion);
+    }
+ else {
+      break;
+    }
+    newerVersions++;
+  }
+  return selectedVersions;
+}

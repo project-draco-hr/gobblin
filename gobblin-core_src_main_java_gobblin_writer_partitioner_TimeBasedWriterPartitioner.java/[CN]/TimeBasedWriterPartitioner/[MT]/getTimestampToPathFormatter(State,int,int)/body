@@ -3,7 +3,5 @@
   if (state.contains(propName)) {
     return Optional.of(DateTimeFormat.forPattern(state.getProp(propName)).withZone(this.timeZone));
   }
- else {
-    return Optional.absent();
-  }
+  return Optional.absent();
 }

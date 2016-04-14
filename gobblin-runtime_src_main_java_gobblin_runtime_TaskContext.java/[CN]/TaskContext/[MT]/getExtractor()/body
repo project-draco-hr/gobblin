@@ -6,11 +6,9 @@
       if (!(limiter instanceof NonRefillableLimiter)) {
         throw new IllegalArgumentException("The Limiter used with an Extractor should be an instance of " + NonRefillableLimiter.class.getSimpleName());
       }
-      return new LimitingExtractorDecorator(getSource().getExtractor(this.taskState),limiter);
+      return new LimitingExtractorDecorator<>(getSource().getExtractor(this.taskState),limiter);
     }
- else {
-      return getSource().getExtractor(this.taskState);
-    }
+    return getSource().getExtractor(this.taskState);
   }
  catch (  IOException ioe) {
     throw new RuntimeException(ioe);

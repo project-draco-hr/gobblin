@@ -1,13 +1,20 @@
 {
   super(fs,jobProps,log);
   this.datasetRoot=datasetRoot;
-  Preconditions.checkArgument(config.hasPath(VERSION_FINDER_CLASS_KEY),"Missing property " + VERSION_FINDER_CLASS_KEY);
-  Preconditions.checkArgument(config.hasPath(RETENTION_POLICY_CLASS_KEY),"Missing property " + RETENTION_POLICY_CLASS_KEY);
-  try {
-    this.versionFinder=(VersionFinder<? extends T>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(config.getString(VERSION_FINDER_CLASS_KEY)),ImmutableList.<Object>of(this.fs,config),ImmutableList.<Object>of(this.fs,jobProps));
-    this.retentionPolicy=(RetentionPolicy<T>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(config.getString(RETENTION_POLICY_CLASS_KEY)),ImmutableList.<Object>of(config),ImmutableList.<Object>of(jobProps));
+  this.versionFindersAndPolicies=Lists.newArrayList();
+  if (config.hasPath(VERSION_FINDER_CLASS_KEY) && config.hasPath(RETENTION_POLICY_CLASS_KEY)) {
+    initWithRetentionPolicy(config,jobProps,RETENTION_POLICY_CLASS_KEY,VERSION_FINDER_CLASS_KEY);
   }
- catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
-    throw new IllegalArgumentException(e);
+ else   if (config.hasPath(VERSION_FINDER_CLASS_KEY) && config.hasPath(SELECTION_POLICY_CLASS_KEY)) {
+    initWithSelectionPolicy(config.getConfig(RETENTION_CONFIGURATION_KEY),jobProps);
+  }
+ else   if (config.hasPath(DATASET_PARTITIONS_LIST_KEY)) {
+    List<? extends Config> versionAndPolicies=config.getConfigList(DATASET_PARTITIONS_LIST_KEY);
+    for (    Config versionAndPolicy : versionAndPolicies) {
+      initWithSelectionPolicy(versionAndPolicy,jobProps);
+    }
+  }
+ else {
+    throw new IllegalArgumentException(String.format("Either set version finder at %s and retention policy at %s or set partitions at %s",VERSION_FINDER_CLASS_KEY,RETENTION_POLICY_CLASS_KEY,DATASET_PARTITIONS_LIST_KEY));
   }
 }

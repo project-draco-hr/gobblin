@@ -1,7 +1,7 @@
 {
   this.flagFlippingExecutor.schedule(new Runnable(){
     @Override public void run(){
-      canIssuePermit=false;
+      TimeBasedLimiter.this.canIssuePermit=false;
     }
   }
 ,this.timeLimit,this.timeUnit);

@@ -1,0 +1,8 @@
+{
+  try {
+    return (VersionFinder<? extends T>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(className),ImmutableList.<Object>of(this.fs,config),ImmutableList.<Object>of(this.fs,jobProps));
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new IllegalArgumentException(e);
+  }
+}

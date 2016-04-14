@@ -1,5 +1,5 @@
 {
-  List<HiveAttribute> attributes=new ArrayList<HiveAttribute>();
+  List<HiveAttribute> attributes=new ArrayList<>();
   List<Schema.Field> fields=schema.getFields();
   for (  Schema.Field field : fields) {
     attributes.add(convertAvroSchemaFieldToHiveAttribute(field));

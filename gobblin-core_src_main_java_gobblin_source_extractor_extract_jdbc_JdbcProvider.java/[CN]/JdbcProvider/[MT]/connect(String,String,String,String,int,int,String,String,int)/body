@@ -7,8 +7,8 @@
     remoteHost=connectionUrl.substring(hostStart,portStart);
     remotePort=Integer.decode(connectionUrl.substring(portStart + 1,connectionUrl.indexOf("/",portStart)));
     try {
-      tunnel=Tunnel.build(remoteHost,remotePort,proxyHost,proxyPort);
-      int tunnelPort=tunnel.getPort();
+      this.tunnel=Tunnel.build(remoteHost,remotePort,proxyHost,proxyPort);
+      int tunnelPort=this.tunnel.getPort();
       String newConnectionUrl=connectionUrl.replaceFirst(remoteHost,"127.0.0.1").replaceFirst(":" + remotePort,":" + tunnelPort);
       connectionUrl=newConnectionUrl;
     }

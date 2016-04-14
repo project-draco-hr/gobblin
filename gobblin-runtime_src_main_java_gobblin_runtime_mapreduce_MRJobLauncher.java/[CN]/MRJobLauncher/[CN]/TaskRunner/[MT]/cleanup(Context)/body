@@ -10,7 +10,7 @@
         this.jobMetrics.get().stopMetricsReporting();
       }
   finally {
-        JobMetrics.remove(this.jobMetrics.get().getName());
+        GobblinMetrics.remove(this.jobMetrics.get().getName());
       }
     }
   }

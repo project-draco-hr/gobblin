@@ -7,7 +7,7 @@
   this.setSampleRecordCount(this.exractSampleRecordCountFromQuery(inputQuery));
   inputQuery=this.removeSampleClauseFromQuery(inputQuery);
   JsonArray targetSchema=new JsonArray();
-  List<String> headerColumns=new ArrayList<String>();
+  List<String> headerColumns=new ArrayList<>();
   try {
     List<Command> cmds=this.getSchemaMetadata(schema,entity);
     CommandOutput<?,?> response=this.executePreparedSql(cmds);

@@ -1,5 +1,5 @@
 {
-  Extract extract=state.createExtract(TableType.SNAPSHOT_ONLY,state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY),"WikipediaOutput");
+  Extract extract=createExtract(TableType.SNAPSHOT_ONLY,state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY),"WikipediaOutput");
   WorkUnit workUnit=WorkUnit.create(extract);
   return Arrays.asList(workUnit);
 }

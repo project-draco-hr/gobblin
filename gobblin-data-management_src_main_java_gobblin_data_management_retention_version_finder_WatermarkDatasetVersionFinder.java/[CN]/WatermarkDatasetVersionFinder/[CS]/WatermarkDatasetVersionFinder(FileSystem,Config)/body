@@ -1,4 +1,0 @@
-{
-  super(fs);
-  this.realVersionFinder=new gobblin.data.management.version.finder.WatermarkDatasetVersionFinder(fs,config);
-}

@@ -2,7 +2,7 @@
   startServer();
   this.topic=topic;
   AdminUtils.createTopic(zkClient,topic,1,1,new Properties());
-  List<KafkaServer> servers=new ArrayList<KafkaServer>();
+  List<KafkaServer> servers=new ArrayList<>();
   servers.add(kafkaServer);
   TestUtils.waitUntilMetadataIsPropagated(scala.collection.JavaConversions.asScalaBuffer(servers),topic,0,5000);
   Properties consumeProps=new Properties();
@@ -13,7 +13,7 @@
   consumeProps.put("auto.commit.interval.ms","10000");
   consumeProps.put("consumer.timeout.ms","10000");
   consumer=Consumer.createJavaConsumerConnector(new ConsumerConfig(consumeProps));
-  Map<String,Integer> topicCountMap=new HashMap<String,Integer>();
+  Map<String,Integer> topicCountMap=new HashMap<>();
   topicCountMap.put(this.topic,1);
   Map<String,List<KafkaStream<byte[],byte[]>>> consumerMap=consumer.createMessageStreams(topicCountMap);
   List<KafkaStream<byte[],byte[]>> streams=consumerMap.get(this.topic);

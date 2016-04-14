@@ -1,8 +1,8 @@
 {
   final int prime=31;
   int result=1;
-  result=prime * result + ((key == null) ? 0 : key.hashCode());
-  result=prime * result + (int)(offset ^ (offset >>> 32));
-  result=prime * result + ((payload == null) ? 0 : payload.hashCode());
+  result=prime * result + ((this.key == null) ? 0 : this.key.hashCode());
+  result=prime * result + (int)(this.offset ^ (this.offset >>> 32));
+  result=prime * result + ((this.payload == null) ? 0 : this.payload.hashCode());
   return result;
 }

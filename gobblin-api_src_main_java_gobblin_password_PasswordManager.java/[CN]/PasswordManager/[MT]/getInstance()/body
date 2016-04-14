@@ -1,7 +1,7 @@
 {
   try {
     Optional<String> absent=Optional.absent();
-    return CACHED_INSTANCES.get(new AbstractMap.SimpleEntry<Optional<String>,Boolean>(absent,shouldUseStrongEncryptor(new State())));
+    return CACHED_INSTANCES.get(new AbstractMap.SimpleEntry<>(absent,shouldUseStrongEncryptor(new State())));
   }
  catch (  ExecutionException e) {
     throw new RuntimeException("Unable to get an instance of PasswordManager",e);

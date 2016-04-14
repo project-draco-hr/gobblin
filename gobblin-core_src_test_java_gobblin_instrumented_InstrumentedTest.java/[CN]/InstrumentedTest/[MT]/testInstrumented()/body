@@ -8,7 +8,7 @@
   Assert.assertTrue(instrumented.getMetricContext().getParent().isPresent());
   Assert.assertEquals(instrumented.getMetricContext().getParent().get(),gobblinMetrics.getMetricContext());
   Map<String,?> tags=instrumented.getMetricContext().getTagMap();
-  Map<String,String> expectedTags=new HashMap<String,String>();
+  Map<String,String> expectedTags=new HashMap<>();
   expectedTags.put("construct",Constructs.EXTRACTOR.toString());
   expectedTags.put("class",InstrumentedExtractor.class.getCanonicalName());
   expectedTags.put(MetricContext.METRIC_CONTEXT_ID_TAG_NAME,tags.get(MetricContext.METRIC_CONTEXT_ID_TAG_NAME).toString());

@@ -1,4 +1,0 @@
-{
-  Collection<DatasetVersion> deletableVersions=this.embeddedRetentionPolicy.listDeletableVersions(allVersions);
-  return listQualifiedRawDatasetVersions(deletableVersions);
-}

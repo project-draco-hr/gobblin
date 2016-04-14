@@ -1,0 +1,4 @@
+FileSystem fs
+Path jobStateFilePath
+T state
+short replication

@@ -6,12 +6,12 @@
     return false;
   }
   Dataset other=(Dataset)obj;
-  if (inputPath == null) {
+  if (this.inputPath == null) {
     if (other.inputPath != null) {
       return false;
     }
   }
- else   if (!inputPath.equals(other.inputPath)) {
+ else   if (!this.inputPath.equals(other.inputPath)) {
     return false;
   }
   return true;

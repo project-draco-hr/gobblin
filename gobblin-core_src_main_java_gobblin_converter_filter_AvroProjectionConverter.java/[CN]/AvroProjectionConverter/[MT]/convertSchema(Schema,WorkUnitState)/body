@@ -2,7 +2,5 @@
   if (this.fieldRemover.isPresent()) {
     return this.fieldRemover.get().removeFields(inputSchema);
   }
- else {
-    return inputSchema;
-  }
+  return inputSchema;
 }

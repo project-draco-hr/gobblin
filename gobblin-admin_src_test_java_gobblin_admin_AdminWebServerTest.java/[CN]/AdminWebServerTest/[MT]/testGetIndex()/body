@@ -1,6 +1,6 @@
 {
   CloseableHttpClient client=HttpClients.createDefault();
-  HttpGet getReq=new HttpGet(String.format("http://localhost:%s/",portNumber));
+  HttpGet getReq=new HttpGet(String.format("http://localhost:%s/",this.portNumber));
   try (CloseableHttpResponse response=client.execute(getReq)){
     assertEquals(200,response.getStatusLine().getStatusCode());
     HttpEntity body=response.getEntity();

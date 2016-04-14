@@ -1,2 +1,0 @@
-List<RetentionPolicy<DatasetVersion>> retentionPolicies
-DeletableCombineOperation combineOperation

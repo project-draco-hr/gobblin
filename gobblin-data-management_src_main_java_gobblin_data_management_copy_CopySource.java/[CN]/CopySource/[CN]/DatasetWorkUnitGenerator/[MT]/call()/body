@@ -6,7 +6,8 @@
     Iterator<FileSet<CopyEntity>> fileSets=this.copyableDataset.getFileSetIterator(this.targetFs,this.copyConfiguration);
     while (fileSets.hasNext() && !this.workUnitList.hasRejectedFileSet()) {
       FileSet<CopyEntity> fileSet=fileSets.next();
-      Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,CopyConfiguration.COPY_PREFIX,fileSet.getName());
+      String extractId=fileSet.getName().replace(':','_');
+      Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,CopyConfiguration.COPY_PREFIX,extractId);
       List<WorkUnit> workUnitsForPartition=Lists.newArrayList();
       for (      CopyEntity copyEntity : fileSet.getFiles()) {
         CopyableDatasetMetadata metadata=new CopyableDatasetMetadata(this.copyableDataset);

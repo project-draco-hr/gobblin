@@ -1,0 +1,13 @@
+{
+  List<? extends Config> retainedConfigs=setupConfig.getConfigList(TEST_DATA_VALIDATE_RETAINED_KEY);
+  for (  Config retainedConfig : retainedConfigs) {
+    Path fullFilePath=new Path(testTempDirPath,PathUtils.withoutLeadingSeparator(new Path(retainedConfig.getString(TEST_DATA_PATH_LOCAL_KEY))));
+    Assert.assertTrue(this.fs.exists(fullFilePath),String.format("%s should not be deleted",fullFilePath.toString()));
+  }
+  List<? extends Config> deletedConfigs=setupConfig.getConfigList(TEST_DATA_VALIDATE_DELETED_KEY);
+  for (  Config retainedConfig : deletedConfigs) {
+    Path fullFilePath=new Path(testTempDirPath,PathUtils.withoutLeadingSeparator(new Path(retainedConfig.getString(TEST_DATA_PATH_LOCAL_KEY))));
+    Assert.assertFalse(this.fs.exists(fullFilePath),String.format("%s should be deleted",fullFilePath.toString()));
+  }
+  this.cleanup();
+}

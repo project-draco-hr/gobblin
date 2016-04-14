@@ -1,5 +1,5 @@
 {
-  for (  final JobListener jobListener : jobListeners) {
+  for (  final JobListener jobListener : this.jobListeners) {
     this.completionService.submit(new Callable<Void>(){
       @Override public Void call() throws Exception {
         jobListener.onJobPrepare(jobContext);

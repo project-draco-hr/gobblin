@@ -19,7 +19,7 @@
   }
   Set<String> requestedJobPropertyKeys=null;
   if (query.hasJobProperties()) {
-    requestedJobPropertyKeys=new HashSet<String>(Arrays.asList(query.getJobProperties().split(",")));
+    requestedJobPropertyKeys=new HashSet<>(Arrays.asList(query.getJobProperties().split(",")));
   }
   PreparedStatement jobPropertiesQueryStatement=connection.prepareStatement(JOB_PROPERTY_QUERY_STATEMENT_TEMPLATE);
   jobPropertiesQueryStatement.setString(1,jobExecutionInfo.getJobId());
@@ -56,7 +56,7 @@
       taskExecutionInfos.add(taskExecutionInfo);
       Set<String> queryTaskPropertyKeys=null;
       if (query.hasTaskProperties()) {
-        queryTaskPropertyKeys=new HashSet<String>(Arrays.asList(query.getTaskProperties().split(",")));
+        queryTaskPropertyKeys=new HashSet<>(Arrays.asList(query.getTaskProperties().split(",")));
       }
       PreparedStatement taskPropertiesQueryStatement=connection.prepareStatement(TASK_PROPERTY_QUERY_STATEMENT_TEMPLATE);
       taskPropertiesQueryStatement.setString(1,taskExecutionInfo.getTaskId());

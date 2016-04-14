@@ -1,14 +1,5 @@
 {
-  Closer closer=Closer.create();
-  try {
-    InputStream is=closer.register(fs.open(jobStateFilePath));
-    DataInputStream dis=closer.register((new DataInputStream(is)));
+  try (InputStream is=fs.open(jobStateFilePath);DataInputStream dis=(new DataInputStream(is))){
     state.readFields(dis);
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-}
+ }

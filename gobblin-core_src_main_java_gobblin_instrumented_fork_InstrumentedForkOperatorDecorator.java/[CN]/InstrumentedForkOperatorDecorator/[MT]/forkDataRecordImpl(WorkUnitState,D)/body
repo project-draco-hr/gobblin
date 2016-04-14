@@ -1,3 +1,3 @@
 {
-  return embeddedForkOperator.forkDataRecord(workUnitState,input);
+  return this.embeddedForkOperator.forkDataRecord(workUnitState,input);
 }

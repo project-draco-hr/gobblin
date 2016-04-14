@@ -1,6 +1,6 @@
 {
-  final short replication=copyableFile.getPreserve().preserve(PreserveAttributes.Option.REPLICATION) ? copyableFile.getOrigin().getReplication() : fs.getDefaultReplication(writeAt);
-  final long blockSize=copyableFile.getPreserve().preserve(PreserveAttributes.Option.BLOCK_SIZE) ? copyableFile.getOrigin().getBlockSize() : fs.getDefaultBlockSize(writeAt);
+  final short replication=copyableFile.getPreserve().preserve(PreserveAttributes.Option.REPLICATION) ? copyableFile.getOrigin().getReplication() : this.fs.getDefaultReplication(writeAt);
+  final long blockSize=copyableFile.getPreserve().preserve(PreserveAttributes.Option.BLOCK_SIZE) ? copyableFile.getOrigin().getBlockSize() : this.fs.getDefaultBlockSize(writeAt);
   Predicate<FileStatus> fileStatusAttributesFilter=new Predicate<FileStatus>(){
     @Override public boolean apply(    FileStatus input){
       return input.getReplication() == replication && input.getBlockSize() == blockSize;
@@ -13,7 +13,7 @@
     this.fs.rename(persistedFile.get().getPath(),writeAt);
   }
  else {
-    FSDataOutputStream os=this.fs.create(writeAt,true,fs.getConf().getInt("io.file.buffer.size",4096),replication,blockSize);
+    FSDataOutputStream os=this.fs.create(writeAt,true,this.fs.getConf().getInt("io.file.buffer.size",4096),replication,blockSize);
     try {
       this.bytesWritten.addAndGet(StreamUtils.copy(inputStream,os));
       log.info("bytes written: " + this.bytesWritten.get() + " for file "+ copyableFile);

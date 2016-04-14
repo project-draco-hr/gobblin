@@ -4,9 +4,7 @@
   if (!this.fs.exists(tablePath)) {
     return states;
   }
-  Closer closer=Closer.create();
-  try {
-    @SuppressWarnings("deprecation") SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
+  try (@SuppressWarnings("deprecation") SequenceFile.Reader reader=new SequenceFile.Reader(this.fs,tablePath,this.conf)){
     Writable writable=reader.getValueClass() == JobState.class ? new JobState() : new JobState.DatasetState();
     try {
       Text key=new Text();
@@ -25,11 +23,5 @@
       throw new IOException(e);
     }
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-  return states;
+   return states;
 }

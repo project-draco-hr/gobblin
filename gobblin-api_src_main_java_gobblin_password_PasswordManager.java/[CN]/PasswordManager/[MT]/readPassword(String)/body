@@ -6,7 +6,5 @@
   if (matcher.find()) {
     return this.decryptPassword(matcher.group(1));
   }
- else {
-    return password;
-  }
+  return password;
 }

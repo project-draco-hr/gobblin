@@ -1,5 +1,5 @@
 {
   this.name=name;
   this.gauge=gauge;
-  this.contextAwareGauge=new WeakReference<ContextAwareGauge<T>>(contextAwareGauge);
+  this.contextAwareGauge=new WeakReference<>(contextAwareGauge);
 }

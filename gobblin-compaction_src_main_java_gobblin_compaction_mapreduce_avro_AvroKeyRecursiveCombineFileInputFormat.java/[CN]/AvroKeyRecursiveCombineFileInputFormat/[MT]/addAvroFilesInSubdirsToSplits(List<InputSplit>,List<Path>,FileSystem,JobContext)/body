@@ -1,5 +1,5 @@
 {
-  Map<Schema,List<Path>> filesBySchema=new HashMap<Schema,List<Path>>();
+  Map<Schema,List<Path>> filesBySchema=new HashMap<>();
   for (  Path file : findAvroFilesInDirs(subdirs,fs)) {
     final Schema schema=AvroUtils.getSchemaFromDataFile(file,fs);
     if (!filesBySchema.containsKey(schema)) {

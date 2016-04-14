@@ -2,7 +2,5 @@
   if (this.embeddedWriter instanceof FinalState) {
     return ((FinalState)this.embeddedWriter).getFinalState();
   }
- else {
-    return super.getFinalState();
-  }
+  return super.getFinalState();
 }

@@ -1,5 +1,5 @@
 {
-  Map<String,Object> record=new HashMap<String,Object>();
+  Map<String,Object> record=Maps.newHashMap();
   for (  Field field : inputRecord.getSchema().getFields()) {
     Object col=inputRecord.get(field.name());
     if (col != null && col instanceof Utf8) {
@@ -7,5 +7,5 @@
     }
     record.put(field.name(),col);
   }
-  return new SingleRecordIterable<JsonObject>(this.gson.fromJson(this.gson.toJson(record),JsonObject.class).getAsJsonObject());
+  return new SingleRecordIterable<>(this.gson.fromJson(this.gson.toJson(record),JsonObject.class).getAsJsonObject());
 }

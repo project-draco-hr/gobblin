@@ -27,7 +27,5 @@
     state.removeProp(key);
     return fieldValue;
   }
- else {
-    return Optional.<T>absent();
-  }
+  return Optional.<T>absent();
 }

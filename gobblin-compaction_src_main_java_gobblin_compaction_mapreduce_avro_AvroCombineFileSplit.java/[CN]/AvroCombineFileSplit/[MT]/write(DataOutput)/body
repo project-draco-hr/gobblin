@@ -1,4 +1,4 @@
 {
   super.write(out);
-  Text.writeString(out,toBase64(schema.toString()));
+  Text.writeString(out,toBase64(this.schema.toString()));
 }

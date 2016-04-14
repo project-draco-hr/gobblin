@@ -1,6 +1,6 @@
 {
-  if (nullable) {
-    List<Schema> list=new ArrayList<Schema>();
+  if (this.nullable) {
+    List<Schema> list=new ArrayList<>();
     list.add(Schema.create(Schema.Type.NULL));
     list.add(schema());
     return Schema.createUnion(list);

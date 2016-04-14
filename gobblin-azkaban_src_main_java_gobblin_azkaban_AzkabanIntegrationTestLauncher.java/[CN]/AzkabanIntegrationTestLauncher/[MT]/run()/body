@@ -1,4 +1,4 @@
 {
-  launcher=createTestHarnessInstance();
-  launcher.launchTest();
+  this.launcher=createTestHarnessInstance();
+  this.launcher.launchTest();
 }

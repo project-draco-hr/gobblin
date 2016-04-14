@@ -1,0 +1,17 @@
+{
+  Preconditions.checkArgument(config.hasPath(VERSION_SELECTION_POLICIES_PREFIX),"Combine operation not specified.");
+  ImmutableList.Builder<VersionSelectionPolicy<FileSystemDatasetVersion>> builder=ImmutableList.builder();
+  for (  String combineClassName : config.getStringList(VERSION_SELECTION_POLICIES_PREFIX)) {
+    try {
+      builder.add((VersionSelectionPolicy<FileSystemDatasetVersion>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(combineClassName),ImmutableList.<Object>of(config),ImmutableList.<Object>of(jobProps)));
+    }
+ catch (    NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+      throw new IllegalArgumentException(e);
+    }
+  }
+  this.selectionPolicies=builder.build();
+  if (this.selectionPolicies.size() == 0) {
+    throw new IOException("No selection policies specified for " + CombineSelectionPolicy.class.getCanonicalName());
+  }
+  this.combineOperation=CombineOperation.valueOf(config.getString(VERSION_SELECTION_COMBINE_OPERATION).toUpperCase());
+}
