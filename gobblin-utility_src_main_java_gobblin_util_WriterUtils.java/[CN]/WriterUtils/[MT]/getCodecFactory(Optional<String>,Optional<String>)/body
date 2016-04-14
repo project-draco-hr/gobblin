@@ -11,6 +11,6 @@
     }
   }
  else {
-    return CodecFactory.fromString(codecName.get());
+    return CodecFactory.fromString(codecName.get().toLowerCase());
   }
 }
