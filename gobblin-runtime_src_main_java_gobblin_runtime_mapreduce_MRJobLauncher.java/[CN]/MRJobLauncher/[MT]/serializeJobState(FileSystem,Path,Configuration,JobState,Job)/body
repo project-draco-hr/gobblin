@@ -3,4 +3,6 @@
   short jobStateRF=(short)conf.getInt("dfs.replication.max",20);
   SerializationUtils.serializeState(fs,jobStateFilePath,jobState,jobStateRF);
   job.getConfiguration().set(ConfigurationKeys.JOB_STATE_FILE_PATH_KEY,jobStateFilePath.toString());
+  DistributedCache.addCacheFile(jobStateFilePath.toUri(),job.getConfiguration());
+  job.getConfiguration().set(ConfigurationKeys.JOB_STATE_DISTRIBUTED_CACHE_NAME,jobStateFilePath.getName());
 }

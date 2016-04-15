@@ -1,5 +1,5 @@
 {
-  try (InputStream is=fs.open(jobStateFilePath);DataInputStream dis=(new DataInputStream(is))){
-    state.readFields(dis);
+  try (InputStream is=fs.open(jobStateFilePath)){
+    deserializeStateFromInputStream(is,state);
   }
  }
