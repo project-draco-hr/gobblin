@@ -1,5 +1,6 @@
 {
   try {
+    log.info(String.format("Configuring selection policy %s for %s with %s",className,this.datasetRoot,config.root().render(ConfigRenderOptions.concise())));
     return (VersionSelectionPolicy<T>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(className),ImmutableList.<Object>of(config),ImmutableList.<Object>of(config,jobProps),ImmutableList.<Object>of(jobProps));
   }
  catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
