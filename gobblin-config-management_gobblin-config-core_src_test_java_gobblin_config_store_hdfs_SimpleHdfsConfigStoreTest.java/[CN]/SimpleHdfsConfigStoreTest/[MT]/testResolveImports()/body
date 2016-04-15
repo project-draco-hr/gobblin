@@ -1,0 +1,6 @@
+{
+  List<String> unresolved=ImmutableList.of("/path/to/tag0","/path/to/${?" + TAG_NAME_SYS_PROP_KEY + "}","${?" + TAG_NAME_SYS_PROP_KEY + "}/${?"+ TAG_NAME_SYS_PROP_KEY+ "}");
+  List<String> resolved=SimpleHDFSConfigStore.resolveIncludesList(unresolved);
+  List<String> expected=ImmutableList.of("/path/to/tag0","/path/to/tag1","tag1/tag1");
+  Assert.assertEquals(resolved,expected);
+}

@@ -1,18 +1,3 @@
 {
-  if (this.cs instanceof ConfigStoreWithResolution) {
-    return ((ConfigStoreWithResolution)this.cs).getResolvedConfig(configKey,this.version);
-  }
-  this.topology.getImportsRecursively(configKey);
-  Config initialConfig=this.getOwnConfig(configKey);
-  if (configKey.isRootPath()) {
-    return initialConfig;
-  }
-  List<ConfigKeyPath> ownImports=this.topology.getOwnImports(configKey);
-  if (ownImports != null) {
-    for (    ConfigKeyPath p : ownImports) {
-      initialConfig=initialConfig.withFallback(this.getResolvedConfig(p));
-    }
-  }
-  initialConfig=initialConfig.withFallback(this.getResolvedConfig(configKey.getParent())).resolve();
-  return initialConfig;
+  return getResolvedConfigRecursive(configKey).withFallback(ConfigFactory.defaultOverrides()).withFallback(ConfigFactory.systemEnvironment()).resolve();
 }

@@ -1,0 +1,15 @@
+{
+  if (includes.isEmpty()) {
+    return includes;
+  }
+  StringBuilder includesBuilder=new StringBuilder();
+  for (  String include : includes) {
+    if (StringUtils.isNotBlank(include) && !StringUtils.startsWith(include,"#")) {
+      includesBuilder.append(INCLUDES_KEY_NAME).append("+=").append(include).append("\n");
+    }
+  }
+  if (includesBuilder.length() > 0) {
+    return ConfigFactory.parseString(includesBuilder.toString()).withFallback(ConfigFactory.defaultOverrides()).withFallback(ConfigFactory.systemEnvironment()).resolve().getStringList(INCLUDES_KEY_NAME);
+  }
+  return includes;
+}
