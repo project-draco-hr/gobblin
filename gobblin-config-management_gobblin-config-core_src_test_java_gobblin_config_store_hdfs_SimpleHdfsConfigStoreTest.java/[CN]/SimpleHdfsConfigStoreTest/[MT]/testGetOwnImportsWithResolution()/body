@@ -1,0 +1,20 @@
+{
+  System.out.println("testGetOwnImportsWithResolution called");
+  String datasetName="dataset-test-get-own-imports-resolution";
+  Path datasetPath=new Path(CONFIG_DIR_PATH,datasetName);
+  try {
+    this.fs.mkdirs(datasetPath);
+    BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(this.fs.create(new Path(datasetPath,"includes.conf")),Charsets.UTF_8));
+    writer.write("/path/to/${?" + TAG_NAME_SYS_PROP_KEY + "}");
+    writer.close();
+    ConfigKeyPath datasetConfigKey=SingleLinkedListConfigKeyPath.ROOT.createChild(datasetName);
+    List<ConfigKeyPath> imports=this.simpleHDFSConfigStore.getOwnImports(datasetConfigKey,VERSION);
+    Assert.assertEquals(imports.size(),1);
+    Assert.assertEquals(imports.get(0).getAbsolutePathString(),"/path/to/" + TAG_NAME_SYS_PROP_VALUE);
+  }
+  finally {
+    if (this.fs.exists(datasetPath)) {
+      this.fs.delete(datasetPath,true);
+    }
+  }
+}

@@ -1,5 +1,4 @@
 {
-  Assert.assertTrue(resolvedConfig.entrySet().size() == 10);
   Assert.assertTrue(resolvedConfig.getString("keyOf_data").equals("valueOf_data"));
   Assert.assertTrue(resolvedConfig.getString("keyOf_identity").equals("valueOf_identity"));
   Assert.assertTrue(resolvedConfig.getString("keyOf_espressoTag").equals("valueOf_espressoTag"));
