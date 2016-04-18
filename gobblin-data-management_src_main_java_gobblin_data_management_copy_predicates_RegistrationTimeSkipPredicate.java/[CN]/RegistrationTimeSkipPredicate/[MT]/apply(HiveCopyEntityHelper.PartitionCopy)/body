@@ -1,0 +1,33 @@
+{
+  if (input == null) {
+    return true;
+  }
+  if (input.getExistingTargetPartition() == null) {
+    throw new RuntimeException("Existing target partition has not been computed! This is an error in the code.");
+  }
+  if (PathUtils.isGlob(input.getPartition().getDataLocation())) {
+    log.error(String.format("%s cannot be applied to globbed location %s. Will not skip.",this.getClass().getSimpleName(),input.getPartition().getDataLocation()));
+    return false;
+  }
+  if (!input.getExistingTargetPartition().isPresent()) {
+    return false;
+  }
+  if (!input.getExistingTargetPartition().get().getParameters().containsKey(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS)) {
+    return false;
+  }
+  try {
+    long oldRegistrationTime=Long.parseLong(input.getExistingTargetPartition().get().getParameters().get(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS));
+    Optional<FileStatus> sourceFileStatus=this.helper.getConfiguration().getCopyContext().getFileStatus(this.helper.getDataset().getFs(),input.getPartition().getDataLocation());
+    if (!sourceFileStatus.isPresent()) {
+      throw new RuntimeException(String.format("Source path %s does not exist!",input.getPartition().getDataLocation()));
+    }
+    return oldRegistrationTime > sourceFileStatus.get().getModificationTime();
+  }
+ catch (  NumberFormatException nfe) {
+    log.warn(String.format("Cannot parse %s in partition %s. Will not skip.",HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,input.getPartition().getCompleteName()));
+    return false;
+  }
+catch (  IOException ioe) {
+    throw new RuntimeException(ioe);
+  }
+}

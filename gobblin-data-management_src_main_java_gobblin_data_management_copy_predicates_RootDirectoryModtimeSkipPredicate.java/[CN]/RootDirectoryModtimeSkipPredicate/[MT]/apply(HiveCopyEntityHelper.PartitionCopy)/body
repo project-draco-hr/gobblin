@@ -5,9 +5,6 @@
   if (!input.getExistingTargetPartition().isPresent()) {
     return false;
   }
-  if (!input.getExistingTargetPartition().get().getParameters().containsKey(HiveDataset.REGISTRATION_GENERATION_TIME)) {
-    return false;
-  }
   try {
     if (PathUtils.isGlob(input.getPartition().getDataLocation())) {
       log.error(String.format("%s cannot be applied to globbed location %s. Will not skip.",this.getClass().getSimpleName(),input.getPartition().getDataLocation()));

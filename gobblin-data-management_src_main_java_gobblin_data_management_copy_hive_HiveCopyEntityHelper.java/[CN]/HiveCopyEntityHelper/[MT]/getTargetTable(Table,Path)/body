@@ -4,7 +4,7 @@
     targetTable.setDbName(this.targetDatabase);
     targetTable.setDataLocation(targetLocation);
     targetTable.getTTable().putToParameters(HiveDataset.REGISTERER,GOBBLIN_DISTCP);
-    targetTable.getTTable().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME,Long.toString(this.startTime));
+    targetTable.getTTable().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(this.startTime));
     HiveAvroCopyEntityHelper.updateTableAttributesIfAvro(targetTable,this);
     return targetTable;
   }

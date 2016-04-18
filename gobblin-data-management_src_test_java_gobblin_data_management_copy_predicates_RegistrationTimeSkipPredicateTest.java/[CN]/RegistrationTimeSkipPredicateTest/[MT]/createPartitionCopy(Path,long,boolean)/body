@@ -1,0 +1,17 @@
+{
+  HiveCopyEntityHelper.PartitionCopy partitionCopy=Mockito.mock(HiveCopyEntityHelper.PartitionCopy.class);
+  Partition partition=Mockito.mock(Partition.class);
+  Mockito.doReturn(location).when(partition).getDataLocation();
+  Mockito.doReturn(partition).when(partitionCopy).getPartition();
+  if (targetPartitionExists) {
+    Partition targetPartition=Mockito.mock(Partition.class);
+    Map<String,String> parameters=Maps.newHashMap();
+    parameters.put(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(registrationGenerationTime));
+    Mockito.doReturn(parameters).when(targetPartition).getParameters();
+    Mockito.doReturn(Optional.of(targetPartition)).when(partitionCopy).getExistingTargetPartition();
+  }
+ else {
+    Mockito.doReturn(Optional.absent()).when(partitionCopy).getExistingTargetPartition();
+  }
+  return partitionCopy;
+}
