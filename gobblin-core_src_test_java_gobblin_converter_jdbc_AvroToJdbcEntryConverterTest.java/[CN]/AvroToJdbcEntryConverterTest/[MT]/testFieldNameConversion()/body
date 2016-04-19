@@ -7,7 +7,7 @@
   JdbcWriterCommandsFactory factory=mock(JdbcWriterCommandsFactory.class);
   when(factory.newInstance(any(State.class))).thenReturn(mockWriterCommands);
   WorkUnitState workUnitState=new WorkUnitState();
-  workUnitState.appendToListProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
+  workUnitState.appendToListProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
   String fieldPairJson="{\"userId\":\"user_id\" , \"memberId\":\"member_id\" , \"businessUnit\":\"business_unit\", \"geoRegion\":\"geo_region\", \"superRegion\":\"super_region\", \"subRegion\":\"sub_region\"}";
   workUnitState.appendToListProp(ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS,fieldPairJson);
   workUnitState.appendToListProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());

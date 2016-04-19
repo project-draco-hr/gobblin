@@ -18,7 +18,7 @@
   JdbcEntrySchema expected=new JdbcEntrySchema(jdbcEntryMetaData);
   Schema inputSchema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/fieldPickInput.avsc"));
   WorkUnitState workUnitState=new WorkUnitState();
-  workUnitState.appendToListProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
+  workUnitState.appendToListProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
   AvroToJdbcEntryConverter converter=new AvroToJdbcEntryConverter(workUnitState,factory);
   converter=spy(converter);
   doReturn(null).when(converter).createConnection(workUnitState);

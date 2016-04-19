@@ -1,7 +1,7 @@
 {
   state=new State();
   state.setProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());
-  state.setProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,DEST_TABLE);
+  state.setProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,DEST_TABLE);
   workUnit=WorkUnit.createEmpty();
   workUnits=Lists.newArrayList();
   workUnits.add(workUnit);

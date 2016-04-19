@@ -1,7 +1,7 @@
 {
   state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
   state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
-  state.setProp(ConfigurationKeys.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,Boolean.toString(true));
+  state.setProp(JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,Boolean.toString(true));
   initializer.initialize();
   Assert.assertEquals(DEST_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
   verify(commands,never()).createTableStructure(any(Connection.class),anyString(),anyString());

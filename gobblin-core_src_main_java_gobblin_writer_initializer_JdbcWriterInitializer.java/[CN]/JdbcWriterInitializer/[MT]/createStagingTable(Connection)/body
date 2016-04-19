@@ -1,8 +1,8 @@
 {
-  String destTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
+  String destTableKey=ForkOperatorUtils.getPropertyNameForBranch(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
   String destinationTable=state.getProp(destTableKey);
   if (StringUtils.isEmpty(destinationTable)) {
-    throw new IllegalArgumentException(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME + " is required for " + this.getClass().getSimpleName()+ " for branch "+ branchId);
+    throw new IllegalArgumentException(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME + " is required for " + this.getClass().getSimpleName()+ " for branch "+ branchId);
   }
   String stagingTable=null;
   for (int i=0; i < NAMING_STAGING_TABLE_TRIAL; i++) {

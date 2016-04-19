@@ -2,7 +2,7 @@
   LOG.info("Converting schema " + inputSchema);
   try (Connection conn=createConnection(workUnit)){
     Map<String,Type> avroColumnType=flatten(inputSchema);
-    String table=Preconditions.checkNotNull(workUnit.getProp(ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME));
+    String table=Preconditions.checkNotNull(workUnit.getProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME));
     Map<String,JdbcType> dateColumnMapping=commands.retrieveDateColumns(conn,table);
     LOG.info("Date column mapping: " + dateColumnMapping);
     List<JdbcEntryMetaDatum> jdbcEntryMetaData=Lists.newArrayList();

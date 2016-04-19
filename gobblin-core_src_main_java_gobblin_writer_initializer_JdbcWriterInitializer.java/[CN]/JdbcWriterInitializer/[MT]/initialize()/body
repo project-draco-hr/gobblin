@@ -5,7 +5,7 @@
     if (isSkipStaging) {
       LOG.info("Writer will write directly to destination table as JobCommitPolicy is " + jobCommitPolicy);
     }
-    final String publishTable=getProp(state,ConfigurationKeys.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
+    final String publishTable=getProp(state,JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
     final String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,branches,branchId);
     String stagingTable=state.getProp(stagingTableKey);
     int i=-1;
@@ -15,7 +15,7 @@
         LOG.info("User chose to skip staing table on branch " + branchId + " workunit "+ i);
         wu.setProp(stagingTableKey,publishTable);
         if (i == 0) {
-          if (getPropAsBoolean(state,ConfigurationKeys.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,branchId)) {
+          if (getPropAsBoolean(state,JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,branchId)) {
             LOG.info("User chose to replace final table " + publishTable + " on branch "+ branchId+ " workunit "+ i);
             commands.truncate(conn,publishTable);
           }
