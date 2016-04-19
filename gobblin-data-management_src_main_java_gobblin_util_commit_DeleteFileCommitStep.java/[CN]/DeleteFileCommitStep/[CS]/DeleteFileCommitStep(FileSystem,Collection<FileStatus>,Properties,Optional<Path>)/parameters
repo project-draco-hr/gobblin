@@ -1,3 +1,4 @@
 FileSystem fs
 Collection<FileStatus> paths
 Properties properties
+Optional<Path> parentDeletionLimit

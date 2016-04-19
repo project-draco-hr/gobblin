@@ -1,8 +1,15 @@
 {
   Trash trash=TrashFactory.createTrash(getFS(),this.properties);
+  Set<Path> parents=Sets.newHashSet();
   for (  FileStatus pathToDelete : this.pathsToDelete) {
     if (existsAndIsExpectedFile(pathToDelete)) {
       trash.moveToTrash(pathToDelete.getPath());
+      parents.add(pathToDelete.getPath().getParent());
+    }
+  }
+  if (this.parentDeletionLimit.isPresent()) {
+    for (    Path parent : parents) {
+      PathUtils.deleteEmptyParentDirectories(getFS(),this.parentDeletionLimit.get(),parent);
     }
   }
 }
