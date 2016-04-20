@@ -1,0 +1,4 @@
+{
+  multiWorkUnit.addWorkUnit(workUnit);
+  setMultiWorkUnitWeight(multiWorkUnit,getMultiWorkUnitWeight(multiWorkUnit) + weight);
+}

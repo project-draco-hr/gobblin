@@ -1,0 +1,8 @@
+{
+  try {
+    return Long.compare(this.weightCache.get(o1),this.weightCache.get(o2));
+  }
+ catch (  ExecutionException ee) {
+    throw new RuntimeException(ee);
+  }
+}
