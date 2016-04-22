@@ -2,9 +2,9 @@
   this.config=config;
   this.applicationName=config.getString(GobblinYarnConfigurationKeys.APPLICATION_NAME_KEY);
   this.appQueueName=config.getString(GobblinYarnConfigurationKeys.APP_QUEUE_KEY);
-  String zkConnectionString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  String zkConnectionString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
-  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY),YarnHelixUtils.getHostname(),InstanceType.SPECTATOR,zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),GobblinClusterUtils.getHostname(),InstanceType.SPECTATOR,zkConnectionString);
   this.yarnConfiguration=yarnConfiguration;
   this.yarnConfiguration.set("fs.automatic.close","false");
   this.yarnClient=YarnClient.createYarnClient();

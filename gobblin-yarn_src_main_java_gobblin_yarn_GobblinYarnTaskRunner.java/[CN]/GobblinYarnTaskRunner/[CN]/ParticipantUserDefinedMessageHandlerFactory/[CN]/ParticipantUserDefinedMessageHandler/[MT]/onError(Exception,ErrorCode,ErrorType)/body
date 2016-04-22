@@ -1,0 +1,3 @@
+{
+  LOGGER.error(String.format("Failed to handle message with exception %s, error code %s, error type %s",e,code,type));
+}

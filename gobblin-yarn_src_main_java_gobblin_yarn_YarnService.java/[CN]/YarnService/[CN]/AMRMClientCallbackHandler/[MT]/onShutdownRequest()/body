@@ -4,5 +4,5 @@
   }
   LOGGER.info("Received shutdown request from the ResourceManager");
   this.done=true;
-  eventBus.post(new ApplicationMasterShutdownRequest());
+  eventBus.post(new ClusterManagerShutdownRequest());
 }

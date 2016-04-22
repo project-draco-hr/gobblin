@@ -1,0 +1,6 @@
+{
+  LOGGER.info("Starting the Gobblin Cluster Manager");
+  this.eventBus.register(this);
+  connectHelixManager();
+  this.applicationLauncher.start();
+}

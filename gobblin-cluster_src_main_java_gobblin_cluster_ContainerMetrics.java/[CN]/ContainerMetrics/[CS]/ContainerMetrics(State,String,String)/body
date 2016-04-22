@@ -1,0 +1,3 @@
+{
+  super(name(taskRunnerId),null,tagsForContainer(containerState,applicationName,taskRunnerId));
+}

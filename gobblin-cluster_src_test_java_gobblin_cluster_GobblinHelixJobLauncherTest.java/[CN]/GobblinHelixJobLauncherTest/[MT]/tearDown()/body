@@ -1,0 +1,12 @@
+{
+  try {
+    this.gobblinTaskRunner.stop();
+    this.thread.join();
+  }
+ catch (  InterruptedException ie) {
+    Thread.currentThread().interrupt();
+  }
+ finally {
+    this.closer.close();
+  }
+}

@@ -1,0 +1,7 @@
+{
+  ImmutableList.Builder<Tag<?>> tags=new ImmutableList.Builder<>();
+  tags.add(new Tag<>(GobblinClusterMetricTagNames.APPLICATION_NAME,applicationName));
+  tags.add(new Tag<>(GobblinClusterMetricTagNames.TASK_RUNNER_ID,taskRunnerId));
+  tags.addAll(getCustomTagsFromState(containerState));
+  return tags.build();
+}

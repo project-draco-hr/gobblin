@@ -1,0 +1,4 @@
+{
+  String helixInstanceName=GobblinClusterManager.class.getSimpleName();
+  return HelixManagerFactory.getZKHelixManager(config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.CONTROLLER,zkConnectionString);
+}

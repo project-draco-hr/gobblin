@@ -1,0 +1,22 @@
+{
+  Closer closer=Closer.create();
+  try {
+    InputStream fileInputStream=closer.register(new FileInputStream(log4jPath));
+    InputStream inputStream=closer.register(targetClass.getResourceAsStream("/" + log4jFileName));
+    Properties customProperties=new Properties();
+    customProperties.load(fileInputStream);
+    Properties originalProperties=new Properties();
+    originalProperties.load(inputStream);
+    for (    Entry<Object,Object> entry : customProperties.entrySet()) {
+      originalProperties.setProperty(entry.getKey().toString(),entry.getValue().toString());
+    }
+    LogManager.resetConfiguration();
+    PropertyConfigurator.configure(originalProperties);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

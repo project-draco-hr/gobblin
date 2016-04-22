@@ -1,0 +1,6 @@
+String applicationName
+String helixInstanceName
+String applicationId
+String taskRunnerId
+Config config
+Optional<Path> appWorkDirOptional

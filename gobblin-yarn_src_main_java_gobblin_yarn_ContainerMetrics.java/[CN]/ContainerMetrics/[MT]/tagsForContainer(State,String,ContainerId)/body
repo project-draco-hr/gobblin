@@ -1,9 +1,0 @@
-{
-  ImmutableList.Builder<Tag<?>> tags=new ImmutableList.Builder<>();
-  tags.add(new Tag<>(GobblinYarnMetricTagNames.YARN_APPLICATION_NAME,applicationName));
-  tags.add(new Tag<>(GobblinYarnMetricTagNames.YARN_APPLICATION_ID,containerId.getApplicationAttemptId().getApplicationId().toString()));
-  tags.add(new Tag<>(GobblinYarnMetricTagNames.YARN_APPLICATION_ATTEMPT_ID,containerId.getApplicationAttemptId().toString()));
-  tags.add(new Tag<>(GobblinYarnMetricTagNames.CONTAINER_ID,containerId.toString()));
-  tags.addAll(getCustomTagsFromState(containerState));
-  return tags.build();
-}
