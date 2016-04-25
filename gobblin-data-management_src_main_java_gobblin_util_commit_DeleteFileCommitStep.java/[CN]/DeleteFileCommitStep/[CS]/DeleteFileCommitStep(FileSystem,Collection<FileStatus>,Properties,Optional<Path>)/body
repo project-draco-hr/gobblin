@@ -2,4 +2,5 @@
   this.fsUri=fs.getUri();
   this.pathsToDelete=paths;
   this.properties=properties;
+  this.parentDeletionLimit=parentDeletionLimit;
 }

@@ -1,9 +1,15 @@
 {
   int stepPriority=initialPriority;
-  InputFormat<?,?> inputFormat=HiveUtils.getInputFormat(partition.getTPartition().getSd());
-  HiveLocationDescriptor targetLocation=new HiveLocationDescriptor(partition.getDataLocation(),inputFormat,this.targetFs,this.dataset.properties);
-  Collection<Path> partitionPaths=targetLocation.getPaths();
-  DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(targetFs,partitionPaths,this.dataset.properties);
+  Collection<Path> partitionPaths;
+  if (this.dataset.properties.containsKey(DELETE_LOCATION_RECURSIVELY_ON_DEREGISTER) && Boolean.parseBoolean(this.dataset.properties.getProperty(DELETE_LOCATION_RECURSIVELY_ON_DEREGISTER))) {
+    partitionPaths=Lists.newArrayList(partition.getDataLocation());
+  }
+ else {
+    InputFormat<?,?> inputFormat=HiveUtils.getInputFormat(partition.getTPartition().getSd());
+    HiveLocationDescriptor targetLocation=new HiveLocationDescriptor(partition.getDataLocation(),inputFormat,this.targetFs,this.dataset.properties);
+    partitionPaths=targetLocation.getPaths();
+  }
+  DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(targetFs,partitionPaths,this.dataset.properties,table.getDataLocation());
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
   PartitionDeregisterStep deregister=new PartitionDeregisterStep(table.getTTable(),partition.getTPartition(),targetURI,hiveRegProps);
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deregister,stepPriority++));
