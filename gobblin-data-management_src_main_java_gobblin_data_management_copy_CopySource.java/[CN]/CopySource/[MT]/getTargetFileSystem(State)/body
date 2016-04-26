@@ -1,3 +1,3 @@
 {
-  return getOptionallyThrottledFileSystem(WriterUtils.getWriterFS(state,1,0),state);
+  return FileSystemUtils.getOptionallyThrottledFileSystem(WriterUtils.getWriterFS(state,1,0),state);
 }

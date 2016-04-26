@@ -1,0 +1,9 @@
+{
+  DeprecationUtils.handleDeprecatedOptions(state,MAX_FILESYSTEM_QPS,DEPRECATED_KEYS);
+  if (state.contains(MAX_FILESYSTEM_QPS)) {
+    return getOptionallyThrottledFileSystem(fs,state.getPropAsInt(MAX_FILESYSTEM_QPS));
+  }
+ else {
+    return fs;
+  }
+}

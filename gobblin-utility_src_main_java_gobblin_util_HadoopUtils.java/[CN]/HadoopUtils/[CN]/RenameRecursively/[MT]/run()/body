@@ -1,0 +1,22 @@
+{
+  try {
+    if (!fileSystem.exists(from)) {
+      return;
+    }
+    for (    FileStatus fromFile : fileSystem.listStatus(from)) {
+      Path relativeFilePath=new Path(StringUtils.substringAfter(fromFile.getPath().toString(),from.toString() + Path.SEPARATOR));
+      Path toFilePath=new Path(to,relativeFilePath);
+      if (!safeRenameIfNotExists(fileSystem,fromFile.getPath(),toFilePath)) {
+        if (fromFile.isDir()) {
+          this.futures.add(executorService.submit(new RenameRecursively(this.fileSystem,fromFile.getPath(),toFilePath,this.executorService,this.futures)));
+        }
+ else {
+          log.info(String.format("File already exists %s. Will not rewrite",toFilePath));
+        }
+      }
+    }
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException(ioe);
+  }
+}
