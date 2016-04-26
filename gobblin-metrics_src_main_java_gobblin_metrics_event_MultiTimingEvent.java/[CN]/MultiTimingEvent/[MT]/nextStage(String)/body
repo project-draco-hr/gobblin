@@ -1,0 +1,5 @@
+{
+  endStage();
+  this.currentStage=name;
+  this.currentStageStart=System.currentTimeMillis();
+}

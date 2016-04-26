@@ -1,4 +1,5 @@
 {
+  this.metricContext=Instrumented.getMetricContext(state,CopySource.class);
   try {
     final FileSystem sourceFs=getSourceFileSystem(state);
     final FileSystem targetFs=getTargetFileSystem(state);

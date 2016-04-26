@@ -1,0 +1,14 @@
+{
+  if (this.submitted) {
+    throw new IOException("MultiTimingEvent has already been submitted.");
+  }
+  this.submitted=true;
+  endStage();
+  Map<String,String> finalMetadata=Maps.newHashMap();
+  finalMetadata.putAll(additionalMetadata);
+  finalMetadata.put(EventSubmitter.EVENT_TYPE,MULTI_TIMING_EVENT);
+  for (  Stage timing : this.timings) {
+    finalMetadata.put(timing.getName(),Long.toString(timing.getDuration()));
+  }
+  this.submitter.submit(this.name,finalMetadata);
+}
