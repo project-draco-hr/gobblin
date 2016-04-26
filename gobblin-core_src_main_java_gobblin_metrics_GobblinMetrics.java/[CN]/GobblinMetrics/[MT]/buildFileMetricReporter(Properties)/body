@@ -27,7 +27,7 @@
     }
     OutputStream output=append ? fs.append(metricLogFile) : fs.create(metricLogFile,true);
     OutputStreamReporter.Factory.newBuilder().outputTo(output).build(properties);
-    this.scheduledReporters.add(this.codahaleReportersCloser.register(OutputStreamEventReporter.forContext(this.metricContext).outputTo(output).build()));
+    this.scheduledReporters.add(this.codahaleReportersCloser.register(OutputStreamEventReporter.forContext(RootMetricContext.get()).outputTo(output).build()));
     LOGGER.info("Will start reporting metrics to directory " + metricsLogDir);
   }
  catch (  IOException ioe) {
