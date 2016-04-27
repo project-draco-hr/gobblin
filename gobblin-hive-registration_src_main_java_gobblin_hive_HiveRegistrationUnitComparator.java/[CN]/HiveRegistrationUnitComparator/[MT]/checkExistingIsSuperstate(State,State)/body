@@ -1,0 +1,3 @@
+{
+  checkExistingIsSuperset(existingState.getProperties().entrySet(),newState.getProperties().entrySet());
+}

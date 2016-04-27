@@ -1,0 +1,8 @@
+{
+  for (  PathFilter filter : this.pathFilters) {
+    if (!filter.accept(path)) {
+      return false;
+    }
+  }
+  return true;
+}

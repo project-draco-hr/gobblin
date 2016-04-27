@@ -1,0 +1,5 @@
+{
+  this.partition=partition;
+  this.properties=properties;
+  this.existingTargetPartition=Optional.fromNullable(targetPartitions.get(this.partition.getValues()));
+}
