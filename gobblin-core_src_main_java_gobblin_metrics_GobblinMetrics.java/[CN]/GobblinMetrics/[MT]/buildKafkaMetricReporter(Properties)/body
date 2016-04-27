@@ -37,7 +37,7 @@
   }
   if (eventsTopic.or(defaultTopic).isPresent()) {
     try {
-      KafkaEventReporter.Builder<?> builder=formatEnum.eventReporterBuilder(this.metricContext,properties);
+      KafkaEventReporter.Builder<?> builder=formatEnum.eventReporterBuilder(RootMetricContext.get(),properties);
       this.scheduledReporters.add(this.codahaleReportersCloser.register(builder.build(brokers,eventsTopic.or(defaultTopic).get())));
     }
  catch (    IOException exception) {
