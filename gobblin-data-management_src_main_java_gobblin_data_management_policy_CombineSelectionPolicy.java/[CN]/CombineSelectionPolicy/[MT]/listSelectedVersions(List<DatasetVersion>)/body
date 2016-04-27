@@ -1,6 +1,6 @@
 {
-  List<Set<FileSystemDatasetVersion>> candidateDeletableVersions=Lists.newArrayList(Iterables.transform(this.selectionPolicies,new Function<VersionSelectionPolicy<FileSystemDatasetVersion>,Set<FileSystemDatasetVersion>>(){
-    @Nullable @Override public Set<FileSystemDatasetVersion> apply(    VersionSelectionPolicy<FileSystemDatasetVersion> input){
+  List<Set<DatasetVersion>> candidateDeletableVersions=Lists.newArrayList(Iterables.transform(this.selectionPolicies,new Function<VersionSelectionPolicy<DatasetVersion>,Set<DatasetVersion>>(){
+    @Nullable @Override public Set<DatasetVersion> apply(    VersionSelectionPolicy<DatasetVersion> input){
       return Sets.newHashSet(input.listSelectedVersions(allVersions));
     }
   }

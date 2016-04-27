@@ -7,11 +7,11 @@
     while (!klazz.isAssignableFrom(classB)) {
       klazz=klazz.getSuperclass();
     }
-    if (FileSystemDatasetVersion.class.isAssignableFrom(klazz)) {
-      return (Class<? extends FileSystemDatasetVersion>)klazz;
+    if (DatasetVersion.class.isAssignableFrom(klazz)) {
+      return (Class<? extends DatasetVersion>)klazz;
     }
  else {
-      return FileSystemDatasetVersion.class;
+      return DatasetVersion.class;
     }
   }
 }

@@ -1,9 +1,9 @@
 {
   Preconditions.checkArgument(config.hasPath(VERSION_SELECTION_POLICIES_PREFIX),"Combine operation not specified.");
-  ImmutableList.Builder<VersionSelectionPolicy<FileSystemDatasetVersion>> builder=ImmutableList.builder();
+  ImmutableList.Builder<VersionSelectionPolicy<DatasetVersion>> builder=ImmutableList.builder();
   for (  String combineClassName : config.getStringList(VERSION_SELECTION_POLICIES_PREFIX)) {
     try {
-      builder.add((VersionSelectionPolicy<FileSystemDatasetVersion>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(combineClassName),ImmutableList.<Object>of(config),ImmutableList.<Object>of(jobProps)));
+      builder.add((VersionSelectionPolicy<DatasetVersion>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(combineClassName),ImmutableList.<Object>of(config),ImmutableList.<Object>of(jobProps)));
     }
  catch (    NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
       throw new IllegalArgumentException(e);

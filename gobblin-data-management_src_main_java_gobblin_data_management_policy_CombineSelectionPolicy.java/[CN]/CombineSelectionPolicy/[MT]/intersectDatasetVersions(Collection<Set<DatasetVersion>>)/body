@@ -2,8 +2,8 @@
   if (sets.size() <= 0) {
     return Sets.newHashSet();
   }
-  Iterator<Set<FileSystemDatasetVersion>> it=sets.iterator();
-  Set<FileSystemDatasetVersion> outputSet=it.next();
+  Iterator<Set<DatasetVersion>> it=sets.iterator();
+  Set<DatasetVersion> outputSet=it.next();
   while (it.hasNext()) {
     outputSet=Sets.intersection(outputSet,it.next());
   }
