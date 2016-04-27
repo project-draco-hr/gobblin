@@ -1,6 +1,0 @@
-{
-  if (!isLocked()) {
-    return;
-  }
-  this.fs.delete(this.lockFile,false);
-}

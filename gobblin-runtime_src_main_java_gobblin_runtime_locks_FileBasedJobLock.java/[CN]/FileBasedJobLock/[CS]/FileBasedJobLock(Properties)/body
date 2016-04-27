@@ -1,0 +1,11 @@
+{
+  try {
+    this.fs=FileSystem.get(URI.create(properties.getProperty(ConfigurationKeys.FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI)),HadoopUtils.getConfFromProperties(properties));
+    String jobName=properties.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+    String lockFileDir=properties.getProperty(JOB_LOCK_DIR);
+    this.lockFile=new Path(lockFileDir,jobName + LOCK_FILE_EXTENSION);
+  }
+ catch (  IOException e) {
+    throw new JobLockException(e);
+  }
+}

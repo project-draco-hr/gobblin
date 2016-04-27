@@ -1,0 +1,11 @@
+{
+  if (!isLocked()) {
+    return;
+  }
+  try {
+    this.fs.delete(this.lockFile,false);
+  }
+ catch (  IOException e) {
+    throw new JobLockException(e);
+  }
+}

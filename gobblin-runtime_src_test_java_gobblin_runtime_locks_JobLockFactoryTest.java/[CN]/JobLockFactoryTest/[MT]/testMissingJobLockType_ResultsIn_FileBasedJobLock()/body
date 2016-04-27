@@ -1,0 +1,15 @@
+{
+  Closer closer=Closer.create();
+  try {
+    Properties properties=new Properties();
+    properties.setProperty(ConfigurationKeys.FS_URI_KEY,"file:///");
+    properties.setProperty(FileBasedJobLock.JOB_LOCK_DIR,"JobLockFactoryTest");
+    properties.setProperty(ConfigurationKeys.JOB_NAME_KEY,"JobLockFactoryTest-" + System.currentTimeMillis());
+    properties.setProperty(ConfigurationKeys.JOB_LOCK_TYPE,FileBasedJobLock.class.getName());
+    JobLock jobLock=closer.register(JobLockFactory.getJobLock(properties,new JobLockEventListener()));
+    MatcherAssert.assertThat(jobLock,Matchers.instanceOf(FileBasedJobLock.class));
+  }
+  finally {
+    closer.close();
+  }
+}

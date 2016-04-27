@@ -1,5 +1,0 @@
-{
-  if (!this.fs.createNewFile(this.lockFile)) {
-    throw new IOException("Failed to create lock file " + this.lockFile.getName());
-  }
-}

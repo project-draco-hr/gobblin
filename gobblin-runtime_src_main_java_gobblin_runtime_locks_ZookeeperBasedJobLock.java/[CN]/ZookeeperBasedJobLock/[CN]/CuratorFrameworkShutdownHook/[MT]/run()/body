@@ -1,0 +1,10 @@
+{
+  log.info("Shutting down curator framework...");
+  try {
+    shutdownCuratorFramework();
+    log.info("Curator framework shut down.");
+  }
+ catch (  Exception e) {
+    log.error("Error while shutting down curator framework.",e);
+  }
+}

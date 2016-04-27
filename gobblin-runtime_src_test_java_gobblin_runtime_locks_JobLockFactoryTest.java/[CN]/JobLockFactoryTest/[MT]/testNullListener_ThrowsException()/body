@@ -1,0 +1,9 @@
+{
+  Closer closer=Closer.create();
+  try {
+    closer.register(JobLockFactory.getJobLock(new Properties(),null));
+  }
+  finally {
+    closer.close();
+  }
+}

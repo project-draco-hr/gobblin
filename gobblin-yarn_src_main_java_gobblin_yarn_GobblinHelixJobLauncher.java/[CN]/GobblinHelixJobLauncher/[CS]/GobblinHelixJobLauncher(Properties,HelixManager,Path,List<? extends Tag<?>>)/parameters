@@ -1,0 +1,4 @@
+Properties jobProps
+HelixManager helixManager
+Path appWorkDir
+List<? extends Tag<?>> metadataTags

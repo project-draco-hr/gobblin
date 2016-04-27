@@ -3,8 +3,16 @@
     try {
       this.jobLockOptional.get().unlock();
     }
- catch (    IOException ioe) {
+ catch (    JobLockException ioe) {
       LOG.error(String.format("Failed to unlock for job %s: %s",this.jobContext.getJobId(),ioe),ioe);
+    }
+ finally {
+      try {
+        this.jobLockOptional.get().close();
+      }
+ catch (      IOException e) {
+        LOG.error(String.format("Failed to close job lock for job %s: %s",this.jobContext.getJobId(),e),e);
+      }
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+  try {
+    if (this.jobContext.isJobLockEnabled()) {
+      this.jobLockOptional=Optional.of(getJobLock(properties,new JobLockEventListener(){
+        @Override public void onLost(){
+          executeCancellation();
+        }
+      }
+));
+    }
+    return !this.jobLockOptional.isPresent() || this.jobLockOptional.get().tryLock();
+  }
+ catch (  JobLockException ioe) {
+    LOG.error(String.format("Failed to acquire job lock for job %s: %s",this.jobContext.getJobId(),ioe),ioe);
+    return false;
+  }
+}
