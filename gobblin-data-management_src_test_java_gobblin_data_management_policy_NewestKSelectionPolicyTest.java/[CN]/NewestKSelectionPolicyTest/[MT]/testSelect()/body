@@ -1,0 +1,34 @@
+{
+  ArrayList<DatasetVersion> versions=new ArrayList<>();
+  for (int i=0; i < 10; ++i) {
+    versions.add(new TestStringDatasetVersion(String.format("v%03d",i)));
+  }
+  Config conf=ConfigFactory.empty().withValue(NewestKSelectionPolicy.NEWEST_K_VERSIONS_SELECTED_KEY,ConfigValueFactory.fromAnyRef(5));
+  NewestKSelectionPolicy policy=new NewestKSelectionPolicy(conf);
+  Collection<DatasetVersion> res=policy.listSelectedVersions(versions);
+  int idx=0;
+  Assert.assertEquals(res.size(),policy.getVersionsSelected());
+  for (  DatasetVersion v : res) {
+    Assert.assertEquals(v,versions.get(idx++),"Mismatch for index " + idx);
+  }
+  conf=ConfigFactory.empty().withValue(NewestKSelectionPolicy.NEWEST_K_VERSIONS_SELECTED_KEY,ConfigValueFactory.fromAnyRef(15));
+  policy=new NewestKSelectionPolicy(conf);
+  res=policy.listSelectedVersions(versions);
+  idx=0;
+  Assert.assertEquals(res.size(),versions.size());
+  for (  DatasetVersion v : res) {
+    Assert.assertEquals(v,versions.get(idx++),"Mismatch for index " + idx);
+  }
+  conf=ConfigFactory.empty().withValue(NewestKSelectionPolicy.NEWEST_K_VERSIONS_NOTSELECTED_KEY,ConfigValueFactory.fromAnyRef(4));
+  policy=new NewestKSelectionPolicy(conf);
+  res=policy.listSelectedVersions(versions);
+  idx=policy.getVersionsSelected();
+  Assert.assertEquals(res.size(),versions.size() - policy.getVersionsSelected());
+  for (  DatasetVersion v : res) {
+    Assert.assertEquals(v,versions.get(idx++),"Mismatch for index " + idx);
+  }
+  conf=ConfigFactory.empty().withValue(NewestKSelectionPolicy.NEWEST_K_VERSIONS_NOTSELECTED_KEY,ConfigValueFactory.fromAnyRef(14));
+  policy=new NewestKSelectionPolicy(conf);
+  res=policy.listSelectedVersions(versions);
+  Assert.assertEquals(res.size(),0);
+}

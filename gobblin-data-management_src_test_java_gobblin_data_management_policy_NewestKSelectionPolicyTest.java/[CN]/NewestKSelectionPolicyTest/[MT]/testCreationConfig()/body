@@ -1,0 +1,19 @@
+{
+  for (  Map.Entry<String,Map<String,Integer>> test : TEST_CONFIGS.entrySet()) {
+    String testName=test.getKey();
+    Config conf=ConfigFactory.parseMap(test.getValue());
+    NewestKSelectionPolicy policy=new NewestKSelectionPolicy(conf);
+    Assert.assertEquals(policy.getVersionsSelected(),Math.abs(TEST_RESULTS.get(testName).intValue()),"Failure for test " + testName);
+    Assert.assertEquals(policy.isExcludeMode(),TEST_RESULTS.get(testName).intValue() < 0,"Failure for test " + testName);
+  }
+  for (  Map.Entry<String,Map<String,Integer>> test : NEG_TEST_CONFIGS.entrySet()) {
+    String testName=test.getKey();
+    Config conf=ConfigFactory.parseMap(test.getValue());
+    try {
+      new NewestKSelectionPolicy(conf);
+      Assert.fail("Exception expected for test " + testName);
+    }
+ catch (    RuntimeException e) {
+    }
+  }
+}

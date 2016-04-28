@@ -1,0 +1,5 @@
+{
+  fromIndex=Math.min(fromIndex,l.size());
+  toIndex=Math.min(toIndex,l.size());
+  return l.subList(fromIndex,toIndex);
+}

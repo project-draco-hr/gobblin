@@ -1,0 +1,14 @@
+{
+  if (config.hasPath(NEWEST_K_VERSIONS_SELECTED_KEY)) {
+    if (config.hasPath(NEWEST_K_VERSIONS_NOTSELECTED_KEY)) {
+      throw new RuntimeException("Only one of " + NEWEST_K_VERSIONS_SELECTED_KEY + " and "+ NEWEST_K_VERSIONS_NOTSELECTED_KEY+ " can be specified.");
+    }
+    return new Params(config.getInt(NEWEST_K_VERSIONS_SELECTED_KEY),false);
+  }
+ else   if (config.hasPath(NEWEST_K_VERSIONS_NOTSELECTED_KEY)) {
+    return new Params(config.getInt(NEWEST_K_VERSIONS_NOTSELECTED_KEY),true);
+  }
+ else {
+    return new Params(VERSIONS_SELECTED_DEFAULT,false);
+  }
+}
