@@ -1,16 +1,22 @@
 {
   int stepPriority=initialPriority;
-  Collection<Path> partitionPaths;
-  if (this.dataset.properties.containsKey(DELETE_LOCATION_RECURSIVELY_ON_DEREGISTER) && Boolean.parseBoolean(this.dataset.properties.getProperty(DELETE_LOCATION_RECURSIVELY_ON_DEREGISTER))) {
+  Collection<Path> partitionPaths=Lists.newArrayList();
+  DeregisterFileDeleteMethod deleteMethod=this.dataset.properties.containsKey(DELETE_FILES_ON_DEREGISTER) ? DeregisterFileDeleteMethod.valueOf(this.dataset.properties.getProperty(DELETE_FILES_ON_DEREGISTER).toUpperCase()) : DEFAULT_DEREGISTER_DELETE_METHOD;
+  if (deleteMethod == DeregisterFileDeleteMethod.RECURSIVE) {
     partitionPaths=Lists.newArrayList(partition.getDataLocation());
   }
- else {
+ else   if (deleteMethod == DeregisterFileDeleteMethod.INPUT_FORMAT) {
     InputFormat<?,?> inputFormat=HiveUtils.getInputFormat(partition.getTPartition().getSd());
     HiveLocationDescriptor targetLocation=new HiveLocationDescriptor(partition.getDataLocation(),inputFormat,this.targetFs,this.dataset.properties);
     partitionPaths=targetLocation.getPaths();
   }
-  DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(targetFs,partitionPaths,this.dataset.properties,table.getDataLocation());
-  copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
+ else   if (deleteMethod == DeregisterFileDeleteMethod.NO_DELETE) {
+    partitionPaths=Lists.newArrayList();
+  }
+  if (!partitionPaths.isEmpty()) {
+    DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(targetFs,partitionPaths,this.dataset.properties,table.getDataLocation());
+    copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
+  }
   PartitionDeregisterStep deregister=new PartitionDeregisterStep(table.getTTable(),partition.getTPartition(),targetURI,hiveRegProps);
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deregister,stepPriority++));
   return stepPriority;
