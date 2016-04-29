@@ -1,5 +1,5 @@
 {
   this.closer=Closer.create();
   this.instrumentationEnabled=GobblinMetrics.isEnabled(state);
-  this.metricContext=closer.register(getMetricContext(state,klazz,tags));
+  this.metricContext=this.closer.register(getMetricContext(state,klazz,tags));
 }

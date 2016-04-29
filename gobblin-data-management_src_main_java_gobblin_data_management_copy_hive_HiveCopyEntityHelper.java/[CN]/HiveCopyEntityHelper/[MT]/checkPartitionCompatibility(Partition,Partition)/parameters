@@ -1,2 +1,2 @@
-Partition sourcePartition
-Partition targetPartition
+Partition desiredTargetPartition
+Partition existingTargetPartition

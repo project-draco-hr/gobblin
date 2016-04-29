@@ -7,7 +7,7 @@
   this.highWatermark=GSON.fromJson(state.getWorkunit().getExpectedHighWatermark(),MultiLongWatermark.class);
   this.nextWatermark=new MultiLongWatermark(this.lowWatermark);
   this.closer=Closer.create();
-  this.kafkaWrapper=closer.register(KafkaWrapper.create(state));
+  this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
   this.stopwatch=Stopwatch.createUnstarted();
   this.decodingErrorCount=Maps.newHashMap();
   this.avgMillisPerRecord=Maps.newHashMapWithExpectedSize(this.partitions.size());

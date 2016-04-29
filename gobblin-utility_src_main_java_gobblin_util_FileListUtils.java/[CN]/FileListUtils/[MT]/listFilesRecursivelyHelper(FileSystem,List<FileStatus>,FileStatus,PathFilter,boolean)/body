@@ -1,0 +1,16 @@
+{
+  if (fileStatus.isDir()) {
+    for (    FileStatus status : fs.listStatus(fileStatus.getPath(),applyFilterToDirectories ? fileFilter : NO_OP_PATH_FILTER)) {
+      if (fileStatus.isDir()) {
+        listFilesRecursivelyHelper(fs,files,status,fileFilter,applyFilterToDirectories);
+      }
+ else {
+        files.add(fileStatus);
+      }
+    }
+  }
+ else   if (fileFilter.accept(fileStatus.getPath())) {
+    files.add(fileStatus);
+  }
+  return files;
+}

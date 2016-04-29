@@ -1,0 +1,4 @@
+{
+  this.params=params;
+  LOGGER.info(String.format("Will %s %d versions of each dataset.",(this.params.excludeMode ? "select" : "exclude"),this.params.versionsSelected));
+}

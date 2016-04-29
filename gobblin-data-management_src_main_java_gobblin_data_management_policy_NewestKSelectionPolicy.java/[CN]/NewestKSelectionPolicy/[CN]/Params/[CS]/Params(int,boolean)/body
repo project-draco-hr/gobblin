@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(versionsSelected >= MIN_VERSIONS_ALLOWED && versionsSelected <= MAX_VERSIONS_ALLOWED);
+  this.versionsSelected=versionsSelected;
+  this.excludeMode=excludeMode;
+}

@@ -1,0 +1,7 @@
+{
+  Configuration conf=newConfiguration();
+  for (  String propName : properties.stringPropertyNames()) {
+    conf.set(propName,properties.getProperty(propName));
+  }
+  return conf;
+}

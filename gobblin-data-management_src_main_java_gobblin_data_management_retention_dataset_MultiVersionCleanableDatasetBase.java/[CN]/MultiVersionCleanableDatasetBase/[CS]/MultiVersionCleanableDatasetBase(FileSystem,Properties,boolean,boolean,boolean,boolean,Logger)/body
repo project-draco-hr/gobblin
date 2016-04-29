@@ -1,0 +1,3 @@
+{
+  this(fs,properties,simulate,skipTrash,deleteEmptyDirectories,deleteAsOwner,Boolean.parseBoolean(IS_DATASET_BLACKLISTED_DEFAULT),log);
+}

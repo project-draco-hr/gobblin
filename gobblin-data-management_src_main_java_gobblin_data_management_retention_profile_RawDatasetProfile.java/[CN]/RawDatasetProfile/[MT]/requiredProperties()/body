@@ -1,6 +1,0 @@
-{
-  List<String> requiredProperties=super.requiredProperties();
-  requiredProperties.add(RawDataset.DATASET_CLASS);
-  requiredProperties.add(RawDataset.DATASET_RETENTION_POLICY_CLASS);
-  return requiredProperties;
-}

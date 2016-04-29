@@ -1,0 +1,2 @@
+List<VersionSelectionPolicy<DatasetVersion>> selectionPolicies
+CombineOperation combineOperation

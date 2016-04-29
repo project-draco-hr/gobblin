@@ -1,0 +1,10 @@
+{
+  try {
+    if (!this.fs.createNewFile(this.lockFile)) {
+      throw new JobLockException("Failed to create lock file " + this.lockFile.getName());
+    }
+  }
+ catch (  IOException e) {
+    throw new JobLockException(e);
+  }
+}

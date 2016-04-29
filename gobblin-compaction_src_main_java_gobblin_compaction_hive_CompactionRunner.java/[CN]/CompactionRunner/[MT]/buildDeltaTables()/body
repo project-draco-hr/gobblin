@@ -1,5 +1,5 @@
 {
-  List<AvroExternalTable> deltas=new ArrayList<AvroExternalTable>();
+  List<AvroExternalTable> deltas=new ArrayList<>();
   for (int i=1; ; i++) {
     String deltai=DELTA + "." + i;
     if (jobProperties.getProperty(deltai + DATALOCATION) == null) {

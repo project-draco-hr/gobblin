@@ -7,7 +7,7 @@
       addWorkUnitToMultiWorkUnit(workUnit,bestGroup);
     }
  else {
-      bestGroup=new MultiWorkUnit();
+      bestGroup=MultiWorkUnit.createEmpty();
       addWorkUnitToMultiWorkUnit(workUnit,bestGroup);
     }
     pQueue.add(bestGroup);

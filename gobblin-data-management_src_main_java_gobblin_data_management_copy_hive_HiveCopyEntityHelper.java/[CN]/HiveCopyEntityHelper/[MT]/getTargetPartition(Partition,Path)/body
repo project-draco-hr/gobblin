@@ -3,6 +3,8 @@
     Partition targetPartition=new Partition(this.targetTable,originPartition.getTPartition().deepCopy());
     targetPartition.getTable().setDbName(this.targetDatabase);
     targetPartition.getTPartition().setDbName(this.targetDatabase);
+    targetPartition.getTPartition().putToParameters(HiveDataset.REGISTERER,GOBBLIN_DISTCP);
+    targetPartition.getTPartition().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(this.startTime));
     targetPartition.setLocation(targetLocation.toString());
     return targetPartition;
   }

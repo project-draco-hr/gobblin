@@ -1,6 +1,6 @@
 {
   Properties props=new Properties();
-  props.put(DateTimeDatasetVersionFinder.DATE_TIME_PATTERN_KEY,"yyyy/MM/dd/hh/mm");
+  props.put(DateTimeDatasetVersionFinder.RETENTION_DATE_TIME_PATTERN_KEY,"yyyy/MM/dd/hh/mm");
   DateTimeDatasetVersionFinder parser=new DateTimeDatasetVersionFinder(null,props);
   Assert.assertEquals(parser.versionClass(),TimestampedDatasetVersion.class);
   Assert.assertEquals(parser.globVersionPattern(),new Path("*/*/*/*/*"));

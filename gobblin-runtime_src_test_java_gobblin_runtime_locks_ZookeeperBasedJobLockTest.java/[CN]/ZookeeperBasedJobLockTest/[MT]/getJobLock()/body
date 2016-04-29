@@ -1,0 +1,13 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(ZookeeperBasedJobLock.CONNECTION_STRING,testingServer.getConnectString());
+  properties.setProperty(ConfigurationKeys.JOB_NAME_KEY,"ZookeeperBasedJobLockTest-" + System.currentTimeMillis());
+  properties.setProperty(ZookeeperBasedJobLock.MAX_RETRY_COUNT,"1");
+  properties.setProperty(ZookeeperBasedJobLock.LOCKS_ACQUIRE_TIMEOUT_MILLISECONDS,"1000");
+  properties.setProperty(ZookeeperBasedJobLock.RETRY_BACKOFF_SECONDS,"1");
+  properties.setProperty(ZookeeperBasedJobLock.SESSION_TIMEOUT_SECONDS,"180");
+  properties.setProperty(ZookeeperBasedJobLock.CONNECTION_TIMEOUT_SECONDS,"30");
+  ZookeeperBasedJobLock lock=new ZookeeperBasedJobLock(properties);
+  lock.setEventListener(new JobLockEventListener());
+  return lock;
+}

@@ -1,17 +1,8 @@
 {
-  Closer closer=Closer.create();
-  try {
-    byte[] writableBytes=BaseEncoding.base64().decode(serializedWritableStr);
-    ByteArrayInputStream byteArrayInputStream=closer.register(new ByteArrayInputStream(writableBytes));
-    DataInputStream dataInputStream=closer.register(new DataInputStream(byteArrayInputStream));
+  byte[] writableBytes=BaseEncoding.base64().decode(serializedWritableStr);
+  try (ByteArrayInputStream byteArrayInputStream=new ByteArrayInputStream(writableBytes);DataInputStream dataInputStream=new DataInputStream(byteArrayInputStream)){
     Writable writable=ReflectionUtils.newInstance(writableClass,configuration);
     writable.readFields(dataInputStream);
     return writable;
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-}
+ }

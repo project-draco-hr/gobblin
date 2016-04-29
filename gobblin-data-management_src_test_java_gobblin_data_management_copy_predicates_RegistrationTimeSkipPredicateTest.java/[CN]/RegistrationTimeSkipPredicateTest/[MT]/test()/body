@@ -1,0 +1,29 @@
+{
+  Path partition1Path=new Path("/path/to/partition1");
+  long modTime=100000;
+  CopyContext copyContext=new CopyContext();
+  CopyConfiguration copyConfiguration=Mockito.mock(CopyConfiguration.class);
+  Mockito.doReturn(copyContext).when(copyConfiguration).getCopyContext();
+  HiveDataset dataset=Mockito.mock(HiveDataset.class);
+  FileSystem fs=Mockito.spy(FileSystem.getLocal(new Configuration()));
+  FileStatus status=new FileStatus(1,false,1,1,modTime,partition1Path);
+  Path qualifiedPath=fs.makeQualified(partition1Path);
+  Mockito.doReturn(status).when(fs).getFileStatus(qualifiedPath);
+  Mockito.doReturn(status).when(fs).getFileStatus(partition1Path);
+  Mockito.doReturn(fs).when(dataset).getFs();
+  HiveCopyEntityHelper helper=Mockito.mock(HiveCopyEntityHelper.class);
+  Mockito.doReturn(copyConfiguration).when(helper).getConfiguration();
+  Mockito.doReturn(dataset).when(helper).getDataset();
+  RegistrationTimeSkipPredicate predicate=new RegistrationTimeSkipPredicate(helper);
+  HiveCopyEntityHelper.PartitionCopy pc=createPartitionCopy(partition1Path,modTime - 1,true);
+  Assert.assertFalse(predicate.apply(pc));
+  pc=createPartitionCopy(partition1Path,modTime,true);
+  Assert.assertFalse(predicate.apply(pc));
+  pc=createPartitionCopy(partition1Path,modTime + 1,true);
+  Assert.assertTrue(predicate.apply(pc));
+  pc=createPartitionCopy(partition1Path,modTime + 1,false);
+  Assert.assertFalse(predicate.apply(pc));
+  pc=createPartitionCopy(partition1Path,modTime + 1,true);
+  pc.getExistingTargetPartition().get().getParameters().clear();
+  Assert.assertFalse(predicate.apply(pc));
+}

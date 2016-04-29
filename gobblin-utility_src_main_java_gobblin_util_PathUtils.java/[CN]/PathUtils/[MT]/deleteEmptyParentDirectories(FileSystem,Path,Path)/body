@@ -1,0 +1,11 @@
+{
+  if (PathUtils.isAncestor(limitPath,startPath) && !PathUtils.getPathWithoutSchemeAndAuthority(limitPath).equals(PathUtils.getPathWithoutSchemeAndAuthority(startPath)) && fs.listStatus(startPath).length == 0) {
+    if (!fs.delete(startPath,false)) {
+      log.warn("Failed to delete empty directory " + startPath);
+    }
+ else {
+      log.info("Deleted empty directory " + startPath);
+    }
+    deleteEmptyParentDirectories(fs,limitPath,startPath.getParent());
+  }
+}

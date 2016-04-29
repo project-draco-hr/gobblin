@@ -1,0 +1,4 @@
+{
+  this.tableMetadata.keyFieldLocations=deltaFieldLocations;
+  return this;
+}

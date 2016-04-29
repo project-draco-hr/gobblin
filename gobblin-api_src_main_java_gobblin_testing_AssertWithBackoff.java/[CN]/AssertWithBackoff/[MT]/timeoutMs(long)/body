@@ -1,5 +1,5 @@
 {
-  timeoutMs=assertTimeoutMs;
+  this.timeoutMs=assertTimeoutMs;
   if (!this.maxSleepMs.isPresent()) {
     this.maxSleepMs=Optional.of(getAutoMaxSleep());
   }

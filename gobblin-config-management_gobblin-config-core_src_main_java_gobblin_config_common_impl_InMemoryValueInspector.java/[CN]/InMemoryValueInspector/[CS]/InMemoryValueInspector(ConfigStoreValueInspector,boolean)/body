@@ -1,11 +1,11 @@
 {
   this.valueFallback=valueFallback;
   if (useStrongRef) {
-    ownConfigCache=CacheBuilder.newBuilder().build();
-    recursiveConfigCache=CacheBuilder.newBuilder().build();
+    this.ownConfigCache=CacheBuilder.newBuilder().build();
+    this.recursiveConfigCache=CacheBuilder.newBuilder().build();
   }
  else {
-    ownConfigCache=CacheBuilder.newBuilder().softValues().build();
-    recursiveConfigCache=CacheBuilder.newBuilder().softValues().build();
+    this.ownConfigCache=CacheBuilder.newBuilder().softValues().build();
+    this.recursiveConfigCache=CacheBuilder.newBuilder().softValues().build();
   }
 }

@@ -1,0 +1,8 @@
+{
+  try {
+    return this.fs.exists(this.lockFile);
+  }
+ catch (  IOException e) {
+    throw new JobLockException(e);
+  }
+}

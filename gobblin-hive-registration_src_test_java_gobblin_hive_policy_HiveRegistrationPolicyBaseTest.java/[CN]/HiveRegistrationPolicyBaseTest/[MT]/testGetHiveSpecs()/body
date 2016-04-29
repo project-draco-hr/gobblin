@@ -1,0 +1,23 @@
+{
+  State state=new State();
+  state.appendToListProp(HiveRegistrationPolicyBase.HIVE_DATABASE_NAME,"db1");
+  state.appendToListProp(HiveRegistrationPolicyBase.ADDITIONAL_HIVE_DATABASE_NAMES,"db2");
+  state.appendToListProp(HiveRegistrationPolicyBase.HIVE_TABLE_NAME,"tbl1");
+  state.appendToListProp(HiveRegistrationPolicyBase.ADDITIONAL_HIVE_TABLE_NAMES,"tbl2,tbl3");
+  this.path=new Path(getClass().getResource("/test-hive-table").toString());
+  Collection<HiveSpec> specs=new HiveRegistrationPolicyBase(state).getHiveSpecs(this.path);
+  Assert.assertEquals(specs.size(),6);
+  Iterator<HiveSpec> iterator=specs.iterator();
+  HiveSpec spec=iterator.next();
+  examine(spec,"db1","tbl1");
+  spec=iterator.next();
+  examine(spec,"db1","tbl2");
+  spec=iterator.next();
+  examine(spec,"db1","tbl3");
+  spec=iterator.next();
+  examine(spec,"db2","tbl1");
+  spec=iterator.next();
+  examine(spec,"db2","tbl2");
+  spec=iterator.next();
+  examine(spec,"db2","tbl3");
+}

@@ -1,0 +1,8 @@
+{
+  this.fs=fs;
+  this.testTempDirPath=testTempDirPath;
+  this.setupConfig=ConfigFactory.parseResources(PathUtils.getPathWithoutSchemeAndAuthority(testSetupConfPath).toString());
+  if (!this.setupConfig.hasPath(DATA_GENERATOR_KEY)) {
+    throw new RuntimeException(String.format("Failed to load setup config at %s",testSetupConfPath.toString()));
+  }
+}

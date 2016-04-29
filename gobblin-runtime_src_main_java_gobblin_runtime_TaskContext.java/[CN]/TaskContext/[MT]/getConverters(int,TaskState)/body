@@ -10,7 +10,7 @@
   for (  String converterClass : Splitter.on(",").omitEmptyStrings().trimResults().split(this.workUnit.getProp(converterClassKey))) {
     try {
       Converter<?,?,?,?> converter=Converter.class.cast(Class.forName(converterClass).newInstance());
-      InstrumentedConverterDecorator instrumentedConverter=new InstrumentedConverterDecorator(converter);
+      InstrumentedConverterDecorator instrumentedConverter=new InstrumentedConverterDecorator<>(converter);
       instrumentedConverter.init(forkTaskState);
       converters.add(instrumentedConverter);
     }

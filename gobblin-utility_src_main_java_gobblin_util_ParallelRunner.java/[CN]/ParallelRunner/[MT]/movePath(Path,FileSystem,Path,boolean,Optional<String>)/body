@@ -1,11 +1,11 @@
 {
   this.futures.add(new NamedFuture(this.executor.submit(new Callable<Void>(){
     @Override public Void call() throws Exception {
-      Lock lock=locks.get(src.toString());
+      Lock lock=ParallelRunner.this.locks.get(src.toString());
       lock.lock();
       try {
-        if (fs.exists(src)) {
-          HadoopUtils.movePath(fs,src,dstFs,dst,overwrite,dstFs.getConf());
+        if (ParallelRunner.this.fs.exists(src)) {
+          HadoopUtils.movePath(ParallelRunner.this.fs,src,dstFs,dst,overwrite,dstFs.getConf());
           if (group.isPresent()) {
             HadoopUtils.setGroup(dstFs,dst,group.get());
           }

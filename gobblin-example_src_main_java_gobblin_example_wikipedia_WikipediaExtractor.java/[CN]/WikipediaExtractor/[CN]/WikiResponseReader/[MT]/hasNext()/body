@@ -1,20 +1,20 @@
 {
-  if (!recordsOfCurrentTitle.isEmpty()) {
+  if (!WikipediaExtractor.this.recordsOfCurrentTitle.isEmpty()) {
     return true;
   }
- else   if (requestedTitles.isEmpty()) {
+ else   if (WikipediaExtractor.this.requestedTitles.isEmpty()) {
     return false;
   }
  else {
-    while (!requestedTitles.isEmpty()) {
-      String currentTitle=requestedTitles.poll();
+    while (!WikipediaExtractor.this.requestedTitles.isEmpty()) {
+      String currentTitle=WikipediaExtractor.this.requestedTitles.poll();
       try {
-        recordsOfCurrentTitle=retrievePageRevisions(currentTitle);
+        WikipediaExtractor.this.recordsOfCurrentTitle=retrievePageRevisions(currentTitle);
       }
  catch (      IOException e) {
         LOG.error("IOException while retrieving revisions for title '" + currentTitle + "'");
       }
-      if (!recordsOfCurrentTitle.isEmpty()) {
+      if (!WikipediaExtractor.this.recordsOfCurrentTitle.isEmpty()) {
         return true;
       }
     }

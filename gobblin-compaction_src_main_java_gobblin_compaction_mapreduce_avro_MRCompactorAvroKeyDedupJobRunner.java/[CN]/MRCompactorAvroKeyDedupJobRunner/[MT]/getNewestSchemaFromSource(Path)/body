@@ -1,5 +1,5 @@
 {
-  FileStatus[] files=fs.listStatus(sourceDir);
+  FileStatus[] files=this.fs.listStatus(sourceDir);
   Arrays.sort(files,new LastModifiedDescComparator());
   for (  FileStatus status : files) {
     if (status.isDir()) {

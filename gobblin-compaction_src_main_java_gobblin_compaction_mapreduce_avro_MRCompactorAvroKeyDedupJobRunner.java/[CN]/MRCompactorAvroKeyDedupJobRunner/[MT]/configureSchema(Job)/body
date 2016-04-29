@@ -1,6 +1,6 @@
 {
   Schema newestSchema=getNewestSchemaFromSource(job);
-  if (useSingleInputSchema) {
+  if (this.useSingleInputSchema) {
     AvroJob.setInputKeySchema(job,newestSchema);
   }
   AvroJob.setMapOutputKeySchema(job,this.shouldDeduplicate ? getKeySchema(job,newestSchema) : newestSchema);

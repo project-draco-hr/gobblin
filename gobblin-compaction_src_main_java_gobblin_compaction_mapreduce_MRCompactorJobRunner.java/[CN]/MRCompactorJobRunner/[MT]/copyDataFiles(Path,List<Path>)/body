@@ -4,10 +4,10 @@
   for (  final Path filePath : inputFilePaths) {
     Future<Void> future=executor.submit(new Callable<Void>(){
       @Override public Void call() throws Exception {
-        Path convertedFilePath=outputRecordCountProvider.convertPath(lateInputRecordCountProvider.restoreFilePath(filePath),inputRecordCountProvider);
+        Path convertedFilePath=MRCompactorJobRunner.this.outputRecordCountProvider.convertPath(MRCompactorJobRunner.this.lateInputRecordCountProvider.restoreFilePath(filePath),MRCompactorJobRunner.this.inputRecordCountProvider);
         String targetFileName=convertedFilePath.getName();
-        Path outPath=lateOutputRecordCountProvider.constructLateFilePath(targetFileName,fs,outputDirectory);
-        HadoopUtils.copyPath(fs,filePath,fs,outPath,fs.getConf());
+        Path outPath=MRCompactorJobRunner.this.lateOutputRecordCountProvider.constructLateFilePath(targetFileName,MRCompactorJobRunner.this.fs,outputDirectory);
+        HadoopUtils.copyPath(MRCompactorJobRunner.this.fs,filePath,MRCompactorJobRunner.this.fs,outPath,MRCompactorJobRunner.this.fs.getConf());
         LOG.debug(String.format("Copied %s to %s.",filePath,outPath));
         return null;
       }

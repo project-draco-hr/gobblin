@@ -2,8 +2,8 @@
   if (this.selectionPolicies.size() == 1) {
     return this.selectionPolicies.get(0).versionClass();
   }
-  Class<? extends FileSystemDatasetVersion> klazz=this.selectionPolicies.get(0).versionClass();
-  for (  VersionSelectionPolicy<? extends FileSystemDatasetVersion> policy : selectionPolicies) {
+  Class<? extends DatasetVersion> klazz=this.selectionPolicies.get(0).versionClass();
+  for (  VersionSelectionPolicy<? extends DatasetVersion> policy : selectionPolicies) {
     klazz=commonSuperclass(klazz,policy.versionClass());
   }
   return klazz;

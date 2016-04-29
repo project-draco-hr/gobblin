@@ -2,7 +2,5 @@
   if (this.s.isPresent()) {
     return this.s.get();
   }
- else {
-    return this.t.get();
-  }
+  return this.t.get();
 }

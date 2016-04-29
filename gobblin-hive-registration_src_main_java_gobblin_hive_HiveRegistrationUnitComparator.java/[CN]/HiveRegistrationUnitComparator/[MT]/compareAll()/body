@@ -1,4 +1,4 @@
 {
-  this.compareInputFormat().compareOutputFormat().compareIsCompressed().compareIsStoredAsSubDirs().compareNumBuckets().compareBucketCols().compareRawLocation();
+  this.compareInputFormat().compareOutputFormat().compareIsCompressed().compareIsStoredAsSubDirs().compareNumBuckets().compareBucketCols().compareRawLocation().compareParameters();
   return (T)this;
 }

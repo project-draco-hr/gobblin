@@ -24,6 +24,8 @@ case MONTH:
 partition.put(Granularity.MONTH.toString(),dateTime.getMonthOfYear());
 case YEAR:
 partition.put(Granularity.YEAR.toString(),dateTime.getYear());
+default :
+break;
 }
 }
 return partition;

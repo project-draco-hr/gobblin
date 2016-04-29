@@ -1,0 +1,4 @@
+boolean shouldCommitDataInJob
+DeliverySemantics deliverySemantics
+String datasetUrn
+JobState.DatasetState datasetState

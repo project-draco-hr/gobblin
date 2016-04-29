@@ -1,8 +1,8 @@
 {
   this.closer=Closer.create();
   this.byteArrayOutputStream=new ByteArrayOutputStream();
-  this.out=this.closer.register(new DataOutputStream(byteArrayOutputStream));
+  this.out=this.closer.register(new DataOutputStream(this.byteArrayOutputStream));
   this.encoder=getEncoder(schema,this.out);
   this.schemaVersionWriter=schemaVersionWriter;
-  this.writer=new SpecificDatumWriter<T>(schema);
+  this.writer=new SpecificDatumWriter<>(schema);
 }

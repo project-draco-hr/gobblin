@@ -1,6 +1,6 @@
 {
   this.eventBus.register(this);
-  Assert.assertTrue(jobConfigFileDir.mkdirs());
+  Assert.assertTrue(this.jobConfigFileDir.mkdirs());
   Closer closer=Closer.create();
   try {
     for (int i=0; i < NUM_JOB_CONFIG_FILES; i++) {

@@ -3,10 +3,10 @@
     context.write(key,NullWritable.get());
   }
  else {
-    populateComparableKeyRecord(key.datum(),outKey.datum());
-    outValue.datum(key.datum());
+    populateComparableKeyRecord(key.datum(),this.outKey.datum());
+    this.outValue.datum(key.datum());
     try {
-      context.write(outKey,outValue);
+      context.write(this.outKey,this.outValue);
     }
  catch (    AvroRuntimeException e) {
       final Path[] paths=((CombineFileSplit)context.getInputSplit()).getPaths();

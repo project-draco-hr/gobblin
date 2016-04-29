@@ -1,3 +1,0 @@
-Schema schema
-Map<String,Schema> schemaMap
-MutableInt count

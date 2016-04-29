@@ -9,19 +9,7 @@
     method.setAccessible(true);
     method.invoke(urlClassLoader,new Object[]{u});
   }
- catch (  NoSuchMethodException e) {
-    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
-  }
-catch (  IllegalArgumentException e) {
-    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
-  }
-catch (  IllegalAccessException e) {
-    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
-  }
-catch (  InvocationTargetException e) {
-    throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
-  }
-catch (  MalformedURLException e) {
+ catch (  ReflectiveOperationException|IOException e) {
     throw new RuntimeException("Unable to add hive.site.dir to CLASSPATH",e);
   }
 }

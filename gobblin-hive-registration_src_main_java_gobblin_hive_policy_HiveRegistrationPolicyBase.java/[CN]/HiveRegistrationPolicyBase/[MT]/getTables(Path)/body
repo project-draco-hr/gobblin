@@ -1,0 +1,9 @@
+{
+  List<HiveTable> tables=Lists.newArrayList();
+  for (  String databaseName : getDatabaseNames(path)) {
+    for (    String tableName : getTableNames(path)) {
+      tables.add(getTable(path,databaseName,tableName));
+    }
+  }
+  return tables;
+}

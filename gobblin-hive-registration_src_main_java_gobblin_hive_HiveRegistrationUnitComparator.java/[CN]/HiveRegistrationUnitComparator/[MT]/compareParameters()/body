@@ -1,0 +1,8 @@
+{
+  if (!this.result) {
+    checkExistingIsSuperstate(this.existingUnit.getProps(),this.newUnit.getProps());
+    checkExistingIsSuperstate(this.existingUnit.getStorageProps(),this.newUnit.getStorageProps());
+    checkExistingIsSuperstate(this.existingUnit.getSerDeProps(),this.newUnit.getSerDeProps());
+  }
+  return (T)this;
+}

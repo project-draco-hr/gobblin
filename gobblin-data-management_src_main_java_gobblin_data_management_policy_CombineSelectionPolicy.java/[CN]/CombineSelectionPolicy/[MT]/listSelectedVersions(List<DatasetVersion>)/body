@@ -1,0 +1,16 @@
+{
+  List<Set<DatasetVersion>> candidateDeletableVersions=Lists.newArrayList(Iterables.transform(this.selectionPolicies,new Function<VersionSelectionPolicy<DatasetVersion>,Set<DatasetVersion>>(){
+    @Nullable @Override public Set<DatasetVersion> apply(    VersionSelectionPolicy<DatasetVersion> input){
+      return Sets.newHashSet(input.listSelectedVersions(allVersions));
+    }
+  }
+));
+switch (this.combineOperation) {
+case INTERSECT:
+    return intersectDatasetVersions(candidateDeletableVersions);
+case UNION:
+  return unionDatasetVersions(candidateDeletableVersions);
+default :
+throw new RuntimeException("Combine operation " + this.combineOperation + " not recognized.");
+}
+}

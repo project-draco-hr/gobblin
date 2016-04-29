@@ -1,0 +1,11 @@
+{
+  if (sets.size() <= 0) {
+    return Sets.newHashSet();
+  }
+  Iterator<Set<T>> it=sets.iterator();
+  Set<T> outputSet=it.next();
+  while (it.hasNext()) {
+    outputSet=Sets.union(outputSet,it.next());
+  }
+  return outputSet;
+}

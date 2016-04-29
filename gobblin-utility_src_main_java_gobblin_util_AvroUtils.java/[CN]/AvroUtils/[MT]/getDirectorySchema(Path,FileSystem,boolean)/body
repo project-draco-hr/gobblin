@@ -10,8 +10,8 @@
       FileStatus file=latest ? files.get(0) : files.get(files.size() - 1);
       LOG.debug("Path to get the avro schema: " + file);
       FsInput fi=new FsInput(file.getPath(),fs.getConf());
-      GenericDatumReader<GenericRecord> genReader=new GenericDatumReader<GenericRecord>();
-      schema=closer.register(new DataFileReader<GenericRecord>(fi,genReader)).getSchema();
+      GenericDatumReader<GenericRecord> genReader=new GenericDatumReader<>();
+      schema=closer.register(new DataFileReader<>(fi,genReader)).getSchema();
     }
   }
  catch (  IOException ioe) {

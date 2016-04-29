@@ -1,0 +1,12 @@
+{
+  Closer closer=Closer.create();
+  try {
+    Properties properties=new Properties();
+    properties.setProperty(ConfigurationKeys.JOB_LOCK_TYPE,"ThisIsATest");
+    JobLock jobLock=closer.register(JobLockFactory.getJobLock(properties,new JobLockEventListener()));
+    MatcherAssert.assertThat(jobLock,Matchers.instanceOf(FileBasedJobLock.class));
+  }
+  finally {
+    closer.close();
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return createFromConfig(ConfigFactory.parseProperties(props));
+}

@@ -1,5 +1,5 @@
 {
-  SocketChannel client=server.accept();
+  SocketChannel client=this.server.accept();
   LOG.info("Accepted connection from {}",client.getRemoteAddress());
   try {
     new ProxySetupHandler(client,selector,config);

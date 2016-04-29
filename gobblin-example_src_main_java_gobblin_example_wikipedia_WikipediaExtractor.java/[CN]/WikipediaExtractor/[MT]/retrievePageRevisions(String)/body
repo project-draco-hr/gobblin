@@ -1,5 +1,5 @@
 {
-  Queue<JsonElement> retrievedRevisions=new LinkedList<JsonElement>();
+  Queue<JsonElement> retrievedRevisions=new LinkedList<>();
   Closer closer=Closer.create();
   HttpURLConnection conn=null;
   StringBuilder sb=new StringBuilder();

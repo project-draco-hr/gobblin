@@ -1,3 +1,0 @@
-{
-  return Schema.createArray(this.removeFields(schema.getElementType(),schemaMap,count));
-}

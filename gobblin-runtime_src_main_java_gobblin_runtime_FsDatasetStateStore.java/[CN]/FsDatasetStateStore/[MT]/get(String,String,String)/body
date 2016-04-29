@@ -3,9 +3,7 @@
   if (!this.fs.exists(tablePath)) {
     return null;
   }
-  Closer closer=Closer.create();
-  try {
-    @SuppressWarnings("deprecation") SequenceFile.Reader reader=closer.register(new SequenceFile.Reader(this.fs,tablePath,this.conf));
+  try (@SuppressWarnings("deprecation") SequenceFile.Reader reader=new SequenceFile.Reader(this.fs,tablePath,this.conf)){
     Writable writable=reader.getValueClass() == JobState.class ? new JobState() : new JobState.DatasetState();
     try {
       Text key=new Text();
@@ -14,9 +12,7 @@
           if (writable instanceof JobState.DatasetState) {
             return (JobState.DatasetState)writable;
           }
- else {
-            return ((JobState)writable).newDatasetState(true);
-          }
+          return ((JobState)writable).newDatasetState(true);
         }
       }
     }
@@ -24,11 +20,5 @@
       throw new IOException(e);
     }
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-  return null;
+   return null;
 }

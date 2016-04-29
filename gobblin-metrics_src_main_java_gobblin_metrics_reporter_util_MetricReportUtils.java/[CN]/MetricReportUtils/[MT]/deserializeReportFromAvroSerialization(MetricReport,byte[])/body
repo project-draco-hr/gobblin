@@ -1,6 +1,6 @@
 {
   if (!READER.isPresent()) {
-    READER=Optional.of(new SpecificDatumReader<MetricReport>(MetricReport.class));
+    READER=Optional.of(new SpecificDatumReader<>(MetricReport.class));
   }
   Closer closer=Closer.create();
   try {

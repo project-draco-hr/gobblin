@@ -1,5 +1,0 @@
-Properties jobProps
-HelixManager helixManager
-FileSystem fs
-Path appWorkDir
-List<? extends Tag<?>> metadataTags

@@ -1,0 +1,27 @@
+{
+  if (input == null) {
+    return true;
+  }
+  if (!input.getExistingTargetPartition().isPresent()) {
+    return false;
+  }
+  try {
+    if (PathUtils.isGlob(input.getPartition().getDataLocation())) {
+      log.error(String.format("%s cannot be applied to globbed location %s. Will not skip.",this.getClass().getSimpleName(),input.getPartition().getDataLocation()));
+      return false;
+    }
+    Path targetPath=this.helper.getTargetFileSystem().makeQualified(this.helper.getTargetPath(input.getPartition().getDataLocation(),this.helper.getTargetFs(),Optional.of(input.getPartition()),false));
+    Optional<FileStatus> targetFileStatus=this.helper.getConfiguration().getCopyContext().getFileStatus(this.helper.getTargetFs(),targetPath);
+    if (!targetFileStatus.isPresent()) {
+      return false;
+    }
+    Optional<FileStatus> sourceFileStatus=this.helper.getConfiguration().getCopyContext().getFileStatus(this.helper.getDataset().getFs(),input.getPartition().getDataLocation());
+    if (!sourceFileStatus.isPresent()) {
+      throw new RuntimeException(String.format("Source path %s does not exist!",input.getPartition().getDataLocation()));
+    }
+    return targetFileStatus.get().getModificationTime() > sourceFileStatus.get().getModificationTime();
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException(ioe);
+  }
+}

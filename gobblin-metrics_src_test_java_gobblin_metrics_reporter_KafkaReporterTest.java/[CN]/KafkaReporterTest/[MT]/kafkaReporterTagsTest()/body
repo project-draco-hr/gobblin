@@ -1,8 +1,8 @@
 {
   MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".kafkaReporterTagsTest").build();
   Counter counter=metricContext.counter("com.linkedin.example.counter");
-  Tag<?> tag1=new Tag<String>("tag1","value1");
-  Tag<?> tag2=new Tag<Integer>("tag2",2);
+  Tag<?> tag1=new Tag<>("tag1","value1");
+  Tag<?> tag2=new Tag<>("tag2",2);
   MockKafkaPusher pusher=new MockKafkaPusher();
   KafkaReporter kafkaReporter=getBuilder(pusher).withTags(Lists.newArrayList(tag1,tag2)).build("localhost:0000","topic",new Properties());
   counter.inc();

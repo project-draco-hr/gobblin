@@ -1,8 +1,8 @@
 {
-  if (!properties.containsKey(ConfigurationKeys.TEST_HARNESS_LAUNCHER_IMPL)) {
+  if (!this.properties.containsKey(ConfigurationKeys.TEST_HARNESS_LAUNCHER_IMPL)) {
     throw new RuntimeException("Unable to launch Test Harness. No implementation class found");
   }
-  final String className=properties.getProperty(ConfigurationKeys.TEST_HARNESS_LAUNCHER_IMPL);
+  final String className=this.properties.getProperty(ConfigurationKeys.TEST_HARNESS_LAUNCHER_IMPL);
   final Class<TestHarnessLauncher> clazz=(Class<TestHarnessLauncher>)Class.forName(className);
   return clazz.newInstance();
 }

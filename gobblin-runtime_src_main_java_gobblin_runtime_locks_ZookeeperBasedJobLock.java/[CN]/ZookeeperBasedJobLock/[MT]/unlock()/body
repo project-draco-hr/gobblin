@@ -1,0 +1,10 @@
+{
+  if (this.lock.isAcquiredInThisProcess()) {
+    try {
+      this.lock.release();
+    }
+ catch (    Exception e) {
+      throw new JobLockException("Failed to release lock " + this.lockPath,e);
+    }
+  }
+}

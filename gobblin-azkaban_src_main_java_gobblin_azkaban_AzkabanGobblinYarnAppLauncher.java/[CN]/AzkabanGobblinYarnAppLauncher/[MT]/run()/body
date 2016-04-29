@@ -3,7 +3,7 @@
   Runtime.getRuntime().addShutdownHook(new Thread(){
     @Override public void run(){
       try {
-        gobblinYarnAppLauncher.stop();
+        AzkabanGobblinYarnAppLauncher.this.gobblinYarnAppLauncher.stop();
       }
  catch (      IOException ioe) {
         LOGGER.error("Failed to shutdown the " + GobblinYarnAppLauncher.class.getSimpleName(),ioe);

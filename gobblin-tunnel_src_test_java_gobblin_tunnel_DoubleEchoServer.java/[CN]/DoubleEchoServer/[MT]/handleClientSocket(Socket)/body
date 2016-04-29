@@ -4,8 +4,8 @@
     PrintWriter out=new PrintWriter(clientSocket.getOutputStream());
     String line=in.readLine();
     while (line != null && isServerRunning()) {
-      if (delay > 0) {
-        sleepQuietly(delay);
+      if (this.delay > 0) {
+        sleepQuietly(this.delay);
       }
       out.println(line + " " + line);
       out.flush();

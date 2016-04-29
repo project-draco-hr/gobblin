@@ -1,0 +1,3 @@
+{
+  return ImmutableList.<String>builder().addAll(getKeyColumnsToProject()).addAll(getDeltaColumnsToProject()).build();
+}

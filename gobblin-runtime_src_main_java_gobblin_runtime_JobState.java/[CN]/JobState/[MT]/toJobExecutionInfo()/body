@@ -44,7 +44,7 @@
     gauge.setGroup(MetricGroup.JOB.name());
     gauge.setName(entry.getKey());
     gauge.setType(MetricTypeEnum.valueOf(GobblinMetrics.MetricType.GAUGE.name()));
-    gauge.setValue(((Gauge)entry.getValue()).getValue().toString());
+    gauge.setValue(((Gauge<?>)entry.getValue()).getValue().toString());
     metricArray.add(gauge);
   }
   jobExecutionInfo.setMetrics(metricArray);

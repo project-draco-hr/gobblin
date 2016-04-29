@@ -1,6 +1,6 @@
 {
   try {
-    return (DatasetsFinder)Class.forName(this.state.getProp(COMPACTION_DATASETS_FINDER,DEFAULT_COMPACTION_DATASETS_FINDER)).getConstructor(State.class).newInstance(state);
+    return (DatasetsFinder)Class.forName(this.state.getProp(COMPACTION_DATASETS_FINDER,DEFAULT_COMPACTION_DATASETS_FINDER)).getConstructor(State.class).newInstance(this.state);
   }
  catch (  Exception e) {
     throw new RuntimeException("Failed to initiailize DatasetsFinder.",e);

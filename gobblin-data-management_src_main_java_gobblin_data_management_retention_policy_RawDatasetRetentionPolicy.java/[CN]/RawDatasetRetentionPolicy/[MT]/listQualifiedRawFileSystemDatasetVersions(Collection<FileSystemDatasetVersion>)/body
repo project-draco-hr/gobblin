@@ -1,0 +1,16 @@
+{
+  return Lists.newArrayList(Collections2.filter(allVersions,new Predicate<FileSystemDatasetVersion>(){
+    @Override public boolean apply(    FileSystemDatasetVersion version){
+      Iterable<Path> refinedDatasetPaths=getRefinedDatasetPaths(version);
+      try {
+        Optional<Long> latestRawDatasetModTime=getLatestModTime(version.getPaths());
+        Optional<Long> latestRefinedDatasetModTime=getLatestModTime(refinedDatasetPaths);
+        return latestRawDatasetModTime.isPresent() && latestRefinedDatasetModTime.isPresent() && latestRawDatasetModTime.get() <= latestRefinedDatasetModTime.get();
+      }
+ catch (      IOException e) {
+        throw new RuntimeException("Failed to get modification time",e);
+      }
+    }
+  }
+));
+}

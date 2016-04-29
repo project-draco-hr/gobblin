@@ -1,4 +1,3 @@
 {
-  super(fs,jobProps,config);
-  this.client=ConfigClientCache.getClient(VersionStabilityPolicy.STRONG_LOCAL_STABILITY);
+  this(fs,jobProps,config,ConfigClientCache.getClient(VersionStabilityPolicy.STRONG_LOCAL_STABILITY));
 }

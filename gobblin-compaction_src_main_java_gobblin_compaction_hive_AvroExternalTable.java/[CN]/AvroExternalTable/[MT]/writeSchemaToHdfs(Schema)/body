@@ -1,5 +1,5 @@
 {
-  String defaultTmpSchemaDir=getParentDir(dataLocationInHdfs);
+  String defaultTmpSchemaDir=getParentDir(this.dataLocationInHdfs);
   String tmpSchemaDir=CompactionRunner.jobProperties.getProperty(HIVE_TMPSCHEMA_DIR,defaultTmpSchemaDir);
   tmpSchemaDir=addSlash(tmpSchemaDir);
   String tmpSchemaPath=tmpSchemaDir + UUID.randomUUID().toString() + ".avsc";

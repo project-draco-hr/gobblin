@@ -1,15 +1,6 @@
 {
-  Closer closer=Closer.create();
   Path completionFilePath=new Path(compactionOutputPath,COMPACTION_COMPLETE_FILE_NAME);
-  try {
-    FSDataInputStream completionFileStream=closer.register(fs.open(completionFilePath));
+  try (FSDataInputStream completionFileStream=fs.open(completionFilePath)){
     return completionFileStream.readLong();
   }
- catch (  Throwable t) {
-    LOG.error("Failed to read compaction timestamp from " + compactionOutputPath,t);
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-}
+ }

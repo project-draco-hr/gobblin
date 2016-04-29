@@ -1,0 +1,5 @@
+{
+  try (DataInputStream dis=(new DataInputStream(is))){
+    state.readFields(dis);
+  }
+ }

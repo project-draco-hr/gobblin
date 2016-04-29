@@ -1,0 +1,4 @@
+FileSystem fs
+Collection<Path> paths
+Properties properties
+Path parentDeletionLimit

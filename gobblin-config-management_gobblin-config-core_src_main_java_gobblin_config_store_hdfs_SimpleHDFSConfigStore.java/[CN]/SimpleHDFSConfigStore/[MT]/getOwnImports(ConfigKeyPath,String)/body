@@ -11,12 +11,12 @@
     FileStatus includesFileStatus=this.fs.getFileStatus(includesFile);
     if (!includesFileStatus.isDir()) {
       try (InputStream includesConfInStream=this.fs.open(includesFileStatus.getPath())){
-        configKeyPaths.addAll(Lists.newArrayList(Iterables.transform(IOUtils.readLines(includesConfInStream,Charsets.UTF_8),new IncludesToConfigKey())));
+        configKeyPaths.addAll(Lists.newArrayList(Iterables.transform(resolveIncludesList(IOUtils.readLines(includesConfInStream,Charsets.UTF_8)),new IncludesToConfigKey())));
       }
      }
   }
  catch (  IOException e) {
-    throw new RuntimeException(String.format("Error while getting imports for configKey: \"%s\"",configKey),e);
+    throw new RuntimeException(String.format("Error while getting config for configKey: \"%s\"",configKey),e);
   }
   return configKeyPaths;
 }

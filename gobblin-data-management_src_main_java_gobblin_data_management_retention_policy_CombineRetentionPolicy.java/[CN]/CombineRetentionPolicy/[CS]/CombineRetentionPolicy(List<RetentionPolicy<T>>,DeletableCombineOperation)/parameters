@@ -1,0 +1,2 @@
+List<RetentionPolicy<T>> retentionPolicies
+DeletableCombineOperation combineOperation

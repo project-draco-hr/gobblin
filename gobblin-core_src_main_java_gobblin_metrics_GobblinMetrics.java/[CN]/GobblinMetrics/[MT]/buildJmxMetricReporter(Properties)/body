@@ -3,5 +3,5 @@
     LOGGER.info("Not reporting metrics to JMX");
     return;
   }
-  this.jmxReporter=Optional.of(codahaleReportersCloser.register(JmxReporter.forRegistry(this.metricContext).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build()));
+  this.jmxReporter=Optional.of(codahaleReportersCloser.register(JmxReporter.forRegistry(RootMetricContext.get()).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).build()));
 }
