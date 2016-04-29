@@ -1,10 +1,5 @@
 {
-  if (args.length != 1) {
-    LOG.info("Proper usage: java -jar compaction.jar <global-config-file>\n" + "or\n" + "hadoop jar compaction.jar <global-config-file>\n"+ "or\n"+ "yarn jar compaction.jar <global-config-file>\n");
-    System.exit(1);
-  }
-  Configuration globalConfig=new PropertiesConfiguration(args[0]);
-  properties=ConfigurationConverter.getProperties(globalConfig);
+  properties=CliOptions.parseArgs(MRCompactionRunner.class,args);
   File compactionConfigDir=new File(properties.getProperty(COMPACTION_CONFIG_DIR));
   File[] listOfFiles=compactionConfigDir.listFiles();
   if (listOfFiles == null || listOfFiles.length == 0) {

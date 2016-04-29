@@ -1,0 +1,19 @@
+{
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      try {
+        compactor.cancel();
+      }
+ catch (      IOException e) {
+        LOG.warn("Unable to cancel the compactor jobs!",e);
+      }
+    }
+  }
+);
+  try {
+    compactor.compact();
+  }
+ catch (  Exception e) {
+    compactor.cancel();
+  }
+}

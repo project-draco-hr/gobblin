@@ -1,0 +1,4 @@
+{
+  this.properties=properties;
+  this.compactor=getCompactor(getCompactorFactory(),getCompactorListener(getCompactorListenerFactory()));
+}

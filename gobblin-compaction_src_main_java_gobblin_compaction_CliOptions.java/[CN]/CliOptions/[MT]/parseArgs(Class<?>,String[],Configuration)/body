@@ -1,0 +1,29 @@
+{
+  try {
+    if (conf != null) {
+      args=new GenericOptionsParser(conf,args).getCommandLine().getArgs();
+    }
+    CommandLine cmd=new DefaultParser().parse(options(),args);
+    if (cmd.hasOption(HELP_OPTION.getOpt())) {
+      printUsage(caller);
+      System.exit(0);
+    }
+    String jobConfigLocation=JOB_CONFIG_OPTION.getLongOpt();
+    if (!cmd.hasOption(jobConfigLocation)) {
+      printUsage(caller);
+      System.exit(1);
+    }
+    Properties jobConfig;
+    if (conf == null) {
+      jobConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(jobConfigLocation));
+    }
+ else {
+      jobConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(jobConfigLocation),conf);
+      JobConfigurationUtils.putConfigurationIntoProperties(conf,jobConfig);
+    }
+    return jobConfig;
+  }
+ catch (  ParseException|ConfigurationException|URISyntaxException e) {
+    throw new IOException(e);
+  }
+}

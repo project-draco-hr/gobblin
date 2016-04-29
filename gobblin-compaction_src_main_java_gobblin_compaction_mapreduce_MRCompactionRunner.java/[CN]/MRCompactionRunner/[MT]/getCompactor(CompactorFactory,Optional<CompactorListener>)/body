@@ -1,0 +1,8 @@
+{
+  try {
+    return compactorFactory.createCompactor(this.properties,new ArrayList<Tag<String>>(),compactorListener);
+  }
+ catch (  CompactorCreationException e) {
+    throw new RuntimeException("Unable to create compactor",e);
+  }
+}
