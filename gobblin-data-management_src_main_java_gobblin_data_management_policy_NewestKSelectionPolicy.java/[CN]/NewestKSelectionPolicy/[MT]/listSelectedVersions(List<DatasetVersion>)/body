@@ -1,0 +1,8 @@
+{
+  if (this.isExcludeMode()) {
+    return getBoundarySafeSublist(allVersions,this.getVersionsSelected(),allVersions.size());
+  }
+ else {
+    return getBoundarySafeSublist(allVersions,0,this.getVersionsSelected());
+  }
+}

@@ -1,3 +1,0 @@
-{
-  return CollectionUtils.subtract(allVersions,super.listSelectedVersions(allVersions));
-}

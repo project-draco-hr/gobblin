@@ -1,0 +1,6 @@
+{
+  if (!(o instanceof TestStringDatasetVersion)) {
+    throw new RuntimeException("Incompatible version: " + o);
+  }
+  return _version.compareTo(((TestStringDatasetVersion)o)._version);
+}

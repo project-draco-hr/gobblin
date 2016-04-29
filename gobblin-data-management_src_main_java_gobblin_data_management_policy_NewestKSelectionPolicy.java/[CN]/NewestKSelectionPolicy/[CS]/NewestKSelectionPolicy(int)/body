@@ -1,4 +1,0 @@
-{
-  this.versionsSelected=versionsRetained;
-  LOGGER.info(String.format("%s will select %d versions of each dataset.",NewestKSelectionPolicy.class.getName(),this.versionsSelected));
-}
