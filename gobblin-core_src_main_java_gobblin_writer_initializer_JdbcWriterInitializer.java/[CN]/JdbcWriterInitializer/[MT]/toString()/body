@@ -1,3 +1,0 @@
-{
-  return String.format("JdbcWriterInitializer [branches=%s, branchId=%s, state=%s, workUnits=%s, commands=%s, userCreatedStagingTable=%s, createdStagingTable=%s]",branches,branchId,state,workUnits,commands,userCreatedStagingTable,createdStagingTables);
-}

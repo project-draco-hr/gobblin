@@ -4,10 +4,7 @@
   this.workUnits=Lists.newArrayList(workUnits);
   this.branches=branches;
   this.branchId=branchId;
-  String destKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,branches,branchId);
-  String destType=Preconditions.checkNotNull(state.getProp(destKey),destKey + " is required for underlying JDBC product name");
-  Destination dest=Destination.of(DestinationType.valueOf(destType.toUpperCase()),state);
-  this.commands=jdbcWriterCommandsFactory.newInstance(dest);
+  this.jdbcWriterCommandsFactory=jdbcWriterCommandsFactory;
   this.createdStagingTables=Sets.newHashSet();
   state.setProp(ConfigurationKeys.CLEANUP_STAGING_DATA_BY_INITIALIZER,Boolean.toString(true));
 }

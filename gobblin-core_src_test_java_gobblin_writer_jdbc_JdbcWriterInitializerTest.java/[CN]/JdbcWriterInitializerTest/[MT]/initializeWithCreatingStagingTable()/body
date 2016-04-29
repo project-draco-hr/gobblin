@@ -1,5 +1,5 @@
 {
-  when(commands.isEmpty(conn,STAGING_TABLE)).thenReturn(Boolean.TRUE);
+  when(commands.isEmpty(STAGING_TABLE)).thenReturn(Boolean.TRUE);
   DatabaseMetaData metadata=mock(DatabaseMetaData.class);
   when(conn.getMetaData()).thenReturn(metadata);
   ResultSet rs=mock(ResultSet.class);
@@ -8,10 +8,10 @@
   initializer.initialize();
   Assert.assertTrue(!StringUtils.isEmpty(workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE)));
   InOrder inOrder=inOrder(commands);
-  inOrder.verify(commands,times(1)).createTableStructure(any(Connection.class),anyString(),anyString());
-  inOrder.verify(commands,times(1)).drop(any(Connection.class),anyString());
-  inOrder.verify(commands,times(1)).createTableStructure(any(Connection.class),anyString(),anyString());
+  inOrder.verify(commands,times(1)).createTableStructure(anyString(),anyString());
+  inOrder.verify(commands,times(1)).drop(anyString());
+  inOrder.verify(commands,times(1)).createTableStructure(anyString(),anyString());
   initializer.close();
-  inOrder.verify(commands,times(1)).drop(any(Connection.class),anyString());
-  inOrder.verify(commands,never()).truncate(any(Connection.class),anyString());
+  inOrder.verify(commands,times(1)).drop(anyString());
+  inOrder.verify(commands,never()).truncate(anyString());
 }

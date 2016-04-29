@@ -1,3 +1,0 @@
-{
-  return String.format("JdbcEntrySchema [jdbcMetaData=%s]",jdbcMetaData);
-}

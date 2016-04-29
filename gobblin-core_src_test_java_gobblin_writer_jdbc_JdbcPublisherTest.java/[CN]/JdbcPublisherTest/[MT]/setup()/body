@@ -4,8 +4,8 @@
   state.setProp(JdbcPublisher.JDBC_PUBLISHER_DATABASE_NAME,database);
   commands=mock(JdbcWriterCommands.class);
   factory=mock(JdbcWriterCommandsFactory.class);
-  when(factory.newInstance(any(State.class))).thenReturn(commands);
   conn=mock(Connection.class);
+  when(factory.newInstance(state,conn)).thenReturn(commands);
   workUnitStates=new ArrayList<>();
   workUnitState=mock(WorkUnitState.class);
   when(workUnitState.getProp(ConfigurationKeys.WRITER_STAGING_TABLE)).thenReturn(stagingTable);

@@ -11,9 +11,9 @@
     writer.commit();
     Assert.assertEquals(writer.recordsWritten(),writeCount);
   }
-   verify(writerCommands,times(writeCount)).insert(any(Connection.class),anyString(),anyString(),any(JdbcEntryData.class));
+   verify(writerCommands,times(writeCount)).insert(anyString(),anyString(),any(JdbcEntryData.class));
   verify(conn,times(1)).commit();
   verify(conn,never()).rollback();
-  verify(writerCommands,times(1)).flush(conn);
+  verify(writerCommands,times(1)).flush();
   verify(conn,times(1)).close();
 }

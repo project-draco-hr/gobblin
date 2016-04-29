@@ -1,0 +1,3 @@
+{
+  jdbcBufferedWriter.insert(databaseName,table,jdbcEntryData);
+}

@@ -1,4 +1,3 @@
 {
   super();
-  this.jdbcWriterCommandsFactory=new JdbcWriterCommandsFactory();
 }

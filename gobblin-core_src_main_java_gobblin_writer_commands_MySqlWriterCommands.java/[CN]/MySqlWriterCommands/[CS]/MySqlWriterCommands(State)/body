@@ -1,3 +1,0 @@
-{
-  this.jdbcBufferedWriter=new MySqlBufferedInserter(state);
-}

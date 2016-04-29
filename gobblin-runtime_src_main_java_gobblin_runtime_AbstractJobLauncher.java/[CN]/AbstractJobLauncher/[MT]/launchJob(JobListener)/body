@@ -31,9 +31,8 @@
           LOG.warn("No work units have been created for job " + jobId);
           return;
         }
-        WriterInitializer writerInitializer=WriterInitializerFactory.newInstace(jobState,workUnits.get());
-        closer.register(writerInitializer);
-        writerInitializer.initialize();
+        closer.register(WriterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
+        closer.register(ConverterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
         TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_STAGING_DATA_CLEAN);
         cleanLeftoverStagingData(workUnits.get(),jobState);
         stagingDataCleanTimer.stop();

@@ -6,16 +6,16 @@
   final int entryCount=1007;
   final int colSize=7;
   State state=new State();
-  state.setProp(ConfigurationKeys.WRITER_JDBC_INSERT_BATCH_SIZE,Integer.toString(batchSize));
-  MySqlBufferedInserter inserter=new MySqlBufferedInserter(state);
+  state.setProp(WRITER_JDBC_INSERT_BATCH_SIZE,Integer.toString(batchSize));
   Connection conn=mock(Connection.class);
+  MySqlBufferedInserter inserter=new MySqlBufferedInserter(state,conn);
   PreparedStatement pstmt=mock(PreparedStatement.class);
   when(conn.prepareStatement(anyString())).thenReturn(pstmt);
   List<JdbcEntryData> jdbcEntries=createJdbcEntries(colNums,colSize,entryCount);
   for (  JdbcEntryData entry : jdbcEntries) {
-    inserter.insert(conn,db,table,entry);
+    inserter.insert(db,table,entry);
   }
-  inserter.flush(conn);
+  inserter.flush();
   verify(conn,times(2)).prepareStatement(anyString());
   verify(pstmt,times(11)).clearParameters();
   verify(pstmt,times(11)).execute();

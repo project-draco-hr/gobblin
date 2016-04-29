@@ -1,3 +1,0 @@
-{
-  jdbcBufferedWriter.insert(conn,databaseName,table,jdbcEntryData);
-}

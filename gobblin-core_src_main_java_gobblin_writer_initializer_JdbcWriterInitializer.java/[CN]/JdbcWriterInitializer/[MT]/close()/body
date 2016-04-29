@@ -1,15 +1,16 @@
 {
   LOG.info("Closing " + this.getClass().getSimpleName());
   try (Connection conn=createConnection()){
+    JdbcWriterCommands commands=createJdbcWriterCommands(conn);
     if (!createdStagingTables.isEmpty()) {
       for (      String stagingTable : createdStagingTables) {
         LOG.info("Dropping staging table " + createdStagingTables);
-        commands.drop(conn,stagingTable);
+        commands.drop(stagingTable);
       }
     }
     if (userCreatedStagingTable != null) {
       LOG.info("Truncating staging table " + userCreatedStagingTable);
-      commands.truncate(conn,userCreatedStagingTable);
+      commands.truncate(userCreatedStagingTable);
     }
   }
  catch (  SQLException e) {

@@ -1,8 +1,0 @@
-{
-switch (destination.getType()) {
-case MYSQL:
-    return new MySqlWriterCommands(destination.getProperties());
-default :
-  throw new IllegalArgumentException(destination.getType() + " is not supported");
-}
-}

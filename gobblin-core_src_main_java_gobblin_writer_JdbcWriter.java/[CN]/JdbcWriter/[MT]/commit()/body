@@ -1,7 +1,7 @@
 {
   try {
     LOG.info("Flushing pending insert.");
-    commands.flush(conn);
+    commands.flush();
     LOG.info("Commiting transaction.");
     conn.commit();
   }

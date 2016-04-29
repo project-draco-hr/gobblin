@@ -7,9 +7,9 @@
   workUnits.add(workUnit);
   factory=mock(JdbcWriterCommandsFactory.class);
   commands=mock(JdbcWriterCommands.class);
-  doReturn(commands).when(factory).newInstance(any(Destination.class));
+  conn=mock(Connection.class);
+  doReturn(commands).when(factory).newInstance(any(Destination.class),eq(conn));
   initializer=new JdbcWriterInitializer(state,workUnits,factory,1,0);
   initializer=spy(initializer);
-  conn=mock(Connection.class);
   doReturn(conn).when(initializer).createConnection();
 }

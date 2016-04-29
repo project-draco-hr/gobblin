@@ -1,7 +1,3 @@
 {
-  this.writerInitializers=Lists.newArrayList(writerInitializers);
-  this.closer=Closer.create();
-  for (  WriterInitializer wi : this.writerInitializers) {
-    closer.register(wi);
-  }
+  intializer=new MultiInitializer(writerInitializers);
 }

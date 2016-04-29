@@ -9,17 +9,17 @@
   final double bufferRatio=0.8D;
   final int bufferSize=(int)(entrySize * batchSize * bufferRatio);
   State state=new State();
-  state.setProp(ConfigurationKeys.WRITER_JDBC_INSERT_BATCH_SIZE,Integer.toString(batchSize));
-  state.setProp(ConfigurationKeys.WRITER_JDBC_INSERT_BUFFER_SIZE,Integer.toString(bufferSize));
-  MySqlBufferedInserter inserter=new MySqlBufferedInserter(state);
+  state.setProp(WRITER_JDBC_INSERT_BATCH_SIZE,Integer.toString(batchSize));
+  state.setProp(WRITER_JDBC_INSERT_BUFFER_SIZE,Integer.toString(bufferSize));
   Connection conn=mock(Connection.class);
+  MySqlBufferedInserter inserter=new MySqlBufferedInserter(state,conn);
   PreparedStatement pstmt=mock(PreparedStatement.class);
   when(conn.prepareStatement(anyString())).thenReturn(pstmt);
   List<JdbcEntryData> jdbcEntries=createJdbcEntries(colNums,colSize,entryCount);
   for (  JdbcEntryData entry : jdbcEntries) {
-    inserter.insert(conn,db,table,entry);
+    inserter.insert(db,table,entry);
   }
-  inserter.flush(conn);
+  inserter.flush();
   int expectedBatchSize=(int)(batchSize * bufferRatio);
   int expectedExecuteCount=entryCount / expectedBatchSize + 1;
   verify(conn,times(expectedExecuteCount + 1)).prepareStatement(anyString());

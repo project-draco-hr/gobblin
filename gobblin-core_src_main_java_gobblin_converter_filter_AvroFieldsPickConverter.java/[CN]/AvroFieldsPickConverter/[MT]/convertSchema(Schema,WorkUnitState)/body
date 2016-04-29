@@ -3,11 +3,10 @@
   String fieldsStr=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS);
   Preconditions.checkNotNull(fieldsStr,ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS + " is required for converter " + this.getClass().getSimpleName());
   LOG.info("Converting schema to selected fields: " + fieldsStr);
-  List<String> fields=SPLITTER_ON_COMMA.splitToList(fieldsStr);
-  Set<String> fieldsToRemove=fieldsToRemove(inputSchema,fields);
-  LOG.info("Fields to be removed from schema: " + fieldsToRemove);
-  AvroSchemaFieldRemover remover=new AvroSchemaFieldRemover(JOINER_ON_COMMA.join(fieldsToRemove));
-  Schema converted=remover.removeFieldsStrictly(inputSchema);
-  LOG.info("Converted schema: " + converted);
-  return converted;
+  try {
+    return createSchema(inputSchema,fieldsStr);
+  }
+ catch (  Exception e) {
+    throw new SchemaConversionException(e);
+  }
 }

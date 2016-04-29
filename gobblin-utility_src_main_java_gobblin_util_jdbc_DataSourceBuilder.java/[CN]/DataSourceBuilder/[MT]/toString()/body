@@ -1,3 +1,0 @@
-{
-  return "DataSourceBuilder [url=" + url + ", driver="+ driver+ ", userName="+ userName+ ", passWord="+ passWord+ ", maxIdleConnections="+ maxIdleConnections+ ", maxActiveConnections="+ maxActiveConnections+ ", cryptoKeyLocation="+ cryptoKeyLocation+ ", useStrongEncryption="+ useStrongEncryption+ ", state="+ state+ "]";
-}

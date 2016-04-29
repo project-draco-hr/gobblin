@@ -1,13 +1,13 @@
 {
   state.setProp(ConfigurationKeys.WRITER_STAGING_TABLE,STAGING_TABLE);
   state.setProp(ConfigurationKeys.WRITER_TRUNCATE_STAGING_TABLE,Boolean.toString(true));
-  when(commands.isEmpty(conn,STAGING_TABLE)).thenReturn(Boolean.TRUE);
+  when(commands.isEmpty(STAGING_TABLE)).thenReturn(Boolean.TRUE);
   initializer.initialize();
   Assert.assertEquals(STAGING_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
   InOrder inOrder=inOrder(commands);
-  inOrder.verify(commands,times(1)).truncate(conn,STAGING_TABLE);
+  inOrder.verify(commands,times(1)).truncate(STAGING_TABLE);
   initializer.close();
-  inOrder.verify(commands,times(1)).truncate(conn,STAGING_TABLE);
-  verify(commands,never()).createTableStructure(any(Connection.class),anyString(),anyString());
-  verify(commands,never()).drop(any(Connection.class),anyString());
+  inOrder.verify(commands,times(1)).truncate(STAGING_TABLE);
+  verify(commands,never()).createTableStructure(anyString(),anyString());
+  verify(commands,never()).drop(anyString());
 }

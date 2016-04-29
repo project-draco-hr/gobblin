@@ -4,7 +4,7 @@
   initializer.initialize();
   initializer.close();
   Assert.assertEquals(DEST_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
-  verify(commands,never()).createTableStructure(any(Connection.class),anyString(),anyString());
-  verify(commands,never()).truncate(any(Connection.class),anyString());
-  verify(commands,never()).drop(any(Connection.class),anyString());
+  verify(commands,never()).createTableStructure(anyString(),anyString());
+  verify(commands,never()).truncate(anyString());
+  verify(commands,never()).drop(anyString());
 }

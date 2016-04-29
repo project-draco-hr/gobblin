@@ -1,5 +1,4 @@
 {
-  this.commands=jdbcWriterCommandsFactory.newInstance(workUnit);
   String avroToJdbcFieldsPairJsonStr=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS);
   if (!StringUtils.isEmpty(avroToJdbcFieldsPairJsonStr)) {
     if (!avroToJdbcColPairs.isPresent()) {

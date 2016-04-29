@@ -1,3 +1,0 @@
-{
-  return String.format("JdbcEntrySchema [columnName=%s, JdbcType=%s]",columnName,jdbcType);
-}

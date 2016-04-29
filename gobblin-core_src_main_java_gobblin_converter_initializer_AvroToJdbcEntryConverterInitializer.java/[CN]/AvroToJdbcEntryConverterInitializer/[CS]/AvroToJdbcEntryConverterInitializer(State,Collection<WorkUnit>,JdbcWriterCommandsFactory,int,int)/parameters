@@ -1,0 +1,5 @@
+State state
+Collection<WorkUnit> workUnits
+JdbcWriterCommandsFactory jdbcWriterCommandsFactory
+int branches
+int branchId

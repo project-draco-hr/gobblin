@@ -1,0 +1,19 @@
+{
+  Schema newRecord=Schema.createRecord(inputSchema.getName(),inputSchema.getDoc(),inputSchema.getNamespace(),inputSchema.isError());
+  List<Field> newFields=Lists.newArrayList();
+  for (  TrieNode child : node.children.values()) {
+    Field innerSrcField=inputSchema.getField(child.val);
+    Preconditions.checkNotNull(innerSrcField,child.val + " does not exist under " + inputSchema);
+    if (child.children.isEmpty()) {
+      newFields.add(new Field(innerSrcField.name(),innerSrcField.schema(),innerSrcField.doc(),innerSrcField.defaultValue()));
+    }
+ else {
+      Schema innerSrcSchema=innerSrcField.schema();
+      Schema innerDestSchema=createSchemaHelper(innerSrcSchema,child);
+      Field innerDestField=new Field(innerSrcField.name(),innerDestSchema,innerSrcField.doc(),innerSrcField.defaultValue());
+      newFields.add(innerDestField);
+    }
+  }
+  newRecord.setFields(newFields);
+  return newRecord;
+}

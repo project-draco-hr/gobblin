@@ -1,0 +1,15 @@
+{
+  if (!fqnIterator.hasNext()) {
+    return;
+  }
+  String val=fqnIterator.next();
+  TrieNode child=node.children.get(val);
+  if (child == null) {
+    child=new TrieNode(val);
+    node.children.put(val,child);
+  }
+ else   if (!fqnIterator.hasNext()) {
+    throw new IllegalArgumentException("Duplicate record detected: " + fqn);
+  }
+  addHelper(child,fqnIterator,fqn);
+}
