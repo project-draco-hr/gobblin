@@ -1,0 +1,8 @@
+{
+  try {
+    return compactorListenerFactory.createCompactorListener(this.properties);
+  }
+ catch (  CompactorListenerCreationException e) {
+    throw new RuntimeException("Unable to create compactor listener",e);
+  }
+}

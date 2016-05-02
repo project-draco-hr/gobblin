@@ -1,0 +1,5 @@
+{
+  Properties jobProperties=CliOptions.parseArgs(MRCompactionRunner.class,args,new Configuration());
+  MRCompactionRunner compactionRunner=new MRCompactionRunner(jobProperties);
+  compactionRunner.compact();
+}

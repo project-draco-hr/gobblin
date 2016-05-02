@@ -1,0 +1,6 @@
+{
+  for (Iterator<Entry<String,String>> it=configuration.iterator(); it.hasNext(); ) {
+    Entry<String,String> entry=it.next();
+    properties.put(entry.getKey(),entry.getValue());
+  }
+}
