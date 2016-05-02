@@ -1,4 +1,5 @@
 {
-  this.rateControlledFs=new RateControlledFileSystem(FileSystem.getLocal(new Configuration()),20);
+  Limiter limiter=new RateBasedLimiter(20);
+  this.rateControlledFs=new TestRateControlledFileSystem(FileSystem.getLocal(new Configuration()),20,limiter);
   this.rateControlledFs.startRateControl();
 }
