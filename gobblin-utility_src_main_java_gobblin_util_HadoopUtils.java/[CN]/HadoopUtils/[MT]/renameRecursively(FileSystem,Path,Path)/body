@@ -1,9 +1,12 @@
 {
-  FileSystem throttledFS=FileSystemUtils.getOptionallyThrottledFileSystem(fileSystem,1000);
+  FileSystem throttledFS=FileSystemUtils.getOptionallyThrottledFileSystem(fileSystem,10000);
   ExecutorService executorService=ScalingThreadPoolExecutor.newScalingThreadPool(1,100,100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("rename-thread-%d")));
   Queue<Future> futures=Queues.newConcurrentLinkedQueue();
   try {
-    futures.add(executorService.submit(new RenameRecursively(throttledFS,from,to,executorService,futures)));
+    if (!fileSystem.exists(from)) {
+      return;
+    }
+    futures.add(executorService.submit(new RenameRecursively(throttledFS,fileSystem.getFileStatus(from),to,executorService,futures)));
     while (!futures.isEmpty()) {
       try {
         futures.poll().get();
