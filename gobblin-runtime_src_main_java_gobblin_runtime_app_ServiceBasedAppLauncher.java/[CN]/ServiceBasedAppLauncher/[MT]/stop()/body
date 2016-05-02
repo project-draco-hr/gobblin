@@ -1,4 +1,8 @@
 {
+  if (!this.hasStarted) {
+    LOG.warn("ApplicationLauncher was never started");
+    return;
+  }
   if (this.hasStopped) {
     LOG.warn("ApplicationLauncher has already stopped");
     return;
