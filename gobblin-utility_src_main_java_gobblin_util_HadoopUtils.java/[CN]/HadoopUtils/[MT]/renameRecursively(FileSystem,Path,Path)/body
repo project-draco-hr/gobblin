@@ -1,17 +1,22 @@
 {
-  if (!fileSystem.exists(from)) {
-    return;
-  }
-  for (  FileStatus fromFile : fileSystem.listStatus(from)) {
-    Path relativeFilePath=new Path(StringUtils.substringAfter(fromFile.getPath().toString(),from.toString() + Path.SEPARATOR));
-    Path toFilePath=new Path(to,relativeFilePath);
-    if (!safeRenameIfNotExists(fileSystem,fromFile.getPath(),toFilePath)) {
-      if (fromFile.isDir()) {
-        renameRecursively(fileSystem,fromFile.getPath(),toFilePath);
+  FileSystem throttledFS=getOptionallyThrottledFileSystem(fileSystem,10000);
+  ExecutorService executorService=ScalingThreadPoolExecutor.newScalingThreadPool(1,100,100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("rename-thread-%d")));
+  Queue<Future> futures=Queues.newConcurrentLinkedQueue();
+  try {
+    if (!fileSystem.exists(from)) {
+      return;
+    }
+    futures.add(executorService.submit(new RenameRecursively(throttledFS,fileSystem.getFileStatus(from),to,executorService,futures)));
+    while (!futures.isEmpty()) {
+      try {
+        futures.poll().get();
       }
- else {
-        log.info(String.format("File already exists %s. Will not rewrite",toFilePath));
+ catch (      ExecutionException|InterruptedException ee) {
+        throw new IOException(ee.getCause());
       }
     }
+  }
+  finally {
+    ExecutorsUtils.shutdownExecutorService(executorService,Optional.of(log),1,TimeUnit.SECONDS);
   }
 }

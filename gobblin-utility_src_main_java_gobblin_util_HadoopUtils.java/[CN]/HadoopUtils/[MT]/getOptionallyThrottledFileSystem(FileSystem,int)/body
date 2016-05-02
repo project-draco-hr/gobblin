@@ -1,0 +1,20 @@
+{
+  if (fs instanceof Decorator) {
+    for (    Object obj : DecoratorUtils.getDecoratorLineage(fs)) {
+      if (obj instanceof RateControlledFileSystem) {
+        return fs;
+      }
+    }
+  }
+  if (qpsLimit > 0) {
+    try {
+      RateControlledFileSystem newFS=new RateControlledFileSystem(fs,qpsLimit);
+      newFS.startRateControl();
+      return newFS;
+    }
+ catch (    ExecutionException ee) {
+      throw new IOException("Could not create throttled FileSystem.",ee);
+    }
+  }
+  return fs;
+}
