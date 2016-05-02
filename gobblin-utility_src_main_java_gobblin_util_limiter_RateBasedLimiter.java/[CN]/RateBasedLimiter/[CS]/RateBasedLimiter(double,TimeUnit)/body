@@ -1,3 +1,4 @@
 {
-  this.rateLimiter=RateLimiter.create(convertRate(rateLimit,timeUnit,TimeUnit.SECONDS));
+  this.rateLimitPerSecond=convertRate(rateLimit,timeUnit,TimeUnit.SECONDS);
+  this.rateLimiter=RateLimiter.create(this.rateLimitPerSecond);
 }
