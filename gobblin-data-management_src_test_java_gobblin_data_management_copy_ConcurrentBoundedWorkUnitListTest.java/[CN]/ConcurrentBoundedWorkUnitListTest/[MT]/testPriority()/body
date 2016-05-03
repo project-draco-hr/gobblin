@@ -1,5 +1,5 @@
 {
-  ConcurrentBoundedWorkUnitList list=new ConcurrentBoundedWorkUnitList(10,new NameComparator());
+  ConcurrentBoundedWorkUnitList list=new ConcurrentBoundedWorkUnitList(10,new NameComparator(),1);
   Assert.assertTrue(addFiles(list,"z-1",10));
   Assert.assertEquals(list.getWorkUnits().size(),10);
   Assert.assertFalse(addFiles(list,"z-2",5));

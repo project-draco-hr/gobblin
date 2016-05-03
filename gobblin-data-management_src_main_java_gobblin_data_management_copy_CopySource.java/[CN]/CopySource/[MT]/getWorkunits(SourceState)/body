@@ -4,7 +4,7 @@
     final FileSystem sourceFs=getSourceFileSystem(state);
     final FileSystem targetFs=getTargetFileSystem(state);
     long maxSizePerBin=state.getPropAsLong(MAX_SIZE_MULTI_WORKUNITS,0);
-    final ConcurrentBoundedWorkUnitList workUnitList=new ConcurrentBoundedWorkUnitList(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED),new AllEqualComparator<FileSet<CopyEntity>>());
+    final ConcurrentBoundedWorkUnitList workUnitList=ConcurrentBoundedWorkUnitList.builder().maxSize(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED)).strictLimitMultiplier(2).build();
     final CopyConfiguration copyConfiguration=CopyConfiguration.builder(targetFs,state.getProperties()).build();
     DatasetsFinder<CopyableDatasetBase> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY);
     IterableDatasetFinder<CopyableDatasetBase> iterableDatasetFinder=datasetFinder instanceof IterableDatasetFinder ? (IterableDatasetFinder<CopyableDatasetBase>)datasetFinder : new IterableDatasetFinderImpl<>(datasetFinder);

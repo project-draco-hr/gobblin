@@ -4,7 +4,7 @@
   }
   try {
     Iterator<FileSet<CopyEntity>> fileSets=this.copyableDataset.getFileSetIterator(this.targetFs,this.copyConfiguration);
-    while (fileSets.hasNext() && !this.workUnitList.hasRejectedFileSet()) {
+    while (fileSets.hasNext() && !shouldStopGeneratingWorkUnits(this.workUnitList)) {
       FileSet<CopyEntity> fileSet=fileSets.next();
       String extractId=fileSet.getName().replace(':','_');
       Extract extract=new Extract(Extract.TableType.SNAPSHOT_ONLY,CopyConfiguration.COPY_PREFIX,extractId);
