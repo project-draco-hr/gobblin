@@ -1,5 +1,6 @@
 String jobId
 String containerId
+JobState jobState
 List<WorkUnit> workUnits
 TaskStateTracker taskStateTracker
 TaskExecutor taskExecutor

@@ -1,3 +1,4 @@
 {
-  this.workunit=workUnit;
+  this.workUnit=workUnit;
+  this.jobState=new State();
 }

@@ -1,3 +1,3 @@
 {
-  return Long.parseLong(getProperty(key));
+  return Long.parseLong(getProp(key));
 }

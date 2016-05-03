@@ -6,6 +6,6 @@
     workUnit.setId(taskId);
     workUnit.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);
     jobState.incrementTaskCount();
-    jobState.addTaskState(new TaskState(new WorkUnitState(workUnit)));
+    jobState.addTaskState(new TaskState(new WorkUnitState(workUnit,jobState)));
   }
 }

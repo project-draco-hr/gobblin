@@ -10,7 +10,7 @@
     }
   }
   CountDownLatch countDownLatch=new CountDownLatch(workUnits.size());
-  List<Task> tasks=runWorkUnits(jobId,workUnits,taskStateTracker,taskExecutor,countDownLatch);
+  List<Task> tasks=runWorkUnits(jobId,jobState,workUnits,taskStateTracker,taskExecutor,countDownLatch);
   logger.info(String.format("Waiting for submitted tasks of job %s to complete in container %s...",jobId,containerId));
   while (countDownLatch.getCount() > 0) {
     logger.info(String.format("%d out of %d tasks of job %s are running in container %s",countDownLatch.getCount(),workUnits.size(),jobId,containerId));

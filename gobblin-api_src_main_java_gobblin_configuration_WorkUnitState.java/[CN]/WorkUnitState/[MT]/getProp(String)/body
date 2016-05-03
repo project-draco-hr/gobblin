@@ -1,3 +1,10 @@
 {
-  return getProperty(key);
+  String value=super.getProp(key);
+  if (value == null) {
+    value=this.workUnit.getProp(key);
+  }
+  if (value == null) {
+    value=this.jobState.getProp(key);
+  }
+  return value;
 }

@@ -1,5 +1,5 @@
 {
-  JsonElement lowWatermark=this.workunit.getLowWatermark();
+  JsonElement lowWatermark=this.workUnit.getLowWatermark();
   if (lowWatermark == null) {
     return;
   }

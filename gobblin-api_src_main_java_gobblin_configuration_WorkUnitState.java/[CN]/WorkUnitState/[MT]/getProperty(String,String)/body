@@ -1,9 +1,3 @@
 {
-  String propStr=super.getProperty(key);
-  if (propStr != null) {
-    return propStr;
-  }
- else {
-    return workunit.getProperty(key,def);
-  }
+  return getProp(key,def);
 }

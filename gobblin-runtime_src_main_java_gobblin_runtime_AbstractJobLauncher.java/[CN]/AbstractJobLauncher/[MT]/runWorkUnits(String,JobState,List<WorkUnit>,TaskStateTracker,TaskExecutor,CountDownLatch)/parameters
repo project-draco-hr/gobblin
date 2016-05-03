@@ -1,4 +1,5 @@
 String jobId
+JobState jobState
 List<WorkUnit> workUnits
 TaskStateTracker stateTracker
 TaskExecutor taskExecutor

@@ -1,5 +1,5 @@
 {
-  try (ByteArrayInputStream bis=new ByteArrayInputStream(enc.decode(serialized));ObjectInputStream ois=new ObjectInputStream(bis)){
+  try (ObjectInputStream ois=new ObjectInputStream(new ByteArrayInputStream(enc.decode(serialized)))){
     return clazz.cast(ois.readObject());
   }
  catch (  ClassNotFoundException e) {

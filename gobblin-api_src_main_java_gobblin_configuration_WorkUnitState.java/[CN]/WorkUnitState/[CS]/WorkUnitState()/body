@@ -1,3 +1,4 @@
 {
-  this.workunit=WorkUnit.createEmpty();
+  this.workUnit=WorkUnit.createEmpty();
+  this.jobState=new State();
 }

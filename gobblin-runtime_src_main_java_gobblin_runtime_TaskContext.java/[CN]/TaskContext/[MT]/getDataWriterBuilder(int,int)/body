@@ -1,5 +1,5 @@
 {
-  String dataWriterBuilderClassName=this.workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS,branches,index),ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS);
+  String dataWriterBuilderClassName=this.taskState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_BUILDER_CLASS,branches,index),ConfigurationKeys.DEFAULT_WRITER_BUILDER_CLASS);
   try {
     return DataWriterBuilder.class.cast(Class.forName(dataWriterBuilderClassName).newInstance());
   }

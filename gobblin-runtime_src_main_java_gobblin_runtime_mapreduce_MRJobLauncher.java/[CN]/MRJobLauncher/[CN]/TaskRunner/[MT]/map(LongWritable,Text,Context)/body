@@ -3,13 +3,9 @@
   SerializationUtils.deserializeState(this.fs,new Path(value.toString()),workUnit);
   if (workUnit instanceof MultiWorkUnit) {
     List<WorkUnit> flattenedWorkUnits=JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits());
-    for (    WorkUnit flattenedWorkUnit : flattenedWorkUnits) {
-      flattenedWorkUnit.addAllIfNotExist(this.jobState);
-    }
     this.workUnits.addAll(flattenedWorkUnits);
   }
  else {
-    workUnit.addAllIfNotExist(this.jobState);
     this.workUnits.add(workUnit);
   }
 }

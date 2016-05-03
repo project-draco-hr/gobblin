@@ -6,6 +6,6 @@
     String key=txt.toString();
     txt.readFields(in);
     String value=txt.toString();
-    properties.put(key,value);
+    this.properties.put(key,value);
   }
 }

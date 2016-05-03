@@ -1,10 +1,6 @@
 {
-  Closer closer=Closer.create();
-  try {
-    closer.register(new LocalJobLauncher(this.jobConfig)).launchJob(null);
+  try (JobLauncher launcher=new LocalJobLauncher(this.jobConfig)){
+    launcher.launchJob(null);
   }
-  finally {
-    closer.close();
-  }
-  verifyJobState(1);
+   verifyJobState(1);
 }

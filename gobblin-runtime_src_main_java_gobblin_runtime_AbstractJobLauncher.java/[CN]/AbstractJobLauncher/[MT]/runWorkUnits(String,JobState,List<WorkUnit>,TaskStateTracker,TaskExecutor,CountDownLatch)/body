@@ -2,7 +2,7 @@
   List<Task> tasks=Lists.newArrayList();
   for (  WorkUnit workUnit : workUnits) {
     String taskId=workUnit.getProp(ConfigurationKeys.TASK_ID_KEY);
-    WorkUnitState workUnitState=new WorkUnitState(workUnit);
+    WorkUnitState workUnitState=new WorkUnitState(workUnit,jobState);
     workUnitState.setId(taskId);
     workUnitState.setProp(ConfigurationKeys.JOB_ID_KEY,jobId);
     workUnitState.setProp(ConfigurationKeys.TASK_ID_KEY,taskId);

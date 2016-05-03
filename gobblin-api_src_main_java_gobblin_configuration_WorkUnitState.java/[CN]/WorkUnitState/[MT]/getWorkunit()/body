@@ -1,3 +1,3 @@
 {
-  return new ImmutableWorkUnit(workunit);
+  return new ImmutableWorkUnit(this.workUnit);
 }

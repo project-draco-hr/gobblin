@@ -3,5 +3,5 @@
     return false;
   }
   WorkUnitState other=(WorkUnitState)object;
-  return ((this.workunit == null && other.workunit == null) || (this.workunit != null && this.workunit.equals(other.workunit))) && super.equals(other);
+  return ((this.workUnit == null && other.workUnit == null) || (this.workUnit != null && this.workUnit.equals(other.workUnit))) && ((this.jobState == null && other.jobState == null) || (this.jobState != null && this.jobState.equals(other.jobState))) && super.equals(other);
 }

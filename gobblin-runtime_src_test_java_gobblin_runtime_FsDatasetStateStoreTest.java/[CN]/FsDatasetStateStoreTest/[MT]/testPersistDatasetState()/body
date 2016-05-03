@@ -1,7 +1,6 @@
 {
   JobState.DatasetState datasetState=new JobState.DatasetState(TEST_JOB_NAME,TEST_JOB_ID);
   datasetState.setDatasetUrn(TEST_DATASET_URN);
-  datasetState.setProp("foo","bar");
   datasetState.setState(JobState.RunningState.COMMITTED);
   datasetState.setId(TEST_DATASET_URN);
   datasetState.setStartTime(this.startTime);

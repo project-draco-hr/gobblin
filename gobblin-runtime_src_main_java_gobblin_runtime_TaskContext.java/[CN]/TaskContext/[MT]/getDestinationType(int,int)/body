@@ -1,3 +1,3 @@
 {
-  return Destination.DestinationType.valueOf(this.workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,branches,index),Destination.DestinationType.HDFS.name()));
+  return Destination.DestinationType.valueOf(this.taskState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,branches,index),Destination.DestinationType.HDFS.name()));
 }

@@ -6,16 +6,12 @@
     List<WorkUnit> workUnits=Lists.newArrayList();
     if (workUnit instanceof MultiWorkUnit) {
       List<WorkUnit> flattenedWorkUnits=JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits());
-      for (      WorkUnit flattenedWorkUnit : flattenedWorkUnits) {
-        flattenedWorkUnit.addAllIfNotExist(this.jobState);
-      }
       workUnits.addAll(flattenedWorkUnits);
     }
  else {
-      workUnit.addAllIfNotExist(this.jobState);
       workUnits.add(workUnit);
     }
-    AbstractJobLauncher.runWorkUnits(this.jobId,this.participantId,workUnits,this.taskStateTracker,this.taskExecutor,this.taskStateStore,LOGGER);
+    AbstractJobLauncher.runWorkUnits(this.jobId,this.participantId,this.jobState,workUnits,this.taskStateTracker,this.taskExecutor,this.taskStateStore,LOGGER);
     return new TaskResult(TaskResult.Status.COMPLETED,String.format("completed tasks: %d",workUnits.size()));
   }
  catch (  InterruptedException ie) {

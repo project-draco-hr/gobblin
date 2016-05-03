@@ -1,5 +1,6 @@
 {
   Set<String> set=Sets.newHashSet(super.getPropertyNames());
-  set.addAll(workunit.getPropertyNames());
+  set.addAll(this.workUnit.getPropertyNames());
+  set.addAll(this.jobState.getPropertyNames());
   return set;
 }

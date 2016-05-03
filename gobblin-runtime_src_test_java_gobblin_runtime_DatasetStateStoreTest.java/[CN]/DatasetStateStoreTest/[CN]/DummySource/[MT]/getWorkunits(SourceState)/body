@@ -1,6 +1,4 @@
 {
-  SourceState previousSourceState=sourceState.getPreviousSourceState();
-  sourceState.setProp(CURRENT_RUN_KEY,previousSourceState != null ? previousSourceState.getPropAsInt(CURRENT_RUN_KEY) + 1 : 1);
   sourceState.setProp(FOO,BAR);
   if (Iterables.isEmpty(sourceState.getPreviousWorkUnitStates())) {
     return initializeWorkUnits();

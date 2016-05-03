@@ -1,4 +1,4 @@
 {
-  Extract curExtract=new Extract(workunit.getExtract());
+  Extract curExtract=new Extract(this.workUnit.getExtract());
   return curExtract;
 }
