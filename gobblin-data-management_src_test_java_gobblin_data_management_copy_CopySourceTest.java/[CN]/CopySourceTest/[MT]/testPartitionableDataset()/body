@@ -6,6 +6,7 @@
   state.setProp(DatasetUtils.DATASET_PROFILE_CLASS_KEY,TestCopyablePartitionableDatasedFinder.class.getCanonicalName());
   CopySource source=new CopySource();
   List<WorkUnit> workunits=source.getWorkunits(state);
+  workunits=JobLauncherUtils.flattenWorkUnits(workunits);
   Assert.assertEquals(workunits.size(),TestCopyableDataset.FILE_COUNT);
   Extract extractAbove=null;
   Extract extractBelow=null;

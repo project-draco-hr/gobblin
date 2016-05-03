@@ -1,0 +1,42 @@
+{
+  DiffPathSet.DiffPathSetBuilder builder=DiffPathSet.builder();
+  multiTimer.nextStage(Stages.SOURCE_PATH_LISTING);
+  Map<Path,FileStatus> sourcePaths=sourceLocation.getPaths();
+  multiTimer.nextStage(Stages.TARGET_EXISTING_PATH_LISTING);
+  Map<Path,FileStatus> targetExistingPaths=currentTargetLocation.isPresent() ? currentTargetLocation.get().getPaths() : Maps.<Path,FileStatus>newHashMap();
+  multiTimer.nextStage(Stages.DESIRED_PATHS_LISTING);
+  Map<Path,FileStatus> desiredTargetExistingPaths;
+  try {
+    desiredTargetExistingPaths=desiredTargetLocation.getPaths();
+  }
+ catch (  InvalidInputException ioe) {
+    desiredTargetExistingPaths=Maps.newHashMap();
+  }
+  multiTimer.nextStage(Stages.PATH_DIFF);
+  for (  FileStatus sourcePath : sourcePaths.values()) {
+    Path newPath=helper.getTargetPath(sourcePath.getPath(),desiredTargetLocation.getFileSystem(),partition,true);
+    boolean shouldCopy=true;
+    if (desiredTargetExistingPaths.containsKey(newPath)) {
+      FileStatus existingTargetStatus=desiredTargetExistingPaths.get(newPath);
+      if (!helper.shouldReplaceFile(existingTargetStatus,sourcePath)) {
+        shouldCopy=false;
+      }
+    }
+    if (shouldCopy) {
+      builder.copyFile(sourcePath);
+    }
+ else {
+      targetExistingPaths.remove(newPath);
+      desiredTargetExistingPaths.remove(newPath);
+    }
+  }
+  multiTimer.nextStage(Stages.COMPUTE_DELETE_PATHS);
+  for (  Path delete : targetExistingPaths.keySet()) {
+    builder.deleteFile(delete);
+    desiredTargetExistingPaths.remove(delete);
+  }
+  if (desiredTargetExistingPaths.size() > 0) {
+    throw new IOException(String.format("New table / partition would pick up existing, undesired files in target file system. " + "%s, files %s.",partition.isPresent() ? partition.get().getCompleteName() : helper.dataset.table.getCompleteName(),Arrays.toString(desiredTargetExistingPaths.keySet().toArray())));
+  }
+  return builder.build();
+}

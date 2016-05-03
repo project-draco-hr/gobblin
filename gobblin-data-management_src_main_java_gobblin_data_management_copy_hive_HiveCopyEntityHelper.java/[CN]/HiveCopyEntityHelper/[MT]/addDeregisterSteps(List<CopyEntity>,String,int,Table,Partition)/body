@@ -8,7 +8,7 @@
  else   if (deleteMethod == DeregisterFileDeleteMethod.INPUT_FORMAT) {
     InputFormat<?,?> inputFormat=HiveUtils.getInputFormat(partition.getTPartition().getSd());
     HiveLocationDescriptor targetLocation=new HiveLocationDescriptor(partition.getDataLocation(),inputFormat,this.targetFs,this.dataset.properties);
-    partitionPaths=targetLocation.getPaths();
+    partitionPaths=targetLocation.getPaths().keySet();
   }
  else   if (deleteMethod == DeregisterFileDeleteMethod.NO_DELETE) {
     partitionPaths=Lists.newArrayList();
