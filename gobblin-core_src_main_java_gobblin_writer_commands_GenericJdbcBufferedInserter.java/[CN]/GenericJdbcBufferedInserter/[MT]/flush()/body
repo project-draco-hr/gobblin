@@ -1,0 +1,5 @@
+{
+  if (currBatchSize > 0) {
+    insertBatch();
+  }
+}

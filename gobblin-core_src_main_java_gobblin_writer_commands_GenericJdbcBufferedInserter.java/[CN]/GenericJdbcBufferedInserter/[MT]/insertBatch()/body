@@ -1,0 +1,16 @@
+{
+  Callable<Void> insertCall=new Callable<Void>(){
+    @Override public Void call() throws Exception {
+      pStmt.executeBatch();
+      return null;
+    }
+  }
+;
+  try {
+    retryer.wrap(insertCall).call();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to insert.",e);
+  }
+  resetBatch();
+}

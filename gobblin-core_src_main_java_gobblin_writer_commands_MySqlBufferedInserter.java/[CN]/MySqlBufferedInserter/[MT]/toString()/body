@@ -1,3 +1,0 @@
-{
-  return String.format("MySqlBufferedWriter [pendingInserts=%s, usedBufferSize=%s, columnNames=%s, insertStmtPrefix=%s, retryer=%s, batchSize=%s, maxBufferSize=%s, maxParamSize=%s]",pendingInserts,usedBufferSize,columnNames,insertStmtPrefix,retryer,batchSize,maxBufferSize,maxParamSize);
-}

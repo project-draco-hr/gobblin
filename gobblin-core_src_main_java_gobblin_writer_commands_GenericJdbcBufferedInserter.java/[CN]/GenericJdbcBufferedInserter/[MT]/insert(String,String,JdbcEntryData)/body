@@ -1,0 +1,14 @@
+{
+  if (pStmt == null) {
+    initializeBatch(databaseName,table,jdbcEntryData);
+  }
+  int i=0;
+  for (  JdbcEntryDatum datum : jdbcEntryData) {
+    pStmt.setObject(++i,datum.getVal());
+  }
+  pStmt.addBatch();
+  currBatchSize++;
+  if (currBatchSize >= maxBatchSize) {
+    insertBatch();
+  }
+}

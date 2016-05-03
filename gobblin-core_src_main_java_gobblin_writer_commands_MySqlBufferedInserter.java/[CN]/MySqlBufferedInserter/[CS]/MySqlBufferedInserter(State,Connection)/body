@@ -1,7 +1,6 @@
 {
   this.conn=conn;
   this.batchSize=state.getPropAsInt(WRITER_JDBC_INSERT_BATCH_SIZE,DEFAULT_WRITER_JDBC_INSERT_BATCH_SIZE);
-  this.maxBufferSize=state.getPropAsInt(WRITER_JDBC_INSERT_BUFFER_SIZE,DEFAULT_WRITER_JDBC_INSERT_BUFFER_SIZE);
   if (batchSize < 1) {
     throw new IllegalArgumentException(WRITER_JDBC_INSERT_BATCH_SIZE + " should be a positive number");
   }

@@ -32,7 +32,7 @@
           return;
         }
         closer.register(WriterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
-        closer.register(ConverterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
+        closer.register(ConverterInitializerFactory.newInstance(jobState,workUnits.get())).initialize();
         TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.MR_STAGING_DATA_CLEAN);
         cleanLeftoverStagingData(workUnits.get(),jobState);
         stagingDataCleanTimer.stop();

@@ -12,9 +12,6 @@
   workUnitState.appendToListProp(ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS,fieldPairJson);
   workUnitState.appendToListProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());
   AvroToJdbcEntryConverter converter=new AvroToJdbcEntryConverter(workUnitState);
-  converter=spy(converter);
-  doReturn(null).when(converter).createConnection(workUnitState);
-  when(converter.createConnection(workUnitState)).thenReturn(null);
   Schema inputSchema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/user.avsc"));
   List<JdbcEntryMetaDatum> jdbcEntryMetaData=new ArrayList<>();
   jdbcEntryMetaData.add(new JdbcEntryMetaDatum("user_id",JdbcType.VARCHAR));

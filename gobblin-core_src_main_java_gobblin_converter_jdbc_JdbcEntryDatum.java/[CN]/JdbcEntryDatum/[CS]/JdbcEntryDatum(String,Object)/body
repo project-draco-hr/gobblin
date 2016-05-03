@@ -1,5 +1,4 @@
 {
   this.columnName=Preconditions.checkNotNull(columnName);
   this.val=Preconditions.checkNotNull(val);
-  this.byteSize=val.toString().getBytes().length;
 }

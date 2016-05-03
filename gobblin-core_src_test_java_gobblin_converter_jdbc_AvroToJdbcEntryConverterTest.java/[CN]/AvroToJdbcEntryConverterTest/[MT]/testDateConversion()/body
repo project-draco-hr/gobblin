@@ -20,9 +20,6 @@
   WorkUnitState workUnitState=new WorkUnitState();
   workUnitState.appendToListProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
   AvroToJdbcEntryConverter converter=new AvroToJdbcEntryConverter(workUnitState);
-  converter=spy(converter);
-  doReturn(null).when(converter).createConnection(workUnitState);
-  when(converter.createConnection(workUnitState)).thenReturn(null);
   Map<String,JdbcType> dateColumnMapping=Maps.newHashMap();
   dateColumnMapping.put("date_of_birth",JdbcType.DATE);
   dateColumnMapping.put("last_modified",JdbcType.TIME);
