@@ -1,0 +1,26 @@
+{
+  FileSystem fs=Mockito.mock(FileSystem.class);
+  Path sourcePath=new Path("/source");
+  Path s1=new Path(sourcePath,"d1");
+  FileStatus[] sourceStatuses=new FileStatus[10000];
+  FileStatus[] targetStatuses=new FileStatus[1000];
+  for (int i=0; i < sourceStatuses.length; i++) {
+    sourceStatuses[i]=getFileStatus(new Path(s1,"path" + i),false);
+  }
+  for (int i=0; i < targetStatuses.length; i++) {
+    targetStatuses[i]=getFileStatus(new Path(s1,"path" + i),false);
+  }
+  Mockito.when(fs.getUri()).thenReturn(new URI("file:///"));
+  Mockito.when(fs.getFileStatus(sourcePath)).thenAnswer(getDelayedAnswer(getFileStatus(sourcePath,true)));
+  Mockito.when(fs.exists(sourcePath)).thenAnswer(getDelayedAnswer(true));
+  Mockito.when(fs.listStatus(sourcePath)).thenAnswer(getDelayedAnswer(new FileStatus[]{getFileStatus(s1,true)}));
+  Mockito.when(fs.exists(s1)).thenAnswer(getDelayedAnswer(true));
+  Mockito.when(fs.listStatus(s1)).thenAnswer(getDelayedAnswer(sourceStatuses));
+  Path target=new Path("/target");
+  Path s1Target=new Path(target,"d1");
+  Mockito.when(fs.exists(target)).thenAnswer(getDelayedAnswer(true));
+  Mockito.when(fs.exists(s1Target)).thenAnswer(getDelayedAnswer(true));
+  Mockito.when(fs.mkdirs(Mockito.any(Path.class))).thenAnswer(getDelayedAnswer(true));
+  Mockito.when(fs.rename(Mockito.any(Path.class),Mockito.any(Path.class))).thenAnswer(getDelayedAnswer(true));
+  HadoopUtils.renameRecursively(fs,sourcePath,target);
+}
