@@ -1,0 +1,11 @@
+{
+  if (this.currentStage != null) {
+    long time=System.currentTimeMillis() - this.currentStageStart;
+    this.timings.add(new Stage(this.currentStage,time));
+    if (reportAsMetrics && submitter.getMetricContext().isPresent()) {
+      String timerName=submitter.getNamespace() + "." + name+ "."+ this.currentStage;
+      submitter.getMetricContext().get().timer(timerName).update(time,TimeUnit.MILLISECONDS);
+    }
+  }
+  this.currentStage=null;
+}

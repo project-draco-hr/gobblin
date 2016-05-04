@@ -1,7 +1,10 @@
 {
   DiffPathSet.DiffPathSetBuilder builder=DiffPathSet.builder();
+  multiTimer.nextStage(Stages.SOURCE_PATH_LISTING);
   Set<Path> sourcePaths=sourceLocation.getPaths();
+  multiTimer.nextStage(Stages.TARGET_EXISTING_PATH_LISTING);
   Set<Path> targetExistingPaths=currentTargetLocation.isPresent() ? currentTargetLocation.get().getPaths() : Sets.<Path>newHashSet();
+  multiTimer.nextStage(Stages.DESIRED_PATHS_LISTING);
   Set<Path> desiredTargetExistingPaths;
   try {
     desiredTargetExistingPaths=desiredTargetLocation.getPaths();
@@ -9,6 +12,7 @@
  catch (  InvalidInputException ioe) {
     desiredTargetExistingPaths=Sets.newHashSet();
   }
+  multiTimer.nextStage(Stages.PATH_DIFF);
   for (  Path sourcePath : sourcePaths) {
     Path newPath=getTargetPath(sourcePath,desiredTargetLocation.getFileSystem(),partition,true);
     boolean shouldCopy=true;
@@ -27,6 +31,7 @@
       desiredTargetExistingPaths.remove(newPath);
     }
   }
+  multiTimer.nextStage(Stages.COMPUTE_DELETE_PATHS);
   for (  Path delete : targetExistingPaths) {
     builder.deleteFile(delete);
     desiredTargetExistingPaths.remove(delete);
