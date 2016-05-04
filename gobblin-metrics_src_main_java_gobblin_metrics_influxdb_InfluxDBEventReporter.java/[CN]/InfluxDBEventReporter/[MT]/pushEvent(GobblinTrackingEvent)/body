@@ -1,6 +1,6 @@
 {
   Map<String,String> metadata=event.getMetadata();
-  String name=JOINER.join(metricPrefix,metadata.get(METADATA_TASK_ID),EVENTS_QUALIFIER,event.getName());
+  String name=getMetricName(metadata,event.getName());
   long timestamp=Long.valueOf(event.getTimestamp());
   MultiPartEvent multiPartEvent=MultiPartEvent.getEvent(metadata.get(EventSubmitter.EVENT_TYPE));
   if (multiPartEvent == null) {

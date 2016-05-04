@@ -6,6 +6,5 @@
  else {
     this.graphitePusher=this.closer.register(new GraphitePusher(builder.hostname,builder.port,builder.connectionType));
   }
-  this.metricPrefix=builder.metricPrefix;
   this.emitValueAsKey=builder.emitValueAsKey;
 }

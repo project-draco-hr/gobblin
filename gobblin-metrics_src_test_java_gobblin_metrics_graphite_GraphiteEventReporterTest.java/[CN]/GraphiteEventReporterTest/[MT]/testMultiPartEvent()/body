@@ -1,6 +1,8 @@
 {
   try (MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".testGraphiteReporter2").build();GraphiteEventReporter graphiteEventReporter=getBuilder(metricContext).withEmitValueAsKey(true).build()){
     Map<String,String> metadata=Maps.newHashMap();
+    metadata.put(JobEvent.METADATA_JOB_ID,"job2");
+    metadata.put(TaskEvent.METADATA_TASK_ID,"task2");
     metadata.put(EventSubmitter.EVENT_TYPE,"JobStateEvent");
     metadata.put(JobEvent.METADATA_JOB_START_TIME,"1457736710521");
     metadata.put(JobEvent.METADATA_JOB_END_TIME,"1457736710734");
@@ -21,7 +23,7 @@
  catch (    InterruptedException ex) {
       Thread.currentThread().interrupt();
     }
-    String prefix="gobblin.metrics.graphite.GraphiteEventReporterTest.testGraphiteReporter2.events.JobStateEvent";
+    String prefix="gobblin.metrics.job2.task2.events.JobStateEvent";
     Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobBeginTime").getValue(),"1457736710521");
     Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobEndTime").getValue(),"1457736710734");
     Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobLaunchedTasks").getValue(),"3");

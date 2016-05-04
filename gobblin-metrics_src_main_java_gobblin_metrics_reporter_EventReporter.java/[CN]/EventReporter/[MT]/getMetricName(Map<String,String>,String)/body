@@ -1,0 +1,3 @@
+{
+  return JOINER.join(METRIC_KEY_PREFIX,metadata.get(METADATA_JOB_ID),metadata.get(METADATA_TASK_ID),EVENTS_QUALIFIER,eventName);
+}

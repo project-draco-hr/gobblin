@@ -1,8 +1,9 @@
 {
   boolean metricsEnabled=Utils.getPropAsBoolean(properties,ConfigurationKeys.METRICS_REPORTING_GRAPHITE_METRICS_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_METRICS_ENABLED);
+  if (metricsEnabled)   LOGGER.info("Reporting metrics to Graphite");
   boolean eventsEnabled=Utils.getPropAsBoolean(properties,ConfigurationKeys.METRICS_REPORTING_GRAPHITE_EVENTS_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_EVENTS_ENABLED);
+  if (eventsEnabled)   LOGGER.info("Reporting events to Graphite");
   if (!metricsEnabled && !eventsEnabled) {
-    LOGGER.info("Not reporting metrics and events to Graphite");
     return;
   }
   try {
@@ -31,22 +32,16 @@
       LOGGER.error("Failed to create Graphite metrics reporter. Will not report metrics to Graphite.",e);
     }
   }
- else {
-    LOGGER.info("Not reporting metrics to Graphite");
-  }
   if (eventsEnabled) {
     boolean emitValueAsKey=Utils.getPropAsBoolean(properties,ConfigurationKeys.METRICS_REPORTING_GRAPHITE_EVENTS_VALUE_AS_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_EVENTS_VALUE_AS_KEY);
     String eventsPortProp=properties.getProperty(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_EVENTS_PORT);
     int eventsPort=(eventsPortProp == null) ? (metricsEnabled ? port : Integer.parseInt(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_PORT)) : Integer.parseInt(eventsPortProp);
     try {
-      GraphiteEventReporter eventReporter=GraphiteEventReporter.Factory.forContext(this.metricContext).withConnectionType(connectionType).withConnection(hostname,eventsPort).withEmitValueAsKey(emitValueAsKey).build();
+      GraphiteEventReporter eventReporter=GraphiteEventReporter.Factory.forContext(RootMetricContext.get()).withConnectionType(connectionType).withConnection(hostname,eventsPort).withEmitValueAsKey(emitValueAsKey).build();
       this.scheduledReporters.add(this.codahaleReportersCloser.register(eventReporter));
     }
  catch (    IOException e) {
       LOGGER.error("Failed to create Graphite event reporter. Will not report events to Graphite.",e);
     }
-  }
- else {
-    LOGGER.info("Not reporting events to Graphite");
   }
 }

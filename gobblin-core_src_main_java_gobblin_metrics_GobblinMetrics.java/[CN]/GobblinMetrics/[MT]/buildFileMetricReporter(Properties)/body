@@ -1,8 +1,8 @@
 {
   if (!Boolean.valueOf(properties.getProperty(ConfigurationKeys.METRICS_REPORTING_FILE_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_FILE_ENABLED))) {
-    LOGGER.info("Not reporting metrics to log files");
     return;
   }
+  LOGGER.info("Reporting metrics to log files");
   if (!properties.containsKey(ConfigurationKeys.METRICS_LOG_DIR_KEY)) {
     LOGGER.error("Not reporting metrics to log files because " + ConfigurationKeys.METRICS_LOG_DIR_KEY + " is undefined");
     return;
