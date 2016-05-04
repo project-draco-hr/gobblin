@@ -1,0 +1,9 @@
+{
+  return new Answer<T>(){
+    @Override public T answer(    InvocationOnMock invocation) throws Throwable {
+      Thread.sleep(50);
+      return result;
+    }
+  }
+;
+}
