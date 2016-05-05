@@ -1,0 +1,4 @@
+{
+  String metricName=getKey(prefix,name);
+  pushMetric(metricName,gauge.getValue().toString(),timestamp);
+}

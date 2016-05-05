@@ -1,0 +1,4 @@
+{
+  String metricKey=(key == null) ? MetricRegistry.name(CONTEXT_NAME,metricPrefix,metric) : MetricRegistry.name(CONTEXT_NAME,metricPrefix,metric,key.getName());
+  return influxDB.getMetric(metricKey).getValue();
+}

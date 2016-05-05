@@ -1,8 +1,8 @@
 {
   ImmutableMap.Builder<String,String> jobMetadataBuilder=new ImmutableMap.Builder<String,String>();
-  jobMetadataBuilder.put(JOB_ID,jobState.getJobId());
-  jobMetadataBuilder.put(JOB_NAME,jobState.getJobName());
-  jobMetadataBuilder.put(JOB_TRACKING_URL,jobState.getTrackingURL().or(UNKNOWN_VALUE));
+  jobMetadataBuilder.put(METADATA_JOB_ID,jobState.getJobId());
+  jobMetadataBuilder.put(METADATA_JOB_NAME,jobState.getJobName());
+  jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL,jobState.getTrackingURL().or(UNKNOWN_VALUE));
   Map<String,String> jobMetadata=jobMetadataBuilder.build();
   for (  TaskState taskState : jobState.getTaskStates()) {
     submitTaskStateEvent(taskState,jobMetadata);

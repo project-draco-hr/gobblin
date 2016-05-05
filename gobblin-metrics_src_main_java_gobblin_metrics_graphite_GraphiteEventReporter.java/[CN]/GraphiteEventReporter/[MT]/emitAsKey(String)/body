@@ -1,0 +1,3 @@
+{
+  return emitValueAsKey && (field.equals(TaskEvent.METADATA_TASK_WORKING_STATE) || field.equals(JobEvent.METADATA_JOB_STATE));
+}

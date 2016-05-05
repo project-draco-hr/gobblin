@@ -1,0 +1,4 @@
+{
+  String metricName=getKey(prefix,name,COUNT.getName());
+  points.add(buildMetricAsPoint(metricName,counter.getCount(),false,timestamp));
+}

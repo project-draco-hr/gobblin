@@ -1,0 +1,4 @@
+{
+  reportCounter(points,prefix,name,histogram,timestamp);
+  reportSnapshot(points,prefix,name,histogram.getSnapshot(),timestamp,false);
+}

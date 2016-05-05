@@ -1,0 +1,31 @@
+{
+  String prefix=getMetricNamePrefix(tags);
+  long timestamp=System.currentTimeMillis() / 1000l;
+  try {
+    for (    Map.Entry<String,Gauge> gauge : gauges.entrySet()) {
+      reportGauge(prefix,gauge.getKey(),gauge.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Counter> counter : counters.entrySet()) {
+      reportCounter(prefix,counter.getKey(),counter.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Histogram> histogram : histograms.entrySet()) {
+      reportHistogram(prefix,histogram.getKey(),histogram.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Meter> meter : meters.entrySet()) {
+      reportMetered(prefix,meter.getKey(),meter.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Timer> timer : timers.entrySet()) {
+      reportTimer(prefix,timer.getKey(),timer.getValue(),timestamp);
+    }
+    this.graphitePusher.flush();
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Error sending metrics to Graphite",ioe);
+    try {
+      this.graphitePusher.close();
+    }
+ catch (    IOException innerIoe) {
+      LOGGER.error("Error closing the Graphite sender",innerIoe);
+    }
+  }
+}

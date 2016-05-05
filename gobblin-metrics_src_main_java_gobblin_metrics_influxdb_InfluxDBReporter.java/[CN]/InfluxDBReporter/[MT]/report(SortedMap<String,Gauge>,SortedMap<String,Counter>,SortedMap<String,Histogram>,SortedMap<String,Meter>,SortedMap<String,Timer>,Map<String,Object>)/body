@@ -1,0 +1,26 @@
+{
+  String prefix=getMetricNamePrefix(tags);
+  long timestamp=System.currentTimeMillis();
+  List<Point> points=Lists.newArrayList();
+  try {
+    for (    Map.Entry<String,Gauge> gauge : gauges.entrySet()) {
+      reportGauge(points,prefix,gauge.getKey(),gauge.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Counter> counter : counters.entrySet()) {
+      reportCounter(points,prefix,counter.getKey(),counter.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Histogram> histogram : histograms.entrySet()) {
+      reportHistogram(points,prefix,histogram.getKey(),histogram.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Meter> meter : meters.entrySet()) {
+      reportMetered(points,prefix,meter.getKey(),meter.getValue(),timestamp);
+    }
+    for (    Map.Entry<String,Timer> timer : timers.entrySet()) {
+      reportTimer(points,prefix,timer.getKey(),timer.getValue(),timestamp);
+    }
+    influxDBPusher.push(points);
+  }
+ catch (  IOException ioe) {
+    LOGGER.error("Error sending metrics to InfluxDB",ioe);
+  }
+}

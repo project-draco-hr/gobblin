@@ -13,6 +13,8 @@
   }
   buildFileMetricReporter(properties);
   buildKafkaMetricReporter(properties);
+  buildGraphiteMetricReporter(properties);
+  buildInfluxDBMetricReporter(properties);
   buildCustomMetricReporters(properties);
   RootMetricContext.get().startReporting();
   for (  com.codahale.metrics.ScheduledReporter scheduledReporter : this.scheduledReporters) {

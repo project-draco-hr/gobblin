@@ -1,12 +1,12 @@
 {
   try {
     this.taskStateCollectorService.startAsync().awaitRunning();
-    TimingEvent jobSubmissionTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.HELIX_JOB_SUBMISSION);
+    TimingEvent jobSubmissionTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.HELIX_JOB_SUBMISSION);
     submitJobToHelix(createJob(workUnits));
     jobSubmissionTimer.stop();
     LOGGER.info(String.format("Submitted job %s to Helix",this.jobContext.getJobId()));
     this.jobSubmitted=true;
-    TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.HELIX_JOB_RUN);
+    TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.HELIX_JOB_RUN);
     waitForJobCompletion();
     jobRunTimer.stop();
     LOGGER.info(String.format("Job %s completed",this.jobContext.getJobId()));

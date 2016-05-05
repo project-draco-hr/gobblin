@@ -1,0 +1,5 @@
+{
+  GraphiteConnectionType connectionType=Mockito.mock(GraphiteConnectionType.class);
+  Mockito.when(connectionType.createConnection(DEFAULT_HOST,DEFAULT_PORT)).thenReturn(graphiteSender);
+  this.graphitePusher=new GraphitePusher(DEFAULT_HOST,DEFAULT_PORT,connectionType);
+}

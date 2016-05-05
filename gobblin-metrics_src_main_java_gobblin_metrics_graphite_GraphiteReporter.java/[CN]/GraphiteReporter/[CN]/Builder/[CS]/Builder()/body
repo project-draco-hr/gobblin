@@ -1,0 +1,7 @@
+{
+  super();
+  this.name="GraphiteReporter";
+  this.graphitePusher=Optional.absent();
+  this.filter=MetricFilter.ALL;
+  this.connectionType=GraphiteConnectionType.TCP;
+}

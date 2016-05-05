@@ -1,0 +1,4 @@
+String metricName
+Number value
+boolean toDuration
+long timestamp

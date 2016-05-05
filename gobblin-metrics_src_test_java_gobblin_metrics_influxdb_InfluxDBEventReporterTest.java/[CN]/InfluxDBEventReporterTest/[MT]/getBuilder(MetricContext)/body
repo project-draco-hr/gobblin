@@ -1,0 +1,3 @@
+{
+  return InfluxDBEventReporter.Factory.forContext(metricContext).withInfluxDBPusher(influxDBPusher);
+}

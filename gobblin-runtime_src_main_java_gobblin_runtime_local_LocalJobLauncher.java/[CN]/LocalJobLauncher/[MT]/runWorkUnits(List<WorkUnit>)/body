@@ -1,5 +1,5 @@
 {
-  TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_PREPARATION);
+  TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.WORK_UNITS_PREPARATION);
   List<WorkUnit> workUnitsToRun=JobLauncherUtils.flattenWorkUnits(workUnits);
   workUnitsPreparationTimer.stop();
   if (workUnitsToRun.isEmpty()) {
@@ -11,7 +11,7 @@
   for (  WorkUnit workUnit : workUnitsToRun) {
     workUnit.addAllIfNotExist(jobState);
   }
-  TimingEvent workUnitsRunTimer=this.eventSubmitter.getTimingEvent(TimingEventNames.RunJobTimings.WORK_UNITS_RUN);
+  TimingEvent workUnitsRunTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.WORK_UNITS_RUN);
   this.countDownLatch=new CountDownLatch(workUnitsToRun.size());
   AbstractJobLauncher.runWorkUnits(this.jobContext.getJobId(),this.jobContext.getJobState(),workUnitsToRun,this.taskStateTracker,this.taskExecutor,this.countDownLatch);
   LOG.info(String.format("Waiting for submitted tasks of job %s to complete...",jobId));

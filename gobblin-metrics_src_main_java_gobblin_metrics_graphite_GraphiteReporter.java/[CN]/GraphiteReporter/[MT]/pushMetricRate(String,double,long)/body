@@ -1,0 +1,3 @@
+{
+  pushMetric(metricName,getValue(convertRate(value)),timestamp);
+}

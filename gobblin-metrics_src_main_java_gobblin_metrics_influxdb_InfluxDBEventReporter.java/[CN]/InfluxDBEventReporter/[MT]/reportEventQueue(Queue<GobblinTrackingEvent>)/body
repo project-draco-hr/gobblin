@@ -1,0 +1,11 @@
+{
+  GobblinTrackingEvent nextEvent;
+  try {
+    while (null != (nextEvent=queue.poll())) {
+      pushEvent(nextEvent);
+    }
+  }
+ catch (  IOException e) {
+    LOGGER.error("Error sending event to InfluxDB",e);
+  }
+}

@@ -1,0 +1,47 @@
+{
+  boolean metricsEnabled=Utils.getPropAsBoolean(properties,ConfigurationKeys.METRICS_REPORTING_GRAPHITE_METRICS_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_METRICS_ENABLED);
+  if (metricsEnabled)   LOGGER.info("Reporting metrics to Graphite");
+  boolean eventsEnabled=Utils.getPropAsBoolean(properties,ConfigurationKeys.METRICS_REPORTING_GRAPHITE_EVENTS_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_EVENTS_ENABLED);
+  if (eventsEnabled)   LOGGER.info("Reporting events to Graphite");
+  if (!metricsEnabled && !eventsEnabled) {
+    return;
+  }
+  try {
+    Preconditions.checkArgument(properties.containsKey(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_HOSTNAME),"Graphite hostname is missing.");
+  }
+ catch (  IllegalArgumentException exception) {
+    LOGGER.error("Not reporting to Graphite due to missing Graphite configuration(s).",exception);
+    return;
+  }
+  String hostname=properties.getProperty(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_HOSTNAME);
+  int port=Integer.parseInt(properties.getProperty(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_PORT,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_PORT));
+  GraphiteConnectionType connectionType;
+  String type=properties.getProperty(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_SENDING_TYPE,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_SENDING_TYPE).toUpperCase();
+  try {
+    connectionType=GraphiteConnectionType.valueOf(type);
+  }
+ catch (  IllegalArgumentException exception) {
+    LOGGER.warn("Graphite Reporter connection type " + type + " not recognized. Will use TCP for sending.",exception);
+    connectionType=GraphiteConnectionType.TCP;
+  }
+  if (metricsEnabled) {
+    try {
+      GraphiteReporter.Factory.newBuilder().withConnectionType(connectionType).withConnection(hostname,port).withMetricContextName(this.metricContext.getName()).build(properties);
+    }
+ catch (    IOException e) {
+      LOGGER.error("Failed to create Graphite metrics reporter. Will not report metrics to Graphite.",e);
+    }
+  }
+  if (eventsEnabled) {
+    boolean emitValueAsKey=Utils.getPropAsBoolean(properties,ConfigurationKeys.METRICS_REPORTING_GRAPHITE_EVENTS_VALUE_AS_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_GRAPHITE_EVENTS_VALUE_AS_KEY);
+    String eventsPortProp=properties.getProperty(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_EVENTS_PORT);
+    int eventsPort=(eventsPortProp == null) ? (metricsEnabled ? port : Integer.parseInt(ConfigurationKeys.METRICS_REPORTING_GRAPHITE_PORT)) : Integer.parseInt(eventsPortProp);
+    try {
+      GraphiteEventReporter eventReporter=GraphiteEventReporter.Factory.forContext(RootMetricContext.get()).withConnectionType(connectionType).withConnection(hostname,eventsPort).withEmitValueAsKey(emitValueAsKey).build();
+      this.scheduledReporters.add(this.codahaleReportersCloser.register(eventReporter));
+    }
+ catch (    IOException e) {
+      LOGGER.error("Failed to create Graphite event reporter. Will not report events to Graphite.",e);
+    }
+  }
+}

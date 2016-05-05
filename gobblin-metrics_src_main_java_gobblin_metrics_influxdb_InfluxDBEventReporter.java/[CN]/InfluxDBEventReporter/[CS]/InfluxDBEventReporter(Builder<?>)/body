@@ -1,0 +1,9 @@
+{
+  super(builder);
+  if (builder.influxDBPusher.isPresent()) {
+    this.influxDBPusher=builder.influxDBPusher.get();
+  }
+ else {
+    this.influxDBPusher=new InfluxDBPusher.Builder(builder.url,builder.username,builder.password,builder.database,builder.connectionType).build();
+  }
+}

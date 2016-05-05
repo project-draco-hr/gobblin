@@ -1,0 +1,4 @@
+{
+  reportSnapshot(prefix,name,timer.getSnapshot(),timestamp,true);
+  reportMetered(prefix,name,timer,timestamp);
+}

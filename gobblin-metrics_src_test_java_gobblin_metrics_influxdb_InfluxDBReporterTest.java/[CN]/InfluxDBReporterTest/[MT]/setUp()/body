@@ -1,0 +1,5 @@
+{
+  InfluxDBConnectionType connectionType=Mockito.mock(InfluxDBConnectionType.class);
+  Mockito.when(connectionType.createConnection(DEFAULT_URL,DEFAULT_USERNAME,DEFAULT_PASSWORD)).thenReturn(influxDB);
+  this.influxDBPusher=new InfluxDBPusher.Builder(DEFAULT_URL,DEFAULT_USERNAME,DEFAULT_PASSWORD,DEFAULT_DATABASE,connectionType).build();
+}

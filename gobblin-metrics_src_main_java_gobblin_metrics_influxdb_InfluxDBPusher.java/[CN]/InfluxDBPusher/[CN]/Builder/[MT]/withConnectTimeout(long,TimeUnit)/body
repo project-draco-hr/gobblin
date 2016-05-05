@@ -1,0 +1,4 @@
+{
+  influxDB.setConnectTimeout(connectTimeout,timeUnit);
+  return this;
+}

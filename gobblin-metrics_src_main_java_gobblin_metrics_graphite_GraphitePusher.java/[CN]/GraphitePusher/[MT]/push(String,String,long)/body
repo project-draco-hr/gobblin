@@ -1,0 +1,3 @@
+{
+  graphiteSender.send(name,value,timestamp);
+}

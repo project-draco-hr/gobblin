@@ -1,0 +1,24 @@
+{
+  try (MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".testInfluxDBReporter1").build();InfluxDBEventReporter influxEventReporter=getBuilder(metricContext).build()){
+    Map<String,String> metadata=Maps.newHashMap();
+    metadata.put(JobEvent.METADATA_JOB_ID,"job1");
+    metadata.put(TaskEvent.METADATA_TASK_ID,"task1");
+    metricContext.submitEvent(GobblinTrackingEvent.newBuilder().setName(JobEvent.TASKS_SUBMITTED).setNamespace(NAMESPACE).setMetadata(metadata).build());
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    influxEventReporter.report();
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    TimestampedValue retrievedEvent=influxDB.getMetric("gobblin.metrics.job1.task1.events.TasksSubmitted");
+    Assert.assertEquals(retrievedEvent.getValue(),"0.0");
+    Assert.assertTrue(retrievedEvent.getTimestamp() <= (System.currentTimeMillis()));
+  }
+ }
