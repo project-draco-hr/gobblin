@@ -1,0 +1,8 @@
+{
+  List<WorkUnit> workUnitList=Lists.newArrayList(getWorkUnitWithWeight(Long.MAX_VALUE),getWorkUnitWithWeight(Long.MAX_VALUE),getWorkUnitWithWeight(10));
+  List<WorkUnit> multiWorkUnits=new WorstFitDecreasingBinPacking(100).pack(workUnitList,weighter);
+  Assert.assertEquals(multiWorkUnits.size(),3);
+  Assert.assertEquals(((MultiWorkUnit)multiWorkUnits.get(0)).getWorkUnits().size(),1);
+  Assert.assertEquals(((MultiWorkUnit)multiWorkUnits.get(1)).getWorkUnits().size(),1);
+  Assert.assertEquals(((MultiWorkUnit)multiWorkUnits.get(2)).getWorkUnits().size(),1);
+}

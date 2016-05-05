@@ -1,0 +1,3 @@
+{
+  return Long.compare(getMultiWorkUnitWeight(o1),getMultiWorkUnitWeight(o2));
+}

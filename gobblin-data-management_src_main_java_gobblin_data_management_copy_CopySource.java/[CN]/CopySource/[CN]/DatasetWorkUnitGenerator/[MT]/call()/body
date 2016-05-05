@@ -20,6 +20,7 @@
         workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,datasetAndPartition.toString());
         workUnit.setProp(SlaEventKeys.DATASET_URN_KEY,this.copyableDataset.datasetURN());
         workUnit.setProp(SlaEventKeys.PARTITION_KEY,copyEntity.getFileSet());
+        setWorkUnitWeight(workUnit,copyEntity);
         computeAndSetWorkUnitGuid(workUnit);
         workUnitsForPartition.add(workUnit);
       }

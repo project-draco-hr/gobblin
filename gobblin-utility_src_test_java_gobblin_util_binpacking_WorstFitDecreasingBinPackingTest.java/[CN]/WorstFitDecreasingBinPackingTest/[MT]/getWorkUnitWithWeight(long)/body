@@ -1,0 +1,5 @@
+{
+  WorkUnit workUnit=new WorkUnit(new Extract(Extract.TableType.APPEND_ONLY,"",""));
+  workUnit.setProp(WEIGHT,Long.toString(weight));
+  return workUnit;
+}

@@ -1,0 +1,37 @@
+{
+  if (this.maxWeightPerUnit <= 0) {
+    return workUnitsIn;
+  }
+  List<WorkUnit> workUnits=Lists.newArrayList(workUnitsIn);
+  long totalSize=0;
+  for (  WorkUnit workUnit : workUnits) {
+    totalSize+=weighter.weight(workUnit);
+  }
+  int estimatedMultiWorkUnits=Math.min((int)((totalSize - 1) / this.maxWeightPerUnit) + 1,workUnits.size());
+  MinMaxPriorityQueue<MultiWorkUnit> pQueue=MinMaxPriorityQueue.orderedBy(new MultiWorkUnitComparator()).create();
+  for (int i=0; i < estimatedMultiWorkUnits; i++) {
+    pQueue.add(MultiWorkUnit.createEmpty());
+  }
+  Collections.sort(workUnits,Collections.reverseOrder(new WeightComparator(weighter)));
+  for (  WorkUnit workUnit : workUnits) {
+    MultiWorkUnit lightestMultiWorkUnit=pQueue.peek();
+    long weight=Math.max(1,weighter.weight(workUnit));
+    long multiWorkUnitWeight=getMultiWorkUnitWeight(lightestMultiWorkUnit);
+    if (multiWorkUnitWeight == 0 || (weight + multiWorkUnitWeight <= this.maxWeightPerUnit && weight + multiWorkUnitWeight > multiWorkUnitWeight)) {
+      addToMultiWorkUnit(lightestMultiWorkUnit,workUnit,weight);
+      pQueue.poll();
+      pQueue.add(lightestMultiWorkUnit);
+    }
+ else {
+      MultiWorkUnit newMultiWorkUnit=MultiWorkUnit.createEmpty();
+      addToMultiWorkUnit(newMultiWorkUnit,workUnit,weight);
+      pQueue.add(newMultiWorkUnit);
+    }
+  }
+  return Lists.<WorkUnit>newArrayList(Iterables.filter(pQueue,new Predicate<MultiWorkUnit>(){
+    @Override public boolean apply(    @Nullable MultiWorkUnit input){
+      return getMultiWorkUnitWeight(input) > 0;
+    }
+  }
+));
+}
