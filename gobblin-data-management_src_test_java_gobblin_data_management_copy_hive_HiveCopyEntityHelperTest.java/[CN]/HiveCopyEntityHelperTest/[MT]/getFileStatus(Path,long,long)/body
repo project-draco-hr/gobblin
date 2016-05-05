@@ -1,0 +1,3 @@
+{
+  return new FileStatus(len,false,0,0,modtime,path);
+}

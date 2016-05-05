@@ -1,12 +1,8 @@
 {
-  Set<Path> result=new HashSet<Path>();
   if (!this.fs.exists(this.rootPath)) {
-    return result;
+    return Sets.newHashSet();
   }
   PathFilter actualFilter=skipHiddenPaths ? new AndPathFilter(new HiddenFilter(),this.pathFilter) : this.pathFilter;
   List<FileStatus> files=FileListUtils.listFilesRecursively(this.fs,this.rootPath,actualFilter);
-  for (  FileStatus file : files) {
-    result.add(file.getPath());
-  }
-  return result;
+  return Sets.newHashSet(files);
 }

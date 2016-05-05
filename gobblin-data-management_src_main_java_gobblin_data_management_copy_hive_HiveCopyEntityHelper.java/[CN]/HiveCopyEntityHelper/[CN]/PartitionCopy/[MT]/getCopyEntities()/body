@@ -38,7 +38,7 @@
     HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forPartition(targetPartition,targetFs,properties);
     Optional<HiveLocationDescriptor> existingTargetLocation=existingTargetPartition.isPresent() ? Optional.of(HiveLocationDescriptor.forPartition(existingTargetPartition.get(),targetFs,properties)) : Optional.<HiveLocationDescriptor>absent();
     multiTimer.nextStage(Stages.FULL_PATH_DIFF);
-    DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer);
+    DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer,HiveCopyEntityHelper.this);
     multiTimer.nextStage(Stages.CREATE_DELETE_UNITS);
     if (diffPathSet.pathsToDelete.size() > 0) {
       DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,dataset.properties);
