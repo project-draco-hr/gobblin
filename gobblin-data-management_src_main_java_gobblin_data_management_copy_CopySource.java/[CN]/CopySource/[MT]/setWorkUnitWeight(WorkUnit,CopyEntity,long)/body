@@ -3,6 +3,6 @@
   if (copyEntity instanceof CopyableFile) {
     weight=((CopyableFile)copyEntity).getOrigin().getLen();
   }
-  weight=Math.max(weight,10000);
+  weight=Math.max(weight,minWeight);
   workUnit.setProp(WORK_UNIT_WEIGHT,Long.toString(weight));
 }
