@@ -1,9 +1,8 @@
 {
   Path configStoreDir=new Path(SimpleHDFSConfigStore.CONFIG_STORE_NAME);
-  FileSystem fs=null;
+  FileSystem localFS=FileSystem.getLocal(new Configuration());
   try {
-    fs=FileSystem.getLocal(new Configuration());
-    fs.mkdirs(configStoreDir);
+    Assert.assertTrue(localFS.mkdirs(configStoreDir));
     SimpleLocalHDFSConfigStoreFactory simpleLocalHDFSConfigStoreFactory=new SimpleLocalHDFSConfigStoreFactory();
     URI configKey=new URI(simpleLocalHDFSConfigStoreFactory.getScheme(),"","","","");
     SimpleHDFSConfigStore simpleHDFSConfigStore=simpleLocalHDFSConfigStoreFactory.createConfigStore(configKey);
@@ -12,8 +11,6 @@
     Assert.assertEquals(simpleHDFSConfigStore.getStoreURI().getPath(),System.getProperty("user.dir"));
   }
   finally {
-    if (fs != null && fs.exists(configStoreDir)) {
-      fs.delete(configStoreDir,true);
-    }
+    localFS.delete(configStoreDir,true);
   }
 }

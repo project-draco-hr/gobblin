@@ -6,5 +6,8 @@
   if (Strings.isNullOrEmpty(configKey.getAuthority())) {
     return new URI(getPhysicalScheme(),getDefaultAuthority(),"","","");
   }
-  return new URI(getPhysicalScheme(),configKey.getAuthority(),"","","");
+ else {
+    String uriPhysicalScheme=configKeyScheme.substring(SIMPLE_HDFS_SCHEME_PREFIX.length(),configKeyScheme.length());
+    return new URI(uriPhysicalScheme,configKey.getAuthority(),"","","");
+  }
 }

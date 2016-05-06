@@ -1,0 +1,3 @@
+{
+  this(ConfigFactory.load().getConfig(DEFAULT_CONFIG_NAMESPACE));
+}

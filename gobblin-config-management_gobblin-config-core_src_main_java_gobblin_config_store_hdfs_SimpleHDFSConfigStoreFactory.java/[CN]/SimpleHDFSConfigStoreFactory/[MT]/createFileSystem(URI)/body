@@ -1,6 +1,6 @@
 {
   try {
-    return FileSystem.get(createHDFSURI(configKey),new Configuration());
+    return FileSystem.get(createFileSystemURI(configKey),new Configuration());
   }
  catch (  IOException|URISyntaxException e) {
     throw new ConfigStoreCreationException(configKey,e);
