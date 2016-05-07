@@ -1,7 +1,7 @@
 {
   Map<String,String> metadata=event.getMetadata();
   String name=getMetricName(metadata,event.getName());
-  long timestamp=Long.valueOf(event.getTimestamp()) / 1000l;
+  long timestamp=event.getTimestamp() / 1000l;
   MultiPartEvent multipartEvent=MultiPartEvent.getEvent(metadata.get(EventSubmitter.EVENT_TYPE));
   if (multipartEvent == null) {
     graphitePusher.push(name,EMTPY_VALUE,timestamp);

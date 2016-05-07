@@ -3,10 +3,12 @@
   String tableFilter=constructTableFilter(query.getId().getTable());
   String jobNameByTableQuery=String.format(JOB_NAME_QUERY_BY_TABLE_STATEMENT_TEMPLATE,tableFilter);
   List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
-  PreparedStatement queryStatement=connection.prepareStatement(jobNameByTableQuery);
-  ResultSet rs=queryStatement.executeQuery();
-  while (rs.next()) {
-    jobExecutionInfos.addAll(processQueryByJobName(connection,rs.getString(1),query,Optional.of(tableFilter)));
-  }
-  return jobExecutionInfos;
+  try (PreparedStatement queryStatement=connection.prepareStatement(jobNameByTableQuery)){
+    try (ResultSet rs=queryStatement.executeQuery()){
+      while (rs.next()) {
+        jobExecutionInfos.addAll(processQueryByJobName(connection,rs.getString(1),query,Optional.of(tableFilter)));
+      }
+    }
+   }
+   return jobExecutionInfos;
 }

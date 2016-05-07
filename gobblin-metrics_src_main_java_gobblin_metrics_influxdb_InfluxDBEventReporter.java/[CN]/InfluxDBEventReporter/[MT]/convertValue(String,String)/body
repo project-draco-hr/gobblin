@@ -1,7 +1,7 @@
 {
   if (value == null)   return EMTPY_VALUE;
   if (METADATA_DURATION.equals(field)) {
-    return convertDuration(TimeUnit.MILLISECONDS.toNanos(Long.valueOf(value)));
+    return convertDuration(TimeUnit.MILLISECONDS.toNanos(Long.parseLong(value)));
   }
  else {
     Double doubleValue=Doubles.tryParse(value);

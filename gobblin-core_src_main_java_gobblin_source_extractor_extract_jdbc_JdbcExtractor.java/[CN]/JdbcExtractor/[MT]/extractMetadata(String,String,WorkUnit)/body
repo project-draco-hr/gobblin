@@ -45,7 +45,7 @@
     this.log.info("Schema:" + targetSchema);
     this.log.info("Extract query: " + this.getExtractSql());
   }
- catch (  Exception e) {
+ catch (  RuntimeException|IOException|SchemaException e) {
     throw new SchemaException("Failed to get metadata using JDBC; error - " + e.getMessage(),e);
   }
 }

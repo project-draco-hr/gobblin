@@ -38,7 +38,7 @@
     QueryResultList list=bulkConnection.getQueryResultList(this.bulkJob.getId(),this.bulkBatchInfo.getId());
     return Arrays.asList(list.getResult());
   }
- catch (  Exception e) {
+ catch (  RuntimeException|AsyncApiException|InterruptedException e) {
     throw new RuntimeException("Failed to get query result ids from salesforce using bulk api; error - " + e.getMessage(),e);
   }
 }

@@ -21,15 +21,17 @@
     listJobExecutionsQuery=LIST_RECENT_JOB_EXECUTION_QUERY_TEMPLATE;
   }
   listJobExecutionsQuery+=" ORDER BY last_modified_ts DESC";
-  PreparedStatement queryStatement=connection.prepareStatement(listJobExecutionsQuery);
-  int limit=query.getLimit();
-  if (limit > 0) {
-    queryStatement.setMaxRows(limit);
-  }
-  ResultSet rs=queryStatement.executeQuery();
-  List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
-  while (rs.next()) {
-    jobExecutionInfos.add(processQueryById(connection,rs.getString(1),query,Optional.<String>absent()));
-  }
-  return jobExecutionInfos;
-}
+  try (PreparedStatement queryStatement=connection.prepareStatement(listJobExecutionsQuery)){
+    int limit=query.getLimit();
+    if (limit > 0) {
+      queryStatement.setMaxRows(limit);
+    }
+    try (ResultSet rs=queryStatement.executeQuery()){
+      List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
+      while (rs.next()) {
+        jobExecutionInfos.add(processQueryById(connection,rs.getString(1),query,Optional.<String>absent()));
+      }
+      return jobExecutionInfos;
+    }
+   }
+ }

@@ -1,3 +1,3 @@
 {
-  return METADATA_DURATION.equals(field) ? Double.toString(convertDuration(TimeUnit.MILLISECONDS.toNanos(Long.valueOf(value)))) : value;
+  return METADATA_DURATION.equals(field) ? Double.toString(convertDuration(TimeUnit.MILLISECONDS.toNanos(Long.parseLong(value)))) : value;
 }

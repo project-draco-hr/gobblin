@@ -1,6 +1,9 @@
 {
   Preconditions.checkArgument(info.hasJobId());
-  PreparedStatement queryStatement=connection.prepareStatement(JOB_EXECUTION_QUERY_BY_JOB_ID_STATEMENT_TEMPLATE);
-  queryStatement.setString(1,info.getJobId());
-  return queryStatement.executeQuery().next();
-}
+  try (PreparedStatement queryStatement=connection.prepareStatement(JOB_EXECUTION_QUERY_BY_JOB_ID_STATEMENT_TEMPLATE)){
+    queryStatement.setString(1,info.getJobId());
+    try (ResultSet resultSet=queryStatement.executeQuery()){
+      return resultSet.next();
+    }
+   }
+ }

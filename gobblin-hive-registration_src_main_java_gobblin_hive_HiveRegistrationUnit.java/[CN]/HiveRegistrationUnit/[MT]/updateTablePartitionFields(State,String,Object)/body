@@ -2,10 +2,10 @@
   boolean isExistingField=true;
 switch (key) {
 case HiveConstants.CREATE_TIME:
-    this.createTime=Optional.of((long)value);
+    this.createTime=Optional.of((Long)value);
   break;
 case HiveConstants.LAST_ACCESS_TIME:
-this.createTime=Optional.of((long)value);
+this.createTime=Optional.of((Long)value);
 break;
 default :
 isExistingField=false;

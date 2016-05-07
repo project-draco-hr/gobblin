@@ -1,17 +1,18 @@
 {
   Preconditions.checkArgument(info.hasJobName());
   Preconditions.checkArgument(info.hasJobId());
-  PreparedStatement insertStatement=connection.prepareStatement(JOB_EXECUTION_INSERT_STATEMENT_TEMPLATE);
-  int index=0;
-  insertStatement.setString(++index,info.getJobName());
-  insertStatement.setString(++index,info.getJobId());
-  insertStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
-  insertStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
-  insertStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
-  insertStatement.setString(++index,info.hasState() ? info.getState().name() : null);
-  insertStatement.setInt(++index,info.hasLaunchedTasks() ? info.getLaunchedTasks() : -1);
-  insertStatement.setInt(++index,info.hasCompletedTasks() ? info.getCompletedTasks() : -1);
-  insertStatement.setString(++index,info.hasLauncherType() ? info.getLauncherType().name() : null);
-  insertStatement.setString(++index,info.hasTrackingUrl() ? info.getTrackingUrl() : null);
-  insertStatement.executeUpdate();
-}
+  try (PreparedStatement insertStatement=connection.prepareStatement(JOB_EXECUTION_INSERT_STATEMENT_TEMPLATE)){
+    int index=0;
+    insertStatement.setString(++index,info.getJobName());
+    insertStatement.setString(++index,info.getJobId());
+    insertStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
+    insertStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
+    insertStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
+    insertStatement.setString(++index,info.hasState() ? info.getState().name() : null);
+    insertStatement.setInt(++index,info.hasLaunchedTasks() ? info.getLaunchedTasks() : -1);
+    insertStatement.setInt(++index,info.hasCompletedTasks() ? info.getCompletedTasks() : -1);
+    insertStatement.setString(++index,info.hasLauncherType() ? info.getLauncherType().name() : null);
+    insertStatement.setString(++index,info.hasTrackingUrl() ? info.getTrackingUrl() : null);
+    insertStatement.executeUpdate();
+  }
+ }
