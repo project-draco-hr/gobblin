@@ -1,4 +1,3 @@
 {
-  in.skip(pos);
-  this.pos=pos;
+  this.pos+=this.in.skip(pos - this.pos);
 }
