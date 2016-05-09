@@ -1,6 +1,9 @@
 {
   Preconditions.checkArgument(info.hasTaskId());
-  PreparedStatement queryStatement=connection.prepareStatement(TASK_EXECUTION_EXIST_QUERY_STATEMENT_TEMPLATE);
-  queryStatement.setString(1,info.getTaskId());
-  return queryStatement.executeQuery().next();
-}
+  try (PreparedStatement queryStatement=connection.prepareStatement(TASK_EXECUTION_EXIST_QUERY_STATEMENT_TEMPLATE)){
+    queryStatement.setString(1,info.getTaskId());
+    try (ResultSet resultSet=queryStatement.executeQuery()){
+      return resultSet.next();
+    }
+   }
+ }

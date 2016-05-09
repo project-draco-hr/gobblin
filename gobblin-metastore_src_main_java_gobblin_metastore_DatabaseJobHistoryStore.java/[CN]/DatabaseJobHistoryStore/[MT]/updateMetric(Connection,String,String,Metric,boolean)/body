@@ -4,21 +4,22 @@
   Preconditions.checkArgument(metric.hasName());
   Preconditions.checkArgument(metric.hasType());
   Preconditions.checkArgument(metric.hasValue());
-  PreparedStatement updateStatement=connection.prepareStatement(template);
-  int index=0;
-  if (insert) {
-    updateStatement.setString(++index,id);
-    updateStatement.setString(++index,metric.getGroup());
-    updateStatement.setString(++index,metric.getName());
-    updateStatement.setString(++index,metric.getType().name());
-    updateStatement.setString(++index,metric.getValue());
-  }
+  try (PreparedStatement updateStatement=connection.prepareStatement(template)){
+    int index=0;
+    if (insert) {
+      updateStatement.setString(++index,id);
+      updateStatement.setString(++index,metric.getGroup());
+      updateStatement.setString(++index,metric.getName());
+      updateStatement.setString(++index,metric.getType().name());
+      updateStatement.setString(++index,metric.getValue());
+    }
  else {
-    updateStatement.setString(++index,metric.getValue());
-    updateStatement.setString(++index,id);
-    updateStatement.setString(++index,metric.getGroup());
-    updateStatement.setString(++index,metric.getName());
-    updateStatement.setString(++index,metric.getType().name());
+      updateStatement.setString(++index,metric.getValue());
+      updateStatement.setString(++index,id);
+      updateStatement.setString(++index,metric.getGroup());
+      updateStatement.setString(++index,metric.getName());
+      updateStatement.setString(++index,metric.getType().name());
+    }
+    updateStatement.executeUpdate();
   }
-  updateStatement.executeUpdate();
-}
+ }

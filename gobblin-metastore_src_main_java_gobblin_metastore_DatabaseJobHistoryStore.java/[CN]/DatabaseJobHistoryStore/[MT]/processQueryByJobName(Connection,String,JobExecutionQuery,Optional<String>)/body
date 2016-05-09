@@ -15,15 +15,17 @@
   }
   jobIdByNameQuery+=" ORDER BY created_ts DESC";
   List<JobExecutionInfo> jobExecutionInfos=Lists.newArrayList();
-  PreparedStatement queryStatement=connection.prepareStatement(jobIdByNameQuery);
-  int limit=query.getLimit();
-  if (limit > 0) {
-    queryStatement.setMaxRows(limit);
-  }
-  queryStatement.setString(1,jobName);
-  ResultSet rs=queryStatement.executeQuery();
-  while (rs.next()) {
-    jobExecutionInfos.add(processQueryById(connection,rs.getString(1),query,tableFilter));
-  }
-  return jobExecutionInfos;
+  try (PreparedStatement queryStatement=connection.prepareStatement(jobIdByNameQuery)){
+    int limit=query.getLimit();
+    if (limit > 0) {
+      queryStatement.setMaxRows(limit);
+    }
+    queryStatement.setString(1,jobName);
+    try (ResultSet rs=queryStatement.executeQuery()){
+      while (rs.next()) {
+        jobExecutionInfos.add(processQueryById(connection,rs.getString(1),query,tableFilter));
+      }
+    }
+   }
+   return jobExecutionInfos;
 }

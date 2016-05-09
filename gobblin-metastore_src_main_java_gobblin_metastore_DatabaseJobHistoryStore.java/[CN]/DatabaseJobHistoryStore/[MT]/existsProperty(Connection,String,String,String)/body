@@ -1,9 +1,12 @@
 {
   Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
   Preconditions.checkArgument(!Strings.isNullOrEmpty(key));
-  PreparedStatement queryStatement=connection.prepareStatement(template);
-  int index=0;
-  queryStatement.setString(++index,id);
-  queryStatement.setString(++index,key);
-  return queryStatement.executeQuery().next();
-}
+  try (PreparedStatement queryStatement=connection.prepareStatement(template)){
+    int index=0;
+    queryStatement.setString(++index,id);
+    queryStatement.setString(++index,key);
+    try (ResultSet resultSet=queryStatement.executeQuery()){
+      return resultSet.next();
+    }
+   }
+ }

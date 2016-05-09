@@ -2,17 +2,18 @@
   Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
   Preconditions.checkArgument(!Strings.isNullOrEmpty(key));
   Preconditions.checkArgument(!Strings.isNullOrEmpty(value));
-  PreparedStatement updateStatement=connection.prepareStatement(template);
-  int index=0;
-  if (insert) {
-    updateStatement.setString(++index,id);
-    updateStatement.setString(++index,key);
-    updateStatement.setString(++index,value);
-  }
+  try (PreparedStatement updateStatement=connection.prepareStatement(template)){
+    int index=0;
+    if (insert) {
+      updateStatement.setString(++index,id);
+      updateStatement.setString(++index,key);
+      updateStatement.setString(++index,value);
+    }
  else {
-    updateStatement.setString(++index,value);
-    updateStatement.setString(++index,id);
-    updateStatement.setString(++index,key);
+      updateStatement.setString(++index,value);
+      updateStatement.setString(++index,id);
+      updateStatement.setString(++index,key);
+    }
+    updateStatement.executeUpdate();
   }
-  updateStatement.executeUpdate();
-}
+ }

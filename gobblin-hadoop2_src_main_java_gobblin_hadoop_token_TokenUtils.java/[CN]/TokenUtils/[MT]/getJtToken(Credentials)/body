@@ -10,7 +10,7 @@
     }
     LOG.info("Created JT token: " + mrdt.toString());
     LOG.info("Token kind: " + mrdt.getKind());
-    LOG.info("Token id: " + mrdt.getIdentifier());
+    LOG.info("Token id: " + Arrays.toString(mrdt.getIdentifier()));
     LOG.info("Token service: " + mrdt.getService());
     cred.addToken(mrdt.getService(),mrdt);
   }

@@ -1,17 +1,18 @@
 {
   Preconditions.checkArgument(info.hasTaskId());
-  PreparedStatement updateStatement=connection.prepareStatement(TASK_EXECUTION_UPDATE_STATEMENT_TEMPLATE);
-  int index=0;
-  updateStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
-  updateStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
-  updateStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
-  updateStatement.setString(++index,info.hasState() ? info.getState().name() : null);
-  updateStatement.setString(++index,info.hasFailureException() ? info.getFailureException() : null);
-  updateStatement.setLong(++index,info.hasLowWatermark() ? info.getLowWatermark() : -1);
-  updateStatement.setLong(++index,info.hasHighWatermark() ? info.getHighWatermark() : -1);
-  updateStatement.setString(++index,info.hasTable() && info.getTable().hasNamespace() ? info.getTable().getNamespace() : null);
-  updateStatement.setString(++index,info.hasTable() && info.getTable().hasName() ? info.getTable().getName() : null);
-  updateStatement.setString(++index,info.hasTable() && info.getTable().hasType() ? info.getTable().getType().name() : null);
-  updateStatement.setString(++index,info.getTaskId());
-  updateStatement.executeUpdate();
-}
+  try (PreparedStatement updateStatement=connection.prepareStatement(TASK_EXECUTION_UPDATE_STATEMENT_TEMPLATE)){
+    int index=0;
+    updateStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
+    updateStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : DEFAULT_TIMESTAMP,getCalendarUTCInstance());
+    updateStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
+    updateStatement.setString(++index,info.hasState() ? info.getState().name() : null);
+    updateStatement.setString(++index,info.hasFailureException() ? info.getFailureException() : null);
+    updateStatement.setLong(++index,info.hasLowWatermark() ? info.getLowWatermark() : -1);
+    updateStatement.setLong(++index,info.hasHighWatermark() ? info.getHighWatermark() : -1);
+    updateStatement.setString(++index,info.hasTable() && info.getTable().hasNamespace() ? info.getTable().getNamespace() : null);
+    updateStatement.setString(++index,info.hasTable() && info.getTable().hasName() ? info.getTable().getName() : null);
+    updateStatement.setString(++index,info.hasTable() && info.getTable().hasType() ? info.getTable().getType().name() : null);
+    updateStatement.setString(++index,info.getTaskId());
+    updateStatement.executeUpdate();
+  }
+ }

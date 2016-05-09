@@ -1,76 +1,88 @@
 {
   Preconditions.checkArgument(!Strings.isNullOrEmpty(jobId));
-  PreparedStatement jobExecutionQueryStatement=connection.prepareStatement(JOB_EXECUTION_QUERY_BY_JOB_ID_STATEMENT_TEMPLATE);
-  jobExecutionQueryStatement.setString(1,jobId);
-  ResultSet jobRs=jobExecutionQueryStatement.executeQuery();
-  if (!jobRs.next()) {
-    return null;
-  }
-  JobExecutionInfo jobExecutionInfo=resultSetToJobExecutionInfo(jobRs);
-  if (query.isIncludeJobMetrics()) {
-    PreparedStatement jobMetricQueryStatement=connection.prepareStatement(JOB_METRIC_QUERY_STATEMENT_TEMPLATE);
-    jobMetricQueryStatement.setString(1,jobRs.getString(2));
-    ResultSet jobMetricRs=jobMetricQueryStatement.executeQuery();
-    MetricArray jobMetrics=new MetricArray();
-    while (jobMetricRs.next()) {
-      jobMetrics.add(resultSetToMetric(jobMetricRs));
-    }
-    jobExecutionInfo.setMetrics(jobMetrics);
-  }
-  Set<String> requestedJobPropertyKeys=null;
-  if (query.hasJobProperties()) {
-    requestedJobPropertyKeys=new HashSet<>(Arrays.asList(query.getJobProperties().split(",")));
-  }
-  PreparedStatement jobPropertiesQueryStatement=connection.prepareStatement(JOB_PROPERTY_QUERY_STATEMENT_TEMPLATE);
-  jobPropertiesQueryStatement.setString(1,jobExecutionInfo.getJobId());
-  ResultSet jobPropertiesRs=jobPropertiesQueryStatement.executeQuery();
-  Map<String,String> jobProperties=Maps.newHashMap();
-  while (jobPropertiesRs.next()) {
-    Map.Entry<String,String> property=resultSetToProperty(jobPropertiesRs);
-    if (requestedJobPropertyKeys == null || requestedJobPropertyKeys.contains(property.getKey())) {
-      jobProperties.put(property.getKey(),property.getValue());
-    }
-  }
-  jobExecutionInfo.setJobProperties(new StringMap(jobProperties));
-  if (query.isIncludeTaskExecutions()) {
-    TaskExecutionInfoArray taskExecutionInfos=new TaskExecutionInfoArray();
-    String taskExecutionQuery=TASK_EXECUTION_QUERY_STATEMENT_TEMPLATE;
-    if (tableFilter.isPresent() && !Strings.isNullOrEmpty(tableFilter.get())) {
-      taskExecutionQuery+=" AND " + tableFilter.get();
-    }
-    PreparedStatement taskExecutionQueryStatement=connection.prepareStatement(taskExecutionQuery);
-    taskExecutionQueryStatement.setString(1,jobId);
-    ResultSet taskRs=taskExecutionQueryStatement.executeQuery();
-    while (taskRs.next()) {
-      TaskExecutionInfo taskExecutionInfo=resultSetToTaskExecutionInfo(taskRs);
-      if (query.isIncludeTaskMetrics()) {
-        PreparedStatement taskMetricQueryStatement=connection.prepareStatement(TASK_METRIC_QUERY_STATEMENT_TEMPLATE);
-        taskMetricQueryStatement.setString(1,taskExecutionInfo.getTaskId());
-        ResultSet taskMetricRs=taskMetricQueryStatement.executeQuery();
-        MetricArray taskMetrics=new MetricArray();
-        while (taskMetricRs.next()) {
-          taskMetrics.add(resultSetToMetric(taskMetricRs));
+  try (PreparedStatement jobExecutionQueryStatement=connection.prepareStatement(JOB_EXECUTION_QUERY_BY_JOB_ID_STATEMENT_TEMPLATE)){
+    jobExecutionQueryStatement.setString(1,jobId);
+    try (ResultSet jobRs=jobExecutionQueryStatement.executeQuery()){
+      if (!jobRs.next()) {
+        return null;
+      }
+      JobExecutionInfo jobExecutionInfo=resultSetToJobExecutionInfo(jobRs);
+      if (query.isIncludeJobMetrics()) {
+        try (PreparedStatement jobMetricQueryStatement=connection.prepareStatement(JOB_METRIC_QUERY_STATEMENT_TEMPLATE)){
+          jobMetricQueryStatement.setString(1,jobRs.getString(2));
+          try (ResultSet jobMetricRs=jobMetricQueryStatement.executeQuery()){
+            MetricArray jobMetrics=new MetricArray();
+            while (jobMetricRs.next()) {
+              jobMetrics.add(resultSetToMetric(jobMetricRs));
+            }
+            jobExecutionInfo.setMetrics(jobMetrics);
+          }
+         }
+       }
+      Set<String> requestedJobPropertyKeys=null;
+      if (query.hasJobProperties()) {
+        requestedJobPropertyKeys=new HashSet<>(Arrays.asList(query.getJobProperties().split(",")));
+      }
+      try (PreparedStatement jobPropertiesQueryStatement=connection.prepareStatement(JOB_PROPERTY_QUERY_STATEMENT_TEMPLATE)){
+        jobPropertiesQueryStatement.setString(1,jobExecutionInfo.getJobId());
+        try (ResultSet jobPropertiesRs=jobPropertiesQueryStatement.executeQuery()){
+          Map<String,String> jobProperties=Maps.newHashMap();
+          while (jobPropertiesRs.next()) {
+            Map.Entry<String,String> property=resultSetToProperty(jobPropertiesRs);
+            if (requestedJobPropertyKeys == null || requestedJobPropertyKeys.contains(property.getKey())) {
+              jobProperties.put(property.getKey(),property.getValue());
+            }
+          }
+          jobExecutionInfo.setJobProperties(new StringMap(jobProperties));
         }
-        taskExecutionInfo.setMetrics(taskMetrics);
-      }
-      taskExecutionInfos.add(taskExecutionInfo);
-      Set<String> queryTaskPropertyKeys=null;
-      if (query.hasTaskProperties()) {
-        queryTaskPropertyKeys=new HashSet<>(Arrays.asList(query.getTaskProperties().split(",")));
-      }
-      PreparedStatement taskPropertiesQueryStatement=connection.prepareStatement(TASK_PROPERTY_QUERY_STATEMENT_TEMPLATE);
-      taskPropertiesQueryStatement.setString(1,taskExecutionInfo.getTaskId());
-      ResultSet taskPropertiesRs=taskPropertiesQueryStatement.executeQuery();
-      Map<String,String> taskProperties=Maps.newHashMap();
-      while (taskPropertiesRs.next()) {
-        Map.Entry<String,String> property=resultSetToProperty(taskPropertiesRs);
-        if (queryTaskPropertyKeys == null || queryTaskPropertyKeys.contains(property.getKey())) {
-          taskProperties.put(property.getKey(),property.getValue());
+       }
+       if (query.isIncludeTaskExecutions()) {
+        TaskExecutionInfoArray taskExecutionInfos=new TaskExecutionInfoArray();
+        String taskExecutionQuery=TASK_EXECUTION_QUERY_STATEMENT_TEMPLATE;
+        if (tableFilter.isPresent() && !Strings.isNullOrEmpty(tableFilter.get())) {
+          taskExecutionQuery+=" AND " + tableFilter.get();
         }
-      }
-      taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
+        try (PreparedStatement taskExecutionQueryStatement=connection.prepareStatement(taskExecutionQuery)){
+          taskExecutionQueryStatement.setString(1,jobId);
+          try (ResultSet taskRs=taskExecutionQueryStatement.executeQuery()){
+            while (taskRs.next()) {
+              TaskExecutionInfo taskExecutionInfo=resultSetToTaskExecutionInfo(taskRs);
+              if (query.isIncludeTaskMetrics()) {
+                try (PreparedStatement taskMetricQueryStatement=connection.prepareStatement(TASK_METRIC_QUERY_STATEMENT_TEMPLATE)){
+                  taskMetricQueryStatement.setString(1,taskExecutionInfo.getTaskId());
+                  try (ResultSet taskMetricRs=taskMetricQueryStatement.executeQuery()){
+                    MetricArray taskMetrics=new MetricArray();
+                    while (taskMetricRs.next()) {
+                      taskMetrics.add(resultSetToMetric(taskMetricRs));
+                    }
+                    taskExecutionInfo.setMetrics(taskMetrics);
+                  }
+                 }
+               }
+              taskExecutionInfos.add(taskExecutionInfo);
+              Set<String> queryTaskPropertyKeys=null;
+              if (query.hasTaskProperties()) {
+                queryTaskPropertyKeys=new HashSet<>(Arrays.asList(query.getTaskProperties().split(",")));
+              }
+              try (PreparedStatement taskPropertiesQueryStatement=connection.prepareStatement(TASK_PROPERTY_QUERY_STATEMENT_TEMPLATE)){
+                taskPropertiesQueryStatement.setString(1,taskExecutionInfo.getTaskId());
+                try (ResultSet taskPropertiesRs=taskPropertiesQueryStatement.executeQuery()){
+                  Map<String,String> taskProperties=Maps.newHashMap();
+                  while (taskPropertiesRs.next()) {
+                    Map.Entry<String,String> property=resultSetToProperty(taskPropertiesRs);
+                    if (queryTaskPropertyKeys == null || queryTaskPropertyKeys.contains(property.getKey())) {
+                      taskProperties.put(property.getKey(),property.getValue());
+                    }
+                  }
+                  taskExecutionInfo.setTaskProperties(new StringMap(taskProperties));
+                }
+               }
+             }
+            jobExecutionInfo.setTaskExecutions(taskExecutionInfos);
+          }
+         }
+       }
+      return jobExecutionInfo;
     }
-    jobExecutionInfo.setTaskExecutions(taskExecutionInfos);
-  }
-  return jobExecutionInfo;
-}
+   }
+ }

@@ -1,7 +1,7 @@
 {
   return String.format("Delete the following files at %s: %s",this.fsUri,Iterables.toString(Iterables.transform(this.pathsToDelete,new Function<FileStatus,Path>(){
     @Nullable @Override public Path apply(    @Nullable FileStatus input){
-      return input.getPath();
+      return input != null ? input.getPath() : null;
     }
   }
 )));
