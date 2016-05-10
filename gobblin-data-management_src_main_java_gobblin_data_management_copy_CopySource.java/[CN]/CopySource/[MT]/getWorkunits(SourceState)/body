@@ -61,7 +61,9 @@
       }
       return Lists.newArrayList();
     }
-    List<? extends WorkUnit> workUnits=new WorstFitDecreasingBinPacking(maxSizePerBin).pack(workUnitList.getWorkUnits(),this.weighter);
+    List<WorkUnit> flatWorkUnits=workUnitList.getWorkUnits();
+    List<? extends WorkUnit> workUnits=new WorstFitDecreasingBinPacking(maxSizePerBin).pack(flatWorkUnits,this.weighter);
+    log.info(String.format("Bin packed work units. Initial work units: %d, packed work units: %d, max weight per bin: %d, " + "max work units per bin: %d.",flatWorkUnits.size(),workUnits.size(),maxSizePerBin,maxWorkUnitsPerMultiWorkUnit));
     return Lists.newArrayList(workUnits);
   }
  catch (  IOException e) {

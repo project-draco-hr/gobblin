@@ -2,7 +2,7 @@
   this.weighter=weighter;
   this.weightCache=CacheBuilder.newBuilder().softValues().build(new CacheLoader<WorkUnit,Long>(){
     @Override public Long load(    WorkUnit key) throws Exception {
-      return weighter.weight(key);
+      return WeightComparator.this.weighter.weight(key);
     }
   }
 );
