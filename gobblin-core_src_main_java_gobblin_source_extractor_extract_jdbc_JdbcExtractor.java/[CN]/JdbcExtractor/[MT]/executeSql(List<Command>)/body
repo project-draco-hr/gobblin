@@ -22,7 +22,7 @@ ResultSet resultSet=null;
 try {
 this.jdbcSource=createJdbcSource();
 this.dataConnection=this.jdbcSource.getConnection();
-try (Statement statement=this.dataConnection.createStatement()){
+Statement statement=this.dataConnection.createStatement();
 if (fetchSize != 0 && this.getExpectedRecordCount() > 2000) {
 statement.setFetchSize(fetchSize);
 }
@@ -32,7 +32,6 @@ log.error("Failed to execute sql:" + query);
 }
 resultSet=statement.getResultSet();
 }
- }
  catch (Exception e) {
 log.error("Failed to execute sql:" + query + " ;error-"+ e.getMessage(),e);
 }
