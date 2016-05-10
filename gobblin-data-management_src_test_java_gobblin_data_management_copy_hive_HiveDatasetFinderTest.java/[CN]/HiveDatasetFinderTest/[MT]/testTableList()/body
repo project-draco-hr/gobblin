@@ -1,0 +1,18 @@
+{
+  List<HiveDatasetFinder.DbAndTable> dbAndTables=Lists.newArrayList();
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db1","table1"));
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db1","table2"));
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db1","table3"));
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db2","table1"));
+  HiveMetastoreClientPool pool=getTestPool(dbAndTables);
+  Properties properties=new Properties();
+  properties.put(HiveDatasetFinder.DB_KEY,"db1");
+  properties.put(HiveDatasetFinder.TABLE_PATTERN_KEY,"table1|table2");
+  HiveDatasetFinder finder=new TestHiveDatasetFinder(FileSystem.getLocal(new Configuration()),properties,pool);
+  List<HiveDataset> datasets=Lists.newArrayList(finder.getDatasetsIterator());
+  Assert.assertEquals(datasets.size(),2);
+  Assert.assertEquals(datasets.get(0).getTable().getDbName(),"db1");
+  Assert.assertEquals(datasets.get(0).getTable().getTableName(),"table1");
+  Assert.assertEquals(datasets.get(1).getTable().getDbName(),"db1");
+  Assert.assertEquals(datasets.get(1).getTable().getTableName(),"table2");
+}

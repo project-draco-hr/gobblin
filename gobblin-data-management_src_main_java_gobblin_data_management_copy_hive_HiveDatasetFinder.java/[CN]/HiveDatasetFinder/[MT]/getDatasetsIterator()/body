@@ -1,10 +1,11 @@
 {
-  return Iterators.transform(getTables(this.db,this.tablePattern).iterator(),new Function<Table,HiveDataset>(){
-    @Nullable @Override public HiveDataset apply(    @Nullable Table table){
-      try {
-        return new HiveDataset(fs,clientPool,new org.apache.hadoop.hive.ql.metadata.Table(table),properties);
+  return Iterators.transform(getTables().iterator(),new Function<DbAndTable,HiveDataset>(){
+    @Nullable @Override public HiveDataset apply(    @Nullable DbAndTable dbAndTable){
+      try (AutoReturnableObject<IMetaStoreClient> client=clientPool.getClient()){
+        Table table=client.get().getTable(dbAndTable.getDb(),dbAndTable.getTable());
+        return createHiveDataset(table);
       }
- catch (      IOException ioe) {
+ catch (      IOException|TException ioe) {
         throw new RuntimeException(ioe);
       }
     }

@@ -1,0 +1,5 @@
+{
+  HiveDataset dataset=Mockito.mock(HiveDataset.class);
+  Mockito.when(dataset.getTable()).thenReturn(new org.apache.hadoop.hive.ql.metadata.Table(table));
+  return dataset;
+}

@@ -1,0 +1,4 @@
+SetMultimap<Pattern,Pattern> multimap
+String database
+Optional<String> table
+boolean blacklist

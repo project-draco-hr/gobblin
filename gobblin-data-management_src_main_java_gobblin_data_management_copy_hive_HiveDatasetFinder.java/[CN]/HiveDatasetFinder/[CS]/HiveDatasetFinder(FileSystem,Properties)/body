@@ -1,9 +1,3 @@
 {
-  Preconditions.checkArgument(properties.containsKey(DB_KEY));
-  this.fs=fs;
-  this.clientPool=HiveMetastoreClientPool.get(properties,Optional.fromNullable(properties.getProperty(HIVE_METASTORE_URI_KEY)));
-  this.hiveProps=this.clientPool.getHiveRegProps();
-  this.db=properties.getProperty(DB_KEY);
-  this.tablePattern=properties.getProperty(TABLE_PATTERN_KEY,DEFAULT_TABLE_PATTERN);
-  this.properties=properties;
+  this(fs,properties,createClientPool(properties));
 }
