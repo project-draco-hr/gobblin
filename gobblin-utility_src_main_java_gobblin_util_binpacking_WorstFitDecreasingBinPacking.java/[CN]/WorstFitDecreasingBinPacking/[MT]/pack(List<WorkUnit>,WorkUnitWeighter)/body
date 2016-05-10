@@ -3,11 +3,19 @@
     return workUnitsIn;
   }
   List<WorkUnit> workUnits=Lists.newArrayList(workUnitsIn);
-  long totalSize=0;
+  long smallUnitSize=0;
+  int largeUnits=0;
   for (  WorkUnit workUnit : workUnits) {
-    totalSize+=weighter.weight(workUnit);
+    long weight=weighter.weight(workUnit);
+    if (weight <= this.maxWeightPerUnit) {
+      smallUnitSize+=weight;
+    }
+ else {
+      largeUnits++;
+    }
   }
-  int estimatedMultiWorkUnits=Math.min((int)((totalSize - 1) / this.maxWeightPerUnit) + 1,workUnits.size());
+  int estimateByWeight=largeUnits + (int)((smallUnitSize - 1) / this.maxWeightPerUnit) + 1;
+  int estimatedMultiWorkUnits=Math.min(estimateByWeight,workUnits.size());
   MinMaxPriorityQueue<MultiWorkUnit> pQueue=MinMaxPriorityQueue.orderedBy(new MultiWorkUnitComparator()).create();
   for (int i=0; i < estimatedMultiWorkUnits; i++) {
     pQueue.add(MultiWorkUnit.createEmpty());
