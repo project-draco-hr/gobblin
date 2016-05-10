@@ -4,12 +4,7 @@
     taskAttemptContextClass=Class.forName("org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl");
   }
  catch (  ClassNotFoundException cnfe) {
-    try {
-      taskAttemptContextClass=Class.forName("org.apache.hadoop.mapreduce.TaskAttemptContext");
-    }
- catch (    ClassNotFoundException cnfe1) {
-      throw new RuntimeException(cnfe1);
-    }
+    throw new RuntimeException(cnfe);
   }
   try {
     return (TaskAttemptContext)taskAttemptContextClass.getDeclaredConstructor(Configuration.class,TaskAttemptID.class).newInstance(configuration,taskAttemptID);
