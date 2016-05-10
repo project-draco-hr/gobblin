@@ -6,13 +6,7 @@
  catch (  InterruptedException ie) {
     Thread.currentThread().interrupt();
   }
-  try {
-    this.helixManager.disconnect();
-    if (this.localFs.exists(this.appWorkDir)) {
-      this.localFs.delete(this.appWorkDir,true);
-    }
-  }
-  finally {
+ finally {
     this.closer.close();
   }
 }

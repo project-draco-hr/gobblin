@@ -17,7 +17,7 @@
     List<JobState.DatasetState> previousDatasetStates=getAll(jobName,stateStoreFileStatus.getPath().getName());
     if (!previousDatasetStates.isEmpty()) {
       JobState.DatasetState previousDatasetState=previousDatasetStates.get(0);
-      datasetStatesByUrns.put(previousDatasetState.getProp(ConfigurationKeys.DATASET_URN_KEY,ConfigurationKeys.DEFAULT_DATASET_URN),previousDatasetState);
+      datasetStatesByUrns.put(previousDatasetState.getDatasetUrn(),previousDatasetState);
     }
   }
   if (datasetStatesByUrns.size() > 1) {

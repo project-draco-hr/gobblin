@@ -1,0 +1,6 @@
+{
+  this.name="ConfiguredScheduledReporter";
+  this.rateUnit=TimeUnit.SECONDS;
+  this.durationUnit=TimeUnit.MILLISECONDS;
+  this.tags=Maps.newHashMap();
+}

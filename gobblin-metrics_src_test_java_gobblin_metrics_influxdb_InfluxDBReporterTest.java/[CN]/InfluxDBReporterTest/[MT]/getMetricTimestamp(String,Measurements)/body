@@ -1,0 +1,4 @@
+{
+  String metricKey=(key == null) ? MetricRegistry.name(CONTEXT_NAME,METRIC_PREFIX,metric) : MetricRegistry.name(CONTEXT_NAME,METRIC_PREFIX,metric,key.getName());
+  return influxDB.getMetric(metricKey).getTimestamp();
+}

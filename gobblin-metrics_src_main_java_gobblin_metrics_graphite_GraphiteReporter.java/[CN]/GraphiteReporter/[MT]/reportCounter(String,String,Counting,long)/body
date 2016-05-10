@@ -1,0 +1,4 @@
+{
+  String metricName=getKey(prefix,name,COUNT.getName());
+  pushMetric(metricName,counter.getCount(),false,timestamp);
+}

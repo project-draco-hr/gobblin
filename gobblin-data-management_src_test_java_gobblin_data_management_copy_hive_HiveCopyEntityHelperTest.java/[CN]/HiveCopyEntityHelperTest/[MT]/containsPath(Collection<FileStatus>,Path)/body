@@ -1,0 +1,8 @@
+{
+  for (  FileStatus status : statuses) {
+    if (status.getPath().equals(path)) {
+      return true;
+    }
+  }
+  return false;
+}

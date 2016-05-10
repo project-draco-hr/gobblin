@@ -1,13 +1,13 @@
 {
   String converterClassKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.CONVERTER_CLASSES_KEY,index);
-  if (!this.workUnit.contains(converterClassKey)) {
+  if (!this.taskState.contains(converterClassKey)) {
     return Collections.emptyList();
   }
   if (index >= 0) {
     forkTaskState.setProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,index);
   }
   List<Converter<?,?,?,?>> converters=Lists.newArrayList();
-  for (  String converterClass : Splitter.on(",").omitEmptyStrings().trimResults().split(this.workUnit.getProp(converterClassKey))) {
+  for (  String converterClass : Splitter.on(",").omitEmptyStrings().trimResults().split(this.taskState.getProp(converterClassKey))) {
     try {
       Converter<?,?,?,?> converter=Converter.class.cast(Class.forName(converterClass).newInstance());
       InstrumentedConverterDecorator instrumentedConverter=new InstrumentedConverterDecorator<>(converter);

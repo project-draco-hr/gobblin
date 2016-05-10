@@ -1,5 +1,5 @@
 {
   Configuration conf=HadoopUtils.getConfFromState(state);
   String uri=state.getProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,ConfigurationKeys.LOCAL_FS_URI);
-  return getOptionallyThrottledFileSystem(FileSystem.get(URI.create(uri),conf),state);
+  return HadoopUtils.getOptionallyThrottledFileSystem(FileSystem.get(URI.create(uri),conf),state);
 }

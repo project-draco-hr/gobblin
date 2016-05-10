@@ -1,3 +1,5 @@
 {
+  super();
+  this.name="KafkaReporter";
   this.kafkaPusher=Optional.absent();
 }

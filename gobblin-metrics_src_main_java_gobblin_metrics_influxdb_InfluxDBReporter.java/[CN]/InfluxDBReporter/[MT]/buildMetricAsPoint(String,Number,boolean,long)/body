@@ -1,0 +1,4 @@
+{
+  Number metricValue=toDuration ? convertDuration(value.doubleValue()) : value;
+  return buildMetricAsPoint(metricName,metricValue,timestamp);
+}

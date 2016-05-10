@@ -1,5 +1,0 @@
-String jobId
-List<WorkUnit> workUnits
-TaskStateTracker stateTracker
-TaskExecutor taskExecutor
-CountDownLatch countDownLatch

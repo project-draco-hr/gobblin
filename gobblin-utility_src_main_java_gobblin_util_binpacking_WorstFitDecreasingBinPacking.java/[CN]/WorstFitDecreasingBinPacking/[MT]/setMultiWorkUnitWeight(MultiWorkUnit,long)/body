@@ -1,0 +1,3 @@
+{
+  multiWorkUnit.setProp(TOTAL_MULTI_WORK_UNIT_WEIGHT,Long.toString(weight));
+}

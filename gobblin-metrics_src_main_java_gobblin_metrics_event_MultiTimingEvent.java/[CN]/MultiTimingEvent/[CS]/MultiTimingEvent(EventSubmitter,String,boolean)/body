@@ -1,0 +1,7 @@
+{
+  this.name=name;
+  this.submitter=submitter;
+  this.timings=Lists.newArrayList();
+  this.submitted=false;
+  this.reportAsMetrics=reportAsMetrics;
+}

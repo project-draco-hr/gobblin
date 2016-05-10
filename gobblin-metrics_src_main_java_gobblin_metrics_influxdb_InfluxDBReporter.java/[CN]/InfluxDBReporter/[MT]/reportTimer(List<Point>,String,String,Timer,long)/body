@@ -1,0 +1,4 @@
+{
+  reportSnapshot(points,prefix,name,timer.getSnapshot(),timestamp,true);
+  reportMetered(points,prefix,name,timer,timestamp);
+}

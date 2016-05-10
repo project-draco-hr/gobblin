@@ -1,4 +1,5 @@
 {
+  MultiTimingEvent multiTimer=new MultiTimingEvent(this.eventSubmitter,"TableCopy",true);
   int stepPriority=0;
   String fileSet=this.dataset.table.getTableName();
   List<CopyEntity> copyEntities=Lists.newArrayList();
@@ -6,11 +7,12 @@
   HiveLocationDescriptor sourceLocation=HiveLocationDescriptor.forTable(this.dataset.table,this.dataset.fs,this.dataset.properties);
   HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forTable(this.targetTable,this.targetFs,this.dataset.properties);
   Optional<HiveLocationDescriptor> existingTargetLocation=this.existingTargetTable.isPresent() ? Optional.of(HiveLocationDescriptor.forTable(this.existingTargetTable.get(),this.targetFs,this.dataset.properties)) : Optional.<HiveLocationDescriptor>absent();
-  DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent());
+  DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer,this);
   DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,this.dataset.properties);
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
   for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,configuration,Optional.<Partition>absent())) {
     copyEntities.add(builder.build());
   }
+  multiTimer.close();
   return copyEntities;
 }

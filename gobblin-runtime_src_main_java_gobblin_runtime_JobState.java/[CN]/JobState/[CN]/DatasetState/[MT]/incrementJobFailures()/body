@@ -1,0 +1,3 @@
+{
+  super.setProp(ConfigurationKeys.JOB_FAILURES_KEY,Integer.parseInt(super.getProp(ConfigurationKeys.JOB_FAILURES_KEY,"0")) + 1);
+}

@@ -1,0 +1,4 @@
+{
+  this.influxDBPusher=Optional.of(pusher);
+  return self();
+}

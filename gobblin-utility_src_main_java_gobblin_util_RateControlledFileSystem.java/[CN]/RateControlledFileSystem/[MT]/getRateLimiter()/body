@@ -1,3 +1,14 @@
 {
-  return FS_URI_TO_RATE_LIMITER_CACHE.get(this.fs.getUri().toString(),this.callableLimiter);
+  String key=this.fs.getUri().toString();
+  RateBasedLimiter limiter=FS_URI_TO_RATE_LIMITER_CACHE.get(key,this.callableLimiter);
+  if (limiter.getRateLimitPerSecond() < this.limitPerSecond) {
+    try {
+      limiter=this.callableLimiter.call();
+      FS_URI_TO_RATE_LIMITER_CACHE.put(key,limiter);
+    }
+ catch (    Exception exc) {
+      throw new ExecutionException(exc);
+    }
+  }
+  return limiter;
 }

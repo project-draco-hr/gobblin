@@ -1,0 +1,8 @@
+{
+  reportCounter(prefix,name,metered,timestamp);
+  String baseMetricName=getKey(prefix,name);
+  pushMetricRate(getKey(baseMetricName,RATE_1MIN),metered.getOneMinuteRate(),timestamp);
+  pushMetricRate(getKey(baseMetricName,RATE_5MIN),metered.getFiveMinuteRate(),timestamp);
+  pushMetricRate(getKey(baseMetricName,RATE_15MIN),metered.getFifteenMinuteRate(),timestamp);
+  pushMetricRate(getKey(baseMetricName,MEAN_RATE),metered.getMeanRate(),timestamp);
+}

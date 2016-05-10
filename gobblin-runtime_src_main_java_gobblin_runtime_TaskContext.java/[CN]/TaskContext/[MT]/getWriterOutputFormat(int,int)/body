@@ -1,4 +1,4 @@
 {
-  String writerOutputFormatValue=this.workUnit.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY,branches,index),WriterOutputFormat.OTHER.name());
+  String writerOutputFormatValue=this.taskState.getProp(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_OUTPUT_FORMAT_KEY,branches,index),WriterOutputFormat.OTHER.name());
   return Enums.getIfPresent(WriterOutputFormat.class,writerOutputFormatValue.toUpperCase()).or(WriterOutputFormat.OTHER);
 }

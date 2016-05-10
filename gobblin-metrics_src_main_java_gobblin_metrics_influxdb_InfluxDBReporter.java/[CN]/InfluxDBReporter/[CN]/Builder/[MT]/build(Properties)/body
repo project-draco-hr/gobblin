@@ -1,0 +1,3 @@
+{
+  return new InfluxDBReporter(this,ConfigUtils.propertiesToConfig(props,Optional.of(ConfigurationKeys.METRICS_CONFIGURATIONS_PREFIX)));
+}

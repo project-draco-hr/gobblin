@@ -1,2 +1,0 @@
-int maxSize
-Comparator<FileSet<CopyEntity>> comparator

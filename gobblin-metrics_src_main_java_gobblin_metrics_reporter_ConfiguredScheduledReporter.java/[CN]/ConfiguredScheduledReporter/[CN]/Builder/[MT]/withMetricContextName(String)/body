@@ -1,0 +1,4 @@
+{
+  this.metricContextName=metricContextName;
+  return self();
+}

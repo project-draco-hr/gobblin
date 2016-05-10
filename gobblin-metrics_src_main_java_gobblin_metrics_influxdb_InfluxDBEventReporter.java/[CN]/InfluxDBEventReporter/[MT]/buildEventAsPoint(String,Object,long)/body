@@ -1,0 +1,3 @@
+{
+  return Point.measurement(name).field("value",value).time(timestamp,TimeUnit.MILLISECONDS).build();
+}

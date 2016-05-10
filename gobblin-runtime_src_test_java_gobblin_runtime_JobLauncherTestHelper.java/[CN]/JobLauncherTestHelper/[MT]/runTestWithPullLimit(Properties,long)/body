@@ -1,0 +1,23 @@
+{
+  String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+  String jobId=JobLauncherUtils.newJobId(jobName);
+  jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,jobId);
+  Closer closer=Closer.create();
+  try {
+    JobLauncher jobLauncher=closer.register(JobLauncherFactory.newJobLauncher(this.launcherProps,jobProps));
+    jobLauncher.launchJob(null);
+  }
+  finally {
+    closer.close();
+  }
+  List<JobState.DatasetState> datasetStateList=this.datasetStateStore.getAll(jobName,jobId + ".jst");
+  DatasetState datasetState=datasetStateList.get(0);
+  Assert.assertEquals(datasetState.getState(),JobState.RunningState.COMMITTED);
+  Assert.assertEquals(datasetState.getCompletedTasks(),4);
+  Assert.assertEquals(datasetState.getJobFailures(),0);
+  for (  TaskState taskState : datasetState.getTaskStates()) {
+    Assert.assertEquals(taskState.getWorkingState(),WorkUnitState.WorkingState.COMMITTED);
+    Assert.assertEquals(taskState.getPropAsLong(ConfigurationKeys.EXTRACTOR_ROWS_EXTRACTED),limit);
+    Assert.assertEquals(taskState.getPropAsLong(ConfigurationKeys.WRITER_ROWS_WRITTEN),limit);
+  }
+}

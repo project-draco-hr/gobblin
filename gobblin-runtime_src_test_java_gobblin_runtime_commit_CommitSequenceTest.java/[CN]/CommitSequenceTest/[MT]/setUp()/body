@@ -13,8 +13,8 @@
   this.fs.createNewFile(src1);
   this.fs.createNewFile(src2);
   DatasetState ds=new DatasetState("job-name","job-id");
-  ds.setProp("key1","value1");
-  ds.setProp("key2","value2");
+  ds.setDatasetUrn("urn");
+  ds.setNoJobFailure();
   State state=new State();
   state.setProp(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,storeRootDir.toString());
   this.sequence=new CommitSequence.Builder().withJobName("testjob").withDatasetUrn("testurn").beginStep(FsRenameCommitStep.Builder.class).from(src1).to(dst1).withProps(state).endStep().beginStep(FsRenameCommitStep.Builder.class).from(src2).to(dst2).withProps(state).endStep().beginStep(DatasetStateCommitStep.Builder.class).withDatasetUrn("urn").withDatasetState(ds).withProps(state).endStep().build();

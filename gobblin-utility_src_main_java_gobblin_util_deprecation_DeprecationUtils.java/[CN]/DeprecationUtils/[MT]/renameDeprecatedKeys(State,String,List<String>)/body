@@ -1,0 +1,11 @@
+{
+  if (state.contains(currentKey)) {
+    return;
+  }
+  for (  String oldKey : deprecatedKeys) {
+    if (state.contains(oldKey)) {
+      state.setProp(currentKey,state.getProp(oldKey));
+      return;
+    }
+  }
+}

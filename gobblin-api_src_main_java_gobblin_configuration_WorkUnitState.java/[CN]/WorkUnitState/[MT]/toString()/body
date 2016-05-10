@@ -1,3 +1,3 @@
 {
-  return super.toString() + "\nWorkUnit: " + getWorkunit().toString()+ "\nExtract: "+ getExtract().toString();
+  return super.toString() + "\nWorkUnit: " + getWorkunit().toString()+ "\nExtract: "+ getExtract().toString()+ "\nJobState: "+ this.jobState.toString();
 }

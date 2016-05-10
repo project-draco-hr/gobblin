@@ -1,4 +1,0 @@
-{
-  LOG.info("Executing SQL " + statement);
-  statement.execute();
-}

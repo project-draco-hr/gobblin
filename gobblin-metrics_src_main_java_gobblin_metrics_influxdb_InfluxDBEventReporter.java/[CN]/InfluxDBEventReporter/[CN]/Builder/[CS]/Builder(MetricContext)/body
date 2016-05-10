@@ -1,0 +1,5 @@
+{
+  super(context);
+  this.influxDBPusher=Optional.absent();
+  this.connectionType=InfluxDBConnectionType.TCP;
+}

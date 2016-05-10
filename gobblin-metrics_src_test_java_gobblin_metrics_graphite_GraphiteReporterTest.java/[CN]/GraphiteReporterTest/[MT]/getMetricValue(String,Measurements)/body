@@ -1,0 +1,3 @@
+{
+  return getMetricValue(METRIC_PREFIX,metric,key);
+}

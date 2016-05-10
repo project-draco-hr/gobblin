@@ -5,7 +5,6 @@
   this.locale=builder.locale;
   this.clock=builder.clock;
   this.dateFormat=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.MEDIUM,locale);
-  this.tags=builder.tags;
   this.dateFormat.setTimeZone(builder.timeZone);
   this.outputBuffer=new ByteArrayOutputStream();
   try {

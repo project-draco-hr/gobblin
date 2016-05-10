@@ -1,4 +1,4 @@
 {
-  super(workUnitState.getWorkunit());
-  super.addAll(workUnitState);
+  super(workUnitState.getWorkunit(),workUnitState.getJobState());
+  super.addAll(workUnitState.getProperties());
 }

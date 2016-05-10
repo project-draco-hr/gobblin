@@ -1,7 +1,0 @@
-{
-  this.currentSize=0;
-  this.maxSize=maxSize;
-  this.comparator=comparator;
-  this.workUnitsMap=new TreeMap<>(new AugmentedComparator(comparator));
-  this.rejectedFileSet=false;
-}

@@ -1,0 +1,7 @@
+{
+  BatchPoints.Builder batchPointsBuilder=BatchPoints.database(database).retentionPolicy(DEFAULT_RETENTION_POLICY);
+  for (  Point point : points) {
+    batchPointsBuilder.point(point);
+  }
+  influxDB.write(batchPointsBuilder.build());
+}

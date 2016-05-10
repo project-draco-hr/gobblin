@@ -15,7 +15,7 @@
     partnerConfig.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME));
     partnerConfig.setPassword(PasswordManager.getInstance(this.workUnit).readPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD)));
     partnerConfig.setAuthEndpoint(soapAuthEndPoint);
-    PartnerConnection connection=new PartnerConnection(partnerConfig);
+    new PartnerConnection(partnerConfig);
     String soapEndpoint=partnerConfig.getServiceEndpoint();
     String restEndpoint=soapEndpoint.substring(0,soapEndpoint.indexOf("Soap/")) + "async/" + apiVersion;
     ConnectorConfig config=new ConnectorConfig();

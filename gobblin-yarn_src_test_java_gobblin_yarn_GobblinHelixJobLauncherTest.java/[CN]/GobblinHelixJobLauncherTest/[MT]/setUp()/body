@@ -7,10 +7,24 @@
   String helixClusterName=config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
   YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectingString,helixClusterName);
   this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.CONTROLLER,zkConnectingString);
+  this.closer.register(new Closeable(){
+    @Override public void close() throws IOException {
+      helixManager.disconnect();
+    }
+  }
+);
   this.helixManager.connect();
   Properties properties=ConfigUtils.configToProperties(config);
   this.localFs=FileSystem.getLocal(new Configuration());
   this.appWorkDir=new Path(GobblinHelixJobLauncherTest.class.getSimpleName());
+  this.closer.register(new Closeable(){
+    @Override public void close() throws IOException {
+      if (localFs.exists(appWorkDir)) {
+        localFs.delete(appWorkDir,true);
+      }
+    }
+  }
+);
   this.jobName=config.getString(ConfigurationKeys.JOB_NAME_KEY);
   this.jobOutputFile=new File(config.getString(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),config.getString(ConfigurationKeys.WRITER_FILE_PATH) + File.separator + config.getString(ConfigurationKeys.WRITER_FILE_NAME));
   File sourceJsonFile=new File(this.appWorkDir.toString(),TestHelper.TEST_JOB_NAME + ".json");

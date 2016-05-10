@@ -1,0 +1,4 @@
+{
+  String metricName=getKey(prefix,name);
+  points.add(buildMetricAsPoint(metricName,gauge.getValue(),timestamp));
+}

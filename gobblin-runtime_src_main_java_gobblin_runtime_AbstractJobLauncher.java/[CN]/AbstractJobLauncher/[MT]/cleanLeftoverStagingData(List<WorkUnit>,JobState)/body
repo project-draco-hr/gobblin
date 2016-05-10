@@ -17,9 +17,7 @@
       Map<String,ParallelRunner> parallelRunners=Maps.newHashMap();
       try {
         for (        WorkUnit workUnit : JobLauncherUtils.flattenWorkUnits(workUnits)) {
-          WorkUnit fatWorkUnit=WorkUnit.copyOf(workUnit);
-          fatWorkUnit.addAllIfNotExist(jobState);
-          JobLauncherUtils.cleanTaskStagingData(fatWorkUnit,LOG,closer,parallelRunners);
+          JobLauncherUtils.cleanTaskStagingData(new WorkUnitState(workUnit,jobState),LOG,closer,parallelRunners);
         }
       }
  catch (      Throwable t) {

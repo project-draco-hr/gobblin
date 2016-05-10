@@ -1,6 +1,7 @@
 {
   Properties props=new Properties();
-  props.putAll(this.workunit.getProperties());
+  props.putAll(this.jobState.getProperties());
+  props.putAll(this.workUnit.getProperties());
   props.putAll(super.getProperties());
   return props;
 }

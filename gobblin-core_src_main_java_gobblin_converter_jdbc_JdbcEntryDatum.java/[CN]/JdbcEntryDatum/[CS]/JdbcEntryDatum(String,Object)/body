@@ -1,4 +1,4 @@
 {
   this.columnName=Preconditions.checkNotNull(columnName);
-  this.val=Preconditions.checkNotNull(val);
+  this.val=val;
 }

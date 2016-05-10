@@ -1,8 +1,8 @@
 {
   this.fs=fs;
   this.limitPerSecond=limitPerSecond;
-  this.callableLimiter=new Callable<Limiter>(){
-    @Override public Limiter call() throws Exception {
+  this.callableLimiter=new Callable<RateBasedLimiter>(){
+    @Override public RateBasedLimiter call() throws Exception {
       return new RateBasedLimiter(limitPerSecond);
     }
   }

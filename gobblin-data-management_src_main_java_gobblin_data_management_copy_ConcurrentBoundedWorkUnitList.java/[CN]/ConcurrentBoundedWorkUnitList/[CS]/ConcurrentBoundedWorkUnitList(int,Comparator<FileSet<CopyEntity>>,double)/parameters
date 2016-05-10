@@ -1,0 +1,3 @@
+int maxSize
+Comparator<FileSet<CopyEntity>> comparator
+double strictLimitMultiplier

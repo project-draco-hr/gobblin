@@ -1,0 +1,7 @@
+{
+  String currentContextName=(String)tags.get(MetricContext.METRIC_CONTEXT_NAME_TAG_NAME);
+  if (metricContextName == null || (currentContextName.indexOf(metricContextName) > -1)) {
+    return currentContextName;
+  }
+  return JOINER.join(metricContextName,tags.get("taskId"),tags.get("forkBranchName"),tags.get("class"));
+}

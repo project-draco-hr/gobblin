@@ -1,7 +1,7 @@
 {
   try (Closer closer=Closer.create()){
     Class<? extends CommitSequencePublisher> dataPublisherClass=(Class<? extends CommitSequencePublisher>)Class.forName(datasetState.getProp(ConfigurationKeys.DATA_PUBLISHER_TYPE,ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
-    CommitSequencePublisher publisher=(CommitSequencePublisher)closer.register(DataPublisher.getInstance(dataPublisherClass,datasetState));
+    CommitSequencePublisher publisher=(CommitSequencePublisher)closer.register(DataPublisher.getInstance(dataPublisherClass,this.jobState));
     publisher.publish(datasetState.getTaskStates());
     return publisher.getCommitSequenceBuilder();
   }

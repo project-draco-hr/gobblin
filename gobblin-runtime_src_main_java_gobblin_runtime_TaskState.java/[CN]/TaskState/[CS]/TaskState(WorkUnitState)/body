@@ -1,5 +1,5 @@
 {
-  super(workUnitState.getWorkunit());
+  super(workUnitState.getWorkunit(),workUnitState.getJobState());
   addAll(workUnitState);
   this.jobId=workUnitState.getProp(ConfigurationKeys.JOB_ID_KEY);
   this.taskId=workUnitState.getProp(ConfigurationKeys.TASK_ID_KEY);

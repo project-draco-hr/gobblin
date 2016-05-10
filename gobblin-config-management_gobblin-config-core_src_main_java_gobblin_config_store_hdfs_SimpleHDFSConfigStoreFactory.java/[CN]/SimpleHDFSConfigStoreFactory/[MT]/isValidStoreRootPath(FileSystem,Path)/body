@@ -1,0 +1,4 @@
+{
+  Path storeRoot=new Path(storeRootPath,SimpleHDFSConfigStore.CONFIG_STORE_NAME);
+  return fs.exists(storeRoot);
+}

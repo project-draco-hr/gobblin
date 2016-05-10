@@ -1,0 +1,4 @@
+String prefix
+String name
+Timer timer
+long timestamp

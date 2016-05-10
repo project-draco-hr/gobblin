@@ -1,0 +1,33 @@
+{
+  try (MetricContext metricContext=MetricContext.builder(this.getClass().getCanonicalName() + ".testGraphiteReporter2").build();GraphiteEventReporter graphiteEventReporter=getBuilder(metricContext).withEmitValueAsKey(true).build()){
+    Map<String,String> metadata=Maps.newHashMap();
+    metadata.put(JobEvent.METADATA_JOB_ID,"job2");
+    metadata.put(TaskEvent.METADATA_TASK_ID,"task2");
+    metadata.put(EventSubmitter.EVENT_TYPE,"JobStateEvent");
+    metadata.put(JobEvent.METADATA_JOB_START_TIME,"1457736710521");
+    metadata.put(JobEvent.METADATA_JOB_END_TIME,"1457736710734");
+    metadata.put(JobEvent.METADATA_JOB_LAUNCHED_TASKS,"3");
+    metadata.put(JobEvent.METADATA_JOB_COMPLETED_TASKS,"2");
+    metadata.put(JobEvent.METADATA_JOB_STATE,"FAILED");
+    metricContext.submitEvent(GobblinTrackingEvent.newBuilder().setName(MultiPartEvent.JOBSTATE_EVENT.getEventName()).setNamespace(NAMESPACE).setMetadata(metadata).build());
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    graphiteEventReporter.report();
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    String prefix="gobblin.metrics.job2.task2.events.JobStateEvent";
+    Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobBeginTime").getValue(),"1457736710521");
+    Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobEndTime").getValue(),"1457736710734");
+    Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobLaunchedTasks").getValue(),"3");
+    Assert.assertEquals(graphiteSender.getMetric(prefix + ".jobCompletedTasks").getValue(),"2");
+    Assert.assertNotNull(graphiteSender.getMetric(prefix + ".jobState.FAILED"));
+  }
+ }

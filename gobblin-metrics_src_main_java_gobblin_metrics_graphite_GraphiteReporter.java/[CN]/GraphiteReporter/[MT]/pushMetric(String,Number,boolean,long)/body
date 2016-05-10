@@ -1,0 +1,4 @@
+{
+  String metricValue=toDuration ? getValue(convertDuration(value.doubleValue())) : getValue(value);
+  pushMetric(metricName,metricValue,timestamp);
+}

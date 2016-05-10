@@ -1,0 +1,3 @@
+{
+  return multiWorkUnit.contains(TOTAL_MULTI_WORK_UNIT_WEIGHT) ? multiWorkUnit.getPropAsLong(TOTAL_MULTI_WORK_UNIT_WEIGHT) : 0;
+}

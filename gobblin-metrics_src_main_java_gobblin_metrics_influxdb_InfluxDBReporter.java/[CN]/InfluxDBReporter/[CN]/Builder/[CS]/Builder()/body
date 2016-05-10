@@ -1,0 +1,7 @@
+{
+  super();
+  this.name="InfluxDBReporter";
+  this.influxDBPusher=Optional.absent();
+  this.filter=MetricFilter.ALL;
+  this.connectionType=InfluxDBConnectionType.TCP;
+}

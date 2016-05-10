@@ -25,6 +25,7 @@
   }
   LOGGER.info(String.format("Collected task state of %d completed tasks",taskStateQueue.size()));
   for (  TaskState taskState : taskStateQueue) {
+    taskState.setJobState(this.jobState);
     this.jobState.addTaskState(taskState);
   }
   this.eventBus.post(new NewTaskCompletionEvent(ImmutableList.copyOf(taskStateQueue)));

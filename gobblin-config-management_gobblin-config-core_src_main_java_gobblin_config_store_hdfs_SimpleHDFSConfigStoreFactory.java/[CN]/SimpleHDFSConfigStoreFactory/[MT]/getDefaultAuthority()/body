@@ -1,3 +1,3 @@
 {
-  return FileSystem.get(new Configuration()).getUri().getAuthority();
+  return this.defaultStoreFS.getUri().getAuthority();
 }

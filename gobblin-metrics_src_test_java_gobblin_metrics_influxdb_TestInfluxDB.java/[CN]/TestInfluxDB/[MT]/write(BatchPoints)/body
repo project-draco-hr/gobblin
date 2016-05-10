@@ -1,0 +1,5 @@
+{
+  for (  Point point : batchPoints.getPoints()) {
+    write(point.lineProtocol());
+  }
+}

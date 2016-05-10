@@ -17,7 +17,7 @@
   }
   LOG.info("Created JH token: " + jhToken.toString());
   LOG.info("Token kind: " + jhToken.getKind());
-  LOG.info("Token id: " + jhToken.getIdentifier());
+  LOG.info("Token id: " + Arrays.toString(jhToken.getIdentifier()));
   LOG.info("Token service: " + jhToken.getService());
   cred.addToken(jhToken.getService(),jhToken);
 }

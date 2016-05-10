@@ -1,0 +1,18 @@
+{
+  GobblinTrackingEvent nextEvent;
+  try {
+    while (null != (nextEvent=queue.poll())) {
+      pushEvent(nextEvent);
+    }
+    this.graphitePusher.flush();
+  }
+ catch (  IOException e) {
+    LOGGER.error("Error sending event to Graphite",e);
+    try {
+      this.graphitePusher.flush();
+    }
+ catch (    IOException e1) {
+      LOGGER.error("Unable to flush previous events to Graphite",e);
+    }
+  }
+}

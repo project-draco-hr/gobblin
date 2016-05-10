@@ -1,11 +1,15 @@
 {
   if (!Boolean.valueOf(properties.getProperty(ConfigurationKeys.METRICS_REPORTING_KAFKA_ENABLED_KEY,ConfigurationKeys.DEFAULT_METRICS_REPORTING_KAFKA_ENABLED))) {
-    LOGGER.info("Not reporting metrics to Kafka");
     return;
   }
+  LOGGER.info("Reporting metrics to Kafka");
   Optional<String> defaultTopic=Optional.fromNullable(properties.getProperty(ConfigurationKeys.METRICS_KAFKA_TOPIC));
   Optional<String> metricsTopic=Optional.fromNullable(properties.getProperty(ConfigurationKeys.METRICS_KAFKA_TOPIC_METRICS));
   Optional<String> eventsTopic=Optional.fromNullable(properties.getProperty(ConfigurationKeys.METRICS_KAFKA_TOPIC_EVENTS));
+  boolean metricsEnabled=metricsTopic.or(defaultTopic).isPresent();
+  if (metricsEnabled)   LOGGER.info("Reporting metrics to Kafka");
+  boolean eventsEnabled=eventsTopic.or(defaultTopic).isPresent();
+  if (eventsEnabled)   LOGGER.info("Reporting events to Kafka");
   try {
     Preconditions.checkArgument(properties.containsKey(ConfigurationKeys.METRICS_KAFKA_BROKERS),"Kafka metrics brokers missing.");
     Preconditions.checkArgument(metricsTopic.or(eventsTopic).or(defaultTopic).isPresent(),"Kafka topic missing.");
@@ -24,7 +28,7 @@
     LOGGER.warn("Kafka metrics reporting format " + reportingFormat + " not recognized. Will report in json format.",exception);
     formatEnum=KafkaReportingFormats.JSON;
   }
-  if (metricsTopic.or(defaultTopic).isPresent()) {
+  if (metricsEnabled) {
     try {
       formatEnum.metricReporterBuilder(properties).build(brokers,metricsTopic.or(defaultTopic).get(),properties);
     }
@@ -32,10 +36,7 @@
       LOGGER.error("Failed to create Kafka metrics reporter. Will not report metrics to Kafka.",exception);
     }
   }
- else {
-    LOGGER.warn("Not reporting metrics to Kafka, no topic specified");
-  }
-  if (eventsTopic.or(defaultTopic).isPresent()) {
+  if (eventsEnabled) {
     try {
       KafkaEventReporter.Builder<?> builder=formatEnum.eventReporterBuilder(RootMetricContext.get(),properties);
       this.scheduledReporters.add(this.codahaleReportersCloser.register(builder.build(brokers,eventsTopic.or(defaultTopic).get())));
@@ -43,9 +44,6 @@
  catch (    IOException exception) {
       LOGGER.error("Failed to create Kafka events reporter. Will not report events to Kafka.",exception);
     }
-  }
- else {
-    LOGGER.warn("Not reporting events to Kafka, no topic specified");
   }
   LOGGER.info("Will start reporting metrics to Kafka");
 }
