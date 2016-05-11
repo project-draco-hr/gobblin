@@ -3,11 +3,7 @@
     Method getCounterMethod=context.getClass().getMethod("getCounter",Enum.class);
     return ((Counter)getCounterMethod.invoke(context,counterName)).getValue();
   }
- catch (  NoSuchMethodException e) {
-    org.apache.hadoop.mapred.TaskAttemptContext mapredContext=(org.apache.hadoop.mapred.TaskAttemptContext)context;
-    return ((StatusReporter)mapredContext.getProgressible()).getCounter(counterName).getValue();
-  }
-catch (  Exception e) {
+ catch (  Exception e) {
     throw new RuntimeException("Error reading record count counter",e);
   }
 }

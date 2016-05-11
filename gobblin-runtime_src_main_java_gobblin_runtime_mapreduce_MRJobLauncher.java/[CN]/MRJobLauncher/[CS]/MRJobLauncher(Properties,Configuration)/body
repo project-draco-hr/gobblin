@@ -2,7 +2,6 @@
   super(jobProps,ImmutableList.<Tag<?>>of());
   this.conf=conf;
   JobConfigurationUtils.putPropertiesIntoConfiguration(this.jobProps,this.conf);
-  this.conf.set("mapred.max.map.failures.percent","100");
   this.conf.set("mapreduce.map.failures.maxpercent","100");
   this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
   this.fs=buildFileSystem(jobProps,this.conf);
