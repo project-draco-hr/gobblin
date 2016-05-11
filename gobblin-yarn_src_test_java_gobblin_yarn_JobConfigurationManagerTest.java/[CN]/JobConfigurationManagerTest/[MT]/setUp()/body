@@ -1,6 +1,6 @@
 {
   this.eventBus.register(this);
-  Assert.assertTrue(this.jobConfigFileDir.mkdirs());
+  Assert.assertTrue(this.jobConfigFileDir.mkdirs(),"Failed to create " + this.jobConfigFileDir);
   Closer closer=Closer.create();
   try {
     for (int i=0; i < NUM_JOB_CONFIG_FILES; i++) {
