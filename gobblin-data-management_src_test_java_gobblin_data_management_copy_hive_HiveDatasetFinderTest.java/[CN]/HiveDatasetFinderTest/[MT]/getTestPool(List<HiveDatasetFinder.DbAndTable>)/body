@@ -1,0 +1,23 @@
+{
+  SetMultimap<String,String> entities=HashMultimap.create();
+  for (  HiveDatasetFinder.DbAndTable dbAndTable : dbAndTables) {
+    entities.put(dbAndTable.getDb(),dbAndTable.getTable());
+  }
+  HiveMetastoreClientPool pool=Mockito.mock(HiveMetastoreClientPool.class);
+  IMetaStoreClient client=Mockito.mock(IMetaStoreClient.class);
+  Mockito.when(client.getAllDatabases()).thenReturn(Lists.newArrayList(entities.keySet()));
+  for (  String db : entities.keySet()) {
+    Mockito.doReturn(Lists.newArrayList(entities.get(db))).when(client).getAllTables(db);
+  }
+  for (  HiveDatasetFinder.DbAndTable dbAndTable : dbAndTables) {
+    Table table=new Table();
+    table.setDbName(dbAndTable.getDb());
+    table.setTableName(dbAndTable.getTable());
+    Mockito.doReturn(table).when(client).getTable(dbAndTable.getDb(),dbAndTable.getTable());
+  }
+  AutoReturnableObject<IMetaStoreClient> aro=Mockito.mock(AutoReturnableObject.class);
+  Mockito.when(aro.get()).thenReturn(client);
+  Mockito.when(pool.getHiveRegProps()).thenReturn(null);
+  Mockito.when(pool.getClient()).thenReturn(aro);
+  return pool;
+}

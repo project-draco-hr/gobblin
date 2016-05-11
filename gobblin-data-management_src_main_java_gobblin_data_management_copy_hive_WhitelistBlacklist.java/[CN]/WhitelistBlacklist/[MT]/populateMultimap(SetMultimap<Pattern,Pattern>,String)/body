@@ -1,0 +1,30 @@
+{
+  Splitter tokenSplitter=Splitter.on(",").omitEmptyStrings().trimResults();
+  Splitter partSplitter=Splitter.on(".").omitEmptyStrings().trimResults();
+  Splitter tableSplitter=Splitter.on("|").omitEmptyStrings().trimResults();
+  for (  String token : tokenSplitter.split(list)) {
+    if (!Strings.isNullOrEmpty(token)) {
+      List<String> parts=partSplitter.splitToList(token);
+      if (parts.size() > 2) {
+        throw new IOException("Invalid token " + token);
+      }
+      Pattern databasePattern=Pattern.compile(parts.get(0).replace("*",".*"));
+      Set<Pattern> tablePatterns=Sets.newHashSet();
+      if (parts.size() == 2) {
+        String tables=parts.get(1);
+        for (        String table : tableSplitter.split(tables)) {
+          if (table.equals("*")) {
+            tablePatterns.add(ALL_TABLES);
+          }
+ else {
+            tablePatterns.add(Pattern.compile(table.replace("*",".*")));
+          }
+        }
+      }
+ else {
+        tablePatterns.add(ALL_TABLES);
+      }
+      multimap.putAll(databasePattern,tablePatterns);
+    }
+  }
+}

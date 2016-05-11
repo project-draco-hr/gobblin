@@ -1,0 +1,6 @@
+{
+  if (!this.blacklistMultimap.isEmpty() && multimapContains(this.blacklistMultimap,db,table,true)) {
+    return false;
+  }
+  return this.whitelistMultimap.isEmpty() || multimapContains(this.whitelistMultimap,db,table,false);
+}

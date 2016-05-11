@@ -1,0 +1,6 @@
+{
+  this.whitelistMultimap=HashMultimap.create();
+  this.blacklistMultimap=HashMultimap.create();
+  populateMultimap(this.whitelistMultimap,whitelist);
+  populateMultimap(this.blacklistMultimap,blacklist);
+}
