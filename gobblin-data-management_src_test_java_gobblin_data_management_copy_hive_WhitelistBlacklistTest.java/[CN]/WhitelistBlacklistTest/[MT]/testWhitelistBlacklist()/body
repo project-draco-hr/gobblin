@@ -1,0 +1,8 @@
+{
+  WhitelistBlacklist whitelistBlacklist=new WhitelistBlacklist("dba","dba.tablea");
+  Assert.assertTrue(whitelistBlacklist.acceptDb("dba"));
+  Assert.assertFalse(whitelistBlacklist.acceptDb("dbb"));
+  Assert.assertFalse(whitelistBlacklist.acceptTable("dba","tablea"));
+  Assert.assertTrue(whitelistBlacklist.acceptTable("dba","tableb"));
+  Assert.assertFalse(whitelistBlacklist.acceptTable("dbb","tableb"));
+}

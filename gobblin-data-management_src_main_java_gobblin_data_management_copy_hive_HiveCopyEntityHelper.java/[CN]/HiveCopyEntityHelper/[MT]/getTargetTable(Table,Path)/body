@@ -3,6 +3,7 @@
     Table targetTable=originTable.copy();
     targetTable.setDbName(this.targetDatabase);
     targetTable.setDataLocation(targetLocation);
+    targetTable.setOwner(UserGroupInformation.getCurrentUser().getShortUserName());
     targetTable.getTTable().putToParameters(HiveDataset.REGISTERER,GOBBLIN_DISTCP);
     targetTable.getTTable().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(this.startTime));
     HiveAvroCopyEntityHelper.updateTableAttributesIfAvro(targetTable,this);

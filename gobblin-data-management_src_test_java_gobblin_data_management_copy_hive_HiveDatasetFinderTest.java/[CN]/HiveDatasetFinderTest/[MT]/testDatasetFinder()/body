@@ -1,0 +1,12 @@
+{
+  List<HiveDatasetFinder.DbAndTable> dbAndTables=Lists.newArrayList();
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db1","table1"));
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db1","table2"));
+  dbAndTables.add(new HiveDatasetFinder.DbAndTable("db1","table3"));
+  HiveMetastoreClientPool pool=getTestPool(dbAndTables);
+  Properties properties=new Properties();
+  properties.put(HiveDatasetFinder.HIVE_DATASET_PREFIX + "." + WhitelistBlacklist.WHITELIST,"");
+  HiveDatasetFinder finder=new TestHiveDatasetFinder(FileSystem.getLocal(new Configuration()),properties,pool);
+  List<HiveDataset> datasets=Lists.newArrayList(finder.getDatasetsIterator());
+  Assert.assertEquals(datasets.size(),3);
+}

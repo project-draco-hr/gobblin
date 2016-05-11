@@ -9,6 +9,8 @@
     this.targetFs=targetFs;
     this.relocateDataFiles=Boolean.valueOf(this.dataset.properties.getProperty(RELOCATE_DATA_FILES_KEY,DEFAULT_RELOCATE_DATA_FILES));
     this.targetTableRoot=this.dataset.properties.containsKey(COPY_TARGET_TABLE_ROOT) ? Optional.of(resolvePath(this.dataset.properties.getProperty(COPY_TARGET_TABLE_ROOT),this.dataset.table.getDbName(),this.dataset.table.getTableName())) : Optional.<Path>absent();
+    this.targetTablePrefixTobeReplaced=this.dataset.properties.containsKey(COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED) ? Optional.of(new Path(this.dataset.properties.getProperty(COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED))) : Optional.<Path>absent();
+    this.targetTablePrefixReplacement=this.dataset.properties.containsKey(COPY_TARGET_TABLE_PREFIX_REPLACEMENT) ? Optional.of(new Path(this.dataset.properties.getProperty(COPY_TARGET_TABLE_PREFIX_REPLACEMENT))) : Optional.<Path>absent();
     this.hiveRegProps=new HiveRegProps(new State(this.dataset.properties));
     this.targetURI=Optional.fromNullable(this.dataset.properties.getProperty(TARGET_METASTORE_URI_KEY));
     this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.properties,this.targetURI);

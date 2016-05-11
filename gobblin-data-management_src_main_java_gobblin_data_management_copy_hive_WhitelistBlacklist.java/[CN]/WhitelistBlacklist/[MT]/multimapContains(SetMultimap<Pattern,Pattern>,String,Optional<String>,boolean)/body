@@ -1,0 +1,15 @@
+{
+  for (  Pattern dbPattern : multimap.keySet()) {
+    if (dbPattern.matcher(database).matches()) {
+      if (!table.isPresent()) {
+        return !blacklist || multimap.get(dbPattern).contains(ALL_TABLES);
+      }
+      for (      Pattern tablePattern : multimap.get(dbPattern)) {
+        if (tablePattern.matcher(table.get()).matches()) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

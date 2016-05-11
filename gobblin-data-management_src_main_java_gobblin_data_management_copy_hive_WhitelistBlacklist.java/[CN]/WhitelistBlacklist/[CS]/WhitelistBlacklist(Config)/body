@@ -1,0 +1,3 @@
+{
+  this(config.hasPath(WHITELIST) ? config.getString(WHITELIST) : "",config.hasPath(BLACKLIST) ? config.getString(BLACKLIST) : "");
+}

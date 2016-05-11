@@ -1,0 +1,7 @@
+{
+  Path sourcePathWithoutSchemeAndAuthority=PathUtils.getPathWithoutSchemeAndAuthority(sourcePath);
+  Preconditions.checkArgument(PathUtils.isAncestor(prefixTobeReplaced,sourcePathWithoutSchemeAndAuthority),"When replacing prefix, all locations must be descendants of the prefix. " + "The prefix: %s, file location: %s.",prefixTobeReplaced,sourcePathWithoutSchemeAndAuthority);
+  Path relativePath=PathUtils.relativizePath(sourcePathWithoutSchemeAndAuthority,prefixTobeReplaced);
+  Path result=new Path(prefixReplacement,relativePath);
+  return result;
+}
