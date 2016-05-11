@@ -1,0 +1,12 @@
+{
+  if (!ignoreDbCreation) {
+    createTestDb(dbName);
+  }
+  Table tbl=org.apache.hadoop.hive.ql.metadata.Table.getEmptyTable(dbName,tableName);
+  tbl.getSd().setLocation(tableSdLoc);
+  if (partitionFieldName.isPresent()) {
+    tbl.addToPartitionKeys(new FieldSchema(partitionFieldName.get(),"string","some comment"));
+  }
+  this.localMetastoreClient.createTable(tbl);
+  return tbl;
+}

@@ -1,0 +1,7 @@
+{
+  SourceState testState=new SourceState();
+  testState.setProp("hive.dataset.database",dbName);
+  testState.setProp("hive.dataset.table.pattern","*");
+  testState.setProp("hive.unit.updateProviderFactory.class",MockUpdateProviderFactory.class.getCanonicalName());
+  return testState;
+}

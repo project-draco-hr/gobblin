@@ -1,3 +1,3 @@
 {
-  return GLOB_TOKENS.matcher(path.toString()).find();
+  return (path != null) && GLOB_TOKENS.matcher(path.toString()).find();
 }

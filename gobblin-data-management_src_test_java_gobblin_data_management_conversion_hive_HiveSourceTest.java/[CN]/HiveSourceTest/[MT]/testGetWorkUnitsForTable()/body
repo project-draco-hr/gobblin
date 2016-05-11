@@ -1,0 +1,17 @@
+{
+  String dbName="testdb2";
+  String tableName="testtable2";
+  String tableSdLoc="/tmp/testtable2";
+  this.localMetastoreClient.dropDatabase(dbName,false,true,true);
+  SourceState testState=getTestState(dbName);
+  createTestTable(dbName,tableName,tableSdLoc,Optional.<String>absent());
+  updateProvider.addMockUpdateTime(dbName + "@" + tableName,10);
+  List<WorkUnit> workUnits=hiveSource.getWorkunits(testState);
+  Assert.assertEquals(workUnits.size(),1);
+  WorkUnit wu=workUnits.get(0);
+  HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(wu.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);
+  Assert.assertTrue(hiveUnit instanceof HiveTable,"Serialized hive unit is not a table");
+  Assert.assertEquals(hiveUnit.getDbName(),dbName);
+  Assert.assertEquals(hiveUnit.getTableName(),tableName);
+  Assert.assertEquals(hiveUnit.getLocation().get(),"file:" + tableSdLoc);
+}

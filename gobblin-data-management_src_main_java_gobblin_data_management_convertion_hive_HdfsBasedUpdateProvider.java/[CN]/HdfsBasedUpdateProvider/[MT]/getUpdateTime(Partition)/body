@@ -1,0 +1,9 @@
+{
+  try {
+    return getUpdateTime(partition.getDataLocation());
+  }
+ catch (  IOException e) {
+    log.warn(String.format("Failed to get update time for %s. Will return update time as 0",partition.getCompleteName()),e);
+  }
+  return 0;
+}

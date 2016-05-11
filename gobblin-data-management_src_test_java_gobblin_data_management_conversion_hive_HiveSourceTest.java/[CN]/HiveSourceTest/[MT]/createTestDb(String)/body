@@ -1,0 +1,9 @@
+{
+  Database db=new Database(dbName,"Some description","/tmp/" + dbName,new HashMap<String,String>());
+  try {
+    this.localMetastoreClient.createDatabase(db);
+  }
+ catch (  AlreadyExistsException e) {
+    log.warn(dbName + " already exits");
+  }
+}

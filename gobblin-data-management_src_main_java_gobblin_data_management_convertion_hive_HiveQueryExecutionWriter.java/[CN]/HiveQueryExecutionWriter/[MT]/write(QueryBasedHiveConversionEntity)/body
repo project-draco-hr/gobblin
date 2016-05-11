@@ -1,0 +1,8 @@
+{
+  try {
+    this.hiveJdbcConnector.executeStatements(hiveConversionEntity.getConversionQuery());
+  }
+ catch (  SQLException e) {
+    throw new IOException(e);
+  }
+}

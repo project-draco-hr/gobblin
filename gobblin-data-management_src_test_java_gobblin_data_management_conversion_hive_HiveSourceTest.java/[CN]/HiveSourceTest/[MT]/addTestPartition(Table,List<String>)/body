@@ -1,0 +1,9 @@
+{
+  StorageDescriptor partitionSd=new StorageDescriptor();
+  partitionSd.setLocation("/tmp/" + tbl.getTableName() + "/part1");
+  partitionSd.setSerdeInfo(new SerDeInfo("name","serializationLib",new HashMap<String,String>()));
+  partitionSd.setCols(tbl.getPartitionKeys());
+  Partition partition=new Partition(values,tbl.getDbName(),tbl.getTableName(),1,1,partitionSd,new HashMap<String,String>());
+  localMetastoreClient.add_partition(partition);
+  return partition;
+}

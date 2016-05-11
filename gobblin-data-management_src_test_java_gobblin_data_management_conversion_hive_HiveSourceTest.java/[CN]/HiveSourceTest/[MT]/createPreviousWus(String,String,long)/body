@@ -1,0 +1,6 @@
+{
+  WorkUnitState wus=new WorkUnitState();
+  wus.setActualHighWatermark(new LongWatermark(watermark));
+  wus.setProp(ConfigurationKeys.DATASET_URN_KEY,dbName + "@" + tableName);
+  return wus;
+}
