@@ -11,7 +11,6 @@
   List<HiveDataset> datasets=Lists.newArrayList(finder.getDatasetsIterator());
   Assert.assertEquals(datasets.size(),2);
   Assert.assertEquals(datasets.get(0).getTable().getDbName(),"db1");
-  Assert.assertEquals(datasets.get(0).getTable().getTableName(),"table1");
   Assert.assertEquals(datasets.get(1).getTable().getDbName(),"db1");
-  Assert.assertEquals(datasets.get(1).getTable().getTableName(),"table2");
+  Assert.assertEquals(Sets.newHashSet(datasets.get(0).getTable().getTableName(),datasets.get(1).getTable().getTableName()),Sets.newHashSet("table1","table2"));
 }
