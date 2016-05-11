@@ -1,0 +1,6 @@
+{
+  if (tableWatermarks.containsKey(table.getCompleteName())) {
+    return tableWatermarks.get(table.getCompleteName());
+  }
+  return new LongWatermark(0);
+}

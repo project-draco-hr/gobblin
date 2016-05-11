@@ -1,0 +1,7 @@
+{
+  if (this.hiveUnits.isEmpty()) {
+    return null;
+  }
+  HiveRegistrationUnit hiveUnit=this.hiveUnits.remove(0);
+  return new QueryBasedHiveConversionEntity(hiveUnit,this.hiveAvroSchemaProvider.getSchema(hiveUnit));
+}

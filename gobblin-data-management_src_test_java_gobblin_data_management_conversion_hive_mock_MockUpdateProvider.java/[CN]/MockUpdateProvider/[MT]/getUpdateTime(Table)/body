@@ -1,0 +1,6 @@
+{
+  if (this.mock_updates_map.containsKey(table.getCompleteName())) {
+    return this.mock_updates_map.get(table.getCompleteName());
+  }
+  return 0;
+}

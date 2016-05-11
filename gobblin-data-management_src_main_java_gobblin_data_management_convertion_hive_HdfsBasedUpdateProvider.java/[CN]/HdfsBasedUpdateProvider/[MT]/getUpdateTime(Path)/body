@@ -1,0 +1,6 @@
+{
+  if (this.fs.exists(path)) {
+    return this.fs.getFileStatus(path).getModificationTime();
+  }
+  return 0;
+}

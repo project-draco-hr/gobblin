@@ -1,0 +1,8 @@
+{
+  try {
+    return new HiveQueryExecutionWriter(HiveJdbcConnector.newConnectorWithProps(this.destination.getProperties().getProperties()));
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+}

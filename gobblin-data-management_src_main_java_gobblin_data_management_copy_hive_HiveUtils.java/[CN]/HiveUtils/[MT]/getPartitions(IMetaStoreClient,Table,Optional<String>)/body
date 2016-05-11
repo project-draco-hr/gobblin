@@ -1,0 +1,14 @@
+{
+  try {
+    List<Partition> partitions=Lists.newArrayList();
+    List<org.apache.hadoop.hive.metastore.api.Partition> partitionsList=filter.isPresent() ? client.listPartitionsByFilter(table.getDbName(),table.getTableName(),filter.get(),(short)-1) : client.listPartitions(table.getDbName(),table.getTableName(),(short)-1);
+    for (    org.apache.hadoop.hive.metastore.api.Partition p : partitionsList) {
+      Partition partition=new Partition(table,p);
+      partitions.add(partition);
+    }
+    return partitions;
+  }
+ catch (  TException|HiveException te) {
+    throw new IOException("Hive Error",te);
+  }
+}

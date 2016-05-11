@@ -1,0 +1,4 @@
+{
+  this.query.append(query);
+  return this;
+}

@@ -1,0 +1,5 @@
+{
+  HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(state.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);
+  this.hiveUnits=Lists.newArrayList(hiveUnit);
+  this.hiveAvroSchemaProvider=GobblinConstructorUtils.invokeConstructor(HiveAvroSchemaProvider.class,state.getProp(OPTIONAL_HIVE_AVRO_SCHEMA_PROVIDER_CLASS_KEY,DEFAULT_HIVE_AVRO_SCHEMA_PROVIDER_CLASS),fs);
+}
