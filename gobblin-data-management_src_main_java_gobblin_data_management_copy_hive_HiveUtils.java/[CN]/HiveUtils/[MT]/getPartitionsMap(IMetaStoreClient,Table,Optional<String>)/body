@@ -1,6 +1,9 @@
 {
   return Maps.uniqueIndex(getPartitions(client,table,filter),new Function<Partition,List<String>>(){
-    @Override public List<String> apply(    Partition partition){
+    @Override public List<String> apply(    @Nullable Partition partition){
+      if (partition == null) {
+        return null;
+      }
       return partition.getValues();
     }
   }
