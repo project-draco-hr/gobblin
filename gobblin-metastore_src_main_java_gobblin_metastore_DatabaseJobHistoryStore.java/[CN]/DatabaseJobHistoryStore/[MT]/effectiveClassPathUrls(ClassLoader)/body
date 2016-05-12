@@ -1,0 +1,3 @@
+{
+  return ClasspathHelper.forManifest(ClasspathHelper.forClassLoader(classLoaders));
+}

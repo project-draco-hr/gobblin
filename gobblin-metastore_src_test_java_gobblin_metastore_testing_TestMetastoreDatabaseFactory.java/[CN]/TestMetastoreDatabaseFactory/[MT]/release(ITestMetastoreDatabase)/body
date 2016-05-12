@@ -1,0 +1,8 @@
+{
+synchronized (syncObject) {
+    if (instances.remove(instance) && instances.size() == 0) {
+      testMetastoreDatabaseServer.close();
+      testMetastoreDatabaseServer=null;
+    }
+  }
+}

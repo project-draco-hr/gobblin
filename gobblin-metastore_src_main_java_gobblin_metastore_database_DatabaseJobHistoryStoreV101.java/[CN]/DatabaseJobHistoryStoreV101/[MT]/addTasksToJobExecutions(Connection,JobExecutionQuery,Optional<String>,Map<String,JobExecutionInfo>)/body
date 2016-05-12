@@ -1,0 +1,13 @@
+{
+  Map<String,Map<String,TaskExecutionInfo>> tasksExecutions=getTasksForJobExecutions(connection,query,tableFilter,jobExecutionInfos);
+  addMetricsToTasks(connection,query,tableFilter,tasksExecutions);
+  addPropertiesToTasks(connection,query,tableFilter,tasksExecutions);
+  for (  Map.Entry<String,Map<String,TaskExecutionInfo>> taskExecution : tasksExecutions.entrySet()) {
+    JobExecutionInfo jobExecutionInfo=jobExecutionInfos.get(taskExecution.getKey());
+    TaskExecutionInfoArray taskExecutionInfos=new TaskExecutionInfoArray();
+    for (    TaskExecutionInfo taskExecutionInfo : taskExecution.getValue().values()) {
+      taskExecutionInfos.add(taskExecutionInfo);
+    }
+    jobExecutionInfo.setTaskExecutions(taskExecutionInfos);
+  }
+}

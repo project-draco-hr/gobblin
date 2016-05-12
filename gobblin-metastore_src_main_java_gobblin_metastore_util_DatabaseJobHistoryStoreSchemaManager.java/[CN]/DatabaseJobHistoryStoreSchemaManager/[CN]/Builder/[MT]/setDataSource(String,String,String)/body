@@ -1,0 +1,6 @@
+{
+  this.properties.setProperty("flyway.url",url);
+  this.properties.setProperty("flyway.user",user);
+  this.properties.setProperty("flyway.password",password);
+  return this;
+}

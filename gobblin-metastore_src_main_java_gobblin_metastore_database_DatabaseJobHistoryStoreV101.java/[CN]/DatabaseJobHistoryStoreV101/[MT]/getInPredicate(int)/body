@@ -1,0 +1,3 @@
+{
+  return StringUtils.join(Iterables.limit(Iterables.cycle("?"),count).iterator(),",");
+}

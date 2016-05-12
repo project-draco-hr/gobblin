@@ -1,0 +1,16 @@
+{
+  Optional<PreparedStatement> upsertStatement=Optional.absent();
+  int batchSize=0;
+  for (  TaskExecutionInfo taskExecution : taskExecutions) {
+    if (!upsertStatement.isPresent()) {
+      upsertStatement=Optional.of(connection.prepareStatement(TASK_EXECUTION_UPSERT_STATEMENT_TEMPLATE));
+    }
+    addTaskExecutionInfoToBatch(upsertStatement.get(),taskExecution);
+    if (batchSize++ > 1000) {
+      executeBatches(upsertStatement);
+      upsertStatement=Optional.absent();
+      batchSize=0;
+    }
+  }
+  executeBatches(upsertStatement);
+}

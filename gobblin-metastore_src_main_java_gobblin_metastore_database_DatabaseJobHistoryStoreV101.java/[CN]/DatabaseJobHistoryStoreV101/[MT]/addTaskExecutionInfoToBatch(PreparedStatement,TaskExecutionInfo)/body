@@ -1,0 +1,18 @@
+{
+  Preconditions.checkArgument(info.hasTaskId());
+  Preconditions.checkArgument(info.hasJobId());
+  int index=0;
+  upsertStatement.setString(++index,info.getTaskId());
+  upsertStatement.setString(++index,info.getJobId());
+  upsertStatement.setTimestamp(++index,info.hasStartTime() ? new Timestamp(info.getStartTime()) : null,getCalendarUTCInstance());
+  upsertStatement.setTimestamp(++index,info.hasEndTime() ? new Timestamp(info.getEndTime()) : null,getCalendarUTCInstance());
+  upsertStatement.setLong(++index,info.hasDuration() ? info.getDuration() : -1);
+  upsertStatement.setString(++index,info.hasState() ? info.getState().name() : null);
+  upsertStatement.setString(++index,info.hasFailureException() ? info.getFailureException() : null);
+  upsertStatement.setLong(++index,info.hasLowWatermark() ? info.getLowWatermark() : -1);
+  upsertStatement.setLong(++index,info.hasHighWatermark() ? info.getHighWatermark() : -1);
+  upsertStatement.setString(++index,info.hasTable() && info.getTable().hasNamespace() ? info.getTable().getNamespace() : null);
+  upsertStatement.setString(++index,info.hasTable() && info.getTable().hasName() ? info.getTable().getName() : null);
+  upsertStatement.setString(++index,info.hasTable() && info.getTable().hasType() ? info.getTable().getType().name() : null);
+  upsertStatement.addBatch();
+}

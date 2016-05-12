@@ -1,0 +1,3 @@
+{
+  return current.compareTo(expected) >= 0;
+}

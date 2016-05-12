@@ -1,0 +1,6 @@
+{
+  if (!"latest".equalsIgnoreCase(version)) {
+    this.properties.setProperty("flyway.target",version);
+  }
+  return this;
+}

@@ -1,0 +1,8 @@
+{
+  try {
+    return PREFIX + builder.build().toString();
+  }
+ catch (  URISyntaxException e) {
+    return "";
+  }
+}

@@ -1,0 +1,49 @@
+{
+  TaskExecutionInfo taskExecutionInfo=new TaskExecutionInfo();
+  taskExecutionInfo.setTaskId(rs.getString("task_id"));
+  taskExecutionInfo.setJobId(rs.getString("job_id"));
+  try {
+    Timestamp startTime=rs.getTimestamp("start_time");
+    if (startTime != null) {
+      taskExecutionInfo.setStartTime(startTime.getTime());
+    }
+  }
+ catch (  SQLException se) {
+    taskExecutionInfo.setStartTime(0);
+  }
+  try {
+    Timestamp endTime=rs.getTimestamp("end_time");
+    if (endTime != null) {
+      taskExecutionInfo.setEndTime(endTime.getTime());
+    }
+  }
+ catch (  SQLException se) {
+    taskExecutionInfo.setEndTime(0);
+  }
+  taskExecutionInfo.setDuration(rs.getLong("duration"));
+  String state=rs.getString("state");
+  if (!Strings.isNullOrEmpty(state)) {
+    taskExecutionInfo.setState(TaskStateEnum.valueOf(state));
+  }
+  String failureException=rs.getString("failure_exception");
+  if (!Strings.isNullOrEmpty(failureException)) {
+    taskExecutionInfo.setFailureException(failureException);
+  }
+  taskExecutionInfo.setLowWatermark(rs.getLong("low_watermark"));
+  taskExecutionInfo.setHighWatermark(rs.getLong("high_watermark"));
+  Table table=new Table();
+  String namespace=rs.getString("table_namespace");
+  if (!Strings.isNullOrEmpty(namespace)) {
+    table.setNamespace(namespace);
+  }
+  String name=rs.getString("table_name");
+  if (!Strings.isNullOrEmpty(name)) {
+    table.setName(name);
+  }
+  String type=rs.getString("table_type");
+  if (!Strings.isNullOrEmpty(type)) {
+    table.setType(TableTypeEnum.valueOf(type));
+  }
+  taskExecutionInfo.setTable(table);
+  return taskExecutionInfo;
+}

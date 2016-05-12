@@ -1,0 +1,10 @@
+{
+  if (upsertStatement.isPresent()) {
+    try {
+      upsertStatement.get().executeBatch();
+    }
+  finally {
+      upsertStatement.get().close();
+    }
+  }
+}

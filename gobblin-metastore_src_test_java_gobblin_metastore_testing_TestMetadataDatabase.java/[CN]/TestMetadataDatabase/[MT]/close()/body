@@ -1,0 +1,10 @@
+{
+  try {
+    this.testMetastoreDatabaseServer.drop(database);
+  }
+ catch (  URISyntaxException|SQLException ignored) {
+  }
+ finally {
+    TestMetastoreDatabaseFactory.release(this);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(id));
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(key));
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(value));
+  int index=0;
+  upsertStatement.setString(++index,id);
+  upsertStatement.setString(++index,key);
+  upsertStatement.setString(++index,value);
+  upsertStatement.addBatch();
+}

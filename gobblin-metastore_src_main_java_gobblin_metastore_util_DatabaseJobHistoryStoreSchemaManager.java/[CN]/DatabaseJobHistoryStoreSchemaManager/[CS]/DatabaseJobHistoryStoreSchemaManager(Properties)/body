@@ -1,0 +1,5 @@
+{
+  flyway=new Flyway();
+  flyway.configure(properties);
+  flyway.setClassLoader(this.getClass().getClassLoader());
+}

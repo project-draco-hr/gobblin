@@ -1,0 +1,3 @@
+Connection connection
+Optional<StringMap> jobProperties
+TaskExecutionInfoArray taskExecutions

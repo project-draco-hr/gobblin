@@ -1,0 +1,30 @@
+{
+  if (args.length < 1 || args.length > 2) {
+    printUsage();
+  }
+  Closer closer=Closer.create();
+  try {
+    CompositeConfiguration config=new CompositeConfiguration();
+    config.addConfiguration(new SystemConfiguration());
+    if (args.length == 2) {
+      config.addConfiguration(new PropertiesConfiguration(args[1]));
+    }
+    Properties properties=getProperties(config);
+    DatabaseJobHistoryStoreSchemaManager schemaManager=closer.register(DatabaseJobHistoryStoreSchemaManager.builder(properties).build());
+    if (String.CASE_INSENSITIVE_ORDER.compare("migrate",args[0]) == 0) {
+      schemaManager.migrate();
+    }
+ else     if (String.CASE_INSENSITIVE_ORDER.compare("info",args[0]) == 0) {
+      schemaManager.info();
+    }
+ else {
+      printUsage();
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

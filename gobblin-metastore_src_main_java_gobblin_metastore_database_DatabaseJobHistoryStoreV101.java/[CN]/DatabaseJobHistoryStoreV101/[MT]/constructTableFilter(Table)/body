@@ -1,0 +1,21 @@
+{
+  StringBuilder sb=new StringBuilder();
+  boolean hasNamespace=table.hasNamespace();
+  if (hasNamespace) {
+    sb.append("table_namespace='").append(table.getNamespace()).append("'");
+  }
+  boolean hasName=table.hasName();
+  if (hasName) {
+    if (hasNamespace) {
+      sb.append(" AND ");
+    }
+    sb.append("table_name='").append(table.getName()).append("'");
+  }
+  if (table.hasType()) {
+    if (hasName) {
+      sb.append(" AND ");
+    }
+    sb.append("table_type='").append(table.getType().name()).append("'");
+  }
+  return sb.toString();
+}

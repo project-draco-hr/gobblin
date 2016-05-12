@@ -1,0 +1,12 @@
+{
+  Flyway flyway=new Flyway();
+  flyway.setDataSource(dataSource);
+  MigrationInfoService info=flyway.info();
+  MigrationInfo[] all=info.all();
+  MigrationVersion latestVersion=all[all.length - 1].getVersion();
+  MigrationVersion currentVersion=MigrationVersion.EMPTY;
+  if (info.current() != null) {
+    currentVersion=info.current().getVersion();
+  }
+  return new DatabaseVersion(currentVersion,latestVersion);
+}

@@ -1,0 +1,18 @@
+{
+  if (jobExecutionInfo.hasMetrics()) {
+    Optional<PreparedStatement> upsertStatement=Optional.absent();
+    int batchSize=0;
+    for (    Metric metric : jobExecutionInfo.getMetrics()) {
+      if (!upsertStatement.isPresent()) {
+        upsertStatement=Optional.of(connection.prepareStatement(JOB_METRIC_UPSERT_STATEMENT_TEMPLATE));
+      }
+      addMetricToBatch(upsertStatement.get(),metric,jobExecutionInfo.getJobId());
+      if (batchSize++ > 1000) {
+        executeBatches(upsertStatement);
+        upsertStatement=Optional.absent();
+        batchSize=0;
+      }
+    }
+    executeBatches(upsertStatement);
+  }
+}

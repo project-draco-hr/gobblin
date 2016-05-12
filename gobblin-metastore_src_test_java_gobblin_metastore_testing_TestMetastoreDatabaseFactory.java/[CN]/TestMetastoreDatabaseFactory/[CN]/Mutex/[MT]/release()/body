@@ -1,0 +1,32 @@
+{
+  if (isLocked.get()) {
+synchronized (syncObject) {
+      if (isLocked.get()) {
+        if (fileLock != null) {
+          boolean result=true;
+          try {
+            fileLock.close();
+            fileLock=null;
+            isLocked.set(false);
+          }
+ catch (          IOException ignored) {
+            result=false;
+          }
+          if (fileChannel != null) {
+            try {
+              fileChannel.close();
+            }
+ catch (            IOException ignored) {
+              result=false;
+            }
+          }
+          return result;
+        }
+        isLocked.set(false);
+        return true;
+      }
+      return true;
+    }
+  }
+  return true;
+}

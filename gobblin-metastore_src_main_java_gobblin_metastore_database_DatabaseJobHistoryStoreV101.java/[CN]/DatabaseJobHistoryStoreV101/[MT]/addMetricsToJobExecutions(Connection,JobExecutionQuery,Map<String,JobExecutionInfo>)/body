@@ -1,0 +1,23 @@
+{
+  if (query.isIncludeJobMetrics() && jobExecutionInfos.size() > 0) {
+    String template=String.format(JOB_METRIC_QUERY_STATEMENT_TEMPLATE,getInPredicate(jobExecutionInfos.size()));
+    int index=1;
+    try (PreparedStatement jobMetricQueryStatement=connection.prepareStatement(template)){
+      for (      String jobId : jobExecutionInfos.keySet()) {
+        jobMetricQueryStatement.setString(index++,jobId);
+      }
+      try (ResultSet jobMetricRs=jobMetricQueryStatement.executeQuery()){
+        while (jobMetricRs.next()) {
+          String jobId=jobMetricRs.getString("job_id");
+          JobExecutionInfo jobExecutionInfo=jobExecutionInfos.get(jobId);
+          MetricArray metricArray=jobExecutionInfo.getMetrics(GetMode.NULL);
+          if (metricArray == null) {
+            metricArray=new MetricArray();
+            jobExecutionInfo.setMetrics(metricArray);
+          }
+          metricArray.add(resultSetToMetric(jobMetricRs));
+        }
+      }
+     }
+   }
+}

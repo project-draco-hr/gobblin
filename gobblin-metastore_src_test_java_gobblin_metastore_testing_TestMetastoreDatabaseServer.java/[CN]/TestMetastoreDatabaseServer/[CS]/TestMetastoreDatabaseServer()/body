@@ -1,0 +1,4 @@
+{
+  config=MysqldConfig.aMysqldConfig(Version.v5_6_latest).withPort(chooseRandomPort()).withUser(USER,PASSWORD).build();
+  testingMySqlServer=EmbeddedMysql.anEmbeddedMysql(config).start();
+}

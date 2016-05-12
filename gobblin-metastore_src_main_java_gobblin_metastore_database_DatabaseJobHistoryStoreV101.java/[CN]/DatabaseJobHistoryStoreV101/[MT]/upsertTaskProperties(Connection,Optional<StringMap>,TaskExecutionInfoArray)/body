@@ -1,0 +1,22 @@
+{
+  Optional<PreparedStatement> upsertStatement=Optional.absent();
+  int batchSize=0;
+  for (  TaskExecutionInfo taskExecution : taskExecutions) {
+    if (taskExecution.hasTaskProperties()) {
+      for (      Map.Entry<String,String> property : taskExecution.getTaskProperties().entrySet()) {
+        if (!jobProperties.isPresent() || !jobProperties.get().containsKey(property.getKey()) || !jobProperties.get().get(property.getKey()).equals(property.getValue())) {
+          if (!upsertStatement.isPresent()) {
+            upsertStatement=Optional.of(connection.prepareStatement(TASK_PROPERTY_UPSERT_STATEMENT_TEMPLATE));
+          }
+          addPropertyToBatch(upsertStatement.get(),property.getKey(),property.getValue(),taskExecution.getTaskId());
+          if (batchSize++ > 1000) {
+            executeBatches(upsertStatement);
+            upsertStatement=Optional.absent();
+            batchSize=0;
+          }
+        }
+      }
+    }
+  }
+  executeBatches(upsertStatement);
+}

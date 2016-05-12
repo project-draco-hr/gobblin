@@ -1,0 +1,4 @@
+{
+  MigrationInfoService info=flyway.info();
+  System.out.println(MigrationInfoDumper.dumpToAsciiTable(info.all()));
+}

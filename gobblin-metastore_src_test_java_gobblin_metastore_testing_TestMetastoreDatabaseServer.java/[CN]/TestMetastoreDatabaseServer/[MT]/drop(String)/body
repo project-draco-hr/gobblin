@@ -1,0 +1,13 @@
+{
+  Optional<Connection> connectionOptional=Optional.absent();
+  try {
+    connectionOptional=getConnector(getInformationSchemaJdbcUrl());
+    Connection connection=connectionOptional.get();
+    executeStatement(connection,String.format(DROP_DATABASE_TEMPLATE,database));
+  }
+  finally {
+    if (connectionOptional.isPresent()) {
+      connectionOptional.get().close();
+    }
+  }
+}

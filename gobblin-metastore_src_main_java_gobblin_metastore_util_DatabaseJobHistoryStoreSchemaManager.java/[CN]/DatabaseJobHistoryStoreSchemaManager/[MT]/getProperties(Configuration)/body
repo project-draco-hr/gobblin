@@ -1,0 +1,11 @@
+{
+  Properties props=new Properties();
+  char delimiter=(config instanceof AbstractConfiguration) ? ((AbstractConfiguration)config).getListDelimiter() : ',';
+  Iterator keys=config.getKeys();
+  while (keys.hasNext()) {
+    String key=(String)keys.next();
+    List list=config.getList(key);
+    props.setProperty("flyway." + key,StringUtils.join(list.iterator(),delimiter));
+  }
+  return props;
+}

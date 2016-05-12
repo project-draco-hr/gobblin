@@ -1,0 +1,43 @@
+{
+  Optional<Connection> connectionOptional=Optional.absent();
+  try {
+    connectionOptional=Optional.of(getConnection());
+    Connection connection=connectionOptional.get();
+    connection.setAutoCommit(false);
+    upsertJobExecutionInfo(connection,jobExecutionInfo);
+    upsertJobMetrics(connection,jobExecutionInfo);
+    upsertJobProperties(connection,jobExecutionInfo);
+    if (jobExecutionInfo.hasTaskExecutions()) {
+      upsertTaskExecutionInfos(connection,jobExecutionInfo.getTaskExecutions());
+      upsertTaskMetrics(connection,jobExecutionInfo.getTaskExecutions());
+      Optional<StringMap> jobProperties=Optional.absent();
+      if (jobExecutionInfo.hasJobProperties()) {
+        jobProperties=Optional.of(jobExecutionInfo.getJobProperties());
+      }
+      upsertTaskProperties(connection,jobProperties,jobExecutionInfo.getTaskExecutions());
+    }
+    connection.commit();
+  }
+ catch (  SQLException se) {
+    LOGGER.error("Failed to put a new job execution information record",se);
+    if (connectionOptional.isPresent()) {
+      try {
+        connectionOptional.get().rollback();
+      }
+ catch (      SQLException se1) {
+        LOGGER.error("Failed to rollback",se1);
+      }
+    }
+    throw new IOException(se);
+  }
+ finally {
+    if (connectionOptional.isPresent()) {
+      try {
+        connectionOptional.get().close();
+      }
+ catch (      SQLException se) {
+        LOGGER.error("Failed to close connection",se);
+      }
+    }
+  }
+}

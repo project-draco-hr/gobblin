@@ -9,7 +9,8 @@
   beanProvider.add("jobHistoryStore",jobHistoryStore);
   ResourceFactory factory=new InjectMockResourceFactory(beanProvider);
   TransportDispatcher dispatcher=new DelegatingTransportDispatcher(new RestLiServer(config,factory));
-  this.httpServer=Optional.of(new HttpNettyServerFactory(FilterChains.empty()).createServer(port,dispatcher));
+  FilterChain filterChain=FilterChains.create(new ServerCompressionFilter(new EncodingType[]{EncodingType.SNAPPY,EncodingType.GZIP}));
+  this.httpServer=Optional.of(new HttpNettyServerFactory(filterChain).createServer(port,dispatcher));
   LOGGER.info("Starting the job execution information server");
   this.httpServer.get().start();
 }

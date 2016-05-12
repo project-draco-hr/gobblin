@@ -1,0 +1,27 @@
+{
+  if (query.isIncludeTaskMetrics() && taskExecutionInfos.size() > 0) {
+    int index=1;
+    String template=String.format(TASK_METRIC_QUERY_STATEMENT_TEMPLATE,getInPredicate(taskExecutionInfos.size()));
+    if (tableFilter.isPresent() && !Strings.isNullOrEmpty(tableFilter.get())) {
+      template+=" AND t." + tableFilter.get();
+    }
+    try (PreparedStatement taskMetricQueryStatement=connection.prepareStatement(template)){
+      for (      String jobId : taskExecutionInfos.keySet()) {
+        taskMetricQueryStatement.setString(index++,jobId);
+      }
+      try (ResultSet taskMetricRs=taskMetricQueryStatement.executeQuery()){
+        while (taskMetricRs.next()) {
+          String jobId=taskMetricRs.getString("job_id");
+          String taskId=taskMetricRs.getString("task_id");
+          TaskExecutionInfo taskExecutionInfo=taskExecutionInfos.get(jobId).get(taskId);
+          MetricArray metricsArray=taskExecutionInfo.getMetrics(GetMode.NULL);
+          if (metricsArray == null) {
+            metricsArray=new MetricArray();
+            taskExecutionInfo.setMetrics(metricsArray);
+          }
+          metricsArray.add(resultSetToMetric(taskMetricRs));
+        }
+      }
+     }
+   }
+}
