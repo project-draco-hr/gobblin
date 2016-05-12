@@ -1,0 +1,12 @@
+{
+  LOG.info("Converting schema " + inputSchema);
+  String fieldsStr=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS);
+  Preconditions.checkNotNull(fieldsStr,ConfigurationKeys.CONVERTER_AVRO_FIELD_PICK_FIELDS + " is required for converter " + this.getClass().getSimpleName());
+  LOG.info("Converting schema to selected fields: " + fieldsStr);
+  try {
+    return createSchema(inputSchema,fieldsStr);
+  }
+ catch (  Exception e) {
+    throw new SchemaConversionException(e);
+  }
+}

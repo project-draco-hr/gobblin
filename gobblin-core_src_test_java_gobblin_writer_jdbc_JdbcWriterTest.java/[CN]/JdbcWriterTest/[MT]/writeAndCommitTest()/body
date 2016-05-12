@@ -1,0 +1,19 @@
+{
+  final String database="db";
+  final String table="users";
+  final int writeCount=25;
+  JdbcWriterCommands writerCommands=mock(JdbcWriterCommands.class);
+  Connection conn=mock(Connection.class);
+  try (JdbcWriter writer=new JdbcWriter(writerCommands,new State(),database,table,conn)){
+    for (int i=0; i < writeCount; i++) {
+      writer.write(null);
+    }
+    writer.commit();
+    Assert.assertEquals(writer.recordsWritten(),writeCount);
+  }
+   verify(writerCommands,times(writeCount)).insert(anyString(),anyString(),any(JdbcEntryData.class));
+  verify(conn,times(1)).commit();
+  verify(conn,never()).rollback();
+  verify(writerCommands,times(1)).flush();
+  verify(conn,times(1)).close();
+}

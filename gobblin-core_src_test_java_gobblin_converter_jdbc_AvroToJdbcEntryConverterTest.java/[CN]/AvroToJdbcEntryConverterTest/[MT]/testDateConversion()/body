@@ -1,0 +1,30 @@
+{
+  final String table="users";
+  Map<String,JdbcType> dateColums=new HashMap<>();
+  dateColums.put("date_of_birth",JdbcType.DATE);
+  dateColums.put("last_modified",JdbcType.TIME);
+  dateColums.put("created",JdbcType.TIMESTAMP);
+  JdbcWriterCommands mockWriterCommands=mock(JdbcWriterCommands.class);
+  when(mockWriterCommands.retrieveDateColumns(table)).thenReturn(dateColums);
+  JdbcWriterCommandsFactory factory=mock(JdbcWriterCommandsFactory.class);
+  when(factory.newInstance(any(State.class),any(Connection.class))).thenReturn(mockWriterCommands);
+  List<JdbcEntryMetaDatum> jdbcEntryMetaData=new ArrayList<>();
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("name",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("favorite_number",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("favorite_color",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("date_of_birth",JdbcType.DATE));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("last_modified",JdbcType.TIME));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("created",JdbcType.TIMESTAMP));
+  JdbcEntrySchema expected=new JdbcEntrySchema(jdbcEntryMetaData);
+  Schema inputSchema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/fieldPickInput.avsc"));
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.appendToListProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
+  AvroToJdbcEntryConverter converter=new AvroToJdbcEntryConverter(workUnitState);
+  Map<String,JdbcType> dateColumnMapping=Maps.newHashMap();
+  dateColumnMapping.put("date_of_birth",JdbcType.DATE);
+  dateColumnMapping.put("last_modified",JdbcType.TIME);
+  dateColumnMapping.put("created",JdbcType.TIMESTAMP);
+  workUnitState.appendToListProp(AvroToJdbcEntryConverter.CONVERTER_AVRO_JDBC_DATE_FIELDS,new Gson().toJson(dateColumnMapping));
+  JdbcEntrySchema actual=converter.convertSchema(inputSchema,workUnitState);
+  Assert.assertEquals(expected,actual);
+}

@@ -1,0 +1,12 @@
+{
+  for (  String jarFile : SPLITTER.split(hdfsJarFileList)) {
+    FileStatus[] status=fs.listStatus(new Path(jarFile));
+    for (    FileStatus fileStatus : status) {
+      if (!fileStatus.isDir()) {
+        Path path=new Path(jarFile,fileStatus.getPath().getName());
+        LOG.info(String.format("Adding %s to classpath",path));
+        DistributedCache.addFileToClassPath(path,this.conf,this.fs);
+      }
+    }
+  }
+}

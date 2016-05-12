@@ -1,0 +1,4 @@
+{
+  this.maxIdleConnections=maxIdleConnections;
+  return this;
+}

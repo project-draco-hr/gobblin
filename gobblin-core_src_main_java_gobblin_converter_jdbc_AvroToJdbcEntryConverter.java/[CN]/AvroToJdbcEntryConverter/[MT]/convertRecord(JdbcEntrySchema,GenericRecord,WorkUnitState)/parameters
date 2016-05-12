@@ -1,0 +1,3 @@
+JdbcEntrySchema outputSchema
+GenericRecord record
+WorkUnitState workUnit

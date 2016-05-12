@@ -1,0 +1,18 @@
+{
+  doThrow(RuntimeException.class).when(commands).copyTable(database,stagingTable,destinationTable);
+  try {
+    publisher.publish(workUnitStates);
+    Assert.fail("Test case didn't throw Exception.");
+  }
+ catch (  RuntimeException e) {
+    Assert.assertTrue(e instanceof RuntimeException);
+  }
+  InOrder inOrder=inOrder(conn,commands,workUnitState);
+  inOrder.verify(conn,times(1)).setAutoCommit(false);
+  inOrder.verify(commands,times(1)).copyTable(database,stagingTable,destinationTable);
+  inOrder.verify(conn,times(1)).rollback();
+  inOrder.verify(conn,times(1)).close();
+  verify(conn,never()).commit();
+  verify(commands,never()).deleteAll(destinationTable);
+  verify(workUnitState,never()).setWorkingState(any(WorkUnitState.WorkingState.class));
+}

@@ -1,0 +1,7 @@
+{
+  this.initializers=ImmutableList.copyOf(initializers);
+  this.closer=Closer.create();
+  for (  Initializer initializer : this.initializers) {
+    closer.register(initializer);
+  }
+}

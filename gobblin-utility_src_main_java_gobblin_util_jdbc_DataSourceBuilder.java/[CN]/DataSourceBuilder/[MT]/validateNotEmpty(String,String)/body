@@ -1,0 +1,3 @@
+{
+  Preconditions.checkArgument(!StringUtils.isEmpty(s),name + " should not be empty.");
+}

@@ -1,0 +1,16 @@
+{
+  this.state=builder.destination.getProperties();
+  this.state.appendToListProp(ConfigurationKeys.FORK_BRANCH_ID_KEY,Integer.toString(builder.branch));
+  String databaseTableKey=ForkOperatorUtils.getPropertyNameForBranch(JdbcPublisher.JDBC_PUBLISHER_DATABASE_NAME,builder.branches,builder.branch);
+  this.databaseName=Preconditions.checkNotNull(state.getProp(databaseTableKey),"Staging table is missing with key " + databaseTableKey);
+  String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,builder.branches,builder.branch);
+  this.tableName=Preconditions.checkNotNull(state.getProp(stagingTableKey),"Staging table is missing with key " + stagingTableKey);
+  try {
+    this.conn=createConnection();
+    this.commands=new JdbcWriterCommandsFactory().newInstance(state,conn);
+    conn.setAutoCommit(false);
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+}

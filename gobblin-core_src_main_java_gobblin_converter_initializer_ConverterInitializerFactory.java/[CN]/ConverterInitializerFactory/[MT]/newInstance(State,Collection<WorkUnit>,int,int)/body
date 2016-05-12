@@ -1,0 +1,16 @@
+{
+  Preconditions.checkNotNull(state);
+  String converterClassesParam=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.CONVERTER_CLASSES_KEY,branches,branchId);
+  List<String> converterClasses=COMMA_SPLITTER.splitToList(state.getProp(converterClassesParam,""));
+  if (converterClasses.isEmpty()) {
+    return NOOP;
+  }
+  List<ConverterInitializer> cis=Lists.newArrayList();
+  JdbcWriterCommandsFactory factory=new JdbcWriterCommandsFactory();
+  for (  String converterClass : converterClasses) {
+    if (AvroToJdbcEntryConverter.class.getName().equals(converterClass)) {
+      cis.add(new AvroToJdbcEntryConverterInitializer(state,workUnits,factory,branches,branchId));
+    }
+  }
+  return new MultiConverterInitializer(cis);
+}

@@ -1,0 +1,12 @@
+{
+  try {
+    LOG.info("Flushing pending insert.");
+    commands.flush();
+    LOG.info("Commiting transaction.");
+    conn.commit();
+  }
+ catch (  Exception e) {
+    failed=true;
+    throw new RuntimeException(e);
+  }
+}

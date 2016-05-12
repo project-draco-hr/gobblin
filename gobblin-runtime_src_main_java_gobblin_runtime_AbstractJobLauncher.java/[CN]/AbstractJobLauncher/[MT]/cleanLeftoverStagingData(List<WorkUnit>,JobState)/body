@@ -1,4 +1,7 @@
 {
+  if (jobState.getPropAsBoolean(ConfigurationKeys.CLEANUP_STAGING_DATA_BY_INITIALIZER,false)) {
+    return;
+  }
   try {
     if (!canCleanStagingData(jobState)) {
       LOG.error("Job " + jobState.getJobName() + " has unfinished commit sequences. Will not clean up staging data.");

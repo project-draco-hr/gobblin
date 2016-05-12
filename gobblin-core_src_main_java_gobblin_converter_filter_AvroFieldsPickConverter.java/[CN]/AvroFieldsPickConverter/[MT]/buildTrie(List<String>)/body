@@ -1,0 +1,7 @@
+{
+  TrieNode root=new TrieNode(null);
+  for (  String fqn : fqns) {
+    root.add(fqn);
+  }
+  return root;
+}

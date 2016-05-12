@@ -1,0 +1,5 @@
+{
+  List<String> fields=SPLITTER_ON_COMMA.splitToList(fieldsStr);
+  TrieNode root=buildTrie(fields);
+  return createSchemaHelper(schema,root);
+}

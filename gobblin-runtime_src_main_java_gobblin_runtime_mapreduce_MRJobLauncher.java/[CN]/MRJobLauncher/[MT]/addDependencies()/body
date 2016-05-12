@@ -13,5 +13,8 @@
   if (this.jobProps.containsKey(ConfigurationKeys.JOB_HDFS_FILES_KEY)) {
     addHDFSFiles(this.jobProps.getProperty(ConfigurationKeys.JOB_HDFS_FILES_KEY));
   }
+  if (jobProps.containsKey(ConfigurationKeys.JOB_JAR_HDFS_FILES_KEY)) {
+    addHdfsJars(jobProps.getProperty(ConfigurationKeys.JOB_JAR_HDFS_FILES_KEY));
+  }
   distributedCacheSetupTimer.stop();
 }

@@ -1,0 +1,4 @@
+{
+  this.useStrongEncryption=useStrongEncryption;
+  return this;
+}

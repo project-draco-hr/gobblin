@@ -1,0 +1,6 @@
+{
+  String destKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,branches,branchId);
+  String destType=Preconditions.checkNotNull(state.getProp(destKey),destKey + " is required for underlying JDBC product name");
+  Destination dest=Destination.of(DestinationType.valueOf(destType.toUpperCase()),state);
+  return jdbcWriterCommandsFactory.newInstance(dest,conn);
+}

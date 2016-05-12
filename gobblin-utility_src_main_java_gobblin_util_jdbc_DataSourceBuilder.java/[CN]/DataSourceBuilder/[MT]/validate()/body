@@ -1,0 +1,7 @@
+{
+  validateNotEmpty(url,"url");
+  validateNotEmpty(driver,"driver");
+  validateNotEmpty(passWord,"passWord");
+  Preconditions.checkArgument(maxIdleConnections == null || maxIdleConnections > 0,"maxIdleConnections should be a positive integer.");
+  Preconditions.checkArgument(maxActiveConnections == null || maxActiveConnections > 0,"maxActiveConnections should be a positive integer.");
+}

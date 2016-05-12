@@ -8,7 +8,7 @@
         this.eventSubmitter.submit(JobEvent.LOCK_IN_USE);
         throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
       }
-      try {
+      try (Closer closer=Closer.create()){
         notifyListeners(this.jobContext,jobListener,TimingEvent.LauncherTimings.JOB_PREPARE,new JobListenerAction(){
           @Override public void apply(          JobListener jobListener,          JobContext jobContext) throws Exception {
             jobListener.onJobPrepare(jobContext);
@@ -31,6 +31,8 @@
           LOG.warn("No work units have been created for job " + jobId);
           return;
         }
+        closer.register(WriterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
+        closer.register(ConverterInitializerFactory.newInstance(jobState,workUnits.get())).initialize();
         TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_STAGING_DATA_CLEAN);
         cleanLeftoverStagingData(workUnits.get(),jobState);
         stagingDataCleanTimer.stop();

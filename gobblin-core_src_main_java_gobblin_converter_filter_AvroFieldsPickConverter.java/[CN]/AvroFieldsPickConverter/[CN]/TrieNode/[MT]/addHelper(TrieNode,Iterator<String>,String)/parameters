@@ -1,0 +1,3 @@
+TrieNode node
+Iterator<String> fqnIterator
+String fqn

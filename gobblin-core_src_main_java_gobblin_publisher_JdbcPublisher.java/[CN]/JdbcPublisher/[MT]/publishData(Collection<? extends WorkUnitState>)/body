@@ -1,0 +1,49 @@
+{
+  LOG.info("Start publishing data");
+  int branches=state.getPropAsInt(ConfigurationKeys.FORK_BRANCHES_KEY,1);
+  Set<String> emptiedDestTables=Sets.newHashSet();
+  final Connection conn=createConnection();
+  final JdbcWriterCommands commands=jdbcWriterCommandsFactory.newInstance(state,conn);
+  try {
+    conn.setAutoCommit(false);
+    for (int i=0; i < branches; i++) {
+      final String destinationTable=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,i));
+      final String databaseName=state.getProp(ForkOperatorUtils.getPropertyNameForBranch(JDBC_PUBLISHER_DATABASE_NAME,branches,i));
+      Preconditions.checkNotNull(destinationTable);
+      if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,i),false) && !emptiedDestTables.contains(destinationTable)) {
+        LOG.info("Deleting table " + destinationTable);
+        commands.deleteAll(destinationTable);
+        emptiedDestTables.add(destinationTable);
+      }
+      Map<String,List<WorkUnitState>> stagingTables=getStagingTables(states,branches,i);
+      for (      Map.Entry<String,List<WorkUnitState>> entry : stagingTables.entrySet()) {
+        String stagingTable=entry.getKey();
+        LOG.info("Copying data from staging table " + stagingTable + " into destination table "+ destinationTable);
+        commands.copyTable(databaseName,stagingTable,destinationTable);
+        for (        WorkUnitState workUnitState : entry.getValue()) {
+          workUnitState.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+        }
+      }
+    }
+    LOG.info("Commit publish data");
+    conn.commit();
+  }
+ catch (  Exception e) {
+    try {
+      LOG.error("Failed publishing. Rolling back.");
+      conn.rollback();
+    }
+ catch (    SQLException se) {
+      LOG.error("Failed rolling back.",se);
+    }
+    throw new RuntimeException("Failed publishing",e);
+  }
+ finally {
+    try {
+      conn.close();
+    }
+ catch (    SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}

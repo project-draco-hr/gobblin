@@ -1,0 +1,15 @@
+{
+  Set<String> colNames=new HashSet<>();
+  while (colNames.size() < colNums) {
+    String colName=RandomStringUtils.randomAlphabetic(colSize);
+    if (colNames.contains(colName)) {
+      continue;
+    }
+    colNames.add(colName);
+  }
+  List<JdbcEntryData> result=new ArrayList<>();
+  for (int i=0; i < entryCount; i++) {
+    result.add(createJdbcEntry(colNames,colSize));
+  }
+  return result;
+}

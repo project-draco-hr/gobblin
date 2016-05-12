@@ -1,0 +1,8 @@
+{
+  Preconditions.checkNotNull(jdbcEntryDatumEntries);
+  ImmutableMap.Builder<String,JdbcEntryDatum> builder=ImmutableSortedMap.naturalOrder();
+  for (  JdbcEntryDatum datum : jdbcEntryDatumEntries) {
+    builder.put(datum.getColumnName(),datum);
+  }
+  this.jdbcEntryData=builder.build();
+}

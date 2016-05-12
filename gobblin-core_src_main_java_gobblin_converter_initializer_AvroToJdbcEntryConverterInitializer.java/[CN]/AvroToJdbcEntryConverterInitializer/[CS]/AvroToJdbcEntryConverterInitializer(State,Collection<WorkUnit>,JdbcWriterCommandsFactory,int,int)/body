@@ -1,0 +1,7 @@
+{
+  this.state=state;
+  this.workUnits=workUnits;
+  this.jdbcWriterCommandsFactory=jdbcWriterCommandsFactory;
+  this.branches=branches;
+  this.branchId=branchId;
+}

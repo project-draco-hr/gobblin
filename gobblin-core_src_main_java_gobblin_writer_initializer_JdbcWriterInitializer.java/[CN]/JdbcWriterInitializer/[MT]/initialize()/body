@@ -1,0 +1,52 @@
+{
+  try (Connection conn=createConnection()){
+    JdbcWriterCommands commands=createJdbcWriterCommands(conn);
+    JobCommitPolicy jobCommitPolicy=JobCommitPolicy.getCommitPolicy(state);
+    boolean isSkipStaging=!JobCommitPolicy.COMMIT_ON_FULL_SUCCESS.equals(jobCommitPolicy);
+    if (isSkipStaging) {
+      LOG.info("Writer will write directly to destination table as JobCommitPolicy is " + jobCommitPolicy);
+    }
+    final String publishTable=getProp(state,JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,branches,branchId);
+    final String stagingTableKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_STAGING_TABLE,branches,branchId);
+    String stagingTable=state.getProp(stagingTableKey);
+    int i=-1;
+    for (    WorkUnit wu : workUnits) {
+      i++;
+      if (isSkipStaging) {
+        LOG.info("User chose to skip staing table on branch " + branchId + " workunit "+ i);
+        wu.setProp(stagingTableKey,publishTable);
+        if (i == 0) {
+          if (getPropAsBoolean(state,JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,branches,branchId)) {
+            LOG.info("User chose to replace final table " + publishTable + " on branch "+ branchId+ " workunit "+ i);
+            commands.truncate(publishTable);
+          }
+        }
+        continue;
+      }
+      if (!StringUtils.isEmpty(stagingTable)) {
+        LOG.info("Staging table for branch " + branchId + " from user: "+ stagingTable);
+        wu.setProp(stagingTableKey,stagingTable);
+        if (i == 0) {
+          if (state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_TRUNCATE_STAGING_TABLE,branches,branchId),false)) {
+            LOG.info("Truncating staging table " + stagingTable + " as requested.");
+            commands.truncate(stagingTable);
+          }
+          if (!commands.isEmpty(stagingTable)) {
+            LOG.error("Staging table " + stagingTable + " is not empty. Failing.");
+            throw new IllegalArgumentException("Staging table " + stagingTable + " should be empty.");
+          }
+          userCreatedStagingTable=stagingTable;
+        }
+        continue;
+      }
+      LOG.info("Staging table has not been passed from user for branch " + branchId + " workunit "+ i+ " . Creating.");
+      String createdStagingTable=createStagingTable(conn,commands);
+      wu.setProp(stagingTableKey,createdStagingTable);
+      createdStagingTables.add(createdStagingTable);
+      LOG.info("Staging table " + createdStagingTable + " has been created for branchId "+ branchId+ " workunit "+ i);
+    }
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException("Failed with SQL",e);
+  }
+}

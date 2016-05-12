@@ -1,0 +1,10 @@
+{
+  publisher.publish(workUnitStates);
+  InOrder inOrder=inOrder(conn,commands,workUnitState);
+  inOrder.verify(conn,times(1)).setAutoCommit(false);
+  inOrder.verify(commands,times(1)).copyTable(database,stagingTable,destinationTable);
+  inOrder.verify(workUnitState,times(1)).setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+  inOrder.verify(conn,times(1)).commit();
+  inOrder.verify(conn,times(1)).close();
+  verify(commands,never()).deleteAll(destinationTable);
+}

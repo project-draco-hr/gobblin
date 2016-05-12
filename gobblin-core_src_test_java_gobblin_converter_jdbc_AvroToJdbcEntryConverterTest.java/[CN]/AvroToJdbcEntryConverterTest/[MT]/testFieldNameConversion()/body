@@ -1,0 +1,32 @@
+{
+  Map<String,JdbcType> dateColums=new HashMap<>();
+  dateColums.put("last_updated",JdbcType.TIMESTAMP);
+  final String table="users";
+  JdbcWriterCommands mockWriterCommands=mock(JdbcWriterCommands.class);
+  when(mockWriterCommands.retrieveDateColumns(table)).thenReturn(dateColums);
+  JdbcWriterCommandsFactory factory=mock(JdbcWriterCommandsFactory.class);
+  when(factory.newInstance(any(State.class),any(Connection.class))).thenReturn(mockWriterCommands);
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.appendToListProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,table);
+  String fieldPairJson="{\"userId\":\"user_id\" , \"memberId\":\"member_id\" , \"businessUnit\":\"business_unit\", \"geoRegion\":\"geo_region\", \"superRegion\":\"super_region\", \"subRegion\":\"sub_region\"}";
+  workUnitState.appendToListProp(ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS,fieldPairJson);
+  workUnitState.appendToListProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());
+  AvroToJdbcEntryConverter converter=new AvroToJdbcEntryConverter(workUnitState);
+  Schema inputSchema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/user.avsc"));
+  List<JdbcEntryMetaDatum> jdbcEntryMetaData=new ArrayList<>();
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("user_id",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("member_id",JdbcType.BIGINT));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("business_unit",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("level",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("geo_region",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("super_region",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("sub_region",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("currency",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("segment",JdbcType.VARCHAR));
+  jdbcEntryMetaData.add(new JdbcEntryMetaDatum("vertical",JdbcType.VARCHAR));
+  JdbcEntrySchema expected=new JdbcEntrySchema(jdbcEntryMetaData);
+  Map<String,JdbcType> dateColumnMapping=Maps.newHashMap();
+  workUnitState.appendToListProp(AvroToJdbcEntryConverter.CONVERTER_AVRO_JDBC_DATE_FIELDS,new Gson().toJson(dateColumnMapping));
+  JdbcEntrySchema actual=converter.convertSchema(inputSchema,workUnitState);
+  Assert.assertEquals(expected,actual);
+}

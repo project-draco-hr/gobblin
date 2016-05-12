@@ -1,0 +1,10 @@
+{
+  if (columnNames == null) {
+    initializeForBatch(conn,databaseName,table,jdbcEntryData);
+  }
+  pendingInserts.add(jdbcEntryData);
+  if (pendingInserts.size() == batchSize) {
+    insertBatch(insertPstmtForFixedBatch);
+    return;
+  }
+}

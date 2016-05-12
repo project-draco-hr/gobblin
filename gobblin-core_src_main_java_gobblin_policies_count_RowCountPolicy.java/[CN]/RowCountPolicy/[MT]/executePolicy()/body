@@ -3,6 +3,7 @@
     return Result.PASSED;
   }
  else {
+    LOG.warn(this.getClass().getSimpleName() + " fails as read count and write count mismatch: " + this);
     return Result.FAILED;
   }
 }

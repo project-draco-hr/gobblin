@@ -1,0 +1,13 @@
+{
+  state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
+  state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
+  state.setProp(JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,Boolean.toString(true));
+  initializer.initialize();
+  Assert.assertEquals(DEST_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
+  verify(commands,never()).createTableStructure(anyString(),anyString());
+  InOrder inOrder=inOrder(commands);
+  inOrder.verify(commands,times(1)).truncate(DEST_TABLE);
+  initializer.close();
+  inOrder.verify(commands,never()).truncate(anyString());
+  verify(commands,never()).drop(anyString());
+}

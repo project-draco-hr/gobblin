@@ -1,0 +1,5 @@
+{
+  pStmt.clearBatch();
+  pStmt.clearParameters();
+  currBatchSize=0;
+}

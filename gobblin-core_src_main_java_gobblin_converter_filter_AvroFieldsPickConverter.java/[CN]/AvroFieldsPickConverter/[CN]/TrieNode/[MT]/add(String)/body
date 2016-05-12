@@ -1,0 +1,3 @@
+{
+  addHelper(this,SPLITTER_ON_DOT.splitToList(fqn).iterator(),fqn);
+}

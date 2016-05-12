@@ -1,0 +1,13 @@
+{
+  if (LOG.isDebugEnabled()) {
+    LOG.debug("Writing " + record);
+  }
+  try {
+    commands.insert(databaseName,tableName,record);
+    recordWrittenCount++;
+  }
+ catch (  Exception e) {
+    failed=true;
+    throw new RuntimeException(e);
+  }
+}

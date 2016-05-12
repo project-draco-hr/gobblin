@@ -1,0 +1,3 @@
+{
+  intializer=new MultiInitializer(writerInitializers);
+}

@@ -1,0 +1,8 @@
+{
+  List<JdbcEntryDatum> datumList=new ArrayList<>();
+  for (  String colName : colNames) {
+    JdbcEntryDatum datum=new JdbcEntryDatum(colName,RandomStringUtils.randomAlphabetic(colSize));
+    datumList.add(datum);
+  }
+  return new JdbcEntryData(datumList);
+}

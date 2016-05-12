@@ -1,0 +1,10 @@
+{
+  validateInput(state);
+  this.state=state;
+  this.workUnits=Lists.newArrayList(workUnits);
+  this.branches=branches;
+  this.branchId=branchId;
+  this.jdbcWriterCommandsFactory=jdbcWriterCommandsFactory;
+  this.createdStagingTables=Sets.newHashSet();
+  state.setProp(ConfigurationKeys.CLEANUP_STAGING_DATA_BY_INITIALIZER,Boolean.toString(true));
+}
