@@ -1,0 +1,5 @@
+FileSystem fs
+Path rootPath
+Properties properties
+String idenifier
+List<FileStatus> subFiles

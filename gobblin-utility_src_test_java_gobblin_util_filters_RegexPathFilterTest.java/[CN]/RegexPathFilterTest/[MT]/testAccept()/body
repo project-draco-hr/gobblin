@@ -1,0 +1,11 @@
+{
+  String regex="a.*\\.b";
+  Path matchedPath=new Path("fsuri://testdir/subdir/a11.b");
+  Path unmatchedPath=new Path("fsuri://testdir/subdir/a.11b");
+  RegexPathFilter includeFilter=new RegexPathFilter(regex);
+  RegexPathFilter excludeFilter=new RegexPathFilter(regex,false);
+  Assert.assertTrue(includeFilter.accept(matchedPath));
+  Assert.assertFalse(includeFilter.accept(unmatchedPath));
+  Assert.assertFalse(excludeFilter.accept(matchedPath));
+  Assert.assertTrue(excludeFilter.accept(unmatchedPath));
+}

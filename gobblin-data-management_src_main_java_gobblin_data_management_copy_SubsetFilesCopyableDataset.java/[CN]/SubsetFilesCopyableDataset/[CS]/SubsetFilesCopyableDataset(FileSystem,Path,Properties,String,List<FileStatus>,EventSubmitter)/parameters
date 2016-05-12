@@ -1,0 +1,6 @@
+FileSystem fs
+Path rootPath
+Properties properties
+String idenifier
+List<FileStatus> subFiles
+EventSubmitter eventSubmitter

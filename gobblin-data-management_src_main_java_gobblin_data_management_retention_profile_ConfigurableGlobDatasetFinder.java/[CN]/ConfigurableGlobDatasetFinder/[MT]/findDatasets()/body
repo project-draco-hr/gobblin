@@ -1,7 +1,7 @@
 {
   List<T> datasets=Lists.newArrayList();
   LOG.info("Finding datasets for pattern " + this.datasetPattern);
-  FileStatus[] fileStatuss=this.fs.globStatus(this.datasetPattern);
+  FileStatus[] fileStatuss=this.getDatasetDirs();
   if (fileStatuss != null) {
     for (    FileStatus fileStatus : fileStatuss) {
       Path pathToMatch=PathUtils.getPathWithoutSchemeAndAuthority(fileStatus.getPath());
