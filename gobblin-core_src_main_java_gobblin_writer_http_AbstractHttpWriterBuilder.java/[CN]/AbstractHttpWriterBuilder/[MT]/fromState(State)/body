@@ -1,0 +1,5 @@
+{
+  Config config=ConfigBuilder.create().loadProps(state.getProperties(),CONF_PREFIX).build();
+  fromConfig(config);
+  return typedSelf();
+}

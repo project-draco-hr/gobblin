@@ -1,0 +1,4 @@
+{
+  _httpClientBuilder=builder;
+  return typedSelf();
+}

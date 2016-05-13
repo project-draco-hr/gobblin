@@ -1,0 +1,9 @@
+{
+  try {
+    onConnect(route.getTargetHost());
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("onConnect() callback failure: " + e,e);
+  }
+  return super.requestConnection(route,state);
+}

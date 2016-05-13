@@ -1,0 +1,4 @@
+HttpClientConnection conn
+HttpRoute route
+int connectTimeout
+HttpContext context

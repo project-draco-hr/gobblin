@@ -1,0 +1,4 @@
+{
+  _log.info("Setting current HTTP server host to: " + curHttpHost);
+  _curHttpHost=curHttpHost;
+}

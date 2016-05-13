@@ -1,0 +1,4 @@
+{
+  _originDestription=originDescription;
+  _currentConfig=originDescription.isPresent() ? ConfigFactory.empty(_originDestription.get()) : ConfigFactory.empty();
+}

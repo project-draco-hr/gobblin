@@ -1,0 +1,19 @@
+{
+  Preconditions.checkNotNull(props);
+  Preconditions.checkNotNull(scopePrefix);
+  int scopePrefixLen=scopePrefix.length();
+  for (  Map.Entry<Object,Object> propEntry : props.entrySet()) {
+    String propName=propEntry.getKey().toString();
+    if (propName.startsWith(scopePrefix)) {
+      String scopedName=propName.substring(scopePrefixLen);
+      if (scopedName.isEmpty()) {
+        throw new RuntimeException("Illegal scoped property:" + propName);
+      }
+      if (!Character.isAlphabetic(scopedName.charAt(0))) {
+        throw new RuntimeException("Scoped name for property " + propName + " should start with a character: "+ scopedName);
+      }
+      _primitiveProps.put(scopedName,propEntry.getValue());
+    }
+  }
+  return this;
+}

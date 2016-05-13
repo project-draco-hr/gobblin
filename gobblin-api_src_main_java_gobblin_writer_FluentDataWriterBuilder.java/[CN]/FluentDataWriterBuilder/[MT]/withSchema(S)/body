@@ -1,0 +1,4 @@
+{
+  super.withSchema(schema);
+  return typedSelf();
+}

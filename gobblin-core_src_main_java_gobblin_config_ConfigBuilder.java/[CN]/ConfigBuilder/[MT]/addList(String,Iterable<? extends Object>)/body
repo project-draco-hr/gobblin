@@ -1,0 +1,4 @@
+{
+  _currentConfig=_originDestription.isPresent() ? _currentConfig.withValue(name,ConfigValueFactory.fromIterable(values,_originDestription.get())) : _currentConfig.withValue(name,ConfigValueFactory.fromIterable(values));
+  return this;
+}
