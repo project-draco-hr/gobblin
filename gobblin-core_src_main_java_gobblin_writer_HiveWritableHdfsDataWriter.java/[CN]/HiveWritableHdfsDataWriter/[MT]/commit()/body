@@ -1,4 +1,4 @@
 {
   this.writer.close(false);
-  super.close();
+  super.commit();
 }
