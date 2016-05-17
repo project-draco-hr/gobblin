@@ -1,6 +1,14 @@
 {
   List<KafkaPartition> partitions=Lists.newArrayList();
   for (  PartitionMetadata partitionMetadata : topicMetadata.partitionsMetadata()) {
+    if (null == partitionMetadata) {
+      LOG.error("Ignoring topic with null partition metadata " + topicMetadata.topic());
+      return Collections.emptyList();
+    }
+    if (null == partitionMetadata.leader()) {
+      LOG.error("Ignoring topic with null partition leader " + topicMetadata.topic() + " metatada="+ partitionMetadata);
+      return Collections.emptyList();
+    }
     partitions.add(new KafkaPartition.Builder().withId(partitionMetadata.partitionId()).withTopicName(topicMetadata.topic()).withLeaderId(partitionMetadata.leader().id()).withLeaderHostAndPort(partitionMetadata.leader().host(),partitionMetadata.leader().port()).build());
   }
   return partitions;
