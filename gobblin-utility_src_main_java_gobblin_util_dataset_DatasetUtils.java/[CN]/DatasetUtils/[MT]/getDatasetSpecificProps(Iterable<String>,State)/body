@@ -1,0 +1,27 @@
+{
+  if (!Strings.isNullOrEmpty(state.getProp(DATASET_SPECIFIC_PROPS)) || !Strings.isNullOrEmpty(state.getProp(KAFKA_TOPIC_SPECIFIC_STATE))) {
+    Map<String,State> datasetSpecificConfigMap=Maps.newHashMap();
+    JsonArray array=!Strings.isNullOrEmpty(state.getProp(DATASET_SPECIFIC_PROPS)) ? state.getPropAsJsonArray(DATASET_SPECIFIC_PROPS) : state.getPropAsJsonArray(KAFKA_TOPIC_SPECIFIC_STATE);
+    for (    JsonElement datasetElement : array) {
+      Preconditions.checkArgument(datasetElement.isJsonObject(),"The value for property " + DATASET_SPECIFIC_PROPS + " is malformed");
+      JsonObject object=datasetElement.getAsJsonObject();
+      if (object.has(DATASET)) {
+        JsonElement datasetNameElement=object.get(DATASET);
+        Preconditions.checkArgument(datasetNameElement.isJsonPrimitive(),"The value for property " + DATASET_SPECIFIC_PROPS + " is malformed, the "+ DATASET+ " field must be a string");
+        for (        String dataset : Iterables.filter(datasets,new DatasetPredicate(datasetNameElement.getAsString()))) {
+          if (datasetSpecificConfigMap.containsKey(dataset)) {
+            datasetSpecificConfigMap.get(dataset).addAll(StateUtils.jsonObjectToState(object,DATASET));
+          }
+ else {
+            datasetSpecificConfigMap.put(dataset,StateUtils.jsonObjectToState(object,DATASET));
+          }
+        }
+      }
+ else {
+        LOG.warn("Skipping JsonElement " + datasetElement + " as it is does not contain a field with key "+ DATASET);
+      }
+    }
+    return datasetSpecificConfigMap;
+  }
+  return Maps.newHashMap();
+}

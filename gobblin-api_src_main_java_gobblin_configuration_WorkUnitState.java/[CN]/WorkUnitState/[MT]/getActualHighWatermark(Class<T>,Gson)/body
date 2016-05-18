@@ -1,0 +1,10 @@
+{
+  JsonElement json=getActualHighWatermark();
+  if (json == null) {
+    json=this.workUnit.getLowWatermark();
+    if (json == null) {
+      return null;
+    }
+  }
+  return gson.fromJson(json,watermarkClass);
+}

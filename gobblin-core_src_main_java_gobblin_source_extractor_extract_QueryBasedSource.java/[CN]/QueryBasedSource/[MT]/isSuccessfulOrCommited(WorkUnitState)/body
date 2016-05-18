@@ -1,0 +1,3 @@
+{
+  return wus.getWorkingState() == WorkingState.SUCCESSFUL || wus.getWorkingState() == WorkingState.COMMITTED;
+}

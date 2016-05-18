@@ -3,10 +3,9 @@
   this.workUnitState=state;
   this.topicName=KafkaUtils.getTopicName(state);
   this.partitions=KafkaUtils.getPartitions(state);
-  this.lowWatermark=GSON.fromJson(state.getWorkunit().getLowWatermark(),MultiLongWatermark.class);
-  this.highWatermark=GSON.fromJson(state.getWorkunit().getExpectedHighWatermark(),MultiLongWatermark.class);
+  this.lowWatermark=state.getWorkunit().getLowWatermark(MultiLongWatermark.class);
+  this.highWatermark=state.getWorkunit().getExpectedHighWatermark(MultiLongWatermark.class);
   this.nextWatermark=new MultiLongWatermark(this.lowWatermark);
-  this.closer=Closer.create();
   this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
   this.stopwatch=Stopwatch.createUnstarted();
   this.decodingErrorCount=Maps.newHashMap();

@@ -1,18 +1,16 @@
 {
-  this.log.info("Get source record count using Rest Api");
+  log.info("Get source record count using Rest Api");
   long count=0;
   try {
-    boolean success=this.getConnection();
+    boolean success=this.connector.connect();
     if (!success) {
       throw new RecordCountException("Failed to connect.");
     }
- else {
-      this.log.debug("Connected successfully.");
-      List<Command> cmds=this.getCountMetadata(schema,entity,workUnit,predicateList);
-      CommandOutput<?,?> response=this.getResponse(cmds);
-      count=this.getCount(response);
-      this.log.info("Source record count:" + count);
-    }
+    log.debug("Connected successfully.");
+    List<Command> cmds=this.getCountMetadata(schema,entity,workUnit,predicateList);
+    CommandOutput<?,?> response=this.connector.getResponse(cmds);
+    count=getCount(response);
+    log.info("Source record count:" + count);
     return count;
   }
  catch (  Exception e) {

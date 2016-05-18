@@ -1,0 +1,11 @@
+{
+  if (state.contains(ConfigurationKeys.SOURCE_ENTITIES)) {
+    log.info("Using entity names in " + ConfigurationKeys.SOURCE_ENTITIES);
+    return state.getPropAsSet(ConfigurationKeys.SOURCE_ENTITIES);
+  }
+ else   if (state.contains(ConfigurationKeys.SOURCE_ENTITY)) {
+    log.info("Using entity name in " + ConfigurationKeys.SOURCE_ENTITY);
+    return ImmutableSet.of(state.getProp(ConfigurationKeys.SOURCE_ENTITY));
+  }
+  throw new IllegalStateException(String.format("One of the following properties must be specified: %s, %s.",ConfigurationKeys.SOURCE_ENTITIES,ConfigurationKeys.SOURCE_ENTITY));
+}

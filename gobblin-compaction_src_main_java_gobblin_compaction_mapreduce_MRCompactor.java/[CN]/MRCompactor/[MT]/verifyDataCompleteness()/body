@@ -1,6 +1,6 @@
 {
-  List<Pattern> blacklist=getDataComplVerifBlacklist();
-  List<Pattern> whitelist=getDataComplVerifWhitelist();
+  List<Pattern> blacklist=DatasetFilterUtils.getPatternList(this.state,COMPACTION_COMPLETENESS_VERIFICATION_BLACKLIST);
+  List<Pattern> whitelist=DatasetFilterUtils.getPatternList(this.state,COMPACTION_COMPLETENESS_VERIFICATION_WHITELIST);
   int numDatasetsVerifiedTogether=getNumDatasetsVerifiedTogether();
   List<Dataset> datasetsToBeVerified=Lists.newArrayList();
   for (  Dataset dataset : this.datasets) {

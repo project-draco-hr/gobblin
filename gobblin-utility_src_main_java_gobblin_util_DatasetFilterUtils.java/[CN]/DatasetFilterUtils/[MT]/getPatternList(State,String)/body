@@ -1,0 +1,3 @@
+{
+  return getPatternList(state,propKey,StringUtils.EMPTY);
+}

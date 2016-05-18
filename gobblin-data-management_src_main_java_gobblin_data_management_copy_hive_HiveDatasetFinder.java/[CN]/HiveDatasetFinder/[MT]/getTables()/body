@@ -2,15 +2,15 @@
   List<DbAndTable> tables=Lists.newArrayList();
   try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     Iterable<String> databases=Iterables.filter(client.get().getAllDatabases(),new Predicate<String>(){
-      @Override public boolean apply(      @Nullable String db){
-        return whitelistBlacklist.acceptDb(db);
+      @Override public boolean apply(      String db){
+        return HiveDatasetFinder.this.whitelistBlacklist.acceptDb(db);
       }
     }
 );
     for (    final String db : databases) {
       Iterable<String> tableNames=Iterables.filter(client.get().getAllTables(db),new Predicate<String>(){
-        @Override public boolean apply(        @Nullable String table){
-          return whitelistBlacklist.acceptTable(db,table);
+        @Override public boolean apply(        String table){
+          return HiveDatasetFinder.this.whitelistBlacklist.acceptTable(db,table);
         }
       }
 );

@@ -2,29 +2,40 @@
   initLogger(state);
   List<WorkUnit> workUnits=Lists.newArrayList();
   String nameSpaceName=state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY);
-  String entityName=state.getProp(ConfigurationKeys.SOURCE_ENTITY);
-  String extractTableName=state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY);
-  if (StringUtils.isBlank(extractTableName)) {
-    extractTableName=Utils.escapeSpecialCharacters(entityName,ConfigurationKeys.ESCAPE_CHARS_IN_TABLE_NAME,"_");
+  Map<String,String> tableNameToEntityMap=Maps.newHashMap();
+  Set<String> entities=getSourceEntities(state);
+  List<Pattern> blacklist=DatasetFilterUtils.getPatternList(state,ENTITY_BLACKLIST);
+  List<Pattern> whitelist=DatasetFilterUtils.getPatternList(state,ENTITY_WHITELIST);
+  for (  String entity : DatasetFilterUtils.filter(entities,blacklist,whitelist)) {
+    tableNameToEntityMap.put(Utils.escapeSpecialCharacters(entity,ConfigurationKeys.ESCAPE_CHARS_IN_TABLE_NAME,"_"),entity);
   }
-  TableType tableType=TableType.valueOf(state.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
-  long previousWatermark=this.getLatestWatermarkFromMetadata(state);
-  Map<Long,Long> sortedPartitions=Maps.newTreeMap();
-  sortedPartitions.putAll(new Partitioner(state).getPartitions(previousWatermark));
-  SourceState partitionState=new SourceState();
-  partitionState.addAll(state);
-  Extract extract=partitionState.createExtract(tableType,nameSpaceName,extractTableName);
-  if (Boolean.valueOf(state.getProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY))) {
-    extract.setFullTrue(System.currentTimeMillis());
+  Map<String,State> tableSpecificPropsMap=shouldObtainTablePropsFromConfigStore(state) ? getTableSpecificPropsFromConfigStore(tableNameToEntityMap.keySet(),state) : DatasetUtils.getDatasetSpecificProps(tableNameToEntityMap.keySet(),state);
+  Map<String,Long> prevWatermarksByTable=getPreviousWatermarksForAllTables(state);
+  for (  String tableName : Sets.union(tableNameToEntityMap.keySet(),prevWatermarksByTable.keySet())) {
+    log.info(String.format("Table to be processed: %s, %s",tableName,tableNameToEntityMap.containsKey(tableName) ? "source entity = " + tableNameToEntityMap.get(tableName) : "which does not have source entity but has previous watermark"));
+    SourceState combinedState=getCombinedState(state,tableSpecificPropsMap.get(tableName));
+    TableType tableType=TableType.valueOf(combinedState.getProp(ConfigurationKeys.EXTRACT_TABLE_TYPE_KEY).toUpperCase());
+    long previousWatermark=prevWatermarksByTable.containsKey(tableName) ? prevWatermarksByTable.get(tableName) : ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+    if (!tableNameToEntityMap.containsKey(tableName)) {
+      combinedState.setProp(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE,previousWatermark);
+    }
+    Map<Long,Long> sortedPartitions=Maps.newTreeMap();
+    sortedPartitions.putAll(new Partitioner(combinedState).getPartitions(previousWatermark));
+    Extract extract=createExtract(tableType,nameSpaceName,tableName);
+    if (Boolean.valueOf(combinedState.getProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY))) {
+      extract.setFullTrue(System.currentTimeMillis());
+    }
+    for (    Entry<Long,Long> entry : sortedPartitions.entrySet()) {
+      WorkUnit workunit=WorkUnit.create(extract);
+      workunit.setProp(ConfigurationKeys.SOURCE_ENTITY,tableName);
+      workunit.setWatermarkInterval(new WatermarkInterval(new LongWatermark(entry.getKey()),new LongWatermark(entry.getValue())));
+      workUnits.add(workunit);
+    }
   }
-  for (  Entry<Long,Long> entry : sortedPartitions.entrySet()) {
-    partitionState.setProp(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY,entry.getKey());
-    partitionState.setProp(ConfigurationKeys.WORK_UNIT_HIGH_WATER_MARK_KEY,entry.getValue());
-    workUnits.add(partitionState.createWorkUnit(extract));
-  }
-  LOG.info("Total number of work units for the current run: " + workUnits.size());
+  log.info("Total number of workunits for the current run: " + workUnits.size());
   List<WorkUnit> previousWorkUnits=this.getPreviousWorkUnitsForRetry(state);
-  LOG.info("Total number of incomplete tasks from the previous run: " + previousWorkUnits.size());
+  log.info("Total number of incomplete tasks from the previous run: " + previousWorkUnits.size());
   workUnits.addAll(previousWorkUnits);
-  return workUnits;
+  int numOfMultiWorkunits=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
+  return pack(workUnits,numOfMultiWorkunits);
 }

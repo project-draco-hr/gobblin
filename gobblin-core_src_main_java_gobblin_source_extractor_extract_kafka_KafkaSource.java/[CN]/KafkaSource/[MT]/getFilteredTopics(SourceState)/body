@@ -1,5 +1,5 @@
 {
-  List<Pattern> blacklist=getBlacklist(state);
-  List<Pattern> whitelist=getWhitelist(state);
+  List<Pattern> blacklist=DatasetFilterUtils.getPatternList(state,TOPIC_BLACKLIST);
+  List<Pattern> whitelist=DatasetFilterUtils.getPatternList(state,TOPIC_WHITELIST);
   return this.kafkaWrapper.getFilteredTopics(blacklist,whitelist);
 }

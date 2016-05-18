@@ -1,6 +1,6 @@
 {
   log.info("Updating the current state high water mark with " + this.highWatermark);
-  this.workUnitState.setHighWaterMark(this.highWatermark);
+  this.workUnitState.setActualHighWatermark(new LongWatermark(this.highWatermark));
   try {
     this.closeConnection();
   }

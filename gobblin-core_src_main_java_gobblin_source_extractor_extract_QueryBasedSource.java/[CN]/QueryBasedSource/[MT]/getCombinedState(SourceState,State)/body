@@ -1,0 +1,8 @@
+{
+  if (tableSpecificState == null) {
+    return state;
+  }
+  SourceState combinedState=new SourceState(state,state.getPreviousDatasetStatesByUrns(),state.getPreviousWorkUnitStates());
+  combinedState.addAll(tableSpecificState);
+  return combinedState;
+}

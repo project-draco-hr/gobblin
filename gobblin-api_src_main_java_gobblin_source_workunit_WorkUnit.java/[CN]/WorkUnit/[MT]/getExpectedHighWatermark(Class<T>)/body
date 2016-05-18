@@ -1,0 +1,3 @@
+{
+  return getExpectedHighWatermark(watermarkClass,GSON);
+}

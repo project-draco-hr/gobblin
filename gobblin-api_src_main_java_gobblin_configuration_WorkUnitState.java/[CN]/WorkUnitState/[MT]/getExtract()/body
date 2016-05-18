@@ -1,4 +1,3 @@
 {
-  Extract curExtract=new Extract(this.workUnit.getExtract());
-  return curExtract;
+  return new Extract(this.workUnit.getExtract());
 }

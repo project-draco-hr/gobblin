@@ -1,0 +1,4 @@
+{
+  this.state=state;
+  this.authTokenTimeout=state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_TIMEOUT,ConfigurationKeys.DEFAULT_CONN_TIMEOUT);
+}

@@ -3,18 +3,16 @@
   long maxFailedConversions=workUnit.getPropAsLong(ConfigurationKeys.CONVERTER_AVRO_MAX_CONVERSION_FAILURES,ConfigurationKeys.DEFAULT_CONVERTER_AVRO_MAX_CONVERSION_FAILURES);
   for (  Map.Entry<String,JsonElement> entry : inputRecord.entrySet()) {
     try {
-      avroRecord.put(entry.getKey(),converters.get(entry.getKey()).convert(entry.getValue()));
+      avroRecord.put(entry.getKey(),this.converters.get(entry.getKey()).convert(entry.getValue()));
     }
  catch (    Exception e) {
-      numFailedConversion++;
-      if (numFailedConversion < maxFailedConversions) {
+      this.numFailedConversion++;
+      if (this.numFailedConversion < maxFailedConversions) {
         LOG.error("Dropping record " + inputRecord + " because it cannot be converted to Avro",e);
-        return new EmptyIterable<GenericRecord>();
+        return new EmptyIterable<>();
       }
- else {
-        throw new DataConversionException("Unable to convert field:" + entry.getKey() + " for value:"+ entry.getValue()+ " for record: "+ inputRecord,e);
-      }
+      throw new DataConversionException("Unable to convert field:" + entry.getKey() + " for value:"+ entry.getValue()+ " for record: "+ inputRecord,e);
     }
   }
-  return new SingleRecordIterable<GenericRecord>(avroRecord);
+  return new SingleRecordIterable<>(avroRecord);
 }

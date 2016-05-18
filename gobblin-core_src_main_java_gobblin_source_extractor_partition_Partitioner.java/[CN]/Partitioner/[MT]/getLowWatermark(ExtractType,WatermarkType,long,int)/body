@@ -6,7 +6,7 @@
     LOG.info("Overriding low water mark with the given start value: " + lowWatermark);
   }
  else {
-    if (this.isSnapshot(extractType)) {
+    if (isSnapshot(extractType)) {
       lowWatermark=this.getSnapshotLowWatermark(watermarkType,previousWatermark,deltaForNextWatermark);
     }
  else {

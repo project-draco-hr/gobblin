@@ -1,5 +1,5 @@
 {
-  this.log.info("Get source record count from salesforce");
+  log.info("Get source record count from salesforce");
   String output;
   Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
   if (itr.hasNext()) {
@@ -8,7 +8,7 @@
  else {
     throw new RecordCountException("Failed to get count from salesforce; REST response has no output");
   }
-  JsonElement element=gson.fromJson(output,JsonObject.class);
+  JsonElement element=GSON.fromJson(output,JsonObject.class);
   long count;
   try {
     JsonObject jsonObject=element.getAsJsonObject();

@@ -1,6 +1,0 @@
-{
-  if (this.httpClient == null) {
-    return true;
-  }
-  return false;
-}

@@ -1,5 +1,5 @@
 {
-  HashMap<Long,Long> defaultPartition=new HashMap<Long,Long>();
+  HashMap<Long,Long> defaultPartition=Maps.newHashMap();
   if (!isWatermarkExists()) {
     defaultPartition.put(ConfigurationKeys.DEFAULT_WATERMARK_VALUE,ConfigurationKeys.DEFAULT_WATERMARK_VALUE);
     LOG.info("Watermark column or type not found - Default partition with low watermark and high watermark as " + ConfigurationKeys.DEFAULT_WATERMARK_VALUE);
@@ -7,7 +7,7 @@
   }
   ExtractType extractType=ExtractType.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_EXTRACT_TYPE).toUpperCase());
   WatermarkType watermarkType=WatermarkType.valueOf(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE,ConfigurationKeys.DEFAULT_WATERMARK_TYPE).toUpperCase());
-  int interval=this.getUpdatedInterval(this.state.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_PARTITION_INTERVAL,0),extractType,watermarkType);
+  int interval=getUpdatedInterval(this.state.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_PARTITION_INTERVAL,0),extractType,watermarkType);
   int sourceMaxAllowedPartitions=this.state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS,0);
   int maxPartitions=(sourceMaxAllowedPartitions != 0 ? sourceMaxAllowedPartitions : ConfigurationKeys.DEFAULT_MAX_NUMBER_OF_PARTITIONS);
   WatermarkPredicate watermark=new WatermarkPredicate(null,watermarkType);

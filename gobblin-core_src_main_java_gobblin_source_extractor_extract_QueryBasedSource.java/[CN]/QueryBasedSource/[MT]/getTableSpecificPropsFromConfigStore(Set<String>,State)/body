@@ -1,0 +1,15 @@
+{
+  ConfigClient client=ConfigClientCache.getClient(VersionStabilityPolicy.STRONG_LOCAL_STABILITY);
+  String configStoreUri=state.getProp(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI);
+  Preconditions.checkNotNull(configStoreUri);
+  Map<String,State> result=Maps.newHashMap();
+  for (  String table : tables) {
+    try {
+      result.put(table,ConfigUtils.configToState(client.getConfig(PathUtils.combinePaths(configStoreUri,QUERY_BASED_SOURCE,table).toUri())));
+    }
+ catch (    VersionDoesNotExistException|ConfigStoreFactoryDoesNotExistsException|ConfigStoreCreationException e) {
+      throw new RuntimeException("Unable to get table config for " + table,e);
+    }
+  }
+  return result;
+}

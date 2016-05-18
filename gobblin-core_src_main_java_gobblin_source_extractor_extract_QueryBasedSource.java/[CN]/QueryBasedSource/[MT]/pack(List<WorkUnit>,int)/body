@@ -1,0 +1,14 @@
+{
+  Preconditions.checkArgument(numOfMultiWorkunits > 0);
+  if (workUnits.size() <= numOfMultiWorkunits) {
+    return workUnits;
+  }
+  List<WorkUnit> result=Lists.newArrayListWithCapacity(numOfMultiWorkunits);
+  for (int i=0; i < numOfMultiWorkunits; i++) {
+    result.add(MultiWorkUnit.createEmpty());
+  }
+  for (int i=0; i < workUnits.size(); i++) {
+    ((MultiWorkUnit)result.get(i % numOfMultiWorkunits)).addWorkUnit(workUnits.get(i));
+  }
+  return result;
+}

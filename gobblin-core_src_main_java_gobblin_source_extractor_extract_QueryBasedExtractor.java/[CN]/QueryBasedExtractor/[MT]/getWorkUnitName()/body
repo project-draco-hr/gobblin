@@ -1,3 +1,19 @@
 {
-  return this.workUnitName;
+  StringBuilder sb=new StringBuilder();
+  sb.append("[");
+  sb.append(StringUtils.stripToEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SCHEMA)));
+  sb.append("_");
+  sb.append(StringUtils.stripToEmpty(this.workUnit.getProp(ConfigurationKeys.SOURCE_ENTITY)));
+  sb.append("_");
+  String id=this.workUnitState.getId();
+  int seqIndex=id.lastIndexOf("_",id.length());
+  if (seqIndex > 0) {
+    String timeSeqStr=id.substring(0,seqIndex);
+    int timeIndex=timeSeqStr.lastIndexOf("_",timeSeqStr.length());
+    if (timeIndex > 0) {
+      sb.append(id.substring(timeIndex + 1));
+    }
+  }
+  sb.append("]");
+  return sb.toString();
 }

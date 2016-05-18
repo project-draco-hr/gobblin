@@ -1,0 +1,4 @@
+{
+  List<String> list=state.getPropAsList(propKey,def);
+  return getPatternsFromStrings(list);
+}

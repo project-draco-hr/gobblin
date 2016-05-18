@@ -16,5 +16,5 @@
  else {
     convertedDataType=new DataType(dataType);
   }
-  return gson.fromJson(gson.toJson(convertedDataType),JsonObject.class).getAsJsonObject();
+  return GSON.fromJson(GSON.toJson(convertedDataType),JsonObject.class).getAsJsonObject();
 }

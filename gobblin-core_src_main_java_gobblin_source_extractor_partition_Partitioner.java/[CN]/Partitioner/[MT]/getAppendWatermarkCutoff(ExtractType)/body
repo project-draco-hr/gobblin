@@ -2,12 +2,12 @@
   LOG.debug("Getting append water mark cutoff");
   long highWatermark=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
   String timeZone=this.state.getProp(ConfigurationKeys.SOURCE_TIMEZONE);
-  AppendMaxLimitType limitType=this.getAppendLimitType(extractType,this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
+  AppendMaxLimitType limitType=getAppendLimitType(extractType,this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
   if (limitType == null) {
     LOG.debug("Limit type is not found");
     return highWatermark;
   }
-  int limitDelta=this.getAppendLimitDelta(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
+  int limitDelta=getAppendLimitDelta(this.state.getProp(ConfigurationKeys.SOURCE_QUERYBASED_APPEND_MAX_WATERMARK_LIMIT));
   if (limitDelta == 0) {
     highWatermark=Long.parseLong(Utils.dateTimeToString(Utils.getCurrentTime(timeZone),WATERMARKTIMEFORMAT,timeZone));
   }
@@ -23,6 +23,8 @@ break;
 case CURRENTHOUR:
 format="yyyyMMddHH";
 seconds=3599;
+break;
+default :
 break;
 }
 DateTime deltaTime=Utils.getCurrentTime(timeZone).minusHours(limitDelta);

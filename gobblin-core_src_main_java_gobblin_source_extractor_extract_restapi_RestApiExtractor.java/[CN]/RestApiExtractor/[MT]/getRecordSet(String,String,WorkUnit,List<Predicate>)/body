@@ -1,31 +1,27 @@
 {
-  this.log.debug("Get data records using Rest Api");
+  log.debug("Get data records using Rest Api");
   Iterator<JsonElement> rs=null;
   List<Command> cmds;
   try {
     boolean success=true;
-    if (isConnectionClosed()) {
-      success=this.getConnection();
+    if (this.connector.isConnectionClosed()) {
+      success=this.connector.connect();
     }
     if (!success) {
       throw new DataRecordException("Failed to connect.");
     }
- else {
-      this.log.debug("Connected successfully.");
-      if (this.getPullStatus() == false) {
-        return null;
-      }
- else {
-        if (this.getNextUrl() == null) {
-          cmds=this.getDataMetadata(schema,entity,workUnit,predicateList);
-        }
- else {
-          cmds=RestApiExtractor.constructGetCommand(this.getNextUrl());
-        }
-        CommandOutput<?,?> response=this.getResponse(cmds);
-        rs=this.getData(response);
-      }
+    log.debug("Connected successfully.");
+    if (this.getPullStatus() == false) {
+      return null;
     }
+    if (this.getNextUrl() == null) {
+      cmds=this.getDataMetadata(schema,entity,workUnit,predicateList);
+    }
+ else {
+      cmds=RestApiConnector.constructGetCommand(this.getNextUrl());
+    }
+    CommandOutput<?,?> response=this.connector.getResponse(cmds);
+    rs=this.getData(response);
     return rs;
   }
  catch (  Exception e) {

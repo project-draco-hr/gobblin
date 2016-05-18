@@ -1,5 +1,5 @@
 {
-  this.log.info("Extract Metadata using Rest Api");
+  log.info("Extract Metadata using Rest Api");
   JsonArray columnArray=new JsonArray();
   String inputQuery=workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_QUERY);
   List<String> columnListInQuery=null;
@@ -14,56 +14,54 @@
     columnListExcluded=splitter.splitToList(excludedColumns.toLowerCase());
   }
   try {
-    boolean success=this.getConnection();
+    boolean success=this.connector.connect();
     if (!success) {
       throw new SchemaException("Failed to connect.");
     }
- else {
-      this.log.debug("Connected successfully.");
-      List<Command> cmds=this.getSchemaMetadata(schema,entity);
-      CommandOutput<?,?> response=this.getResponse(cmds);
-      array=this.getSchema(response);
-      for (      JsonElement columnElement : array) {
-        Schema obj=gson.fromJson(columnElement,Schema.class);
-        String columnName=obj.getColumnName();
-        obj.setWaterMark(this.isWatermarkColumn(workUnit.getProp("extract.delta.fields"),columnName));
-        if (this.isWatermarkColumn(workUnit.getProp("extract.delta.fields"),columnName)) {
-          obj.setNullable(false);
-        }
- else         if (this.getPrimarykeyIndex(workUnit.getProp("extract.primary.key.fields"),columnName) == 0) {
-          obj.setNullable(true);
-        }
-        obj.setPrimaryKey(this.getPrimarykeyIndex(workUnit.getProp("extract.primary.key.fields"),columnName));
-        String jsonStr=gson.toJson(obj);
-        JsonObject jsonObject=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
-        if (inputQuery == null || columnListInQuery == null || (columnListInQuery.size() == 1 && columnListInQuery.get(0).equals("*")) || (columnListInQuery.size() >= 1 && this.isMetadataColumn(columnName,columnListInQuery))) {
-          if (!columnListExcluded.contains(columnName.trim().toLowerCase())) {
-            this.columnList.add(columnName);
-            columnArray.add(jsonObject);
-          }
+    log.debug("Connected successfully.");
+    List<Command> cmds=this.getSchemaMetadata(schema,entity);
+    CommandOutput<?,?> response=this.connector.getResponse(cmds);
+    array=this.getSchema(response);
+    for (    JsonElement columnElement : array) {
+      Schema obj=GSON.fromJson(columnElement,Schema.class);
+      String columnName=obj.getColumnName();
+      obj.setWaterMark(this.isWatermarkColumn(workUnit.getProp("extract.delta.fields"),columnName));
+      if (this.isWatermarkColumn(workUnit.getProp("extract.delta.fields"),columnName)) {
+        obj.setNullable(false);
+      }
+ else       if (this.getPrimarykeyIndex(workUnit.getProp("extract.primary.key.fields"),columnName) == 0) {
+        obj.setNullable(true);
+      }
+      obj.setPrimaryKey(this.getPrimarykeyIndex(workUnit.getProp("extract.primary.key.fields"),columnName));
+      String jsonStr=GSON.toJson(obj);
+      JsonObject jsonObject=GSON.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+      if (inputQuery == null || columnListInQuery == null || (columnListInQuery.size() == 1 && columnListInQuery.get(0).equals("*")) || (columnListInQuery.size() >= 1 && this.isMetadataColumn(columnName,columnListInQuery))) {
+        if (!columnListExcluded.contains(columnName.trim().toLowerCase())) {
+          this.columnList.add(columnName);
+          columnArray.add(jsonObject);
         }
       }
-      if (inputQuery == null && this.columnList.size() != 0) {
-        this.updatedQuery="SELECT " + Joiner.on(",").join(columnList) + " FROM "+ entity;
-      }
- else {
-        if (inputQuery != null) {
-          String queryLowerCase=inputQuery.toLowerCase();
-          int columnsStartIndex=queryLowerCase.indexOf("select ") + 7;
-          int columnsEndIndex=queryLowerCase.indexOf(" from ");
-          if (columnsStartIndex > 0 && columnsEndIndex > 0) {
-            String givenColumnList=inputQuery.substring(columnsStartIndex,columnsEndIndex);
-            this.updatedQuery=inputQuery.replace(givenColumnList,Joiner.on(",").join(this.columnList));
-          }
- else {
-            this.updatedQuery=inputQuery;
-          }
-        }
-      }
-      this.log.info("Updated input query: " + this.updatedQuery);
-      this.log.debug("Schema:" + columnArray);
-      this.setOutputSchema(columnArray);
     }
+    if (inputQuery == null && this.columnList.size() != 0) {
+      this.updatedQuery="SELECT " + Joiner.on(",").join(this.columnList) + " FROM "+ entity;
+    }
+ else {
+      if (inputQuery != null) {
+        String queryLowerCase=inputQuery.toLowerCase();
+        int columnsStartIndex=queryLowerCase.indexOf("select ") + 7;
+        int columnsEndIndex=queryLowerCase.indexOf(" from ");
+        if (columnsStartIndex > 0 && columnsEndIndex > 0) {
+          String givenColumnList=inputQuery.substring(columnsStartIndex,columnsEndIndex);
+          this.updatedQuery=inputQuery.replace(givenColumnList,Joiner.on(",").join(this.columnList));
+        }
+ else {
+          this.updatedQuery=inputQuery;
+        }
+      }
+    }
+    log.info("Updated input query: " + this.updatedQuery);
+    log.debug("Schema:" + columnArray);
+    this.setOutputSchema(columnArray);
   }
  catch (  RuntimeException|RestApiConnectionException|RestApiProcessingException|IOException|SchemaException e) {
     throw new SchemaException("Failed to get schema using rest api; error - " + e.getMessage(),e);

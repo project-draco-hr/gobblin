@@ -1,4 +1,4 @@
 {
-  this.log.debug("Build url to retrieve schema");
-  return constructGetCommand(this.getFullUri("/sobjects/" + entity.trim() + "/describe"));
+  log.debug("Build url to retrieve schema");
+  return constructGetCommand(this.sfConnector.getFullUri("/sobjects/" + entity.trim() + "/describe"));
 }

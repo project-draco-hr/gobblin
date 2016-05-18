@@ -1,5 +1,5 @@
 {
-  this.log.info("Get schema from salesforce");
+  log.info("Get schema from salesforce");
   String output;
   Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
   if (itr.hasNext()) {
@@ -9,7 +9,7 @@
     throw new SchemaException("Failed to get schema from salesforce; REST response has no output");
   }
   JsonArray fieldJsonArray=new JsonArray();
-  JsonElement element=gson.fromJson(output,JsonObject.class);
+  JsonElement element=GSON.fromJson(output,JsonObject.class);
   JsonObject jsonObject=element.getAsJsonObject();
   try {
     JsonArray array=jsonObject.getAsJsonArray("fields");
@@ -21,7 +21,7 @@
       String elementDataType="string";
       List<String> mapSymbols=null;
       JsonObject newDataType=this.convertDataType(field.get("name").getAsString(),dataType,elementDataType,mapSymbols);
-      this.log.debug("ColumnName:" + field.get("name").getAsString() + ";   old datatype:"+ dataType+ ";   new datatype:"+ newDataType);
+      log.debug("ColumnName:" + field.get("name").getAsString() + ";   old datatype:"+ dataType+ ";   new datatype:"+ newDataType);
       schema.setDataType(newDataType);
       schema.setLength(field.get("length").getAsLong());
       schema.setPrecision(field.get("precision").getAsInt());
@@ -31,8 +31,8 @@
       schema.setComment((field.get("label").isJsonNull() ? null : field.get("label").getAsString()));
       schema.setDefaultValue((field.get("defaultValue").isJsonNull() ? null : field.get("defaultValue").getAsString()));
       schema.setUnique(field.get("unique").getAsBoolean());
-      String jsonStr=gson.toJson(schema);
-      JsonObject obj=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+      String jsonStr=GSON.toJson(schema);
+      JsonObject obj=GSON.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
       fieldJsonArray.add(obj);
     }
   }

@@ -1,0 +1,9 @@
+{
+  Set<String> result=Sets.newHashSet();
+  JsonObject jsonObject=new Gson().fromJson(response,JsonObject.class).getAsJsonObject();
+  JsonArray array=jsonObject.getAsJsonArray("sobjects");
+  for (  JsonElement element : array) {
+    result.add(element.getAsJsonObject().get("name").getAsString());
+  }
+  return result;
+}

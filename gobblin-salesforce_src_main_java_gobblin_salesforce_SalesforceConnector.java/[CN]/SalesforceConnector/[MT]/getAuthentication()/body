@@ -1,0 +1,25 @@
+{
+  log.debug("Authenticating salesforce");
+  String clientId=this.state.getProp(ConfigurationKeys.SOURCE_CONN_CLIENT_ID);
+  String clientSecret=this.state.getProp(ConfigurationKeys.SOURCE_CONN_CLIENT_SECRET);
+  String userName=this.state.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME);
+  String password=PasswordManager.getInstance(this.state).readPassword(this.state.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
+  String securityToken=this.state.getProp(ConfigurationKeys.SOURCE_CONN_SECURITY_TOKEN);
+  String host=this.state.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
+  List<NameValuePair> formParams=Lists.newArrayList();
+  formParams.add(new BasicNameValuePair("grant_type","password"));
+  formParams.add(new BasicNameValuePair("client_id",clientId));
+  formParams.add(new BasicNameValuePair("client_secret",clientSecret));
+  formParams.add(new BasicNameValuePair("username",userName));
+  formParams.add(new BasicNameValuePair("password",password + securityToken));
+  try {
+    HttpPost post=new HttpPost(host + DEFAULT_AUTH_TOKEN_PATH);
+    post.setEntity(new UrlEncodedFormEntity(formParams));
+    HttpResponse httpResponse=getHttpClient().execute(post);
+    HttpEntity httpEntity=httpResponse.getEntity();
+    return httpEntity;
+  }
+ catch (  Exception e) {
+    throw new RestApiConnectionException("Failed to authenticate salesforce using user:" + userName + " and host:"+ host+ "; error-"+ e.getMessage(),e);
+  }
+}

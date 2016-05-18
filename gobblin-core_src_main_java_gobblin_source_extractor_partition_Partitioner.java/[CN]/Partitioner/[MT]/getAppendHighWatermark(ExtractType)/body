@@ -4,7 +4,5 @@
     LOG.info("Overriding high water mark with end value:" + ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE);
     return this.state.getPropAsLong(ConfigurationKeys.SOURCE_QUERYBASED_END_VALUE,0);
   }
- else {
-    return this.getAppendWatermarkCutoff(extractType);
-  }
+  return this.getAppendWatermarkCutoff(extractType);
 }

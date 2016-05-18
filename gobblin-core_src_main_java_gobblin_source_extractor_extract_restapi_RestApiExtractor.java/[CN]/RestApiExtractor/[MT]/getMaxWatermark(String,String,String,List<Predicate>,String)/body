@@ -1,18 +1,16 @@
 {
-  this.log.info("Get high watermark using Rest Api");
+  log.info("Get high watermark using Rest Api");
   long CalculatedHighWatermark=-1;
   try {
-    boolean success=this.getConnection();
+    boolean success=this.connector.connect();
     if (!success) {
       throw new HighWatermarkException("Failed to connect.");
     }
- else {
-      this.log.debug("Connected successfully.");
-      List<Command> cmds=this.getHighWatermarkMetadata(schema,entity,watermarkColumn,predicateList);
-      CommandOutput<?,?> response=this.getResponse(cmds);
-      CalculatedHighWatermark=this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
-    }
-    this.log.info("High watermark:" + CalculatedHighWatermark);
+    log.debug("Connected successfully.");
+    List<Command> cmds=this.getHighWatermarkMetadata(schema,entity,watermarkColumn,predicateList);
+    CommandOutput<?,?> response=this.connector.getResponse(cmds);
+    CalculatedHighWatermark=this.getHighWatermark(response,watermarkColumn,watermarkSourceFormat);
+    log.info("High watermark:" + CalculatedHighWatermark);
     return CalculatedHighWatermark;
   }
  catch (  Exception e) {

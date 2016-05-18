@@ -5,8 +5,8 @@
   this.inputDir=getInputDir();
   this.destDir=getDestDir();
   this.tmpOutputDir=getTmpOutputDir();
-  this.blacklist=getBlacklist();
-  this.whitelist=getWhitelist();
+  this.blacklist=DatasetFilterUtils.getPatternList(state,MRCompactor.COMPACTION_BLACKLIST);
+  this.whitelist=DatasetFilterUtils.getPatternList(state,MRCompactor.COMPACTION_WHITELIST);
   this.highPriority=getHighPriorityPatterns();
   this.normalPriority=getNormalPriorityPatterns();
   this.recompactDatasets=getRecompactDatasets();

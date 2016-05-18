@@ -18,7 +18,7 @@
     when(client.getConfig(any(String.class))).thenReturn(testConfig);
     Properties jobProps=new Properties();
     jobProps.setProperty(CleanableDatasetBase.SKIP_TRASH_KEY,Boolean.toString(true));
-    jobProps.setProperty(ManagedCleanableDatasetFinder.CONFIG_MANAGEMENT_STORE_URI,"dummy");
+    jobProps.setProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI,"dummy");
     @SuppressWarnings("unchecked") DatasetsFinder<CleanableDataset> finder=(DatasetsFinder<CleanableDataset>)ConstructorUtils.invokeConstructor(Class.forName(testConfig.getString(MultiCleanableDatasetFinder.DATASET_FINDER_CLASS_KEY)),new Object[]{fs,jobProps,testConfig,client});
     for (    CleanableDataset dataset : finder.findDatasets()) {
       dataset.clean();

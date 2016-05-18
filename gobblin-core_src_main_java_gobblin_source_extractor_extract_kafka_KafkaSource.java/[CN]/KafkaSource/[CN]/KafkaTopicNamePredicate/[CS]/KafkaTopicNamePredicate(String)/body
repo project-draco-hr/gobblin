@@ -1,3 +1,0 @@
-{
-  this.topicNamePattern=Pattern.compile(topicName);
-}

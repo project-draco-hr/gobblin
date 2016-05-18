@@ -1,4 +1,0 @@
-{
-  KafkaPartition partition=new KafkaPartition.Builder().withTopicName(topicName).withId(1).withLeaderHostAndPort("testHost",1).withLeaderId(1).build();
-  return new KafkaTopic(topicName,Lists.newArrayList(partition));
-}

@@ -1,0 +1,15 @@
+{
+  String dataset1="testDataset1";
+  String dataset2="testDataset2";
+  String dataset3="testDataset3";
+  String testKey1="testKey1";
+  String testValue1="testValue1";
+  SourceState state=new SourceState();
+  state.setProp(DatasetUtils.DATASET_SPECIFIC_PROPS,"[{\"dataset\" : \"" + dataset1 + "\", \""+ testKey1+ "\" : \""+ testValue1+ "\"}, {\"dataset\" : \""+ dataset2+ "\", \""+ testKey1+ "\" : \""+ testValue1+ "\"}]");
+  Map<String,State> datasetSpecificStateMap=DatasetUtils.getDatasetSpecificProps(Lists.newArrayList(dataset1,dataset3),state);
+  State dataset1ExpectedState=new State();
+  dataset1ExpectedState.setProp(testKey1,testValue1);
+  Assert.assertEquals(datasetSpecificStateMap.get(dataset1),dataset1ExpectedState);
+  Assert.assertNull(datasetSpecificStateMap.get(dataset2));
+  Assert.assertNull(datasetSpecificStateMap.get(dataset3));
+}

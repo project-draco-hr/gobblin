@@ -1,3 +1,0 @@
-{
-  return ImmutableList.<WorkUnitState>builder().addAll(this.previousWorkUnitStates).build();
-}

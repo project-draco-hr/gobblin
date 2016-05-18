@@ -1,5 +1,5 @@
 {
-  this.log.debug("Build url to retrieve source record count");
+  log.debug("Build url to retrieve source record count");
   String existingPredicate="";
   if (this.updatedQuery != null) {
     String queryLowerCase=this.updatedQuery.toLowerCase();
@@ -9,23 +9,21 @@
     }
   }
   String query="SELECT COUNT() FROM " + entity + existingPredicate;
-  String limitString=this.getLimitFromInputQuery(query);
+  String limitString=getLimitFromInputQuery(query);
   query=query.replace(limitString,"");
   try {
     if (isNullPredicate(predicateList)) {
-      this.log.info("QUERY: " + query);
-      return constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
+      log.info("QUERY: " + query);
+      return constructGetCommand(this.sfConnector.getFullUri(getSoqlUrl(query)));
     }
- else {
-      Iterator<Predicate> i=predicateList.listIterator();
-      while (i.hasNext()) {
-        Predicate predicate=i.next();
-        query=SqlQueryUtils.addPredicate(query,predicate.getCondition());
-      }
-      query=query + this.getLimitFromInputQuery(this.updatedQuery);
-      this.log.info("QUERY: " + query);
-      return constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
+    Iterator<Predicate> i=predicateList.listIterator();
+    while (i.hasNext()) {
+      Predicate predicate=i.next();
+      query=SqlQueryUtils.addPredicate(query,predicate.getCondition());
     }
+    query=query + getLimitFromInputQuery(this.updatedQuery);
+    log.info("QUERY: " + query);
+    return constructGetCommand(this.sfConnector.getFullUri(getSoqlUrl(query)));
   }
  catch (  Exception e) {
     throw new RecordCountException("Failed to get salesforce url for record count; error - " + e.getMessage(),e);

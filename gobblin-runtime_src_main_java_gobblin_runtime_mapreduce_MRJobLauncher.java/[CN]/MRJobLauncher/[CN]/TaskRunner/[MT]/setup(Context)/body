@@ -1,7 +1,7 @@
 {
   try (Closer closer=Closer.create()){
     this.fs=FileSystem.get(context.getConfiguration());
-    this.taskStateStore=new FsStateStore<>(this.fs,FileOutputFormat.getOutputPath(context).toUri().getPath(),TaskState.class);
+    this.taskStateStore=new FsStateStore<>(this.fs,SequenceFileOutputFormat.getOutputPath(context).toUri().getPath(),TaskState.class);
     String jobStateFileName=context.getConfiguration().get(ConfigurationKeys.JOB_STATE_DISTRIBUTED_CACHE_NAME);
     boolean foundStateFile=false;
     for (    Path dcPath : DistributedCache.getLocalCacheFiles(context.getConfiguration())) {

@@ -1,7 +1,7 @@
 {
   String watermarkColumn=this.workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
-  long lwm=this.workUnit.getLowWaterMark();
-  long hwm=this.workUnit.getHighWaterMark();
+  long lwm=this.workUnit.getLowWatermark(LongWatermark.class).getValue();
+  long hwm=this.workUnit.getExpectedHighWatermark(LongWatermark.class).getValue();
   log.info("Low water mark: " + lwm + "; and High water mark: "+ hwm);
   WatermarkType watermarkType;
   if (StringUtils.isBlank(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
@@ -15,9 +15,9 @@
     this.extractMetadata(this.schema,this.entity,this.workUnit);
     if (StringUtils.isNotBlank(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
-      this.log.info("High water mark from source: " + this.highWatermark);
+      log.info("High water mark from source: " + this.highWatermark);
       long currentRunHighWatermark=(this.highWatermark != ConfigurationKeys.DEFAULT_WATERMARK_VALUE ? this.highWatermark : this.getLowWatermarkWithNoDelta(lwm));
-      this.log.info("High water mark for the current run: " + currentRunHighWatermark);
+      log.info("High water mark for the current run: " + currentRunHighWatermark);
       this.setRangePredicates(watermarkColumn,watermarkType,lwm,currentRunHighWatermark);
       this.highWatermark=currentRunHighWatermark;
     }
@@ -25,11 +25,11 @@
       this.sourceRecordCount=this.getSourceCount(this.schema,this.entity,this.workUnit,this.predicateList);
     }
  else {
-      this.log.info("Skip count calculation");
+      log.info("Skip count calculation");
       this.sourceRecordCount=-1;
     }
     if (this.sourceRecordCount == 0) {
-      this.log.info("Record count is 0; Setting fetch status to false to skip readRecord()");
+      log.info("Record count is 0; Setting fetch status to false to skip readRecord()");
       this.setFetchStatus(false);
     }
   }

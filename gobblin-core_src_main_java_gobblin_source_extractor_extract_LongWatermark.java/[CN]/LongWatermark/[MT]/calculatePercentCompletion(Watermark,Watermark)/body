@@ -1,0 +1,13 @@
+{
+  Preconditions.checkArgument(lowWatermark instanceof LongWatermark);
+  Preconditions.checkArgument(highWatermark instanceof LongWatermark);
+  long total=((LongWatermark)highWatermark).value - ((LongWatermark)lowWatermark).value;
+  long pulled=this.value - ((LongWatermark)lowWatermark).value;
+  Preconditions.checkState(total >= 0);
+  Preconditions.checkState(pulled >= 0);
+  if (total == 0) {
+    return 0;
+  }
+  long percent=Math.min(100,LongMath.divide(pulled * 100,total,RoundingMode.HALF_UP));
+  return (short)percent;
+}

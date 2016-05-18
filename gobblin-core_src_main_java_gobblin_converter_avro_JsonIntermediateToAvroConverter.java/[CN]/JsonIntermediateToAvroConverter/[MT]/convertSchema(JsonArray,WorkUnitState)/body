@@ -1,5 +1,5 @@
 {
-  List<Schema.Field> fields=new ArrayList<Schema.Field>();
+  List<Schema.Field> fields=new ArrayList<>();
   for (  JsonElement elem : schema) {
     JsonObject map=(JsonObject)elem;
     String columnName=map.get("columnName").getAsString();
@@ -8,7 +8,7 @@
     Schema fldSchema;
     try {
       JsonElementConversionFactory.JsonElementConverter converter=JsonElementConversionFactory.getConvertor(columnName,map.get("dataType").getAsJsonObject().get("type").getAsString(),map,workUnit,nullable);
-      converters.put(columnName,converter);
+      this.converters.put(columnName,converter);
       fldSchema=converter.getSchema();
     }
  catch (    UnsupportedDateTypeException e) {

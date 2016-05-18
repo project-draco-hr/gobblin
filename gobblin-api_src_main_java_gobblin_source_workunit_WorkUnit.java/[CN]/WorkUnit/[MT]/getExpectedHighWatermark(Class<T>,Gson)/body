@@ -1,0 +1,7 @@
+{
+  JsonElement json=getExpectedHighWatermark();
+  if (json == null) {
+    return null;
+  }
+  return gson.fromJson(json,watermarkClass);
+}

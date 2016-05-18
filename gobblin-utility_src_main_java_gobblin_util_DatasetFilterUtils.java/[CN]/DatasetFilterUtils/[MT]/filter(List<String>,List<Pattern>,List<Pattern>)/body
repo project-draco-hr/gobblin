@@ -1,0 +1,9 @@
+{
+  List<String> result=Lists.newArrayList();
+  for (  String topic : topics) {
+    if (survived(topic,blacklist,whitelist)) {
+      result.add(topic);
+    }
+  }
+  return result;
+}

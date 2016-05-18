@@ -1,20 +1,20 @@
 {
   if (!this.isPullRequired()) {
-    this.log.info("No more records to read");
+    log.info("No more records to read");
     return null;
   }
   D nextElement=null;
   try {
     if (isInitialPull()) {
-      this.log.info("Initial pull");
-      iterator=this.getIterator();
+      log.info("Initial pull");
+      this.iterator=this.getIterator();
     }
-    if (iterator.hasNext()) {
-      nextElement=iterator.next();
-      if (!iterator.hasNext()) {
-        this.log.debug("Getting next pull");
-        iterator=this.getIterator();
-        if (iterator == null) {
+    if (this.iterator.hasNext()) {
+      nextElement=this.iterator.next();
+      if (!this.iterator.hasNext()) {
+        log.debug("Getting next pull");
+        this.iterator=this.getIterator();
+        if (this.iterator == null) {
           this.setFetchStatus(false);
         }
       }

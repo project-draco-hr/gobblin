@@ -1,5 +1,5 @@
 {
-  this.log.debug("Build url to retrieve data records");
+  log.debug("Build url to retrieve data records");
   String query=this.updatedQuery;
   String url=null;
   try {
@@ -8,10 +8,10 @@
     }
  else {
       if (isNullPredicate(predicateList)) {
-        this.log.info("QUERY:" + query);
-        return constructGetCommand(this.getFullUri(this.getSoqlUrl(query)));
+        log.info("QUERY:" + query);
+        return constructGetCommand(this.sfConnector.getFullUri(getSoqlUrl(query)));
       }
-      String limitString=this.getLimitFromInputQuery(query);
+      String limitString=getLimitFromInputQuery(query);
       query=query.replace(limitString,"");
       Iterator<Predicate> i=predicateList.listIterator();
       while (i.hasNext()) {
@@ -22,8 +22,8 @@
         query=SqlQueryUtils.addPredicate(query,"IsDeleted = true");
       }
       query=query + limitString;
-      this.log.info("QUERY: " + query);
-      url=this.getFullUri(this.getSoqlUrl(query));
+      log.info("QUERY: " + query);
+      url=this.sfConnector.getFullUri(getSoqlUrl(query));
     }
     return constructGetCommand(url);
   }

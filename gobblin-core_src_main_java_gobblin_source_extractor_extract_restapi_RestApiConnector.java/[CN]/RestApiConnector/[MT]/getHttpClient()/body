@@ -1,0 +1,11 @@
+{
+  if (this.httpClient == null) {
+    this.httpClient=new DefaultHttpClient();
+    if (this.state.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && !this.state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL).isEmpty()) {
+      log.info("Connecting via proxy: " + this.state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL));
+      HttpHost proxy=new HttpHost(this.state.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),this.state.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
+      this.httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,proxy);
+    }
+  }
+  return this.httpClient;
+}

@@ -1,0 +1,10 @@
+{
+  String condition="";
+  if (watermarkValue != DEFAULT_WATERMARK_VALUE) {
+    condition=this.watermark.getWatermarkCondition(extractor,watermarkValue,operator);
+  }
+  if (StringUtils.isBlank(this.watermarkColumn) || condition.equals("")) {
+    return null;
+  }
+  return new Predicate(this.watermarkColumn,watermarkValue,condition,this.getWatermarkSourceFormat(extractor),type);
+}

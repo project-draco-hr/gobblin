@@ -1,5 +1,5 @@
 {
-  this.log.info("Get high watermark from salesforce");
+  log.info("Get high watermark from salesforce");
   String output;
   Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
   if (itr.hasNext()) {
@@ -8,7 +8,7 @@
  else {
     throw new HighWatermarkException("Failed to get high watermark from salesforce; REST response has no output");
   }
-  JsonElement element=gson.fromJson(output,JsonObject.class);
+  JsonElement element=GSON.fromJson(output,JsonObject.class);
   long high_ts;
   try {
     JsonObject jsonObject=element.getAsJsonObject();

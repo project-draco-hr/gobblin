@@ -1,0 +1,4 @@
+QueryBasedExtractor<?,?> extractor
+long watermarkValue
+String operator
+Predicate.PredicateType type

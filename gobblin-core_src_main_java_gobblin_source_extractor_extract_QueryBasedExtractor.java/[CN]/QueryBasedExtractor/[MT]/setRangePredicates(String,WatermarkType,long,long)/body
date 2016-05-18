@@ -1,5 +1,5 @@
 {
-  this.log.debug("Getting range predicates");
+  log.debug("Getting range predicates");
   WatermarkPredicate watermark=new WatermarkPredicate(watermarkColumn,watermarkType);
   this.addPredicates(watermark.getPredicate(this,lwmValue,">=",Predicate.PredicateType.LWM));
   this.addPredicates(watermark.getPredicate(this,hwmValue,"<=",Predicate.PredicateType.HWM));

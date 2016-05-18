@@ -1,11 +1,11 @@
 {
-  this.log.debug("Getting salesforce data using bulk api");
+  log.debug("Getting salesforce data using bulk api");
   RecordSet<JsonElement> rs=null;
   try {
     if (this.bulkApiInitialRun == true) {
       this.setBulkJobFinished(false);
-      this.bulkResultIdList=this.getQueryResultIds(schema,entity,predicateList);
-      this.log.info("Number of bulk api resultSet Ids:" + this.bulkResultIdList.size());
+      this.bulkResultIdList=getQueryResultIds(entity,predicateList);
+      log.info("Number of bulk api resultSet Ids:" + this.bulkResultIdList.size());
     }
     if (!this.isBulkJobFinished()) {
       rs=getBulkData();
@@ -16,9 +16,7 @@
       if (this.columnList.contains("IsDeleted") && !isSoftDeletesPullDisabled) {
         return this.getSoftDeletedRecords(schema,entity,workUnit,predicateList);
       }
- else {
-        this.log.info("Ignoring soft delete records");
-      }
+      log.info("Ignoring soft delete records");
     }
     return rs.iterator();
   }

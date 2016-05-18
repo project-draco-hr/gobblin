@@ -2,10 +2,5 @@
   if (StringUtils.isBlank(watermarkColumn)) {
     return false;
   }
-  if (Arrays.asList(watermarkColumn.toLowerCase().split(",")).size() > 1) {
-    return true;
-  }
- else {
-    return false;
-  }
+  return Arrays.asList(watermarkColumn.toLowerCase().split(",")).size() > 1;
 }

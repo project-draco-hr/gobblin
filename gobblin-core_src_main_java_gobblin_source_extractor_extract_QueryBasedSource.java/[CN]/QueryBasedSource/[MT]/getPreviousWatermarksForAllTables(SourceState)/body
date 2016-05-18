@@ -1,0 +1,31 @@
+{
+  Map<String,Long> result=Maps.newHashMap();
+  Map<String,Long> prevLowWatermarksByTable=Maps.newHashMap();
+  Map<String,Long> prevActualHighWatermarksByTable=Maps.newHashMap();
+  Set<String> tablesWithFailedTasks=Sets.newHashSet();
+  boolean commitOnFullSuccess=JobCommitPolicy.getCommitPolicy(state) == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS;
+  for (  WorkUnitState previousWus : state.getPreviousWorkUnitStates()) {
+    String table=previousWus.getExtract().getTable();
+    long lowWm=previousWus.getWorkunit().getLowWatermark(LongWatermark.class).getValue();
+    if (!prevLowWatermarksByTable.containsKey(table)) {
+      prevLowWatermarksByTable.put(table,lowWm);
+    }
+ else {
+      prevLowWatermarksByTable.put(table,Math.min(prevLowWatermarksByTable.get(table),lowWm));
+    }
+    long highWm=previousWus.getActualHighWatermark(LongWatermark.class).getValue();
+    if (!prevActualHighWatermarksByTable.containsKey(table)) {
+      prevActualHighWatermarksByTable.put(table,highWm);
+    }
+ else {
+      prevActualHighWatermarksByTable.put(table,Math.max(prevActualHighWatermarksByTable.get(table),highWm));
+    }
+    if (commitOnFullSuccess && !isSuccessfulOrCommited(previousWus)) {
+      tablesWithFailedTasks.add(table);
+    }
+  }
+  for (  Map.Entry<String,Long> entry : prevLowWatermarksByTable.entrySet()) {
+    result.put(entry.getKey(),tablesWithFailedTasks.contains(entry.getKey()) ? entry.getValue() : prevActualHighWatermarksByTable.get(entry.getKey()));
+  }
+  return result;
+}

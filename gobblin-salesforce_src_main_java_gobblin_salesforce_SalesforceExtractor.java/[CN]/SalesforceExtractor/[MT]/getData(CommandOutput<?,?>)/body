@@ -1,5 +1,5 @@
 {
-  this.log.debug("Get data records from response");
+  log.debug("Get data records from response");
   String output;
   Iterator<String> itr=(Iterator<String>)response.getResults().values().iterator();
   if (itr.hasNext()) {
@@ -8,17 +8,17 @@
  else {
     throw new DataRecordException("Failed to get data from salesforce; REST response has no output");
   }
-  List<JsonElement> rs=new ArrayList<JsonElement>();
-  JsonElement element=gson.fromJson(output,JsonObject.class);
+  List<JsonElement> rs=Lists.newArrayList();
+  JsonElement element=GSON.fromJson(output,JsonObject.class);
   JsonArray partRecords;
   try {
     JsonObject jsonObject=element.getAsJsonObject();
     partRecords=jsonObject.getAsJsonArray("records");
     if (jsonObject.get("done").getAsBoolean()) {
-      this.setPullStatus(false);
+      setPullStatus(false);
     }
  else {
-      this.setNextUrl(this.getFullUri(jsonObject.get("nextRecordsUrl").getAsString().replaceAll(this.servicesDataEnvPath,"")));
+      setNextUrl(this.sfConnector.getFullUri(jsonObject.get("nextRecordsUrl").getAsString().replaceAll(this.sfConnector.getServicesDataEnvPath(),"")));
     }
     JsonArray array=Utils.removeElementFromJsonArray(partRecords,"attributes");
     Iterator<JsonElement> li=array.iterator();
