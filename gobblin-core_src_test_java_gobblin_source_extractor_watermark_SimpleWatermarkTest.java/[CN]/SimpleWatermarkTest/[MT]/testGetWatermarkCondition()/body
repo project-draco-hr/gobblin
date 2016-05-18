@@ -1,5 +1,5 @@
 {
   QueryBasedExtractor<?,?> extractor=null;
-  Assert.assertEquals(COLUMN + " " + GREATER_THAN+ " "+ Long.MAX_VALUE,simpleWatermark.getWatermarkCondition(extractor,Long.MAX_VALUE,GREATER_THAN));
-  Assert.assertEquals(COLUMN + " null " + Long.MIN_VALUE,simpleWatermark.getWatermarkCondition(extractor,Long.MIN_VALUE,null));
+  Assert.assertEquals(COLUMN + " " + GREATER_THAN+ " "+ Long.MAX_VALUE,this.simpleWatermark.getWatermarkCondition(extractor,Long.MAX_VALUE,GREATER_THAN));
+  Assert.assertEquals(COLUMN + " null " + Long.MIN_VALUE,this.simpleWatermark.getWatermarkCondition(extractor,Long.MIN_VALUE,null));
 }

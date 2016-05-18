@@ -1,5 +1,5 @@
 {
   Map<Long,Long> expected=getIntervals(100,100,1);
-  Map<Long,Long> actual=simpleWatermark.getIntervals(100,100,10,10);
+  Map<Long,Long> actual=this.simpleWatermark.getIntervals(100,100,10,10);
   Assert.assertEquals(actual,expected);
 }

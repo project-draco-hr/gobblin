@@ -1,6 +1,6 @@
 {
   int partitionInterval=100 / 7 + 1;
   Map<Long,Long> expected=getIntervals(0,100,partitionInterval);
-  Map<Long,Long> actual=simpleWatermark.getIntervals(0,100,3,7);
+  Map<Long,Long> actual=this.simpleWatermark.getIntervals(0,100,3,7);
   Assert.assertEquals(actual,expected);
 }

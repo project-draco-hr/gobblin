@@ -1,4 +1,4 @@
 {
-  tsWatermark=new TimestampWatermark(COLUMN,watermarkFormat);
-  workunitState.setId("");
+  this.tsWatermark=new TimestampWatermark(COLUMN,this.watermarkFormat);
+  this.workunitState.setId("");
 }

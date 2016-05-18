@@ -1,4 +1,4 @@
 {
-  SqlServerExtractor extractor=new SqlServerExtractor(workunitState);
-  Assert.assertEquals(tsWatermark.getWatermarkCondition(extractor,WATERMARK_VALUE,OPERATOR),COLUMN + " " + OPERATOR+ " '2014-10-29 13:30:15'");
+  SqlServerExtractor extractor=new SqlServerExtractor(this.workunitState);
+  Assert.assertEquals(this.tsWatermark.getWatermarkCondition(extractor,WATERMARK_VALUE,OPERATOR),COLUMN + " " + OPERATOR+ " '2014-10-29 13:30:15'");
 }

@@ -1,5 +1,5 @@
 {
   Map<Long,Long> expected=getIntervals(LOW_WATERMARK_VALUE,HIGH_WATERMARK_VALUE,1000);
-  Map<Long,Long> actual=tsWatermark.getIntervals(LOW_WATERMARK_VALUE,HIGH_WATERMARK_VALUE,1,1);
+  Map<Long,Long> actual=this.tsWatermark.getIntervals(LOW_WATERMARK_VALUE,HIGH_WATERMARK_VALUE,1,1);
   Assert.assertEquals(actual,expected);
 }

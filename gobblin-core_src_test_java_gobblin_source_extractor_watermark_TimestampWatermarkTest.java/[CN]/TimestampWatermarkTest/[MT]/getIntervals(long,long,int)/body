@@ -1,7 +1,7 @@
 {
   Map<Long,Long> intervals=new HashMap<Long,Long>();
   if (lowWatermarkValue > highWatermarkValue || partitionInterval <= 0)   return intervals;
-  final SimpleDateFormat inputFormat=new SimpleDateFormat(watermarkFormat);
+  final SimpleDateFormat inputFormat=new SimpleDateFormat(this.watermarkFormat);
   Date startTime=inputFormat.parse(String.valueOf(lowWatermarkValue));
   Date endTime=inputFormat.parse(String.valueOf(highWatermarkValue));
   Calendar cal=Calendar.getInstance();
