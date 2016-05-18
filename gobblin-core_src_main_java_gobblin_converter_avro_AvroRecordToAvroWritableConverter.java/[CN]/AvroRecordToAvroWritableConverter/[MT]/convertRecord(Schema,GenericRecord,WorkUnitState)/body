@@ -1,0 +1,7 @@
+{
+  AvroGenericRecordWritable avroWritable=new AvroGenericRecordWritable();
+  avroWritable.setRecord(inputRecord);
+  avroWritable.setFileSchema(outputSchema);
+  avroWritable.setRecordReaderID(this.uid);
+  return Lists.newArrayList(avroWritable);
+}
