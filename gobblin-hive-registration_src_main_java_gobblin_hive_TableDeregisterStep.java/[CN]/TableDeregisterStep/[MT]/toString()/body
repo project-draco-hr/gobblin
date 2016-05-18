@@ -1,0 +1,3 @@
+{
+  return String.format("Deregister table %s.%s on Hive metastore %s.",this.table.getDbName(),this.table.getTableName(),this.metastoreURI.isPresent() ? this.metastoreURI.get() : "default");
+}

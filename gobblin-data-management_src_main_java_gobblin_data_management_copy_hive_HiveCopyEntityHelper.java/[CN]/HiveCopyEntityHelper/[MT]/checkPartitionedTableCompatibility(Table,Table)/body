@@ -1,6 +1,6 @@
 {
   if (!desiredTargetTable.getDataLocation().equals(existingTargetTable.getDataLocation())) {
-    throw new IOException(String.format("Desired target location %s and already registered target location %s do not agree.",desiredTargetTable.getDataLocation(),existingTargetTable.getDataLocation()));
+    throw new HiveTableLocationNotMatchException(desiredTargetTable.getDataLocation(),existingTargetTable.getDataLocation());
   }
   if (HiveUtils.isPartitioned(desiredTargetTable) != HiveUtils.isPartitioned(existingTargetTable)) {
     throw new IOException(String.format("%s: Desired target table %s partitioned, existing target table %s partitioned. Tables are incompatible.",this.dataset.tableIdentifier,HiveUtils.isPartitioned(desiredTargetTable) ? "is" : "is not",HiveUtils.isPartitioned(existingTargetTable) ? "is" : "is not"));

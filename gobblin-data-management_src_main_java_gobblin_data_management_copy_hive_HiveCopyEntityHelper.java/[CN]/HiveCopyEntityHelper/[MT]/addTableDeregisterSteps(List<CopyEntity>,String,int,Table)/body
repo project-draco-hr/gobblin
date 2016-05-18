@@ -1,0 +1,26 @@
+{
+  int stepPriority=initialPriority;
+  Collection<Path> tablePaths=Lists.newArrayList();
+switch (this.getDeleteMethod()) {
+case RECURSIVE:
+    tablePaths=Lists.newArrayList(table.getDataLocation());
+  break;
+case INPUT_FORMAT:
+InputFormat<?,?> inputFormat=HiveUtils.getInputFormat(table.getSd());
+HiveLocationDescriptor targetLocation=new HiveLocationDescriptor(table.getDataLocation(),inputFormat,this.getTargetFs(),this.getDataset().getProperties());
+tablePaths=targetLocation.getPaths().keySet();
+break;
+case NO_DELETE:
+tablePaths=Lists.newArrayList();
+break;
+default :
+tablePaths=Lists.newArrayList();
+}
+if (!tablePaths.isEmpty()) {
+DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(this.getTargetFs(),tablePaths,this.getDataset().getProperties(),table.getDataLocation());
+copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
+}
+TableDeregisterStep deregister=new TableDeregisterStep(table.getTTable(),this.getTargetURI(),this.getHiveRegProps());
+copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deregister,stepPriority++));
+return stepPriority;
+}

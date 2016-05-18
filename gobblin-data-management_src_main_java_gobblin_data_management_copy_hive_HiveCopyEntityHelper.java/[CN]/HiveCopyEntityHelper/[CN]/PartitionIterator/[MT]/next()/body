@@ -17,7 +17,7 @@
     String deregisterFileSet="deregister";
     for (    Map.Entry<List<String>,Partition> partitionEntry : targetPartitions.entrySet()) {
       try {
-        priority=addDeregisterSteps(deregisterCopyEntities,deregisterFileSet,priority,targetTable,partitionEntry.getValue());
+        priority=addPartitionDeregisterSteps(deregisterCopyEntities,deregisterFileSet,priority,targetTable,partitionEntry.getValue());
       }
  catch (      IOException ioe) {
         log.error("Could not create work unit to deregister partition " + partitionEntry.getValue().getCompleteName());

@@ -1,0 +1,5 @@
+{
+  try (HiveRegister hiveRegister=HiveRegister.get(this.props,this.metastoreURI)){
+    hiveRegister.dropTableIfExists(this.table.getDbName(),this.table.getTableName());
+  }
+ }

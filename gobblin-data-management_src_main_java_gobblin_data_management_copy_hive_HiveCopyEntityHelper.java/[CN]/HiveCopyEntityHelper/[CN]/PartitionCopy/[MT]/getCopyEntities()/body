@@ -21,7 +21,7 @@
           return Lists.newArrayList();
         }
         log.warn("Source and target partitions are not compatible. Will override target partition.",ioe);
-        stepPriority=addDeregisterSteps(copyEntities,fileSet,stepPriority,targetTable,existingTargetPartition.get());
+        stepPriority=addPartitionDeregisterSteps(copyEntities,fileSet,stepPriority,targetTable,existingTargetPartition.get());
         existingTargetPartition=Optional.absent();
       }
     }
