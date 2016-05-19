@@ -5,8 +5,8 @@
   this.localMetastoreClient.dropDatabase(dbName,false,true,true);
   SourceState testState=getTestState(dbName);
   createTestTable(dbName,tableName,tableSdLoc,Optional.<String>absent());
-  updateProvider.addMockUpdateTime(dbName + "@" + tableName,10);
-  List<WorkUnit> workUnits=hiveSource.getWorkunits(testState);
+  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName,10);
+  List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
   HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(wu.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);

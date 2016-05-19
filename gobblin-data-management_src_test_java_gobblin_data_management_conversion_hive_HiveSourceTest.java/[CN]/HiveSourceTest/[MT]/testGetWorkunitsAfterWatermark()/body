@@ -11,9 +11,9 @@
   SourceState testState=new SourceState(getTestState(dbName),previousWorkUnitStates);
   createTestTable(dbName,tableName1,tableSdLoc1,Optional.<String>absent());
   createTestTable(dbName,tableName2,tableSdLoc2,Optional.<String>absent(),true);
-  updateProvider.addMockUpdateTime(dbName + "@" + tableName1,10);
-  updateProvider.addMockUpdateTime(dbName + "@" + tableName2,15);
-  List<WorkUnit> workUnits=hiveSource.getWorkunits(testState);
+  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName1,10);
+  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName2,15);
+  List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
   HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(wu.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);

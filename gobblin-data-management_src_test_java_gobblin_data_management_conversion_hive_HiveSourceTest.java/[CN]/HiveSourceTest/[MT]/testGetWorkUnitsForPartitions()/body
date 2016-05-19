@@ -6,8 +6,8 @@
   SourceState testState=getTestState(dbName);
   Table tbl=createTestTable(dbName,tableName,tableSdLoc,Optional.of("field"));
   Partition partition=addTestPartition(tbl,ImmutableList.of("f1"));
-  updateProvider.addMockUpdateTime("testdb3@testtable3@field=f1",2);
-  List<WorkUnit> workUnits=hiveSource.getWorkunits(testState);
+  this.updateProvider.addMockUpdateTime("testdb3@testtable3@field=f1",2);
+  List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
   HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(wu.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);
