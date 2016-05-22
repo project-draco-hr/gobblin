@@ -7,14 +7,14 @@
         throw new RuntimeException("RowLevelPolicy " + p + " failed on record "+ record);
       }
  else       if (p.getType().equals(RowLevelPolicy.Type.ERR_FILE)) {
-        if (!errFileOpen) {
+        if (!this.errFileOpen) {
           this.writer.open(getErrFilePath(p));
           this.writer.write(record);
         }
  else {
           this.writer.write(record);
         }
-        errFileOpen=true;
+        this.errFileOpen=true;
       }
       return false;
     }

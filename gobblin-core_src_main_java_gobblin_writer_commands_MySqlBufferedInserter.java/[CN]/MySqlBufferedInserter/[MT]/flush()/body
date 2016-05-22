@@ -1,8 +1,8 @@
 {
-  if (pendingInserts == null || pendingInserts.isEmpty()) {
+  if (this.pendingInserts == null || this.pendingInserts.isEmpty()) {
     return;
   }
-  try (PreparedStatement pstmt=conn.prepareStatement(createPrepareStatementStr(insertStmtPrefix,pendingInserts.size()))){
+  try (PreparedStatement pstmt=this.conn.prepareStatement(createPrepareStatementStr(this.insertStmtPrefix,this.pendingInserts.size()))){
     insertBatch(pstmt);
   }
  }

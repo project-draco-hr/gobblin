@@ -3,14 +3,14 @@
     if (!hasDefaultStoreURI()) {
       throw new ConfigStoreCreationException(configKey,"No default store has been configured.");
     }
-    return defaultStoreURI.get();
+    return this.defaultStoreURI.get();
   }
   Path path=new Path(configKey.getPath());
   while (path != null) {
     try {
       if (fs.exists(path)) {
         for (        FileStatus fileStatus : fs.listStatus(path)) {
-          if (fileStatus.isDir() && fileStatus.getPath().getName().equals(SimpleHDFSConfigStore.CONFIG_STORE_NAME)) {
+          if (fileStatus.isDirectory() && fileStatus.getPath().getName().equals(SimpleHDFSConfigStore.CONFIG_STORE_NAME)) {
             return fs.getUri().resolve(fileStatus.getPath().getParent().toUri());
           }
         }

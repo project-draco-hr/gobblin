@@ -5,6 +5,6 @@
   this.properties=properties;
   this.tableRootPath=PathUtils.isGlob(this.table.getDataLocation()) ? Optional.<Path>absent() : Optional.of(this.table.getDataLocation());
   this.tableIdentifier=this.table.getDbName() + "." + this.table.getTableName();
-  log.info("Created Hive dataset for table " + tableIdentifier);
+  log.info("Created Hive dataset for table " + this.tableIdentifier);
   this.metricContext=Instrumented.getMetricContext(new State(properties),HiveDataset.class,Lists.<Tag<?>>newArrayList(new Tag<>(DATABASE,table.getDbName()),new Tag<>(TABLE,table.getTableName())));
 }

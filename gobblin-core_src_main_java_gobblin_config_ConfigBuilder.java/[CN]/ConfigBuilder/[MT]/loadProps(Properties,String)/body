@@ -12,7 +12,7 @@
       if (!Character.isAlphabetic(scopedName.charAt(0))) {
         throw new RuntimeException("Scoped name for property " + propName + " should start with a character: "+ scopedName);
       }
-      _primitiveProps.put(scopedName,propEntry.getValue());
+      this.primitiveProps.put(scopedName,propEntry.getValue());
     }
   }
   return this;

@@ -1,5 +1,5 @@
 {
-  int value=options;
+  int value=this.options;
   StringBuilder mnemonicString=new StringBuilder();
   for (  Option option : Option.values()) {
     if (value % 2 != 0) {

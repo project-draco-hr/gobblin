@@ -1,4 +1,4 @@
 {
   DateTime snapshotTime=Trash.TRASH_SNAPSHOT_NAME_FORMATTER.parseDateTime(snapshot.getPath().getName());
-  return snapshotTime.plusMinutes(retentionMinutes).isBeforeNow();
+  return snapshotTime.plusMinutes(this.retentionMinutes).isBeforeNow();
 }

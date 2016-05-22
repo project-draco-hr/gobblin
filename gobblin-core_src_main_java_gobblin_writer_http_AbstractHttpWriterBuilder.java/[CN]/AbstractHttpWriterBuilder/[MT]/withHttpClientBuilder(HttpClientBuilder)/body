@@ -1,4 +1,4 @@
 {
-  _httpClientBuilder=builder;
+  this._httpClientBuilder=builder;
   return typedSelf();
 }

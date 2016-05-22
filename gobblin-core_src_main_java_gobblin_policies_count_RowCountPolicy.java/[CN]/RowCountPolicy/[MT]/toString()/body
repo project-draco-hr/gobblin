@@ -1,3 +1,3 @@
 {
-  return String.format("RowCountPolicy [rowsRead=%s, rowsWritten=%s]",rowsRead,rowsWritten);
+  return String.format("RowCountPolicy [rowsRead=%s, rowsWritten=%s]",this.rowsRead,this.rowsWritten);
 }

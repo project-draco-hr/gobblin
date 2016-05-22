@@ -9,7 +9,7 @@
   LOG.info("Date column mapping: " + dateColumnMapping);
   List<JdbcEntryMetaDatum> jdbcEntryMetaData=Lists.newArrayList();
   for (  Map.Entry<String,Type> avroEntry : avroColumnType.entrySet()) {
-    String colName=tryConvertColumn(avroEntry.getKey(),avroToJdbcColPairs);
+    String colName=tryConvertColumn(avroEntry.getKey(),this.avroToJdbcColPairs);
     JdbcType JdbcType=dateColumnMapping.get(colName);
     if (JdbcType == null) {
       JdbcType=AVRO_TYPE_JDBC_TYPE_MAPPING.get(avroEntry.getValue());

@@ -13,10 +13,10 @@
     partitionPaths=Lists.newArrayList();
   }
   if (!partitionPaths.isEmpty()) {
-    DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(targetFs,partitionPaths,this.dataset.getProperties(),table.getDataLocation());
+    DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(this.targetFs,partitionPaths,this.dataset.getProperties(),table.getDataLocation());
     copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
   }
-  PartitionDeregisterStep deregister=new PartitionDeregisterStep(table.getTTable(),partition.getTPartition(),targetURI,hiveRegProps);
+  PartitionDeregisterStep deregister=new PartitionDeregisterStep(table.getTTable(),partition.getTPartition(),this.targetURI,this.hiveRegProps);
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deregister,stepPriority++));
   return stepPriority;
 }

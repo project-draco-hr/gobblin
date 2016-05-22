@@ -1,4 +1,4 @@
 {
-  _originDestription=originDescription;
-  _currentConfig=originDescription.isPresent() ? ConfigFactory.empty(_originDestription.get()) : ConfigFactory.empty();
+  this.originDestription=originDescription;
+  this.currentConfig=originDescription.isPresent() ? ConfigFactory.empty(this.originDestription.get()) : ConfigFactory.empty();
 }

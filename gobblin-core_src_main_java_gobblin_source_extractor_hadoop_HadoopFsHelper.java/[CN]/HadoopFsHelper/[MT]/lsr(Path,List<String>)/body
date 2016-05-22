@@ -1,10 +1,10 @@
 {
-  if (!this.fs.getFileStatus(p).isDir()) {
+  if (!this.fs.getFileStatus(p).isDirectory()) {
     results.add(p.toString());
   }
   Path qualifiedPath=this.fs.makeQualified(p);
   for (  FileStatus status : this.fs.listStatus(p)) {
-    if (status.isDir()) {
+    if (status.isDirectory()) {
       if (!qualifiedPath.equals(status.getPath())) {
         lsr(status.getPath(),results);
       }

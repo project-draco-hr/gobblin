@@ -1,6 +1,6 @@
 {
   for (  FileStatus status : fileSystem.listStatus(path)) {
-    if (!status.isDir()) {
+    if (!status.isDirectory()) {
       results.add(status);
     }
  else {

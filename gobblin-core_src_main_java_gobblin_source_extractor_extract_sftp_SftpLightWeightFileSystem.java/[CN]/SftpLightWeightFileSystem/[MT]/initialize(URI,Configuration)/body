@@ -1,9 +1,9 @@
 {
   super.initialize(name,conf);
   State state=HadoopUtils.getStateFromConf(conf);
-  fsHelper=new SftpFsHelper(state);
+  this.fsHelper=new SftpFsHelper(state);
   try {
-    fsHelper.connect();
+    this.fsHelper.connect();
   }
  catch (  FileBasedHelperException e) {
     throw new IOException(e);

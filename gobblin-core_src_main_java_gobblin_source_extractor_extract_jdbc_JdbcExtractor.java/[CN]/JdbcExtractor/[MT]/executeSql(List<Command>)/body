@@ -12,7 +12,7 @@ case FETCHSIZE:
     fetchSize=Integer.parseInt(cmd.getParams().get(0));
   break;
 default :
-log.error("Command " + type.toString() + " not recognized");
+this.log.error("Command " + type.toString() + " not recognized");
 break;
 }
 }
@@ -28,12 +28,12 @@ statement.setFetchSize(fetchSize);
 }
 final boolean status=statement.execute(query);
 if (status == false) {
-log.error("Failed to execute sql:" + query);
+this.log.error("Failed to execute sql:" + query);
 }
 resultSet=statement.getResultSet();
 }
  catch (Exception e) {
-log.error("Failed to execute sql:" + query + " ;error-"+ e.getMessage(),e);
+this.log.error("Failed to execute sql:" + query + " ;error-"+ e.getMessage(),e);
 }
 CommandOutput<JdbcCommand,ResultSet> output=new JdbcCommandOutput();
 output.put((JdbcCommand)cmds.get(0),resultSet);

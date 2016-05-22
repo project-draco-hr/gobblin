@@ -1,3 +1,3 @@
 {
-  return new SftpExtractor<S,D>(state);
+  return new SftpExtractor<>(state);
 }

@@ -2,7 +2,5 @@
   if (isBlob(resultsetMetadata.getColumnType(i))) {
     return readBlobAsString(resultset.getBlob(i));
   }
- else {
-    return resultset.getString(i);
-  }
+  return resultset.getString(i);
 }

@@ -40,8 +40,8 @@
     Map<String,HiveMetastoreClientPool> namedPools=ImmutableMap.of(source_client,this.dataset.clientPool,target_client,this.targetClientPool);
     multiTimer.nextStage(Stages.GET_TABLES);
     try (HiveMetastoreClientPool.MultiClient multiClient=HiveMetastoreClientPool.safeGetClients(namedPools)){
-      if (multiClient.getClient(target_client).tableExists(targetDatabase,this.dataset.table.getTableName())) {
-        this.existingTargetTable=Optional.of(new Table(multiClient.getClient(target_client).getTable(targetDatabase,this.dataset.table.getTableName())));
+      if (multiClient.getClient(target_client).tableExists(this.targetDatabase,this.dataset.table.getTableName())) {
+        this.existingTargetTable=Optional.of(new Table(multiClient.getClient(target_client).getTable(this.targetDatabase,this.dataset.table.getTableName())));
       }
  else {
         this.existingTargetTable=Optional.absent();
@@ -49,7 +49,7 @@
       Path targetPath=getTargetLocation(dataset.fs,this.targetFs,dataset.table.getDataLocation(),Optional.<Partition>absent());
       this.targetTable=getTargetTable(this.dataset.table,targetPath);
       HiveSpec tableHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(this.targetTable.getTTable())).build();
-      CommitStep tableRegistrationStep=new HiveRegisterStep(targetURI,tableHiveSpec,this.hiveRegProps);
+      CommitStep tableRegistrationStep=new HiveRegisterStep(this.targetURI,tableHiveSpec,this.hiveRegProps);
       this.tableRegistrationStep=Optional.of(tableRegistrationStep);
       if (this.existingTargetTable.isPresent() && this.existingTargetTable.get().isPartitioned()) {
         checkPartitionedTableCompatibility(this.targetTable,this.existingTargetTable.get());

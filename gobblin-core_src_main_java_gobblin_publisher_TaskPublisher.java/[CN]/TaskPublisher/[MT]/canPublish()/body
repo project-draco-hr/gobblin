@@ -7,15 +7,9 @@
         LOG.info("Cleanup for task publisher executed successfully.");
         return PublisherState.SUCCESS;
       }
- else {
-        return PublisherState.CLEANUP_FAIL;
-      }
+      return PublisherState.CLEANUP_FAIL;
     }
- else {
-      return PublisherState.POLICY_TESTS_FAIL;
-    }
+    return PublisherState.POLICY_TESTS_FAIL;
   }
- else {
-    return PublisherState.COMPONENTS_NOT_FINISHED;
-  }
+  return PublisherState.COMPONENTS_NOT_FINISHED;
 }

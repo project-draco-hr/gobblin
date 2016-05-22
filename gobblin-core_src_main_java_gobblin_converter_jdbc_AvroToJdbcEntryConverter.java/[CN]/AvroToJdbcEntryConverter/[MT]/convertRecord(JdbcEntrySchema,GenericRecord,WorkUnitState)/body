@@ -6,7 +6,7 @@
   for (  JdbcEntryMetaDatum entry : outputSchema) {
     final String colName=entry.getColumnName();
     final JdbcType jdbcType=entry.getJdbcType();
-    final Object val=record.get(tryConvertColumn(colName,jdbcToAvroColPairs));
+    final Object val=record.get(tryConvertColumn(colName,this.jdbcToAvroColPairs));
     if (val == null) {
       jdbcEntryData.add(new JdbcEntryDatum(colName,null));
       continue;
@@ -42,5 +42,5 @@ JdbcEntryData converted=new JdbcEntryData(jdbcEntryData);
 if (LOG.isDebugEnabled()) {
 LOG.debug("Converted data into " + converted);
 }
-return new SingleRecordIterable<JdbcEntryData>(converted);
+return new SingleRecordIterable<>(converted);
 }

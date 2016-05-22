@@ -1,3 +1,2 @@
 WorkUnitState workUnitState
 TaskLevelPolicyCheckResults results
-int index

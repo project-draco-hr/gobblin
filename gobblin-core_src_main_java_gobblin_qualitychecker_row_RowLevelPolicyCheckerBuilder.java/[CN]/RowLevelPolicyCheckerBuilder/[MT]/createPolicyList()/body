@@ -1,5 +1,5 @@
 {
-  List<RowLevelPolicy> list=new ArrayList<RowLevelPolicy>();
+  List<RowLevelPolicy> list=new ArrayList<>();
   Splitter splitter=Splitter.on(",").omitEmptyStrings().trimResults();
   String rowLevelPoliciesKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.ROW_LEVEL_POLICY_LIST,this.index);
   String rowLevelPolicyTypesKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.ROW_LEVEL_POLICY_LIST_TYPE,this.index);

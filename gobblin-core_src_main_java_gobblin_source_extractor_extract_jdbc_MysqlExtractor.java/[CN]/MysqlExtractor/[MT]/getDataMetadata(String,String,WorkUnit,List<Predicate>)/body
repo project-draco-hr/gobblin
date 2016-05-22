@@ -1,5 +1,5 @@
 {
-  this.log.debug("Build query to extract data");
+  log.debug("Build query to extract data");
   List<Command> commands=new ArrayList<>();
   int fetchsize=Integer.MIN_VALUE;
   String watermarkFilter=this.concatPredicates(predicateList);

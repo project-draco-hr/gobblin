@@ -1,7 +1,7 @@
 {
   Preconditions.checkArgument(!partitions.isEmpty(),"There should be at least one partition");
   workUnit.setProp(KafkaSource.TOPIC_NAME,partitions.get(0).getTopicName());
-  GobblinMetrics.addCustomTagToState(workUnit,new Tag<String>("kafkaTopic",partitions.get(0).getTopicName()));
+  GobblinMetrics.addCustomTagToState(workUnit,new Tag<>("kafkaTopic",partitions.get(0).getTopicName()));
   workUnit.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,partitions.get(0).getTopicName());
   for (int i=0; i < partitions.size(); i++) {
     workUnit.setProp(KafkaUtils.getPartitionPropName(KafkaSource.PARTITION_ID,i),partitions.get(i).getId());

@@ -1,21 +1,21 @@
 {
-  columnNames=Lists.newArrayList();
+  this.columnNames=Lists.newArrayList();
   for (  JdbcEntryDatum datum : jdbcEntryData) {
-    columnNames.add(datum.getColumnName());
+    this.columnNames.add(datum.getColumnName());
   }
-  pendingInserts=Lists.newArrayList();
-  insertStmtPrefix=String.format(INSERT_STATEMENT_PREFIX_FORMAT,databaseName,table,JOINER_ON_COMMA.join(columnNames));
-  int actualBatchSize=Math.min(batchSize,maxParamSize / columnNames.size());
-  if (batchSize != actualBatchSize) {
-    LOG.info("Changing batch size from " + batchSize + " to "+ actualBatchSize+ " due to # of params limitation "+ maxParamSize+ " , # of columns: "+ columnNames.size());
+  this.pendingInserts=Lists.newArrayList();
+  this.insertStmtPrefix=String.format(INSERT_STATEMENT_PREFIX_FORMAT,databaseName,table,JOINER_ON_COMMA.join(this.columnNames));
+  int actualBatchSize=Math.min(this.batchSize,this.maxParamSize / this.columnNames.size());
+  if (this.batchSize != actualBatchSize) {
+    LOG.info("Changing batch size from " + this.batchSize + " to "+ actualBatchSize+ " due to # of params limitation "+ this.maxParamSize+ " , # of columns: "+ this.columnNames.size());
   }
-  batchSize=actualBatchSize;
-  insertPstmtForFixedBatch=conn.prepareStatement(createPrepareStatementStr(insertStmtPrefix,batchSize));
-  if (batchSize == 1) {
+  this.batchSize=actualBatchSize;
+  this.insertPstmtForFixedBatch=conn.prepareStatement(createPrepareStatementStr(this.insertStmtPrefix,this.batchSize));
+  if (this.batchSize == 1) {
     LOG.info("Initialized for insert " + this);
   }
  else {
     LOG.info("Initialized for batch insert " + this);
   }
-  retryer=RetryerBuilder.<Boolean>newBuilder().retryIfException().withWaitStrategy(WaitStrategies.exponentialWait(1000,30,TimeUnit.SECONDS)).withStopStrategy(StopStrategies.stopAfterAttempt(5)).build();
+  this.retryer=RetryerBuilder.<Boolean>newBuilder().retryIfException().withWaitStrategy(WaitStrategies.exponentialWait(1000,30,TimeUnit.SECONDS)).withStopStrategy(StopStrategies.stopAfterAttempt(5)).build();
 }

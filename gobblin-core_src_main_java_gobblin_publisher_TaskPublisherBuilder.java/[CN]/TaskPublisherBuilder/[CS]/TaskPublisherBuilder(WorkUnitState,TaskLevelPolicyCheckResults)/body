@@ -1,5 +1,4 @@
 {
   this.results=results;
   this.workUnitState=workUnitState;
-  this.index=index;
 }

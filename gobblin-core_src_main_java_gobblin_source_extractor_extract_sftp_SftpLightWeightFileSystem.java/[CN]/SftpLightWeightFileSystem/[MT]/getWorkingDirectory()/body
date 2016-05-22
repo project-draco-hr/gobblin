@@ -1,7 +1,7 @@
 {
   ChannelSftp channelSftp=null;
   try {
-    channelSftp=fsHelper.getSftpChannel();
+    channelSftp=this.fsHelper.getSftpChannel();
     Path workingDir=new Path(channelSftp.pwd());
     return workingDir;
   }

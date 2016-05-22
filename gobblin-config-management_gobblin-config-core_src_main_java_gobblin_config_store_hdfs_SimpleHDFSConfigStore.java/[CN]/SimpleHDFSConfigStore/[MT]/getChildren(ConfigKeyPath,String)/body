@@ -8,7 +8,7 @@
       return children;
     }
     for (    FileStatus fileStatus : this.fs.listStatus(datasetDir)) {
-      if (fileStatus.isDir()) {
+      if (fileStatus.isDirectory()) {
         children.add(configKey.createChild(fileStatus.getPath().getName()));
       }
     }

@@ -3,7 +3,7 @@
     @Override public Boolean call() throws Exception {
       int i=0;
       pstmt.clearParameters();
-      for (      JdbcEntryData pendingEntry : pendingInserts) {
+      for (      JdbcEntryData pendingEntry : MySqlBufferedInserter.this.pendingInserts) {
         for (        JdbcEntryDatum datum : pendingEntry) {
           pstmt.setObject(++i,datum.getVal());
         }
@@ -16,7 +16,7 @@
   }
 ;
   try {
-    retryer.wrap(insertCall).call();
+    this.retryer.wrap(insertCall).call();
   }
  catch (  Exception e) {
     throw new RuntimeException("Failed to insert.",e);

@@ -1,7 +1,7 @@
 {
   List<FileStatus> srcLogFiles=FileListUtils.listFilesRecursively(this.srcFs,this.srcLogDir,new PathFilter(){
     @Override public boolean accept(    Path path){
-      return logFileExtensions.contains(Files.getFileExtension(path.getName()));
+      return LogCopier.this.logFileExtensions.contains(Files.getFileExtension(path.getName()));
     }
   }
 );

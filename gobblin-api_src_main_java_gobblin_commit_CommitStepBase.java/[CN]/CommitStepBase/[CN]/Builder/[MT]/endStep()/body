@@ -1,5 +1,5 @@
 {
   Preconditions.checkState(this.commitSequenceBuilder.isPresent());
   this.commitSequenceBuilder.get().addStep(build());
-  return commitSequenceBuilder.get();
+  return this.commitSequenceBuilder.get();
 }

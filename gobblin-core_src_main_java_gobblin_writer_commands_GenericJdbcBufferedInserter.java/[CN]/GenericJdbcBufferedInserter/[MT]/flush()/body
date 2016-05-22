@@ -1,5 +1,5 @@
 {
-  if (currBatchSize > 0) {
+  if (this.currBatchSize > 0) {
     insertBatch();
   }
 }

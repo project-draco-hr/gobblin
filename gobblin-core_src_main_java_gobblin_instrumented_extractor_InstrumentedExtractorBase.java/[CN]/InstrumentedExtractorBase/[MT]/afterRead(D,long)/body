@@ -1,6 +1,6 @@
 {
   Instrumented.updateTimer(this.extractorTimer,System.nanoTime() - startTime,TimeUnit.NANOSECONDS);
   if (record != null) {
-    Instrumented.markMeter(readRecordsMeter);
+    Instrumented.markMeter(this.readRecordsMeter);
   }
 }

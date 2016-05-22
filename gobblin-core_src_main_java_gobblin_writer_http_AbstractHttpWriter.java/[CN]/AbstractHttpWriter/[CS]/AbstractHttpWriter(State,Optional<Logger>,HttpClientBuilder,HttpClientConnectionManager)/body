@@ -1,7 +1,7 @@
 {
   super(state);
-  _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(this.getClass());
-  _debugLogEnabled=_log.isDebugEnabled();
+  this._log=log.isPresent() ? log.get() : LoggerFactory.getLogger(this.getClass());
+  this._debugLogEnabled=this._log.isDebugEnabled();
   httpClientInject.setConnectionManager(new HttpClientConnectionManagerWithConnTracking(connManager));
-  _client=httpClientInject.build();
+  this._client=httpClientInject.build();
 }

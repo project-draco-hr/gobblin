@@ -6,8 +6,8 @@
   this.skipTrash=props.containsKey(TrashFactory.SKIP_TRASH) && Boolean.parseBoolean(props.getProperty(TrashFactory.SKIP_TRASH));
   this.operationsReceived=new AtomicLong();
   this.lock=new ReentrantLock();
-  this.clockStateUpdated=lock.newCondition();
-  this.signalReceived=lock.newCondition();
+  this.clockStateUpdated=this.lock.newCondition();
+  this.signalReceived=this.lock.newCondition();
   this.clockState=0;
   this.operationsWaiting=new AtomicLong();
   this.callsReceivedSignal=new AtomicLong();

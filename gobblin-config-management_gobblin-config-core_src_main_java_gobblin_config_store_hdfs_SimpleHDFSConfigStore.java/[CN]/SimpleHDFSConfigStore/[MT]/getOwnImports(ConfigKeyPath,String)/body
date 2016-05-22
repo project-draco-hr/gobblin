@@ -9,7 +9,7 @@
       return configKeyPaths;
     }
     FileStatus includesFileStatus=this.fs.getFileStatus(includesFile);
-    if (!includesFileStatus.isDir()) {
+    if (!includesFileStatus.isDirectory()) {
       try (InputStream includesConfInStream=this.fs.open(includesFileStatus.getPath())){
         configKeyPaths.addAll(Lists.newArrayList(Iterables.transform(resolveIncludesList(IOUtils.readLines(includesConfInStream,Charsets.UTF_8)),new IncludesToConfigKey())));
       }

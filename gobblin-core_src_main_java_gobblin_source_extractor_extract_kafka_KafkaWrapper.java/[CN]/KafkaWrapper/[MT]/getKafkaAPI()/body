@@ -2,7 +2,5 @@
   if (this.useNewKafkaAPI) {
     return new KafkaNewAPI();
   }
- else {
-    return new KafkaOldAPI();
-  }
+  return new KafkaOldAPI();
 }

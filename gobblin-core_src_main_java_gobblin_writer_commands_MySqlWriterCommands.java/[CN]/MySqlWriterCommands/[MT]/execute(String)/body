@@ -1,6 +1,6 @@
 {
   LOG.info("Executing SQL " + sql);
-  try (PreparedStatement pstmt=conn.prepareStatement(sql)){
+  try (PreparedStatement pstmt=this.conn.prepareStatement(sql)){
     pstmt.execute();
   }
  }

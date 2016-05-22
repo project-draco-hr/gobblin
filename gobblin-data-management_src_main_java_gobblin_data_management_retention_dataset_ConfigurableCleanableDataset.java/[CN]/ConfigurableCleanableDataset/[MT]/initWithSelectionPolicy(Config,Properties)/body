@@ -5,6 +5,6 @@
     this.versionFindersAndPolicies.add(new VersionFinderAndPolicy<>(createSelectionPolicy(config.getString(selectionPolicyKey),config,jobProps),createVersionFinder(config.getString(versionFinderKey),config,jobProps)));
   }
  else {
-    log.warn(String.format("Version finder and policy not initialized for partition. Set version finder at %s and Selection policy at %s",VERSION_FINDER_CLASS_KEY,SELECTION_POLICY_CLASS_KEY));
+    this.log.warn(String.format("Version finder and policy not initialized for partition. Set version finder at %s and Selection policy at %s",VERSION_FINDER_CLASS_KEY,SELECTION_POLICY_CLASS_KEY));
   }
 }

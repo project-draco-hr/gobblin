@@ -3,7 +3,5 @@
   if (stateGuid.isPresent()) {
     return Guid.combine(file.guid(),stateGuid.get()).toString();
   }
- else {
-    throw new IOException("State does not contain a guid.");
-  }
+  throw new IOException("State does not contain a guid.");
 }

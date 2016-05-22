@@ -2,16 +2,12 @@
   if (classA.isAssignableFrom(classB)) {
     return classA;
   }
- else {
-    Class<?> klazz=classA;
-    while (!klazz.isAssignableFrom(classB)) {
-      klazz=klazz.getSuperclass();
-    }
-    if (DatasetVersion.class.isAssignableFrom(klazz)) {
-      return (Class<? extends DatasetVersion>)klazz;
-    }
- else {
-      return DatasetVersion.class;
-    }
+  Class<?> klazz=classA;
+  while (!klazz.isAssignableFrom(classB)) {
+    klazz=klazz.getSuperclass();
   }
+  if (DatasetVersion.class.isAssignableFrom(klazz)) {
+    return (Class<? extends DatasetVersion>)klazz;
+  }
+  return DatasetVersion.class;
 }

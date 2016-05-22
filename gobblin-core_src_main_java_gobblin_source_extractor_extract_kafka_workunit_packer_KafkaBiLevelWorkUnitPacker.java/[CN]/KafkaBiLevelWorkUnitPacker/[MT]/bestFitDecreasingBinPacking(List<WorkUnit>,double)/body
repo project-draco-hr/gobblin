@@ -1,6 +1,6 @@
 {
   Collections.sort(workUnits,LOAD_DESC_COMPARATOR);
-  PriorityQueue<MultiWorkUnit> pQueue=new PriorityQueue<MultiWorkUnit>(workUnits.size(),LOAD_DESC_COMPARATOR);
+  PriorityQueue<MultiWorkUnit> pQueue=new PriorityQueue<>(workUnits.size(),LOAD_DESC_COMPARATOR);
   for (  WorkUnit workUnit : workUnits) {
     MultiWorkUnit bestGroup=findAndPopBestFitGroup(workUnit,pQueue,avgGroupSize);
     if (bestGroup != null) {

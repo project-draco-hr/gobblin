@@ -2,7 +2,7 @@
   try {
     createNewLogFileIfNeeded();
     LOGGER.debug(String.format("Copying changes from %s to %s",this.srcLogFile,this.destLogFile));
-    copyChangesOfLogFile(srcFs.makeQualified(this.srcLogFile),destFs.makeQualified(this.destLogFile));
+    copyChangesOfLogFile(LogCopier.this.srcFs.makeQualified(this.srcLogFile),LogCopier.this.destFs.makeQualified(this.destLogFile));
   }
  catch (  IOException ioe) {
     LOGGER.error(String.format("Failed while copying logs from %s to %s",this.srcLogFile,this.destLogFile),ioe);

@@ -1,6 +1,6 @@
 {
   try {
-    ChannelSftp channelSftp=(ChannelSftp)session.openChannel("sftp");
+    ChannelSftp channelSftp=(ChannelSftp)this.session.openChannel("sftp");
     channelSftp.connect();
     return channelSftp;
   }

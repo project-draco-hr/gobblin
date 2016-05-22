@@ -1,7 +1,7 @@
 {
   Set<Dataset> datasets=Sets.newHashSet();
   for (  FileStatus datasetsFileStatus : this.fs.listStatus(new Path(this.inputDir))) {
-    if (datasetsFileStatus.isDir()) {
+    if (datasetsFileStatus.isDirectory()) {
       String datasetName=datasetsFileStatus.getPath().getName();
       if (DatasetFilterUtils.survived(datasetName,this.blacklist,this.whitelist)) {
         log.info("Found dataset: " + datasetsFileStatus.getPath().getName());

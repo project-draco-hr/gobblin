@@ -1,5 +1,5 @@
 {
-  if (dir.isDir()) {
+  if (dir.isDirectory()) {
     FileStatus[] filesInDir=fs.listStatus(dir.getPath());
     if (filesInDir != null) {
       for (      FileStatus f : filesInDir) {

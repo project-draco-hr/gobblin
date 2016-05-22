@@ -5,11 +5,7 @@
     if (sizeEstimatorType.isPresent()) {
       return getWorkUnitSizeEstimator(sizeEstimatorType.get());
     }
- else {
-      throw new IllegalArgumentException("WorkUnit size estimator type " + sizeEstimatorType + " not found");
-    }
+    throw new IllegalArgumentException("WorkUnit size estimator type " + sizeEstimatorType + " not found");
   }
- else {
-    return getWorkUnitSizeEstimator(DEFAULT_SIZE_ESTIMATOR_TYPE);
-  }
+  return getWorkUnitSizeEstimator(DEFAULT_SIZE_ESTIMATOR_TYPE);
 }

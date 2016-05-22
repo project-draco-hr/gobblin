@@ -1,5 +1,5 @@
 {
   conversionEntity.appendQuery("Insert into table ").appendQuery(conversionEntity.getHiveUnit().getDbName()).appendQuery(".").appendQuery(conversionEntity.getHiveUnit().getTableName()).appendQuery("_orc ").appendQuery("select * from ").appendQuery(conversionEntity.getHiveUnit().getDbName()).appendQuery(".").appendQuery(conversionEntity.getHiveUnit().getTableName());
   log.info("Conversion Query " + conversionEntity.getConversionQuery());
-  return new SingleRecordIterable<QueryBasedHiveConversionEntity>(conversionEntity);
+  return new SingleRecordIterable<>(conversionEntity);
 }

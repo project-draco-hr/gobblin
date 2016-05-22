@@ -1,3 +1,2 @@
 TaskState taskState
 TaskLevelPolicyCheckResults results
-int index

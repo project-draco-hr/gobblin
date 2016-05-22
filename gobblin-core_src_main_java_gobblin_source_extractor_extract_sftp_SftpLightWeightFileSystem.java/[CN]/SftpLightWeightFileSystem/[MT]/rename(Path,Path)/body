@@ -1,7 +1,7 @@
 {
   ChannelSftp channelSftp=null;
   try {
-    channelSftp=fsHelper.getSftpChannel();
+    channelSftp=this.fsHelper.getSftpChannel();
     channelSftp.rename(HadoopUtils.toUriPath(oldPath),HadoopUtils.toUriPath(newPath));
   }
  catch (  SftpException e) {

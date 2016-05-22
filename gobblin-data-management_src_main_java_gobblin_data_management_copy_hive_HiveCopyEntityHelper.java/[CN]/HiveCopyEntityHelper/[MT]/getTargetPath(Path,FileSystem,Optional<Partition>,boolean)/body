@@ -8,9 +8,7 @@
     if (!isConcreteFile) {
       return targetFs.makeQualified(path);
     }
- else {
-      return targetFs.makeQualified(new Path(path,sourcePath.getName()));
-    }
+    return targetFs.makeQualified(new Path(path,sourcePath.getName()));
   }
   if (this.targetTablePrefixTobeReplaced.isPresent() || this.targetTablePrefixReplacement.isPresent()) {
     Preconditions.checkState(this.targetTablePrefixTobeReplaced.isPresent(),String.format("Must specify both %s option and %s option together",COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED,COPY_TARGET_TABLE_PREFIX_REPLACEMENT));
@@ -28,9 +26,7 @@
     if (!isConcreteFile) {
       return targetFs.makeQualified(path);
     }
- else {
-      return targetFs.makeQualified(new Path(path,sourcePath.getName()));
-    }
+    return targetFs.makeQualified(new Path(path,sourcePath.getName()));
   }
  else {
     return targetFs.makeQualified(PathUtils.getPathWithoutSchemeAndAuthority(sourcePath));

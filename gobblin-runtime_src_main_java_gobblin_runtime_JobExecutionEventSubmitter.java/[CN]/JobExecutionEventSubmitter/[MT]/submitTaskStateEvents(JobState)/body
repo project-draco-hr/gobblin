@@ -1,5 +1,5 @@
 {
-  ImmutableMap.Builder<String,String> jobMetadataBuilder=new ImmutableMap.Builder<String,String>();
+  ImmutableMap.Builder<String,String> jobMetadataBuilder=new ImmutableMap.Builder<>();
   jobMetadataBuilder.put(METADATA_JOB_ID,jobState.getJobId());
   jobMetadataBuilder.put(METADATA_JOB_NAME,jobState.getJobName());
   jobMetadataBuilder.put(METADATA_JOB_TRACKING_URL,jobState.getTrackingURL().or(UNKNOWN_VALUE));

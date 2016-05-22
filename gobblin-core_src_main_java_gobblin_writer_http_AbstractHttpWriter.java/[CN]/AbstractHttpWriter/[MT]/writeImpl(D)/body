@@ -1,7 +1,7 @@
 {
-  _curRequest=onNewRecord(record,_curRequest);
-  if (_curRequest.isPresent()) {
-    ListenableFuture<HttpResponse> responseFuture=sendRequest(_curRequest.get());
+  this._curRequest=onNewRecord(record,this._curRequest);
+  if (this._curRequest.isPresent()) {
+    ListenableFuture<HttpResponse> responseFuture=sendRequest(this._curRequest.get());
     waitForResponse(responseFuture);
     try {
       processResponse(responseFuture.get());

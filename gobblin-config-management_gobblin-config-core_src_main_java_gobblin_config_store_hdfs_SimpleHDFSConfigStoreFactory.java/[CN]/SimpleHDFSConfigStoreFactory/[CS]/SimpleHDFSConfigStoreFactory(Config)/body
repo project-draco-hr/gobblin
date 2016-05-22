@@ -7,7 +7,7 @@
       }
       Path defStorePath=new Path(uri);
       this.defaultStoreFS=defStorePath.getFileSystem(new Configuration());
-      this.defaultStoreURI=Optional.of(defaultStoreFS.makeQualified(defStorePath).toUri());
+      this.defaultStoreURI=Optional.of(this.defaultStoreFS.makeQualified(defStorePath).toUri());
       if (!isValidStoreRootPath(this.defaultStoreFS,defStorePath)) {
         throw new IllegalArgumentException("Path does not appear to be a config store root: " + this.defaultStoreFS);
       }

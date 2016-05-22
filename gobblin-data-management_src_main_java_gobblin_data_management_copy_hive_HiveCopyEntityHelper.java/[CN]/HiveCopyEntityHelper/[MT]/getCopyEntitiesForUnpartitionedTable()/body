@@ -5,12 +5,12 @@
   List<CopyEntity> copyEntities=Lists.newArrayList();
   if (this.existingTargetTable.isPresent()) {
     if (!this.targetTable.getDataLocation().equals(this.existingTargetTable.get().getDataLocation())) {
-      if (existingEntityPolicy != ExistingEntityPolicy.REPLACE_TABLE) {
+      if (this.existingEntityPolicy != ExistingEntityPolicy.REPLACE_TABLE) {
         log.error("Source and target table are not compatible. Aborting copy of table " + this.targetTable,new HiveTableLocationNotMatchException(this.targetTable.getDataLocation(),this.existingTargetTable.get().getDataLocation()));
         return Lists.newArrayList();
       }
       log.warn("Source and target table are not compatible. Will override target table " + this.existingTargetTable.get().getDataLocation());
-      stepPriority=addTableDeregisterSteps(copyEntities,fileSet,stepPriority,targetTable);
+      stepPriority=addTableDeregisterSteps(copyEntities,fileSet,stepPriority,this.targetTable);
       this.existingTargetTable=Optional.absent();
     }
   }
@@ -19,9 +19,9 @@
   HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forTable(this.targetTable,this.targetFs,this.dataset.getProperties());
   Optional<HiveLocationDescriptor> existingTargetLocation=this.existingTargetTable.isPresent() ? Optional.of(HiveLocationDescriptor.forTable(this.existingTargetTable.get(),this.targetFs,this.dataset.getProperties())) : Optional.<HiveLocationDescriptor>absent();
   DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer,this);
-  DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,this.dataset.getProperties());
+  DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(this.targetFs,diffPathSet.pathsToDelete,this.dataset.getProperties());
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
-  for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,configuration,Optional.<Partition>absent())) {
+  for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,this.configuration,Optional.<Partition>absent())) {
     copyEntities.add(builder.build());
   }
   multiTimer.close();

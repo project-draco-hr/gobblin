@@ -28,5 +28,5 @@
       outputRecord.add(outputSchema.get(i).getAsJsonObject().get("columnName").getAsString(),JsonNull.INSTANCE);
     }
   }
-  return new SingleRecordIterable<JsonObject>(outputRecord);
+  return new SingleRecordIterable<>(outputRecord);
 }

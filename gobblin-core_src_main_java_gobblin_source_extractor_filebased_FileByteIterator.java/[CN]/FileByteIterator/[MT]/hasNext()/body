@@ -1,6 +1,6 @@
 {
   try {
-    return bufferedInputStream.available() > 0;
+    return this.bufferedInputStream.available() > 0;
   }
  catch (  IOException e) {
     throw Throwables.propagate(e);

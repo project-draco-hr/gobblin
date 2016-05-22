@@ -1,5 +1,5 @@
 {
-  this.log.debug("Getting timestamp predicate for Mysql");
+  log.debug("Getting timestamp predicate for Mysql");
   String formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,MYSQL_TIMESTAMP_FORMAT);
   return Utils.getCoalesceColumnNames(column) + " " + operator+ " '"+ formattedvalue+ "'";
 }

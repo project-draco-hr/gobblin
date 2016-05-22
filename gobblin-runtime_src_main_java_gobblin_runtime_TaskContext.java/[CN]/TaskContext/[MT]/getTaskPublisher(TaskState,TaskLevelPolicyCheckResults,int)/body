@@ -1,3 +1,0 @@
-{
-  return new TaskPublisherBuilderFactory().newTaskPublisherBuilder(taskState,results,index).build();
-}

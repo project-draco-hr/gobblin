@@ -3,7 +3,7 @@
     return this.selectionPolicies.get(0).versionClass();
   }
   Class<? extends DatasetVersion> klazz=this.selectionPolicies.get(0).versionClass();
-  for (  VersionSelectionPolicy<? extends DatasetVersion> policy : selectionPolicies) {
+  for (  VersionSelectionPolicy<? extends DatasetVersion> policy : this.selectionPolicies) {
     klazz=commonSuperclass(klazz,policy.versionClass());
   }
   return klazz;

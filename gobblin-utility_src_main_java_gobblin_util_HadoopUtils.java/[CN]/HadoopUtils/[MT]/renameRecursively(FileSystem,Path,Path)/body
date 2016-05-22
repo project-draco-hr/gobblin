@@ -1,7 +1,7 @@
 {
   FileSystem throttledFS=getOptionallyThrottledFileSystem(fileSystem,10000);
   ExecutorService executorService=ScalingThreadPoolExecutor.newScalingThreadPool(1,100,100,ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("rename-thread-%d")));
-  Queue<Future> futures=Queues.newConcurrentLinkedQueue();
+  Queue<Future<?>> futures=Queues.newConcurrentLinkedQueue();
   try {
     if (!fileSystem.exists(from)) {
       return;

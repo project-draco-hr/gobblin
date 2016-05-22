@@ -7,45 +7,45 @@
     List<CopyEntity> copyEntities=Lists.newArrayList();
     stepPriority=addSharedSteps(copyEntities,fileSet,stepPriority);
     multiTimer.nextStage(Stages.COMPUTE_TARGETS);
-    Path targetPath=getTargetLocation(dataset.fs,targetFs,this.partition.getDataLocation(),Optional.of(this.partition));
+    Path targetPath=getTargetLocation(HiveCopyEntityHelper.this.dataset.fs,HiveCopyEntityHelper.this.targetFs,this.partition.getDataLocation(),Optional.of(this.partition));
     Partition targetPartition=getTargetPartition(this.partition,targetPath);
     multiTimer.nextStage(Stages.EXISTING_PARTITION);
     if (this.existingTargetPartition.isPresent()) {
-      targetPartitions.remove(partition.getValues());
+      HiveCopyEntityHelper.this.targetPartitions.remove(this.partition.getValues());
       try {
-        checkPartitionCompatibility(targetPartition,existingTargetPartition.get());
+        checkPartitionCompatibility(targetPartition,this.existingTargetPartition.get());
       }
  catch (      IOException ioe) {
-        if (existingEntityPolicy != ExistingEntityPolicy.REPLACE_PARTITIONS) {
+        if (HiveCopyEntityHelper.this.existingEntityPolicy != ExistingEntityPolicy.REPLACE_PARTITIONS) {
           log.error("Source and target partitions are not compatible. Aborting copy of partition " + this.partition,ioe);
           return Lists.newArrayList();
         }
         log.warn("Source and target partitions are not compatible. Will override target partition.",ioe);
-        stepPriority=addPartitionDeregisterSteps(copyEntities,fileSet,stepPriority,targetTable,existingTargetPartition.get());
-        existingTargetPartition=Optional.absent();
+        stepPriority=addPartitionDeregisterSteps(copyEntities,fileSet,stepPriority,HiveCopyEntityHelper.this.targetTable,this.existingTargetPartition.get());
+        this.existingTargetPartition=Optional.absent();
       }
     }
     multiTimer.nextStage(Stages.PARTITION_SKIP_PREDICATE);
-    if (fastPartitionSkip.isPresent() && fastPartitionSkip.get().apply(this)) {
+    if (HiveCopyEntityHelper.this.fastPartitionSkip.isPresent() && HiveCopyEntityHelper.this.fastPartitionSkip.get().apply(this)) {
       log.info(String.format("Skipping copy of partition %s due to fast partition skip predicate.",this.partition.getCompleteName()));
       return Lists.newArrayList();
     }
-    HiveSpec partitionHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(targetTable.getTTable())).withPartition(Optional.of(HiveMetaStoreUtils.getHivePartition(targetPartition.getTPartition()))).build();
-    HiveRegisterStep register=new HiveRegisterStep(targetURI,partitionHiveSpec,hiveRegProps);
+    HiveSpec partitionHiveSpec=new SimpleHiveSpec.Builder<>(targetPath).withTable(HiveMetaStoreUtils.getHiveTable(HiveCopyEntityHelper.this.targetTable.getTTable())).withPartition(Optional.of(HiveMetaStoreUtils.getHivePartition(targetPartition.getTPartition()))).build();
+    HiveRegisterStep register=new HiveRegisterStep(HiveCopyEntityHelper.this.targetURI,partitionHiveSpec,HiveCopyEntityHelper.this.hiveRegProps);
     copyEntities.add(new PostPublishStep(fileSet,Maps.<String,Object>newHashMap(),register,stepPriority++));
     multiTimer.nextStage(Stages.CREATE_LOCATIONS);
-    HiveLocationDescriptor sourceLocation=HiveLocationDescriptor.forPartition(this.partition,dataset.fs,properties);
-    HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forPartition(targetPartition,targetFs,properties);
-    Optional<HiveLocationDescriptor> existingTargetLocation=existingTargetPartition.isPresent() ? Optional.of(HiveLocationDescriptor.forPartition(existingTargetPartition.get(),targetFs,properties)) : Optional.<HiveLocationDescriptor>absent();
+    HiveLocationDescriptor sourceLocation=HiveLocationDescriptor.forPartition(this.partition,HiveCopyEntityHelper.this.dataset.fs,this.properties);
+    HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forPartition(targetPartition,HiveCopyEntityHelper.this.targetFs,this.properties);
+    Optional<HiveLocationDescriptor> existingTargetLocation=this.existingTargetPartition.isPresent() ? Optional.of(HiveLocationDescriptor.forPartition(this.existingTargetPartition.get(),HiveCopyEntityHelper.this.targetFs,this.properties)) : Optional.<HiveLocationDescriptor>absent();
     multiTimer.nextStage(Stages.FULL_PATH_DIFF);
     DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer,HiveCopyEntityHelper.this);
     multiTimer.nextStage(Stages.CREATE_DELETE_UNITS);
     if (diffPathSet.pathsToDelete.size() > 0) {
-      DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(targetFs,diffPathSet.pathsToDelete,dataset.properties);
+      DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(HiveCopyEntityHelper.this.targetFs,diffPathSet.pathsToDelete,HiveCopyEntityHelper.this.dataset.properties);
       copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
     }
     multiTimer.nextStage(Stages.CREATE_COPY_UNITS);
-    for (    CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,configuration,Optional.of(partition))) {
+    for (    CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,HiveCopyEntityHelper.this.configuration,Optional.of(this.partition))) {
       copyEntities.add(builder.fileSet(fileSet).checksum(new byte[0]).build());
     }
     return copyEntities;

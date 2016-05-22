@@ -1,6 +1,0 @@
-{
-  while (path.getParent() != null) {
-    path=path.getParent();
-  }
-  return path;
-}

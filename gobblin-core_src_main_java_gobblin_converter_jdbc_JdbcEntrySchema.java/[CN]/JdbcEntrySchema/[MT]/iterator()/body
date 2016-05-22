@@ -1,3 +1,3 @@
 {
-  return jdbcMetaData.values().iterator();
+  return this.jdbcMetaData.values().iterator();
 }

@@ -3,7 +3,7 @@
     this.log.warn("No deletable dataset version can be found. Ignoring.");
     return;
   }
-  Set<Path> possiblyEmptyDirectories=new HashSet<Path>();
+  Set<Path> possiblyEmptyDirectories=new HashSet<>();
   for (  FileSystemDatasetVersion versionToDelete : deletableVersions) {
     this.log.info("Deleting dataset version " + versionToDelete);
     Set<Path> pathsToDelete=versionToDelete.getPaths();

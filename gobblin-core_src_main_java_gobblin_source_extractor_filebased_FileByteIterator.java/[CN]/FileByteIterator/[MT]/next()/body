@@ -1,11 +1,9 @@
 {
   try {
     if (this.hasNext()) {
-      return (byte)bufferedInputStream.read();
+      return (byte)this.bufferedInputStream.read();
     }
- else {
-      throw new NoSuchElementException("No more data left in the file");
-    }
+    throw new NoSuchElementException("No more data left in the file");
   }
  catch (  IOException e) {
     throw Throwables.propagate(e);

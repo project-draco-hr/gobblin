@@ -1,3 +1,3 @@
 {
-  return this.isEmbeddedInstrumented ? ((InstrumentedConverterBase)embeddedConverter).getMetricContext() : super.getMetricContext();
+  return this.isEmbeddedInstrumented ? ((InstrumentedConverterBase<SI,SO,DI,DO>)this.embeddedConverter).getMetricContext() : super.getMetricContext();
 }

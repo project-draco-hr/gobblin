@@ -1,16 +1,16 @@
 {
-  if (!srcFs.exists(srcFile)) {
+  if (!LogCopier.this.srcFs.exists(srcFile)) {
     LOGGER.warn("Source log file not found: " + srcFile);
     return;
   }
   Closer closer=Closer.create();
   FSDataInputStream fsDataInputStream=null;
   try {
-    fsDataInputStream=closer.register(srcFs.open(srcFile));
+    fsDataInputStream=closer.register(LogCopier.this.srcFs.open(srcFile));
     LOGGER.debug(String.format("Reading log file %s from position %d",srcFile,this.currentPos));
     fsDataInputStream.seek(this.currentPos);
     BufferedReader srcLogFileReader=closer.register(new BufferedReader(new InputStreamReader(fsDataInputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
-    FSDataOutputStream outputStream=destFs.exists(destFile) ? destFs.append(destFile) : destFs.create(destFile);
+    FSDataOutputStream outputStream=LogCopier.this.destFs.exists(destFile) ? LogCopier.this.destFs.append(destFile) : LogCopier.this.destFs.create(destFile);
     BufferedWriter destLogFileWriter=closer.register(new BufferedWriter(new OutputStreamWriter(outputStream,ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
     String line;
     int linesProcessed=0;
@@ -21,7 +21,7 @@
       destLogFileWriter.write(line);
       destLogFileWriter.newLine();
       linesProcessed++;
-      if (linesProcessed % linesWrittenBeforeFlush == 0) {
+      if (linesProcessed % LogCopier.this.linesWrittenBeforeFlush == 0) {
         destLogFileWriter.flush();
       }
     }

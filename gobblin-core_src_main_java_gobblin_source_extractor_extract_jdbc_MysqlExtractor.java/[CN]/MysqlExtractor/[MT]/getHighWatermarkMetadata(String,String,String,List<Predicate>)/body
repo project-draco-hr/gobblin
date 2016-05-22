@@ -1,5 +1,5 @@
 {
-  this.log.debug("Build query to get high watermark");
+  log.debug("Build query to get high watermark");
   List<Command> commands=new ArrayList<>();
   String columnProjection="max(" + Utils.getCoalesceColumnNames(watermarkColumn) + ")";
   String watermarkFilter=this.concatPredicates(predicateList);

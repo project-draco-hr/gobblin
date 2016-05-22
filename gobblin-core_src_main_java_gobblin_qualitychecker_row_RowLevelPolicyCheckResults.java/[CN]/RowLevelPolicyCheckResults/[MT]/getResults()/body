@@ -1,7 +1,7 @@
 {
-  List<String> list=new ArrayList<String>();
+  List<String> list=new ArrayList<>();
   Joiner joiner=Joiner.on("\n").skipNulls();
-  for (  Map.Entry<RowLevelPolicyResultPair,Long> entry : results.entrySet()) {
+  for (  Map.Entry<RowLevelPolicyResultPair,Long> entry : this.results.entrySet()) {
     list.add("RowLevelPolicy " + entry.getKey().getPolicy().toString() + " processed "+ entry.getValue()+ " record(s) with result "+ entry.getKey().getResult());
   }
   return joiner.join(list);

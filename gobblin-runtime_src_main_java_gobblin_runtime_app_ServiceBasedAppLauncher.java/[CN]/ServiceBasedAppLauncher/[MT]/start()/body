@@ -6,7 +6,7 @@
   this.hasStarted=true;
   this.serviceManager=new ServiceManager(this.services);
   Runtime.getRuntime().addShutdownHook(new Thread(){
-    public void run(){
+    @Override public void run(){
       try {
         ServiceBasedAppLauncher.this.stop();
       }

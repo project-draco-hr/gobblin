@@ -1,12 +1,12 @@
 {
   this.separator=separator;
-  parser=new StreamTokenizer(input);
-  parser.ordinaryChars(0,255);
-  parser.wordChars(0,255);
-  parser.ordinaryChar(enclosedChar);
-  parser.ordinaryChar(separator);
-  parser.eolIsSignificant(true);
-  parser.whitespaceChars('\n','\n');
-  parser.whitespaceChars('\r','\r');
-  atEOF=false;
+  this.parser=new StreamTokenizer(input);
+  this.parser.ordinaryChars(0,255);
+  this.parser.wordChars(0,255);
+  this.parser.ordinaryChar(enclosedChar);
+  this.parser.ordinaryChar(separator);
+  this.parser.eolIsSignificant(true);
+  this.parser.whitespaceChars('\n','\n');
+  this.parser.whitespaceChars('\r','\r');
+  this.atEOF=false;
 }

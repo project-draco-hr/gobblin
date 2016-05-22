@@ -1,7 +1,7 @@
 {
   ChannelExec channelExec;
   try {
-    channelExec=(ChannelExec)session.openChannel("exec");
+    channelExec=(ChannelExec)this.session.openChannel("exec");
     channelExec.setCommand(command);
     channelExec.connect();
     return channelExec;

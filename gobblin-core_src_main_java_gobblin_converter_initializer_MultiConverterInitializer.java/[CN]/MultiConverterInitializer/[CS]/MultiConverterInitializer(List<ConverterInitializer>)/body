@@ -1,3 +1,3 @@
 {
-  intializer=new MultiInitializer(converterInitializers);
+  this.intializer=new MultiInitializer(converterInitializers);
 }

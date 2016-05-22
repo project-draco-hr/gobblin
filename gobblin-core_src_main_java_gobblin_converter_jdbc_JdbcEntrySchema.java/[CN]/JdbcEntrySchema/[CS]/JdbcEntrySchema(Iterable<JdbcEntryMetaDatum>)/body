@@ -4,5 +4,5 @@
   for (  JdbcEntryMetaDatum datum : jdbcMetaDatumEntries) {
     builder.put(datum.getColumnName(),datum);
   }
-  jdbcMetaData=builder.build();
+  this.jdbcMetaData=builder.build();
 }

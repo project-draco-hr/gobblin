@@ -1,3 +1,3 @@
 {
-  return this.isEmbeddedInstrumented ? ((InstrumentedDataWriterBase)this.embeddedWriter).getMetricContext() : super.getMetricContext();
+  return this.isEmbeddedInstrumented ? ((InstrumentedDataWriterBase<D>)this.embeddedWriter).getMetricContext() : super.getMetricContext();
 }

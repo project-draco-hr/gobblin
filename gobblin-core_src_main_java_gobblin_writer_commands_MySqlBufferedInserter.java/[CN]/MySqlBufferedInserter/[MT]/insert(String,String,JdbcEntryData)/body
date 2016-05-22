@@ -1,10 +1,10 @@
 {
-  if (columnNames == null) {
-    initializeForBatch(conn,databaseName,table,jdbcEntryData);
+  if (this.columnNames == null) {
+    initializeForBatch(this.conn,databaseName,table,jdbcEntryData);
   }
-  pendingInserts.add(jdbcEntryData);
-  if (pendingInserts.size() == batchSize) {
-    insertBatch(insertPstmtForFixedBatch);
+  this.pendingInserts.add(jdbcEntryData);
+  if (this.pendingInserts.size() == this.batchSize) {
+    insertBatch(this.insertPstmtForFixedBatch);
     return;
   }
 }

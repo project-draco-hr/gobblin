@@ -2,7 +2,5 @@
   if (state.contains(PERSIST_DIR_KEY)) {
     return Optional.of(new Path(state.getProp(PERSIST_DIR_KEY),UserGroupInformation.getCurrentUser().getShortUserName()));
   }
- else {
-    return Optional.absent();
-  }
+  return Optional.absent();
 }

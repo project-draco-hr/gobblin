@@ -5,11 +5,7 @@
     if (packerType.isPresent()) {
       return getInstance(packerType.get(),source,state);
     }
- else {
-      throw new IllegalArgumentException("WorkUnit packer type " + packerTypeStr + " not found");
-    }
+    throw new IllegalArgumentException("WorkUnit packer type " + packerTypeStr + " not found");
   }
- else {
-    return getInstance(DEFAULT_PACKER_TYPE,source,state);
-  }
+  return getInstance(DEFAULT_PACKER_TYPE,source,state);
 }

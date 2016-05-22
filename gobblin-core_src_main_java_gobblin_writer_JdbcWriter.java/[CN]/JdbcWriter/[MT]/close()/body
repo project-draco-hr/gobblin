@@ -1,13 +1,13 @@
 {
   try {
     try {
-      if (failed && conn != null) {
-        conn.rollback();
+      if (this.failed && this.conn != null) {
+        this.conn.rollback();
       }
     }
   finally {
-      if (conn != null) {
-        conn.close();
+      if (this.conn != null) {
+        this.conn.close();
       }
     }
   }

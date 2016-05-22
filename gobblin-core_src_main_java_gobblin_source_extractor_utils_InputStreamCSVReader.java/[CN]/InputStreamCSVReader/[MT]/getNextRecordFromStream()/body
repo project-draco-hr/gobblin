@@ -1,43 +1,43 @@
 {
-  if (atEOF) {
+  if (this.atEOF) {
     return null;
   }
-  ArrayList<String> record=new ArrayList<String>(maxFieldCount);
+  ArrayList<String> record=new ArrayList<>(this.maxFieldCount);
   StringBuilder fieldValue=null;
   while (true) {
-    int token=parser.nextToken();
+    int token=this.parser.nextToken();
     if (token == StreamTokenizer.TT_EOF) {
       addField(record,fieldValue);
-      atEOF=true;
+      this.atEOF=true;
       break;
     }
     if (token == StreamTokenizer.TT_EOL) {
       addField(record,fieldValue);
       break;
     }
-    if (token == separator) {
+    if (token == this.separator) {
       addField(record,fieldValue);
       fieldValue=null;
       continue;
     }
     if (token == StreamTokenizer.TT_WORD) {
       if (fieldValue != null) {
-        throw new CSVParseException("Unknown error",parser.lineno());
+        throw new CSVParseException("Unknown error",this.parser.lineno());
       }
-      fieldValue=new StringBuilder(parser.sval);
+      fieldValue=new StringBuilder(this.parser.sval);
       continue;
     }
     if (token == '"') {
       if (fieldValue != null) {
-        throw new CSVParseException("Found unescaped quote. A value with quote should be within a quote",parser.lineno());
+        throw new CSVParseException("Found unescaped quote. A value with quote should be within a quote",this.parser.lineno());
       }
       while (true) {
-        token=parser.nextToken();
+        token=this.parser.nextToken();
         if (token == StreamTokenizer.TT_EOF) {
-          atEOF=true;
-          throw new CSVParseException("EOF reached before closing an opened quote",parser.lineno());
+          this.atEOF=true;
+          throw new CSVParseException("EOF reached before closing an opened quote",this.parser.lineno());
         }
-        if (token == separator) {
+        if (token == this.separator) {
           fieldValue=appendFieldValue(fieldValue,token);
           continue;
         }
@@ -46,28 +46,26 @@
           continue;
         }
         if (token == StreamTokenizer.TT_WORD) {
-          fieldValue=appendFieldValue(fieldValue,parser.sval);
+          fieldValue=appendFieldValue(fieldValue,this.parser.sval);
           continue;
         }
         if (token == '"') {
-          int nextToken=parser.nextToken();
+          int nextToken=this.parser.nextToken();
           if (nextToken == '"') {
             fieldValue=appendFieldValue(fieldValue,nextToken);
             continue;
           }
           if (nextToken == StreamTokenizer.TT_WORD) {
-            throw new CSVParseException("Not expecting more text after end quote",parser.lineno());
+            throw new CSVParseException("Not expecting more text after end quote",this.parser.lineno());
           }
- else {
-            parser.pushBack();
-            break;
-          }
+          this.parser.pushBack();
+          break;
         }
       }
     }
   }
-  if (record.size() > maxFieldCount) {
-    maxFieldCount=record.size();
+  if (record.size() > this.maxFieldCount) {
+    this.maxFieldCount=record.size();
   }
   return record;
 }

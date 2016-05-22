@@ -1,9 +1,7 @@
 {
-  Path versionRootPath=PathUtils.combinePaths(physicalStoreRoot.toString(),CONFIG_STORE_NAME,version);
-  if (fs.isDirectory(versionRootPath)) {
+  Path versionRootPath=PathUtils.combinePaths(SimpleHDFSConfigStore.this.physicalStoreRoot.toString(),CONFIG_STORE_NAME,this.version);
+  if (SimpleHDFSConfigStore.this.fs.isDirectory(versionRootPath)) {
     return versionRootPath;
   }
- else {
-    throw new VersionDoesNotExistException(getStoreURI(),version,String.format("Cannot find specified version under root %s",versionRootPath));
-  }
+  throw new VersionDoesNotExistException(getStoreURI(),this.version,String.format("Cannot find specified version under root %s",versionRootPath));
 }

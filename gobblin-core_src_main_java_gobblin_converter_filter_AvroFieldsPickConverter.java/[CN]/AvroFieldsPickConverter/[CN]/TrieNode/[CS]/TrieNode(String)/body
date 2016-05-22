@@ -1,4 +1,4 @@
 {
   this.val=val;
-  children=Maps.newHashMap();
+  this.children=Maps.newHashMap();
 }

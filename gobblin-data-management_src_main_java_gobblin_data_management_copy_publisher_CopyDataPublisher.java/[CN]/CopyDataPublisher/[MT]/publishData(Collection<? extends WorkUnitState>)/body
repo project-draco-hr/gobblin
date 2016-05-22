@@ -6,7 +6,7 @@
       this.publishFileSet(datasetAndPartition,datasets.get(datasetAndPartition));
     }
  catch (    Throwable e) {
-      CopyEventSubmitterHelper.submitFailedDatasetPublish(eventSubmitter,datasetAndPartition);
+      CopyEventSubmitterHelper.submitFailedDatasetPublish(this.eventSubmitter,datasetAndPartition);
       log.error("Failed to publish " + datasetAndPartition.getDataset().getDatasetURN(),e);
       allDatasetsPublished=false;
     }

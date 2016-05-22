@@ -1,7 +1,7 @@
 {
   String avroToJdbcFieldsPairJsonStr=workUnit.getProp(ConfigurationKeys.CONVERTER_AVRO_JDBC_ENTRY_FIELDS_PAIRS);
   if (!StringUtils.isEmpty(avroToJdbcFieldsPairJsonStr)) {
-    if (!avroToJdbcColPairs.isPresent()) {
+    if (!this.avroToJdbcColPairs.isPresent()) {
       ImmutableMap.Builder<String,String> avroToJdbcBuilder=ImmutableMap.builder();
       ImmutableMap.Builder<String,String> jdbcToAvroBuilder=ImmutableMap.builder();
       JsonObject json=new JsonParser().parse(avroToJdbcFieldsPairJsonStr).getAsJsonObject();
@@ -12,8 +12,8 @@
         avroToJdbcBuilder.put(entry.getKey(),entry.getValue().getAsString());
         jdbcToAvroBuilder.put(entry.getValue().getAsString(),entry.getKey());
       }
-      avroToJdbcColPairs=Optional.of((Map<String,String>)avroToJdbcBuilder.build());
-      jdbcToAvroColPairs=Optional.of((Map<String,String>)jdbcToAvroBuilder.build());
+      this.avroToJdbcColPairs=Optional.of((Map<String,String>)avroToJdbcBuilder.build());
+      this.jdbcToAvroColPairs=Optional.of((Map<String,String>)jdbcToAvroBuilder.build());
     }
   }
   return this;

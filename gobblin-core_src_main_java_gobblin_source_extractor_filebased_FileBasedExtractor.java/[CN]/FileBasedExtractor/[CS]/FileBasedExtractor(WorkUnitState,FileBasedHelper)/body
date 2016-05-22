@@ -26,7 +26,7 @@
     }
   }
  else {
-    this.fileDownloader=new SingleFileDownloader<D>(this);
+    this.fileDownloader=new SingleFileDownloader<>(this);
   }
   this.counters.initialize(getMetricContext(),CounterNames.class,this.getClass());
 }

@@ -1,7 +1,7 @@
 {
   SftpGetMonitor monitor=new SftpGetMonitor();
   try {
-    ChannelSftp channelSftp=fsHelper.getSftpChannel();
+    ChannelSftp channelSftp=this.fsHelper.getSftpChannel();
     InputStream is=channelSftp.get(HadoopUtils.toUriPath(path),monitor);
     return new FSDataInputStream(new BufferedFSInputStream(new SftpFsFileInputStream(is,channelSftp),bufferSize));
   }

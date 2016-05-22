@@ -3,9 +3,7 @@
     if (this.nullable) {
       return null;
     }
- else {
-      throw new RuntimeException("Field: " + getName() + " is not nullable and contains a null value");
-    }
+    throw new RuntimeException("Field: " + getName() + " is not nullable and contains a null value");
   }
   return convertField(value);
 }

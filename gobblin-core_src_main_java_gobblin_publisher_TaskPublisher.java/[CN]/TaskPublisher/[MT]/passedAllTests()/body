@@ -1,5 +1,5 @@
 {
-  for (  Map.Entry<TaskLevelPolicy.Result,TaskLevelPolicy.Type> entry : results.getPolicyResults().entrySet()) {
+  for (  Map.Entry<TaskLevelPolicy.Result,TaskLevelPolicy.Type> entry : this.results.getPolicyResults().entrySet()) {
     if (entry.getKey().equals(TaskLevelPolicy.Result.FAILED) && entry.getValue().equals(TaskLevelPolicy.Type.FAIL)) {
       return false;
     }

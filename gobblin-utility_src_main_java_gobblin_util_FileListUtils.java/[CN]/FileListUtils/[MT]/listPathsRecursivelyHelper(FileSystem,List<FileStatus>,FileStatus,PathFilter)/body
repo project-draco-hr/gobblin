@@ -2,7 +2,7 @@
   if (fileFilter.accept(fileStatus.getPath())) {
     files.add(fileStatus);
   }
-  if (fileStatus.isDir()) {
+  if (fileStatus.isDirectory()) {
     try {
       for (      FileStatus status : fs.listStatus(fileStatus.getPath())) {
         listPathsRecursivelyHelper(fs,files,status,fileFilter);

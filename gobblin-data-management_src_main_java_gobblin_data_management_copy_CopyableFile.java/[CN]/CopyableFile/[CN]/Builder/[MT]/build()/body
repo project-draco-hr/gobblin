@@ -18,17 +18,17 @@
     this.ancestorsOwnerAndPermission=replicateAncestorsOwnerAndPermission(this.originFs,this.origin.getPath(),this.configuration.getTargetFs(),this.destination);
   }
   if (this.checksum == null) {
-    FileChecksum checksumTmp=this.originFs.getFileChecksum(origin.getPath());
+    FileChecksum checksumTmp=this.originFs.getFileChecksum(this.origin.getPath());
     this.checksum=checksumTmp == null ? new byte[0] : checksumTmp.getBytes();
   }
   if (this.fileSet == null) {
     this.fileSet="";
   }
   if (this.originTimestamp == 0) {
-    this.originTimestamp=origin.getModificationTime();
+    this.originTimestamp=this.origin.getModificationTime();
   }
   if (this.upstreamTimestamp == 0) {
-    this.upstreamTimestamp=origin.getModificationTime();
+    this.upstreamTimestamp=this.origin.getModificationTime();
   }
   return new CopyableFile(this.origin,this.destination,this.destinationOwnerAndPermission,this.ancestorsOwnerAndPermission,this.checksum,this.preserve,this.fileSet,this.originTimestamp,this.upstreamTimestamp,this.additionalMetadata);
 }

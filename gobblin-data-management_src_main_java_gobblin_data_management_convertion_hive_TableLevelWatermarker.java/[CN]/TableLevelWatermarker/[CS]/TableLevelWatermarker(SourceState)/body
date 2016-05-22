@@ -1,6 +1,6 @@
 {
   this.tableWatermarks=Maps.newHashMap();
-  SourceState sourceState=(SourceState)state;
+  SourceState sourceState=state;
   for (  Map.Entry<String,Iterable<WorkUnitState>> datasetWorkUnitStates : sourceState.getPreviousWorkUnitStatesByDatasetUrns().entrySet()) {
     LongWatermark tableWatermark=Collections.min(Lists.newArrayList(Iterables.transform(datasetWorkUnitStates.getValue(),new Function<WorkUnitState,LongWatermark>(){
       @Override public LongWatermark apply(      WorkUnitState w){

@@ -1,5 +1,5 @@
 {
-  if (errFileOpen) {
+  if (this.errFileOpen) {
     this.closer.close();
   }
 }

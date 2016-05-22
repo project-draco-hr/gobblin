@@ -7,9 +7,9 @@
   List<CommitStep> postPublish=getCommitSequence(datasetWorkUnitStates,PostPublishStep.class);
   log.info(String.format("[%s] Found %d prePublish steps and %d postPublish steps.",datasetAndPartition.identifier(),prePublish.size(),postPublish.size()));
   executeCommitSequence(prePublish);
-  HadoopUtils.renameRecursively(fs,datasetWriterOutputPath,new Path("/"));
+  HadoopUtils.renameRecursively(this.fs,datasetWriterOutputPath,new Path("/"));
   executeCommitSequence(postPublish);
-  fs.delete(datasetWriterOutputPath,true);
+  this.fs.delete(datasetWriterOutputPath,true);
   long datasetOriginTimestamp=Long.MAX_VALUE;
   long datasetUpstreamTimestamp=Long.MAX_VALUE;
   for (  WorkUnitState wus : datasetWorkUnitStates) {
@@ -20,7 +20,7 @@
     if (copyEntity instanceof CopyableFile) {
       CopyableFile copyableFile=(CopyableFile)copyEntity;
       if (wus.getWorkingState() == WorkingState.COMMITTED) {
-        CopyEventSubmitterHelper.submitSuccessfulFilePublish(eventSubmitter,copyableFile,wus);
+        CopyEventSubmitterHelper.submitSuccessfulFilePublish(this.eventSubmitter,copyableFile,wus);
       }
       if (datasetOriginTimestamp > copyableFile.getOriginTimestamp()) {
         datasetOriginTimestamp=copyableFile.getOriginTimestamp();
@@ -30,5 +30,5 @@
       }
     }
   }
-  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(eventSubmitter,datasetAndPartition,Long.toString(datasetOriginTimestamp),Long.toString(datasetUpstreamTimestamp));
+  CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(this.eventSubmitter,datasetAndPartition,Long.toString(datasetOriginTimestamp),Long.toString(datasetUpstreamTimestamp));
 }

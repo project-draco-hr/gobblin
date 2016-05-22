@@ -1,3 +1,3 @@
 {
-  initializer.close();
+  this.initializer.close();
 }

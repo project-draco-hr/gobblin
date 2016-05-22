@@ -1,10 +1,10 @@
 {
   try {
     if (this.finishCleanSignal.isPresent()) {
-      finishCleanSignal.get().await();
+      this.finishCleanSignal.get().await();
     }
     if (!this.throwables.isEmpty()) {
-      for (      Throwable t : throwables) {
+      for (      Throwable t : this.throwables) {
         LOG.error("Failed clean due to ",t);
       }
       throw new RuntimeException("Clean failed for one or more datasets");

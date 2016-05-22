@@ -1,5 +1,5 @@
 {
-  List<TaskLevelPolicy> list=new ArrayList<TaskLevelPolicy>();
+  List<TaskLevelPolicy> list=new ArrayList<>();
   String taskLevelPoliciesKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_LEVEL_POLICY_LIST,this.index);
   String taskLevelPolicyTypesKey=ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.TASK_LEVEL_POLICY_LIST_TYPE,this.index);
   if (this.state.contains(taskLevelPoliciesKey) && this.state.contains(taskLevelPolicyTypesKey)) {

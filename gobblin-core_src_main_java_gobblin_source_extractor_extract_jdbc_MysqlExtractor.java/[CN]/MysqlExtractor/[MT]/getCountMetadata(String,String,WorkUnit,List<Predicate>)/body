@@ -1,5 +1,5 @@
 {
-  this.log.debug("Build query to get source record count");
+  log.debug("Build query to get source record count");
   List<Command> commands=new ArrayList<>();
   String columnProjection="COUNT(1)";
   String watermarkFilter=this.concatPredicates(predicateList);

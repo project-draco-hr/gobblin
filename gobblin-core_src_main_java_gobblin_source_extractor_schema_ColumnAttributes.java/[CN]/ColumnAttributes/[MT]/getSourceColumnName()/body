@@ -1,3 +1,3 @@
 {
-  return sourceColumnName;
+  return this.sourceColumnName;
 }

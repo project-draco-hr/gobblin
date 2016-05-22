@@ -8,11 +8,11 @@
   }
   final Calendar calendar=Calendar.getInstance();
   Date nextTime;
-  Date lowWatermarkDate=this.extractFromTimestamp(Long.toString(lowWatermarkValue));
-  Date highWatermarkDate=this.extractFromTimestamp(Long.toString(highWatermarkValue));
+  Date lowWatermarkDate=extractFromTimestamp(Long.toString(lowWatermarkValue));
+  Date highWatermarkDate=extractFromTimestamp(Long.toString(highWatermarkValue));
   final long lowWatermark=lowWatermarkDate.getTime();
   final long highWatermark=highWatermarkDate.getTime();
-  int interval=this.getInterval(highWatermark - lowWatermark,partitionIntervalInHours,maxIntervals);
+  int interval=getInterval(highWatermark - lowWatermark,partitionIntervalInHours,maxIntervals);
   LOG.info("Recalculated partition interval:" + interval + " hours");
   Date startTime=new Date(lowWatermark);
   Date endTime=new Date(highWatermark);

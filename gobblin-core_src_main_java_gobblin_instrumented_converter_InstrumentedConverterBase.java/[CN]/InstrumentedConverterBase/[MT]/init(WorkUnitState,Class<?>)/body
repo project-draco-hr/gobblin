@@ -1,7 +1,7 @@
 {
   Converter<SI,SO,DI,DO> converter=super.init(workUnit);
   this.instrumentationEnabled=GobblinMetrics.isEnabled(workUnit);
-  this.metricContext=closer.register(Instrumented.getMetricContext(workUnit,classTag));
+  this.metricContext=this.closer.register(Instrumented.getMetricContext(workUnit,classTag));
   regenerateMetrics();
   return converter;
 }

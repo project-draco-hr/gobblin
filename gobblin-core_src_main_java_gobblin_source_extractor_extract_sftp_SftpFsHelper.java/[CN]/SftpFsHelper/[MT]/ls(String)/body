@@ -1,6 +1,6 @@
 {
   try {
-    List<String> list=new ArrayList<String>();
+    List<String> list=new ArrayList<>();
     ChannelSftp channel=getSftpChannel();
     Vector<LsEntry> vector=channel.ls(path);
     for (    LsEntry entry : vector) {

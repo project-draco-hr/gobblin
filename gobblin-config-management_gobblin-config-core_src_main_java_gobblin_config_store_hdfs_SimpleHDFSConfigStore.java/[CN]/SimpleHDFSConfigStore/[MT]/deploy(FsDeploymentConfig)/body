@@ -1,19 +1,19 @@
 {
   log.info("Deploying with config : " + deploymentConfig);
   Path hdfsconfigStoreRoot=new Path(this.physicalStoreRoot.getPath(),CONFIG_STORE_NAME);
-  if (!fs.exists(hdfsconfigStoreRoot)) {
+  if (!this.fs.exists(hdfsconfigStoreRoot)) {
     throw new IOException("Config store root not present at " + this.physicalStoreRoot.getPath());
   }
   Path hdfsNewVersionPath=new Path(hdfsconfigStoreRoot,deploymentConfig.getNewVersion());
-  if (!fs.exists(hdfsNewVersionPath)) {
-    fs.mkdirs(hdfsNewVersionPath,deploymentConfig.getStorePermissions());
+  if (!this.fs.exists(hdfsNewVersionPath)) {
+    this.fs.mkdirs(hdfsNewVersionPath,deploymentConfig.getStorePermissions());
     Set<ConfigStream> confStreams=deploymentConfig.getDeployableConfigSource().getConfigStreams();
     for (    ConfigStream confStream : confStreams) {
       String confAtPath=confStream.getConfigPath();
       log.info("Copying resource at : " + confAtPath);
       Path hdsfConfPath=new Path(hdfsNewVersionPath,confAtPath);
-      if (!fs.exists(hdsfConfPath.getParent())) {
-        fs.mkdirs(hdsfConfPath.getParent());
+      if (!this.fs.exists(hdsfConfPath.getParent())) {
+        this.fs.mkdirs(hdsfConfPath.getParent());
       }
       if (confStream.getInputStream().isPresent()) {
         try (SeekableFSInputStream inputStream=new SeekableFSInputStream(confStream.getInputStream().get());FSDataOutputStream os=this.fs.create(hdsfConfPath,false)){
@@ -28,6 +28,6 @@
  else {
     log.warn(String.format("STORE WITH VERSION %s ALREADY EXISTS. NEW RESOURCES WILL NOT BE COPIED. ONLY STORE MEATADATA FILE WILL BE UPDATED TO %s",deploymentConfig.getNewVersion(),deploymentConfig.getNewVersion()));
   }
-  storeMetadata.setCurrentVersion(deploymentConfig.getNewVersion());
+  this.storeMetadata.setCurrentVersion(deploymentConfig.getNewVersion());
   log.info(String.format("New version %s of config store deployed at %s",deploymentConfig.getNewVersion(),hdfsconfigStoreRoot));
 }

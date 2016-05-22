@@ -1,6 +1,6 @@
 {
   double totalEstDataSize=setWorkUnitEstSizes(workUnitsByTopic);
-  double avgGroupSize=totalEstDataSize / (double)numContainers / getPreGroupingSizeFactor(this.state);
+  double avgGroupSize=totalEstDataSize / numContainers / getPreGroupingSizeFactor(this.state);
   List<MultiWorkUnit> mwuGroups=Lists.newArrayList();
   for (  List<WorkUnit> workUnitsForTopic : workUnitsByTopic.values()) {
     double estimatedDataSizeForTopic=calcTotalEstSizeForTopic(workUnitsForTopic);
@@ -13,6 +13,6 @@
       mwuGroups.addAll(bestFitDecreasingBinPacking(workUnitsForTopic,avgGroupSize));
     }
   }
-  List<WorkUnit> groups=squeezeMultiWorkUnits(mwuGroups,this.state);
+  List<WorkUnit> groups=squeezeMultiWorkUnits(mwuGroups);
   return worstFitDecreasingBinPacking(groups,numContainers);
 }

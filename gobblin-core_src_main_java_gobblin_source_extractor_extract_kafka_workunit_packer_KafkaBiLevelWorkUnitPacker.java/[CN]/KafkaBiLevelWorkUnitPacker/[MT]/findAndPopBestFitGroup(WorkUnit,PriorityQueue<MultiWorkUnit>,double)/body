@@ -7,9 +7,7 @@
       bestFit=candidate;
       break;
     }
- else {
-      fullWorkUnits.add(candidate);
-    }
+    fullWorkUnits.add(candidate);
   }
   for (  MultiWorkUnit fullWorkUnit : fullWorkUnits) {
     pQueue.add(fullWorkUnit);

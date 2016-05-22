@@ -1,6 +1,6 @@
 {
   String sql=String.format(SELECT_SQL_FORMAT,table);
-  try (PreparedStatement pstmt=conn.prepareStatement(sql);ResultSet resultSet=pstmt.executeQuery()){
+  try (PreparedStatement pstmt=this.conn.prepareStatement(sql);ResultSet resultSet=pstmt.executeQuery()){
     if (!resultSet.first()) {
       throw new RuntimeException("Should have received at least one row from SQL " + pstmt);
     }

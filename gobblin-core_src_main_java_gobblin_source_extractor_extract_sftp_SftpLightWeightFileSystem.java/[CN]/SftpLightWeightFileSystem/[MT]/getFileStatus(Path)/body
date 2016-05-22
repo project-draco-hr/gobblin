@@ -3,14 +3,14 @@
   ChannelExec channelExec1=null;
   ChannelExec channelExec2=null;
   try {
-    channelSftp=fsHelper.getSftpChannel();
+    channelSftp=this.fsHelper.getSftpChannel();
     SftpATTRS sftpAttrs=channelSftp.stat(HadoopUtils.toUriPath(path));
     FsPermission permission=new FsPermission((short)sftpAttrs.getPermissions());
-    channelExec1=fsHelper.getExecChannel("id " + sftpAttrs.getUId());
+    channelExec1=this.fsHelper.getExecChannel("id " + sftpAttrs.getUId());
     String userName=IOUtils.toString(channelExec1.getInputStream());
-    channelExec2=fsHelper.getExecChannel("id " + sftpAttrs.getGId());
+    channelExec2=this.fsHelper.getExecChannel("id " + sftpAttrs.getGId());
     String groupName=IOUtils.toString(channelExec2.getInputStream());
-    FileStatus fs=new FileStatus(sftpAttrs.getSize(),sftpAttrs.isDir(),1,0l,(long)sftpAttrs.getMTime(),(long)sftpAttrs.getATime(),permission,StringUtils.trimToEmpty(userName),StringUtils.trimToEmpty(groupName),path);
+    FileStatus fs=new FileStatus(sftpAttrs.getSize(),sftpAttrs.isDir(),1,0l,sftpAttrs.getMTime(),sftpAttrs.getATime(),permission,StringUtils.trimToEmpty(userName),StringUtils.trimToEmpty(groupName),path);
     return fs;
   }
  catch (  SftpException e) {

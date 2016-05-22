@@ -1,4 +1,4 @@
 {
-  _primitiveProps.put(name,value);
+  this.primitiveProps.put(name,value);
   return this;
 }

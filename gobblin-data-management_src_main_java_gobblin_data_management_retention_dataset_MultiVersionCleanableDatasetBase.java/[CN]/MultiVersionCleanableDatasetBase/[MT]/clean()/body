@@ -1,6 +1,6 @@
 {
   if (this.isDatasetBlacklisted) {
-    log.info("Dataset blacklisted. Cleanup skipped for " + datasetRoot());
+    this.log.info("Dataset blacklisted. Cleanup skipped for " + datasetRoot());
     return;
   }
   for (  VersionFinderAndPolicy<T> versionFinderAndPolicy : getVersionFindersAndPolicies()) {

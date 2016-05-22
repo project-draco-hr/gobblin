@@ -27,7 +27,7 @@
         date=inFormat.parse(watermark);
       }
  catch (      ParseException e) {
-        log.error("ParseException: " + e.getMessage(),e);
+        this.log.error("ParseException: " + e.getMessage(),e);
       }
       SimpleDateFormat outFormat=new SimpleDateFormat("yyyyMMddHHmmss");
       HighWatermark=Long.parseLong(outFormat.format(date));

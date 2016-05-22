@@ -1,6 +1,6 @@
 {
   try {
-    return storeMetadata.getCurrentVersion();
+    return this.storeMetadata.getCurrentVersion();
   }
  catch (  IOException e) {
     Path configStoreDir=new Path(new Path(this.physicalStoreRoot),CONFIG_STORE_NAME);

@@ -5,5 +5,5 @@
  else {
     this.matcher.get().reset(inputRecord);
   }
-  return this.matcher.get().matches() ? new SingleRecordIterable<String>(inputRecord) : new EmptyIterable<String>();
+  return this.matcher.get().matches() ? new SingleRecordIterable<>(inputRecord) : new EmptyIterable<String>();
 }

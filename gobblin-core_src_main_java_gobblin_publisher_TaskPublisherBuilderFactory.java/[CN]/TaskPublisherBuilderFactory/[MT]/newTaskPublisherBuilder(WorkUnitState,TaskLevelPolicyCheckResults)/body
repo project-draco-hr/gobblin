@@ -1,0 +1,3 @@
+{
+  return TaskPublisherBuilder.newBuilder(workUnitState,results);
+}

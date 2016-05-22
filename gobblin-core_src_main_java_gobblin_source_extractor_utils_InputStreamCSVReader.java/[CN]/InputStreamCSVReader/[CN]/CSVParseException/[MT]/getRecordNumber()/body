@@ -1,3 +1,3 @@
 {
-  return recordNumber;
+  return this.recordNumber;
 }

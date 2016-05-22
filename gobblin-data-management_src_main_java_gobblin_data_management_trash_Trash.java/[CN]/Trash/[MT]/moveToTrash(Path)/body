@@ -1,5 +1,5 @@
 {
-  Path fullyResolvedPath=path.isAbsolute() ? path : new Path(fs.getWorkingDirectory(),path);
+  Path fullyResolvedPath=path.isAbsolute() ? path : new Path(this.fs.getWorkingDirectory(),path);
   Path targetPathInTrash=PathUtils.mergePaths(this.trashLocation,fullyResolvedPath);
   if (!this.fs.exists(targetPathInTrash.getParent())) {
     this.fs.mkdirs(targetPathInTrash.getParent());

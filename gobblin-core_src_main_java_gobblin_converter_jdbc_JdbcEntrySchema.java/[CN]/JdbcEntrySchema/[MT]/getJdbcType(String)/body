@@ -1,4 +1,4 @@
 {
-  JdbcEntryMetaDatum datum=jdbcMetaData.get(columnName);
+  JdbcEntryMetaDatum datum=this.jdbcMetaData.get(columnName);
   return datum == null ? null : datum.getJdbcType();
 }

@@ -9,7 +9,7 @@
   when(mockTaskContext.getTaskLevelPolicyChecker(any(TaskState.class),anyInt())).thenReturn(mock(TaskLevelPolicyChecker.class));
   TaskPublisher mockTaskPublisher=mock(TaskPublisher.class);
   when(mockTaskPublisher.canPublish()).thenReturn(TaskPublisher.PublisherState.SUCCESS);
-  when(mockTaskContext.getTaskPublisher(any(TaskState.class),any(TaskLevelPolicyCheckResults.class),anyInt())).thenReturn(mockTaskPublisher);
+  when(mockTaskContext.getTaskPublisher(any(TaskState.class),any(TaskLevelPolicyCheckResults.class))).thenReturn(mockTaskPublisher);
   TaskStateTracker mockTaskStateTracker=mock(TaskStateTracker.class);
   TaskExecutor taskExecutor=new TaskExecutor(new Properties());
   Task task=new Task(mockTaskContext,mockTaskStateTracker,taskExecutor,Optional.<CountDownLatch>absent());

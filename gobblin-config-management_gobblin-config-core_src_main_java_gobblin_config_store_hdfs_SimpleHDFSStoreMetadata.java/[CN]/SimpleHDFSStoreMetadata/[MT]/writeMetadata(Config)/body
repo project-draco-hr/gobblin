@@ -1,15 +1,15 @@
 {
   Path storeMetadataFileBkpPath=new Path(this.storeMetadataFilePath.getParent(),this.storeMetadataFilePath.getName() + ".bkp");
-  HadoopUtils.deleteIfExists(fs,storeMetadataFileBkpPath,true);
-  if (fs.exists(this.storeMetadataFilePath)) {
-    HadoopUtils.renamePath(fs,this.storeMetadataFilePath,storeMetadataFileBkpPath);
+  HadoopUtils.deleteIfExists(this.fs,storeMetadataFileBkpPath,true);
+  if (this.fs.exists(this.storeMetadataFilePath)) {
+    HadoopUtils.renamePath(this.fs,this.storeMetadataFilePath,storeMetadataFileBkpPath);
   }
   try (FSDataOutputStream outputStream=FileSystem.create(this.fs,this.storeMetadataFilePath,FsDeploymentConfig.DEFAULT_STORE_PERMISSIONS)){
     outputStream.write(config.root().render(ConfigRenderOptions.concise()).getBytes(Charsets.UTF_8));
   }
  catch (  Exception e) {
-    HadoopUtils.deleteIfExists(fs,this.storeMetadataFilePath,true);
-    HadoopUtils.renamePath(fs,storeMetadataFileBkpPath,this.storeMetadataFilePath);
+    HadoopUtils.deleteIfExists(this.fs,this.storeMetadataFilePath,true);
+    HadoopUtils.renamePath(this.fs,storeMetadataFileBkpPath,this.storeMetadataFilePath);
     throw new IOException(String.format("Failed to write store metadata at %s. Restored existing store metadata file from backup",this.storeMetadataFilePath),e);
   }
 }

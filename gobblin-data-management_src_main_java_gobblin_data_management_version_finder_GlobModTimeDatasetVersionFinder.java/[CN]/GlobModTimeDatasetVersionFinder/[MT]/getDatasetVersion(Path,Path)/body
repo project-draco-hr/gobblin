@@ -1,6 +1,6 @@
 {
   try {
-    return new TimestampedDatasetVersion(new DateTime(fs.getFileStatus(fullPath).getModificationTime()),fullPath);
+    return new TimestampedDatasetVersion(new DateTime(this.fs.getFileStatus(fullPath).getModificationTime()),fullPath);
   }
  catch (  IOException e) {
     return null;

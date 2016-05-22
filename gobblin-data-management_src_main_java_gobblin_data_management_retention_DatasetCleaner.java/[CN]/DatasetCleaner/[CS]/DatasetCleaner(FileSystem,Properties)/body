@@ -20,6 +20,6 @@ catch (  ExecutionException exception) {
   tags.addAll(Tag.fromMap(AzkabanTags.getAzkabanTags()));
   this.metricContext=this.closer.register(Instrumented.getMetricContext(new State(props),DatasetCleaner.class,tags));
   this.isMetricEnabled=GobblinMetrics.isEnabled(props);
-  this.eventSubmitter=new EventSubmitter.Builder(metricContext,RetentionEvents.NAMESPACE).build();
+  this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,RetentionEvents.NAMESPACE).build();
   this.throwables=Lists.newArrayList();
 }

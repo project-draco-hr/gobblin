@@ -1,5 +1,5 @@
 {
-  boolean including=!includingRegexPatterns.isPresent() || DatasetFilterUtils.stringInPatterns(line,includingRegexPatterns.get());
-  boolean excluding=excludingRegexPatterns.isPresent() && DatasetFilterUtils.stringInPatterns(line,excludingRegexPatterns.get());
+  boolean including=!LogCopier.this.includingRegexPatterns.isPresent() || DatasetFilterUtils.stringInPatterns(line,LogCopier.this.includingRegexPatterns.get());
+  boolean excluding=LogCopier.this.excludingRegexPatterns.isPresent() && DatasetFilterUtils.stringInPatterns(line,LogCopier.this.excludingRegexPatterns.get());
   return !excluding && including;
 }

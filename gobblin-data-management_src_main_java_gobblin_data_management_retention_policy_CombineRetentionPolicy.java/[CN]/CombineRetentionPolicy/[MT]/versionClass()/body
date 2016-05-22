@@ -3,7 +3,7 @@
     return (Class<T>)this.retentionPolicies.get(0).versionClass();
   }
   Class<T> klazz=(Class<T>)this.retentionPolicies.get(0).versionClass();
-  for (  RetentionPolicy<T> policy : retentionPolicies) {
+  for (  RetentionPolicy<T> policy : this.retentionPolicies) {
     klazz=commonSuperclass(klazz,(Class<T>)policy.versionClass());
   }
   return klazz;

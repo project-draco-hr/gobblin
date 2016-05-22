@@ -1,3 +1,3 @@
 {
-  return new TaskLevelPolicyCheckerBuilderFactory().newPolicyCheckerBuilder(taskState,index).build();
+  return TaskLevelPolicyCheckerBuilderFactory.newPolicyCheckerBuilder(taskState,index).build();
 }

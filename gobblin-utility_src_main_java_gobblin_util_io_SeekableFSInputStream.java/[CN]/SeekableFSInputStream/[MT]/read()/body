@@ -1,5 +1,5 @@
 {
-  int val=in.read();
+  int val=this.in.read();
   if (val > 0) {
     this.pos+=val;
   }

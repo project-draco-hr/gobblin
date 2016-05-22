@@ -1,6 +1,6 @@
 {
   try {
-    closer.close();
+    this.closer.close();
   }
  catch (  IOException e) {
     log.warn("Failed to close all closeables",e);

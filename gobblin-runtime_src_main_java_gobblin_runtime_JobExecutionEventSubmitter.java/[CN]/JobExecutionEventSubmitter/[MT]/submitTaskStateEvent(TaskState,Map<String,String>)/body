@@ -1,5 +1,5 @@
 {
-  ImmutableMap.Builder<String,String> taskMetadataBuilder=new ImmutableMap.Builder<String,String>();
+  ImmutableMap.Builder<String,String> taskMetadataBuilder=new ImmutableMap.Builder<>();
   taskMetadataBuilder.putAll(jobMetadata);
   taskMetadataBuilder.put(METADATA_TASK_ID,taskState.getTaskId());
   taskMetadataBuilder.put(METADATA_TASK_START_TIME,Long.toString(taskState.getStartTime()));

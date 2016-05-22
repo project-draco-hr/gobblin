@@ -1,8 +1,8 @@
 {
   ChannelSftp channel=null;
   try {
-    channel=fsHelper.getSftpChannel();
-    if (getFileStatus(path).isDir()) {
+    channel=this.fsHelper.getSftpChannel();
+    if (getFileStatus(path).isDirectory()) {
       channel.rmdir(HadoopUtils.toUriPath(path));
     }
  else {

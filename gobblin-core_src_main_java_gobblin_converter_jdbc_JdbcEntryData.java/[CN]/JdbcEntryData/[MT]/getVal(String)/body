@@ -1,4 +1,4 @@
 {
-  JdbcEntryDatum datum=jdbcEntryData.get(columnName);
+  JdbcEntryDatum datum=this.jdbcEntryData.get(columnName);
   return datum == null ? null : datum.getVal();
 }

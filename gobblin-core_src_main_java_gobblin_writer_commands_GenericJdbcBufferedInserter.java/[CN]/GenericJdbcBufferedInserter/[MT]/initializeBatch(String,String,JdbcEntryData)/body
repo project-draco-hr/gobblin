@@ -5,10 +5,10 @@
   }
   String insertPstmtStr=String.format(INSERT_STATEMENT_PREFIX_FORMAT,databaseName,table,JOINER_ON_COMMA.join(columnNames),JOINER_ON_COMMA.useForNull("?").join(new String[columnNames.size()]));
   LOG.info("Prepared insert statement: " + insertPstmtStr);
-  pStmt=conn.prepareStatement(insertPstmtStr);
-  int actualBatchSize=Math.min(maxBatchSize,maxParamSize / columnNames.size());
-  if (maxBatchSize != actualBatchSize) {
-    LOG.info("Changing batch size from " + maxBatchSize + " to "+ actualBatchSize+ " due to # of params limitation "+ maxParamSize+ " , # of columns: "+ columnNames.size());
+  this.pStmt=this.conn.prepareStatement(insertPstmtStr);
+  int actualBatchSize=Math.min(this.maxBatchSize,this.maxParamSize / columnNames.size());
+  if (this.maxBatchSize != actualBatchSize) {
+    LOG.info("Changing batch size from " + this.maxBatchSize + " to "+ actualBatchSize+ " due to # of params limitation "+ this.maxParamSize+ " , # of columns: "+ columnNames.size());
   }
-  maxBatchSize=actualBatchSize;
+  this.maxBatchSize=actualBatchSize;
 }

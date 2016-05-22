@@ -3,11 +3,11 @@
     LOG.debug("Writing " + record);
   }
   try {
-    commands.insert(databaseName,tableName,record);
-    recordWrittenCount++;
+    this.commands.insert(this.databaseName,this.tableName,record);
+    this.recordWrittenCount++;
   }
  catch (  Exception e) {
-    failed=true;
+    this.failed=true;
     throw new RuntimeException(e);
   }
 }
