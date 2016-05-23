@@ -1,13 +1,13 @@
 {
-  state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
-  state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
-  state.setProp(JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,Boolean.toString(true));
-  initializer.initialize();
-  Assert.assertEquals(DEST_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
-  verify(commands,never()).createTableStructure(anyString(),anyString());
-  InOrder inOrder=inOrder(commands);
-  inOrder.verify(commands,times(1)).truncate(DEST_TABLE);
-  initializer.close();
-  inOrder.verify(commands,never()).truncate(anyString());
-  verify(commands,never()).drop(anyString());
+  this.state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
+  this.state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
+  this.state.setProp(JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,Boolean.toString(true));
+  this.initializer.initialize();
+  Assert.assertEquals(DEST_TABLE,this.workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
+  verify(this.commands,never()).createTableStructure(anyString(),anyString());
+  InOrder inOrder=inOrder(this.commands);
+  inOrder.verify(this.commands,times(1)).truncate(DEST_TABLE);
+  this.initializer.close();
+  inOrder.verify(this.commands,never()).truncate(anyString());
+  verify(this.commands,never()).drop(anyString());
 }

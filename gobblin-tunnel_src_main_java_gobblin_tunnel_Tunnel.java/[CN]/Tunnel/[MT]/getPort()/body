@@ -1,8 +1,8 @@
 {
   SocketAddress localAddress=null;
   try {
-    if (server != null && server.isOpen()) {
-      localAddress=server.getLocalAddress();
+    if (this.server != null && this.server.isOpen()) {
+      localAddress=this.server.getLocalAddress();
     }
     if (localAddress instanceof InetSocketAddress) {
       return ((InetSocketAddress)localAddress).getPort();

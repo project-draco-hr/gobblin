@@ -1,10 +1,10 @@
 {
-  state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
-  state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
-  initializer.initialize();
-  initializer.close();
-  Assert.assertEquals(DEST_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
-  verify(commands,never()).createTableStructure(anyString(),anyString());
-  verify(commands,never()).truncate(anyString());
-  verify(commands,never()).drop(anyString());
+  this.state.setProp(ConfigurationKeys.JOB_COMMIT_POLICY_KEY,"partial");
+  this.state.setProp(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,Boolean.toString(false));
+  this.initializer.initialize();
+  this.initializer.close();
+  Assert.assertEquals(DEST_TABLE,this.workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
+  verify(this.commands,never()).createTableStructure(anyString(),anyString());
+  verify(this.commands,never()).truncate(anyString());
+  verify(this.commands,never()).drop(anyString());
 }

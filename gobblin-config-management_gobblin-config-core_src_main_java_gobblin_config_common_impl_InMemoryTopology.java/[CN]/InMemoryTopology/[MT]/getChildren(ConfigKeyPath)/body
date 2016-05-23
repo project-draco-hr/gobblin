@@ -3,6 +3,6 @@
     return this.childrenMap.get(configKey);
   }
   Collection<ConfigKeyPath> result=this.fallback.getChildren(configKey);
-  this.addToCollectionMapForCollectionValue(this.childrenMap,configKey,result);
+  addToCollectionMapForCollectionValue(this.childrenMap,configKey,result);
   return result;
 }

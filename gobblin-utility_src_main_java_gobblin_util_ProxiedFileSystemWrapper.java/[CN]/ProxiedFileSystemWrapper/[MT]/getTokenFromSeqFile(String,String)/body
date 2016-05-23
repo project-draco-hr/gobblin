@@ -1,22 +1,15 @@
 {
-  Closer closer=Closer.create();
-  try {
+  try (Closer closer=Closer.create()){
     FileSystem localFs=FileSystem.getLocal(new Configuration());
-    @SuppressWarnings("deprecation") SequenceFile.Reader tokenReader=closer.register(new SequenceFile.Reader(localFs,new Path(authPath),localFs.getConf()));
+    SequenceFile.Reader tokenReader=closer.register(new SequenceFile.Reader(localFs,new Path(authPath),localFs.getConf()));
     Text key=new Text();
-    Token value=new Token();
+    Token<?> value=new Token<>();
     while (tokenReader.next(key,value)) {
       LOG.info("Found token for " + key);
       if (key.toString().equals(proxyUserName)) {
-        return Optional.of(value);
+        return Optional.<Token<?>>of(value);
       }
     }
   }
- catch (  Throwable t) {
-    throw closer.rethrow(t);
-  }
- finally {
-    closer.close();
-  }
-  return Optional.absent();
+   return Optional.absent();
 }

@@ -1,9 +1,9 @@
 {
-  state.setProp(ConfigurationKeys.WRITER_STAGING_TABLE,STAGING_TABLE);
-  when(commands.isEmpty(STAGING_TABLE)).thenReturn(Boolean.TRUE);
-  initializer.initialize();
-  Assert.assertEquals(STAGING_TABLE,workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
-  verify(commands,never()).createTableStructure(anyString(),anyString());
-  verify(commands,never()).truncate(anyString());
-  verify(commands,never()).drop(anyString());
+  this.state.setProp(ConfigurationKeys.WRITER_STAGING_TABLE,STAGING_TABLE);
+  when(this.commands.isEmpty(STAGING_TABLE)).thenReturn(Boolean.TRUE);
+  this.initializer.initialize();
+  Assert.assertEquals(STAGING_TABLE,this.workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
+  verify(this.commands,never()).createTableStructure(anyString(),anyString());
+  verify(this.commands,never()).truncate(anyString());
+  verify(this.commands,never()).drop(anyString());
 }

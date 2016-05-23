@@ -1,15 +1,15 @@
 {
-  state=new State();
-  state.setProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());
-  state.setProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,DEST_TABLE);
-  workUnit=WorkUnit.createEmpty();
-  workUnits=Lists.newArrayList();
-  workUnits.add(workUnit);
-  factory=mock(JdbcWriterCommandsFactory.class);
-  commands=mock(JdbcWriterCommands.class);
-  conn=mock(Connection.class);
-  doReturn(commands).when(factory).newInstance(any(Destination.class),eq(conn));
-  initializer=new JdbcWriterInitializer(state,workUnits,factory,1,0);
-  initializer=spy(initializer);
-  doReturn(conn).when(initializer).createConnection();
+  this.state=new State();
+  this.state.setProp(ConfigurationKeys.WRITER_DESTINATION_TYPE_KEY,DestinationType.MYSQL.name());
+  this.state.setProp(JdbcPublisher.JDBC_PUBLISHER_FINAL_TABLE_NAME,DEST_TABLE);
+  this.workUnit=WorkUnit.createEmpty();
+  this.workUnits=Lists.newArrayList();
+  this.workUnits.add(this.workUnit);
+  this.factory=mock(JdbcWriterCommandsFactory.class);
+  this.commands=mock(JdbcWriterCommands.class);
+  this.conn=mock(Connection.class);
+  doReturn(this.commands).when(this.factory).newInstance(any(Destination.class),eq(this.conn));
+  this.initializer=new JdbcWriterInitializer(this.state,this.workUnits,this.factory,1,0);
+  this.initializer=spy(this.initializer);
+  doReturn(this.conn).when(this.initializer).createConnection();
 }

@@ -4,7 +4,7 @@
   }
   try {
     List<ConfigKeyPath> result=this.fallback.getImportsRecursively(configKey);
-    this.addToListMapForListValue(this.recursiveImportMap,configKey,result);
+    addToListMapForListValue(this.recursiveImportMap,configKey,result);
     return result;
   }
  catch (  UnsupportedOperationException uoe) {

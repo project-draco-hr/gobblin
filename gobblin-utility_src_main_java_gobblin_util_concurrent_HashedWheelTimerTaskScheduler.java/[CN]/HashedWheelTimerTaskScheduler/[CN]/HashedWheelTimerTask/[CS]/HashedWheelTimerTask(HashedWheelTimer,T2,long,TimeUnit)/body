@@ -4,5 +4,5 @@
   this.task=task;
   this.period=period;
   this.unit=unit;
-  future=this.timer.newTimeout(this,this.period,this.unit);
+  this.future=this.timer.newTimeout(this,this.period,this.unit);
 }

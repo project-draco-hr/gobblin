@@ -1,4 +1,4 @@
 {
-  this._log.info("Setting current HTTP server host to: " + curHttpHost);
-  this._curHttpHost=curHttpHost;
+  this.log.info("Setting current HTTP server host to: " + curHttpHost);
+  this.curHttpHost=curHttpHost;
 }

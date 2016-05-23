@@ -1,7 +1,7 @@
 {
   try {
-    server=ServerSocketChannel.open().bind(null);
-    server.configureBlocking(false);
+    this.server=ServerSocketChannel.open().bind(null);
+    this.server.configureBlocking(false);
     Selector selector=Selector.open();
     startTunnelThread(selector);
     return this;

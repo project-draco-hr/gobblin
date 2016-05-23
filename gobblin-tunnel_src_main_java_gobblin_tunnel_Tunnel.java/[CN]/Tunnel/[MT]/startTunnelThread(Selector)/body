@@ -1,11 +1,11 @@
 {
-  thread=new Thread(new Dispatcher(selector),"Tunnel Listener");
-  thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+  this.thread=new Thread(new Dispatcher(selector),"Tunnel Listener");
+  this.thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
     @Override public void uncaughtException(    Thread t,    Throwable e){
       LOG.error("Uncaught exception in thread " + t.getName(),e);
     }
   }
 );
-  thread.setDaemon(true);
-  thread.start();
+  this.thread.setDaemon(true);
+  this.thread.start();
 }

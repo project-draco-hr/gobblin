@@ -4,7 +4,7 @@
   }
   try {
     Collection<ConfigKeyPath> result=this.fallback.getImportedBy(configKey);
-    this.addToCollectionMapForCollectionValue(this.ownImportedByMap,configKey,result);
+    addToCollectionMapForCollectionValue(this.ownImportedByMap,configKey,result);
     return result;
   }
  catch (  UnsupportedOperationException uoe) {

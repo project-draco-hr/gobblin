@@ -3,8 +3,6 @@
   if (configKeyURI.getAuthority() == null) {
     return getConfigKeyPath(configKeyURI.getPath());
   }
- else {
-    URI relative=cs.getStoreURI().relativize(configKeyURI);
-    return getConfigKeyPath(relative.getPath());
-  }
+  URI relative=cs.getStoreURI().relativize(configKeyURI);
+  return getConfigKeyPath(relative.getPath());
 }

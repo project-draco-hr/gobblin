@@ -1,14 +1,13 @@
 {
-  Closer closer=Closer.create();
-  try {
+  try (Closer closer=Closer.create()){
     InputStream propsInput=closer.register(getClass().getResourceAsStream(URL_TO_NAME_MAP_RESOURCE_NAME));
     if (null == propsInput) {
       propsInput=closer.register(ClassLoader.getSystemResourceAsStream(URL_TO_NAME_MAP_RESOURCE_NAME));
     }
     if (null != propsInput) {
       try {
-        _urlToNameMap.load(propsInput);
-        LOG.info("Loaded cluster names map:" + _urlToNameMap);
+        this.urlToNameMap.load(propsInput);
+        LOG.info("Loaded cluster names map:" + this.urlToNameMap);
       }
  catch (      IOException e) {
         LOG.warn("Unable to load cluster names map: " + e,e);
@@ -18,12 +17,7 @@
       LOG.info("no default cluster mapping found");
     }
   }
-  finally {
-    try {
-      closer.close();
-    }
- catch (    IOException e) {
-      LOG.warn("unable to close resource input stream for " + URL_TO_NAME_MAP_RESOURCE_NAME + ":"+ e,e);
-    }
+ catch (  IOException e) {
+    LOG.warn("unable to close resource input stream for " + URL_TO_NAME_MAP_RESOURCE_NAME + ":"+ e,e);
   }
 }

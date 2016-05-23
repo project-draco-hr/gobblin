@@ -1,11 +1,11 @@
 {
-  Option sysConfigOption=OptionBuilder.withArgName("system configuration file").withDescription("Gobblin system configuration file").withLongOpt("sysconfig").hasArgs().create("sc");
-  Option storeUrlOption=OptionBuilder.withArgName("gobblin state store URL").withDescription("Gobblin state store root path URL").withLongOpt("storeurl").hasArgs().isRequired().create('u');
-  Option jobNameOption=OptionBuilder.withArgName("gobblin job name").withDescription("Gobblin job name").withLongOpt("name").hasArgs().isRequired().create('n');
-  Option jobIdOption=OptionBuilder.withArgName("gobblin job id").withDescription("Gobblin job id").withLongOpt("id").hasArgs().create('i');
-  Option convertAllOption=OptionBuilder.withDescription("Whether to convert all past job states of the given job").withLongOpt("all").create('a');
-  Option keepConfigOption=OptionBuilder.withDescription("Whether to keep all configuration properties").withLongOpt("keepConfig").create("kc");
-  Option outputToFile=OptionBuilder.withArgName("output file name").withDescription("Output file name").withLongOpt("toFile").hasArgs().create("t");
+  Option sysConfigOption=Option.builder("sc").argName("system configuration file").desc("Gobblin system configuration file").longOpt("sysconfig").hasArgs().build();
+  Option storeUrlOption=Option.builder("u").argName("gobblin state store URL").desc("Gobblin state store root path URL").longOpt("storeurl").hasArgs().required().build();
+  Option jobNameOption=Option.builder("n").argName("gobblin job name").desc("Gobblin job name").longOpt("name").hasArgs().required().build();
+  Option jobIdOption=Option.builder("i").argName("gobblin job id").desc("Gobblin job id").longOpt("id").hasArgs().build();
+  Option convertAllOption=Option.builder("a").desc("Whether to convert all past job states of the given job").longOpt("all").build();
+  Option keepConfigOption=Option.builder("kc").desc("Whether to keep all configuration properties").longOpt("keepConfig").build();
+  Option outputToFile=Option.builder("t").argName("output file name").desc("Output file name").longOpt("toFile").hasArgs().build();
   Options options=new Options();
   options.addOption(sysConfigOption);
   options.addOption(storeUrlOption);
@@ -16,7 +16,7 @@
   options.addOption(outputToFile);
   CommandLine cmd=null;
   try {
-    CommandLineParser parser=new BasicParser();
+    CommandLineParser parser=new DefaultParser();
     cmd=parser.parse(options,args);
   }
  catch (  ParseException pe) {

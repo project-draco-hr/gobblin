@@ -4,7 +4,5 @@
   if (!workUnitState.contains(ConfigurationKeys.FORK_BRANCH_ID_KEY)) {
     return key;
   }
- else {
-    return workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCH_ID_KEY) >= 0 ? key + "." + workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCH_ID_KEY) : key;
-  }
+  return workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCH_ID_KEY) >= 0 ? key + "." + workUnitState.getPropAsInt(ConfigurationKeys.FORK_BRANCH_ID_KEY) : key;
 }

@@ -1,6 +1,6 @@
 {
   try {
-    TaskScheduler<K,T> taskScheduler=(TaskScheduler<K,T>)type.getTaskSchedulerClass().newInstance();
+    TaskScheduler<K,T> taskScheduler=type.getTaskSchedulerClass().newInstance();
     taskScheduler.start(name);
     return taskScheduler;
   }

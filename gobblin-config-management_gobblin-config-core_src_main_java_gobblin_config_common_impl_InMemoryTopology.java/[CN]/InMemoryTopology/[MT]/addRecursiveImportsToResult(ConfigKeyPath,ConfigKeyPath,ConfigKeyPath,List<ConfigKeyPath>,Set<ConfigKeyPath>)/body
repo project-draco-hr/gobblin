@@ -8,7 +8,7 @@
   }
  else {
     subResult=buildImportsRecursiveFromCacheHelper(initialConfigKey,u,current);
-    this.addToListMapForListValue(this.recursiveImportMap,u,subResult);
+    addToListMapForListValue(this.recursiveImportMap,u,subResult);
   }
   result.addAll(subResult);
 }

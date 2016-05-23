@@ -23,7 +23,7 @@
     }
     return jobConfig;
   }
- catch (  ParseException|ConfigurationException|URISyntaxException e) {
+ catch (  ParseException|ConfigurationException e) {
     throw new IOException(e);
   }
 }

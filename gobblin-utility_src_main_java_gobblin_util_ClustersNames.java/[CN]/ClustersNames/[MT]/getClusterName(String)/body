@@ -1,5 +1,5 @@
 {
   if (null == clusterUrl)   return null;
-  String res=_urlToNameMap.getProperty(clusterUrl);
+  String res=this.urlToNameMap.getProperty(clusterUrl);
   return null != res ? res : normalizeClusterUrl(clusterUrl);
 }

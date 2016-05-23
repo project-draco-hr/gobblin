@@ -1,9 +1,9 @@
 {
-  if (null == this._curHttpHost) {
+  if (null == this.curHttpHost) {
     setCurServerHost(chooseServerHost());
   }
-  if (null == this._curHttpHost) {
+  if (null == this.curHttpHost) {
     throw new RuntimeException("No server host selected!");
   }
-  return this._curHttpHost;
+  return this.curHttpHost;
 }

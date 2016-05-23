@@ -4,12 +4,8 @@
     LOGGER.warn(String.format("No job state found for job with name %s and id %s",jobName,jobId));
     return;
   }
-  JsonWriter jsonWriter=new JsonWriter(writer);
-  jsonWriter.setIndent("\t");
-  try {
+  try (JsonWriter jsonWriter=new JsonWriter(writer)){
+    jsonWriter.setIndent("\t");
     writeJobState(jsonWriter,jobStates.get(0));
   }
-  finally {
-    jsonWriter.close();
-  }
-}
+ }

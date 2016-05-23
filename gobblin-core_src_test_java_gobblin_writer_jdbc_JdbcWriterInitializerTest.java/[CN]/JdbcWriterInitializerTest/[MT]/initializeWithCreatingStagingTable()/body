@@ -1,17 +1,17 @@
 {
-  when(commands.isEmpty(STAGING_TABLE)).thenReturn(Boolean.TRUE);
+  when(this.commands.isEmpty(STAGING_TABLE)).thenReturn(Boolean.TRUE);
   DatabaseMetaData metadata=mock(DatabaseMetaData.class);
-  when(conn.getMetaData()).thenReturn(metadata);
+  when(this.conn.getMetaData()).thenReturn(metadata);
   ResultSet rs=mock(ResultSet.class);
   when(metadata.getTables(anyString(),anyString(),anyString(),any(String[].class))).thenReturn(rs);
   when(rs.next()).thenReturn(Boolean.FALSE);
-  initializer.initialize();
-  Assert.assertTrue(!StringUtils.isEmpty(workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE)));
-  InOrder inOrder=inOrder(commands);
-  inOrder.verify(commands,times(1)).createTableStructure(anyString(),anyString());
-  inOrder.verify(commands,times(1)).drop(anyString());
-  inOrder.verify(commands,times(1)).createTableStructure(anyString(),anyString());
-  initializer.close();
-  inOrder.verify(commands,times(1)).drop(anyString());
-  inOrder.verify(commands,never()).truncate(anyString());
+  this.initializer.initialize();
+  Assert.assertTrue(!StringUtils.isEmpty(this.workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE)));
+  InOrder inOrder=inOrder(this.commands);
+  inOrder.verify(this.commands,times(1)).createTableStructure(anyString(),anyString());
+  inOrder.verify(this.commands,times(1)).drop(anyString());
+  inOrder.verify(this.commands,times(1)).createTableStructure(anyString(),anyString());
+  this.initializer.close();
+  inOrder.verify(this.commands,times(1)).drop(anyString());
+  inOrder.verify(this.commands,never()).truncate(anyString());
 }

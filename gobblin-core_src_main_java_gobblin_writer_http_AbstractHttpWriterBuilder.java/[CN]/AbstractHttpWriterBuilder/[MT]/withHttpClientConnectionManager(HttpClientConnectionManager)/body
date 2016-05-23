@@ -1,4 +1,4 @@
 {
-  this._httpConnManager=connManager;
+  this.httpConnManager=connManager;
   return typedSelf();
 }

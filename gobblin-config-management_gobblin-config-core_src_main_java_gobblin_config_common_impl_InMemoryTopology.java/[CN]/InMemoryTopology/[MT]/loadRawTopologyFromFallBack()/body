@@ -10,7 +10,7 @@
     for (    ConfigKeyPath configKeyPath : currentLevel) {
       List<ConfigKeyPath> ownImports=this.getOwnImports(configKeyPath);
       for (      ConfigKeyPath p : ownImports) {
-        this.addToCollectionMapForSingleValue(this.ownImportedByMap,p,configKeyPath);
+        addToCollectionMapForSingleValue(this.ownImportedByMap,p,configKeyPath);
       }
       Collection<ConfigKeyPath> tmp=this.getChildren(configKeyPath);
       nextLevel.addAll(tmp);
@@ -24,11 +24,11 @@
     }
  else {
       recursiveImports=this.buildImportsRecursiveFromCache(configKey);
-      this.addToListMapForListValue(this.recursiveImportMap,configKey,recursiveImports);
+      addToListMapForListValue(this.recursiveImportMap,configKey,recursiveImports);
     }
     if (recursiveImports != null) {
       for (      ConfigKeyPath p : recursiveImports) {
-        this.addToCollectionMapForSingleValue(this.recursiveImportedByMap,p,configKey);
+        addToCollectionMapForSingleValue(this.recursiveImportedByMap,p,configKey);
       }
     }
   }

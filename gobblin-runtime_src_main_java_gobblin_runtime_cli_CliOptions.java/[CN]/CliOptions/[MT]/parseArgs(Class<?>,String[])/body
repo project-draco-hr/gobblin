@@ -13,7 +13,7 @@
     Properties jobConfig=JobConfigurationUtils.fileToProperties(cmd.getOptionValue(JOB_CONFIG_OPTION.getLongOpt()));
     return JobConfigurationUtils.combineSysAndJobProperties(sysConfig,jobConfig);
   }
- catch (  ParseException|ConfigurationException|URISyntaxException e) {
+ catch (  ParseException|ConfigurationException e) {
     throw new IOException(e);
   }
 }

@@ -1,5 +1,3 @@
 String fieldName
 boolean nullable
 String sourceType
-JsonObject schemaNode
-WorkUnitState state

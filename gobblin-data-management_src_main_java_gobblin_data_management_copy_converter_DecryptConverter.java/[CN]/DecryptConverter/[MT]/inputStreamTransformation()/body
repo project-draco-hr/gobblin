@@ -4,7 +4,7 @@
       try {
         return GPGFileDecrypter.decryptFile(input,DecryptConverter.this.passphrase);
       }
- catch (      NoSuchProviderException|IOException exception) {
+ catch (      IOException exception) {
         throw new RuntimeException(exception);
       }
     }

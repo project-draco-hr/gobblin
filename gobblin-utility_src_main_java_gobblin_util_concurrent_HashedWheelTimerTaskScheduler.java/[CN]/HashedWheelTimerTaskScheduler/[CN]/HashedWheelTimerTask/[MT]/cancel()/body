@@ -1,7 +1,7 @@
 {
-  if (future != null) {
-    future.cancel();
-    future=null;
+  if (this.future != null) {
+    this.future.cancel();
+    this.future=null;
   }
   return true;
 }

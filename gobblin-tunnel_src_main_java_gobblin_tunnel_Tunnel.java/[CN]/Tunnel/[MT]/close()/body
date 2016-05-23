@@ -1,6 +1,6 @@
 {
   try {
-    server.close();
+    this.server.close();
     LOG.info("Closed tunnel.");
   }
  catch (  IOException ioe) {
@@ -8,8 +8,8 @@
   }
  finally {
     try {
-      thread.interrupt();
-      thread.join();
+      this.thread.interrupt();
+      this.thread.join();
     }
  catch (    InterruptedException e) {
       throw new RuntimeException(e);

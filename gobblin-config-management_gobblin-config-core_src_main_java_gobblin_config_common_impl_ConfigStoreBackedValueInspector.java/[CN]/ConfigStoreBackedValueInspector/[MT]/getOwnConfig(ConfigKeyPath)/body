@@ -1,3 +1,3 @@
 {
-  return this.cs.getOwnConfig(configKey,version);
+  return this.cs.getOwnConfig(configKey,this.version);
 }

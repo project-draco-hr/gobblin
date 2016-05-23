@@ -3,7 +3,5 @@
   if (this.referenceFS != null) {
     return decorateFilesystemFromReferenceFS(fs,this.referenceFS);
   }
- else {
-    return fs;
-  }
+  return fs;
 }

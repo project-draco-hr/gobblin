@@ -1,5 +1,5 @@
 {
-  Preconditions.checkArgument(isStarted,"TaskScheduler is not started");
+  Preconditions.checkArgument(this.isStarted,"TaskScheduler is not started");
   try {
     CancellableTask<K,T> cancellableTask=this.cancellableTaskMap.get(task.getKey(),new Callable<CancellableTask<K,T>>(){
       @Override public CancellableTask<K,T> call(){

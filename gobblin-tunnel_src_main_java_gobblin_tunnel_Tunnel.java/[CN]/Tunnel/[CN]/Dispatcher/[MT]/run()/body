@@ -1,9 +1,9 @@
 {
   try {
-    server.register(selector,SelectionKey.OP_ACCEPT,new AcceptHandler(server,selector,config));
+    Tunnel.this.server.register(this.selector,SelectionKey.OP_ACCEPT,new AcceptHandler(Tunnel.this.server,this.selector,Tunnel.this.config));
     while (!Thread.interrupted()) {
-      selector.select();
-      Set<SelectionKey> selectionKeys=selector.selectedKeys();
+      this.selector.select();
+      Set<SelectionKey> selectionKeys=this.selector.selectedKeys();
       for (      SelectionKey selectionKey : selectionKeys) {
         dispatch(selectionKey);
       }

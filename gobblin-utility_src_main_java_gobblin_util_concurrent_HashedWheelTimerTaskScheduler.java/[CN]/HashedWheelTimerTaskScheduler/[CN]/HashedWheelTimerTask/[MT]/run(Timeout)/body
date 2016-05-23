@@ -3,8 +3,8 @@
     this.task.runOneIteration();
   }
   finally {
-    if (future != null) {
-      future=this.timer.newTimeout(this,this.period,this.unit);
+    if (this.future != null) {
+      this.future=this.timer.newTimeout(this,this.period,this.unit);
     }
   }
 }

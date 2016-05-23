@@ -13,9 +13,7 @@ try {
   throw new IOException("Failed to proxy as user " + userNameToProxyAs,e);
 }
 }
- else {
 throw new IOException("No delegation token found for proxy user " + userNameToProxyAs);
-}
 case KEYTAB:
 Preconditions.checkArgument(properties.containsKey(ConfigurationKeys.SUPER_USER_NAME_TO_PROXY_AS_OTHERS) && properties.containsKey(ConfigurationKeys.SUPER_USER_KEY_TAB_LOCATION));
 String superUserName=properties.getProperty(ConfigurationKeys.SUPER_USER_NAME_TO_PROXY_AS_OTHERS);
@@ -24,9 +22,6 @@ try {
 return createProxiedFileSystemUsingKeytab(userNameToProxyAs,superUserName,keytabPath,fsURI,conf);
 }
  catch (InterruptedException e) {
-throw new IOException("Failed to proxy as user " + userNameToProxyAs,e);
-}
-catch (URISyntaxException e) {
 throw new IOException("Failed to proxy as user " + userNameToProxyAs,e);
 }
 default :
