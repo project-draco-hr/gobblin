@@ -1,4 +1,4 @@
-FileSystem fs
+FileSystem sourceFs
 Path fromPath
 Path toPath
 CopyConfiguration copyConfiguration

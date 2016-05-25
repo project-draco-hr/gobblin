@@ -7,10 +7,6 @@
     this.dataset=dataset;
     this.configuration=configuration;
     this.targetFs=targetFs;
-    this.relocateDataFiles=Boolean.valueOf(this.dataset.getProperties().getProperty(RELOCATE_DATA_FILES_KEY,DEFAULT_RELOCATE_DATA_FILES));
-    this.targetTableRoot=this.dataset.getProperties().containsKey(COPY_TARGET_TABLE_ROOT) ? Optional.of(resolvePath(this.dataset.getProperties().getProperty(COPY_TARGET_TABLE_ROOT),this.dataset.table.getDbName(),this.dataset.table.getTableName())) : Optional.<Path>absent();
-    this.targetTablePrefixTobeReplaced=this.dataset.getProperties().containsKey(COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED) ? Optional.of(new Path(this.dataset.getProperties().getProperty(COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED))) : Optional.<Path>absent();
-    this.targetTablePrefixReplacement=this.dataset.getProperties().containsKey(COPY_TARGET_TABLE_PREFIX_REPLACEMENT) ? Optional.of(new Path(this.dataset.getProperties().getProperty(COPY_TARGET_TABLE_PREFIX_REPLACEMENT))) : Optional.<Path>absent();
     this.hiveRegProps=new HiveRegProps(new State(this.dataset.getProperties()));
     this.targetURI=Optional.fromNullable(this.dataset.getProperties().getProperty(TARGET_METASTORE_URI_KEY));
     this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.getProperties(),this.targetURI);
@@ -62,6 +58,7 @@
         this.sourcePartitions=Maps.newHashMap();
         this.targetPartitions=Maps.newHashMap();
       }
+      this.targetPathHelper=new HiveTargetPathHelper(this.dataset);
     }
  catch (    TException te) {
       closer.close();

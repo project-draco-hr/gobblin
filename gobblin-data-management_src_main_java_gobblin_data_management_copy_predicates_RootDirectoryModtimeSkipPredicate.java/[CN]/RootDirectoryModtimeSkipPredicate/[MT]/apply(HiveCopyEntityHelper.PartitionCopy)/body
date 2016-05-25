@@ -10,7 +10,7 @@
       log.error(String.format("%s cannot be applied to globbed location %s. Will not skip.",this.getClass().getSimpleName(),input.getPartition().getDataLocation()));
       return false;
     }
-    Path targetPath=this.helper.getTargetFileSystem().makeQualified(this.helper.getTargetPath(input.getPartition().getDataLocation(),this.helper.getTargetFs(),Optional.of(input.getPartition()),false));
+    Path targetPath=this.helper.getTargetFileSystem().makeQualified(this.helper.getTargetPathHelper().getTargetPath(input.getPartition().getDataLocation(),this.helper.getTargetFs(),Optional.of(input.getPartition()),false));
     Optional<FileStatus> targetFileStatus=this.helper.getConfiguration().getCopyContext().getFileStatus(this.helper.getTargetFs(),targetPath);
     if (!targetFileStatus.isPresent()) {
       return false;

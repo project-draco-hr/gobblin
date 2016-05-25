@@ -14,7 +14,7 @@
   }
   multiTimer.nextStage(Stages.PATH_DIFF);
   for (  FileStatus sourcePath : sourcePaths.values()) {
-    Path newPath=helper.getTargetPath(sourcePath.getPath(),desiredTargetLocation.getFileSystem(),partition,true);
+    Path newPath=helper.getTargetPathHelper().getTargetPath(sourcePath.getPath(),desiredTargetLocation.getFileSystem(),partition,true);
     boolean shouldCopy=true;
     if (desiredTargetExistingPaths.containsKey(newPath)) {
       FileStatus existingTargetStatus=desiredTargetExistingPaths.get(newPath);

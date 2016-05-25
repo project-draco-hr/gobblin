@@ -6,7 +6,7 @@
   String referenceScheme=null;
   String referenceAuthority=null;
   for (  FileStatus status : paths) {
-    dataFiles.add(new SourceAndDestination(status,getTargetPath(status.getPath(),this.targetFs,partition,true)));
+    dataFiles.add(new SourceAndDestination(status,getTargetPathHelper().getTargetPath(status.getPath(),this.targetFs,partition,true)));
   }
   for (  SourceAndDestination sourceAndDestination : dataFiles) {
     URI uri=sourceAndDestination.getSource().getPath().toUri();
@@ -15,7 +15,11 @@
       referenceScheme=uri.getScheme();
       referenceAuthority=uri.getAuthority();
     }
-    builders.add(CopyableFile.fromOriginAndDestination(actualSourceFs,sourceAndDestination.getSource(),sourceAndDestination.getDestination(),configuration));
+    if (!this.dataset.getTableRootPath().isPresent()) {
+      throw new IOException(String.format("Table %s does not have a concrete table root path.",this.dataset.getTable().getCompleteName()));
+    }
+    List<OwnerAndPermission> ancestorOwnerAndPermission=CopyableFile.resolveReplicatedOwnerAndPermissionsRecursively(actualSourceFs,sourceAndDestination.getSource().getPath(),this.dataset.getTableRootPath().get().getParent(),configuration);
+    builders.add(CopyableFile.fromOriginAndDestination(actualSourceFs,sourceAndDestination.getSource(),sourceAndDestination.getDestination(),configuration).ancestorsOwnerAndPermission(ancestorOwnerAndPermission));
   }
   return builders;
 }

@@ -1,0 +1,8 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(HiveTargetPathHelper.COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED,"/table");
+  properties.setProperty(HiveTargetPathHelper.COPY_TARGET_TABLE_PREFIX_REPLACEMENT,"/replaced");
+  HiveTargetPathHelper helper=createTestTargetPathHelper(properties);
+  Path source=new Path(TABLE_ROOT,"partition/file1");
+  Assert.assertEquals(helper.getTargetPath(source,this.fs,Optional.<Partition>absent(),true),new Path("/replaced/path/partition/file1"));
+}

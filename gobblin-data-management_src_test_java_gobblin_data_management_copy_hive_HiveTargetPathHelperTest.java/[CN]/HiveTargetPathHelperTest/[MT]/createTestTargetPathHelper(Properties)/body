@@ -1,0 +1,11 @@
+{
+  HiveDataset dataset=Mockito.mock(HiveDataset.class);
+  Table table=new Table(new org.apache.hadoop.hive.metastore.api.Table());
+  table.setDbName("dbName");
+  table.setTableName("tableName");
+  Mockito.when(dataset.getTable()).thenReturn(table);
+  Mockito.when(dataset.getTableRootPath()).thenReturn(Optional.of(TABLE_ROOT));
+  Mockito.when(dataset.getProperties()).thenReturn(properties);
+  HiveTargetPathHelper helper=new HiveTargetPathHelper(dataset);
+  return helper;
+}
