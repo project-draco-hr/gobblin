@@ -1,0 +1,15 @@
+{
+  WorkUnitState mockWorkUnitState=getMockWorkUnitState();
+  mockWorkUnitState.setProp("schema.registry.url",TEST_URL);
+  Schema schema=SchemaBuilder.record(TEST_RECORD_NAME).namespace(TEST_NAMESPACE).fields().name(TEST_FIELD_NAME).type().stringType().noDefault().endRecord();
+  GenericRecord testGenericRecord=new GenericRecordBuilder(schema).set(TEST_FIELD_NAME,"testValue").build();
+  SchemaRegistryClient mockSchemaRegistryClient=mock(SchemaRegistryClient.class);
+  when(mockSchemaRegistryClient.getByID(any(Integer.class))).thenReturn(schema);
+  Serializer<Object> kafkaEncoder=new KafkaAvroSerializer(mockSchemaRegistryClient);
+  Deserializer<Object> kafkaDecoder=new KafkaAvroDeserializer(mockSchemaRegistryClient);
+  ByteBuffer testGenericRecordByteBuffer=ByteBuffer.wrap(kafkaEncoder.serialize(TEST_TOPIC_NAME,testGenericRecord));
+  KafkaSchemaRegistry<?,?> mockKafkaSchemaRegistry=mock(KafkaSchemaRegistry.class);
+  KafkaDeserializerExtractor kafkaDecoderExtractor=new KafkaDeserializerExtractor(mockWorkUnitState,kafkaDecoder,mockKafkaSchemaRegistry);
+  MessageAndOffset mockMessageAndOffset=getMockMessageAndOffset(testGenericRecordByteBuffer);
+  Assert.assertEquals(kafkaDecoderExtractor.decodeRecord(mockMessageAndOffset),testGenericRecord);
+}

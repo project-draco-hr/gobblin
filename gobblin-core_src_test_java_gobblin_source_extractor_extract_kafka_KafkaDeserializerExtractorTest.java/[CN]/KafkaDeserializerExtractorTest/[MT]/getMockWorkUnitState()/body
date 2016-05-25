@@ -1,0 +1,10 @@
+{
+  WorkUnit mockWorkUnit=WorkUnit.createEmpty();
+  mockWorkUnit.setWatermarkInterval(new WatermarkInterval(new MultiLongWatermark(new ArrayList<Long>()),new MultiLongWatermark(new ArrayList<Long>())));
+  WorkUnitState mockWorkUnitState=new WorkUnitState(mockWorkUnit,new State());
+  mockWorkUnitState.setProp(KafkaSource.TOPIC_NAME,TEST_TOPIC_NAME);
+  mockWorkUnitState.setProp(KafkaSource.PARTITION_ID,"1");
+  mockWorkUnitState.setProp(ConfigurationKeys.KAFKA_BROKERS,"localhost:8080");
+  mockWorkUnitState.setProp(KafkaSchemaRegistry.KAFKA_SCHEMA_REGISTRY_URL,TEST_URL);
+  return mockWorkUnitState;
+}

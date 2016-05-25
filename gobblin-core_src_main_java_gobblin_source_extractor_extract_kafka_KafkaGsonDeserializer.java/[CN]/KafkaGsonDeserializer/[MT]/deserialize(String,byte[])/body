@@ -1,0 +1,3 @@
+{
+  return GSON.fromJson(new String(data,CHARSET),JsonElement.class);
+}
