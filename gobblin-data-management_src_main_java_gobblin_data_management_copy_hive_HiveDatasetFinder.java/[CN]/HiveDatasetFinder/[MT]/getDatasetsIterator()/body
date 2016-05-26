@@ -1,17 +1,21 @@
 {
-  return Iterators.transform(getTables().iterator(),new Function<DbAndTable,HiveDataset>(){
-    @Override public HiveDataset apply(    @Nullable DbAndTable dbAndTable){
-      if (dbAndTable == null) {
-        return null;
+  return new AbstractIterator<HiveDataset>(){
+    private Iterator<DbAndTable> tables=getTables().iterator();
+    @Override protected HiveDataset computeNext(){
+      while (this.tables.hasNext()) {
+        DbAndTable dbAndTable=this.tables.next();
+        try (AutoReturnableObject<IMetaStoreClient> client=HiveDatasetFinder.this.clientPool.getClient()){
+          Table table=client.get().getTable(dbAndTable.getDb(),dbAndTable.getTable());
+          EventSubmitter.submit(HiveDatasetFinder.this.eventSubmitter,DATASET_FOUND,SlaEventKeys.DATASET_URN_KEY,dbAndTable.toString());
+          return createHiveDataset(table);
+        }
+ catch (        IOException|TException ioe) {
+          log.error(String.format("Failed to create HiveDataset for table %s.%s",dbAndTable.getDb(),dbAndTable.getTable()),ioe);
+          EventSubmitter.submit(HiveDatasetFinder.this.eventSubmitter,DATASET_ERROR,SlaEventKeys.DATASET_URN_KEY,dbAndTable.toString(),FAILURE_CONTEXT,ioe.toString());
+        }
       }
-      try (AutoReturnableObject<IMetaStoreClient> client=HiveDatasetFinder.this.clientPool.getClient()){
-        Table table=client.get().getTable(dbAndTable.getDb(),dbAndTable.getTable());
-        return createHiveDataset(table);
-      }
- catch (      IOException|TException ioe) {
-        throw new RuntimeException(ioe);
-      }
+      return endOfData();
     }
   }
-);
+;
 }

@@ -1,0 +1,17 @@
+{
+  String className=default_class;
+  if (props.containsKey(DATASET_PROFILE_CLASS_KEY)) {
+    className=props.getProperty(DATASET_PROFILE_CLASS_KEY);
+  }
+  try {
+    Class<?> datasetFinderClass=Class.forName(className);
+    List<Object> args=Lists.newArrayList(fs,props);
+    if (additionalArgs != null) {
+      args.addAll(Lists.newArrayList(additionalArgs));
+    }
+    return (DatasetsFinder<T>)GobblinConstructorUtils.invokeLongestConstructor(datasetFinderClass,args.toArray());
+  }
+ catch (  ReflectiveOperationException exception) {
+    throw new IOException(exception);
+  }
+}

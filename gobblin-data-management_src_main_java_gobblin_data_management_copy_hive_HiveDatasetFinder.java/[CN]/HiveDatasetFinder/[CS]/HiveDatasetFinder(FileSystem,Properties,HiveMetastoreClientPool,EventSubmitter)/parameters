@@ -1,0 +1,4 @@
+FileSystem fs
+Properties properties
+HiveMetastoreClientPool clientPool
+EventSubmitter eventSubmitter
