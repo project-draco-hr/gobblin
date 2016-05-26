@@ -1,0 +1,3 @@
+Optional<EventSubmitter> submitter
+String name
+Map<String,String> additionalMetadata

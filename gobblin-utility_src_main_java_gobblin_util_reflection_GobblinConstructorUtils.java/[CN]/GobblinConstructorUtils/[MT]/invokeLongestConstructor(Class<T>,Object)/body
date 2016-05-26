@@ -1,0 +1,13 @@
+{
+  Class<?>[] parameterTypes=new Class[args.length];
+  for (int i=0; i < args.length; i++) {
+    parameterTypes[i]=args[i].getClass();
+  }
+  for (int i=args.length; i >= 0; i--) {
+    if (ConstructorUtils.getMatchingAccessibleConstructor(cls,Arrays.copyOfRange(parameterTypes,0,i)) != null) {
+      log.info(String.format("Found accessible constructor for class %s with parameter types %s.",cls,Arrays.toString(Arrays.copyOfRange(parameterTypes,0,i))));
+      return ConstructorUtils.invokeConstructor(cls,Arrays.copyOfRange(args,0,i));
+    }
+  }
+  throw new NoSuchMethodException(String.format("No accessible constructor for class %s with parameters a subset of %s.",cls,Arrays.toString(parameterTypes)));
+}

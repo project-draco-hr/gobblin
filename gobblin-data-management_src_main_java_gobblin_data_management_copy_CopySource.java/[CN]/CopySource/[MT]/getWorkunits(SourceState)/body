@@ -8,7 +8,7 @@
     final long minWorkUnitWeight=Math.max(1,maxSizePerBin / maxWorkUnitsPerMultiWorkUnit);
     final ConcurrentBoundedWorkUnitList workUnitList=ConcurrentBoundedWorkUnitList.builder().maxSize(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED)).strictLimitMultiplier(2).build();
     final CopyConfiguration copyConfiguration=CopyConfiguration.builder(targetFs,state.getProperties()).build();
-    DatasetsFinder<CopyableDatasetBase> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY);
+    DatasetsFinder<CopyableDatasetBase> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY,new EventSubmitter.Builder(this.metricContext,CopyConfiguration.COPY_PREFIX).build());
     IterableDatasetFinder<CopyableDatasetBase> iterableDatasetFinder=datasetFinder instanceof IterableDatasetFinder ? (IterableDatasetFinder<CopyableDatasetBase>)datasetFinder : new IterableDatasetFinderImpl<>(datasetFinder);
     Iterator<CopyableDatasetBase> copyableDatasets=new InterruptibleIterator<>(iterableDatasetFinder.getDatasetsIterator(),new Callable<Boolean>(){
       @Override public Boolean call() throws Exception {
@@ -33,7 +33,7 @@
     }
 );
     try {
-      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("Dataset-cleaner-pool-%d"))).execute();
+      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("Copy-file-listing-pool-%d"))).execute();
       for (      Future<Void> future : futures) {
         try {
           future.get();
