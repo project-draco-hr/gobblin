@@ -32,6 +32,7 @@
     }
     try {
       this.fastPartitionSkip=this.dataset.getProperties().containsKey(FAST_PARTITION_SKIP_PREDICATE) ? Optional.of(GobblinConstructorUtils.invokeFirstConstructor((Class<Predicate<PartitionCopy>>)Class.forName(this.dataset.getProperties().getProperty(FAST_PARTITION_SKIP_PREDICATE)),Lists.<Object>newArrayList(this),Lists.newArrayList())) : Optional.<Predicate<PartitionCopy>>absent();
+      this.fastTableSkip=this.dataset.getProperties().containsKey(FAST_TABLE_SKIP_PREDICATE) ? Optional.of(GobblinConstructorUtils.invokeFirstConstructor((Class<Predicate<HiveCopyEntityHelper>>)Class.forName(this.dataset.getProperties().getProperty(FAST_TABLE_SKIP_PREDICATE)),Lists.newArrayList())) : Optional.<Predicate<HiveCopyEntityHelper>>absent();
     }
  catch (    ReflectiveOperationException roe) {
       closer.close();

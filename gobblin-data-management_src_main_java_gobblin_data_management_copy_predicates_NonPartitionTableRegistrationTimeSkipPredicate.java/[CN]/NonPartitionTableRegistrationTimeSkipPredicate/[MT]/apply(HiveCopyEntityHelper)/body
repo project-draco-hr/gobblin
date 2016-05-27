@@ -1,0 +1,27 @@
+{
+  if (helper == null) {
+    return true;
+  }
+  if (!helper.getExistingTargetTable().isPresent()) {
+    return false;
+  }
+  if (!helper.getExistingTargetTable().get().getParameters().containsKey(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS)) {
+    return false;
+  }
+  try {
+    long oldRegistrationTime=Long.parseLong(helper.getExistingTargetTable().get().getParameters().get(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS));
+    HiveLocationDescriptor sourceHiveDescriptor=HiveLocationDescriptor.forTable(helper.getDataset().getTable(),helper.getDataset().getFs(),helper.getDataset().getProperties());
+    Optional<FileStatus> sourceFileStatus=helper.getConfiguration().getCopyContext().getFileStatus(helper.getDataset().getFs(),sourceHiveDescriptor.getLocation());
+    if (!sourceFileStatus.isPresent()) {
+      throw new RuntimeException(String.format("Source path %s does not exist!",sourceHiveDescriptor.getLocation()));
+    }
+    return oldRegistrationTime > sourceFileStatus.get().getModificationTime();
+  }
+ catch (  NumberFormatException nfe) {
+    log.warn(String.format("Cannot parse %s in table %s. Will not skip.",HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,helper.getDataset().getTable().getDbName() + "." + helper.getDataset().getTable().getTableName()));
+    return false;
+  }
+catch (  IOException ioe) {
+    throw new RuntimeException(ioe);
+  }
+}
