@@ -1,0 +1,8 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(HiveTargetPathHelper.RELOCATE_DATA_FILES_KEY,Boolean.toString(true));
+  properties.setProperty(HiveTargetPathHelper.COPY_TARGET_TABLE_ROOT,"/target/$DB/$TABLE");
+  HiveTargetPathHelper helper=createTestTargetPathHelper(properties);
+  Path source=new Path(TABLE_ROOT,"partition/file1");
+  Assert.assertEquals(helper.getTargetPath(source,this.fs,Optional.<Partition>absent(),true),new Path("/target/dbName/tableName/file1"));
+}

@@ -1,0 +1,6 @@
+{
+  Properties properties=new Properties();
+  HiveTargetPathHelper helper=createTestTargetPathHelper(properties);
+  Path source=new Path(TABLE_ROOT,"partition/file1");
+  Assert.assertEquals(helper.getTargetPath(source,this.fs,Optional.<Partition>absent(),true),new Path(TABLE_ROOT,"partition/file1"));
+}

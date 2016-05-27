@@ -1,0 +1,9 @@
+{
+  this.fs=Mockito.mock(FileSystem.class);
+  Mockito.when(fs.makeQualified(Mockito.any(Path.class))).thenAnswer(new Answer<Path>(){
+    @Override public Path answer(    InvocationOnMock invocation) throws Throwable {
+      return (Path)invocation.getArguments()[0];
+    }
+  }
+);
+}

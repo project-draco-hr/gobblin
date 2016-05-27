@@ -1,0 +1,7 @@
+{
+  this.dataset=dataset;
+  this.relocateDataFiles=Boolean.valueOf(this.dataset.getProperties().getProperty(RELOCATE_DATA_FILES_KEY,DEFAULT_RELOCATE_DATA_FILES));
+  this.targetTableRoot=this.dataset.getProperties().containsKey(COPY_TARGET_TABLE_ROOT) ? Optional.of(resolvePath(this.dataset.getProperties().getProperty(COPY_TARGET_TABLE_ROOT),this.dataset.getTable().getDbName(),this.dataset.getTable().getTableName())) : Optional.<Path>absent();
+  this.targetTablePrefixTobeReplaced=this.dataset.getProperties().containsKey(COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED) ? Optional.of(new Path(this.dataset.getProperties().getProperty(COPY_TARGET_TABLE_PREFIX_TOBE_REPLACED))) : Optional.<Path>absent();
+  this.targetTablePrefixReplacement=this.dataset.getProperties().containsKey(COPY_TARGET_TABLE_PREFIX_REPLACEMENT) ? Optional.of(new Path(this.dataset.getProperties().getProperty(COPY_TARGET_TABLE_PREFIX_REPLACEMENT))) : Optional.<Path>absent();
+}

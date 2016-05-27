@@ -5,7 +5,7 @@
   List<OwnerAndPermission> ownerAndPermissions=Lists.newArrayList();
   Path currentPath=fromPath;
   while (PathUtils.isAncestor(toPath,currentPath.getParent())) {
-    ownerAndPermissions.add(resolveReplicatedOwnerAndPermission(fs,currentPath,copyConfiguration));
+    ownerAndPermissions.add(resolveReplicatedOwnerAndPermission(sourceFs,currentPath,copyConfiguration));
     currentPath=currentPath.getParent();
   }
   return ownerAndPermissions;

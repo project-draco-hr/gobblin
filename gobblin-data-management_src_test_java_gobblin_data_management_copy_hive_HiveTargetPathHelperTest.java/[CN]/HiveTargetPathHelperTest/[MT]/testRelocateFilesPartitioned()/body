@@ -1,0 +1,10 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(HiveTargetPathHelper.RELOCATE_DATA_FILES_KEY,Boolean.toString(true));
+  properties.setProperty(HiveTargetPathHelper.COPY_TARGET_TABLE_ROOT,"/target");
+  HiveTargetPathHelper helper=createTestTargetPathHelper(properties);
+  Path source=new Path(TABLE_ROOT,"partition/file1");
+  Partition partition=Mockito.mock(Partition.class);
+  Mockito.when(partition.getValues()).thenReturn(Lists.newArrayList("part","123"));
+  Assert.assertEquals(helper.getTargetPath(source,this.fs,Optional.of(partition),true),new Path("/target/tableName/part/123/file1"));
+}
