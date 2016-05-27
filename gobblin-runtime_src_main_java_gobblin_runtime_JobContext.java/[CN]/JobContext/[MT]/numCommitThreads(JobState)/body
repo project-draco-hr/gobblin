@@ -1,0 +1,3 @@
+{
+  return jobState.getPropAsBoolean(ConfigurationKeys.PARALLELIZE_DATASET_COMMIT,ConfigurationKeys.DEFAULT_PARALLELIZE_DATASET_COMMIT) ? 20 : 1;
+}

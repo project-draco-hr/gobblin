@@ -1,6 +1,6 @@
 {
-  if (this.s.isPresent()) {
-    return this.s.get();
+  if (this instanceof Left) {
+    return this.s.orNull();
   }
-  return this.t.get();
+  return this.t.orNull();
 }

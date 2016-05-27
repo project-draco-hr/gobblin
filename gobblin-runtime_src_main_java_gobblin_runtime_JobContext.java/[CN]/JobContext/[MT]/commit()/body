@@ -1,17 +1,31 @@
 {
   this.datasetStatesByUrns=Optional.of(this.jobState.createDatasetStatesByUrns());
-  boolean allDatasetsCommit=true;
-  boolean shouldCommitDataInJob=shouldCommitDataInJob(this.jobState);
-  DeliverySemantics deliverySemantics=DeliverySemantics.parse(this.jobState);
+  final boolean shouldCommitDataInJob=shouldCommitDataInJob(this.jobState);
+  final DeliverySemantics deliverySemantics=DeliverySemantics.parse(this.jobState);
+  int numCommitThreads=numCommitThreads(this.jobState);
   if (!shouldCommitDataInJob) {
     this.logger.info("Job will not commit data since data are committed by tasks.");
   }
-  for (  Map.Entry<String,JobState.DatasetState> entry : this.datasetStatesByUrns.get().entrySet()) {
-    allDatasetsCommit&=processDatasetCommit(shouldCommitDataInJob,deliverySemantics,entry.getKey(),entry.getValue());
+  try {
+    List<Either<Void,ExecutionException>> result=new IteratorExecutor<>(Iterables.transform(this.datasetStatesByUrns.get().entrySet(),new Function<Map.Entry<String,DatasetState>,Callable<Void>>(){
+      @Nullable @Override public Callable<Void> apply(      @Nullable final Map.Entry<String,DatasetState> entry){
+        return new Callable<Void>(){
+          @Override public Void call() throws Exception {
+            processDatasetCommit(shouldCommitDataInJob,deliverySemantics,entry.getKey(),entry.getValue());
+            return null;
+          }
+        }
+;
+      }
+    }
+).iterator(),numCommitThreads,ExecutorsUtils.newThreadFactory(Optional.of(this.logger),Optional.of("Commit-thread-%d"))).executeAndGetResults();
+    if (!IteratorExecutor.verifyAllSuccessful(result)) {
+      this.jobState.setState(JobState.RunningState.FAILED);
+      throw new IOException("Failed to commit dataset state for some dataset(s) of job " + this.jobId);
+    }
   }
-  if (!allDatasetsCommit) {
-    this.jobState.setState(JobState.RunningState.FAILED);
-    throw new IOException("Failed to commit dataset state for some dataset(s) of job " + this.jobId);
+ catch (  InterruptedException exc) {
+    throw new IOException(exc);
   }
   this.jobState.setState(JobState.RunningState.COMMITTED);
 }
