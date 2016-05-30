@@ -7,6 +7,7 @@
     this.dataset=dataset;
     this.configuration=configuration;
     this.targetFs=targetFs;
+    this.targetPathHelper=new HiveTargetPathHelper(this.dataset);
     this.hiveRegProps=new HiveRegProps(new State(this.dataset.getProperties()));
     this.targetURI=Optional.fromNullable(this.dataset.getProperties().getProperty(TARGET_METASTORE_URI_KEY));
     this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.getProperties(),this.targetURI);
@@ -53,13 +54,12 @@
       }
       if (HiveUtils.isPartitioned(this.dataset.table)) {
         this.sourcePartitions=HiveUtils.getPartitionsMap(multiClient.getClient(source_client),this.dataset.table,this.partitionFilter);
-        this.targetPartitions=this.existingTargetTable.isPresent() ? HiveUtils.getPartitionsMap(multiClient.getClient(target_client),this.existingTargetTable.get(),this.partitionFilter) : Maps.<List<String>,Partition>newHashMap();
+        this.targetPartitions=this.existingTargetTable.isPresent() ? Maps.newHashMap(HiveUtils.getPartitionsMap(multiClient.getClient(target_client),this.existingTargetTable.get(),this.partitionFilter)) : Maps.<List<String>,Partition>newHashMap();
       }
  else {
         this.sourcePartitions=Maps.newHashMap();
         this.targetPartitions=Maps.newHashMap();
       }
-      this.targetPathHelper=new HiveTargetPathHelper(this.dataset);
     }
  catch (    TException te) {
       closer.close();
