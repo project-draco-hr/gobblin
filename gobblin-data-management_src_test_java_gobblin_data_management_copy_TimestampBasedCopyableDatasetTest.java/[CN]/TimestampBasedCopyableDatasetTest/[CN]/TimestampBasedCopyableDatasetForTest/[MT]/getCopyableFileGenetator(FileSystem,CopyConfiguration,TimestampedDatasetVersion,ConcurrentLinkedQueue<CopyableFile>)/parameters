@@ -1,0 +1,4 @@
+FileSystem targetFs
+CopyConfiguration configuration
+TimestampedDatasetVersion copyableVersion
+ConcurrentLinkedQueue<CopyableFile> copyableFileList

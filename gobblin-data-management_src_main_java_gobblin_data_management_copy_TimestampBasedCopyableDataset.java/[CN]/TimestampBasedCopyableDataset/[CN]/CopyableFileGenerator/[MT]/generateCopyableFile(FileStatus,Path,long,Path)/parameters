@@ -1,0 +1,4 @@
+FileStatus singleFile
+Path targetPath
+long timestampFromPath
+Path locationToCopy

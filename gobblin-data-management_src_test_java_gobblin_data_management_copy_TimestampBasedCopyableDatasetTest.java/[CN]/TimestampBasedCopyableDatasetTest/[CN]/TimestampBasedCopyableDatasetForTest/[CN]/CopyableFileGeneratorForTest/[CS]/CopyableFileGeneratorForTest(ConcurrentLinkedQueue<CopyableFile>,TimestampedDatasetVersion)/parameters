@@ -1,0 +1,2 @@
+ConcurrentLinkedQueue<CopyableFile> copyableFileList
+TimestampedDatasetVersion copyableVersion

@@ -1,0 +1,16 @@
+{
+  Properties props=new Properties();
+  props.put(TimestampBasedCopyableDataset.COPY_POLICY,TimeBasedCopyPolicyForTest.class.getName());
+  props.put(TimestampBasedCopyableDataset.DATASET_VERSION_FINDER,TimestampedDatasetVersionFinderForTest.class.getName());
+  TimestampBasedCopyableDataset copyabledataset=new TimestampBasedCopyableDataset(localFs,props,new Path("dummy"));
+  CopyConfiguration configuration=mock(CopyConfiguration.class);
+  when(configuration.getPublishDir()).thenReturn(new Path("publishDir"));
+  ConcurrentLinkedQueue<CopyableFile> copyableFileList=new ConcurrentLinkedQueue<>();
+  TimestampedDatasetVersion emptyVersion=new TimestampedDatasetVersion(new DateTime(),new Path("dummy2"));
+  TimestampBasedCopyableDataset.CopyableFileGenerator emptyGenerator=copyabledataset.getCopyableFileGenetator(localFs,configuration,emptyVersion,copyableFileList);
+  emptyGenerator.run();
+  Assert.assertEquals(copyableFileList.size(),0);
+  TimestampedDatasetVersion versionHasNullPath=new TimestampedDatasetVersion(new DateTime(),null);
+  TimestampBasedCopyableDataset.CopyableFileGenerator exceptionGenerator=copyabledataset.getCopyableFileGenetator(localFs,configuration,versionHasNullPath,copyableFileList);
+  exceptionGenerator.run();
+}

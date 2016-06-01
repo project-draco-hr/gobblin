@@ -1,0 +1,3 @@
+{
+  return CopyableFile.fromOriginAndDestination(srcFs,singleFile,targetPath,configuration).originTimestamp(timestampFromPath).upstreamTimestamp(timestampFromPath).fileSet(PathUtils.getPathWithoutSchemeAndAuthority(locationToCopy).toString()).build();
+}

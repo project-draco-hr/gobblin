@@ -1,0 +1,26 @@
+{
+  log.info(String.format("Getting copyable files at root path: %s",this.datasetRoot));
+  List<TimestampedDatasetVersion> versions=Lists.newArrayList(this.datasetVersionFinder.findDatasetVersions(this));
+  if (versions.isEmpty()) {
+    log.warn("No dataset version can be found. Ignoring.");
+    return Lists.newArrayList();
+  }
+  Collection<TimestampedDatasetVersion> copyableVersions=this.versionSelectionPolicy.listSelectedVersions(versions);
+  ConcurrentLinkedQueue<CopyableFile> copyableFileList=new ConcurrentLinkedQueue<>();
+  List<Future<?>> futures=Lists.newArrayList();
+  for (  TimestampedDatasetVersion copyableVersion : copyableVersions) {
+    futures.add(this.executor.submit(this.getCopyableFileGenetator(targetFs,configuration,copyableVersion,copyableFileList)));
+  }
+  try {
+    for (    Future<?> future : futures) {
+      future.get();
+    }
+  }
+ catch (  ExecutionException|InterruptedException e) {
+    throw new IOException("Failed to generate copyable files.",e);
+  }
+ finally {
+    ExecutorsUtils.shutdownExecutorService(executor,Optional.of(log));
+  }
+  return copyableFileList;
+}

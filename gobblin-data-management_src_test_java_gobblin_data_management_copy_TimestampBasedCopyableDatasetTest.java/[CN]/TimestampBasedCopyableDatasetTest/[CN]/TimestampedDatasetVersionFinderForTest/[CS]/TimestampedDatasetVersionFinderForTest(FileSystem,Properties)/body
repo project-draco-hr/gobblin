@@ -1,0 +1,4 @@
+{
+  start=new DateTime(2006,1,1,0,0);
+  range=3650;
+}

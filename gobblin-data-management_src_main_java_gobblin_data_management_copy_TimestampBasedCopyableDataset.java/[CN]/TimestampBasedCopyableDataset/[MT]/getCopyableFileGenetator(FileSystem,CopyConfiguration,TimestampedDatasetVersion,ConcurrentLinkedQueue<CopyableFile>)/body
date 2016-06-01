@@ -1,0 +1,3 @@
+{
+  return new CopyableFileGenerator(this.srcFs,targetFs,configuration,this.datasetRoot,this.getTargetRoot(configuration.getPublishDir()),copyableVersion.getDateTime(),copyableVersion.getPaths(),copyableFileList,this.copyableFileFilter());
+}
