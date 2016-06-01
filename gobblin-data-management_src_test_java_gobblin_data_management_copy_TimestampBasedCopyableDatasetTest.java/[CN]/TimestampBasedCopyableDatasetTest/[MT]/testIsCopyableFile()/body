@@ -19,7 +19,7 @@
   TimestampedDatasetVersion srcVersion=new TimestampedDatasetVersion(new DateTime(),versionPath);
 class SimpleCopyableFileGenerator extends TimestampBasedCopyableDataset.CopyableFileGenerator {
     public SimpleCopyableFileGenerator(    TimestampBasedCopyableDataset copyableDataset,    FileSystem srcFs,    FileSystem targetFs,    CopyConfiguration configuration,    TimestampedDatasetVersion copyableVersion,    ConcurrentLinkedQueue<CopyableFile> copyableFileList){
-      copyableDataset.super(srcFs,targetFs,configuration,copyableDataset.datasetRoot(),configuration.getPublishDir(),copyableVersion.getDateTime(),copyableVersion.getPaths(),copyableFileList,copyableDataset.copyableFileFilter());
+      super(srcFs,targetFs,configuration,copyableDataset.datasetRoot(),configuration.getPublishDir(),copyableVersion.getDateTime(),copyableVersion.getPaths(),copyableFileList,copyableDataset.copyableFileFilter());
     }
     @Override protected CopyableFile generateCopyableFile(    FileStatus singleFile,    Path targetPath,    long timestampFromPath,    Path locationToCopy) throws IOException {
       CopyableFile mockCopyableFile=mock(CopyableFile.class);
