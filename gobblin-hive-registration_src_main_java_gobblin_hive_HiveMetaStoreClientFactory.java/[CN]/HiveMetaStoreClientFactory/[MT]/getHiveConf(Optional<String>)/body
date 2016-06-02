@@ -2,6 +2,7 @@
   HiveConf hiveConf=new HiveConf();
   if (hcatURI.isPresent()) {
     hiveConf.setVar(HiveConf.ConfVars.METASTOREURIS,hcatURI.get());
+    hiveConf.set(HIVE_METASTORE_TOKEN_SIGNATURE,hcatURI.get());
   }
   return hiveConf;
 }
