@@ -1,0 +1,9 @@
+Schema originalSchema
+Schema flattenedSchema
+String originalTblName
+String flattenedTblName
+Optional<String> optionalOriginalDbName
+Optional<String> optionalFlattenedDbName
+Optional<Map<String,String>> optionalPartitionDMLInfo
+Optional<Boolean> optionalOverwriteTable
+Optional<Boolean> optionalCreateIfNotExists

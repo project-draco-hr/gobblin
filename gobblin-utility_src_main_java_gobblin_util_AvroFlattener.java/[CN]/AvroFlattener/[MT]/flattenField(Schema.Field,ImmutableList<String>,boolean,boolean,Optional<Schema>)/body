@@ -1,0 +1,70 @@
+{
+  Preconditions.checkNotNull(f);
+  Preconditions.checkNotNull(f.schema());
+  Preconditions.checkNotNull(f.name());
+  List<Schema.Field> flattenedFields=new ArrayList<>();
+  ImmutableList<String> lineage=ImmutableList.<String>builder().addAll(parentLineage.iterator()).add(f.name()).build();
+  if (Schema.Type.RECORD.equals(f.schema().getType())) {
+    if (null != f.schema().getFields() && f.schema().getFields().size() > 0) {
+      for (      Schema.Field field : f.schema().getFields()) {
+        flattenedFields.addAll(flattenField(field,lineage,true,flattenComplexTypes,Optional.<Schema>absent()));
+      }
+    }
+  }
+ else {
+    Optional<Schema> optionalRecord=isOfOptionType(f.schema());
+    if (optionalRecord.isPresent()) {
+      Schema record=optionalRecord.get();
+      if (record.getFields().size() > 0) {
+        for (        Schema.Field field : record.getFields()) {
+          flattenedFields.addAll(flattenField(field,lineage,true,flattenComplexTypes,Optional.of(f.schema())));
+        }
+      }
+    }
+ else {
+      String flattenName=f.name();
+      String flattenSource=StringUtils.EMPTY;
+      if (shouldPopulateLineage) {
+        flattenName=StringUtils.join(lineage,flattenedNameJoiner);
+        flattenSource=StringUtils.join(lineage,flattenedSourceJoiner);
+      }
+      Schema flattenedFieldSchema=flatten(f.schema(),shouldPopulateLineage,flattenComplexTypes);
+      if (shouldWrapInOption.isPresent()) {
+        boolean isNullFirstMember=Schema.Type.NULL.equals(shouldWrapInOption.get().getTypes().get(0).getType());
+        if (Schema.Type.UNION.equals(flattenedFieldSchema.getType())) {
+          List<Schema> newUnionMembers=new ArrayList<>();
+          if (isNullFirstMember) {
+            newUnionMembers.add(Schema.create(Schema.Type.NULL));
+          }
+          for (          Schema type : flattenedFieldSchema.getTypes()) {
+            if (Schema.Type.NULL.equals(type.getType())) {
+              continue;
+            }
+            newUnionMembers.add(type);
+          }
+          if (!isNullFirstMember) {
+            newUnionMembers.add(Schema.create(Schema.Type.NULL));
+          }
+          flattenedFieldSchema=Schema.createUnion(newUnionMembers);
+        }
+ else {
+          if (isNullFirstMember) {
+            flattenedFieldSchema=Schema.createUnion(Arrays.asList(Schema.create(Schema.Type.NULL),flattenedFieldSchema));
+          }
+ else {
+            flattenedFieldSchema=Schema.createUnion(Arrays.asList(flattenedFieldSchema,Schema.create(Schema.Type.NULL)));
+          }
+        }
+      }
+      Schema.Field field=new Schema.Field(flattenName,flattenedFieldSchema,f.doc(),f.defaultValue(),f.order());
+      if (StringUtils.isNotBlank(flattenSource)) {
+        field.addProp(FLATTENED_SOURCE_KEY,flattenSource);
+      }
+      for (      Map.Entry<String,JsonNode> entry : f.getJsonProps().entrySet()) {
+        field.addProp(entry.getKey(),entry.getValue());
+      }
+      flattenedFields.add(field);
+    }
+  }
+  return flattenedFields;
+}

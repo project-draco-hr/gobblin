@@ -1,0 +1,18 @@
+{
+  Preconditions.checkNotNull(schema);
+  Preconditions.checkArgument(Schema.Type.UNION.equals(schema.getType()));
+  Schema flattenedSchema;
+  List<Schema> flattenedUnionMembers=new ArrayList<>();
+  if (null != schema.getTypes() && schema.getTypes().size() > 0) {
+    for (    Schema oldUnionMember : schema.getTypes()) {
+      if (flattenComplexTypes) {
+        flattenedUnionMembers.add(flatten(oldUnionMember,shouldPopulateLineage,flattenComplexTypes));
+      }
+ else {
+        flattenedUnionMembers.add(oldUnionMember);
+      }
+    }
+  }
+  flattenedSchema=Schema.createUnion(flattenedUnionMembers);
+  return flattenedSchema;
+}

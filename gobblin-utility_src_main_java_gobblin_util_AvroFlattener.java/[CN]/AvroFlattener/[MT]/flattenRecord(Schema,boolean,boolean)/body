@@ -1,0 +1,17 @@
+{
+  Preconditions.checkNotNull(schema);
+  Preconditions.checkArgument(Schema.Type.RECORD.equals(schema.getType()));
+  Schema flattenedSchema;
+  List<Schema.Field> flattenedFields=new ArrayList<>();
+  if (schema.getFields().size() > 0) {
+    for (    Schema.Field oldField : schema.getFields()) {
+      List<Schema.Field> newFields=flattenField(oldField,ImmutableList.<String>of(),shouldPopulateLineage,flattenComplexTypes,Optional.<Schema>absent());
+      if (null != newFields && newFields.size() > 0) {
+        flattenedFields.addAll(newFields);
+      }
+    }
+  }
+  flattenedSchema=Schema.createRecord(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.isError());
+  flattenedSchema.setFields(flattenedFields);
+  return flattenedSchema;
+}

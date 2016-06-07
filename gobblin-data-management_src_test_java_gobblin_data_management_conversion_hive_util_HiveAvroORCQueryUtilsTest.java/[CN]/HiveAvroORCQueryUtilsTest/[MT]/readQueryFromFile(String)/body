@@ -1,0 +1,4 @@
+{
+  InputStream is=HiveAvroORCQueryUtilsTest.class.getClassLoader().getResourceAsStream("avroToOrcQueryUtilsTest/" + filename);
+  return IOUtils.toString(is,"UTF-8");
+}

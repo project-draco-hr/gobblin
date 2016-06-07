@@ -1,0 +1,3 @@
+{
+  return this.hiveAvroSchemaProvider.getSchema(this.hiveUnits.get(0));
+}

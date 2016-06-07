@@ -1,0 +1,93 @@
+{
+  if (topLevel && !schema.getType().equals(Schema.Type.RECORD)) {
+    throw new IllegalArgumentException(String.format("Schema for table must be of type RECORD. Received type: %s",schema.getType()));
+  }
+  StringBuilder columns=new StringBuilder();
+  boolean isFirst;
+switch (schema.getType()) {
+case RECORD:
+    isFirst=true;
+  if (topLevel) {
+    for (    Schema.Field field : schema.getFields()) {
+      if (isFirst) {
+        isFirst=false;
+      }
+ else {
+        columns.append(", \n");
+      }
+      String type=generateAvroToHiveColumnMapping(field.schema(),hiveColumns,false);
+      if (hiveColumns.isPresent()) {
+        hiveColumns.get().put(field.name(),type);
+      }
+      columns.append(String.format("  `%s` %s",field.name(),type));
+    }
+  }
+ else {
+    columns.append(AVRO_TO_HIVE_COLUMN_MAPPING_V_12.get(schema.getType())).append("<");
+    for (    Schema.Field field : schema.getFields()) {
+      if (isFirst) {
+        isFirst=false;
+      }
+ else {
+        columns.append(",");
+      }
+      String type=generateAvroToHiveColumnMapping(field.schema(),hiveColumns,false);
+      columns.append(field.name()).append(":").append(type);
+    }
+    columns.append(">");
+  }
+break;
+case UNION:
+Optional<Schema> optionalType=isOfOptionType(schema);
+if (optionalType.isPresent()) {
+Schema optionalTypeSchema=optionalType.get();
+columns.append(generateAvroToHiveColumnMapping(optionalTypeSchema,hiveColumns,false));
+}
+ else {
+columns.append(AVRO_TO_HIVE_COLUMN_MAPPING_V_12.get(schema.getType())).append("<");
+isFirst=true;
+for (Schema unionMember : schema.getTypes()) {
+if (Schema.Type.NULL.equals(unionMember.getType())) {
+  continue;
+}
+if (isFirst) {
+  isFirst=false;
+}
+ else {
+  columns.append(",");
+}
+columns.append(generateAvroToHiveColumnMapping(unionMember,hiveColumns,false));
+}
+columns.append(">");
+}
+break;
+case MAP:
+columns.append(AVRO_TO_HIVE_COLUMN_MAPPING_V_12.get(schema.getType())).append("<");
+columns.append("string,").append(generateAvroToHiveColumnMapping(schema.getValueType(),hiveColumns,false));
+columns.append(">");
+break;
+case ARRAY:
+columns.append(AVRO_TO_HIVE_COLUMN_MAPPING_V_12.get(schema.getType())).append("<");
+columns.append(generateAvroToHiveColumnMapping(schema.getElementType(),hiveColumns,false));
+columns.append(">");
+break;
+case NULL:
+break;
+case BYTES:
+case DOUBLE:
+case ENUM:
+case FIXED:
+case FLOAT:
+case INT:
+case LONG:
+case STRING:
+case BOOLEAN:
+columns.append(AVRO_TO_HIVE_COLUMN_MAPPING_V_12.get(schema.getType()));
+break;
+default :
+String exceptionMessage=String.format("DDL query generation failed for \"%s\" ",schema);
+log.error(exceptionMessage);
+throw new AvroRuntimeException(exceptionMessage);
+}
+return columns.toString();
+}

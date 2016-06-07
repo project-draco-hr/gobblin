@@ -1,0 +1,63 @@
+{
+  Schema flattenedSchema;
+switch (schema.getType()) {
+case ARRAY:
+    if (flattenComplexTypes) {
+      flattenedSchema=Schema.createArray(flatten(schema.getElementType(),false));
+    }
+ else {
+      flattenedSchema=Schema.createArray(schema.getElementType());
+    }
+  break;
+case BOOLEAN:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case BYTES:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case DOUBLE:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case ENUM:
+flattenedSchema=Schema.createEnum(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.getEnumSymbols());
+break;
+case FIXED:
+flattenedSchema=Schema.createFixed(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.getFixedSize());
+break;
+case FLOAT:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case INT:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case LONG:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case MAP:
+if (flattenComplexTypes) {
+flattenedSchema=Schema.createMap(flatten(schema.getValueType(),false));
+}
+ else {
+flattenedSchema=Schema.createMap(schema.getValueType());
+}
+break;
+case NULL:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case RECORD:
+flattenedSchema=flattenRecord(schema,shouldPopulateLineage,flattenComplexTypes);
+break;
+case STRING:
+flattenedSchema=Schema.create(schema.getType());
+break;
+case UNION:
+flattenedSchema=flattenUnion(schema,shouldPopulateLineage,flattenComplexTypes);
+break;
+default :
+String exceptionMessage=String.format("Schema flattening failed for \"%s\" ",schema);
+LOG.error(exceptionMessage);
+throw new AvroRuntimeException(exceptionMessage);
+}
+copyProperties(schema,flattenedSchema);
+return flattenedSchema;
+}

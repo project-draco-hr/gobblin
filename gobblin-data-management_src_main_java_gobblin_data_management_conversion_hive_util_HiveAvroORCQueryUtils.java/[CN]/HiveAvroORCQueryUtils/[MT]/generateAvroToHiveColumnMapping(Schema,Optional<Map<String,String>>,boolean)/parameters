@@ -1,0 +1,3 @@
+Schema schema
+Optional<Map<String,String>> hiveColumns
+boolean topLevel
