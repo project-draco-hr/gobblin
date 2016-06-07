@@ -1,0 +1,63 @@
+{
+  this.metricContext=Instrumented.getMetricContext(state,HiveSource.class);
+  this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,CONVERSION_PREFIX).build();
+  List<WorkUnit> workunits=Lists.newArrayList();
+  try {
+    EventSubmitter.submit(Optional.of(this.eventSubmitter),SETUP_EVENT);
+    HiveSourceWatermarker watermaker=new TableLevelWatermarker(state);
+    HiveUnitUpdateProviderFactory updateProviderFactory=GobblinConstructorUtils.invokeConstructor(HiveUnitUpdateProviderFactory.class,state.getProp(OPTIONAL_HIVE_UNIT_UPDATE_PROVIDER_FACTORY_CLASS_KEY,DEFAULT_HIVE_UNIT_UPDATE_PROVIDER_FACTORY_CLASS));
+    HiveUnitUpdateProvider updateProvider=updateProviderFactory.create(state);
+    IterableDatasetFinder<HiveDataset> datasetFinder=new HiveDatasetFinder(getSourceFs(),state.getProperties(),this.eventSubmitter);
+    EventSubmitter.submit(Optional.of(this.eventSubmitter),FIND_HIVE_TABLES_EVENT);
+    Iterator<HiveDataset> iterator=datasetFinder.getDatasetsIterator();
+    while (iterator.hasNext()) {
+      HiveDataset hiveDataset=iterator.next();
+      LongWatermark expectedDatasetHighWatermark=new LongWatermark(new DateTime().getMillis());
+      log.debug(String.format("Processing dataset: %s",hiveDataset));
+      if (HiveUtils.isPartitioned(hiveDataset.getTable())) {
+        List<Partition> sourcePartitions=HiveUtils.getPartitions(hiveDataset.getClientPool().getClient().get(),hiveDataset.getTable(),Optional.<String>absent());
+        for (        Partition sourcePartition : sourcePartitions) {
+          LongWatermark lowWatermark=watermaker.getPreviousHighWatermark(sourcePartition);
+          long updateTime=updateProvider.getUpdateTime(sourcePartition);
+          if (Long.compare(updateTime,lowWatermark.getValue()) > 0) {
+            HivePartition hivePartition=HiveMetaStoreUtils.getHivePartition(sourcePartition.getTPartition());
+            log.debug(String.format("Processing partition: %s",hivePartition));
+            WorkUnit workUnit=WorkUnit.createEmpty();
+            workUnit.setProp(HIVE_UNIT_SERIALIZED_KEY,GENERICS_AWARE_GSON.toJson(hivePartition,HivePartition.class));
+            workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+            workUnit.setProp(PARTITIONS_COMPLETE_NAME_KEY,sourcePartition.getCompleteName());
+            workUnit.setProp(PARTITIONS_NAME_KEY,sourcePartition.getName());
+            workUnit.setProp(PARTITIONS_TYPE_KEY,sourcePartition.getSchema().getProperty("partition_columns.types"));
+            workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());
+            workunits.add(workUnit);
+            log.debug(String.format("Workunit added for partition: %s",workUnit));
+          }
+ else {
+            log.info(String.format("Not creating workunit for partition %s as updateTime %s is lesser than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));
+          }
+        }
+      }
+ else {
+        long updateTime=updateProvider.getUpdateTime(hiveDataset.getTable());
+        LongWatermark lowWatermark=watermaker.getPreviousHighWatermark(hiveDataset.getTable());
+        if (Long.compare(updateTime,lowWatermark.getValue()) > 0) {
+          HiveTable hiveTable=HiveMetaStoreUtils.getHiveTable(hiveDataset.getTable().getTTable());
+          log.debug(String.format("Processing table: %s",hiveTable));
+          WorkUnit workUnit=WorkUnit.createEmpty();
+          workUnit.setProp(HIVE_UNIT_SERIALIZED_KEY,GENERICS_AWARE_GSON.toJson(hiveTable,HiveTable.class));
+          workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+          workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());
+          workunits.add(workUnit);
+          log.debug(String.format("Workunit added for table: %s",workUnit));
+        }
+ else {
+          log.info(String.format("Not creating workunit for table %s as updateTime %s is lesser than low watermark %s",hiveDataset.getTable().getCompleteName(),updateTime,lowWatermark.getValue()));
+        }
+      }
+    }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
+  return workunits;
+}

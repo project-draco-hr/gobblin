@@ -1,53 +1,9 @@
 {
-  Schema flattenedSchema;
-switch (schema.getType()) {
-case ARRAY:
-    flattenedSchema=Schema.createArray(flatten(schema.getElementType(),false));
-  break;
-case BOOLEAN:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case BYTES:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case DOUBLE:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case ENUM:
-flattenedSchema=Schema.createEnum(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.getEnumSymbols());
-break;
-case FIXED:
-flattenedSchema=Schema.createFixed(schema.getName(),schema.getDoc(),schema.getNamespace(),schema.getFixedSize());
-break;
-case FLOAT:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case INT:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case LONG:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case MAP:
-flattenedSchema=Schema.createMap(flatten(schema.getValueType(),false));
-break;
-case NULL:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case RECORD:
-flattenedSchema=flattenRecord(schema,shouldPopulateLineage);
-break;
-case STRING:
-flattenedSchema=Schema.create(schema.getType());
-break;
-case UNION:
-flattenedSchema=flattenUnion(schema,shouldPopulateLineage);
-break;
-default :
-String exceptionMessage=String.format("Schema flattening failed for \"%s\" ",schema);
-LOG.error(exceptionMessage);
-throw new AvroRuntimeException(exceptionMessage);
-}
-copyProperties(schema,flattenedSchema);
-return flattenedSchema;
+  Preconditions.checkNotNull(schema);
+  this.flattenedNameJoiner=FLATTENED_NAME_JOINER;
+  this.flattenedSourceJoiner=FLATTENED_SOURCE_JOINER;
+  Schema flattenedSchema=flatten(schema,false,flattenComplexTypes);
+  LOG.debug("Original Schema : " + schema);
+  LOG.debug("Flattened Schema: " + flattenedSchema);
+  return flattenedSchema;
 }

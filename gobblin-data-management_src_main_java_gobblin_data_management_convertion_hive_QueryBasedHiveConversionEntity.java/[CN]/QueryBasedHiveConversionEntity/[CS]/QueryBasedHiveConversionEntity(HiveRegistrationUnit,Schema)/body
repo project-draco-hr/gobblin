@@ -1,5 +1,0 @@
-{
-  this.hiveUnit=hiveUnit;
-  this.hiveUnitSchema=hiveUnitSchema;
-  this.query=new StringBuilder();
-}
