@@ -1,60 +1,21 @@
 {
-  Preconditions.checkNotNull(outputSchema);
-  Preconditions.checkNotNull(conversionEntity);
-  Preconditions.checkNotNull(workUnit);
-  Preconditions.checkNotNull(conversionEntity.getHiveTable());
-  Schema flattenedSchema=avroFlattener.flatten(outputSchema,true);
+  Preconditions.checkNotNull(outputSchema,"Output schema must not be null");
+  Preconditions.checkNotNull(conversionEntity,"Conversion entity must not be null");
+  Preconditions.checkNotNull(workUnit,"Workunit state must not be null");
+  Preconditions.checkNotNull(conversionEntity.getHiveTable(),"Hive table within conversion entity must not be null");
+  Schema flattenedSchema=AVRO_FLATTENER.flatten(outputSchema,true);
   String avroTableName=conversionEntity.getHiveTable().getTableName();
   String avroDataLocation=conversionEntity.getHivePartition().isPresent() ? conversionEntity.getHivePartition().get().getLocation() : conversionEntity.getHiveTable().getSd().getLocation();
   String orcTableName=avroTableName + "_orc";
-  String orcTableLocation;
-  String orcTableAlternateLocation=workUnit.getJobState().getProp(ORC_TABLE_ALTERNATE_LOCATION);
-  if (StringUtils.isNotBlank(orcTableAlternateLocation)) {
-    orcTableLocation=orcTableAlternateLocation.endsWith("/") ? orcTableAlternateLocation + orcTableName : orcTableAlternateLocation + "/" + orcTableName;
-  }
- else {
-    orcTableLocation=(avroDataLocation.endsWith("/") ? avroDataLocation.substring(0,avroDataLocation.length() - 1) : avroDataLocation) + "_orc";
-  }
-  orcTableLocation+="/" + workUnit.getJobState().getId();
-  Optional<Map<String,String>> optionalPartitionsDDLInfo=Optional.<Map<String,String>>absent();
-  Optional<Map<String,String>> optionalPartitionsDMLInfo=Optional.<Map<String,String>>absent();
-  String partitionsInfoString=null;
-  String partitionsTypeString=null;
-  if (conversionEntity.getHivePartition().isPresent()) {
-    partitionsInfoString=conversionEntity.getHivePartition().get().getName();
-    partitionsTypeString=conversionEntity.getHivePartition().get().getSchema().getProperty("partition_columns.types");
-  }
-  if (StringUtils.isNotBlank(partitionsInfoString) || StringUtils.isNotBlank(partitionsTypeString)) {
-    if (StringUtils.isBlank(partitionsInfoString) || StringUtils.isBlank(partitionsTypeString)) {
-      throw new IllegalArgumentException("Both partitions info and partions must be present, if one is specified");
-    }
-    Map<String,String> partitionDDLInfo=new HashMap<>();
-    Map<String,String> partitionDMLInfo=new HashMap<>();
-    List<String> pInfo=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsInfoString);
-    List<String> pType=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsTypeString);
-    if (pInfo.size() != pType.size()) {
-      throw new IllegalArgumentException("partitions info and partitions type list should of same size");
-    }
-    for (int i=0; i < pInfo.size(); i++) {
-      List<String> partitionInfoParts=Splitter.on("=").omitEmptyStrings().trimResults().splitToList(pInfo.get(i));
-      String partitionType=pType.get(i);
-      if (partitionInfoParts.size() != 2) {
-        throw new IllegalArgumentException(String.format("Partition details should be of the format partitionName=partitionValue. Recieved: %s",pInfo.get(i)));
-      }
-      partitionDDLInfo.put(partitionInfoParts.get(0),partitionType);
-      partitionDMLInfo.put(partitionInfoParts.get(0),partitionInfoParts.get(1));
-    }
-    if (partitionDDLInfo.size() > 0) {
-      optionalPartitionsDDLInfo=Optional.of(partitionDDLInfo);
-    }
-    if (partitionDMLInfo.size() > 0) {
-      optionalPartitionsDMLInfo=Optional.of(partitionDMLInfo);
-    }
-  }
-  String createFlattenedTableDDL=HiveAvroORCQueryUtils.generateCreateTableDDL(flattenedSchema,orcTableName,orcTableLocation,Optional.of(conversionEntity.getHiveTable().getDbName()),optionalPartitionsDDLInfo,Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent());
+  String orcTableDatabase=getOrcTableDatabase(workUnit,conversionEntity);
+  String orcDataLocation=getOrcDataLocation(workUnit,avroDataLocation,orcTableName);
+  Map<String,String> partitionsDDLInfo=Maps.newHashMap();
+  Map<String,String> partitionsDMLInfo=Maps.newHashMap();
+  populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
+  String createFlattenedTableDDL=HiveAvroORCQueryUtils.generateCreateTableDDL(flattenedSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent());
   conversionEntity.getQueries().add(createFlattenedTableDDL);
   log.info("Create DDL: " + createFlattenedTableDDL);
-  String insertInORCTableDML=HiveAvroORCQueryUtils.generateTableMappingDML(outputSchema,flattenedSchema,avroTableName,orcTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(conversionEntity.getHiveTable().getDbName()),optionalPartitionsDMLInfo,Optional.<Boolean>absent(),Optional.<Boolean>absent());
+  String insertInORCTableDML=HiveAvroORCQueryUtils.generateTableMappingDML(outputSchema,flattenedSchema,avroTableName,orcTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent());
   conversionEntity.getQueries().add(insertInORCTableDML);
   log.info("Conversion DML: " + insertInORCTableDML);
   log.info("Conversion Query " + conversionEntity.getQueries());

@@ -3,7 +3,7 @@
   Preconditions.checkNotNull(flattenedSchema);
   Preconditions.checkArgument(StringUtils.isNotBlank(originalTblName));
   Preconditions.checkArgument(StringUtils.isNotBlank(flattenedTblName));
-  String originalDbName=optionalOriginalDbName.isPresent() ? optionalFlattenedDbName.get() : DEFAULT_DB_NAME;
+  String originalDbName=optionalOriginalDbName.isPresent() ? optionalOriginalDbName.get() : DEFAULT_DB_NAME;
   String flattenedDbName=optionalFlattenedDbName.isPresent() ? optionalFlattenedDbName.get() : DEFAULT_DB_NAME;
   boolean shouldOverwriteTable=optionalOverwriteTable.isPresent() ? optionalOverwriteTable.get() : true;
   boolean shouldCreateIfNotExists=optionalCreateIfNotExists.isPresent() ? optionalCreateIfNotExists.get() : false;
