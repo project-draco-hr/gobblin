@@ -1,15 +1,15 @@
 {
   this.metricContext=Instrumented.getMetricContext(state,HiveSource.class);
-  this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,CONVERSION_PREFIX).build();
+  this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
   List<WorkUnit> workunits=Lists.newArrayList();
   try {
-    EventSubmitter.submit(Optional.of(this.eventSubmitter),SETUP_EVENT);
+    EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.SETUP_EVENT);
     HiveSourceWatermarker watermaker=new TableLevelWatermarker(state);
     HiveUnitUpdateProviderFactory updateProviderFactory=GobblinConstructorUtils.invokeConstructor(HiveUnitUpdateProviderFactory.class,state.getProp(OPTIONAL_HIVE_UNIT_UPDATE_PROVIDER_FACTORY_CLASS_KEY,DEFAULT_HIVE_UNIT_UPDATE_PROVIDER_FACTORY_CLASS));
     HiveUnitUpdateProvider updateProvider=updateProviderFactory.create(state);
     IterableDatasetFinder<HiveDataset> datasetFinder=new HiveDatasetFinder(getSourceFs(),state.getProperties(),this.eventSubmitter);
     AvroSchemaManager avroSchemaManager=new AvroSchemaManager(getSourceFs(),state);
-    EventSubmitter.submit(Optional.of(this.eventSubmitter),FIND_HIVE_TABLES_EVENT);
+    EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.FIND_HIVE_TABLES_EVENT);
     Iterator<HiveDataset> iterator=datasetFinder.getDatasetsIterator();
     while (iterator.hasNext()) {
       HiveDataset hiveDataset=iterator.next();
@@ -27,6 +27,7 @@
             HiveSourceUtils.serializeTable(workUnit,hiveDataset.getTable(),avroSchemaManager);
             HiveSourceUtils.serializePartition(workUnit,sourcePartition,avroSchemaManager);
             workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+            HiveSourceUtils.setPartitionSlaEventMetadata(workUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue());
             workunits.add(workUnit);
             log.debug(String.format("Workunit added for partition: %s",workUnit));
           }
@@ -44,6 +45,7 @@
           workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());
           HiveSourceUtils.serializeTable(workUnit,hiveDataset.getTable(),avroSchemaManager);
           workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+          HiveSourceUtils.setTableSlaEventMetadata(workUnit,hiveDataset.getTable(),updateTime,lowWatermark.getValue());
           workunits.add(workUnit);
           log.debug(String.format("Workunit added for table: %s",workUnit));
         }
