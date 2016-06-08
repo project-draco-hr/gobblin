@@ -1,0 +1,13 @@
+{
+  if (sd.getSerdeInfo().getParameters().containsKey(HiveAvroSerDeManager.SCHEMA_URL)) {
+    return new Path(sd.getSerdeInfo().getParameters().get(HiveAvroSerDeManager.SCHEMA_URL));
+  }
+ else   if (sd.getSerdeInfo().getParameters().containsKey(HiveAvroSerDeManager.SCHEMA_LITERAL)) {
+    Schema schema=this.schemaParser.parse(sd.getSerdeInfo().getParameters().get(HiveAvroSerDeManager.SCHEMA_LITERAL));
+    return getOrGenerateSchemaFile(schema);
+  }
+ else {
+    Schema schema=AvroUtils.getDirectorySchema(new Path(sd.getLocation()),this.fs,true);
+    return getOrGenerateSchemaFile(schema);
+  }
+}

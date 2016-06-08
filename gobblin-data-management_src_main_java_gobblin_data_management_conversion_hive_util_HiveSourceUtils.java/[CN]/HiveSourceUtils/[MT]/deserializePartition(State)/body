@@ -1,0 +1,3 @@
+{
+  return HiveSource.GENERICS_AWARE_GSON.fromJson(state.getProp(HIVE_PARTITION_SERIALIZED_KEY),SerializableHivePartition.class);
+}

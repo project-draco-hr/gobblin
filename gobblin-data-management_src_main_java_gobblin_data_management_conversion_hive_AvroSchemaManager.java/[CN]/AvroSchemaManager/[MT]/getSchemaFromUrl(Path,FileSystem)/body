@@ -1,0 +1,3 @@
+{
+  return AvroUtils.parseSchemaFromFile(schemaUrl,fs);
+}

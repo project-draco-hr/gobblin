@@ -1,4 +1,0 @@
-{
-  this.queries.add(query);
-  return this;
-}

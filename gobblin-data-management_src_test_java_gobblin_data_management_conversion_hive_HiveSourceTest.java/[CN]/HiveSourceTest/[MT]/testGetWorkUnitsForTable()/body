@@ -9,9 +9,8 @@
   List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
-  HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(wu.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);
-  Assert.assertTrue(hiveUnit instanceof HiveTable,"Serialized hive unit is not a table");
-  Assert.assertEquals(hiveUnit.getDbName(),dbName);
-  Assert.assertEquals(hiveUnit.getTableName(),tableName);
-  Assert.assertEquals(hiveUnit.getLocation().get(),"file:" + tableSdLoc);
+  SerializableHiveTable serializedHiveTable=HiveSourceUtils.deserializeTable(wu);
+  Assert.assertEquals(serializedHiveTable.getDbName(),dbName);
+  Assert.assertEquals(serializedHiveTable.getTableName(),tableName);
+  Assert.assertEquals(serializedHiveTable.getSchemaUrl(),new Path("/tmp/dummy"));
 }

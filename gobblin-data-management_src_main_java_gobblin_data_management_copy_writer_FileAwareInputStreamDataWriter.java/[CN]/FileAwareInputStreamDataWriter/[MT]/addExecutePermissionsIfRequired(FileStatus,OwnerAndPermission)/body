@@ -2,7 +2,7 @@
   if (ownerAndPermission.getFsPermission() == null) {
     return ownerAndPermission;
   }
-  if (!file.isDirectory()) {
+  if (!file.isDir()) {
     return ownerAndPermission;
   }
   return new OwnerAndPermission(ownerAndPermission.getOwner(),ownerAndPermission.getGroup(),addExecutePermissionToOwner(ownerAndPermission.getFsPermission()));

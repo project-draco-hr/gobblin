@@ -1,6 +1,6 @@
 {
   try {
-    List<String> conversionQueries=hiveConversionEntity.getConversionQueries();
+    List<String> conversionQueries=hiveConversionEntity.getQueries();
     this.hiveJdbcConnector.executeStatements(conversionQueries.toArray(new String[conversionQueries.size()]));
   }
  catch (  SQLException e) {

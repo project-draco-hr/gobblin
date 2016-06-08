@@ -1,0 +1,3 @@
+{
+  state.setProp(HIVE_PARTITION_SERIALIZED_KEY,HiveSource.GENERICS_AWARE_GSON.toJson(new SerializableHivePartition(partition.getTable().getDbName(),partition.getTable().getTableName(),partition.getName(),avroSchemaManager.getSchemaUrl(partition)),SerializableHivePartition.class));
+}

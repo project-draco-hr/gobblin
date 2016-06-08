@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(schema,"Avro Schema should not be null");
+  String hashedSchema=Hashing.sha256().hashString(schema.toString(),StandardCharsets.UTF_8).toString();
+  if (!this.schemaPaths.containsKey(hashedSchema)) {
+    Path schemaFilePath=new Path(this.schemaDir,String.valueOf(System.currentTimeMillis() + ".avsc"));
+    AvroUtils.writeSchemaToFile(schema,schemaFilePath,fs,true);
+    this.schemaPaths.put(hashedSchema,schemaFilePath);
+  }
+  return this.schemaPaths.get(hashedSchema);
+}

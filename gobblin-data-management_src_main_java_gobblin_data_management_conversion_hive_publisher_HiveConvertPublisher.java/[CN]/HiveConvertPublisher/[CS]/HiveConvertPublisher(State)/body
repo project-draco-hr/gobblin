@@ -1,3 +1,4 @@
 {
   super(state);
+  this.avroSchemaManager=new AvroSchemaManager(FileSystem.get(HadoopUtils.newConfiguration()),state);
 }

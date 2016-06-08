@@ -4,6 +4,7 @@
   }
   Table tbl=org.apache.hadoop.hive.ql.metadata.Table.getEmptyTable(dbName,tableName);
   tbl.getSd().setLocation(tableSdLoc);
+  tbl.getSd().getSerdeInfo().setParameters(ImmutableMap.of(HiveAvroSerDeManager.SCHEMA_URL,"/tmp/dummy"));
   if (partitionFieldName.isPresent()) {
     tbl.addToPartitionKeys(new FieldSchema(partitionFieldName.get(),"string","some comment"));
   }

@@ -1,0 +1,2 @@
+SchemaAwareHiveTable hiveTable
+Optional<SchemaAwareHivePartition> hivePartition

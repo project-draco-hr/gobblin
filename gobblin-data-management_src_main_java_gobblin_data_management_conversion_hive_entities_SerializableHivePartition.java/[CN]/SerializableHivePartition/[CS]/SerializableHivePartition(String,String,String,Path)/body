@@ -1,0 +1,4 @@
+{
+  super(dbName,tableName,schemaUrl);
+  this.partitionName=partitionName;
+}

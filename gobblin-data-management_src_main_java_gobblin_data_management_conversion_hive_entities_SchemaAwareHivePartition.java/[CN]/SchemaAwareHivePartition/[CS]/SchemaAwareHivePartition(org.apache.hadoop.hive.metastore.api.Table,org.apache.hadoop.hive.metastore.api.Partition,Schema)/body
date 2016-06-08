@@ -1,0 +1,4 @@
+{
+  super(new Table(table),partition);
+  this.avroSchema=schema;
+}

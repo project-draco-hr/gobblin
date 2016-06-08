@@ -3,5 +3,6 @@
   testState.setProp("hive.dataset.database",dbName);
   testState.setProp("hive.dataset.table.pattern","*");
   testState.setProp("hive.unit.updateProviderFactory.class",MockUpdateProviderFactory.class.getCanonicalName());
+  testState.setProp(ConfigurationKeys.JOB_ID_KEY,"testJobId");
   return testState;
 }

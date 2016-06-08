@@ -1,3 +1,8 @@
 {
-  return new HiveConvertExtractor(state,getSourceFs());
+  try {
+    return new HiveConvertExtractor(state,getSourceFs());
+  }
+ catch (  TException|HiveException e) {
+    throw new IOException(e);
+  }
 }

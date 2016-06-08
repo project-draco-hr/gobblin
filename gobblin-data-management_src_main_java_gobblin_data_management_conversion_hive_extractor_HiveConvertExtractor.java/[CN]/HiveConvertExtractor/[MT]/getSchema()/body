@@ -1,3 +1,7 @@
 {
-  return this.hiveAvroSchemaProvider.getSchema(this.hiveUnits.get(0));
+  if (this.conversionEntities.isEmpty()) {
+    return null;
+  }
+  QueryBasedHiveConversionEntity conversionEntity=this.conversionEntities.get(0);
+  return conversionEntity.getHiveTable().getAvroSchema();
 }

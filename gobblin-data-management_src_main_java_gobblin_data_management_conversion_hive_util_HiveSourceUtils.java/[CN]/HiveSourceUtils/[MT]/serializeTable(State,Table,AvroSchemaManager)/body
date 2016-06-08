@@ -1,0 +1,3 @@
+{
+  state.setProp(HIVE_TABLE_SERIALIZED_KEY,HiveSource.GENERICS_AWARE_GSON.toJson(new SerializableHiveTable(table.getDbName(),table.getTableName(),avroSchemaManager.getSchemaUrl(table)),SerializableHiveTable.class));
+}

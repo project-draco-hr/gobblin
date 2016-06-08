@@ -1,5 +1,13 @@
 {
-  HiveRegistrationUnit hiveUnit=HiveSource.GENERICS_AWARE_GSON.fromJson(state.getProp(HiveSource.HIVE_UNIT_SERIALIZED_KEY),HiveRegistrationUnit.class);
-  this.hiveUnits=Lists.newArrayList(hiveUnit);
-  this.hiveAvroSchemaProvider=GobblinConstructorUtils.invokeConstructor(HiveAvroSchemaProvider.class,state.getProp(OPTIONAL_HIVE_AVRO_SCHEMA_PROVIDER_CLASS_KEY,DEFAULT_HIVE_AVRO_SCHEMA_PROVIDER_CLASS),fs);
+  HiveMetastoreClientPool pool=HiveMetastoreClientPool.get(state.getJobState().getProperties(),Optional.of(state.getJobState().getProp(HiveDatasetFinder.HIVE_METASTORE_URI_KEY)));
+  SerializableHiveTable hiveTable=HiveSourceUtils.deserializeTable(state);
+  Table table=pool.getClient().get().getTable(hiveTable.getDbName(),hiveTable.getTableName());
+  SchemaAwareHiveTable schemaAwareHiveTable=new SchemaAwareHiveTable(table,AvroSchemaManager.getSchemaFromUrl(hiveTable.getSchemaUrl(),fs));
+  SchemaAwareHivePartition schemaAwareHivePartition=null;
+  if (HiveSourceUtils.hasPartition(state)) {
+    SerializableHivePartition hivePartition=HiveSourceUtils.deserializePartition(state);
+    Partition partition=pool.getClient().get().getPartition(hiveTable.getTableName(),hiveTable.getDbName(),hivePartition.getPartitionName());
+    schemaAwareHivePartition=new SchemaAwareHivePartition(table,partition,AvroSchemaManager.getSchemaFromUrl(hivePartition.getSchemaUrl(),fs));
+  }
+  this.conversionEntities.add(new QueryBasedHiveConversionEntity(schemaAwareHiveTable,Optional.fromNullable(schemaAwareHivePartition)));
 }
