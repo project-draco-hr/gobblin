@@ -2,6 +2,10 @@
   this.metricContext=Instrumented.getMetricContext(state,HiveSource.class);
   this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
   List<WorkUnit> workunits=Lists.newArrayList();
+  Optional<LongWatermark> bootstrapLowWatermark=Optional.absent();
+  if (state.contains(HIVE_SOURCE_BOOTSTRAP_LOW_WATERMARK_KEY)) {
+    bootstrapLowWatermark=Optional.of(new LongWatermark(state.getPropAsLong(HIVE_SOURCE_BOOTSTRAP_LOW_WATERMARK_KEY)));
+  }
   try {
     EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.SETUP_EVENT);
     HiveSourceWatermarker watermaker=new TableLevelWatermarker(state);
@@ -20,6 +24,9 @@
           List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
           for (          Partition sourcePartition : sourcePartitions) {
             LongWatermark lowWatermark=watermaker.getPreviousHighWatermark(sourcePartition);
+            if (bootstrapLowWatermark.isPresent() && Long.compare(bootstrapLowWatermark.get().getValue(),lowWatermark.getValue()) > 0) {
+              lowWatermark=bootstrapLowWatermark.get();
+            }
             long updateTime=updateProvider.getUpdateTime(sourcePartition);
             if (Long.compare(updateTime,lowWatermark.getValue()) > 0) {
               log.debug(String.format("Processing partition: %s",sourcePartition));
@@ -40,6 +47,9 @@
  else {
           long updateTime=updateProvider.getUpdateTime(hiveDataset.getTable());
           LongWatermark lowWatermark=watermaker.getPreviousHighWatermark(hiveDataset.getTable());
+          if (bootstrapLowWatermark.isPresent() && Long.compare(bootstrapLowWatermark.get().getValue(),lowWatermark.getValue()) > 0) {
+            lowWatermark=bootstrapLowWatermark.get();
+          }
           if (Long.compare(updateTime,lowWatermark.getValue()) > 0) {
             log.debug(String.format("Processing table: %s",hiveDataset.getTable()));
             WorkUnit workUnit=WorkUnit.createEmpty();
