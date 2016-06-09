@@ -1,0 +1,4 @@
+FileSystem fs
+Properties props
+EventSubmitter eventSubmitter
+SourceState state

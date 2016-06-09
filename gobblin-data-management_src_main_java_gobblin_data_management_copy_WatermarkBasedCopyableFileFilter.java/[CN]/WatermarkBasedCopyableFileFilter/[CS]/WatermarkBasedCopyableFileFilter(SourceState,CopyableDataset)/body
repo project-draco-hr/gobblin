@@ -1,0 +1,13 @@
+{
+  Preconditions.checkNotNull(state);
+  this.sourcestate=state;
+  this.copyableFileWatermarkGeneratorOptional=CopyableFileWatermarkHelper.getCopyableFileWatermarkGenerator(state);
+  Preconditions.checkArgument(this.copyableFileWatermarkGeneratorOptional.isPresent());
+  this.copyableDatasetMetadata=new CopyableDatasetMetadata(copyableDataset);
+  this.callablePrevWatermarkMap=new Callable<Map<String,IncludeExcludeWatermark>>(){
+    @Override public Map<String,IncludeExcludeWatermark> call() throws Exception {
+      return getPreviousWatermarkForFilter(sourcestate,copyableFileWatermarkGeneratorOptional);
+    }
+  }
+;
+}

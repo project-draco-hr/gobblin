@@ -1,0 +1,4 @@
+{
+  this(fs,rootPath,properties,idenifier,subFiles,eventSubmitter);
+  this.state=state;
+}

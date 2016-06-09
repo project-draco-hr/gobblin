@@ -1,0 +1,13 @@
+{
+  if (curWatermarkIntervalOptional.isPresent() && previousWatermark != null) {
+    if (previousWatermark.isInclude()) {
+      return ((ComparableWatermark)(curWatermarkIntervalOptional.get().getExpectedHighWatermark())).compareTo(previousWatermark.getWatermark()) < 0;
+    }
+ else {
+      return ((ComparableWatermark)(curWatermarkIntervalOptional.get().getExpectedHighWatermark())).compareTo(previousWatermark.getWatermark()) <= 0;
+    }
+  }
+ else {
+    return false;
+  }
+}
