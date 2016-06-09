@@ -1,0 +1,4 @@
+{
+  StringWatermark stringWatermark=new StringWatermark(copyableFile.getFileStatus().getPath().toString());
+  return Optional.of(new WatermarkInterval(stringWatermark,stringWatermark));
+}

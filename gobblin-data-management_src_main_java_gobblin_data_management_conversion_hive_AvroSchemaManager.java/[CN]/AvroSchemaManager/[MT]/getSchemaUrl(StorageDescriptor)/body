@@ -2,12 +2,18 @@
   if (sd.getSerdeInfo().getParameters().containsKey(HiveAvroSerDeManager.SCHEMA_URL)) {
     return new Path(sd.getSerdeInfo().getParameters().get(HiveAvroSerDeManager.SCHEMA_URL));
   }
- else   if (sd.getSerdeInfo().getParameters().containsKey(HiveAvroSerDeManager.SCHEMA_LITERAL)) {
-    Schema schema=this.schemaParser.parse(sd.getSerdeInfo().getParameters().get(HiveAvroSerDeManager.SCHEMA_LITERAL));
-    return getOrGenerateSchemaFile(schema);
+  String schemaLiteral=null;
+  try {
+    if (sd.getSerdeInfo().getParameters().containsKey(HiveAvroSerDeManager.SCHEMA_LITERAL)) {
+      schemaLiteral=sd.getSerdeInfo().getParameters().get(HiveAvroSerDeManager.SCHEMA_LITERAL);
+      log.debug("Schema literal is: " + schemaLiteral);
+      Schema schema=HiveAvroORCQueryUtils.readSchemaFromString(schemaLiteral);
+      return getOrGenerateSchemaFile(schema);
+    }
   }
- else {
-    Schema schema=AvroUtils.getDirectorySchema(new Path(sd.getLocation()),this.fs,true);
-    return getOrGenerateSchemaFile(schema);
+ catch (  Exception e) {
+    log.error(String.format("Failed to parse schema from schema literal. Falling back to HDFS schema: %s",schemaLiteral),e);
   }
+  Schema schema=AvroUtils.getDirectorySchema(new Path(sd.getLocation()),this.fs,true);
+  return getOrGenerateSchemaFile(schema);
 }

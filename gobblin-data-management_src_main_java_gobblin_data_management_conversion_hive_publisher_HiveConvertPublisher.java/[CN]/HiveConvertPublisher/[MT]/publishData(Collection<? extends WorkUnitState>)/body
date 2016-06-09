@@ -2,5 +2,6 @@
   for (  WorkUnitState wus : states) {
     wus.setWorkingState(WorkingState.COMMITTED);
     wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
+    new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SLA_EVENT,wus.getProperties()).submit();
   }
 }

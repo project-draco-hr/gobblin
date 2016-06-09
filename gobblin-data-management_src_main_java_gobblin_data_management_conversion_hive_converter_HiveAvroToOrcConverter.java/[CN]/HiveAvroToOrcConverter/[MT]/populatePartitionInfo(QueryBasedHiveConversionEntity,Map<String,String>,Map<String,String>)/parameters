@@ -1,0 +1,3 @@
+QueryBasedHiveConversionEntity conversionEntity
+Map<String,String> partitionsDDLInfo
+Map<String,String> partitionsDMLInfo

@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(other instanceof StringWatermark);
+  return this.value.compareTo(((StringWatermark)other).getValue());
+}

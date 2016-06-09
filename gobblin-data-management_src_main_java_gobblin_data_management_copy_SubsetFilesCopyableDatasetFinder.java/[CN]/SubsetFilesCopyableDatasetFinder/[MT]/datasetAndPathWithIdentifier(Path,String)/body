@@ -1,0 +1,8 @@
+{
+  try {
+    return GobblinConstructorUtils.invokeLongestConstructor(SubsetFilesCopyableDataset.class,fs,path,props,identifier,idToFileStatuses.get(identifier),eventSubmitter,state);
+  }
+ catch (  ReflectiveOperationException e) {
+    throw new IOException(e);
+  }
+}

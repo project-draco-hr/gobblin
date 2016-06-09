@@ -1,0 +1,6 @@
+{
+  if (!watermarkGenerator.isPresent()) {
+    return Optional.absent();
+  }
+  return watermarkGenerator.get().generateWatermarkIntervalForCopyableFile(copyableFile);
+}

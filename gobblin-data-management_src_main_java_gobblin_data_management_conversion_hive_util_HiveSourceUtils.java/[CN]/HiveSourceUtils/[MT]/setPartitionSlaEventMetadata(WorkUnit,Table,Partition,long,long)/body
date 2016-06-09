@@ -1,0 +1,7 @@
+{
+  state.setProp(SlaEventKeys.DATASET_URN_KEY,state.getProp(ConfigurationKeys.DATASET_URN_KEY));
+  state.setProp(SlaEventKeys.PARTITION_KEY,partition.getName());
+  state.setProp(SlaEventKeys.UPSTREAM_TS_IN_MILLI_SECS_KEY,String.valueOf(updateTime));
+  state.setProp(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY,System.currentTimeMillis());
+  state.setProp(SlaEventKeys.PREVIOUS_PUBLISH_TS_IN_MILLI_SECS_KEY,lowWatermark);
+}

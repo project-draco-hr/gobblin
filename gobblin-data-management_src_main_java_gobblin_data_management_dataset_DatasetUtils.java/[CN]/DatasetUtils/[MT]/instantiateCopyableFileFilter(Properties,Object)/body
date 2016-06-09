@@ -4,9 +4,9 @@
   }
   try {
     Class<?> copyableFileFilterClass=Class.forName(props.getProperty(COPYABLE_FILE_FILTER_KEY));
-    return (CopyableFileFilter)copyableFileFilterClass.newInstance();
+    return (CopyableFileFilter)GobblinConstructorUtils.invokeLongestConstructor(copyableFileFilterClass,additionalArgs);
   }
- catch (  ClassNotFoundException|InstantiationException|IllegalAccessException exception) {
+ catch (  ReflectiveOperationException exception) {
     throw new RuntimeException(exception);
   }
 }

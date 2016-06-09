@@ -21,6 +21,7 @@
         workUnit.setProp(SlaEventKeys.DATASET_URN_KEY,this.copyableDataset.datasetURN());
         workUnit.setProp(SlaEventKeys.PARTITION_KEY,copyEntity.getFileSet());
         setWorkUnitWeight(workUnit,copyEntity,minWorkUnitWeight);
+        setWorkUnitWatermark(workUnit,watermarkGenerator,copyEntity);
         computeAndSetWorkUnitGuid(workUnit);
         workUnitsForPartition.add(workUnit);
       }

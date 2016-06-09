@@ -1,0 +1,3 @@
+WorkUnit workUnit
+Optional<CopyableFileWatermarkGenerator> watermarkGenerator
+CopyEntity copyEntity

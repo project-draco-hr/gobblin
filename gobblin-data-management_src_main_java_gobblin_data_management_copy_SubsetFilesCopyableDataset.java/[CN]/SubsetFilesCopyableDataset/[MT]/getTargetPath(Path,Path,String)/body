@@ -1,0 +1,4 @@
+{
+  Path filePathRelativeToSearchPath=PathUtils.relativizePath(originPath,this.rootPath);
+  return new Path(publishDir,filePathRelativeToSearchPath);
+}

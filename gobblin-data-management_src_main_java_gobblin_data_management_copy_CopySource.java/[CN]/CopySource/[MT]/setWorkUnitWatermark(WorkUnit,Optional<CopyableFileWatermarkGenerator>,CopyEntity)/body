@@ -1,0 +1,8 @@
+{
+  if (copyEntity instanceof CopyableFile) {
+    Optional<WatermarkInterval> watermarkIntervalOptional=CopyableFileWatermarkHelper.getCopyableFileWatermark((CopyableFile)copyEntity,watermarkGenerator);
+    if (watermarkIntervalOptional.isPresent()) {
+      workUnit.setWatermarkInterval(watermarkIntervalOptional.get());
+    }
+  }
+}
