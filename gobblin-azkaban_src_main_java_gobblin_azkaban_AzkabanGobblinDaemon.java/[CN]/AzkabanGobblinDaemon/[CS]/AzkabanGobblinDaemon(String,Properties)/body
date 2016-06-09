@@ -1,0 +1,4 @@
+{
+  super(jobId,LOG);
+  this.daemon=new SchedulerDaemon(props);
+}

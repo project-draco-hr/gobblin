@@ -1,0 +1,52 @@
+{
+  Configuration conf=new Configuration();
+  try (FileSystem filesystem=configDirPath.getFileSystem(conf)){
+    if (!filesystem.exists(configDirPath)) {
+      throw new RuntimeException("The specified job configurations directory was not found: " + configDirPath.toString());
+    }
+    FileStatus[] propertiesFilesStatus=filesystem.listStatus(configDirPath,PROPERTIES_PATH_FILTER);
+    if (propertiesFilesStatus != null && propertiesFilesStatus.length > 0) {
+      if (propertiesFilesStatus.length != 1) {
+        throw new RuntimeException("Found more than one .properties file in directory: " + configDirPath);
+      }
+      PropertiesConfiguration propertiesConfiguration=new PropertiesConfiguration();
+      Path uniqueConfigFilePath=propertiesFilesStatus[0].getPath();
+      try (InputStreamReader inputStreamReader=new InputStreamReader(filesystem.open(uniqueConfigFilePath),Charsets.UTF_8)){
+        propertiesConfiguration.load(inputStreamReader);
+        rootProps.putAll(ConfigurationConverter.getProperties(propertiesConfiguration));
+      }
+     }
+    FileStatus[] nonPropFiles=filesystem.listStatus(configDirPath,NON_PROPERTIES_PATH_FILTER);
+    if (nonPropFiles == null || nonPropFiles.length == 0) {
+      return;
+    }
+    for (    FileStatus nonPropFile : nonPropFiles) {
+      Path configFilePath=nonPropFile.getPath();
+      if (nonPropFile.isDirectory()) {
+        Properties rootPropsCopy=new Properties();
+        rootPropsCopy.putAll(rootProps);
+        loadGenericJobConfigsRecursive(jobConfigs,rootPropsCopy,jobConfigFileExtensions,configFilePath);
+      }
+ else {
+        if (!jobConfigFileExtensions.contains(configFilePath.getName().substring(configFilePath.getName().lastIndexOf('.') + 1).toLowerCase())) {
+          LOGGER.warn("Skipped file " + configFilePath + " that has an unsupported extension");
+          continue;
+        }
+        Path doneFilePath=configFilePath.suffix(".done");
+        if (filesystem.exists(doneFilePath)) {
+          LOGGER.info("Skipped job configuration file " + doneFilePath + " for which a .done file exists");
+          continue;
+        }
+        Properties jobProps=new Properties();
+        jobProps.putAll(rootProps);
+        PropertiesConfiguration propertiesConfiguration=new PropertiesConfiguration();
+        try (InputStreamReader inputStreamReader=new InputStreamReader(filesystem.open(configFilePath),Charsets.UTF_8)){
+          propertiesConfiguration.load(inputStreamReader);
+          jobProps.putAll(ConfigurationConverter.getProperties(propertiesConfiguration));
+          jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,configFilePath.toString());
+          jobConfigs.add(jobProps);
+        }
+       }
+    }
+  }
+ }

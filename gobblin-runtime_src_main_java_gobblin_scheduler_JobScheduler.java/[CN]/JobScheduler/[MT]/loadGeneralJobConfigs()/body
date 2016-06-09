@@ -1,0 +1,5 @@
+{
+  List<Properties> jobConfigs=SchedulerUtils.loadGenericJobConfigs(this.properties);
+  LOG.info(String.format("Loaded %d job configurations",jobConfigs.size()));
+  return jobConfigs;
+}
