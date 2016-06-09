@@ -5,7 +5,7 @@
   Preconditions.checkNotNull(conversionEntity.getHiveTable(),"Hive table within conversion entity must not be null");
   Schema flattenedSchema=AVRO_FLATTENER.flatten(outputSchema,true);
   String avroTableName=conversionEntity.getHiveTable().getTableName();
-  String avroDataLocation=conversionEntity.getHivePartition().isPresent() ? conversionEntity.getHivePartition().get().getLocation() : conversionEntity.getHiveTable().getSd().getLocation();
+  String avroDataLocation=conversionEntity.getHivePartition().isPresent() ? conversionEntity.getHivePartition().get().getLocation() : conversionEntity.getHiveTable().getTTable().getSd().getLocation();
   String orcTableName=avroTableName + "_orc";
   String orcTableDatabase=getOrcTableDatabase(workUnit,conversionEntity);
   String orcDataLocation=getOrcDataLocation(workUnit,avroDataLocation,orcTableName);
