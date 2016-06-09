@@ -1,7 +1,15 @@
 {
-  for (  WorkUnitState wus : states) {
-    wus.setWorkingState(WorkingState.COMMITTED);
-    wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
-    new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SLA_EVENT,wus.getProperties()).submit();
+  if (Iterables.tryFind(states,UNSUCCESSFUL_WORKUNIT).isPresent()) {
+    for (    WorkUnitState wus : states) {
+      wus.setWorkingState(WorkingState.FAILED);
+      new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_FAILED_EVENT,wus.getProperties()).submit();
+    }
+  }
+ else {
+    for (    WorkUnitState wus : states) {
+      wus.setWorkingState(WorkingState.COMMITTED);
+      wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
+      new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
+    }
   }
 }
