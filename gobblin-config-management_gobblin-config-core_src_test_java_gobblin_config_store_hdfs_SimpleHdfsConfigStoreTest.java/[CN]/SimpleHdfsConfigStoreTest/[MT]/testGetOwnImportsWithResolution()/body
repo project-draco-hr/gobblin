@@ -1,5 +1,4 @@
 {
-  System.out.println("testGetOwnImportsWithResolution called");
   String datasetName="dataset-test-get-own-imports-resolution";
   Path datasetPath=new Path(CONFIG_DIR_PATH,datasetName);
   try {

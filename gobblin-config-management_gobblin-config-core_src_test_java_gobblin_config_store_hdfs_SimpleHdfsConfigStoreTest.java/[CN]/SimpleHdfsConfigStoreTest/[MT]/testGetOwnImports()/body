@@ -13,8 +13,8 @@
     ConfigKeyPath datasetConfigKey=SingleLinkedListConfigKeyPath.ROOT.createChild(datasetName);
     List<ConfigKeyPath> imports=this.simpleHDFSConfigStore.getOwnImports(datasetConfigKey,VERSION);
     Assert.assertEquals(imports.size(),2);
-    Assert.assertEquals(imports.get(0).getAbsolutePathString(),tagKey1);
-    Assert.assertEquals(imports.get(1).getAbsolutePathString(),tagKey2);
+    Assert.assertEquals(imports.get(0).getAbsolutePathString(),tagKey2);
+    Assert.assertEquals(imports.get(1).getAbsolutePathString(),tagKey1);
   }
   finally {
     if (this.fs.exists(datasetPath)) {
