@@ -1,0 +1,17 @@
+{
+  for (  final PathAlterationListener listener : listeners) {
+    listener.onStart(this);
+  }
+  final Path rootPath=rootEntry.getPath();
+  if (rootEntry.isExists()) {
+    checkAndNotify(rootEntry,rootEntry.getChildren(),listPaths(rootPath));
+  }
+ else   if (rootEntry.isExists()) {
+    checkAndNotify(rootEntry,rootEntry.getChildren(),EMPTY_PATH_ARRAY);
+  }
+ else {
+  }
+  for (  final PathAlterationListener listener : listeners) {
+    listener.onStop(this);
+  }
+}

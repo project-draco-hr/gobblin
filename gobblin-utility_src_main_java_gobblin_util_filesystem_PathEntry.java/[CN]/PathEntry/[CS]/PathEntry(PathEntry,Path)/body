@@ -1,0 +1,8 @@
+{
+  if (path == null) {
+    throw new IllegalArgumentException("File is missing");
+  }
+  this.path=path;
+  this.parent=parent;
+  this.name=path.getName();
+}

@@ -1,0 +1,16 @@
+{
+  if (running) {
+    throw new IllegalStateException("Monitor is already running");
+  }
+  for (  final PathAlterationObserver observer : observers) {
+    observer.initialize();
+  }
+  running=true;
+  if (threadFactory != null) {
+    thread=threadFactory.newThread(this);
+  }
+ else {
+    thread=new Thread(this);
+  }
+  executionResult=executor.scheduleWithFixedDelay(thread,initialDelay,interval,TimeUnit.MILLISECONDS);
+}

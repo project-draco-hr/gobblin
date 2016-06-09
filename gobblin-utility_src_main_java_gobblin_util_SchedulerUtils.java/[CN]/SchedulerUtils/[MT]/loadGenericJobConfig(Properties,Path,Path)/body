@@ -1,0 +1,12 @@
+{
+  List<Properties> commonPropsList=Lists.newArrayList();
+  getCommonProperties(commonPropsList,jobConfigPathDir,jobConfigPath.getParent());
+  commonPropsList.add(properties);
+  Properties jobProps=new Properties();
+  for (  Properties commonProps : Lists.reverse(commonPropsList)) {
+    jobProps.putAll(commonProps);
+  }
+  jobProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(jobConfigPath.toUri().toURL())));
+  jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,jobConfigPath.toString());
+  return jobProps;
+}

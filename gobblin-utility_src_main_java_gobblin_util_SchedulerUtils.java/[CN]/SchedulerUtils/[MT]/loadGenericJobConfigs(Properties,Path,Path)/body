@@ -1,0 +1,12 @@
+{
+  List<Properties> commonPropsList=Lists.newArrayList();
+  getCommonProperties(commonPropsList,jobConfigPathDir,commonPropsPath.getParent().getParent());
+  commonPropsList.add(properties);
+  Properties commonProps=new Properties();
+  for (  Properties pros : Lists.reverse(commonPropsList)) {
+    commonProps.putAll(pros);
+  }
+  List<Properties> jobConfigs=Lists.newArrayList();
+  loadGenericJobConfigsRecursive(jobConfigs,commonProps,getJobConfigurationFileExtensions(properties),commonPropsPath.getParent());
+  return jobConfigs;
+}

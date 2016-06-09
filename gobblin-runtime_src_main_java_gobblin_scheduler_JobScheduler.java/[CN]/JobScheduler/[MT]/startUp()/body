@@ -7,6 +7,6 @@
       this.properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,"file://" + this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
     }
     scheduleGeneralConfiguredJobs();
-    startJobConfigFileMonitor();
+    startGeneralJobConfigFileMonitor();
   }
 }

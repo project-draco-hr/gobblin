@@ -1,0 +1,21 @@
+{
+  if (rootEntry == null) {
+    throw new IllegalArgumentException("Root entry is missing");
+  }
+  if (rootEntry.getPath() == null) {
+    throw new IllegalArgumentException("Root directory is missing");
+  }
+  this.rootEntry=rootEntry;
+  this.pathFilter=pathFilter;
+  if (caseSensitivity == null || caseSensitivity.equals(IOCase.SYSTEM)) {
+    this.comparator=PathComparator.PATH_SYSTEM_COMPARATOR;
+  }
+ else   if (caseSensitivity.equals(IOCase.INSENSITIVE)) {
+    this.comparator=PathComparator.PATH_INSENSITIVE_COMPARATOR;
+  }
+ else {
+    this.comparator=PathComparator.PATH_COMPARATOR;
+  }
+  Configuration conf=new Configuration();
+  fileSystem=rootEntry.getPath().getFileSystem(conf);
+}

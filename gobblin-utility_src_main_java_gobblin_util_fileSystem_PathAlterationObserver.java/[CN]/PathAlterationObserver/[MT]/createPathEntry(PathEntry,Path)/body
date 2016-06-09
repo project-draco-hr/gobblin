@@ -1,0 +1,7 @@
+{
+  final PathEntry entry=parent.newChildInstance(path);
+  entry.refresh(path);
+  final PathEntry[] children=doListPathsEntry(path,entry);
+  entry.setChildren(children);
+  return entry;
+}

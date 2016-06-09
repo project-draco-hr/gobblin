@@ -1,0 +1,3 @@
+{
+  return caseSensitivity.checkCompareTo(path1.toUri().toString(),path2.toUri().toString());
+}

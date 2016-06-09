@@ -1,0 +1,28 @@
+{
+  PathAlterationObserver observer=new PathAlterationObserver(rootDirPath);
+  observer.addListener(listener);
+  monitor.addObserver(observer);
+  Configuration conf=new Configuration();
+  try (final FileSystem fileSystem=rootDirPath.getFileSystem(conf)){
+    FileStatus[] subDirsStatus=fileSystem.listStatus(rootDirPath,new PathFilter(){
+      @Override public boolean accept(      Path path){
+        PathEntry pathEntry=new PathEntry(path);
+        return pathEntry.isExists();
+      }
+    }
+);
+    if (subDirsStatus != null && subDirsStatus.length > 0) {
+      ArrayList<Path> tmpSubDirsList=new ArrayList<>();
+      for (      FileStatus subDirStatus : subDirsStatus) {
+        tmpSubDirsList.add(subDirStatus.getPath());
+      }
+      Path[] subDirs=tmpSubDirsList.toArray(new Path[tmpSubDirsList.size()]);
+      if (subDirs.length == 0) {
+        return;
+      }
+      for (      Path subDir : subDirs) {
+        addPathAlterationObserver(monitor,listener,subDir);
+      }
+    }
+  }
+ }

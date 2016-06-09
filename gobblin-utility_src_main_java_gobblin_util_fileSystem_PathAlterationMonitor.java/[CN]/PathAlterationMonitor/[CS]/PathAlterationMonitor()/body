@@ -1,0 +1,4 @@
+{
+  this(10000);
+  this.executor=Executors.newScheduledThreadPool(1);
+}

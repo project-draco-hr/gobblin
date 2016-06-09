@@ -1,0 +1,6 @@
+{
+  if (paths != null) {
+    Arrays.sort(paths,this);
+  }
+  return paths;
+}

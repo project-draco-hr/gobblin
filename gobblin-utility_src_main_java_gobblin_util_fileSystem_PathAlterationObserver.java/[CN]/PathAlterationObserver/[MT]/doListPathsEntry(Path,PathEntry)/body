@@ -1,0 +1,13 @@
+{
+  ArrayList<Path> result=new ArrayList<>();
+  final FileStatus[] tmpFileStatusForPaths=fileSystem.listStatus(path);
+  for (  FileStatus tmpFileStatusForPath : tmpFileStatusForPaths) {
+    result.add(tmpFileStatusForPath.getPath());
+  }
+  final Path[] paths=result.toArray(new Path[result.size()]);
+  final PathEntry[] children=paths.length > 0 ? new PathEntry[paths.length] : PathEntry.EMPTY_ENTRIES;
+  for (int i=0; i < paths.length; i++) {
+    children[i]=createPathEntry(entry,paths[i]);
+  }
+  return children;
+}

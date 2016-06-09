@@ -1,0 +1,12 @@
+{
+  if (entry.refresh(path)) {
+    for (    final PathAlterationListener listener : listeners) {
+      if (entry.isDirectory()) {
+        listener.onDirectoryChange(path);
+      }
+ else {
+        listener.onFileChange(path);
+      }
+    }
+  }
+}
