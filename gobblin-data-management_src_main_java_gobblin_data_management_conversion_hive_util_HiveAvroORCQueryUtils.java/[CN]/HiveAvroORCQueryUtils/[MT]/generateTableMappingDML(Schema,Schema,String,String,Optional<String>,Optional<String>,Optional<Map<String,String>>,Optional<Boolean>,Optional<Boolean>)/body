@@ -11,10 +11,10 @@
   log.debug("Flattened Schema: " + flattenedSchema.toString());
   StringBuilder dmlQuery=new StringBuilder();
   if (shouldOverwriteTable) {
-    dmlQuery.append(String.format("INSERT OVERWRITE TABLE `%s.%s` \n",flattenedDbName,flattenedTblName));
+    dmlQuery.append(String.format("INSERT OVERWRITE TABLE `%s.%s` %n",flattenedDbName,flattenedTblName));
   }
  else {
-    dmlQuery.append(String.format("INSERT INTO TABLE `%s.%s` \n",flattenedDbName,flattenedTblName));
+    dmlQuery.append(String.format("INSERT INTO TABLE `%s.%s` %n",flattenedDbName,flattenedTblName));
   }
   if (optionalPartitionDMLInfo.isPresent()) {
     if (optionalPartitionDMLInfo.get().size() > 0) {
@@ -48,7 +48,7 @@
     }
     dmlQuery.append(String.format("  %s",colName));
   }
-  dmlQuery.append(String.format(" \nFROM `%s.%s` ",originalDbName,originalTblName));
+  dmlQuery.append(String.format(" %n FROM `%s.%s` ",originalDbName,originalTblName));
   if (optionalPartitionDMLInfo.isPresent()) {
     if (optionalPartitionDMLInfo.get().size() > 0) {
       dmlQuery.append("WHERE ");
