@@ -1,0 +1,6 @@
+{
+  if (config.hasPath(path)) {
+    return config.getBoolean(path);
+  }
+  return def;
+}
