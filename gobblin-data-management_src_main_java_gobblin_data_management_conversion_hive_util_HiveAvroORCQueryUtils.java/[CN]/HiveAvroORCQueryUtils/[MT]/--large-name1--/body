@@ -65,7 +65,7 @@
       }
       ddl.append(" ) ");
     }
-    ddl.append(String.format(" INTO %s BUCKETS \n",optionalNumOfBuckets.get()));
+    ddl.append(String.format(" INTO %s BUCKETS %n",optionalNumOfBuckets.get()));
   }
  else {
     if (optionalSortOrderInfo.isPresent()) {
@@ -73,13 +73,13 @@
     }
   }
   ddl.append("ROW FORMAT SERDE \n");
-  ddl.append(String.format("  '%s' \n",rowFormatSerde));
+  ddl.append(String.format("  '%s' %n",rowFormatSerde));
   ddl.append("STORED AS INPUTFORMAT \n");
-  ddl.append(String.format("  '%s' \n",inputFormat));
+  ddl.append(String.format("  '%s' %n",inputFormat));
   ddl.append("OUTPUTFORMAT \n");
-  ddl.append(String.format("  '%s' \n",outputFormat));
+  ddl.append(String.format("  '%s' %n",outputFormat));
   ddl.append("LOCATION \n");
-  ddl.append(String.format("  '%s' \n",tblLocation));
+  ddl.append(String.format("  '%s' %n",tblLocation));
   if (null != tblProperties && tblProperties.size() > 0) {
     ddl.append("TBLPROPERTIES ( \n");
     boolean isFirst=true;
