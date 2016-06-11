@@ -1,0 +1,14 @@
+{
+  for (  Patterns pattern : Patterns.values()) {
+    String dateString=StringUtils.substringAfterLast(location,pattern.prefix);
+    if (StringUtils.isNotBlank(dateString)) {
+      try {
+        return pattern.dateFormat.parseMillis(dateString);
+      }
+ catch (      IllegalArgumentException|UnsupportedOperationException e) {
+        throw new UpdateNotFoundExecption(String.format("Failed parsing date string %s",dateString));
+      }
+    }
+  }
+  throw new UpdateNotFoundExecption(String.format("Path %s does not match any date pattern %s",location,Arrays.toString(Patterns.values())));
+}

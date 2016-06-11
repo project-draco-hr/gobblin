@@ -1,0 +1,15 @@
+{
+  DateTimeUtils.setCurrentMillisProvider(new FixedThreadLocalMillisProvider(new DateTime(2016,6,20,0,0,0,0).getMillis()));
+  long currentTime=System.currentTimeMillis();
+  long watermarkTime=new DateTime(currentTime).minusDays(2).getMillis();
+  HiveSource source=new HiveSource();
+  source.initialize(getTestState("testdb6"));
+  LongWatermark mockLongWatermark=new LongWatermark(watermarkTime);
+  boolean shouldCreate=source.shouldCreateWorkunitForPartition(DatePatternUpdateProviderTest.createMockPartitionWithLocation("/daily/2016/05/01"),currentTime,mockLongWatermark);
+  Assert.assertEquals(shouldCreate,true);
+  watermarkTime=new DateTime(currentTime).plusDays(2).getMillis();
+  mockLongWatermark=new LongWatermark(watermarkTime);
+  shouldCreate=source.shouldCreateWorkunitForPartition(DatePatternUpdateProviderTest.createMockPartitionWithLocation("/daily/2016/05/01"),currentTime,mockLongWatermark);
+  Assert.assertEquals(shouldCreate,false,"Should not create workunit for partition with no new updates");
+  DateTimeUtils.setCurrentMillisSystem();
+}

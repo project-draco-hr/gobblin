@@ -1,0 +1,4 @@
+{
+  this.prefix=prefix;
+  this.dateFormat=DateTimeFormat.forPattern(patternString).withZone(DateTimeZone.forID(ConfigurationKeys.PST_TIMEZONE_NAME));
+}

@@ -2,5 +2,5 @@
   if (this.fs.exists(path)) {
     return this.fs.getFileStatus(path).getModificationTime();
   }
-  return 0;
+  throw new UpdateNotFoundExecption(String.format("Data file does not exist at path %s",path));
 }

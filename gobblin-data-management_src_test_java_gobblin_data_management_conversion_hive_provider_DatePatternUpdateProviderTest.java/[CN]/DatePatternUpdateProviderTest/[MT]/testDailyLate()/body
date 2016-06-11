@@ -1,0 +1,5 @@
+{
+  HiveUnitUpdateProvider updateProvider=new DatePatternUpdateProvider();
+  Partition mockPartition=createMockPartitionWithLocation("/data/TestEvent/daily_late/2016/02/02");
+  Assert.assertEquals(updateProvider.getUpdateTime(mockPartition),EPOCH_2016_02_02);
+}
