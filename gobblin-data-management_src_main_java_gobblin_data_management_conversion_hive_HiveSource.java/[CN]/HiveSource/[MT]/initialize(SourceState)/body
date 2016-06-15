@@ -1,13 +1,12 @@
 {
+  this.updateProvider=UpdateProviderFactory.create(state);
   this.metricContext=Instrumented.getMetricContext(state,HiveSource.class);
   this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
   this.avroSchemaManager=new AvroSchemaManager(getSourceFs(),state);
   this.workunits=Lists.newArrayList();
   this.watermaker=new TableLevelWatermarker(state);
-  HiveUnitUpdateProviderFactory updateProviderFactory=GobblinConstructorUtils.invokeConstructor(HiveUnitUpdateProviderFactory.class,state.getProp(OPTIONAL_HIVE_UNIT_UPDATE_PROVIDER_FACTORY_CLASS_KEY,DEFAULT_HIVE_UNIT_UPDATE_PROVIDER_FACTORY_CLASS));
-  this.updateProvider=updateProviderFactory.create(state);
-  this.lookBackUpdateProvider=state.contains(HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY) ? Optional.of(new DatePatternUpdateProvider()) : Optional.<HiveUnitUpdateProvider>absent();
   EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.SETUP_EVENT);
   this.datasetFinder=new HiveDatasetFinder(getSourceFs(),state.getProperties(),this.eventSubmitter);
-  this.maxLookBackDays=state.getPropAsInt(HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,Integer.MAX_VALUE);
+  int maxLookBackDays=state.getPropAsInt(HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,DEFAULT_HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS);
+  this.maxLookBackTime=new DateTime().minusDays(maxLookBackDays).getMillis();
 }

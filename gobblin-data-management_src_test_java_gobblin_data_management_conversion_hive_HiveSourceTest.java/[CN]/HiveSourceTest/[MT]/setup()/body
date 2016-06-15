@@ -1,5 +1,5 @@
 {
   this.localMetastoreClient=HiveMetastoreClientPool.get(new Properties(),Optional.<String>absent()).getClient().get();
   this.hiveSource=new HiveSource();
-  this.updateProvider=MockUpdateProvider.getInstance();
+  this.updateProvider=new HiveMetastoreBasedUpdateProvider();
 }

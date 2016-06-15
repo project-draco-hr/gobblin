@@ -1,15 +1,7 @@
 {
-  try {
-    if (this.lookBackUpdateProvider.isPresent()) {
-      DateTime maxLookbackTime=new DateTime().minusDays(this.maxLookBackDays);
-      return Long.compare(this.lookBackUpdateProvider.get().getUpdateTime(partition),maxLookbackTime.getMillis()) > 0 && Long.compare(updateTime,lowWatermark.getValue()) > 0;
-    }
- else {
-      return Long.compare(updateTime,lowWatermark.getValue()) > 0;
-    }
-  }
- catch (  UpdateNotFoundExecption e) {
-    log.warn(String.format("Not creating workunit for partition %s as it failed to get update time. %s",partition.getCompleteName(),e.getMessage()));
+  DateTime createTime=new DateTime(TimeUnit.MILLISECONDS.convert(partition.getTPartition().getCreateTime(),TimeUnit.SECONDS));
+  if (createTime.isBefore(this.maxLookBackTime)) {
     return false;
   }
+  return new DateTime(updateTime).isAfter(lowWatermark.getValue());
 }

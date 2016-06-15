@@ -1,0 +1,7 @@
+{
+  org.apache.hadoop.hive.ql.metadata.Partition partition=new org.apache.hadoop.hive.ql.metadata.Partition();
+  Partition tPartition=new Partition();
+  tPartition.setCreateTime((int)TimeUnit.SECONDS.convert(createTime,TimeUnit.MILLISECONDS));
+  partition.setTPartition(tPartition);
+  return partition;
+}

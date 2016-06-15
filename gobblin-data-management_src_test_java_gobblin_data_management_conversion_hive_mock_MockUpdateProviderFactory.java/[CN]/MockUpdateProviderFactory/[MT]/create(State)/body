@@ -1,3 +1,0 @@
-{
-  return MockUpdateProvider.getInstance();
-}
