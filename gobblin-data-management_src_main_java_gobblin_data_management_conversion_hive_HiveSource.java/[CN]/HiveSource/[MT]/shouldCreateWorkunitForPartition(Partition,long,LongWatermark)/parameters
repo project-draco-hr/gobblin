@@ -1,0 +1,3 @@
+Partition partition
+long updateTime
+LongWatermark lowWatermark

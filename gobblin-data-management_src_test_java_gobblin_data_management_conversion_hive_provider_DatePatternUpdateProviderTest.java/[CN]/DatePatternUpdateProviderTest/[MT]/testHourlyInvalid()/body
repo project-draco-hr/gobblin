@@ -1,0 +1,5 @@
+{
+  HiveUnitUpdateProvider updateProvider=new DatePatternUpdateProvider();
+  Partition mockPartition=createMockPartitionWithLocation("/data/TestEvent/hourly/2016/02/abc/10");
+  updateProvider.getUpdateTime(mockPartition);
+}

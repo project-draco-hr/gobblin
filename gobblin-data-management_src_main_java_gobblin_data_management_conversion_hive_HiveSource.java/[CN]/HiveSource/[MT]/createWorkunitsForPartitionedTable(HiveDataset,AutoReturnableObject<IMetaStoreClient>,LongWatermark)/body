@@ -1,0 +1,26 @@
+{
+  List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
+  for (  Partition sourcePartition : sourcePartitions) {
+    LongWatermark lowWatermark=watermarker.getPreviousHighWatermark(sourcePartition);
+    try {
+      long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
+      if (shouldCreateWorkunitForPartition(sourcePartition,updateTime,lowWatermark)) {
+        log.debug(String.format("Processing partition: %s",sourcePartition));
+        WorkUnit workUnit=WorkUnit.createEmpty();
+        workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());
+        HiveSourceUtils.serializeTable(workUnit,hiveDataset.getTable(),this.avroSchemaManager);
+        HiveSourceUtils.serializePartition(workUnit,sourcePartition,this.avroSchemaManager);
+        workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+        HiveSourceUtils.setPartitionSlaEventMetadata(workUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue());
+        workunits.add(workUnit);
+        log.debug(String.format("Workunit added for partition: %s",workUnit));
+      }
+ else {
+        log.info(String.format("Not creating workunit for partition %s as updateTime %s is lesser than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));
+      }
+    }
+ catch (    UpdateNotFoundException e) {
+      log.info(String.format("Not Creating workunit for %s as update time was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
+    }
+  }
+}

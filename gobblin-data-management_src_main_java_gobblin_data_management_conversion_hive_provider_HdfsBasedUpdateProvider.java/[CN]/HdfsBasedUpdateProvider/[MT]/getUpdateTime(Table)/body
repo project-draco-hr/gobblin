@@ -3,7 +3,6 @@
     return getUpdateTime(table.getDataLocation());
   }
  catch (  IOException e) {
-    log.warn(String.format("Failed to get update time for %s. Will return update time as 0",table.getCompleteName()),e);
+    throw new UpdateNotFoundException(String.format("Failed to get update time for %s.",table.getCompleteName()),e);
   }
-  return 0;
 }

@@ -5,8 +5,7 @@
   this.localMetastoreClient.dropDatabase(dbName,false,true,true);
   SourceState testState=getTestState(dbName);
   createTestTable(dbName,tableName,tableSdLoc,Optional.<String>absent());
-  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName,10);
-  List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
+  List<WorkUnit> workUnits=hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
   SerializableHiveTable serializedHiveTable=HiveSourceUtils.deserializeTable(wu);
