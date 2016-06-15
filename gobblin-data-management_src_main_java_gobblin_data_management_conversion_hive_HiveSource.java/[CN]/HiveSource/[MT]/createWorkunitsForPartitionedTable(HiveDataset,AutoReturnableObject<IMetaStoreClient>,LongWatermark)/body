@@ -1,7 +1,7 @@
 {
   List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
   for (  Partition sourcePartition : sourcePartitions) {
-    LongWatermark lowWatermark=watermaker.getPreviousHighWatermark(sourcePartition);
+    LongWatermark lowWatermark=watermarker.getPreviousHighWatermark(sourcePartition);
     try {
       long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
       if (shouldCreateWorkunitForPartition(sourcePartition,updateTime,lowWatermark)) {
@@ -19,7 +19,7 @@
         log.info(String.format("Not creating workunit for partition %s as updateTime %s is lesser than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));
       }
     }
- catch (    UpdateNotFoundExecption e) {
+ catch (    UpdateNotFoundException e) {
       log.info(String.format("Not Creating workunit for %s as update time was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
     }
   }

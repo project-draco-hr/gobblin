@@ -6,9 +6,9 @@
         return pattern.dateFormat.parseMillis(dateString);
       }
  catch (      IllegalArgumentException|UnsupportedOperationException e) {
-        throw new UpdateNotFoundExecption(String.format("Failed parsing date string %s",dateString));
+        throw new UpdateNotFoundException(String.format("Failed parsing date string %s",dateString));
       }
     }
   }
-  throw new UpdateNotFoundExecption(String.format("Path %s does not match any date pattern %s",location,Arrays.toString(Patterns.values())));
+  throw new UpdateNotFoundException(String.format("Path %s does not match any date pattern %s",location,Arrays.toString(Patterns.values())));
 }

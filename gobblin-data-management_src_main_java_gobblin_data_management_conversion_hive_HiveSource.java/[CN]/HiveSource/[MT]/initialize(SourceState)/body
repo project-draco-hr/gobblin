@@ -4,7 +4,7 @@
   this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
   this.avroSchemaManager=new AvroSchemaManager(getSourceFs(),state);
   this.workunits=Lists.newArrayList();
-  this.watermaker=new TableLevelWatermarker(state);
+  this.watermarker=new TableLevelWatermarker(state);
   EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.SETUP_EVENT);
   this.datasetFinder=new HiveDatasetFinder(getSourceFs(),state.getProperties(),this.eventSubmitter);
   int maxLookBackDays=state.getPropAsInt(HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,DEFAULT_HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS);

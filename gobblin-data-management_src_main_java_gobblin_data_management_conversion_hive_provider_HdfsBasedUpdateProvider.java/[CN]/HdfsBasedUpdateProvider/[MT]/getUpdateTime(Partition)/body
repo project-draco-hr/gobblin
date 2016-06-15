@@ -3,6 +3,6 @@
     return getUpdateTime(partition.getDataLocation());
   }
  catch (  IOException e) {
-    throw new UpdateNotFoundExecption(String.format("Failed to get update time for %s",partition.getCompleteName()),e);
+    throw new UpdateNotFoundException(String.format("Failed to get update time for %s",partition.getCompleteName()),e);
   }
 }
