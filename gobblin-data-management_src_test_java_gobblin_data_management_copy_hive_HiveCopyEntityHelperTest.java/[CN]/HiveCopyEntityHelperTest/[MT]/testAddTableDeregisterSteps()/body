@@ -18,7 +18,7 @@
   int priority=helper.addTableDeregisterSteps(copyEntities,fileSet,initialPriority,meta_table);
   Assert.assertTrue(priority == 1);
   Assert.assertTrue(copyEntities.size() == 1);
-  Assert.assertTrue(copyEntities.get(0) instanceof PrePublishStep);
-  PrePublishStep p=(PrePublishStep)(copyEntities.get(0));
+  Assert.assertTrue(copyEntities.get(0) instanceof PostPublishStep);
+  PostPublishStep p=(PostPublishStep)(copyEntities.get(0));
   Assert.assertTrue(p.getStep().toString().contains("Deregister table TestDB.TestTable on Hive metastore /targetURI"));
 }
