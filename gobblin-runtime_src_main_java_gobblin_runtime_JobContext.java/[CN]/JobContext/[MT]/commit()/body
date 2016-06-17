@@ -1,21 +1,15 @@
 {
-  this.datasetStatesByUrns=Optional.of(this.jobState.createDatasetStatesByUrns());
+  this.datasetStatesByUrns=Optional.of(computeDatasetStatesByUrns());
   final boolean shouldCommitDataInJob=shouldCommitDataInJob(this.jobState);
   final DeliverySemantics deliverySemantics=DeliverySemantics.parse(this.jobState);
-  int numCommitThreads=numCommitThreads(this.jobState);
+  final int numCommitThreads=numCommitThreads();
   if (!shouldCommitDataInJob) {
     this.logger.info("Job will not commit data since data are committed by tasks.");
   }
   try {
     List<Either<Void,ExecutionException>> result=new IteratorExecutor<>(Iterables.transform(this.datasetStatesByUrns.get().entrySet(),new Function<Map.Entry<String,DatasetState>,Callable<Void>>(){
-      @Nullable @Override public Callable<Void> apply(      @Nullable final Map.Entry<String,DatasetState> entry){
-        return new Callable<Void>(){
-          @Override public Void call() throws Exception {
-            processDatasetCommit(shouldCommitDataInJob,deliverySemantics,entry.getKey(),entry.getValue());
-            return null;
-          }
-        }
-;
+      @Nullable @Override public Callable<Void> apply(      final Map.Entry<String,DatasetState> entry){
+        return createSafeDatasetCommit(shouldCommitDataInJob,deliverySemantics,entry.getKey(),entry.getValue(),numCommitThreads > 1,JobContext.this);
       }
     }
 ).iterator(),numCommitThreads,ExecutorsUtils.newThreadFactory(Optional.of(this.logger),Optional.of("Commit-thread-%d"))).executeAndGetResults();

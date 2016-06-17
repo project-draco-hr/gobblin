@@ -1,0 +1,9 @@
+{
+  this.queue.put(false);
+  if (this.toReturn instanceof Either.Left) {
+    return ((Either.Left<T,Exception>)this.toReturn).getLeft();
+  }
+ else {
+    throw ((Either.Right<T,Exception>)this.toReturn).getRight();
+  }
+}

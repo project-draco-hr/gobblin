@@ -1,0 +1,5 @@
+Properties jobProps
+Logger logger
+Map<String,JobState.DatasetState> datasetStateMap
+Predicate<String> successPredicate
+Queue<ControllableCallable<Void>> callablesQueue

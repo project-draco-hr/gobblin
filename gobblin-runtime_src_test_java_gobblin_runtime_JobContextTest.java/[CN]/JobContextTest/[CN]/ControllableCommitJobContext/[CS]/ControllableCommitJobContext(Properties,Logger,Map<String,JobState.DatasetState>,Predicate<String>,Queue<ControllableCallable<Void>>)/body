@@ -1,0 +1,5 @@
+{
+  super(jobProps,logger,datasetStateMap);
+  this.successPredicate=successPredicate;
+  this.callablesQueue=callablesQueue;
+}
