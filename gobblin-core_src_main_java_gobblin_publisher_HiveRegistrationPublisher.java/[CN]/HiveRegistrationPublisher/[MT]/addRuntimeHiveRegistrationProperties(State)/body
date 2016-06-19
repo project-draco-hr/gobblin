@@ -1,0 +1,3 @@
+{
+  state.appendToListProp(HiveRegProps.HIVE_TABLE_PARTITION_PROPS,String.format("%s:%d",DATA_PUBLISH_TIME,TimeUnit.SECONDS.convert(System.currentTimeMillis(),TimeUnit.MILLISECONDS)));
+}

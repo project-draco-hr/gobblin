@@ -1,11 +1,13 @@
 {
   CompletionService<Collection<HiveSpec>> completionService=new ExecutorCompletionService<>(this.hivePolicyExecutor);
+  addRuntimeHiveRegistrationProperties(super.state);
+  final HiveRegistrationPolicy policy=HiveRegistrationPolicyBase.getPolicy(super.state);
   Set<String> pathsToRegister=getUniquePathsToRegister(states);
   log.info("Number of paths to be registered in Hive: " + pathsToRegister.size());
   for (  final String path : pathsToRegister) {
     completionService.submit(new Callable<Collection<HiveSpec>>(){
       @Override public Collection<HiveSpec> call() throws Exception {
-        return HiveRegistrationPublisher.this.policy.getHiveSpecs(new Path(path));
+        return policy.getHiveSpecs(new Path(path));
       }
     }
 );
