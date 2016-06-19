@@ -29,7 +29,7 @@
   DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(this.targetFs,diffPathSet.pathsToDelete,this.dataset.getProperties());
   copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
   for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,this.configuration,Optional.<Partition>absent())) {
-    copyEntities.add(builder.build());
+    copyEntities.add(builder.fileSet(fileSet).build());
   }
   multiTimer.close();
   return copyEntities;
