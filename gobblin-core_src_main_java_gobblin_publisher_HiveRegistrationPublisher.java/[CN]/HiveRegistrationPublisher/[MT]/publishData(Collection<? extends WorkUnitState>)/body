@@ -1,6 +1,5 @@
 {
   CompletionService<Collection<HiveSpec>> completionService=new ExecutorCompletionService<>(this.hivePolicyExecutor);
-  addRuntimeHiveRegistrationProperties(super.state);
   final HiveRegistrationPolicy policy=HiveRegistrationPolicyBase.getPolicy(super.state);
   Set<String> pathsToRegister=getUniquePathsToRegister(states);
   log.info("Number of paths to be registered in Hive: " + pathsToRegister.size());
