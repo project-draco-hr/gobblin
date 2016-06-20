@@ -12,7 +12,7 @@
           createWorkunitsForPartitionedTable(hiveDataset,client,expectedDatasetHighWatermark);
         }
  else {
-          createPartitionForNonPartitionedTable(hiveDataset,expectedDatasetHighWatermark);
+          createWorkunitForNonPartitionedTable(hiveDataset,expectedDatasetHighWatermark);
         }
       }
      }

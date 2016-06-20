@@ -1,7 +1,0 @@
-{
-  DateTime createTime=new DateTime(TimeUnit.MILLISECONDS.convert(partition.getTPartition().getCreateTime(),TimeUnit.SECONDS));
-  if (createTime.isBefore(this.maxLookBackTime)) {
-    return false;
-  }
-  return new DateTime(updateTime).isAfter(lowWatermark.getValue());
-}

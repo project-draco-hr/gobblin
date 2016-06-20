@@ -1,0 +1,4 @@
+{
+  DateTime createTime=new DateTime(TimeUnit.MILLISECONDS.convert(partition.getTPartition().getCreateTime(),TimeUnit.SECONDS));
+  return createTime.isBefore(this.maxLookBackTime);
+}

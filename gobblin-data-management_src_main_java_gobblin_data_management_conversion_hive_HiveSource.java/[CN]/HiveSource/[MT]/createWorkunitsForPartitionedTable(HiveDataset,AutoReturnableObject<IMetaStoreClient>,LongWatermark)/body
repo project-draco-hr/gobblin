@@ -1,10 +1,13 @@
 {
   List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
   for (  Partition sourcePartition : sourcePartitions) {
+    if (isOlderThanLookback(sourcePartition)) {
+      continue;
+    }
     LongWatermark lowWatermark=watermarker.getPreviousHighWatermark(sourcePartition);
     try {
       long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
-      if (shouldCreateWorkunitForPartition(sourcePartition,updateTime,lowWatermark)) {
+      if (shouldCreateWorkunit(updateTime,lowWatermark)) {
         log.debug(String.format("Processing partition: %s",sourcePartition));
         WorkUnit workUnit=WorkUnit.createEmpty();
         workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());

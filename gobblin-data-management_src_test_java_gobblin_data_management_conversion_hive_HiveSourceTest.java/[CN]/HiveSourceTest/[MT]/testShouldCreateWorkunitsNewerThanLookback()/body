@@ -1,12 +1,10 @@
 {
   long currentTime=System.currentTimeMillis();
-  long watermarkTime=new DateTime(currentTime).minusDays(50).getMillis();
   long partitionCreateTime=new DateTime(currentTime).minusDays(25).getMillis();
-  LongWatermark watermark=new LongWatermark(watermarkTime);
   org.apache.hadoop.hive.ql.metadata.Partition partition=createDummyPartition(partitionCreateTime);
   SourceState testState=getTestState("testDb7");
   HiveSource source=new HiveSource();
   source.initialize(testState);
-  boolean shouldCreate=source.shouldCreateWorkunitForPartition(partition,updateProvider.getUpdateTime(partition),watermark);
-  Assert.assertEquals(shouldCreate,true,"Should create workunits newer than lookback");
+  boolean isOlderThanLookback=source.isOlderThanLookback(partition);
+  Assert.assertEquals(isOlderThanLookback,false,"Should create workunits newer than lookback");
 }
