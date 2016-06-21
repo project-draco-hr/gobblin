@@ -1,7 +1,7 @@
 {
   ImmutableList.Builder<Tag<?>> tags=new ImmutableList.Builder<>();
-  tags.add(new Tag<>(GobblinYarnMetricTagNames.YARN_APPLICATION_ID,this.applicationId));
-  tags.add(new Tag<>(GobblinYarnMetricTagNames.YARN_APPLICATION_NAME,this.applicationName));
+  tags.add(new Tag<>(GobblinClusterMetricTagNames.APPLICATION_ID,this.applicationId));
+  tags.add(new Tag<>(GobblinClusterMetricTagNames.APPLICATION_NAME,this.applicationName));
   GobblinMetrics gobblinMetrics=GobblinMetrics.get(this.applicationId,null,tags.build());
   gobblinMetrics.startMetricReporting(ConfigUtils.configToProperties(config));
   return gobblinMetrics;

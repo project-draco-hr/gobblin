@@ -1,0 +1,15 @@
+{
+  Properties properties=ConfigUtils.configToProperties(config);
+  if (!properties.contains(ServiceBasedAppLauncher.APP_STOP_TIME_SECONDS)) {
+    properties.setProperty(ServiceBasedAppLauncher.APP_STOP_TIME_SECONDS,Long.toString(300));
+  }
+  this.applicationId=applicationId;
+  this.applicationLauncher=new ServiceBasedAppLauncher(properties,clusterName);
+  String zkConnectionString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
+  this.helixManager=buildHelixManager(config,zkConnectionString);
+  this.fs=buildFileSystem(config);
+  this.appWorkDir=GobblinClusterUtils.getAppWorkDirPath(this.fs,clusterName,applicationId);
+  this.applicationLauncher.addService(buildGobblinHelixJobScheduler(config,this.appWorkDir,getMetadataTags(clusterName,applicationId)));
+  this.applicationLauncher.addService(buildJobConfigurationManager(config));
+}

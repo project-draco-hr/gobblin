@@ -1,7 +1,7 @@
 {
   this.eventBus.register(this);
-  String clusterName=this.config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
-  YarnHelixUtils.createGobblinYarnHelixCluster(this.config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY),clusterName);
+  String clusterName=this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  HelixUtils.createGobblinHelixCluster(this.config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY),clusterName);
   LOGGER.info("Created Helix cluster " + clusterName);
   connectHelixManager();
   startYarnClient();
@@ -23,7 +23,7 @@
     LOGGER.info("Adding YarnAppSecurityManager since login is keytab based");
     services.add(buildYarnAppSecurityManager());
   }
-  services.add(buildLogCopier(this.config,new Path(this.sinkLogRootDir,this.applicationName + Path.SEPARATOR + this.applicationId.get().toString()),YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,this.applicationId.get().toString())));
+  services.add(buildLogCopier(this.config,new Path(this.sinkLogRootDir,this.applicationName + Path.SEPARATOR + this.applicationId.get().toString()),GobblinClusterUtils.getAppWorkDirPath(this.fs,this.applicationName,this.applicationId.get().toString())));
   if (config.getBoolean(ConfigurationKeys.JOB_EXECINFO_SERVER_ENABLED_KEY)) {
     LOGGER.info("Starting the job execution info server since it is enabled");
     Properties properties=ConfigUtils.configToProperties(config);

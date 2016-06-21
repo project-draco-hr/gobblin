@@ -1,6 +1,6 @@
 {
   Path srcFilePath=new Path(jobConfPackagePath);
-  Path destFilePath=new Path(destDir,srcFilePath.getName() + GobblinYarnConfigurationKeys.TAR_GZ_FILE_SUFFIX);
+  Path destFilePath=new Path(destDir,srcFilePath.getName() + GobblinClusterConfigurationKeys.TAR_GZ_FILE_SUFFIX);
   StreamUtils.tar(FileSystem.getLocal(this.yarnConfiguration),this.fs,srcFilePath,destFilePath);
   YarnHelixUtils.addFileAsLocalResource(this.fs,destFilePath,LocalResourceType.ARCHIVE,resourceMap);
 }

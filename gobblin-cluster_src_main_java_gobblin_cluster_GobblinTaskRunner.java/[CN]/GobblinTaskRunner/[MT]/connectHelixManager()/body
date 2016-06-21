@@ -1,0 +1,11 @@
+{
+  try {
+    this.helixManager.connect();
+    this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new ParticipantShutdownMessageHandlerFactory());
+    this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.USER_DEFINE_MSG.toString(),getUserDefinedMessageHandlerFactory());
+  }
+ catch (  Exception e) {
+    LOGGER.error("HelixManager failed to connect",e);
+    throw Throwables.propagate(e);
+  }
+}

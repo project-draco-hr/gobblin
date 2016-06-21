@@ -1,0 +1,18 @@
+{
+  this.taskExecutor=taskExecutor;
+  this.taskStateTracker=taskStateTracker;
+  this.taskConfig=taskCallbackContext.getTaskConfig();
+  this.jobId=this.taskConfig.getConfigMap().get(ConfigurationKeys.JOB_ID_KEY);
+  this.participantId=taskCallbackContext.getManager().getInstanceName();
+  this.fs=fs;
+  Path taskStateOutputDir=new Path(appWorkDir,GobblinClusterConfigurationKeys.OUTPUT_TASK_STATE_DIR_NAME);
+  this.taskStateStore=new FsStateStore<>(this.fs,taskStateOutputDir.toString(),TaskState.class);
+  Path jobStateFilePath=new Path(appWorkDir,this.jobId + "." + AbstractJobLauncher.JOB_STATE_FILE_NAME);
+  SerializationUtils.deserializeState(this.fs,jobStateFilePath,this.jobState);
+  if (containerMetrics.isPresent()) {
+    this.jobMetrics=Optional.of(JobMetrics.get(this.jobState,containerMetrics.get().getMetricContext()));
+  }
+ else {
+    this.jobMetrics=Optional.absent();
+  }
+}

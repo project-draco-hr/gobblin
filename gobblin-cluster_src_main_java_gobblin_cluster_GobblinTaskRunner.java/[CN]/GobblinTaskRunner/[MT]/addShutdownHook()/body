@@ -1,0 +1,9 @@
+{
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      LOGGER.info("Running the shutdown hook");
+      GobblinTaskRunner.this.stop();
+    }
+  }
+);
+}

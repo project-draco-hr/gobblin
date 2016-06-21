@@ -1,0 +1,20 @@
+{
+  if (this.jobConfDirPath.isPresent()) {
+    File path=new File(this.jobConfDirPath.get());
+    String pwd=System.getProperty("user.dir");
+    File jobConfigDir=new File(pwd,path.getName() + GobblinClusterConfigurationKeys.TAR_GZ_FILE_SUFFIX);
+    if (jobConfigDir.exists()) {
+      LOGGER.info("Loading job configurations from " + jobConfigDir);
+      Properties properties=new Properties();
+      properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,jobConfigDir.getAbsolutePath());
+      List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
+      LOGGER.info("Loaded " + jobConfigs.size() + " job configuration(s)");
+      for (      Properties config : jobConfigs) {
+        postNewJobConfigArrival(config.getProperty(ConfigurationKeys.JOB_NAME_KEY),config);
+      }
+    }
+ else {
+      LOGGER.warn("Job configuration directory " + jobConfigDir + " not found");
+    }
+  }
+}

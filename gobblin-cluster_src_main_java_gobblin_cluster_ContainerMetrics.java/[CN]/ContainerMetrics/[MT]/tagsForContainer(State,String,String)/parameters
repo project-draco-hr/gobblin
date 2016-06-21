@@ -1,0 +1,3 @@
+State containerState
+String applicationName
+String taskRunnerId

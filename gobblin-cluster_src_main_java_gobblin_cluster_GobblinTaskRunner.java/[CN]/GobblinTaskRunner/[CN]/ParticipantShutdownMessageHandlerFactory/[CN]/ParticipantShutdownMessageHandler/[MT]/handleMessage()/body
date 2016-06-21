@@ -1,0 +1,24 @@
+{
+  String messageSubType=this._message.getMsgSubType();
+  Preconditions.checkArgument(messageSubType.equalsIgnoreCase(HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString()),String.format("Unknown %s message subtype: %s",Message.MessageType.SHUTDOWN.toString(),messageSubType));
+  HelixTaskResult result=new HelixTaskResult();
+  if (stopInProgress) {
+    result.setSuccess(true);
+    return result;
+  }
+  LOGGER.info("Handling message " + HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString());
+  ScheduledExecutorService shutdownMessageHandlingCompletionWatcher=MoreExecutors.getExitingScheduledExecutorService(new ScheduledThreadPoolExecutor(1));
+  shutdownMessageHandlingCompletionWatcher.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      HelixManager helixManager=_notificationContext.getManager();
+      HelixDataAccessor helixDataAccessor=helixManager.getHelixDataAccessor();
+      HelixProperty helixProperty=helixDataAccessor.getProperty(_message.getKey(helixDataAccessor.keyBuilder(),helixManager.getInstanceName()));
+      if (helixProperty == null) {
+        GobblinTaskRunner.this.stop();
+      }
+    }
+  }
+,0,1,TimeUnit.SECONDS);
+  result.setSuccess(true);
+  return result;
+}

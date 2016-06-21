@@ -1,0 +1,8 @@
+{
+  return (ContainerMetrics)GOBBLIN_METRICS_REGISTRY.getOrDefault(name(workerId),new Callable<GobblinMetrics>(){
+    @Override public GobblinMetrics call() throws Exception {
+      return new ContainerMetrics(containerState,applicationName,workerId);
+    }
+  }
+);
+}

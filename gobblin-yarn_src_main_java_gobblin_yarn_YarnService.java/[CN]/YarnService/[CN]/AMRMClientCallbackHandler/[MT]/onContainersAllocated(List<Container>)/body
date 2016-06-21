@@ -6,7 +6,7 @@
     LOGGER.info(String.format("Container %s has been allocated",container.getId()));
     String instanceName=unusedHelixInstanceNames.poll();
     if (Strings.isNullOrEmpty(instanceName)) {
-      instanceName=YarnHelixUtils.getHelixInstanceName(GobblinWorkUnitRunner.class.getSimpleName(),helixInstanceIdGenerator.incrementAndGet());
+      instanceName=HelixUtils.getHelixInstanceName(GobblinYarnTaskRunner.class.getSimpleName(),helixInstanceIdGenerator.incrementAndGet());
     }
     final String finalInstanceName=instanceName;
     containerMap.put(container.getId(),new AbstractMap.SimpleImmutableEntry<>(container,finalInstanceName));

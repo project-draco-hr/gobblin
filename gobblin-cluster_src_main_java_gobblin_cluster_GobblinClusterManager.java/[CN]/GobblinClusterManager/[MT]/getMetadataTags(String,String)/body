@@ -1,0 +1,3 @@
+{
+  return Tag.fromMap(new ImmutableMap.Builder<String,Object>().put(GobblinClusterMetricTagNames.APPLICATION_NAME,applicationName).put(GobblinClusterMetricTagNames.APPLICATION_ID,applicationId).build());
+}

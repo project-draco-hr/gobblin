@@ -1,5 +1,5 @@
 {
-  Path appWorkDir=YarnHelixUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId.toString());
+  Path appWorkDir=GobblinClusterUtils.getAppWorkDirPath(this.fs,this.applicationName,applicationId.toString());
   Path appMasterWorkDir=new Path(appWorkDir,GobblinYarnConfigurationKeys.APP_MASTER_WORK_DIR_NAME);
   Map<String,LocalResource> appMasterResources=Maps.newHashMap();
   if (this.config.hasPath(GobblinYarnConfigurationKeys.LIB_JARS_DIR_KEY)) {
@@ -17,9 +17,9 @@
   if (this.config.hasPath(GobblinYarnConfigurationKeys.APP_MASTER_FILES_REMOTE_KEY)) {
     addAppRemoteFiles(this.config.getString(GobblinYarnConfigurationKeys.APP_MASTER_FILES_REMOTE_KEY),appMasterResources);
   }
-  if (this.config.hasPath(GobblinYarnConfigurationKeys.JOB_CONF_PATH_KEY)) {
+  if (this.config.hasPath(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY)) {
     Path appFilesDestDir=new Path(appMasterWorkDir,GobblinYarnConfigurationKeys.APP_FILES_DIR_NAME);
-    addJobConfPackage(this.config.getString(GobblinYarnConfigurationKeys.JOB_CONF_PATH_KEY),appFilesDestDir,appMasterResources);
+    addJobConfPackage(this.config.getString(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY),appFilesDestDir,appMasterResources);
   }
   return appMasterResources;
 }

@@ -1,0 +1,43 @@
+{
+  this.closer.register(new TestingServer(TEST_ZK_PORT));
+  URL url=GobblinHelixJobLauncherTest.class.getClassLoader().getResource(GobblinHelixJobLauncherTest.class.getSimpleName() + ".conf");
+  Assert.assertNotNull(url,"Could not find resource " + url);
+  Config config=ConfigFactory.parseURL(url).resolve();
+  String zkConnectingString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  String helixClusterName=config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  HelixUtils.createGobblinHelixCluster(zkConnectingString,helixClusterName);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.CONTROLLER,zkConnectingString);
+  this.closer.register(new Closeable(){
+    @Override public void close() throws IOException {
+      helixManager.disconnect();
+    }
+  }
+);
+  this.helixManager.connect();
+  Properties properties=ConfigUtils.configToProperties(config);
+  this.localFs=FileSystem.getLocal(new Configuration());
+  this.appWorkDir=new Path(GobblinHelixJobLauncherTest.class.getSimpleName());
+  this.closer.register(new Closeable(){
+    @Override public void close() throws IOException {
+      if (localFs.exists(appWorkDir)) {
+        localFs.delete(appWorkDir,true);
+      }
+    }
+  }
+);
+  this.jobName=config.getString(ConfigurationKeys.JOB_NAME_KEY);
+  this.jobOutputFile=new File(config.getString(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR),config.getString(ConfigurationKeys.WRITER_FILE_PATH) + File.separator + config.getString(ConfigurationKeys.WRITER_FILE_NAME));
+  File sourceJsonFile=new File(this.appWorkDir.toString(),TestHelper.TEST_JOB_NAME + ".json");
+  TestHelper.createSourceJsonFile(sourceJsonFile);
+  properties.setProperty(ConfigurationKeys.SOURCE_FILEBASED_FILES_TO_PULL,sourceJsonFile.getAbsolutePath());
+  this.gobblinHelixJobLauncher=this.closer.register(new GobblinHelixJobLauncher(properties,this.helixManager,this.appWorkDir,ImmutableList.<Tag<?>>of()));
+  this.gobblinTaskRunner=new GobblinTaskRunner(TestHelper.TEST_APPLICATION_NAME,TestHelper.TEST_HELIX_INSTANCE_NAME,TestHelper.TEST_APPLICATION_ID,TestHelper.TEST_TASK_RUNNER_ID,config,Optional.of(appWorkDir));
+  this.fsDatasetStateStore=new FsDatasetStateStore(this.localFs,config.getString(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY));
+  this.thread=new Thread(new Runnable(){
+    @Override public void run(){
+      gobblinTaskRunner.start();
+    }
+  }
+);
+  this.thread.start();
+}
