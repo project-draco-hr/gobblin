@@ -32,7 +32,7 @@ case RECORD:
         columns.append(",");
       }
       String type=generateAvroToHiveColumnMapping(field.schema(),hiveColumns,false);
-      columns.append(field.name()).append(":").append(type);
+      columns.append("`").append(field.name()).append("`").append(":").append(type);
     }
     columns.append(">");
   }

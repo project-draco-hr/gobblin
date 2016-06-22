@@ -46,14 +46,15 @@
  else {
       dmlQuery.append(", \n");
     }
-    dmlQuery.append(String.format("  %s",colName));
+    colName=colName.replaceAll("\\.","`.`");
+    dmlQuery.append(String.format("  `%s`",colName));
   }
   dmlQuery.append(String.format(" %n FROM `%s.%s` ",originalDbName,originalTblName));
   if (optionalPartitionDMLInfo.isPresent()) {
     if (optionalPartitionDMLInfo.get().size() > 0) {
       dmlQuery.append("WHERE ");
       for (      Map.Entry<String,String> partition : optionalPartitionDMLInfo.get().entrySet()) {
-        dmlQuery.append(String.format("%s='%s'",partition.getKey(),partition.getValue()));
+        dmlQuery.append(String.format("`%s`='%s'",partition.getKey(),partition.getValue()));
       }
       dmlQuery.append(" \n");
     }
