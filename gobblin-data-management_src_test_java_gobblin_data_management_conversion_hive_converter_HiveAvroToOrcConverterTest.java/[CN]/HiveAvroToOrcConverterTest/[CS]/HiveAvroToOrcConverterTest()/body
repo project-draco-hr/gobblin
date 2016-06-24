@@ -1,4 +1,3 @@
 {
   this.hiveMetastoreTestUtils=LocalHiveMetastoreTestUtils.getInstance();
-  this.hiveSource=new HiveSource();
 }

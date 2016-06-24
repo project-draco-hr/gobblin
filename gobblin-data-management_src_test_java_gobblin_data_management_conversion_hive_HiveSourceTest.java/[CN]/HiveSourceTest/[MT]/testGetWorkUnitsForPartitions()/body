@@ -2,10 +2,10 @@
   String dbName="testdb3";
   String tableName="testtable3";
   String tableSdLoc="/tmp/testtable3";
-  this.localMetastoreClient.dropDatabase(dbName,false,true,true);
+  this.hiveMetastoreTestUtils.getLocalMetastoreClient().dropDatabase(dbName,false,true,true);
   SourceState testState=getTestState(dbName);
-  Table tbl=createTestTable(dbName,tableName,tableSdLoc,Optional.of("field"));
-  addTestPartition(tbl,ImmutableList.of("f1"),(int)System.currentTimeMillis());
+  Table tbl=this.hiveMetastoreTestUtils.createTestTable(dbName,tableName,tableSdLoc,Optional.of("field"));
+  this.hiveMetastoreTestUtils.addTestPartition(tbl,ImmutableList.of("f1"),(int)System.currentTimeMillis());
   List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
