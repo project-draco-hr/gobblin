@@ -1,3 +1,0 @@
-{
-  return new Schema.Parser().parse(HiveAvroORCQueryUtilsTest.class.getClassLoader().getResourceAsStream("avroToOrcQueryUtilsTest/" + filename));
-}

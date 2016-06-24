@@ -2,11 +2,14 @@
   String orcDataLocation;
   String orcTableAlternateLocation=workUnit.getJobState().getProp(ORC_TABLE_ALTERNATE_LOCATION);
   if (StringUtils.isNotBlank(orcTableAlternateLocation)) {
-    orcDataLocation=StringUtils.removeEnd(orcTableAlternateLocation,Path.SEPARATOR) + "/" + orcTableName;
+    orcDataLocation=StringUtils.removeEnd(orcTableAlternateLocation,Path.SEPARATOR) + Path.SEPARATOR + orcTableName;
   }
  else {
     orcDataLocation=StringUtils.removeEnd(avroDataLocation,Path.SEPARATOR) + "_orc";
   }
-  orcDataLocation+="/" + workUnit.getJobState().getId();
+  if (postfix.isPresent()) {
+    orcDataLocation+=postfix.get();
+  }
+  orcDataLocation+=Path.SEPARATOR + workUnit.getJobState().getId();
   return orcDataLocation;
 }

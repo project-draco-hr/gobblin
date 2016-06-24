@@ -1,0 +1,4 @@
+{
+  InputStream is=ConversionHiveTestUtils.class.getClassLoader().getResourceAsStream(StringUtils.removeEnd(directory,Path.SEPARATOR) + Path.SEPARATOR + filename);
+  return IOUtils.toString(is,"UTF-8");
+}

@@ -5,5 +5,5 @@
   partitionSd.setCols(tbl.getPartitionKeys());
   Partition partition=new Partition(values,tbl.getDbName(),tbl.getTableName(),1,1,partitionSd,new HashMap<String,String>());
   partition.setCreateTime(createTime);
-  return this.localMetastoreClient.add_partition(partition);
+  return this.getLocalMetastoreClient().add_partition(partition);
 }

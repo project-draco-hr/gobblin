@@ -4,12 +4,12 @@
   String tableSdLoc1="/tmp/testtable1";
   String tableName2="testtable2";
   String tableSdLoc2="/tmp/testtable2";
-  this.localMetastoreClient.dropDatabase(dbName,false,true,true);
-  createTestTable(dbName,tableName1,tableSdLoc1,Optional.<String>absent());
-  createTestTable(dbName,tableName2,tableSdLoc2,Optional.<String>absent(),true);
+  this.hiveMetastoreTestUtils.getLocalMetastoreClient().dropDatabase(dbName,false,true,true);
+  this.hiveMetastoreTestUtils.createTestTable(dbName,tableName1,tableSdLoc1,Optional.<String>absent());
+  this.hiveMetastoreTestUtils.createTestTable(dbName,tableName2,tableSdLoc2,Optional.<String>absent(),true);
   List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList();
-  Table table1=this.localMetastoreClient.getTable(dbName,tableName1);
-  previousWorkUnitStates.add(createPreviousWus(dbName,tableName1,TimeUnit.MILLISECONDS.convert(table1.getCreateTime(),TimeUnit.SECONDS)));
+  Table table1=this.hiveMetastoreTestUtils.getLocalMetastoreClient().getTable(dbName,tableName1);
+  previousWorkUnitStates.add(ConversionHiveTestUtils.createWus(dbName,tableName1,TimeUnit.MILLISECONDS.convert(table1.getCreateTime(),TimeUnit.SECONDS)));
   SourceState testState=new SourceState(getTestState(dbName),previousWorkUnitStates);
   List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
