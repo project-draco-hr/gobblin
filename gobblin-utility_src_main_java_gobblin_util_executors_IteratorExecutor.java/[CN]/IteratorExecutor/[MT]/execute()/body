@@ -6,8 +6,13 @@
     }
     int activeTasks=0;
     while (this.iterator.hasNext()) {
-      futures.add(this.completionService.submit(this.iterator.next()));
-      activeTasks++;
+      try {
+        futures.add(this.completionService.submit(this.iterator.next()));
+        activeTasks++;
+      }
+ catch (      Exception exception) {
+        futures.add(Futures.<T>immediateFailedFuture(exception));
+      }
       if (activeTasks == this.numThreads) {
         this.completionService.take();
         activeTasks--;

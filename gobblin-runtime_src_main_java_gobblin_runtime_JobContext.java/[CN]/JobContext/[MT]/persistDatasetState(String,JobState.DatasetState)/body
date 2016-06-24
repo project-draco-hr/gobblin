@@ -1,4 +1,0 @@
-{
-  LOG.info("Persisting dataset state for dataset " + datasetUrn);
-  this.datasetStateStore.persistDatasetState(datasetUrn,datasetState);
-}

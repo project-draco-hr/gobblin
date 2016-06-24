@@ -1,0 +1,39 @@
+{
+  Properties jobProps=new Properties();
+  jobProps.setProperty(ConfigurationKeys.JOB_NAME_KEY,"test");
+  jobProps.setProperty(ConfigurationKeys.JOB_ID_KEY,"id");
+  jobProps.setProperty(ConfigurationKeys.METRICS_ENABLED_KEY,"false");
+  Map<String,JobState.DatasetState> datasetStateMap=Maps.newHashMap();
+  for (int i=0; i < 3; i++) {
+    datasetStateMap.put(Integer.toString(i),new JobState.DatasetState());
+  }
+  final BlockingQueue<ControllableCallable<Void>> callables=Queues.newLinkedBlockingQueue();
+  final JobContext jobContext=new ControllableCommitJobContext(jobProps,log,datasetStateMap,new Predicate<String>(){
+    @Override public boolean apply(    @Nullable String input){
+      return !input.equals("1");
+    }
+  }
+,callables);
+  ExecutorService executorService=Executors.newSingleThreadExecutor();
+  Future future=executorService.submit(new Runnable(){
+    @Override public void run(){
+      try {
+        jobContext.commit();
+      }
+ catch (      IOException ioe) {
+        throw new RuntimeException(ioe);
+      }
+    }
+  }
+);
+  callables.poll(1,TimeUnit.SECONDS).unblock();
+  callables.poll(1,TimeUnit.SECONDS).unblock();
+  callables.poll(1,TimeUnit.SECONDS).unblock();
+  try {
+    future.get(1,TimeUnit.SECONDS);
+    Assert.fail();
+  }
+ catch (  ExecutionException ee) {
+  }
+  Assert.assertEquals(jobContext.getJobState().getState(),JobState.RunningState.FAILED);
+}
