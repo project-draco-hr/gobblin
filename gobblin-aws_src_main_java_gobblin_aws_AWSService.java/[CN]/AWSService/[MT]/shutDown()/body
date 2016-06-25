@@ -1,0 +1,20 @@
+{
+  LOGGER.info("Stopping the AWSService");
+  this.shutdownInProgress=true;
+  try {
+    ExecutorsUtils.shutdownExecutorService(this.containerLaunchExecutor,Optional.of(LOGGER));
+  }
+ catch (  Exception e) {
+    LOGGER.error("Failed to shutdown the ApplicationMaster",e);
+  }
+ finally {
+    try {
+      this.closer.close();
+    }
+  finally {
+      if (this.gobblinMetrics.isPresent()) {
+        this.gobblinMetrics.get().stopMetricsReporting();
+      }
+    }
+  }
+}
