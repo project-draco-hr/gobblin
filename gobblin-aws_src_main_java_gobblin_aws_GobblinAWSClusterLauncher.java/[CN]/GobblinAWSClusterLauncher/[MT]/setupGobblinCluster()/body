@@ -5,6 +5,7 @@
   AWSSdkClient.addPermissionsToSecurityGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),securityGroupName,"0.0.0.0/0","tcp",0,65535);
   String keyName="GobblinKey_" + uuid;
   String material=AWSSdkClient.createKeyValuePair(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),keyName);
+  LOGGER.info("Material is: " + material);
   String clusterId=launchClusterMaster(uuid,keyName,securityGroupName);
   launchWorkUnitRunners(uuid,keyName,securityGroupName);
   return clusterId;

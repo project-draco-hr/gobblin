@@ -10,7 +10,6 @@
     if (this.serviceManager.isPresent()) {
       this.serviceManager.get().stopAsync().awaitStopped(5,TimeUnit.MINUTES);
     }
-    ExecutorsUtils.shutdownExecutorService(this.clusterStatusMonitor,Optional.of(LOGGER),5,TimeUnit.MINUTES);
     disconnectHelixManager();
   }
   finally {
