@@ -1,0 +1,6 @@
+{
+  AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
+  CreateAutoScalingGroupRequest createAutoScalingGroupRequest=new CreateAutoScalingGroupRequest().withAutoScalingGroupName(groupName).withLaunchConfigurationName(launchConfig).withMinSize(minSize).withMaxSize(maxSize).withDesiredCapacity(desiredCapacity).withAvailabilityZones(SPLITTER.splitToList(availabilityZones)).withDefaultCooldown(cooldown).withHealthCheckGracePeriod(healthCheckGracePeriod).withHealthCheckType(healthCheckType).withLoadBalancerNames(SPLITTER.splitToList(loadBalancer)).withTags(tag).withTerminationPolicies(SPLITTER.splitToList(terminationPolicy));
+  autoScaling.createAutoScalingGroup(createAutoScalingGroupRequest);
+  LOGGER.info("Created AutoScalingGroup: " + groupName);
+}

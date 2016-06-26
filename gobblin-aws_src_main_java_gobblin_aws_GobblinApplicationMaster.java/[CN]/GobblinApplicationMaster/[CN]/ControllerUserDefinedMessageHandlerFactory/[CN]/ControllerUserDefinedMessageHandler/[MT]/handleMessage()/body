@@ -1,4 +1,0 @@
-{
-  String messageSubType=this._message.getMsgSubType();
-  throw new IllegalArgumentException(String.format("Unknown %s message subtype: %s",Message.MessageType.USER_DEFINE_MSG.toString(),messageSubType));
-}

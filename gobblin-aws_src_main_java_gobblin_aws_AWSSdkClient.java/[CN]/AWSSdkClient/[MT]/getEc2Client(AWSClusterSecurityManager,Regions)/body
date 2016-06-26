@@ -1,0 +1,12 @@
+{
+  String ec2Endpoint=String.format("%s.%s.amazonaws.com",AWS_EC2_SERVICE,region);
+  final AmazonEC2 ec2;
+  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+    ec2=new AmazonEC2Client(awsClusterSecurityManager.getBasicSessionCredentials());
+  }
+ else {
+    ec2=new AmazonEC2Client(awsClusterSecurityManager.getBasicAWSCredentials());
+  }
+  ec2.setEndpoint(ec2Endpoint);
+  return ec2;
+}

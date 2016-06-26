@@ -1,0 +1,7 @@
+{
+  AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
+  IpPermission ipPermission=new IpPermission().withIpRanges(ipRanges).withIpProtocol(ipProtocol).withFromPort(fromPort).withToPort(toPort);
+  AuthorizeSecurityGroupIngressRequest authorizeSecurityGroupIngressRequest=new AuthorizeSecurityGroupIngressRequest().withGroupName(groupName).withIpPermissions(ipPermission);
+  amazonEC2.authorizeSecurityGroupIngress(authorizeSecurityGroupIngressRequest);
+  LOGGER.info("Added permissions: " + ipPermission + " to security group: "+ groupName);
+}

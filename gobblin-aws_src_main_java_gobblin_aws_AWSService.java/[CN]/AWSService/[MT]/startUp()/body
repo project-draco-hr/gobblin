@@ -2,5 +2,4 @@
   LOGGER.info("Starting the AWSService");
   this.eventBus.register(this);
   LOGGER.info("Requesting initial containers");
-  requestInitialContainers(this.initialContainers);
 }

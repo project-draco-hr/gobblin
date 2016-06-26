@@ -1,0 +1,12 @@
+{
+  String autoscalingEndpoint=String.format("%s.%s.amazonaws.com",AWS_ASG_SERVICE,region);
+  final AmazonAutoScaling autoScaling;
+  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+    autoScaling=new AmazonAutoScalingClient(awsClusterSecurityManager.getBasicSessionCredentials());
+  }
+ else {
+    autoScaling=new AmazonAutoScalingClient(awsClusterSecurityManager.getBasicAWSCredentials());
+  }
+  autoScaling.setEndpoint(autoscalingEndpoint);
+  return autoScaling;
+}

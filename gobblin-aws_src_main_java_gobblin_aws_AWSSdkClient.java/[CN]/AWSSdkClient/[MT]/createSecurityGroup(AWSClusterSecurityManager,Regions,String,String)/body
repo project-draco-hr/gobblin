@@ -1,0 +1,11 @@
+{
+  AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
+  try {
+    CreateSecurityGroupRequest securityGroupRequest=new CreateSecurityGroupRequest().withGroupName(groupName).withDescription(description);
+    amazonEC2.createSecurityGroup(securityGroupRequest);
+    LOGGER.info("Created Security Group: " + groupName);
+  }
+ catch (  AmazonServiceException ase) {
+    LOGGER.warn("Issue in creating security group",ase);
+  }
+}

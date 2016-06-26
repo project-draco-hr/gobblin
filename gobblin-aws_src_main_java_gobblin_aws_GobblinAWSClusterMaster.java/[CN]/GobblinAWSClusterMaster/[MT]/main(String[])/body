@@ -1,0 +1,19 @@
+{
+  Options options=buildOptions();
+  try {
+    CommandLine cmd=new DefaultParser().parse(options,args);
+    if (!cmd.hasOption(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME)) {
+      printUsage(options);
+      System.exit(1);
+    }
+    Log4jConfigurationHelper.updateLog4jConfiguration(GobblinAWSClusterMaster.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
+    String applicationId="1";
+    try (GobblinAWSClusterMaster clusterMaster=new GobblinAWSClusterMaster(cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME),applicationId,ConfigFactory.load())){
+      clusterMaster.start();
+    }
+   }
+ catch (  ParseException pe) {
+    printUsage(options);
+    System.exit(1);
+  }
+}

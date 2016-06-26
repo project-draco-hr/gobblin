@@ -1,0 +1,11 @@
+{
+  String uuid=UUID.randomUUID().toString();
+  String securityGroupName="GobblinSecurityGroup_" + uuid;
+  AWSSdkClient.createSecurityGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),securityGroupName,"Gobblin cluster security group");
+  AWSSdkClient.addPermissionsToSecurityGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),securityGroupName,"0.0.0.0/0","tcp",0,65535);
+  String keyName="GobblinKey_" + uuid;
+  String material=AWSSdkClient.createKeyValuePair(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),keyName);
+  String clusterId=launchClusterMaster(uuid,keyName,securityGroupName);
+  launchWorkUnitRunners(uuid,keyName,securityGroupName);
+  return clusterId;
+}

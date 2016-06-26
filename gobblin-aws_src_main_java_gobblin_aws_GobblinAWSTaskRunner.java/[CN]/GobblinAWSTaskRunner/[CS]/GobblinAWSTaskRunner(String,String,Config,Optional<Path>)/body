@@ -1,0 +1,3 @@
+{
+  super(applicationName,helixInstanceName,getApplicationId(),getTaskRunnerId(),config,appWorkDirOptional);
+}

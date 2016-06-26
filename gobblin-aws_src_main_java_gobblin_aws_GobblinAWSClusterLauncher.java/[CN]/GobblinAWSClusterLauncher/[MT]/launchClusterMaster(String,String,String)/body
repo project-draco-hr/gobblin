@@ -1,0 +1,11 @@
+{
+  String userData=buildClusterMasterCommand(this.masterJvmMemory);
+  String launchConfigName="GobblinMasterLaunchConfig_" + uuid;
+  AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),launchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,null,null,null,null,null,userData);
+  int minNumMasters=1;
+  int maxNumMasters=1;
+  int desiredNumMasters=1;
+  Tag tag=new Tag().withKey("GobblinAWSClusterMaster").withValue(uuid);
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),securityGroups,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,null,null,null,null,null,tag,null);
+  return "GobblinClusterMaster_" + uuid;
+}

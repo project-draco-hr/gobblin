@@ -1,0 +1,6 @@
+{
+  AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
+  CreateLaunchConfigurationRequest createLaunchConfigurationRequest=new CreateLaunchConfigurationRequest().withLaunchConfigurationName(launchConfigName).withImageId(imageId).withInstanceType(instanceType).withSecurityGroups(SPLITTER.splitToList(securityGroups)).withKeyName(keyName).withKernelId(kernelId).withRamdiskId(ramdiskId).withBlockDeviceMappings(blockDeviceMapping).withIamInstanceProfile(iamInstanceProfile).withInstanceMonitoring(instanceMonitoring).withUserData(userData);
+  autoScaling.createLaunchConfiguration(createLaunchConfigurationRequest);
+  LOGGER.info("Created Launch Configuration: " + launchConfigName);
+}

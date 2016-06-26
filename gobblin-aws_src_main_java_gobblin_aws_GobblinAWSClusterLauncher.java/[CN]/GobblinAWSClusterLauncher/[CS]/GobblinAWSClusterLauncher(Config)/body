@@ -1,0 +1,24 @@
+{
+  this.config=config;
+  this.clusterName=config.getString(GobblinAWSConfigurationKeys.CLUSTER_NAME_KEY);
+  String zkConnectionString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),GobblinClusterUtils.getHostname(),InstanceType.SPECTATOR,zkConnectionString);
+  this.awsRegion=config.getString(GobblinAWSConfigurationKeys.AWS_REGION);
+  this.masterAmiId=config.getString(GobblinAWSConfigurationKeys.MASTER_AMI_ID);
+  this.masterInstanceType=config.getString(GobblinAWSConfigurationKeys.MASTER_INSTANCE_TYPE);
+  this.masterJvmMemory=config.getString(GobblinAWSConfigurationKeys.MASTER_JVM_MEMORY);
+  this.workerAmiId=config.getString(GobblinAWSConfigurationKeys.WORKER_AMI_ID);
+  this.workerInstanceType=config.getString(GobblinAWSConfigurationKeys.WORKER_INSTANCE_TYPE);
+  this.workerJvmMemory=config.getString(GobblinAWSConfigurationKeys.WORKER_JVM_MEMORY);
+  this.minWorkers=config.getInt(GobblinAWSConfigurationKeys.MIN_WORKERS);
+  this.maxWorkers=config.getInt(GobblinAWSConfigurationKeys.MAX_WORKERS);
+  this.desiredWorkers=config.getInt(GobblinAWSConfigurationKeys.DESIRED_WORKERS);
+  this.clusterStatusMonitor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("GobblinAWSClusterStatusMonitor")));
+  this.clusterReportIntervalMinutes=config.getLong(GobblinAWSConfigurationKeys.CLUSTER_REPORT_INTERVAL_MINUTES_KEY);
+  this.masterJvmArgs=config.hasPath(GobblinAWSConfigurationKeys.MASTER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.MASTER_JVM_ARGS_KEY)) : Optional.<String>absent();
+  this.workerJvmArgs=config.hasPath(GobblinAWSConfigurationKeys.WORKER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.WORKER_JVM_ARGS_KEY)) : Optional.<String>absent();
+  this.sinkLogRootDir=config.getString(GobblinAWSConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY);
+  this.maxGetClusterReportFailures=config.getInt(GobblinAWSConfigurationKeys.MAX_GET_CLUSTER_REPORT_FAILURES_KEY);
+  this.emailNotificationOnShutdown=config.getBoolean(GobblinAWSConfigurationKeys.EMAIL_NOTIFICATION_ON_SHUTDOWN_KEY);
+}

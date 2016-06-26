@@ -1,0 +1,3 @@
+AWSClusterSecurityManager awsClusterSecurityManager
+Regions region
+String keyName

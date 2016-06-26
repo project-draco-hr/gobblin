@@ -1,0 +1,10 @@
+{
+  StringBuilder userDataCmds=new StringBuilder();
+  String clusterWorkerClassName=GobblinAWSClusterMaster.class.getSimpleName();
+  String nfsRoot="/var/gobblin";
+  StringBuilder logDir=new StringBuilder().append(this.sinkLogRootDir).append(File.separator).append("logs");
+  userDataCmds.append("mkdir -p ").append(logDir).append("\n");
+  StringBuilder launchGobblinClusterWorkerCmd=new StringBuilder().append("java").append(" -Xmx").append(memory).append(" ").append(this.workerJvmArgs.or("")).append(" ").append(GobblinAWSTaskRunner.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" --").append(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME).append(" ").append(HelixUtils.getHelixInstanceName(GobblinAWSTaskRunner.class.getSimpleName(),helixInstanceIdGenerator.incrementAndGet())).append(" 1>").append(logDir).append(File.separator).append(clusterWorkerClassName).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(logDir).append(File.separator).append(clusterWorkerClassName).append(".").append(GobblinAWSClusterLauncher.STDERR);
+  userDataCmds.append(launchGobblinClusterWorkerCmd);
+  return userDataCmds.toString();
+}

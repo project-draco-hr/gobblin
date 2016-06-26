@@ -1,0 +1,7 @@
+{
+  String userData=buildClusterWorkerCommand(this.workerJvmMemory);
+  String launchConfigName="GobblinWorkerLaunchConfig_" + uuid;
+  AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),launchConfigName,this.workerAmiId,this.workerInstanceType,keyName,securityGroups,null,null,null,null,null,userData);
+  Tag tag=new Tag().withKey("GobblinClusterWorker").withValue(uuid);
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),securityGroups,launchConfigName,this.minWorkers,this.maxWorkers,this.desiredWorkers,null,null,null,null,null,tag,null);
+}

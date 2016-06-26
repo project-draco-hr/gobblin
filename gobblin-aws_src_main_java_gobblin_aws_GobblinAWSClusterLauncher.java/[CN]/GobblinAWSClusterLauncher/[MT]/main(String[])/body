@@ -1,0 +1,22 @@
+{
+  final GobblinAWSClusterLauncher gobblinAWSClusterLauncher=new GobblinAWSClusterLauncher(ConfigFactory.load());
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      try {
+        gobblinAWSClusterLauncher.stop();
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to shutdown the " + GobblinAWSClusterLauncher.class.getSimpleName(),ioe);
+      }
+catch (      TimeoutException te) {
+        LOGGER.error("Timeout in stopping the service manager",te);
+      }
+ finally {
+        if (gobblinAWSClusterLauncher.emailNotificationOnShutdown) {
+        }
+      }
+    }
+  }
+);
+  gobblinAWSClusterLauncher.launch();
+}
