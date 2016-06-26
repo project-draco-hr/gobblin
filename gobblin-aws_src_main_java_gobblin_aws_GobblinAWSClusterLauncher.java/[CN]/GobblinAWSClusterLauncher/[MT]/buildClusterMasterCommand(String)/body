@@ -1,8 +1,19 @@
 {
   StringBuilder userDataCmds=new StringBuilder();
   String clusterMasterClassName=GobblinAWSClusterMaster.class.getSimpleName();
+  String appRootDir="/home/ec2-user/" + this.clusterName;
+  String nfsShareIps="*";
+  String nfsShareOpts="rw,sync,no_subtree_check,fsid=1,no_root_squash";
+  String nfsShareDirCmd=String.format("echo '%s %s(%s)' | sudo tee --append /etc/exports",appRootDir,nfsShareIps,nfsShareOpts);
+  userDataCmds.append("sudo yum install nfs-utils nfs-utils-lib").append("\n");
+  userDataCmds.append("mkdir -p ").append(appRootDir).append("\n");
+  userDataCmds.append(nfsShareDirCmd).append("\n");
+  userDataCmds.append("sudo /etc/init.d/nfs start").append("\n");
+  userDataCmds.append("sudo exportfs -a").append("\n");
   StringBuilder logDir=new StringBuilder().append(this.sinkLogRootDir).append(File.separator).append("logs");
+  String appWorkDir=GobblinClusterUtils.getAppWorkDirPath(this.clusterName,"1");
   userDataCmds.append("mkdir -p ").append(logDir).append("\n");
+  userDataCmds.append("mkdir -p ").append(appWorkDir).append("\n");
   StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -Xmx").append(memory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" 1>").append(logDir).append(File.separator).append(clusterMasterClassName).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(logDir).append(File.separator).append(clusterMasterClassName).append(".").append(GobblinAWSClusterLauncher.STDERR);
   userDataCmds.append(launchGobblinClusterMasterCmd);
   return userDataCmds.toString();

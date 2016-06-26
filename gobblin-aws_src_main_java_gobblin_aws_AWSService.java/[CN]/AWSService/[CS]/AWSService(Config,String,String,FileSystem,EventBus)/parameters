@@ -1,5 +1,0 @@
-Config config
-String applicationName
-String applicationId
-FileSystem fs
-EventBus eventBus
