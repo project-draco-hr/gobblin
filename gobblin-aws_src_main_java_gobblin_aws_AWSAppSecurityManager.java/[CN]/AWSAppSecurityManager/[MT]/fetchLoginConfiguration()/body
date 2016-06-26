@@ -1,0 +1,10 @@
+{
+  this.serviceAccessKey=config.getString(GobblinAWSConfigurationKeys.SERVICE_ACCESS_KEY);
+  this.serviceSecretKey=config.getString(GobblinAWSConfigurationKeys.SERVICE_CLIENT_KEY);
+  this.clientAssumeRole=config.getBoolean(GobblinAWSConfigurationKeys.CLIENT_ASSUME_ROLE_KEY);
+  if (this.clientAssumeRole) {
+    this.clientRoleArn=config.getString(GobblinAWSConfigurationKeys.CLIENT_ROLE_ARN_KEY);
+    this.clientExternalId=config.getString(GobblinAWSConfigurationKeys.CLIENT_EXTERNAL_ID_KEY);
+    this.clientSessionId=config.getString(GobblinAWSConfigurationKeys.CLIENT_SESSION_ID_KEY);
+  }
+}

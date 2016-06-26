@@ -1,0 +1,5 @@
+{
+  this.config=config;
+  this.refreshIntervalInMinutes=config.getLong(GobblinAWSConfigurationKeys.CREDENTIALS_REFRESH_INTERVAL_IN_MINUTES);
+  this.loginExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("LoginExecutor")));
+}

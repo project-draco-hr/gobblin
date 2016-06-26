@@ -1,0 +1,6 @@
+{
+  if (!this.clientAssumeRole) {
+    throw new IllegalStateException("AWS Security manager is not configured to run on behalf of another AWS user. " + "Use getBasicAWSCredentials() instead");
+  }
+  return this.basicSessionCredentials;
+}

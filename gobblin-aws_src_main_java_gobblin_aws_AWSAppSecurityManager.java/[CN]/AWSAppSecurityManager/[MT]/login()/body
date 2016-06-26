@@ -1,0 +1,10 @@
+{
+  fetchLoginConfiguration();
+  this.basicAWSCredentials=new BasicAWSCredentials(this.serviceAccessKey,this.serviceSecretKey);
+  if (this.clientAssumeRole) {
+    AssumeRoleRequest assumeRoleRequest=new AssumeRoleRequest().withRoleSessionName(this.clientSessionId).withExternalId(this.clientExternalId).withRoleArn(this.clientRoleArn);
+    AWSSecurityTokenServiceClient stsClient=new AWSSecurityTokenServiceClient(this.basicAWSCredentials);
+    AssumeRoleResult assumeRoleResult=stsClient.assumeRole(assumeRoleRequest);
+    this.basicSessionCredentials=new BasicSessionCredentials(assumeRoleResult.getCredentials().getAccessKeyId(),assumeRoleResult.getCredentials().getSecretAccessKey(),assumeRoleResult.getCredentials().getSessionToken());
+  }
+}
