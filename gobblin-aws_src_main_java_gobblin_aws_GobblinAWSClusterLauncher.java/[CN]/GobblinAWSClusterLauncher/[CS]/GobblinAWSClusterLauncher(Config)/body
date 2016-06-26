@@ -16,6 +16,11 @@
   this.desiredWorkers=config.getInt(GobblinAWSConfigurationKeys.DESIRED_WORKERS);
   this.masterJvmArgs=config.hasPath(GobblinAWSConfigurationKeys.MASTER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.MASTER_JVM_ARGS_KEY)) : Optional.<String>absent();
   this.workerJvmArgs=config.hasPath(GobblinAWSConfigurationKeys.WORKER_JVM_ARGS_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.WORKER_JVM_ARGS_KEY)) : Optional.<String>absent();
+  this.nfsParentDir=config.getString(GobblinAWSConfigurationKeys.NFS_PARENT_DIR);
+  this.masterJarsDir=config.getString(GobblinAWSConfigurationKeys.MASTER_JARS_KEY);
+  this.masterClusterConfS3Uri=config.getString(GobblinAWSConfigurationKeys.MASTER_FILES_S3_KEY);
+  this.workerJarsDir=config.getString(GobblinAWSConfigurationKeys.WORKER_JARS_KEY);
+  this.workerClusterConfS3Uri=config.getString(GobblinAWSConfigurationKeys.WORKER_FILES_S3_KEY);
   this.sinkLogRootDir=config.getString(GobblinAWSConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY);
   this.emailNotificationOnShutdown=config.getBoolean(GobblinAWSConfigurationKeys.EMAIL_NOTIFICATION_ON_SHUTDOWN_KEY);
 }
