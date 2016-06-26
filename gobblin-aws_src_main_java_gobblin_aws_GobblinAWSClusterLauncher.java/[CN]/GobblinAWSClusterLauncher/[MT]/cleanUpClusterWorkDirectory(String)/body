@@ -1,0 +1,7 @@
+{
+  File appWorkDir=new File(GobblinClusterUtils.getAppWorkDirPath(this.clusterName,clusterId));
+  if (appWorkDir.exists() && appWorkDir.isDirectory()) {
+    LOGGER.info("Deleting application working directory " + appWorkDir);
+    FileUtils.deleteDirectory(appWorkDir);
+  }
+}

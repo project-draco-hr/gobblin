@@ -1,8 +1,8 @@
 {
   this.eventBus.register(this);
-  String clusterName=this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
-  HelixUtils.createGobblinHelixCluster(this.config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY),clusterName);
-  LOGGER.info("Created Helix cluster " + clusterName);
+  String helixClusterName=this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  HelixUtils.createGobblinHelixCluster(this.config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY),helixClusterName);
+  LOGGER.info("Created Helix cluster " + helixClusterName);
   connectHelixManager();
   List<Service> services=Lists.newArrayList();
   this.awsClusterSecurityManager=new AWSClusterSecurityManager(this.config);

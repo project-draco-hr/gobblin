@@ -4,7 +4,8 @@
   }
   LOGGER.info("Stopping the " + GobblinAWSClusterLauncher.class.getSimpleName());
   try {
-    if (this.clusterId.isPresent() && !this.clusterCompleted) {
+    if (this.clusterId.isPresent()) {
+      sendShutdownRequest();
     }
     if (this.serviceManager.isPresent()) {
       this.serviceManager.get().stopAsync().awaitStopped(5,TimeUnit.MINUTES);
@@ -15,6 +16,7 @@
   finally {
     try {
       if (this.clusterId.isPresent()) {
+        cleanUpClusterWorkDirectory(this.clusterId.get());
       }
     }
   finally {

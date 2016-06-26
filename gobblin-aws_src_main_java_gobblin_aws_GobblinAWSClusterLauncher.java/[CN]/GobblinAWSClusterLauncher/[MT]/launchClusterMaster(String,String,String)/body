@@ -5,7 +5,7 @@
   int minNumMasters=1;
   int maxNumMasters=1;
   int desiredNumMasters=1;
-  Tag tag=new Tag().withKey("GobblinAWSClusterMaster").withValue(uuid);
+  Tag tag=new Tag().withKey("GobblinMaster").withValue(uuid);
   AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),securityGroups,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,null,null,null,null,null,tag,null);
   return "GobblinClusterMaster_" + uuid;
 }

@@ -13,6 +13,7 @@ catch (      TimeoutException te) {
       }
  finally {
         if (gobblinAWSClusterLauncher.emailNotificationOnShutdown) {
+          gobblinAWSClusterLauncher.sendEmailOnShutdown(Optional.<String>absent());
         }
       }
     }
