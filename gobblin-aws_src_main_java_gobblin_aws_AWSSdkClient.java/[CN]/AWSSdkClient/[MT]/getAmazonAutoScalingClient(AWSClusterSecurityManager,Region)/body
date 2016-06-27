@@ -1,0 +1,11 @@
+{
+  final AmazonAutoScaling autoScaling;
+  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+    autoScaling=new AmazonAutoScalingClient(awsClusterSecurityManager.getBasicSessionCredentials());
+  }
+ else {
+    autoScaling=new AmazonAutoScalingClient(awsClusterSecurityManager.getBasicAWSCredentials());
+  }
+  autoScaling.setRegion(region);
+  return autoScaling;
+}

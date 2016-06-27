@@ -1,0 +1,16 @@
+{
+  Closer closer=Closer.create();
+  try {
+    InputStream inputStream=closer.register(targetClass.getResourceAsStream("/" + log4jFileName));
+    Properties originalProperties=new Properties();
+    originalProperties.load(inputStream);
+    LogManager.resetConfiguration();
+    PropertyConfigurator.configure(originalProperties);
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    closer.close();
+  }
+}

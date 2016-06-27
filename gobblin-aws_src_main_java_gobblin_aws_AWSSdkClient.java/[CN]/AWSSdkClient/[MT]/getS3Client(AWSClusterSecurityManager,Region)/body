@@ -1,0 +1,11 @@
+{
+  final AmazonS3 s3;
+  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+    s3=new AmazonS3Client(awsClusterSecurityManager.getBasicSessionCredentials());
+  }
+ else {
+    s3=new AmazonS3Client(awsClusterSecurityManager.getBasicAWSCredentials());
+  }
+  s3.setRegion(region);
+  return s3;
+}

@@ -1,0 +1,11 @@
+{
+  final AmazonEC2 ec2;
+  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+    ec2=new AmazonEC2Client(awsClusterSecurityManager.getBasicSessionCredentials());
+  }
+ else {
+    ec2=new AmazonEC2Client(awsClusterSecurityManager.getBasicAWSCredentials());
+  }
+  ec2.setRegion(region);
+  return ec2;
+}

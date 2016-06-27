@@ -1,0 +1,7 @@
+AWSClusterSecurityManager awsClusterSecurityManager
+Region region
+String groupName
+String ipRanges
+String ipProtocol
+Integer fromPort
+Integer toPort

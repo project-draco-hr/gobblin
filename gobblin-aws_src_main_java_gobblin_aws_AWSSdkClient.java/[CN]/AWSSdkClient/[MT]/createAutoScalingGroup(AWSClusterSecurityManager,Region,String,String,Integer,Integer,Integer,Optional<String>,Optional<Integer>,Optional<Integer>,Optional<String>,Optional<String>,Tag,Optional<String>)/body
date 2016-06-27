@@ -1,0 +1,24 @@
+{
+  AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
+  CreateAutoScalingGroupRequest createAutoScalingGroupRequest=new CreateAutoScalingGroupRequest().withAutoScalingGroupName(groupName).withLaunchConfigurationName(launchConfig).withMinSize(minSize).withMaxSize(maxSize).withDesiredCapacity(desiredCapacity).withTags(tag);
+  if (availabilityZones.isPresent()) {
+    createAutoScalingGroupRequest=createAutoScalingGroupRequest.withAvailabilityZones(SPLITTER.splitToList(availabilityZones.get()));
+  }
+  if (cooldown.isPresent()) {
+    createAutoScalingGroupRequest=createAutoScalingGroupRequest.withDefaultCooldown(cooldown.get());
+  }
+  if (healthCheckGracePeriod.isPresent()) {
+    createAutoScalingGroupRequest=createAutoScalingGroupRequest.withHealthCheckGracePeriod(healthCheckGracePeriod.get());
+  }
+  if (healthCheckType.isPresent()) {
+    createAutoScalingGroupRequest=createAutoScalingGroupRequest.withHealthCheckType(healthCheckType.get());
+  }
+  if (loadBalancer.isPresent()) {
+    createAutoScalingGroupRequest=createAutoScalingGroupRequest.withLoadBalancerNames(SPLITTER.splitToList(loadBalancer.get()));
+  }
+  if (terminationPolicy.isPresent()) {
+    createAutoScalingGroupRequest=createAutoScalingGroupRequest.withTerminationPolicies(SPLITTER.splitToList(terminationPolicy.get()));
+  }
+  autoScaling.createAutoScalingGroup(createAutoScalingGroupRequest);
+  LOGGER.info("Created AutoScalingGroup: " + groupName);
+}

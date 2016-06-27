@@ -1,18 +1,18 @@
 {
   String userData=buildClusterMasterCommand(this.masterJvmMemory);
   String launchConfigName="GobblinMasterLaunchConfig_" + uuid;
-  AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),launchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,null,null,null,null,null,userData);
+  AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),launchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
   int minNumMasters=1;
   int maxNumMasters=1;
   int desiredNumMasters=1;
   String autoscalingGroupName="GobblinMasterASG_" + uuid;
   Tag tag=new Tag().withKey("GobblinMaster").withValue(uuid);
-  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),autoscalingGroupName,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,null,null,null,null,null,tag,null);
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.<String>absent(),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),tag,Optional.<String>absent());
   LOGGER.info("Waiting for cluster master to launch");
   long startTime=System.currentTimeMillis();
   long launchTimeout=TimeUnit.MINUTES.toMillis(10);
   boolean isMasterLaunched=false;
-  List<Instance> instanceIds=null;
+  List<Instance> instanceIds=Collections.emptyList();
   while (!isMasterLaunched && (System.currentTimeMillis() - startTime) < launchTimeout) {
     try {
       Thread.sleep(5000);
@@ -20,7 +20,7 @@
  catch (    InterruptedException e) {
       throw new RuntimeException("Interrupted while waiting for cluster master to boot up",e);
     }
-    instanceIds=AWSSdkClient.getInstancesForGroup(this.awsClusterSecurityManager,Regions.fromName(this.awsRegion),autoscalingGroupName,"running");
+    instanceIds=AWSSdkClient.getInstancesForGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,"running");
     isMasterLaunched=instanceIds.size() > 0;
   }
   if (!isMasterLaunched) {

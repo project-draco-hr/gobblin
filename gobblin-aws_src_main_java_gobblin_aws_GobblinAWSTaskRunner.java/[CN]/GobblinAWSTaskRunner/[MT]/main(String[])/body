@@ -6,7 +6,7 @@
       printUsage(options);
       System.exit(1);
     }
-    Log4jConfigurationHelper.updateLog4jConfiguration(GobblinTaskRunner.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
+    Log4jConfigHelper.updateLog4jConfiguration(GobblinTaskRunner.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
     String applicationName=cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME);
     String helixInstanceName=cmd.getOptionValue(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME);
     GobblinTaskRunner gobblinTaskRunner=new GobblinAWSTaskRunner(applicationName,helixInstanceName,ConfigFactory.load(),Optional.<Path>absent());
