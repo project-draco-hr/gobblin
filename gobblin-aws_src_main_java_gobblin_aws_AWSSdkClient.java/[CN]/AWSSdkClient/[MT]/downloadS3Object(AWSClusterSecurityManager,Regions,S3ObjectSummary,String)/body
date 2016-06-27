@@ -1,0 +1,8 @@
+{
+  final AmazonS3 amazonS3=getS3Client(awsClusterSecurityManager,region);
+  final GetObjectRequest getObjectRequest=new GetObjectRequest(s3ObjectSummary.getBucketName(),s3ObjectSummary.getKey());
+  final S3Object s3Object=amazonS3.getObject(getObjectRequest);
+  final String targetFile=StringUtils.removeEnd(targetDirectory,File.separator) + File.separator + s3Object.getKey();
+  FileUtils.copyInputStreamToFile(s3Object.getObjectContent(),new File(targetFile));
+  LOGGER.info("S3 object downloaded to file: " + targetFile);
+}

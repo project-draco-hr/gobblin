@@ -1,0 +1,4 @@
+AWSClusterSecurityManager awsClusterSecurityManager
+Regions region
+S3ObjectSummary s3ObjectSummary
+String targetDirectory
