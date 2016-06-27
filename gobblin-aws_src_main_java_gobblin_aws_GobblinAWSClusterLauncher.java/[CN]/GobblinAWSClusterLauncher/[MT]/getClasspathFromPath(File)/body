@@ -1,0 +1,9 @@
+{
+  if (null == path) {
+    return StringUtils.EMPTY;
+  }
+  if (!path.isDirectory()) {
+    return path.getAbsolutePath();
+  }
+  return Joiner.on(":").skipNulls().join(path.list(FileFileFilter.FILE));
+}

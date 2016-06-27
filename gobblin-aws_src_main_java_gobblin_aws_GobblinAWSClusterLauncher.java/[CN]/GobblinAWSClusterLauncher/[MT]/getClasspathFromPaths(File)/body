@@ -1,0 +1,15 @@
+{
+  StringBuilder classpath=new StringBuilder();
+  boolean isFirst=true;
+  for (  File path : paths) {
+    if (!isFirst) {
+      classpath.append(":");
+    }
+    String subClasspath=getClasspathFromPath(path);
+    if (subClasspath.length() > 0) {
+      classpath.append(subClasspath);
+      isFirst=false;
+    }
+  }
+  return classpath.toString();
+}

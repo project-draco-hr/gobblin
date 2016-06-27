@@ -1,20 +1,18 @@
 {
   StringBuilder userDataCmds=new StringBuilder();
   String clusterMasterClassName=GobblinAWSClusterMaster.class.getSimpleName();
-  String appRootDir="/home/ec2-user/" + this.clusterName;
-  String nfsShareIps="*";
-  String nfsShareOpts="rw,sync,no_subtree_check,fsid=1,no_root_squash";
-  String nfsShareDirCmd=String.format("echo '%s %s(%s)' | sudo tee --append /etc/exports",appRootDir,nfsShareIps,nfsShareOpts);
-  userDataCmds.append("sudo yum install nfs-utils nfs-utils-lib").append("\n");
-  userDataCmds.append("mkdir -p ").append(appRootDir).append("\n");
+  String nfsDir=this.nfsParentDir + File.separator + this.clusterName;
+  String nfsShareDirCmd=String.format("echo '%s %s(%s)' | sudo tee --append %s",nfsDir,NFS_SHARE_ALL_IPS,NFS_SHARE_DEFAULT_OPTS,NFS_CONF_FILE);
+  userDataCmds.append("mkdir -p ").append(nfsDir).append("\n");
+  userDataCmds.append(NFS_SERVER_INSTALL_CMD).append("\n");
   userDataCmds.append(nfsShareDirCmd).append("\n");
-  userDataCmds.append("sudo /etc/init.d/nfs start").append("\n");
-  userDataCmds.append("sudo exportfs -a").append("\n");
-  StringBuilder logDir=new StringBuilder().append(this.sinkLogRootDir).append(File.separator).append("logs");
-  String appWorkDir=GobblinClusterUtils.getAppWorkDirPath(this.clusterName,"1");
-  userDataCmds.append("mkdir -p ").append(logDir).append("\n");
+  userDataCmds.append(NFS_SERVER_START_CMD).append("\n");
+  userDataCmds.append(NFS_EXPORT_FS_CMD).append("\n");
+  String appWorkDir=this.nfsParentDir + File.separator + GobblinClusterUtils.getAppWorkDirPath(this.clusterName,"1");
+  userDataCmds.append("mkdir -p ").append(this.sinkLogRootDir).append("\n");
   userDataCmds.append("mkdir -p ").append(appWorkDir).append("\n");
-  StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -Xmx").append(memory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" 1>").append(logDir).append(File.separator).append(clusterMasterClassName).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(logDir).append(File.separator).append(clusterMasterClassName).append(".").append(GobblinAWSClusterLauncher.STDERR);
-  userDataCmds.append(launchGobblinClusterMasterCmd);
+  String classpath=getClasspathFromPaths(new File(this.masterConfLocalDir),new File(this.masterJarsDir),new File(this.libJarsDir));
+  StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx ").append(memory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" 1>").append(this.sinkLogRootDir).append(File.separator).append(clusterMasterClassName).append(".").append(this.masterPublicIp).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(File.separator).append(clusterMasterClassName).append(".").append(this.masterPublicIp).append(".").append(GobblinAWSClusterLauncher.STDERR);
+  userDataCmds.append(launchGobblinClusterMasterCmd).append("\n");
   return userDataCmds.toString();
 }
