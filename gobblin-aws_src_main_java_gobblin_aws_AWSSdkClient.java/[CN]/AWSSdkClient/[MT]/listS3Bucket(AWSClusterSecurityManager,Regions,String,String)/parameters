@@ -1,0 +1,4 @@
+AWSClusterSecurityManager awsClusterSecurityManager
+Regions region
+String bucketName
+String prefix
