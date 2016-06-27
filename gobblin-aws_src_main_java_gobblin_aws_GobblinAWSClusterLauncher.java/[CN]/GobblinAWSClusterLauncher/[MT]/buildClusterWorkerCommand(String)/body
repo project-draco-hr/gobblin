@@ -6,7 +6,30 @@
   userDataCmds.append("mkdir -p ").append(nfsDir).append("\n");
   userDataCmds.append(nfsMountCmd).append("\n");
   userDataCmds.append("mkdir -p ").append(this.sinkLogRootDir).append("\n");
-  String classpath=getClasspathFromPaths(new File(this.workerConfLocalDir),new File(this.workerJarsDir),new File(this.libJarsDir));
+  StringBuilder classpath=new StringBuilder();
+  boolean isFirstClassPathComponent=true;
+  List<String> awsConfS3Uris=SPLITTER.splitToList(this.workerClusterConfS3Uris);
+  for (  String s3Uri : awsConfS3Uris) {
+    userDataCmds.append(String.format("wget --directory-prefix=%s %s",this.awsConfDir,s3Uri));
+    if (isFirstClassPathComponent) {
+      isFirstClassPathComponent=false;
+    }
+ else {
+      classpath.append(":");
+    }
+    classpath.append(this.awsConfDir).append(File.separator).append(StringUtils.substringAfterLast(s3Uri,File.separator));
+  }
+  List<String> awsJarsS3Uris=SPLITTER.splitToList(this.workerClusterJarsS3Uris);
+  for (  String s3Uri : awsJarsS3Uris) {
+    userDataCmds.append(String.format("wget --directory-prefix=%s %s",this.workerJarsDir,s3Uri));
+    if (isFirstClassPathComponent) {
+      isFirstClassPathComponent=false;
+    }
+ else {
+      classpath.append(":");
+    }
+    classpath.append(this.workerJarsDir).append(File.separator).append(StringUtils.substringAfterLast(s3Uri,File.separator));
+  }
   String helixInstanceName=HelixUtils.getHelixInstanceName(GobblinAWSTaskRunner.class.getSimpleName(),helixInstanceIdGenerator.incrementAndGet());
   StringBuilder launchGobblinClusterWorkerCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx ").append(memory).append(" ").append(this.workerJvmArgs.or("")).append(" ").append(GobblinAWSTaskRunner.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" --").append(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME).append(" ").append(helixInstanceName).append(" 1>").append(this.sinkLogRootDir).append(File.separator).append(clusterWorkerClassName).append(".").append(helixInstanceName).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(File.separator).append(clusterWorkerClassName).append(".").append(helixInstanceName).append(".").append(GobblinAWSClusterLauncher.STDERR);
   userDataCmds.append(launchGobblinClusterWorkerCmd);

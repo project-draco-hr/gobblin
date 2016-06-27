@@ -11,7 +11,30 @@
   String appWorkDir=this.nfsParentDir + File.separator + GobblinClusterUtils.getAppWorkDirPath(this.clusterName,"1");
   userDataCmds.append("mkdir -p ").append(this.sinkLogRootDir).append("\n");
   userDataCmds.append("mkdir -p ").append(appWorkDir).append("\n");
-  String classpath=getClasspathFromPaths(new File(this.masterConfLocalDir),new File(this.masterJarsDir),new File(this.libJarsDir));
+  StringBuilder classpath=new StringBuilder();
+  boolean isFirstClassPathComponent=true;
+  List<String> awsConfS3Uris=SPLITTER.splitToList(this.masterClusterConfS3Uris);
+  for (  String s3Uri : awsConfS3Uris) {
+    userDataCmds.append(String.format("wget --directory-prefix=%s %s",this.awsConfDir,s3Uri));
+    if (isFirstClassPathComponent) {
+      isFirstClassPathComponent=false;
+    }
+ else {
+      classpath.append(":");
+    }
+    classpath.append(this.awsConfDir).append(File.separator).append(StringUtils.substringAfterLast(s3Uri,File.separator));
+  }
+  List<String> awsJarsS3Uris=SPLITTER.splitToList(this.masterClusterJarsS3Uris);
+  for (  String s3Uri : awsJarsS3Uris) {
+    userDataCmds.append(String.format("wget --directory-prefix=%s %s",this.masterJarsDir,s3Uri));
+    if (isFirstClassPathComponent) {
+      isFirstClassPathComponent=false;
+    }
+ else {
+      classpath.append(":");
+    }
+    classpath.append(this.masterJarsDir).append(File.separator).append(StringUtils.substringAfterLast(s3Uri,File.separator));
+  }
   StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx ").append(memory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" 1>").append(this.sinkLogRootDir).append(File.separator).append(clusterMasterClassName).append(".").append(this.masterPublicIp).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(File.separator).append(clusterMasterClassName).append(".").append(this.masterPublicIp).append(".").append(GobblinAWSClusterLauncher.STDERR);
   userDataCmds.append(launchGobblinClusterMasterCmd).append("\n");
   return userDataCmds.toString();

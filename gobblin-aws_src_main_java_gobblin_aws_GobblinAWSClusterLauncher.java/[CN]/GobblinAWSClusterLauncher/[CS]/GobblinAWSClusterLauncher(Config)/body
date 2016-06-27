@@ -5,6 +5,7 @@
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
   this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),GobblinClusterUtils.getHostname(),InstanceType.SPECTATOR,zkConnectionString);
   this.awsRegion=config.getString(GobblinAWSConfigurationKeys.AWS_REGION_KEY);
+  this.awsConfDir=config.getString(GobblinAWSConfigurationKeys.AWS_CONF_DIR);
   this.masterAmiId=config.getString(GobblinAWSConfigurationKeys.MASTER_AMI_ID_KEY);
   this.masterInstanceType=config.getString(GobblinAWSConfigurationKeys.MASTER_INSTANCE_TYPE_KEY);
   this.masterJvmMemory=config.getString(GobblinAWSConfigurationKeys.MASTER_JVM_MEMORY_KEY);
@@ -19,10 +20,12 @@
   this.nfsParentDir=config.getString(GobblinAWSConfigurationKeys.NFS_PARENT_DIR_KEY);
   this.masterJarsDir=config.getString(GobblinAWSConfigurationKeys.MASTER_JARS_KEY);
   this.masterConfLocalDir=config.getString(GobblinAWSConfigurationKeys.MASTER_CONF_LOCAL_KEY);
-  this.masterClusterConfS3Uri=config.getString(GobblinAWSConfigurationKeys.MASTER_FILES_S3_KEY);
+  this.masterClusterConfS3Uris=config.getString(GobblinAWSConfigurationKeys.MASTER_CONF_S3_KEY);
+  this.masterClusterJarsS3Uris=config.getString(GobblinAWSConfigurationKeys.MASTER_JARS_S3_KEY);
   this.workerJarsDir=config.getString(GobblinAWSConfigurationKeys.WORKER_JARS_KEY);
   this.workerConfLocalDir=config.getString(GobblinAWSConfigurationKeys.WORKER_CONF_LOCAL_KEY);
-  this.workerClusterConfS3Uri=config.getString(GobblinAWSConfigurationKeys.WORKER_FILES_S3_KEY);
+  this.workerClusterConfS3Uris=config.getString(GobblinAWSConfigurationKeys.WORKER_CONF_S3_KEY);
+  this.workerClusterJarsS3Uris=config.getString(GobblinAWSConfigurationKeys.WORKER_JARS_S3_KEY);
   this.libJarsDir=config.getString(GobblinAWSConfigurationKeys.LIB_JARS_DIR_KEY);
   this.sinkLogRootDir=config.getString(GobblinAWSConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY);
   this.emailNotificationOnShutdown=config.getBoolean(GobblinAWSConfigurationKeys.EMAIL_NOTIFICATION_ON_SHUTDOWN_KEY);
