@@ -1,0 +1,10 @@
+{
+  String value=workUnitState.getWorkunit().getProp(key);
+  if (StringUtils.isBlank(value)) {
+    value=workUnitState.getProp(key);
+  }
+  if (StringUtils.isBlank(value)) {
+    value=workUnitState.getJobState().getProp(key);
+  }
+  return value;
+}

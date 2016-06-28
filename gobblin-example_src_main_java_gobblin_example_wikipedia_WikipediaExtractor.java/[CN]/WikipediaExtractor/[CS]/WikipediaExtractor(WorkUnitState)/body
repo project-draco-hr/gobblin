@@ -1,9 +1,11 @@
 {
+  LOG.info("WorkUnitState received: " + workUnitState);
+  this.workUnitState=workUnitState;
   this.workUnit=workUnitState.getWorkunit();
-  this.rootUrl=this.workUnit.getProp(WIKIPEDIA_API_ROOTURL);
-  this.schema=this.workUnit.getProp(WIKIPEDIA_AVRO_SCHEMA);
-  this.requestedTitles=new LinkedList<>(SPLITTER.splitToList(this.workUnit.getProp(SOURCE_PAGE_TITLES)));
-  this.revisionsCnt=Integer.parseInt(this.workUnit.getProp(SOURCE_REVISIONS_CNT));
+  this.rootUrl=readProp(WIKIPEDIA_API_ROOTURL,workUnitState);
+  this.schema=readProp(WIKIPEDIA_AVRO_SCHEMA,workUnitState);
+  this.requestedTitles=new LinkedList<>(SPLITTER.splitToList(readProp(SOURCE_PAGE_TITLES,workUnitState)));
+  this.revisionsCnt=Integer.parseInt(readProp(SOURCE_REVISIONS_CNT,workUnitState));
   this.numRequestedTitles=this.requestedTitles.size();
   if (this.requestedTitles.isEmpty()) {
     this.recordsOfCurrentTitle=new LinkedList<>();
