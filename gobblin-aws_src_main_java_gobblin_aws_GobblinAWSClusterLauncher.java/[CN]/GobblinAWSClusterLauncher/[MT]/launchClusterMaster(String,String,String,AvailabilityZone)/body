@@ -7,7 +7,7 @@
   int desiredNumMasters=1;
   String autoscalingGroupName="GobblinMasterASG_" + uuid;
   Tag tag=new Tag().withKey("GobblinMaster").withValue(uuid);
-  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),tag,Optional.<String>absent());
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(tag));
   LOGGER.info("Waiting for cluster master to launch");
   long startTime=System.currentTimeMillis();
   long launchTimeout=TimeUnit.MINUTES.toMillis(10);

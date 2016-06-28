@@ -4,5 +4,5 @@
   AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),launchConfigName,this.workerAmiId,this.workerInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
   String autoscalingGroupName="GobblinWorkerASG_" + uuid;
   Tag tag=new Tag().withKey("GobblinWorker").withValue(uuid);
-  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,this.minWorkers,this.maxWorkers,this.desiredWorkers,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),tag,Optional.<String>absent());
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,this.minWorkers,this.maxWorkers,this.desiredWorkers,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(tag));
 }

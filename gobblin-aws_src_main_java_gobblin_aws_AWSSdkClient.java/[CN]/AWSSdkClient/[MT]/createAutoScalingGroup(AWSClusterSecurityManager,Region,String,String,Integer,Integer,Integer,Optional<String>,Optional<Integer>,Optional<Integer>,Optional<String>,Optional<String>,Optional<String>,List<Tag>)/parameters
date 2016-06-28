@@ -10,5 +10,5 @@ Optional<Integer> cooldown
 Optional<Integer> healthCheckGracePeriod
 Optional<String> healthCheckType
 Optional<String> loadBalancer
-Tag tag
 Optional<String> terminationPolicy
+List<Tag> tags
