@@ -1,5 +1,6 @@
 {
   super(eventBus,config);
   this.jobConfFiles=Maps.newHashMap();
-  this.jobConfS3Uri=config.hasPath(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY)) : Optional.<String>absent();
+  this.refreshIntervalInMinutes=config.getLong(GobblinAWSConfigurationKeys.JOB_CONF_REFRESH_INTERVAL_IN_MINUTES);
+  this.fetchJobConfExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("FetchJobConfExecutor")));
 }

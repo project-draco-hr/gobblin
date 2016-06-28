@@ -1,35 +1,16 @@
 {
-  if (this.jobConfS3Uri.isPresent() && this.jobConfDirPath.isPresent()) {
-    FileUtils.copyURLToFile(new URL(this.jobConfS3Uri.get()),new File(this.jobConfDirPath.get()));
-    String zipFile=appendSlash(this.jobConfDirPath.get()) + StringUtils.substringAfterLast(this.jobConfS3Uri.get(),File.separator);
-    String extractedPullFilesPath=appendSlash(this.jobConfDirPath.get()) + "files";
-    unzipArchive(zipFile,new File(extractedPullFilesPath));
-    File jobConfigDir=new File(extractedPullFilesPath);
-    if (jobConfigDir.exists()) {
-      LOGGER.info("Loading job configurations from " + jobConfigDir);
-      Properties properties=new Properties();
-      properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,jobConfigDir.getAbsolutePath());
-      List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
-      LOGGER.info("Loaded " + jobConfigs.size() + " job configuration(s)");
-      for (      Properties config : jobConfigs) {
-        String jobConfigPathIdentifier=config.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY);
-        if (!jobConfFiles.containsKey(jobConfigPathIdentifier)) {
-          jobConfFiles.put(jobConfigPathIdentifier,config);
-          postNewJobConfigArrival(config.getProperty(ConfigurationKeys.JOB_NAME_KEY),config);
-          LOGGER.info("New config arrived for job: " + jobConfigPathIdentifier);
-        }
- else         if (!config.equals(jobConfFiles.get(jobConfigPathIdentifier))) {
-          jobConfFiles.put(jobConfigPathIdentifier,config);
-          postNewJobConfigArrival(config.getProperty(ConfigurationKeys.JOB_NAME_KEY),config);
-          LOGGER.info("Config updated for job: " + jobConfigPathIdentifier);
-        }
- else {
-          LOGGER.info("Config not changed for job: " + jobConfigPathIdentifier);
-        }
+  LOGGER.info("Starting the " + AWSJobConfigurationManager.class.getSimpleName());
+  LOGGER.info(String.format("Scheduling the job configuration refresh task with an interval of %d minute(s)",this.refreshIntervalInMinutes));
+  this.fetchJobConfExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        fetchJobConf();
+      }
+ catch (      IOException|ConfigurationException e) {
+        LOGGER.error("Failed to fetch job configurations",e);
+        throw Throwables.propagate(e);
       }
     }
- else {
-      LOGGER.warn("Job configuration directory " + jobConfigDir + " not found");
-    }
   }
+,0,this.refreshIntervalInMinutes,TimeUnit.MINUTES);
 }
