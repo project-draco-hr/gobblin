@@ -1,0 +1,7 @@
+{
+  AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
+  final DescribeAvailabilityZonesResult describeAvailabilityZonesResult=amazonEC2.describeAvailabilityZones();
+  final List<AvailabilityZone> availabilityZones=describeAvailabilityZonesResult.getAvailabilityZones();
+  LOGGER.info("Found: " + availabilityZones.size() + " availability zone");
+  return availabilityZones;
+}

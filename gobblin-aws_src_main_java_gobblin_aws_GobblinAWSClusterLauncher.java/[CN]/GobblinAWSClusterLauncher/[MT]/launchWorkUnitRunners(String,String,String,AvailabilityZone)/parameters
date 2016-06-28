@@ -1,3 +1,4 @@
 String uuid
 String keyName
 String securityGroups
+AvailabilityZone availabilityZone

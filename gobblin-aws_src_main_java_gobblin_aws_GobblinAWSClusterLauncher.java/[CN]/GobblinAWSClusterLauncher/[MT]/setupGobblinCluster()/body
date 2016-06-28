@@ -7,7 +7,8 @@
   String material=AWSSdkClient.createKeyValuePair(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),keyName);
   LOGGER.info("Material is: " + material);
   FileUtils.writeStringToFile(new File(keyName + ".pem"),material);
-  String clusterId=launchClusterMaster(uuid,keyName,securityGroupName);
-  launchWorkUnitRunners(uuid,keyName,securityGroupName);
+  List<AvailabilityZone> availabilityZones=AWSSdkClient.getAvailabilityZones(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)));
+  String clusterId=launchClusterMaster(uuid,keyName,securityGroupName,availabilityZones.get(0));
+  launchWorkUnitRunners(uuid,keyName,securityGroupName,availabilityZones.get(0));
   return clusterId;
 }
