@@ -1,0 +1,5 @@
+{
+  super(eventBus,config);
+  this.jobConfFiles=Maps.newHashMap();
+  this.jobConfS3Uri=config.hasPath(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY)) : Optional.<String>absent();
+}

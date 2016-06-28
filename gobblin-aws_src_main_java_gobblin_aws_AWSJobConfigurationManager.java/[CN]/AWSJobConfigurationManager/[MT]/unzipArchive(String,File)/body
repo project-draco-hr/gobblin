@@ -1,0 +1,26 @@
+{
+  try (ZipFile zipFile=new ZipFile(file)){
+    Enumeration<? extends ZipEntry> entries=zipFile.entries();
+    while (entries.hasMoreElements()) {
+      ZipEntry entry=entries.nextElement();
+      File entryDestination=new File(outputDir,entry.getName());
+      if (entry.isDirectory()) {
+        entryDestination.mkdirs();
+      }
+ else {
+        entryDestination.getParentFile().mkdirs();
+        InputStream in=null;
+        OutputStream out=null;
+        try {
+          in=zipFile.getInputStream(entry);
+          out=new FileOutputStream(entryDestination);
+          IOUtils.copy(in,out);
+        }
+  finally {
+          if (null != in)           IOUtils.closeQuietly(in);
+          if (null != out)           IOUtils.closeQuietly(out);
+        }
+      }
+    }
+  }
+ }

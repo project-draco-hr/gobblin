@@ -17,6 +17,7 @@
  finally {
     closer.close();
   }
-  this.jobConfigurationManager=new JobConfigurationManager(this.eventBus,Optional.of(JOB_CONFIG_DIR_NAME));
+  Config config=ConfigFactory.empty().withValue(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY,ConfigValueFactory.fromAnyRef(JOB_CONFIG_DIR_NAME));
+  this.jobConfigurationManager=new JobConfigurationManager(this.eventBus,config);
   this.jobConfigurationManager.startAsync().awaitRunning();
 }
