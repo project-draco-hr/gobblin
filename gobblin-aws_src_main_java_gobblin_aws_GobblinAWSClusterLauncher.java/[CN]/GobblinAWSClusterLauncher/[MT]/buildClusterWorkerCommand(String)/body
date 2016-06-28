@@ -1,6 +1,6 @@
 {
   StringBuilder userDataCmds=new StringBuilder().append("#!/bin/bash").append("\n");
-  String clusterWorkerClassName=GobblinAWSClusterMaster.class.getSimpleName();
+  String clusterWorkerClassName=GobblinAWSTaskRunner.class.getSimpleName();
   String nfsDir=this.nfsParentDir + this.clusterName;
   String nfsMountCmd=String.format("mount -t %s %s:%s %s",NFS_TYPE_4,this.masterPublicIp,nfsDir,nfsDir);
   userDataCmds.append("mkdir -p ").append(nfsDir).append("\n");
