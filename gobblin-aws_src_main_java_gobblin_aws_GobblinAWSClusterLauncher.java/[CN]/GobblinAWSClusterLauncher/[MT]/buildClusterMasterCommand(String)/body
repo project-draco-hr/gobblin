@@ -1,14 +1,15 @@
 {
-  StringBuilder userDataCmds=new StringBuilder();
+  StringBuilder userDataCmds=new StringBuilder().append("#!/bin/bash").append("\n");
   String clusterMasterClassName=GobblinAWSClusterMaster.class.getSimpleName();
   String nfsDir=this.nfsParentDir + this.clusterName;
-  String nfsShareDirCmd=String.format("echo '%s %s(%s)' | sudo tee --append %s",nfsDir,NFS_SHARE_ALL_IPS,NFS_SHARE_DEFAULT_OPTS,NFS_CONF_FILE);
+  String nfsShareDirCmd=String.format("echo '%s %s(%s)' | tee --append %s",nfsDir,NFS_SHARE_ALL_IPS,NFS_SHARE_DEFAULT_OPTS,NFS_CONF_FILE);
   userDataCmds.append("mkdir -p ").append(nfsDir).append(File.separator).append("1").append("\n");
   userDataCmds.append(NFS_SERVER_INSTALL_CMD).append("\n");
   userDataCmds.append(nfsShareDirCmd).append("\n");
   userDataCmds.append(NFS_SERVER_START_CMD).append("\n");
   userDataCmds.append(NFS_EXPORT_FS_CMD).append("\n");
   userDataCmds.append("mkdir -p ").append(this.sinkLogRootDir).append("\n");
+  userDataCmds.append("chown -R ec2-user:ec2-user /home/ec2-user/*").append("\n");
   userDataCmds.append("cgS3=").append(this.masterS3ConfUri).append("\n");
   userDataCmds.append("cg=").append(this.awsConfDir).append("\n");
   userDataCmds.append("jrS3=").append(this.masterS3JarsUri).append("\n");

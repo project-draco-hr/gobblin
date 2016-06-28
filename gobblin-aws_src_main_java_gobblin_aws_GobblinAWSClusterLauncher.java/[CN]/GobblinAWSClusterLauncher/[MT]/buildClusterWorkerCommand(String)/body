@@ -1,11 +1,12 @@
 {
-  StringBuilder userDataCmds=new StringBuilder();
+  StringBuilder userDataCmds=new StringBuilder().append("#!/bin/bash").append("\n");
   String clusterWorkerClassName=GobblinAWSClusterMaster.class.getSimpleName();
   String nfsDir=this.nfsParentDir + this.clusterName;
-  String nfsMountCmd=String.format("sudo mount -t %s %s:%s %s",NFS_TYPE_4,this.masterPublicIp,nfsDir,nfsDir);
+  String nfsMountCmd=String.format("mount -t %s %s:%s %s",NFS_TYPE_4,this.masterPublicIp,nfsDir,nfsDir);
   userDataCmds.append("mkdir -p ").append(nfsDir).append("\n");
   userDataCmds.append(nfsMountCmd).append("\n");
   userDataCmds.append("mkdir -p ").append(this.sinkLogRootDir).append("\n");
+  userDataCmds.append("chown -R ec2-user:ec2-user /home/ec2-user/*").append("\n");
   userDataCmds.append("cgS3=").append(this.workerS3ConfUri).append("\n");
   userDataCmds.append("cg=").append(this.awsConfDir).append("\n");
   userDataCmds.append("jrS3=").append(this.workerS3JarsUri).append("\n");
