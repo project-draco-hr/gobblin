@@ -1,0 +1,6 @@
+{
+  if (table.getTableName().equals(THROW_EXCEPTION)) {
+    throw new IOException("bad table");
+  }
+  return new HiveDataset(super.fs,super.clientPool,new org.apache.hadoop.hive.ql.metadata.Table(table),config);
+}

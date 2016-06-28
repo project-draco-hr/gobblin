@@ -12,4 +12,8 @@
     this.whitelistBlacklist=new WhitelistBlacklist(config.getConfig(HIVE_DATASET_PREFIX));
   }
   this.eventSubmitter=Optional.fromNullable(eventSubmitter);
+  this.configStoreUri=Optional.fromNullable(properties.getProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI));
+  this.datasetConfigPrefix=properties.getProperty(HIVE_DATASET_CONIFG_PREFIX_KEY,DEFAULT_HIVE_DATASET_CONIFG_PREFIX);
+  this.configClient=ConfigClientCache.getClient(VersionStabilityPolicy.STRONG_LOCAL_STABILITY);
+  this.jobConfig=ConfigUtils.propertiesToConfig(properties);
 }

@@ -1,7 +1,7 @@
 {
-  pattern=pattern.replace(databaseToken,database);
-  if (pattern.contains(tableToken)) {
-    pattern=pattern.replace(tableToken,table);
+  pattern=pattern.replace(HiveDataset.DATABASE_TOKEN,database);
+  if (pattern.contains(HiveDataset.TABLE_TOKEN)) {
+    pattern=pattern.replace(HiveDataset.TABLE_TOKEN,table);
     return new Path(pattern);
   }
  else {
