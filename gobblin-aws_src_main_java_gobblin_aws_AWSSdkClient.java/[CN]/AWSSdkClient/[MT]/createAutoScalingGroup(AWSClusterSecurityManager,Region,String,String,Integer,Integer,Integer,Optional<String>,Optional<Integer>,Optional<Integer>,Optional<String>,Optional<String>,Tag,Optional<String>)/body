@@ -1,6 +1,7 @@
 {
   AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
-  CreateAutoScalingGroupRequest createAutoScalingGroupRequest=new CreateAutoScalingGroupRequest().withAutoScalingGroupName(groupName).withLaunchConfigurationName(launchConfig).withMinSize(minSize).withMaxSize(maxSize).withDesiredCapacity(desiredCapacity).withTags(tag);
+  Tag propagateAtLaunch=new Tag().withPropagateAtLaunch(true);
+  CreateAutoScalingGroupRequest createAutoScalingGroupRequest=new CreateAutoScalingGroupRequest().withAutoScalingGroupName(groupName).withLaunchConfigurationName(launchConfig).withMinSize(minSize).withMaxSize(maxSize).withDesiredCapacity(desiredCapacity).withTags(tag,propagateAtLaunch);
   if (availabilityZones.isPresent()) {
     createAutoScalingGroupRequest=createAutoScalingGroupRequest.withAvailabilityZones(SPLITTER.splitToList(availabilityZones.get()));
   }
