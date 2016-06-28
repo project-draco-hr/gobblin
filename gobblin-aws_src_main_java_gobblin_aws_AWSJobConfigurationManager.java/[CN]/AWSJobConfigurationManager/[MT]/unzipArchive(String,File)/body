@@ -5,12 +5,12 @@
       ZipEntry entry=entries.nextElement();
       File entryDestination=new File(outputDir,entry.getName());
       if (entry.isDirectory()) {
-        if (!entryDestination.mkdirs()) {
+        if (!entryDestination.mkdirs() && !entryDestination.exists()) {
           throw new IOException("Could not create directory: " + entryDestination + " while un-archiving zip: "+ file);
         }
       }
  else {
-        if (!entryDestination.getParentFile().mkdirs()) {
+        if (!entryDestination.getParentFile().mkdirs() && !entryDestination.getParentFile().exists()) {
           throw new IOException("Could not create parent directory for: " + entryDestination + " while un-archiving zip: "+ file);
         }
         InputStream in=null;

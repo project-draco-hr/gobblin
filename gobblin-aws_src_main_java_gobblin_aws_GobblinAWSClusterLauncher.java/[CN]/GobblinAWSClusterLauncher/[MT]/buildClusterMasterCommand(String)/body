@@ -25,7 +25,7 @@
     userDataCmds.append(String.format("wget -P \"${jr}\" \"${jrS3}\"%s",awsJar)).append("\n");
   }
   classpath.append(":").append(this.masterJarsDir).append("*");
-  StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(memory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" 1>").append(this.sinkLogRootDir).append(clusterMasterClassName).append(".").append(this.masterPublicIp).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(clusterMasterClassName).append(".").append(this.masterPublicIp).append(".").append(GobblinAWSClusterLauncher.STDERR);
+  StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(memory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" 1>").append(this.sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(GobblinAWSClusterLauncher.STDERR);
   userDataCmds.append(launchGobblinClusterMasterCmd).append("\n");
   String userData=userDataCmds.toString();
   LOGGER.info("Userdata for master node: " + userData);
