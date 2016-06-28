@@ -2,13 +2,14 @@
   Options options=buildOptions();
   try {
     CommandLine cmd=new DefaultParser().parse(options,args);
-    if (!cmd.hasOption(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME)) {
+    if (!cmd.hasOption(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME) || !cmd.hasOption(GobblinAWSConfigurationKeys.APP_WORK_DIR)) {
       printUsage(options);
       System.exit(1);
     }
     Log4jConfigHelper.updateLog4jConfiguration(GobblinAWSClusterMaster.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
     String applicationId="1";
-    try (GobblinAWSClusterMaster clusterMaster=new GobblinAWSClusterMaster(cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME),applicationId,ConfigFactory.load())){
+    String appWorkDir=cmd.getOptionValue(GobblinAWSConfigurationKeys.APP_WORK_DIR);
+    try (GobblinAWSClusterMaster clusterMaster=new GobblinAWSClusterMaster(cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME),applicationId,ConfigFactory.load(),Optional.of(new Path(appWorkDir)))){
       clusterMaster.start();
     }
    }

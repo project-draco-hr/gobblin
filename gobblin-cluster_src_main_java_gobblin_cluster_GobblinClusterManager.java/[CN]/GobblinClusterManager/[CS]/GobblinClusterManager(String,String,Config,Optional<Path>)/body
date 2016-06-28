@@ -9,7 +9,7 @@
   LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
   this.helixManager=buildHelixManager(config,zkConnectionString);
   this.fs=buildFileSystem(config);
-  this.appWorkDir=GobblinClusterUtils.getAppWorkDirPath(this.fs,clusterName,applicationId);
+  this.appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : GobblinClusterUtils.getAppWorkDirPath(this.fs,clusterName,applicationId);
   this.applicationLauncher.addService(buildGobblinHelixJobScheduler(config,this.appWorkDir,getMetadataTags(clusterName,applicationId)));
   this.applicationLauncher.addService(buildJobConfigurationManager(config));
 }

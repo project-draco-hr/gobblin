@@ -32,5 +32,6 @@
   this.workerS3JarsFiles=config.getString(GobblinAWSConfigurationKeys.WORKER_S3_JARS_FILES_KEY);
   this.libJarsDir=appendSlash(config.getString(GobblinAWSConfigurationKeys.LIB_JARS_DIR_KEY));
   this.sinkLogRootDir=appendSlash(config.getString(GobblinAWSConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY));
+  this.appWorkDir=appendSlash(config.getString(GobblinAWSConfigurationKeys.APP_WORK_DIR));
   this.emailNotificationOnShutdown=config.getBoolean(GobblinAWSConfigurationKeys.EMAIL_NOTIFICATION_ON_SHUTDOWN_KEY);
 }

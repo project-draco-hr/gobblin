@@ -1,5 +1,5 @@
 {
-  super(applicationName,containerId.getApplicationAttemptId().getApplicationId().toString(),config);
+  super(applicationName,containerId.getApplicationAttemptId().getApplicationId().toString(),config,Optional.<Path>absent());
   GobblinYarnLogSource gobblinYarnLogSource=new GobblinYarnLogSource();
   if (gobblinYarnLogSource.isLogSourcePresent()) {
     this.applicationLauncher.addService(gobblinYarnLogSource.buildLogCopier(config,containerId,this.fs,this.appWorkDir));
