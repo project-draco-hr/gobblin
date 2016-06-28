@@ -22,7 +22,7 @@
     userDataCmds.append(String.format("wget -P \"${jr}\" \"${jrS3}\"%s",awsJar)).append("\n");
   }
   classpath.append(":").append(this.workerJarsDir).append("*");
-  String helixInstanceName=HelixUtils.getHelixInstanceName(GobblinAWSTaskRunner.class.getSimpleName(),helixInstanceIdGenerator.incrementAndGet());
+  String helixInstanceName=GobblinAWSTaskRunner.class.getSimpleName() + UUID.randomUUID().toString();
   StringBuilder launchGobblinClusterWorkerCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(memory).append(" ").append(this.workerJvmArgs.or("")).append(" ").append(GobblinAWSTaskRunner.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" --").append(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME).append(" ").append(helixInstanceName).append(" 1>").append(this.sinkLogRootDir).append(clusterWorkerClassName).append(".").append(helixInstanceName).append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(clusterWorkerClassName).append(".").append(helixInstanceName).append(".").append(GobblinAWSClusterLauncher.STDERR);
   userDataCmds.append(launchGobblinClusterWorkerCmd);
   String userData=userDataCmds.toString();
