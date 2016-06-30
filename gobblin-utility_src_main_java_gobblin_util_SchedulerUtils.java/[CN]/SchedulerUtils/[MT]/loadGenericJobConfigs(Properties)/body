@@ -1,5 +1,5 @@
 {
   List<Properties> jobConfigs=Lists.newArrayList();
-  loadGenericJobConfigsRecursive(jobConfigs,properties,getJobConfigurationFileExtensions(properties),new Path(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)));
+  loadGenericJobConfigsRecursive(jobConfigs,properties,getJobConfigurationFileExtensions(properties),new Path(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY)));
   return jobConfigs;
 }

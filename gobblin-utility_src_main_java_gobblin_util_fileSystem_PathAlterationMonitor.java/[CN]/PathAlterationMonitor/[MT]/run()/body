@@ -1,15 +1,13 @@
 {
-  while (running) {
-    for (    final PathAlterationObserver observer : observers) {
-      try {
-        observer.checkAndNotify();
-      }
- catch (      IOException e) {
-        e.printStackTrace();
-      }
+  for (  final PathAlterationObserver observer : observers) {
+    try {
+      observer.checkAndNotify();
     }
-    if (!running) {
-      break;
+ catch (    IOException e) {
+      e.printStackTrace();
     }
+  }
+  if (!running) {
+    return;
   }
 }

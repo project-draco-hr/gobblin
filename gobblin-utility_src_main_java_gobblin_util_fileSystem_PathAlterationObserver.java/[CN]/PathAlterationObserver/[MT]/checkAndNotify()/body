@@ -3,7 +3,7 @@
     listener.onStart(this);
   }
   final Path rootPath=rootEntry.getPath();
-  if (rootEntry.isExists()) {
+  if (fs.exists(rootPath)) {
     checkAndNotify(rootEntry,rootEntry.getChildren(),listPaths(rootPath));
   }
  else   if (rootEntry.isExists()) {

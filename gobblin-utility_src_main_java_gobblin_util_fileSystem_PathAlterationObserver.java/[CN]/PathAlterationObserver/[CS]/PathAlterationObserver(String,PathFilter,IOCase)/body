@@ -1,3 +1,0 @@
-{
-  this(new Path(directoryName),pathFilter,caseSensitivity);
-}

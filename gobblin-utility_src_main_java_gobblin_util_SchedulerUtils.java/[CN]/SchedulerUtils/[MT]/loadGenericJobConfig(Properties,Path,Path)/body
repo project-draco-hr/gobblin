@@ -1,12 +1,15 @@
 {
+  System.err.println("[loadGenericJobConfig]" + jobConfigPath.toString());
   List<Properties> commonPropsList=Lists.newArrayList();
   getCommonProperties(commonPropsList,jobConfigPathDir,jobConfigPath.getParent());
   commonPropsList.add(properties);
+  System.err.println("Common properties size : " + commonPropsList.size());
   Properties jobProps=new Properties();
   for (  Properties commonProps : Lists.reverse(commonPropsList)) {
     jobProps.putAll(commonProps);
   }
-  jobProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(jobConfigPath.toUri().toURL())));
+  System.err.println("the path is : " + jobConfigPath);
+  jobProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(new Path("file://",jobConfigPath).toUri().toURL())));
   jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,jobConfigPath.toString());
   return jobProps;
 }

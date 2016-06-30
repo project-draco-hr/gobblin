@@ -1,6 +1,5 @@
 {
   Properties properties=new Properties();
-  System.err.println(" LEI :  " + this.jobConfigDir.getAbsolutePath());
   properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getAbsolutePath());
   List<Properties> jobConfigs=SchedulerUtils.loadGenericJobConfigs(properties);
   Assert.assertEquals(jobConfigs.size(),4);

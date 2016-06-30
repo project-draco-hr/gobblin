@@ -6,21 +6,20 @@
   try (final FileSystem fileSystem=rootDirPath.getFileSystem(conf)){
     FileStatus[] subDirsStatus=fileSystem.listStatus(rootDirPath,new PathFilter(){
       @Override public boolean accept(      Path path){
-        PathEntry pathEntry=new PathEntry(path);
-        return pathEntry.isExists();
+        FileStatusEntry fileStatusEntry=new FileStatusEntry(path);
+        return fileStatusEntry.isExists();
       }
     }
 );
     if (subDirsStatus != null && subDirsStatus.length > 0) {
-      ArrayList<Path> tmpSubDirsList=new ArrayList<>();
+      ArrayList<Path> subDirsList=new ArrayList<>();
       for (      FileStatus subDirStatus : subDirsStatus) {
-        tmpSubDirsList.add(subDirStatus.getPath());
+        subDirsList.add(subDirStatus.getPath());
       }
-      Path[] subDirs=tmpSubDirsList.toArray(new Path[tmpSubDirsList.size()]);
-      if (subDirs.length == 0) {
+      if (subDirsList.size() == 0) {
         return;
       }
-      for (      Path subDir : subDirs) {
+      for (      Path subDir : subDirsList) {
         addPathAlterationObserver(monitor,listener,subDir);
       }
     }

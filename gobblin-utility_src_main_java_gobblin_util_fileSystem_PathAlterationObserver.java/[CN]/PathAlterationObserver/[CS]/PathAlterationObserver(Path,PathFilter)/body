@@ -1,3 +1,3 @@
 {
-  this(directory,pathFilter,null);
+  this(new FileStatusEntry(directory),pathFilter);
 }

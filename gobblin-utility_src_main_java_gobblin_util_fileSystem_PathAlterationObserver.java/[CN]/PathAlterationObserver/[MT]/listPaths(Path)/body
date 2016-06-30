@@ -1,8 +1,8 @@
 {
   Path[] children=null;
   ArrayList<Path> tmpChildrenPath=new ArrayList<>();
-  if (fileSystem.isDirectory(path)) {
-    FileStatus[] chiledrenFileStatus=pathFilter == null ? fileSystem.listStatus(path) : fileSystem.listStatus(path,pathFilter);
+  if (fs.isDirectory(path)) {
+    FileStatus[] chiledrenFileStatus=pathFilter == null ? fs.listStatus(path) : fs.listStatus(path,pathFilter);
     for (    FileStatus childFileStatus : chiledrenFileStatus) {
       tmpChildrenPath.add(childFileStatus.getPath());
     }

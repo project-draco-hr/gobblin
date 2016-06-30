@@ -1,0 +1,41 @@
+{
+  PathAlterationMonitor monitor=new PathAlterationMonitor(1000);
+  final Set<Path> fileAltered=Sets.newHashSet();
+  final Semaphore semaphore=new Semaphore(0);
+  PathAlterationListener listener=new PathAlterationListenerAdaptor(){
+    @Override public void onFileCreate(    Path path){
+      System.err.println("File To added : " + path);
+      fileAltered.add(path);
+      semaphore.release();
+    }
+    @Override public void onFileChange(    Path path){
+      System.err.println("File changed " + path);
+      fileAltered.add(path);
+      semaphore.release();
+    }
+  }
+;
+  System.err.println("this.jobConfigDir.getPath():" + this.jobConfigDir.getPath());
+  SchedulerUtils.addPathAlterationObserver(monitor,listener,new Path(this.jobConfigDir.getPath()));
+  try {
+    monitor.start();
+    Thread.sleep(1000);
+    File jobConfigFile=new File(this.subDir11,"test111.pull");
+    Files.touch(jobConfigFile);
+    System.err.println("first:" + jobConfigFile);
+    File commonPropsFile=new File(this.subDir1,"test.properties");
+    Files.touch(commonPropsFile);
+    System.err.println("second:" + commonPropsFile);
+    File newJobConfigFile=new File(this.subDir11,"test112.pull");
+    Files.append("k1=v1",newJobConfigFile,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
+    System.err.println("third:" + newJobConfigFile);
+    semaphore.acquire(3);
+    Assert.assertEquals(fileAltered.size(),3);
+    Assert.assertTrue(fileAltered.contains(new Path("file:" + jobConfigFile)));
+    Assert.assertTrue(fileAltered.contains(new Path("file:" + commonPropsFile)));
+    Assert.assertTrue(fileAltered.contains(new Path("file:" + newJobConfigFile)));
+  }
+  finally {
+    monitor.stop();
+  }
+}

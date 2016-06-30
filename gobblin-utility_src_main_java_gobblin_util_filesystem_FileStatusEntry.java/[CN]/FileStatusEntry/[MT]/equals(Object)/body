@@ -1,0 +1,7 @@
+{
+  if (o == null || this.getClass() != o.getClass()) {
+    return false;
+  }
+  FileStatus other=(FileStatus)o;
+  return this.getPath().equals(other.getPath());
+}

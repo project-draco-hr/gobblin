@@ -1,0 +1,30 @@
+{
+  String customizedInfo="";
+  try {
+    Properties jobProps=SchedulerUtils.loadGenericJobConfig(JobScheduler.this.properties,path,jobConfigFileDirPath);
+switch (action) {
+case SCHEDULE:
+      boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+    scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
+  customizedInfo="schedule";
+break;
+case UNSCHEDULE:
+String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+unscheduleJob(jobName);
+customizedInfo="unschedule";
+break;
+case RESCHEDULE:
+rescheduleJob(jobProps);
+customizedInfo="reschedule";
+break;
+default :
+break;
+}
+}
+ catch (ConfigurationException|IOException e) {
+LOG.error("Failed to load from job configuration file " + path.toString(),e);
+}
+catch (JobException je) {
+LOG.error("Failed to " + customizedInfo + " new job loaded from job configuration file "+ path.toString(),je);
+}
+}

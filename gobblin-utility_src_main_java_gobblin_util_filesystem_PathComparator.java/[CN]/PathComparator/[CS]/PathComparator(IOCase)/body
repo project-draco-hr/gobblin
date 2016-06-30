@@ -1,3 +1,0 @@
-{
-  this.caseSensitivity=caseSensitivity == null ? IOCase.SENSITIVE : caseSensitivity;
-}

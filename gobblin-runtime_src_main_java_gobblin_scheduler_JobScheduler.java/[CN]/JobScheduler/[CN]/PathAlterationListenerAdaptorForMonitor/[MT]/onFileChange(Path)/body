@@ -1,0 +1,13 @@
+{
+  String fileExtension=path.getName().substring(path.getName().lastIndexOf('.') + 1);
+  if (fileExtension.equalsIgnoreCase(SchedulerUtils.JOB_PROPS_FILE_EXTENSION)) {
+    LOG.info("Detected change to common properties file " + path.toString());
+    loadNewCommonConfigAndHandleNewJob(path,Action.RESCHEDULE);
+    return;
+  }
+  if (!JobScheduler.this.jobConfigFileExtensions.contains(fileExtension)) {
+    return;
+  }
+  LOG.info("Detected change to job configuration file " + path.toString());
+  loadNewJobConfigAndHandleNewJob(path,Action.RESCHEDULE);
+}

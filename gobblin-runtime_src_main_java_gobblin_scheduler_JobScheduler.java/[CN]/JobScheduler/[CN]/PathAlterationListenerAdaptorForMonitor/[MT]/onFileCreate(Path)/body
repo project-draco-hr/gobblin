@@ -1,0 +1,8 @@
+{
+  String fileExtensionFromPath=path.getName().substring(path.getName().lastIndexOf('.') + 1);
+  if (!JobScheduler.this.jobConfigFileExtensions.contains(fileExtensionFromPath)) {
+    return;
+  }
+  LOG.info("Detected new job configuration file " + path.toString());
+  loadNewJobConfigAndHandleNewJob(path,Action.SCHEDULE);
+}

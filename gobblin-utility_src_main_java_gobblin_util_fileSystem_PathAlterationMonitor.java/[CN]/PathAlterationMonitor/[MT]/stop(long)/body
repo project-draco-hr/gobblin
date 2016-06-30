@@ -1,10 +1,14 @@
 {
-  if (running == false) {
+  if (!running) {
     throw new IllegalStateException("Monitor is not running");
   }
-  executionResult.cancel(true);
   running=false;
   for (  final PathAlterationObserver observer : observers) {
     observer.destroy();
+  }
+  executionResult.cancel(true);
+  executor.shutdown();
+  if (!executor.awaitTermination(stopInterval,TimeUnit.MILLISECONDS)) {
+    throw new RuntimeException("Did not shutdown in the timeout period");
   }
 }

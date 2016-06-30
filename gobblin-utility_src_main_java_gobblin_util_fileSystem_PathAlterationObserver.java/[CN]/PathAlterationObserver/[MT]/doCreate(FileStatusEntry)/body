@@ -1,0 +1,17 @@
+{
+  System.err.println("Trying to create " + entry.getPath());
+  for (  final PathAlterationListener listener : listeners) {
+    if (entry.isDirectory()) {
+      System.err.println("call OnCreate directory");
+      listener.onDirectoryCreate(entry.getPath());
+    }
+ else {
+      System.err.println("call OnCreate file ");
+      listener.onFileCreate(entry.getPath());
+    }
+  }
+  final FileStatusEntry[] children=entry.getChildren();
+  for (  final FileStatusEntry aChildren : children) {
+    doCreate(aChildren);
+  }
+}

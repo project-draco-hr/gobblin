@@ -1,6 +1,0 @@
-{
-  if (paths != null) {
-    Collections.sort(paths,this);
-  }
-  return paths;
-}

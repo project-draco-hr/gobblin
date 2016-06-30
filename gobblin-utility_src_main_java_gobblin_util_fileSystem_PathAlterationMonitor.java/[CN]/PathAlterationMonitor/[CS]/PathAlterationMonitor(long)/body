@@ -1,4 +1,3 @@
 {
   this.interval=interval;
-  this.executor=Executors.newScheduledThreadPool(1);
 }
