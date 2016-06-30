@@ -1,4 +1,5 @@
 {
+  LOG.info("Monitor debugging: " + this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
   final File jobConfigFileDir=new File(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
   FileAlterationListener listener=new FileAlterationListenerAdaptor(){
     /** 
