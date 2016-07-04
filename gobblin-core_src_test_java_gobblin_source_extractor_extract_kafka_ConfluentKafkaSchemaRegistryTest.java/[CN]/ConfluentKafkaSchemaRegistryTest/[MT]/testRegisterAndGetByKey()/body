@@ -1,0 +1,9 @@
+{
+  Properties properties=new Properties();
+  properties.setProperty(KafkaSchemaRegistry.KAFKA_SCHEMA_REGISTRY_URL,TEST_URL);
+  SchemaRegistryClient schemaRegistryClient=new MockSchemaRegistryClient();
+  KafkaSchemaRegistry<Integer,Schema> kafkaSchemaRegistry=new ConfluentKafkaSchemaRegistry(properties,schemaRegistryClient);
+  Schema schema=SchemaBuilder.record(TEST_RECORD_NAME).namespace(TEST_NAMESPACE).fields().name(TEST_FIELD_NAME).type().stringType().noDefault().endRecord();
+  Integer id=kafkaSchemaRegistry.register(schema);
+  Assert.assertEquals(schema,kafkaSchemaRegistry.getSchemaByKey(id));
+}

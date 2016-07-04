@@ -1,0 +1,11 @@
+{
+  WorkUnitState mockWorkUnitState=getMockWorkUnitState();
+  String testString="Hello World";
+  ByteBuffer testStringByteBuffer=ByteBuffer.wrap(testString.getBytes(StandardCharsets.UTF_8));
+  Deserializer<?> mockKafkaDecoder=mock(Deserializer.class);
+  KafkaSchemaRegistry<?,?> mockKafkaSchemaRegistry=mock(KafkaSchemaRegistry.class);
+  when(mockKafkaDecoder.deserialize(TEST_TOPIC_NAME,testStringByteBuffer.array())).thenReturn(testString);
+  KafkaDeserializerExtractor kafkaDecoderExtractor=new KafkaDeserializerExtractor(mockWorkUnitState,mockKafkaDecoder,mockKafkaSchemaRegistry);
+  MessageAndOffset mockMessageAndOffset=getMockMessageAndOffset(testStringByteBuffer);
+  Assert.assertEquals(kafkaDecoderExtractor.decodeRecord(mockMessageAndOffset),testString);
+}

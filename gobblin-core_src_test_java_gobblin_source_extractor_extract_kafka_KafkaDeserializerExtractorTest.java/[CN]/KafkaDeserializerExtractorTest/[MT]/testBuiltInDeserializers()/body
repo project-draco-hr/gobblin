@@ -1,0 +1,7 @@
+{
+  WorkUnitState mockWorkUnitState=getMockWorkUnitState();
+  mockWorkUnitState.setProp(KafkaDeserializerExtractor.KAFKA_DESERIALIZER_TYPE,KafkaDeserializerExtractor.Deserializers.CONFLUENT_AVRO.name());
+  KafkaDeserializerExtractor kafkaDecoderExtractor=new KafkaDeserializerExtractor(mockWorkUnitState);
+  Assert.assertEquals(kafkaDecoderExtractor.getKafkaDeserializer().getClass(),KafkaDeserializerExtractor.Deserializers.CONFLUENT_AVRO.getDeserializerClass());
+  Assert.assertEquals(kafkaDecoderExtractor.getKafkaSchemaRegistry().getClass(),KafkaDeserializerExtractor.Deserializers.CONFLUENT_AVRO.getSchemaRegistryClass());
+}

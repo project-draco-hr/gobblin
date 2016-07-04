@@ -1,0 +1,8 @@
+{
+  try {
+    return this.schemaRegistryClient.getByID(key);
+  }
+ catch (  IOException|RestClientException e) {
+    throw new SchemaRegistryException(e);
+  }
+}

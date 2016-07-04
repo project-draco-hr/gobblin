@@ -1,0 +1,4 @@
+{
+  String topicName="testTopicName";
+  Assert.assertEquals(topicName,new SimpleKafkaSchemaRegistry(new Properties()).getLatestSchemaByTopic(topicName));
+}
