@@ -1,6 +1,6 @@
 {
-  String subject=String.format("Gobblin AWS cluster %s completed",this.clusterName);
-  StringBuilder messageBuilder=new StringBuilder("Gobblin AWS cluster was shutdown at: " + new Date());
+  final String subject=String.format("Gobblin AWS cluster %s completed",this.clusterName);
+  final StringBuilder messageBuilder=new StringBuilder("Gobblin AWS cluster was shutdown at: " + new Date());
   if (report.isPresent()) {
     messageBuilder.append(' ').append(report.get());
   }

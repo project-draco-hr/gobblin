@@ -1,22 +1,22 @@
 {
   fetchJobConfSettings();
   if (this.jobConfS3Uri.isPresent() && this.jobConfDirPath.isPresent()) {
-    String zipFile=appendSlash(this.jobConfDirPath.get()) + StringUtils.substringAfterLast(this.jobConfS3Uri.get(),File.separator);
+    final String zipFile=appendSlash(this.jobConfDirPath.get()) + StringUtils.substringAfterLast(this.jobConfS3Uri.get(),File.separator);
     LOGGER.debug("Downloading to zip: " + zipFile + " from uri: "+ this.jobConfS3Uri.get());
     FileUtils.copyURLToFile(new URL(this.jobConfS3Uri.get()),new File(zipFile));
-    String extractedPullFilesPath=appendSlash(this.jobConfDirPath.get()) + "files";
+    final String extractedPullFilesPath=appendSlash(this.jobConfDirPath.get()) + "files";
     LOGGER.debug("Extracting to directory: " + extractedPullFilesPath + " from zip: "+ zipFile);
     unzipArchive(zipFile,new File(extractedPullFilesPath));
-    File jobConfigDir=new File(extractedPullFilesPath);
+    final File jobConfigDir=new File(extractedPullFilesPath);
     if (jobConfigDir.exists()) {
       LOGGER.info("Loading job configurations from " + jobConfigDir);
-      Properties properties=new Properties();
+      final Properties properties=new Properties();
       properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,jobConfigDir.getAbsolutePath());
-      List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
+      final List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties);
       LOGGER.info("Loaded " + jobConfigs.size() + " job configuration(s)");
       for (      Properties config : jobConfigs) {
         LOGGER.debug("Config value: " + config);
-        String jobConfigPathIdentifier=config.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY);
+        final String jobConfigPathIdentifier=config.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY);
         if (!jobConfFiles.containsKey(jobConfigPathIdentifier)) {
           jobConfFiles.put(jobConfigPathIdentifier,config);
           postNewJobConfigArrival(config.getProperty(ConfigurationKeys.JOB_NAME_KEY),config);

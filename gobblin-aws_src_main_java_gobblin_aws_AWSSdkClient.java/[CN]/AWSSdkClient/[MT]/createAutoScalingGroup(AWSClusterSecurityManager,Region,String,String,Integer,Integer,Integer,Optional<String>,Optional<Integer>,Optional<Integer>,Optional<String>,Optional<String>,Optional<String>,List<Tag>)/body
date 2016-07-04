@@ -1,6 +1,6 @@
 {
   AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
-  List<Tag> tagsWithPropagationSet=Lists.newArrayList();
+  final List<Tag> tagsWithPropagationSet=Lists.newArrayList();
   for (  Tag tag : tags) {
     tagsWithPropagationSet.add(tag.withPropagateAtLaunch(true));
   }

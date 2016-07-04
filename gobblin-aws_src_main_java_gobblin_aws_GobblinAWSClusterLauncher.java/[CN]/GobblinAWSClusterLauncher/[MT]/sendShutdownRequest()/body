@@ -1,16 +1,16 @@
 {
-  Criteria criteria=new Criteria();
+  final Criteria criteria=new Criteria();
   criteria.setInstanceName("%");
   criteria.setResource("%");
   criteria.setPartition("%");
   criteria.setPartitionState("%");
   criteria.setRecipientInstanceType(InstanceType.CONTROLLER);
   criteria.setSessionSpecific(true);
-  Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString().toLowerCase() + UUID.randomUUID().toString());
+  final Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString().toLowerCase() + UUID.randomUUID().toString());
   shutdownRequest.setMsgSubType(HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString());
   shutdownRequest.setMsgState(Message.MessageState.NEW);
   shutdownRequest.setTgtSessionId("*");
-  int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest);
+  final int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest);
   if (messagesSent == 0) {
     LOGGER.error(String.format("Failed to send the %s message to the controller",shutdownRequest.getMsgSubType()));
   }

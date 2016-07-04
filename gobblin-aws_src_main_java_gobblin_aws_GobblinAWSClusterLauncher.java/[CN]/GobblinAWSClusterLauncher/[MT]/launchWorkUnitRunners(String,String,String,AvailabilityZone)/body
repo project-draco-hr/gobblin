@@ -1,8 +1,8 @@
 {
-  String userData=buildClusterWorkerCommand(this.workerJvmMemory);
-  String launchConfigName="GobblinWorkerLaunchConfig_" + uuid;
+  final String userData=buildClusterWorkerCommand();
+  final String launchConfigName="GobblinWorkerLaunchConfig_" + uuid;
   AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),launchConfigName,this.workerAmiId,this.workerInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
-  String autoscalingGroupName="GobblinWorkerASG_" + uuid;
-  Tag tag=new Tag().withKey("GobblinWorker").withValue(uuid);
+  final String autoscalingGroupName="GobblinWorkerASG_" + uuid;
+  final Tag tag=new Tag().withKey("GobblinWorker").withValue(uuid);
   AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,this.minWorkers,this.maxWorkers,this.desiredWorkers,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(tag));
 }

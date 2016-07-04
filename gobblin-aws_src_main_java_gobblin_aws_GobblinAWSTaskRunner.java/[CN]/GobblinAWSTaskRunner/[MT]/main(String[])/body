@@ -1,16 +1,16 @@
 {
-  Options options=buildOptions();
+  final Options options=buildOptions();
   try {
-    CommandLine cmd=new DefaultParser().parse(options,args);
+    final CommandLine cmd=new DefaultParser().parse(options,args);
     if (!cmd.hasOption(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME) || !cmd.hasOption(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME) || !cmd.hasOption(GobblinAWSConfigurationKeys.APP_WORK_DIR)) {
       printUsage(options);
       System.exit(1);
     }
     Log4jConfigHelper.updateLog4jConfiguration(GobblinTaskRunner.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
-    String applicationName=cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME);
-    String helixInstanceName=cmd.getOptionValue(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME);
-    String appWorkDir=cmd.getOptionValue(GobblinAWSConfigurationKeys.APP_WORK_DIR);
-    GobblinTaskRunner gobblinTaskRunner=new GobblinAWSTaskRunner(applicationName,helixInstanceName,ConfigFactory.load(),Optional.of(new Path(appWorkDir)));
+    final String applicationName=cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME);
+    final String helixInstanceName=cmd.getOptionValue(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME);
+    final String appWorkDir=cmd.getOptionValue(GobblinAWSConfigurationKeys.APP_WORK_DIR);
+    final GobblinTaskRunner gobblinTaskRunner=new GobblinAWSTaskRunner(applicationName,helixInstanceName,ConfigFactory.load(),Optional.of(new Path(appWorkDir)));
     gobblinTaskRunner.start();
   }
  catch (  ParseException pe) {

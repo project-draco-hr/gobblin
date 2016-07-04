@@ -1,5 +1,5 @@
 {
-  Optional<String> reconnectableClusterId=getReconnectableClusterId();
+  final Optional<String> reconnectableClusterId=getReconnectableClusterId();
   if (reconnectableClusterId.isPresent()) {
     LOGGER.info("Found reconnectable cluster with cluster ID: " + reconnectableClusterId.get());
     return reconnectableClusterId;

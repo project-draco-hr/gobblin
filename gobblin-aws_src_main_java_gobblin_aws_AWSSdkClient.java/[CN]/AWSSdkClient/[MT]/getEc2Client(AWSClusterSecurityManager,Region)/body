@@ -1,11 +1,17 @@
 {
-  final AmazonEC2 ec2;
-  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
-    ec2=new AmazonEC2Client(awsClusterSecurityManager.getBasicSessionCredentials());
+  if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+    return amazonEC2;
   }
+synchronized (AWSSdkClient.class) {
+    if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+      if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+        amazonEC2=new AmazonEC2Client(awsClusterSecurityManager.getBasicSessionCredentials());
+      }
  else {
-    ec2=new AmazonEC2Client(awsClusterSecurityManager.getBasicAWSCredentials());
+        amazonEC2=new AmazonEC2Client(awsClusterSecurityManager.getBasicAWSCredentials());
+      }
+      amazonEC2.setRegion(region);
+    }
   }
-  ec2.setRegion(region);
-  return ec2;
+  return amazonEC2;
 }

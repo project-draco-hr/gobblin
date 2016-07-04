@@ -1,10 +1,10 @@
 {
-  AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
-  CreateKeyPairRequest createKeyPairRequest=new CreateKeyPairRequest().withKeyName(keyName);
-  CreateKeyPairResult createKeyPairResult=amazonEC2.createKeyPair(createKeyPairRequest);
-  KeyPair keyPair=createKeyPairResult.getKeyPair();
-  String material=keyPair.getKeyMaterial();
+  final AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
+  final CreateKeyPairRequest createKeyPairRequest=new CreateKeyPairRequest().withKeyName(keyName);
+  final CreateKeyPairResult createKeyPairResult=amazonEC2.createKeyPair(createKeyPairRequest);
+  final KeyPair keyPair=createKeyPairResult.getKeyPair();
+  final String material=keyPair.getKeyMaterial();
   LOGGER.info("Created key: " + keyName);
-  LOGGER.info("Created material: " + material);
+  LOGGER.debug("Created material: " + material);
   return material;
 }

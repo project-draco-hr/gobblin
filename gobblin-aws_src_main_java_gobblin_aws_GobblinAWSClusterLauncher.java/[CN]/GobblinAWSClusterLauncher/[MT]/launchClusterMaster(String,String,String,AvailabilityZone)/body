@@ -1,16 +1,16 @@
 {
-  String userData=buildClusterMasterCommand(this.masterJvmMemory);
-  String launchConfigName="GobblinMasterLaunchConfig_" + uuid;
+  final String userData=buildClusterMasterCommand();
+  final String launchConfigName="GobblinMasterLaunchConfig_" + uuid;
   AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),launchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
-  int minNumMasters=1;
-  int maxNumMasters=1;
-  int desiredNumMasters=1;
-  String autoscalingGroupName="GobblinMasterASG_" + uuid;
-  Tag tag=new Tag().withKey("GobblinMaster").withValue(uuid);
+  final int minNumMasters=1;
+  final int maxNumMasters=1;
+  final int desiredNumMasters=1;
+  final String autoscalingGroupName="GobblinMasterASG_" + uuid;
+  final Tag tag=new Tag().withKey("GobblinMaster").withValue(uuid);
   AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),autoscalingGroupName,launchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(tag));
   LOGGER.info("Waiting for cluster master to launch");
-  long startTime=System.currentTimeMillis();
-  long launchTimeout=TimeUnit.MINUTES.toMillis(10);
+  final long startTime=System.currentTimeMillis();
+  final long launchTimeout=TimeUnit.MINUTES.toMillis(10);
   boolean isMasterLaunched=false;
   List<Instance> instanceIds=Collections.emptyList();
   while (!isMasterLaunched && (System.currentTimeMillis() - startTime) < launchTimeout) {

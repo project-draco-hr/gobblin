@@ -1,0 +1,33 @@
+{
+  final StringBuilder userDataCmds=new StringBuilder().append("#!/bin/bash").append("\n");
+  final String clusterMasterClassName=GobblinAWSClusterMaster.class.getSimpleName();
+  final String nfsDir=this.nfsParentDir + this.clusterName;
+  final String nfsShareDirCmd=String.format("echo '%s %s(%s)' | tee --append %s",nfsDir,NFS_SHARE_ALL_IPS,NFS_SHARE_DEFAULT_OPTS,NFS_CONF_FILE);
+  userDataCmds.append("mkdir -p ").append(nfsDir).append(File.separator).append("1").append("\n");
+  userDataCmds.append(NFS_SERVER_INSTALL_CMD).append("\n");
+  userDataCmds.append(nfsShareDirCmd).append("\n");
+  userDataCmds.append(NFS_SERVER_START_CMD).append("\n");
+  userDataCmds.append(NFS_EXPORT_FS_CMD).append("\n");
+  userDataCmds.append("mkdir -p ").append(this.sinkLogRootDir).append("\n");
+  userDataCmds.append("chown -R ec2-user:ec2-user /home/ec2-user/*").append("\n");
+  userDataCmds.append("cgS3=").append(this.masterS3ConfUri).append("\n");
+  userDataCmds.append("cg=").append(this.awsConfDir).append("\n");
+  userDataCmds.append("jrS3=").append(this.masterS3JarsUri).append("\n");
+  userDataCmds.append("jr=").append(this.masterJarsDir).append("\n");
+  final StringBuilder classpath=new StringBuilder();
+  final List<String> awsConfs=SPLITTER.splitToList(this.masterS3ConfFiles);
+  for (  String awsConf : awsConfs) {
+    userDataCmds.append(String.format("wget -P \"${cg}\" \"${cgS3}\"%s",awsConf)).append("\n");
+  }
+  classpath.append(this.awsConfDir);
+  final List<String> awsJars=SPLITTER.splitToList(this.masterS3JarsFiles);
+  for (  String awsJar : awsJars) {
+    userDataCmds.append(String.format("wget -P \"${jr}\" \"${jrS3}\"%s",awsJar)).append("\n");
+  }
+  classpath.append(":").append(this.masterJarsDir).append("*");
+  final StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(this.masterJvmMemory).append(" ").append(this.masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(this.clusterName).append(" --").append(GobblinAWSConfigurationKeys.APP_WORK_DIR).append(" ").append(this.appWorkDir).append(" 1>").append(this.sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(GobblinAWSClusterLauncher.STDOUT).append(" 2>").append(this.sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(GobblinAWSClusterLauncher.STDERR);
+  userDataCmds.append(launchGobblinClusterMasterCmd).append("\n");
+  final String userData=userDataCmds.toString();
+  LOGGER.info("Userdata for master node: " + userData);
+  return encodeBase64(userData);
+}

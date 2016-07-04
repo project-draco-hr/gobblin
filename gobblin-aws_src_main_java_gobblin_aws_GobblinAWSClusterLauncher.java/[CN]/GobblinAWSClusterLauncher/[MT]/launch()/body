@@ -1,6 +1,6 @@
 {
   this.eventBus.register(this);
-  String helixClusterName=this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  final String helixClusterName=this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
   HelixUtils.createGobblinHelixCluster(this.config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY),helixClusterName);
   LOGGER.info("Created Helix cluster " + helixClusterName);
   connectHelixManager();

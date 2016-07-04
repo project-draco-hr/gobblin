@@ -1,7 +1,7 @@
 {
-  AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
+  final AmazonEC2 amazonEC2=getEc2Client(awsClusterSecurityManager,region);
   final DescribeInstancesResult instancesResult=amazonEC2.describeInstances(new DescribeInstancesRequest().withFilters(new Filter().withName("tag:aws:autoscaling:groupName").withValues(groupName)));
-  List<Instance> instances=new ArrayList<>();
+  final List<Instance> instances=new ArrayList<>();
   for (  Reservation reservation : instancesResult.getReservations()) {
     for (    Instance instance : reservation.getInstances()) {
       if (null == status || null == instance.getState() || status.equals(instance.getState().getName())) {

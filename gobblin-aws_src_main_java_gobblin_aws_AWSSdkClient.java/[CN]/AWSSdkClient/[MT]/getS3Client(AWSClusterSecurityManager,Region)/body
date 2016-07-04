@@ -1,11 +1,17 @@
 {
-  final AmazonS3 s3;
-  if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
-    s3=new AmazonS3Client(awsClusterSecurityManager.getBasicSessionCredentials());
+  if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+    return amazonS3;
   }
+synchronized (AWSSdkClient.class) {
+    if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+      if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+        amazonS3=new AmazonS3Client(awsClusterSecurityManager.getBasicSessionCredentials());
+      }
  else {
-    s3=new AmazonS3Client(awsClusterSecurityManager.getBasicAWSCredentials());
+        amazonS3=new AmazonS3Client(awsClusterSecurityManager.getBasicAWSCredentials());
+      }
+      amazonS3.setRegion(region);
+    }
   }
-  s3.setRegion(region);
-  return s3;
+  return amazonS3;
 }
