@@ -1,5 +1,5 @@
 {
-  final String userData=buildClusterMasterCommand();
+  final String userData=CloudInitScriptBuilder.buildClusterMasterCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterS3ConfUri,this.masterS3ConfFiles,this.masterS3JarsUri,this.masterS3JarsFiles,this.masterJarsDir,this.masterJvmMemory,this.masterJvmArgs);
   this.masterLaunchConfigName=MASTER_LAUNCH_CONFIG_NAME_PREFIX + uuid;
   AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.masterLaunchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
   this.masterAutoScalingGroupName=MASTER_ASG_NAME_PREFIX + uuid;

@@ -1,0 +1,12 @@
+String clusterName
+String nfsParentDir
+String sinkLogRootDir
+String awsConfDir
+String appWorkDir
+String masterS3ConfUri
+String masterS3ConfFiles
+String masterS3JarsUri
+String masterS3JarsFiles
+String masterJarsDir
+String masterJvmMemory
+Optional<String> masterJvmArgs
