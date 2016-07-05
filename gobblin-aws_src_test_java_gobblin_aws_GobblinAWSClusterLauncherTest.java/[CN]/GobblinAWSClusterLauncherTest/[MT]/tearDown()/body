@@ -1,0 +1,12 @@
+{
+  try {
+    this.gobblinAwsClusterLauncher.stop();
+    if (this.helixManager.isConnected()) {
+      this.helixManager.disconnect();
+    }
+    this.gobblinAwsClusterLauncher.disconnectHelixManager();
+  }
+  finally {
+    this.closer.close();
+  }
+}

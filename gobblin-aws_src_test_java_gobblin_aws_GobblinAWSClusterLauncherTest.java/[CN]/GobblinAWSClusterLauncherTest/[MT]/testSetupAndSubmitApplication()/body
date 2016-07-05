@@ -1,0 +1,4 @@
+{
+  this.clusterId=this.gobblinAwsClusterLauncher.setupGobblinCluster();
+  this.clusterIdTag.setValue(this.clusterId);
+}

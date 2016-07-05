@@ -1,0 +1,25 @@
+{
+  MockitoAnnotations.initMocks(this);
+  PowerMockito.whenNew(AWSSdkClient.class).withAnyArguments().thenReturn(awsSdkClient);
+  Mockito.doNothing().when(awsSdkClient).createSecurityGroup(Mockito.anyString(),Mockito.anyString());
+  Mockito.doReturn(Lists.<AvailabilityZone>newArrayList(availabilityZone)).when(awsSdkClient).getAvailabilityZones();
+  Mockito.doReturn("dummy").when(awsSdkClient).createKeyValuePair(Mockito.anyString());
+  Mockito.doReturn(Lists.<AutoScalingGroup>newArrayList(masterASG,workerASG)).when(awsSdkClient).getAutoScalingGroupsWithTag(Mockito.any(Tag.class));
+  Mockito.doReturn(Lists.<Instance>newArrayList(instance)).when(awsSdkClient).getInstancesForGroup(Mockito.anyString(),Mockito.anyString());
+  Mockito.doReturn(Lists.<S3ObjectSummary>newArrayList()).when(awsSdkClient).listS3Bucket(Mockito.anyString(),Mockito.anyString());
+  Mockito.doNothing().when(awsSdkClient).addPermissionsToSecurityGroup(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Integer.class),Mockito.any(Integer.class));
+  Mockito.doNothing().when(awsSdkClient).createAutoScalingGroup(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Integer.class),Mockito.any(Integer.class),Mockito.any(Integer.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(List.class));
+  Mockito.doNothing().when(awsSdkClient).createLaunchConfig(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(String.class),Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(Optional.class),Mockito.any(String.class));
+  Mockito.doNothing().when(awsSdkClient).deleteAutoScalingGroup(Mockito.any(String.class),Mockito.any(boolean.class));
+  Mockito.doNothing().when(awsSdkClient).deleteLaunchConfiguration(Mockito.any(String.class));
+  Mockito.doNothing().when(awsSdkClient).addPermissionsToSecurityGroup(Mockito.any(String.class),Mockito.any(String.class),Mockito.any(String.class),Mockito.any(Integer.class),Mockito.any(Integer.class));
+  final URL url=GobblinAWSClusterLauncherTest.class.getClassLoader().getResource(GobblinAWSClusterLauncherTest.class.getSimpleName() + ".conf");
+  Assert.assertNotNull(url,"Could not find resource " + url);
+  this.config=ConfigFactory.parseURL(url).resolve();
+  this.helixClusterName=this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  final TestingServer testingZKServer=this.closer.register(new TestingServer(TEST_ZK_PORT));
+  this.curatorFramework=TestHelper.createZkClient(testingZKServer,this.closer);
+  final String zkConnectionString=this.config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.CONTROLLER,zkConnectionString);
+  this.gobblinAwsClusterLauncher=new GobblinAWSClusterLauncher(this.config);
+}
