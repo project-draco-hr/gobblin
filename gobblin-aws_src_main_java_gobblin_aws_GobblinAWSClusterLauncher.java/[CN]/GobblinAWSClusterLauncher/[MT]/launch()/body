@@ -5,7 +5,6 @@
   LOGGER.info("Created Helix cluster " + helixClusterName);
   connectHelixManager();
   List<Service> services=Lists.newArrayList();
-  this.awsClusterSecurityManager=new AWSClusterSecurityManager(this.config);
   services.add(this.awsClusterSecurityManager);
   this.serviceManager=Optional.of(new ServiceManager(services));
   this.serviceManager.get().startAsync();

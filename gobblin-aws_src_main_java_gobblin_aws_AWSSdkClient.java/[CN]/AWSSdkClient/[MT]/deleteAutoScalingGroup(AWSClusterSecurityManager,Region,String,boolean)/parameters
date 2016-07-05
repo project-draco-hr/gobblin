@@ -1,4 +1,0 @@
-AWSClusterSecurityManager awsClusterSecurityManager
-Region region
-String autoScalingGroupName
-boolean shouldForceDelete

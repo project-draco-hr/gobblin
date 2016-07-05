@@ -1,6 +1,0 @@
-{
-  final AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
-  final DeleteAutoScalingGroupRequest deleteLaunchConfigurationRequest=new DeleteAutoScalingGroupRequest().withAutoScalingGroupName(autoScalingGroupName).withForceDelete(shouldForceDelete);
-  autoScaling.deleteAutoScalingGroup(deleteLaunchConfigurationRequest);
-  LOGGER.info("Deleted AutoScalingGroup: " + autoScalingGroupName);
-}

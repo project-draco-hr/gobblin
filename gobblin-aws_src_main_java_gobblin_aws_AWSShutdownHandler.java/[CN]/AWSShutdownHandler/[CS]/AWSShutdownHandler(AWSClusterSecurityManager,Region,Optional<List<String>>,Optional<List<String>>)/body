@@ -1,6 +1,0 @@
-{
-  this.awsClusterSecurityManager=awsClusterSecurityManager;
-  this.region=region;
-  this.optionalLaunchConfigurationNames=optionalLaunchConfigurationNames;
-  this.optionalAutoScalingGroupNames=optionalAutoScalingGroupNames;
-}

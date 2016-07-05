@@ -1,7 +1,0 @@
-{
-  final AmazonS3 amazonS3=getS3Client(awsClusterSecurityManager,region);
-  final ListObjectsRequest listObjectsRequest=new ListObjectsRequest().withBucketName(bucketName).withPrefix(prefix);
-  final ObjectListing objectListing=amazonS3.listObjects(listObjectsRequest);
-  LOGGER.info("S3 bucket listing for bucket: " + bucketName + " with prefix: "+ prefix+ " is: "+ objectListing);
-  return objectListing.getObjectSummaries();
-}

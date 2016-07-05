@@ -10,7 +10,7 @@
  catch (    InterruptedException e) {
       throw new RuntimeException("Interrupted while waiting for cluster master to boot up",e);
     }
-    instanceIds=AWSSdkClient.getInstancesForGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.masterAutoScalingGroupName,"running");
+    instanceIds=this.awsSdkClient.getInstancesForGroup(this.masterAutoScalingGroupName,"running");
     isMasterLaunched=instanceIds.size() > 0;
   }
   if (!isMasterLaunched) {

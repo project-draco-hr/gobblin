@@ -1,6 +1,6 @@
 {
   final Tag clusterNameTag=new Tag().withKey(CLUSTER_NAME_ASG_TAG).withValue(this.clusterName);
-  final List<AutoScalingGroup> autoScalingGroups=AWSSdkClient.getAutoScalingGroupsWithTag(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),clusterNameTag);
+  final List<AutoScalingGroup> autoScalingGroups=this.awsSdkClient.getAutoScalingGroupsWithTag(clusterNameTag);
   if (autoScalingGroups.size() == 0) {
     return Optional.absent();
   }

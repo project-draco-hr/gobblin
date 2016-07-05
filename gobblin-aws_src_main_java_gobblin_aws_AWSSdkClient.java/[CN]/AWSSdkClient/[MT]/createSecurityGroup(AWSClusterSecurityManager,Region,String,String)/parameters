@@ -1,4 +1,0 @@
-AWSClusterSecurityManager awsClusterSecurityManager
-Region region
-String groupName
-String description

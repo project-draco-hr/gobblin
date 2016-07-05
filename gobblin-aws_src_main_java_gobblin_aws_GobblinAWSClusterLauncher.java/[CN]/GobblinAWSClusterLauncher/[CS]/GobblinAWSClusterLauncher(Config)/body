@@ -34,4 +34,6 @@
   this.sinkLogRootDir=appendSlash(config.getString(GobblinAWSConfigurationKeys.LOGS_SINK_ROOT_DIR_KEY));
   this.appWorkDir=appendSlash(config.getString(GobblinAWSConfigurationKeys.APP_WORK_DIR));
   this.emailNotificationOnShutdown=config.getBoolean(GobblinAWSConfigurationKeys.EMAIL_NOTIFICATION_ON_SHUTDOWN_KEY);
+  this.awsClusterSecurityManager=new AWSClusterSecurityManager(this.config);
+  this.awsSdkClient=createAWSSdkClient();
 }

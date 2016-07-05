@@ -1,0 +1,11 @@
+String launchConfigName
+String imageId
+String instanceType
+String keyName
+String securityGroups
+Optional<String> kernelId
+Optional<String> ramdiskId
+Optional<BlockDeviceMapping> blockDeviceMapping
+Optional<String> iamInstanceProfile
+Optional<InstanceMonitoring> instanceMonitoring
+String userData

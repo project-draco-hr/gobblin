@@ -11,7 +11,7 @@
   shutdownRequest.setMsgState(Message.MessageState.NEW);
   shutdownRequest.setTgtSessionId("*");
   final int timeout=300000;
-  final int messagesSent=this.helixManager.getMessagingService().sendAndWait(criteria,shutdownRequest,shutdownASG(),timeout);
+  final int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest,shutdownASG(),timeout);
   if (messagesSent == 0) {
     LOGGER.error(String.format("Failed to send the %s message to the controller",shutdownRequest.getMsgSubType()));
   }
