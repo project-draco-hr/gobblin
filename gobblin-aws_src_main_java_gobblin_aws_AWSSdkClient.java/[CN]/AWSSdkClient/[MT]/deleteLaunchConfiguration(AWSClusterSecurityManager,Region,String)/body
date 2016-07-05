@@ -1,0 +1,6 @@
+{
+  final AmazonAutoScaling autoScaling=getAmazonAutoScalingClient(awsClusterSecurityManager,region);
+  final DeleteLaunchConfigurationRequest deleteLaunchConfigurationRequest=new DeleteLaunchConfigurationRequest().withLaunchConfigurationName(launchConfigName);
+  autoScaling.deleteLaunchConfiguration(deleteLaunchConfigurationRequest);
+  LOGGER.info("Deleted Launch Configuration: " + launchConfigName);
+}

@@ -10,7 +10,8 @@
   Message shutdownRequest=new Message(Message.MessageType.SHUTDOWN,HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString().toLowerCase() + UUID.randomUUID().toString());
   shutdownRequest.setMsgSubType(HelixMessageSubTypes.WORK_UNIT_RUNNER_SHUTDOWN.toString());
   shutdownRequest.setMsgState(Message.MessageState.NEW);
-  int messagesSent=this.helixManager.getMessagingService().send(criteria,shutdownRequest);
+  final int timeout=300000;
+  int messagesSent=this.helixManager.getMessagingService().sendAndWait(criteria,shutdownRequest,new NoopReplyHandler(),timeout);
   if (messagesSent == 0) {
     LOGGER.error(String.format("Failed to send the %s message to the participants",shutdownRequest.getMsgSubType()));
   }

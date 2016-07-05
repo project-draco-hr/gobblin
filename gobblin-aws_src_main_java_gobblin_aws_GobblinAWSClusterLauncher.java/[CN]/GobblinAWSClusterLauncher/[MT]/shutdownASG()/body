@@ -1,0 +1,5 @@
+{
+  Optional<List<String>> optionalLaunchConfigurationNames=Optional.of(Arrays.asList(this.masterLaunchConfigName,this.workerLaunchConfigName));
+  Optional<List<String>> optionalAutoScalingGroupNames=Optional.of(Arrays.asList(this.masterAutoScalingGroupName,this.workerAutoScalingGroupName));
+  return new AWSShutdownHandler(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),optionalLaunchConfigurationNames,optionalAutoScalingGroupNames);
+}

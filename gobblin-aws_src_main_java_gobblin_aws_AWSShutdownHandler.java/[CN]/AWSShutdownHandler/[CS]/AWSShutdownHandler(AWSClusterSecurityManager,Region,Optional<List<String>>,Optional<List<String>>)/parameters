@@ -1,0 +1,4 @@
+AWSClusterSecurityManager awsClusterSecurityManager
+Region region
+Optional<List<String>> optionalLaunchConfigurationNames
+Optional<List<String>> optionalAutoScalingGroupNames

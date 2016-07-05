@@ -1,0 +1,12 @@
+{
+  if (optionalLaunchConfigurationNames.isPresent()) {
+    for (    String launchConfigurationName : optionalLaunchConfigurationNames.get()) {
+      AWSSdkClient.deleteLaunchConfiguration(this.awsClusterSecurityManager,this.region,launchConfigurationName);
+    }
+  }
+  if (optionalAutoScalingGroupNames.isPresent()) {
+    for (    String autoScalingGroupName : optionalAutoScalingGroupNames.get()) {
+      AWSSdkClient.deleteAutoScalingGroup(this.awsClusterSecurityManager,this.region,autoScalingGroupName,SHOULD_FORCE_DELETE_ASG_DEFAULT);
+    }
+  }
+}
