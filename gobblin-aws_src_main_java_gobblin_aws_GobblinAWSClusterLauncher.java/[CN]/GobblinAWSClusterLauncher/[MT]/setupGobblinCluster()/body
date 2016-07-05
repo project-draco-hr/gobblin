@@ -5,7 +5,7 @@
   AWSSdkClient.addPermissionsToSecurityGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),securityGroupName,"0.0.0.0/0","tcp",0,65535);
   final String keyName="GobblinKey_" + uuid;
   final String material=AWSSdkClient.createKeyValuePair(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),keyName);
-  LOGGER.info("Material is: " + material);
+  LOGGER.debug("Material is: " + material);
   FileUtils.writeStringToFile(new File(keyName + ".pem"),material);
   final List<AvailabilityZone> availabilityZones=AWSSdkClient.getAvailabilityZones(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)));
   final String clusterId=launchClusterMaster(uuid,keyName,securityGroupName,availabilityZones.get(0));

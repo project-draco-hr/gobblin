@@ -1,8 +1,10 @@
 {
   final String userData=buildClusterWorkerCommand();
-  this.workerLaunchConfigName="GobblinWorkerLaunchConfig_" + uuid;
+  this.workerLaunchConfigName=WORKERS_LAUNCH_CONFIG_PREFIX + uuid;
   AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.workerLaunchConfigName,this.workerAmiId,this.workerInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
-  this.workerAutoScalingGroupName="GobblinWorkerASG_" + uuid;
-  final Tag tag=new Tag().withKey("GobblinWorker").withValue(uuid);
-  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.workerAutoScalingGroupName,this.workerLaunchConfigName,this.minWorkers,this.maxWorkers,this.desiredWorkers,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(tag));
+  this.workerAutoScalingGroupName=WORKERS_ASG_NAME_PREFIX + uuid;
+  final Tag clusterNameTag=new Tag().withKey(CLUSTER_NAME_ASG_TAG).withValue(this.clusterName);
+  final Tag clusterUuidTag=new Tag().withKey(CLUSTER_ID_ASG_TAG).withValue(uuid);
+  final Tag asgTypeTag=new Tag().withKey(ASG_TYPE_ASG_TAG).withValue(ASG_TYPE_WORKERS);
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.workerAutoScalingGroupName,this.workerLaunchConfigName,this.minWorkers,this.maxWorkers,this.desiredWorkers,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(clusterNameTag,clusterUuidTag,asgTypeTag));
 }

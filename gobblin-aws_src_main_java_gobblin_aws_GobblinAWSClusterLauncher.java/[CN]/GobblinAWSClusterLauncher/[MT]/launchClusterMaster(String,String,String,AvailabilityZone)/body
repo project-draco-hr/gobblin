@@ -1,31 +1,17 @@
 {
   final String userData=buildClusterMasterCommand();
-  this.masterLaunchConfigName="GobblinMasterLaunchConfig_" + uuid;
+  this.masterLaunchConfigName=MASTER_LAUNCH_CONFIG_NAME_PREFIX + uuid;
   AWSSdkClient.createLaunchConfig(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.masterLaunchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
-  this.masterAutoScalingGroupName="GobblinMasterASG_" + uuid;
+  this.masterAutoScalingGroupName=MASTER_ASG_NAME_PREFIX + uuid;
   final int minNumMasters=1;
   final int maxNumMasters=1;
   final int desiredNumMasters=1;
-  final Tag tag=new Tag().withKey("GobblinMaster").withValue(uuid);
-  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.masterAutoScalingGroupName,this.masterLaunchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(tag));
+  final Tag clusterNameTag=new Tag().withKey(CLUSTER_NAME_ASG_TAG).withValue(this.clusterName);
+  final Tag clusterUuidTag=new Tag().withKey(CLUSTER_ID_ASG_TAG).withValue(uuid);
+  final Tag asgTypeTag=new Tag().withKey(ASG_TYPE_ASG_TAG).withValue(ASG_TYPE_MASTER);
+  AWSSdkClient.createAutoScalingGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.masterAutoScalingGroupName,this.masterLaunchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(clusterNameTag,clusterUuidTag,asgTypeTag));
   LOGGER.info("Waiting for cluster master to launch");
-  final long startTime=System.currentTimeMillis();
-  final long launchTimeout=TimeUnit.MINUTES.toMillis(10);
-  boolean isMasterLaunched=false;
-  List<Instance> instanceIds=Collections.emptyList();
-  while (!isMasterLaunched && (System.currentTimeMillis() - startTime) < launchTimeout) {
-    try {
-      Thread.sleep(5000);
-    }
- catch (    InterruptedException e) {
-      throw new RuntimeException("Interrupted while waiting for cluster master to boot up",e);
-    }
-    instanceIds=AWSSdkClient.getInstancesForGroup(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),this.masterAutoScalingGroupName,"running");
-    isMasterLaunched=instanceIds.size() > 0;
-  }
-  if (!isMasterLaunched) {
-    throw new RuntimeException("Timed out while waiting for cluster master. " + "Check for issue manually for ASG: " + this.masterAutoScalingGroupName);
-  }
-  this.masterPublicIp=instanceIds.get(0).getPublicIpAddress();
-  return "GobblinClusterMaster_" + uuid;
+  this.masterPublicIp=getMasterPublicIp();
+  LOGGER.info("Master public ip: " + this.masterPublicIp);
+  return uuid;
 }

@@ -1,3 +1,43 @@
 {
-  return Optional.absent();
+  final Tag clusterNameTag=new Tag().withKey(CLUSTER_NAME_ASG_TAG).withValue(this.clusterName);
+  final List<AutoScalingGroup> autoScalingGroups=AWSSdkClient.getAutoScalingGroupsWithTag(this.awsClusterSecurityManager,Region.getRegion(Regions.fromName(this.awsRegion)),clusterNameTag);
+  if (autoScalingGroups.size() == 0) {
+    return Optional.absent();
+  }
+  if (autoScalingGroups.size() != 2) {
+    throw new IOException("Expected 2 auto scaling groups (1 each for master and workers) but found: " + autoScalingGroups.size());
+  }
+  Optional<String> clusterId=Optional.absent();
+  Optional<AutoScalingGroup> masterAsg=Optional.absent();
+  Optional<AutoScalingGroup> workersAsg=Optional.absent();
+  for (  TagDescription tagDescription : autoScalingGroups.get(0).getTags()) {
+    LOGGER.info("Found tag: " + tagDescription);
+    if (tagDescription.getKey().equalsIgnoreCase(CLUSTER_ID_ASG_TAG)) {
+      clusterId=Optional.of(tagDescription.getValue());
+    }
+    if (tagDescription.getKey().equalsIgnoreCase(ASG_TYPE_ASG_TAG)) {
+      if (tagDescription.getValue().equalsIgnoreCase(ASG_TYPE_MASTER)) {
+        masterAsg=Optional.of(autoScalingGroups.get(0));
+        workersAsg=Optional.of(autoScalingGroups.get(1));
+      }
+ else {
+        masterAsg=Optional.of(autoScalingGroups.get(1));
+        workersAsg=Optional.of(autoScalingGroups.get(0));
+      }
+    }
+  }
+  if (!clusterId.isPresent()) {
+    throw new IOException("Found 2 auto scaling group names for: " + this.clusterName + " but tags seem to be corrupted, hence could not determine cluster id");
+  }
+  if (!masterAsg.isPresent() || !workersAsg.isPresent()) {
+    throw new IOException("Found 2 auto scaling group names for: " + this.clusterName + " but tags seem to be corrupted, hence could not determine master and workers ASG");
+  }
+  this.masterAutoScalingGroupName=masterAsg.get().getAutoScalingGroupName();
+  this.masterLaunchConfigName=masterAsg.get().getLaunchConfigurationName();
+  this.workerAutoScalingGroupName=workersAsg.get().getAutoScalingGroupName();
+  this.workerLaunchConfigName=workersAsg.get().getLaunchConfigurationName();
+  LOGGER.info("Trying to find cluster master public ip");
+  this.masterPublicIp=getMasterPublicIp();
+  LOGGER.info("Master public ip: " + this.masterPublicIp);
+  return clusterId;
 }
