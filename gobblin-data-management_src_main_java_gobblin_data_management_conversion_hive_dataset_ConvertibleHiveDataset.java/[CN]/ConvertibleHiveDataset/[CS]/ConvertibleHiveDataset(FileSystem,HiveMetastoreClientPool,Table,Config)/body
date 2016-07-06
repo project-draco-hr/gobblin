@@ -1,0 +1,20 @@
+{
+  super(fs,clientPool,table,config);
+  this.destinationTableName=Optional.fromNullable(resolveTemplate(ConfigUtils.getString(config,DESTINATION_TABLE_KEY,null),table));
+  this.destinationDbName=Optional.fromNullable(resolveTemplate(ConfigUtils.getString(config,DESTINATION_DB_KEY,null),table));
+  this.destinationDataPath=Optional.fromNullable(resolveTemplate(ConfigUtils.getString(config,DESTINATION_DATA_PATH_KEY,null),table));
+  if (config.hasPath(DESTINATION_CONVERSION_FORMATS_KEY)) {
+    this.formats=Optional.of(Sets.<String>newHashSet());
+    try {
+      this.formats.get().addAll(config.getStringList(DESTINATION_CONVERSION_FORMATS_KEY));
+    }
+ catch (    ConfigException.WrongType e) {
+      Splitter tokenSplitter=Splitter.on(",").omitEmptyStrings().trimResults();
+      this.formats.get().addAll(tokenSplitter.splitToList(config.getString(DESTINATION_CONVERSION_FORMATS_KEY)));
+    }
+  }
+ else {
+    this.formats=Optional.absent();
+  }
+  this.hiveProperties=ConfigUtils.configToProperties(ConfigUtils.getConfig(config,HIVE_RUNTIME_PROPERTIES_KEY_PREFIX,ConfigFactory.empty()));
+}

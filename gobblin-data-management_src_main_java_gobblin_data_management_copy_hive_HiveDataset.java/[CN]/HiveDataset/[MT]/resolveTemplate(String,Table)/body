@@ -1,0 +1,3 @@
+{
+  return StringUtils.replaceEach(rawString,new String[]{DATABASE_TOKEN,TABLE_TOKEN},new String[]{table.getDbName(),table.getTableName()});
+}

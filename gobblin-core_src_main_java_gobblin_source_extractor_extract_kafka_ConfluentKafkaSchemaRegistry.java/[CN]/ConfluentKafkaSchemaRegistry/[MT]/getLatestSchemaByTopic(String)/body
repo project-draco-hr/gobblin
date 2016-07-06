@@ -1,0 +1,8 @@
+{
+  try {
+    return new Schema.Parser().parse(this.schemaRegistryClient.getLatestSchemaMetadata(topic).getSchema());
+  }
+ catch (  IOException|RestClientException e) {
+    throw new SchemaRegistryException(e);
+  }
+}

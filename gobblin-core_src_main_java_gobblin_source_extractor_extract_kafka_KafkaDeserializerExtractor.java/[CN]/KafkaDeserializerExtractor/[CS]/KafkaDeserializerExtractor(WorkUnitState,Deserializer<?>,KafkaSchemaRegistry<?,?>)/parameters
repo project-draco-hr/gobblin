@@ -1,0 +1,3 @@
+WorkUnitState state
+Deserializer<?> kafkaDeserializer
+KafkaSchemaRegistry<?,?> kafkaSchemaRegistry

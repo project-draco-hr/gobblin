@@ -9,23 +9,8 @@
   for (  String key : jobProps.stringPropertyNames()) {
     conf.set(key,jobProps.getProperty(key));
   }
-  String stateStoreFsUri=jobProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI);
-  FileSystem stateStoreFs=FileSystem.get(URI.create(stateStoreFsUri),conf);
-  String stateStoreRootDir=jobProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY);
-  if (jobProps.containsKey(ConfigurationKeys.STATE_STORE_ENABLED) && !Boolean.parseBoolean(jobProps.getProperty(ConfigurationKeys.STATE_STORE_ENABLED))) {
-    this.datasetStateStore=new NoopDatasetStateStore(stateStoreFs,stateStoreRootDir);
-  }
- else {
-    this.datasetStateStore=new FsDatasetStateStore(stateStoreFs,stateStoreRootDir);
-  }
-  boolean jobHistoryStoreEnabled=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,Boolean.FALSE.toString()));
-  if (jobHistoryStoreEnabled) {
-    Injector injector=Guice.createInjector(new MetaStoreModule(jobProps));
-    this.jobHistoryStoreOptional=Optional.of(injector.getInstance(JobHistoryStore.class));
-  }
- else {
-    this.jobHistoryStoreOptional=Optional.absent();
-  }
+  this.datasetStateStore=createStateStore(jobProps,conf);
+  this.jobHistoryStoreOptional=createJobHistoryStore(jobProps);
   State jobPropsState=new State();
   jobPropsState.addAll(jobProps);
   this.jobState=new JobState(jobPropsState,this.datasetStateStore.getLatestDatasetStatesByUrns(this.jobName),this.jobName,this.jobId);
@@ -39,6 +24,8 @@
   }
   this.semantics=DeliverySemantics.parse(this.jobState);
   this.commitSequenceStore=createCommitSequenceStore();
-  this.source=new SourceDecorator<>(Source.class.cast(Class.forName(jobProps.getProperty(ConfigurationKeys.SOURCE_CLASS_KEY)).newInstance()),this.jobId,logger);
+  this.source=createSource(jobProps);
   this.logger=logger;
+  this.parallelizeCommit=this.jobState.getPropAsBoolean(ConfigurationKeys.PARALLELIZE_DATASET_COMMIT,ConfigurationKeys.DEFAULT_PARALLELIZE_DATASET_COMMIT);
+  this.parallelCommits=this.parallelizeCommit ? this.jobState.getPropAsInt(ConfigurationKeys.DATASET_COMMIT_THREADS,ConfigurationKeys.DEFAULT_DATASET_COMMIT_THREADS) : 1;
 }

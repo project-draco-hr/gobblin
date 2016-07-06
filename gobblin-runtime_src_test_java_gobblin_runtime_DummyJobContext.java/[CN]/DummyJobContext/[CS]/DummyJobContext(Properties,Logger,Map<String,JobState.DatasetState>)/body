@@ -1,0 +1,4 @@
+{
+  super(jobProps,logger);
+  this.datasetStateMap=datasetStateMap;
+}

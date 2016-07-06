@@ -1,0 +1,11 @@
+{
+  String stateStoreFsUri=jobProps.getProperty(ConfigurationKeys.STATE_STORE_FS_URI_KEY,ConfigurationKeys.LOCAL_FS_URI);
+  FileSystem stateStoreFs=FileSystem.get(URI.create(stateStoreFsUri),conf);
+  String stateStoreRootDir=jobProps.getProperty(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY);
+  if (jobProps.containsKey(ConfigurationKeys.STATE_STORE_ENABLED) && !Boolean.parseBoolean(jobProps.getProperty(ConfigurationKeys.STATE_STORE_ENABLED))) {
+    return new NoopDatasetStateStore(stateStoreFs,stateStoreRootDir);
+  }
+ else {
+    return new FsDatasetStateStore(stateStoreFs,stateStoreRootDir);
+  }
+}

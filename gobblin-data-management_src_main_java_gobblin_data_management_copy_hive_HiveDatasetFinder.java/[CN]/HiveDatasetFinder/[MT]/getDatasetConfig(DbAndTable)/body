@@ -1,0 +1,10 @@
+{
+  Config datasetConfig;
+  if (this.configStoreUri.isPresent()) {
+    datasetConfig=this.configClient.getConfig(this.configStoreUri.get() + HiveConfigClientUtils.getDatasetUri(dbAndTable));
+  }
+ else {
+    datasetConfig=this.jobConfig;
+  }
+  return StringUtils.isBlank(this.datasetConfigPrefix) ? datasetConfig : ConfigUtils.getConfig(datasetConfig,this.datasetConfigPrefix,ConfigFactory.empty());
+}

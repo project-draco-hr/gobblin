@@ -1,0 +1,3 @@
+{
+  this(props,new CachedSchemaRegistryClient(props.getProperty(KAFKA_SCHEMA_REGISTRY_URL),Integer.parseInt(props.getProperty(CONFLUENT_MAX_SCHEMAS_PER_SUBJECT,String.valueOf(Integer.MAX_VALUE)))));
+}

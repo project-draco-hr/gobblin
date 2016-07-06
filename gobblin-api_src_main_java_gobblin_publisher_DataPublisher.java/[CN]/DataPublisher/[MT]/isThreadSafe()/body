@@ -1,0 +1,3 @@
+{
+  return this.getClass() == DataPublisher.class;
+}

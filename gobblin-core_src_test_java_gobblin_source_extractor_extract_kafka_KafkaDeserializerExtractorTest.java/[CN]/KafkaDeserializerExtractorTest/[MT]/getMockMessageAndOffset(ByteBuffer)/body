@@ -1,0 +1,7 @@
+{
+  MessageAndOffset mockMessageAndOffset=mock(MessageAndOffset.class);
+  Message mockMessage=mock(Message.class);
+  when(mockMessage.payload()).thenReturn(payload);
+  when(mockMessageAndOffset.message()).thenReturn(mockMessage);
+  return mockMessageAndOffset;
+}

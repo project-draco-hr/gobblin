@@ -1,0 +1,10 @@
+{
+  try {
+    publisher.publish(datasetState.getTaskStates());
+  }
+ catch (  Throwable t) {
+    log.error("Failed to commit dataset",t);
+    setTaskFailureException(datasetState.getTaskStates(),t);
+  }
+  datasetState.setState(JobState.RunningState.COMMITTED);
+}

@@ -1,0 +1,3 @@
+{
+  this.localMetastoreClient=HiveMetastoreClientPool.get(new Properties(),Optional.<String>absent()).getClient().get();
+}

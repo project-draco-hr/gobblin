@@ -1,0 +1,3 @@
+Properties jobProps
+Logger logger
+Map<String,JobState.DatasetState> datasetStateMap

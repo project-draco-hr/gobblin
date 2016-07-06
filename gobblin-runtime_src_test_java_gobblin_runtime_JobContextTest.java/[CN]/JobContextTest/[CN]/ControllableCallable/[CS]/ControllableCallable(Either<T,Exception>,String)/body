@@ -1,0 +1,6 @@
+{
+  this.queue=Queues.newArrayBlockingQueue(1);
+  this.queue.add(true);
+  this.toReturn=toReturn;
+  this.name=name;
+}

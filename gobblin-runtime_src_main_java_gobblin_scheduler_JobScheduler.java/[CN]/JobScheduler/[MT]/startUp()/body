@@ -1,8 +1,10 @@
 {
   LOG.info("Starting the job scheduler");
   this.scheduler.start();
-  if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
-    scheduleLocallyConfiguredJobs();
-    startJobConfigFileMonitor();
+  Preconditions.checkArgument(this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY) || this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY),"Error in configuration file: Please check your .pull file");
+  if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY) && !this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY)) {
+    this.properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,"file://" + this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
   }
+  scheduleGeneralConfiguredJobs();
+  startJobConfigFileMonitor();
 }
