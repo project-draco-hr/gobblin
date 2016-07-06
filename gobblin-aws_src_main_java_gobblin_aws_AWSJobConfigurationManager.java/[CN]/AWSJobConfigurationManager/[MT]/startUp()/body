@@ -1,6 +1,6 @@
 {
   LOGGER.info("Starting the " + AWSJobConfigurationManager.class.getSimpleName());
-  LOGGER.info(String.format("Scheduling the job configuration refresh task with an interval of %d minute(s)",this.refreshIntervalInSeconds));
+  LOGGER.info(String.format("Scheduling the job configuration refresh task with an interval of %d second(s)",this.refreshIntervalInSeconds));
   this.fetchJobConfExecutor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       try {

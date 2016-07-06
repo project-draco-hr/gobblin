@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(inputString);
+  if (inputString.endsWith("/")) {
+    return inputString;
+  }
+  return inputString + "/";
+}

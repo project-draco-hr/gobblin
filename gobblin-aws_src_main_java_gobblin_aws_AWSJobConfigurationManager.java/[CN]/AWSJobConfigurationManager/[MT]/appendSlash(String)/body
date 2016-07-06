@@ -1,6 +1,0 @@
-{
-  if (value.endsWith("/")) {
-    return value;
-  }
-  return value + "/";
-}

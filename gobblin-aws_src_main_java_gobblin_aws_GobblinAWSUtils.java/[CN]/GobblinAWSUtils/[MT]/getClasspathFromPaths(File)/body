@@ -1,4 +1,5 @@
 {
+  Preconditions.checkNotNull(paths);
   final StringBuilder classpath=new StringBuilder();
   boolean isFirst=true;
   for (  File path : paths) {
