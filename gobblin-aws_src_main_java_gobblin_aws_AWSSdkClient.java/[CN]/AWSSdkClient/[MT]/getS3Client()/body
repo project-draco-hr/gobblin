@@ -1,9 +1,9 @@
 {
-  if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+  if (lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
     return amazonS3;
   }
 synchronized (AWSSdkClient.class) {
-    if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+    if (!(lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis())) {
       if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
         amazonS3=new AmazonS3Client(awsClusterSecurityManager.getBasicSessionCredentials());
       }

@@ -1,9 +1,9 @@
 {
-  if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+  if (lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
     return amazonEC2;
   }
 synchronized (AWSSdkClient.class) {
-    if (lastRefreshCacheTime > 0 && lastRefreshCacheTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+    if (!(lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis())) {
       if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
         amazonEC2=new AmazonEC2Client(awsClusterSecurityManager.getBasicSessionCredentials());
       }
