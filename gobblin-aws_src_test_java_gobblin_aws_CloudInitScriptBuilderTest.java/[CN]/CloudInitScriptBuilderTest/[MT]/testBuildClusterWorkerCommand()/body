@@ -1,5 +1,5 @@
 {
-  final String script=CloudInitScriptBuilder.buildClusterWorkerCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterPublicIp,this.workerS3ConfUri,this.workerS3ConfFiles,this.workerS3JarsUri,this.workerS3JarFiles,this.workerJarsDir,this.workerJvmMemory,Optional.<String>absent());
+  final String script=CloudInitScriptBuilder.buildClusterWorkerCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterPublicIp,this.workerS3ConfUri,this.workerS3ConfFiles,this.workerS3JarsUri,this.workerS3JarFiles,this.workerJarsDir,this.workerJvmMemory,Optional.<String>absent(),gobblinVersion);
   final String decodedScript=new String(Base64.decodeBase64(script));
   Assert.assertEquals(decodedScript,this.expectedWorkerCloudInitScript,"Worker launcher cloud-init script not built as expected");
 }

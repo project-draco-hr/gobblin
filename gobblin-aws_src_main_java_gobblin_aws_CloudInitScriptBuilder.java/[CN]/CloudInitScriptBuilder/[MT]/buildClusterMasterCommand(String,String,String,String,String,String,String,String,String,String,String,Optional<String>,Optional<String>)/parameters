@@ -10,3 +10,4 @@ String masterS3JarsFiles
 String masterJarsDir
 String masterJvmMemory
 Optional<String> masterJvmArgs
+Optional<String> gobblinVersion

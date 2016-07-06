@@ -1,5 +1,5 @@
 {
-  final String userData=CloudInitScriptBuilder.buildClusterWorkerCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterPublicIp,this.workerS3ConfUri,this.workerS3ConfFiles,this.workerS3JarsUri,this.workerS3JarsFiles,this.workerJarsDir,this.workerJvmMemory,this.workerJvmArgs);
+  final String userData=CloudInitScriptBuilder.buildClusterWorkerCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterPublicIp,this.workerS3ConfUri,this.workerS3ConfFiles,this.workerS3JarsUri,this.workerS3JarsFiles,this.workerJarsDir,this.workerJvmMemory,this.workerJvmArgs,this.gobblinVersion);
   this.workerLaunchConfigName=WORKERS_LAUNCH_CONFIG_PREFIX + uuid;
   this.awsSdkClient.createLaunchConfig(this.workerLaunchConfigName,this.workerAmiId,this.workerInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
   this.workerAutoScalingGroupName=WORKERS_ASG_NAME_PREFIX + uuid;

@@ -10,6 +10,9 @@
   cloudInitCmds.append(NFS_EXPORT_FS_CMD).append("\n");
   cloudInitCmds.append("mkdir -p ").append(sinkLogRootDir).append("\n");
   cloudInitCmds.append("chown -R ec2-user:ec2-user /home/ec2-user/*").append("\n");
+  if (gobblinVersion.isPresent()) {
+    cloudInitCmds.append("vr=").append(gobblinVersion.get()).append("\n");
+  }
   cloudInitCmds.append("cgS3=").append(masterS3ConfUri).append("\n");
   cloudInitCmds.append("cg=").append(awsConfDir).append("\n");
   cloudInitCmds.append("jrS3=").append(masterS3JarsUri).append("\n");

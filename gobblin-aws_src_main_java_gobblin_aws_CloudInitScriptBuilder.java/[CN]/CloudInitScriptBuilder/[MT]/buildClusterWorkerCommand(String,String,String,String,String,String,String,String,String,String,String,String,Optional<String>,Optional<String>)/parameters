@@ -11,3 +11,4 @@ String workerS3JarsFiles
 String workerJarsDir
 String workerJvmMemory
 Optional<String> workerJvmArgs
+Optional<String> gobblinVersion
