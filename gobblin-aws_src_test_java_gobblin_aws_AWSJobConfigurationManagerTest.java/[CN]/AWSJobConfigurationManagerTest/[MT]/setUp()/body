@@ -1,0 +1,12 @@
+{
+  this.eventBus.register(this);
+  final URL url=GobblinAWSClusterLauncherTest.class.getClassLoader().getResource(JOB_FIRST_ZIP);
+  final String jobConfZipUri=getJobConfigZipUri(new File(url.toURI()));
+  if (this.jobConfigFileDir.exists()) {
+    FileUtils.deleteDirectory(this.jobConfigFileDir);
+  }
+  Assert.assertTrue(this.jobConfigFileDir.mkdirs(),"Failed to create " + this.jobConfigFileDir);
+  final Config config=ConfigFactory.empty().withValue(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY,ConfigValueFactory.fromAnyRef(this.jobConfigFileDir.toString())).withValue(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY,ConfigValueFactory.fromAnyRef(jobConfZipUri)).withValue(GobblinAWSConfigurationKeys.JOB_CONF_REFRESH_INTERVAL_IN_SECONDS,ConfigValueFactory.fromAnyRef("10"));
+  this.jobConfigurationManager=new AWSJobConfigurationManager(this.eventBus,config);
+  this.jobConfigurationManager.startAsync().awaitRunning();
+}

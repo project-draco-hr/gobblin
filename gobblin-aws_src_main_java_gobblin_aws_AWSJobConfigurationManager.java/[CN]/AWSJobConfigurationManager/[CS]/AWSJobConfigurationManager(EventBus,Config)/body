@@ -1,6 +1,11 @@
 {
   super(eventBus,config);
   this.jobConfFiles=Maps.newHashMap();
-  this.refreshIntervalInMinutes=config.getLong(GobblinAWSConfigurationKeys.JOB_CONF_REFRESH_INTERVAL_IN_MINUTES);
+  if (config.hasPath(GobblinAWSConfigurationKeys.JOB_CONF_REFRESH_INTERVAL_IN_SECONDS)) {
+    this.refreshIntervalInSeconds=config.getLong(GobblinAWSConfigurationKeys.JOB_CONF_REFRESH_INTERVAL_IN_SECONDS);
+  }
+ else {
+    this.refreshIntervalInSeconds=config.getLong(GobblinAWSConfigurationKeys.JOB_CONF_REFRESH_INTERVAL_IN_MINUTES) * 60;
+  }
   this.fetchJobConfExecutor=Executors.newSingleThreadScheduledExecutor(ExecutorsUtils.newThreadFactory(Optional.of(LOGGER),Optional.of("FetchJobConfExecutor")));
 }
