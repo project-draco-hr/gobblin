@@ -1,0 +1,5 @@
+{
+  Config config=ConfigFactory.parseMap(ImmutableMap.<String,String>of("destinationFormats","flattenedOrc,nestedOrc"));
+  ConvertibleHiveDataset cd=createTestConvertibleDataset(config);
+  Assert.assertFalse(cd.getConversionConfigForFormat("invalidFormat").isPresent());
+}

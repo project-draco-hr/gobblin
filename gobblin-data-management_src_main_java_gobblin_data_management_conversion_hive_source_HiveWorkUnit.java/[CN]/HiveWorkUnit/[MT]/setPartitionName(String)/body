@@ -1,0 +1,3 @@
+{
+  this.setProp(HIVE_PARTITION_NAME_KEY,partitionName);
+}

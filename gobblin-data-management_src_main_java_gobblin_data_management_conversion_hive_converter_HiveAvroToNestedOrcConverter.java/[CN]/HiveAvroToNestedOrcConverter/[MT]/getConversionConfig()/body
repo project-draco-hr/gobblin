@@ -1,0 +1,3 @@
+{
+  return super.hiveDataset.getConversionConfigForFormat(OrcFormats.NESTED_ORC.getConfigPrefix()).get();
+}

@@ -9,14 +9,14 @@
       long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
       if (shouldCreateWorkunit(updateTime,lowWatermark)) {
         log.debug(String.format("Processing partition: %s",sourcePartition));
-        WorkUnit workUnit=WorkUnit.createEmpty();
-        workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());
-        HiveSourceUtils.serializeTable(workUnit,hiveDataset.getTable(),this.avroSchemaManager);
-        HiveSourceUtils.serializePartition(workUnit,sourcePartition,this.avroSchemaManager);
-        workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
-        HiveSourceUtils.setPartitionSlaEventMetadata(workUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue());
-        workunits.add(workUnit);
-        log.debug(String.format("Workunit added for partition: %s",workUnit));
+        HiveWorkUnit hiveWorkUnit=new HiveWorkUnit(hiveDataset);
+        hiveWorkUnit.setTableSchemaUrl(this.avroSchemaManager.getSchemaUrl(hiveDataset.getTable()));
+        hiveWorkUnit.setPartitionSchemaUrl(this.avroSchemaManager.getSchemaUrl(sourcePartition));
+        hiveWorkUnit.setPartitionName(sourcePartition.getName());
+        hiveWorkUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+        EventWorkunitUtils.setPartitionSlaEventMetadata(hiveWorkUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue());
+        workunits.add(hiveWorkUnit);
+        log.debug(String.format("Workunit added for partition: %s",hiveWorkUnit));
       }
  else {
         log.info(String.format("Not creating workunit for partition %s as updateTime %s is lesser than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));

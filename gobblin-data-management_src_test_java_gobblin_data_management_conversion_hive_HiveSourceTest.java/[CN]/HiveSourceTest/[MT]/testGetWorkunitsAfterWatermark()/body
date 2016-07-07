@@ -14,7 +14,7 @@
   List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
-  SerializableHiveTable serializedHiveTable=HiveSourceUtils.deserializeTable(wu);
-  Assert.assertEquals(serializedHiveTable.getDbName(),dbName);
-  Assert.assertEquals(serializedHiveTable.getTableName(),tableName2);
+  HiveWorkUnit hwu=new HiveWorkUnit(wu);
+  Assert.assertEquals(hwu.getHiveDataset().getDbAndTable().getDb(),dbName);
+  Assert.assertEquals(hwu.getHiveDataset().getDbAndTable().getTable(),tableName2);
 }

@@ -1,0 +1,3 @@
+{
+  return new Path(this.getProp(HIVE_TABLE_SCHEMA_URL_KEY));
+}

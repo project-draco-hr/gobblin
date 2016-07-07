@@ -1,0 +1,3 @@
+ConvertibleHiveDataset convertibleHiveDataset
+SchemaAwareHiveTable hiveTable
+Optional<SchemaAwareHivePartition> hivePartition

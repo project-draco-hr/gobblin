@@ -1,3 +1,0 @@
-{
-  return workUnit.getJobState().getPropAsBoolean(ORC_TABLE_FLATTEN_SCHEMA,true);
-}

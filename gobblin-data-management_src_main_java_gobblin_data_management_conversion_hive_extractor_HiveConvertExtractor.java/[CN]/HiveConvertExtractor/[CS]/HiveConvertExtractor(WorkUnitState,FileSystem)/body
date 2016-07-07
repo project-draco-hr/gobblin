@@ -1,16 +1,21 @@
 {
+  HiveWorkUnit hiveWokUnit=new HiveWorkUnit(state.getWorkunit());
+  if (!(hiveWokUnit.getHiveDataset() instanceof ConvertibleHiveDataset)) {
+    throw new IllegalStateException("HiveConvertExtractor is only compatible with ConvertibleHiveDataset");
+  }
+  ConvertibleHiveDataset hiveDataset=(ConvertibleHiveDataset)hiveWokUnit.getHiveDataset();
+  String dbName=hiveDataset.getDbAndTable().getDb();
+  String tableName=hiveDataset.getDbAndTable().getTable();
   HiveMetastoreClientPool pool=HiveMetastoreClientPool.get(state.getJobState().getProperties(),Optional.fromNullable(state.getJobState().getProp(HiveDatasetFinder.HIVE_METASTORE_URI_KEY)));
-  SerializableHiveTable hiveTable=HiveSourceUtils.deserializeTable(state);
   try (AutoReturnableObject<IMetaStoreClient> client=pool.getClient()){
-    Table table=client.get().getTable(hiveTable.getDbName(),hiveTable.getTableName());
-    SchemaAwareHiveTable schemaAwareHiveTable=new SchemaAwareHiveTable(table,AvroSchemaManager.getSchemaFromUrl(hiveTable.getSchemaUrl(),fs));
+    Table table=client.get().getTable(dbName,tableName);
+    SchemaAwareHiveTable schemaAwareHiveTable=new SchemaAwareHiveTable(table,AvroSchemaManager.getSchemaFromUrl(hiveWokUnit.getTableSchemaUrl(),fs));
     SchemaAwareHivePartition schemaAwareHivePartition=null;
-    if (HiveSourceUtils.hasPartition(state)) {
-      SerializableHivePartition hivePartition=HiveSourceUtils.deserializePartition(state);
-      Partition partition=client.get().getPartition(hiveTable.getDbName(),hiveTable.getTableName(),hivePartition.getPartitionName());
-      schemaAwareHivePartition=new SchemaAwareHivePartition(table,partition,AvroSchemaManager.getSchemaFromUrl(hivePartition.getSchemaUrl(),fs));
+    if (hiveWokUnit.getPartitionName().isPresent() && hiveWokUnit.getPartitionSchemaUrl().isPresent()) {
+      Partition partition=client.get().getPartition(dbName,tableName,hiveWokUnit.getPartitionName().get());
+      schemaAwareHivePartition=new SchemaAwareHivePartition(table,partition,AvroSchemaManager.getSchemaFromUrl(hiveWokUnit.getPartitionSchemaUrl().get(),fs));
     }
-    QueryBasedHiveConversionEntity entity=new QueryBasedHiveConversionEntity(schemaAwareHiveTable,Optional.fromNullable(schemaAwareHivePartition));
+    QueryBasedHiveConversionEntity entity=new QueryBasedHiveConversionEntity(hiveDataset,schemaAwareHiveTable,Optional.fromNullable(schemaAwareHivePartition));
     this.conversionEntities.add(entity);
   }
  }

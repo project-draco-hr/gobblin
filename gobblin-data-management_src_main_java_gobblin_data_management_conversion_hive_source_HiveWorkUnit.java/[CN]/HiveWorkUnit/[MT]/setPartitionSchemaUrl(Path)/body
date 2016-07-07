@@ -1,0 +1,3 @@
+{
+  this.setProp(HIVE_PARTITION_SCHEMA_URL_KEY,schemaUrl.toString());
+}

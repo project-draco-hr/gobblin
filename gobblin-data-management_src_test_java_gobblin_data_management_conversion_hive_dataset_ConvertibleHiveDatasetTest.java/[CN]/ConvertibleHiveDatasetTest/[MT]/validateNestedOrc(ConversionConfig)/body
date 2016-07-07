@@ -1,0 +1,11 @@
+{
+  Assert.assertEquals(conversionConfig.getDestinationDbName(),"db1_nestedOrcDb");
+  Assert.assertEquals(conversionConfig.getDestinationTableName(),"tb1_nestedOrc");
+  Assert.assertEquals(conversionConfig.getDestinationDataPath(),"/tmp/data_nestedOrc/db1/tb1");
+  Assert.assertEquals(conversionConfig.getClusterBy(),ImmutableList.of("c3","c4"));
+  Assert.assertEquals(conversionConfig.getNumBuckets().get(),Integer.valueOf(5));
+  Properties hiveProps=new Properties();
+  hiveProps=new Properties();
+  hiveProps.setProperty("mapred.map.tasks","12");
+  Assert.assertEquals(conversionConfig.getHiveRuntimeProperties(),hiveProps);
+}

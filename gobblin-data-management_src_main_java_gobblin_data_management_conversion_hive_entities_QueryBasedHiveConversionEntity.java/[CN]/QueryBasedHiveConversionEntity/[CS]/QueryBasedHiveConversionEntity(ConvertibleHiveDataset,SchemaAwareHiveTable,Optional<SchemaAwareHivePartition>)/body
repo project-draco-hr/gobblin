@@ -1,0 +1,6 @@
+{
+  this.convertibleHiveDataset=convertibleHiveDataset;
+  this.hiveTable=hiveTable;
+  this.hivePartition=hivePartition;
+  this.queries=Lists.newArrayList();
+}

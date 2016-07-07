@@ -1,0 +1,9 @@
+{
+  if (!state.contains(HIVE_SOURCE_DATASET_FINDER_CLASS_KEY)) {
+    state.setProp(HIVE_SOURCE_DATASET_FINDER_CLASS_KEY,ConvertibleHiveDatasetFinder.class.getName());
+  }
+  if (!state.contains(HiveDatasetFinder.HIVE_DATASET_CONFIG_PREFIX_KEY)) {
+    state.setProp(HiveDatasetFinder.HIVE_DATASET_CONFIG_PREFIX_KEY,"hive.conversion.avro");
+  }
+  return super.getWorkunits(state);
+}
