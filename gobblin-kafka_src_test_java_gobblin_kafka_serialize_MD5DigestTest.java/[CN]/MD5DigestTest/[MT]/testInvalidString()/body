@@ -1,0 +1,10 @@
+{
+  String foobar="clearly-bad-md5string";
+  try {
+    MD5Digest md5Digest=MD5Digest.fromString(foobar);
+    Assert.fail("Should have thrown an exception");
+  }
+ catch (  Exception e) {
+    log.info("Found expected exception",e.getMessage());
+  }
+}

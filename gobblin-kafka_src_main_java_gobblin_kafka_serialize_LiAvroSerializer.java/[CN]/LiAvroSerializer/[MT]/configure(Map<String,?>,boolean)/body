@@ -1,0 +1,6 @@
+{
+  if (null == schemaRegistry) {
+    schemaRegistry=LiAvroSerDeHelper.getSchemaRegistry(configs);
+  }
+  this.isKey=isKey;
+}

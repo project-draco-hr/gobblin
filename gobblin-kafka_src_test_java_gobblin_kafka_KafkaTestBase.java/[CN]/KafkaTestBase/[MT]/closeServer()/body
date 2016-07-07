@@ -1,0 +1,8 @@
+{
+  if (serverStarted && !serverClosed) {
+    serverClosed=true;
+    kafkaServer.shutdown();
+    zkClient.close();
+    zkServer.shutdown();
+  }
+}

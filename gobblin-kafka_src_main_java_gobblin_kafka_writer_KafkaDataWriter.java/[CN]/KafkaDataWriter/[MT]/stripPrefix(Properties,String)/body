@@ -1,0 +1,10 @@
+{
+  Properties strippedProps=new Properties();
+  int prefixLength=prefix.length();
+  for (  String key : props.stringPropertyNames()) {
+    if (key.startsWith(prefix)) {
+      strippedProps.setProperty(key.substring(prefixLength),props.getProperty(key));
+    }
+  }
+  return strippedProps;
+}

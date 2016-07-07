@@ -1,0 +1,41 @@
+{
+  Preconditions.checkArgument(args.length >= 1,"Usage: java " + SimpleKafkaConsumer.class.getName() + " <properties_file> <checkpoint_file>");
+  String fileName=args[0];
+  Properties props=new Properties();
+  props.load(new FileInputStream(new File(fileName)));
+  KafkaCheckpoint checkpoint=KafkaCheckpoint.emptyCheckpoint();
+  File checkpointFile=null;
+  if (args.length > 1) {
+    try {
+      checkpointFile=new File(args[1]);
+      if (checkpointFile.exists()) {
+        FileInputStream fis=null;
+        try {
+          fis=new FileInputStream(checkpointFile);
+          checkpoint=KafkaCheckpoint.deserialize(fis);
+        }
+  finally {
+          if (fis != null)           fis.close();
+        }
+      }
+ else {
+        log.info("Checkpoint doesn't exist, we will start with an empty one and store it here.");
+      }
+    }
+ catch (    IOException e) {
+      log.warn("Could not deserialize the previous checkpoint. Starting with empty",e);
+      if (!checkpoint.isEmpty()) {
+        checkpoint=KafkaCheckpoint.emptyCheckpoint();
+      }
+    }
+  }
+  final SimpleKafkaConsumer consumer=new SimpleKafkaConsumer(props,checkpoint);
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      log.info("Shutting down...");
+      consumer.shutdown();
+    }
+  }
+);
+  consumer.printLoop(checkpoint,checkpointFile);
+}

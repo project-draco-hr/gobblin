@@ -1,0 +1,3 @@
+{
+  this.producer.send(new ProducerRecord<String,D>(topic,record),this.producerCallback);
+}

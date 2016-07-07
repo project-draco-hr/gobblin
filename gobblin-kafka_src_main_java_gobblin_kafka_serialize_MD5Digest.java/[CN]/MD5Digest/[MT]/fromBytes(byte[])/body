@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(md5Bytes.length == MD5_BYTES_LENGTH,"md5 bytes must be " + MD5_BYTES_LENGTH + " bytes in length, found "+ md5Bytes.length+ " bytes.");
+  String md5String=Hex.encodeHexString(md5Bytes);
+  return new MD5Digest(md5String,md5Bytes);
+}
