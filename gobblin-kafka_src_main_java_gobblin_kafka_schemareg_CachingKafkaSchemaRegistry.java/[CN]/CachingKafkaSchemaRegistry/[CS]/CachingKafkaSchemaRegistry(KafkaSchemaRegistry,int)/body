@@ -1,0 +1,8 @@
+{
+  Preconditions.checkArgument(kafkaSchemaRegistry != null,"KafkaSchemaRegistry cannot be null");
+  Preconditions.checkArgument(!kafkaSchemaRegistry.hasInternalCache(),"SchemaRegistry already has a cache.");
+  _kafkaSchemaRegistry=kafkaSchemaRegistry;
+  _namedSchemaCache=new HashMap<>();
+  _idBasedCache=new HashMap<>();
+  _maxSchemaReferences=maxSchemaReferences;
+}

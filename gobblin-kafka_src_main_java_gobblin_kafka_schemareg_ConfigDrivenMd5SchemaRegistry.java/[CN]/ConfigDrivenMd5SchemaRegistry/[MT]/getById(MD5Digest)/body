@@ -1,0 +1,8 @@
+{
+  if (_schemaHashMap.containsKey(id)) {
+    return _schemaHashMap.get(id);
+  }
+ else {
+    throw new SchemaRegistryException("Could not find schema with id : " + id.asString());
+  }
+}

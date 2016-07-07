@@ -1,0 +1,6 @@
+{
+  TypeFactory typeFactory=_mapper.getTypeFactory();
+  MapType mapType=typeFactory.constructMapType(HashMap.class,Integer.class,Long.class);
+  HashMap<Integer,Long> checkpoint=_mapper.readValue(inputStream,mapType);
+  return new KafkaCheckpoint(checkpoint);
+}

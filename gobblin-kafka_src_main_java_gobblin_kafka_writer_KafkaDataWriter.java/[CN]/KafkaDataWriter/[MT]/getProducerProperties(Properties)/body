@@ -1,0 +1,10 @@
+{
+  Properties producerProperties=stripPrefix(props,KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX);
+  if (!producerProperties.containsKey(KEY_SERIALIZER_CONFIG)) {
+    producerProperties.setProperty(KEY_SERIALIZER_CONFIG,DEFAULT_KEY_SERIALIZER);
+  }
+  if (!producerProperties.containsKey(VALUE_SERIALIZER_CONFIG)) {
+    producerProperties.setProperty(VALUE_SERIALIZER_CONFIG,DEFAULT_VALUE_SERIALIZER);
+  }
+  return producerProperties;
+}

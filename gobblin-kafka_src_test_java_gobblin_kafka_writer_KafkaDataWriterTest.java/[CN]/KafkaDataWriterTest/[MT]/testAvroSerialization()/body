@@ -1,0 +1,23 @@
+{
+  Properties props=new Properties();
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,TOPIC);
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "bootstrap.servers","localhost:" + this.kafkaPort);
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "value.serializer","gobblin.kafka.serialize.LiAvroSerializer");
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + KafkaSchemaRegistryConfigurationKeys.KAFKA_SCHEMA_REGISTRY_CLASS,ConfigDrivenMd5SchemaRegistry.class.getCanonicalName());
+  KafkaDataWriter<GenericRecord> kafkaWriter=new KafkaDataWriter<>(props);
+  GenericRecord record=generateRandomAvroRecord();
+  try {
+    kafkaWriter.write(record);
+  }
+  finally {
+    kafkaWriter.close();
+  }
+  Thread.sleep(500);
+  Assert.assertEquals(kafkaWriter.recordsWritten(),1);
+  byte[] message=iterator.next().message();
+  ConfigDrivenMd5SchemaRegistry schemaReg=new ConfigDrivenMd5SchemaRegistry(TOPIC,record.getSchema());
+  LiAvroDeserializer deser=new LiAvroDeserializer(schemaReg);
+  GenericRecord receivedRecord=deser.deserialize(TOPIC,message);
+  System.out.println(record.toString());
+  System.out.println(receivedRecord.toString());
+}

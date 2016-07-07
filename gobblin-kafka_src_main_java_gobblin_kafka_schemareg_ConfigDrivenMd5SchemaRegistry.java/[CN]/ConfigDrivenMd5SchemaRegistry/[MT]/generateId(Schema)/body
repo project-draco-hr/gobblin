@@ -1,0 +1,11 @@
+{
+  try {
+    byte[] schemaBytes=schema.toString().getBytes("UTF-8");
+    byte[] md5bytes=MessageDigest.getInstance("MD5").digest(schemaBytes);
+    MD5Digest md5Digest=MD5Digest.fromBytes(md5bytes);
+    return md5Digest;
+  }
+ catch (  UnsupportedEncodingException|NoSuchAlgorithmException e) {
+    throw new IllegalStateException("Unexpected error trying to convert schema to bytes",e);
+  }
+}

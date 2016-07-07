@@ -1,0 +1,2 @@
+KafkaSchemaRegistry kafkaSchemaRegistry
+int maxSchemaReferences

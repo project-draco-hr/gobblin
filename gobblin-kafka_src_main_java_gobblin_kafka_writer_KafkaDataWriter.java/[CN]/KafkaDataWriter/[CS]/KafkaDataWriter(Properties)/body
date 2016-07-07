@@ -1,0 +1,3 @@
+{
+  this(new KafkaProducer<>(getProducerProperties(props)),ConfigFactory.parseProperties(props));
+}

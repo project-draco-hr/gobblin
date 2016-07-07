@@ -1,0 +1,5 @@
+{
+  State state=this.destination.getProperties();
+  Properties taskProps=state.getProperties();
+  return new KafkaDataWriter<>(taskProps);
+}
