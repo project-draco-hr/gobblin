@@ -1,0 +1,13 @@
+{
+  Optional<Table> table=Optional.<Table>absent();
+  try {
+    HiveMetastoreClientPool pool=HiveMetastoreClientPool.get(state.getJobState().getProperties(),Optional.fromNullable(state.getJobState().getProp(HiveDatasetFinder.HIVE_METASTORE_URI_KEY)));
+    try (AutoReturnableObject<IMetaStoreClient> client=pool.getClient()){
+      table=Optional.of(client.get().getTable(dbName,tableName));
+    }
+   }
+ catch (  IOException|TException e) {
+    throw new DataConversionException("Could not fetch destination table metadata",e);
+  }
+  return table;
+}

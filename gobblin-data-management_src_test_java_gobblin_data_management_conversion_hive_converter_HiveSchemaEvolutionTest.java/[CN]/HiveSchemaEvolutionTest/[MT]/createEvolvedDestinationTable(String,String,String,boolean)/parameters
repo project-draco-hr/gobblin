@@ -1,0 +1,4 @@
+String tableName
+String dbName
+String location
+boolean withComment

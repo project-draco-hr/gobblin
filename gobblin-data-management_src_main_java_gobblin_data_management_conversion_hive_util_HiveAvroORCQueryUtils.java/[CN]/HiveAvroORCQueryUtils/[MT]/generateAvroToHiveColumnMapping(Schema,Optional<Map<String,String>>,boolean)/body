@@ -19,7 +19,11 @@ case RECORD:
       if (hiveColumns.isPresent()) {
         hiveColumns.get().put(field.name(),type);
       }
-      columns.append(String.format("  `%s` %s",field.name(),type));
+      String flattenSource=field.getProp("flatten_source");
+      if (StringUtils.isBlank(flattenSource)) {
+        flattenSource=field.name();
+      }
+      columns.append(String.format("  `%s` %s COMMENT 'from flatten_source %s'",field.name(),type,flattenSource));
     }
   }
  else {

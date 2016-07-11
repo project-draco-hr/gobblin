@@ -7,7 +7,7 @@
   }
   if (StringUtils.isNotBlank(partitionsInfoString) || StringUtils.isNotBlank(partitionsTypeString)) {
     if (StringUtils.isBlank(partitionsInfoString) || StringUtils.isBlank(partitionsTypeString)) {
-      throw new IllegalArgumentException("Both partitions info and partions must be present, if one is specified");
+      throw new IllegalArgumentException("Both partitions info and partitions must be present, if one is specified");
     }
     List<String> pInfo=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsInfoString);
     List<String> pType=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsTypeString);

@@ -10,3 +10,5 @@ Optional<String> optionalRowFormatSerde
 Optional<String> optionalInputFormat
 Optional<String> optionalOutputFormat
 Optional<Map<String,String>> optionalTblProperties
+boolean isEvolutionEnabled
+Optional<Table> destinationTableMeta

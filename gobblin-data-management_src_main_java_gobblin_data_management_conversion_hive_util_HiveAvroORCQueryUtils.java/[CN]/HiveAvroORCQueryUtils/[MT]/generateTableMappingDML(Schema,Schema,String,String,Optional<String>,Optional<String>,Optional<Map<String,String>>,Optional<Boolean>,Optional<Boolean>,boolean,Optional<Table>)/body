@@ -29,25 +29,62 @@
     dmlQuery.append(" IF NOT EXISTS \n");
   }
   dmlQuery.append("SELECT \n");
-  boolean isFirst=true;
-  List<Schema.Field> fieldList=outputOrcSchema.getFields();
-  for (  Schema.Field field : fieldList) {
-    String flattenSource=field.getProp("flatten_source");
-    String colName;
-    if (StringUtils.isNotBlank(flattenSource)) {
-      colName=flattenSource;
-    }
+  if (isEvolutionEnabled || !destinationTableMeta.isPresent()) {
+    boolean isFirst=true;
+    List<Schema.Field> fieldList=outputOrcSchema.getFields();
+    for (    Schema.Field field : fieldList) {
+      String flattenSource=field.getProp("flatten_source");
+      String colName;
+      if (StringUtils.isNotBlank(flattenSource)) {
+        colName=flattenSource;
+      }
  else {
-      colName=field.name();
-    }
-    if (isFirst) {
-      isFirst=false;
-    }
+        colName=field.name();
+      }
+      colName=colName.replaceAll("\\.","`.`");
+      if (isFirst) {
+        isFirst=false;
+      }
  else {
-      dmlQuery.append(", \n");
+        dmlQuery.append(", \n");
+      }
+      dmlQuery.append(String.format("  `%s`",colName));
     }
-    colName=colName.replaceAll("\\.","`.`");
-    dmlQuery.append(String.format("  `%s`",colName));
+  }
+ else {
+    boolean isFirst=true;
+    List<FieldSchema> fieldList=destinationTableMeta.get().getSd().getCols();
+    for (    FieldSchema field : fieldList) {
+      String colName=StringUtils.EMPTY;
+      if (field.isSetComment() && field.getComment().startsWith("from flatten_source ")) {
+        colName=field.getComment().replaceAll("from flatten_source ","").trim();
+      }
+ else {
+        List<Schema.Field> evolvedFieldList=outputOrcSchema.getFields();
+        for (        Schema.Field evolvedField : evolvedFieldList) {
+          if (evolvedField.name().equalsIgnoreCase(field.getName())) {
+            String flattenSource=evolvedField.getProp("flatten_source");
+            if (StringUtils.isNotBlank(flattenSource)) {
+              colName=flattenSource;
+            }
+ else {
+              colName=evolvedField.name();
+            }
+            break;
+          }
+        }
+      }
+      colName=colName.replaceAll("\\.","`.`");
+      if (StringUtils.isNotBlank(colName)) {
+        if (isFirst) {
+          isFirst=false;
+        }
+ else {
+          dmlQuery.append(", \n");
+        }
+        dmlQuery.append(String.format("  `%s`",colName));
+      }
+    }
   }
   dmlQuery.append(String.format(" %n FROM `%s.%s` ",inputDbName,inputTblName));
   if (optionalPartitionDMLInfo.isPresent()) {

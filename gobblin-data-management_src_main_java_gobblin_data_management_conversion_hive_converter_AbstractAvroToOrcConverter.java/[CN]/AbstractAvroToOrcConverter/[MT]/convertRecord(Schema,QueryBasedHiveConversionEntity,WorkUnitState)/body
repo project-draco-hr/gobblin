@@ -11,6 +11,8 @@
   String orcTableName=getConversionConfig().getDestinationTableName();
   String orcTableDatabase=getConversionConfig().getDestinationDbName();
   String orcDataLocation=getOrcDataLocation(workUnit);
+  boolean isEvolutionEnabled=getConversionConfig().isEvolutionEnabled();
+  Optional<Table> destinationTableMeta=getDestinationTableMeta(orcTableDatabase,orcTableName,workUnit);
   Optional<List<String>> clusterBy=getConversionConfig().getClusterBy().isEmpty() ? Optional.<List<String>>absent() : Optional.of(getConversionConfig().getClusterBy());
   Optional<Integer> numBuckets=getConversionConfig().getNumBuckets();
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
@@ -19,10 +21,10 @@
   for (  Map.Entry<Object,Object> entry : getConversionConfig().getHiveRuntimeProperties().entrySet()) {
     conversionEntity.getQueries().add(String.format("SET %s=%s;",entry.getKey(),entry.getValue()));
   }
-  String createTargetTableDDL=HiveAvroORCQueryUtils.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent());
+  String createTargetTableDDL=HiveAvroORCQueryUtils.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta);
   conversionEntity.getQueries().add(createTargetTableDDL);
   log.debug("Create DDL: " + createTargetTableDDL);
-  String insertInORCTableDML=HiveAvroORCQueryUtils.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent());
+  String insertInORCTableDML=HiveAvroORCQueryUtils.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta);
   conversionEntity.getQueries().add(insertInORCTableDML);
   log.debug("Conversion DML: " + insertInORCTableDML);
   log.debug("Conversion Query " + conversionEntity.getQueries());
