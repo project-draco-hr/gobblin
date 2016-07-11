@@ -12,3 +12,4 @@ Optional<String> optionalOutputFormat
 Optional<Map<String,String>> optionalTblProperties
 boolean isEvolutionEnabled
 Optional<Table> destinationTableMeta
+Map<String,String> hiveColumns

@@ -8,7 +8,6 @@
   String outputFormat=optionalOutputFormat.isPresent() ? optionalOutputFormat.get() : DEFAULT_ORC_OUTPUT_FORMAT;
   Map<String,String> tblProperties=optionalTblProperties.isPresent() ? optionalTblProperties.get() : DEFAULT_TBL_PROPERTIES;
   StringBuilder ddl=new StringBuilder();
-  Map<String,String> hiveColumns=new HashMap<String,String>();
   ddl.append(String.format("CREATE EXTERNAL TABLE IF NOT EXISTS `%s.%s` ",dbName,tblName));
   ddl.append("( \n");
   if (isEvolutionEnabled || !destinationTableMeta.isPresent()) {

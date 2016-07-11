@@ -9,6 +9,7 @@
   }
   String avroTableName=conversionEntity.getHiveTable().getTableName();
   String orcTableName=getConversionConfig().getDestinationTableName();
+  String orcStagingTableName=orcTableName + "_staging";
   String orcTableDatabase=getConversionConfig().getDestinationDbName();
   String orcDataLocation=getOrcDataLocation(workUnit);
   boolean isEvolutionEnabled=getConversionConfig().isEvolutionEnabled();
@@ -21,12 +22,26 @@
   for (  Map.Entry<Object,Object> entry : getConversionConfig().getHiveRuntimeProperties().entrySet()) {
     conversionEntity.getQueries().add(String.format("SET %s=%s;",entry.getKey(),entry.getValue()));
   }
-  String createTargetTableDDL=HiveAvroORCQueryUtils.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta);
+  Map<String,String> hiveColumns=new HashMap<String,String>();
+  String createTargetTableDDL=HiveAvroORCQueryUtils.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
   conversionEntity.getQueries().add(createTargetTableDDL);
   log.debug("Create DDL: " + createTargetTableDDL);
-  String insertInORCTableDML=HiveAvroORCQueryUtils.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta);
+  String insertInORCTableDML=HiveAvroORCQueryUtils.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcStagingTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta);
   conversionEntity.getQueries().add(insertInORCTableDML);
   log.debug("Conversion DML: " + insertInORCTableDML);
+  StringBuilder publishTableQueries=new StringBuilder();
+  publishTableQueries.append(HiveAvroORCQueryUtils.generateEvolutionDDL(orcStagingTableName,orcTableName,outputAvroSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta)).append("\n");
+  publishTableQueries.append(HiveAvroORCQueryUtils.generatePublishTableDDL(orcStagingTableName,orcTableName,destinationTableMeta)).append("\n");
+  workUnit.setProp(HiveAvroORCQueryUtils.SERIALIZED_PUBLISH_TABLE_COMMANDS,HiveAvroORCQueryUtils.GSON.toJson(publishTableQueries));
+  log.debug("Publish table queries: " + publishTableQueries);
+  StringBuilder publishPartitionQueries=new StringBuilder();
+  publishPartitionQueries.append(HiveAvroORCQueryUtils.generatePublishPartitionDDL(orcStagingTableName,orcTableName,partitionsDMLInfo,destinationTableMeta)).append("\n");
+  workUnit.setProp(HiveAvroORCQueryUtils.SERIALIZED_PUBLISH_PARTITION_COMMANDS,HiveAvroORCQueryUtils.GSON.toJson(publishPartitionQueries));
+  log.debug("Publish partition queries: " + publishPartitionQueries);
+  StringBuilder cleanupQueries=new StringBuilder();
+  cleanupQueries.append(HiveAvroORCQueryUtils.generateCleanupDDL(orcStagingTableName)).append("\n");
+  workUnit.setProp(HiveAvroORCQueryUtils.SERIALIZED_CLEANUP_COMMANDS,HiveAvroORCQueryUtils.GSON.toJson(cleanupQueries));
+  log.debug("Cleanup queries: " + cleanupQueries);
   log.debug("Conversion Query " + conversionEntity.getQueries());
   return new SingleRecordIterable<>(conversionEntity);
 }

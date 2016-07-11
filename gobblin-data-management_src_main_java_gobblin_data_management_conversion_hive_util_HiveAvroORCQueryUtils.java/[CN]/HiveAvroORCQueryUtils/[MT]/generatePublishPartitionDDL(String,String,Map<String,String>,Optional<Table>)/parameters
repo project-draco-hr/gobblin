@@ -1,0 +1,4 @@
+String stagingTableName
+String finalTableName
+Map<String,String> partitionsDMLInfo
+Optional<Table> destinationTableMeta

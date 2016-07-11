@@ -1,0 +1,11 @@
+{
+  if (StringUtils.isBlank(queries)) {
+    return;
+  }
+  try {
+    this.hiveJdbcConnector.executeStatements(queries);
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+}
