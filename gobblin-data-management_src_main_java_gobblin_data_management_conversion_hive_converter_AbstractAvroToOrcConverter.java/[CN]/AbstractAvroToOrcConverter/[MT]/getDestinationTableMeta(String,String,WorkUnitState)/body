@@ -6,7 +6,10 @@
       table=Optional.of(client.get().getTable(dbName,tableName));
     }
    }
- catch (  IOException|TException e) {
+ catch (  NoSuchObjectException e) {
+    return Optional.<Table>absent();
+  }
+catch (  IOException|TException e) {
     throw new DataConversionException("Could not fetch destination table metadata",e);
   }
   return table;
