@@ -4,7 +4,7 @@
   if (Iterables.tryFind(states,UNSUCCESSFUL_WORKUNIT).isPresent()) {
     for (    WorkUnitState wus : states) {
       if (isFirst) {
-        cleanupCommands=HiveAvroORCQueryUtils.GSON.fromJson(wus.getProp(HiveAvroORCQueryUtils.SERIALIZED_CLEANUP_COMMANDS),String.class);
+        cleanupCommands=HiveAvroORCQueryUtils.deserializeCleanupCommands(wus);
         isFirst=false;
       }
       wus.setWorkingState(WorkingState.FAILED);
@@ -15,12 +15,12 @@
     String publishTableCommands=StringUtils.EMPTY;
     for (    WorkUnitState wus : states) {
       if (isFirst) {
-        publishTableCommands=HiveAvroORCQueryUtils.GSON.fromJson(wus.getProp(HiveAvroORCQueryUtils.SERIALIZED_PUBLISH_TABLE_COMMANDS),String.class);
+        publishTableCommands=HiveAvroORCQueryUtils.deserializePublishTableCommands(wus);
         executeQueries(publishTableCommands);
-        cleanupCommands=HiveAvroORCQueryUtils.GSON.fromJson(wus.getProp(HiveAvroORCQueryUtils.SERIALIZED_CLEANUP_COMMANDS),String.class);
+        cleanupCommands=HiveAvroORCQueryUtils.deserializeCleanupCommands(wus);
         isFirst=false;
       }
-      String publishPartitionCommands=HiveAvroORCQueryUtils.GSON.fromJson(wus.getProp(HiveAvroORCQueryUtils.SERIALIZED_PUBLISH_PARTITION_COMMANDS),String.class);
+      String publishPartitionCommands=HiveAvroORCQueryUtils.deserializePublishPartitionCommands(wus);
       executeQueries(publishPartitionCommands);
       wus.setWorkingState(WorkingState.COMMITTED);
       wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
