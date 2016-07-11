@@ -1,0 +1,13 @@
+{
+  String orcStagingTableName=schemaName + "_staging";
+  String orcTableName=schemaName;
+  boolean isEvolutionEnabled=false;
+  Optional<Table> destinationTableMeta=createEvolvedDestinationTable(schemaName,"default","",true);
+  Map<String,String> hiveColumns=new HashMap<>();
+  HiveAvroORCQueryUtils.generateCreateTableDDL(outputSchema,schemaName,"/tmp/dummy",Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
+  String generateEvolutionDDL=HiveAvroORCQueryUtils.generateEvolutionDDL(orcStagingTableName,orcTableName,outputSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta);
+  Assert.assertEquals(generateEvolutionDDL,"","Generated evolution DDL did not match for evolution disabled");
+  destinationTableMeta=Optional.absent();
+  generateEvolutionDDL=HiveAvroORCQueryUtils.generateEvolutionDDL(orcStagingTableName,orcTableName,outputSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta);
+  Assert.assertEquals(generateEvolutionDDL,"","Generated evolution DDL did not match for evolution disabled");
+}

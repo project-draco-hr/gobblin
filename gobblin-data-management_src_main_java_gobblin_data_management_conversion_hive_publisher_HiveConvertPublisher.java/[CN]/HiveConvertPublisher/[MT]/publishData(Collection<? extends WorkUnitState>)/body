@@ -1,15 +1,31 @@
 {
+  String cleanupCommands=StringUtils.EMPTY;
+  boolean isFirst=true;
   if (Iterables.tryFind(states,UNSUCCESSFUL_WORKUNIT).isPresent()) {
     for (    WorkUnitState wus : states) {
+      if (isFirst) {
+        cleanupCommands=HiveAvroORCQueryUtils.deserializeCleanupCommands(wus);
+        isFirst=false;
+      }
       wus.setWorkingState(WorkingState.FAILED);
       new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_FAILED_EVENT,wus.getProperties()).submit();
     }
   }
  else {
+    String publishTableCommands=StringUtils.EMPTY;
     for (    WorkUnitState wus : states) {
+      if (isFirst) {
+        publishTableCommands=HiveAvroORCQueryUtils.deserializePublishTableCommands(wus);
+        executeQueries(publishTableCommands);
+        cleanupCommands=HiveAvroORCQueryUtils.deserializeCleanupCommands(wus);
+        isFirst=false;
+      }
+      String publishPartitionCommands=HiveAvroORCQueryUtils.deserializePublishPartitionCommands(wus);
+      executeQueries(publishPartitionCommands);
       wus.setWorkingState(WorkingState.COMMITTED);
       wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
       new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
     }
   }
+  executeQueries(cleanupCommands);
 }

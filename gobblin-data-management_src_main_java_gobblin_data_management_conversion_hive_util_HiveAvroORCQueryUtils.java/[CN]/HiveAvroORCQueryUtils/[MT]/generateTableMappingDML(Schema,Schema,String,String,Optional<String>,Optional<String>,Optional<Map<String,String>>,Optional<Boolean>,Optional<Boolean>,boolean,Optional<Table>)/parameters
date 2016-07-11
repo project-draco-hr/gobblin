@@ -7,3 +7,5 @@ Optional<String> optionalOutputDbName
 Optional<Map<String,String>> optionalPartitionDMLInfo
 Optional<Boolean> optionalOverwriteTable
 Optional<Boolean> optionalCreateIfNotExists
+boolean isEvolutionEnabled
+Optional<Table> destinationTableMeta

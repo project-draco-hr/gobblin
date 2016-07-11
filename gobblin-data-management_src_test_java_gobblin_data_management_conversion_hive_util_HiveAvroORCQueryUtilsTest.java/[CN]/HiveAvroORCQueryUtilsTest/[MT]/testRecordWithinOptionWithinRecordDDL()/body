@@ -1,6 +1,6 @@
 {
   String schemaName="testRecordWithinOptionWithinRecordDDL";
   Schema schema=ConversionHiveTestUtils.readSchemaFromJsonFile(resourceDir,"recordWithinOptionWithinRecord_nested.json");
-  String q=HiveAvroORCQueryUtils.generateCreateTableDDL(schema,schemaName,"file:/user/hive/warehouse/" + schemaName,Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent());
-  Assert.assertEquals(q.trim().replaceAll(" ",""),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinOptionWithinRecord_nested.ddl").replaceAll(" ",""));
+  String q=HiveAvroORCQueryUtils.generateCreateTableDDL(schema,schemaName,"file:/user/hive/warehouse/" + schemaName,Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
+  Assert.assertEquals(q.trim(),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinOptionWithinRecord_nested.ddl"));
 }

@@ -8,10 +8,14 @@
   String outputFormat=optionalOutputFormat.isPresent() ? optionalOutputFormat.get() : DEFAULT_ORC_OUTPUT_FORMAT;
   Map<String,String> tblProperties=optionalTblProperties.isPresent() ? optionalTblProperties.get() : DEFAULT_TBL_PROPERTIES;
   StringBuilder ddl=new StringBuilder();
-  Map<String,String> hiveColumns=new HashMap<String,String>();
   ddl.append(String.format("CREATE EXTERNAL TABLE IF NOT EXISTS `%s.%s` ",dbName,tblName));
   ddl.append("( \n");
-  ddl.append(generateAvroToHiveColumnMapping(schema,Optional.of(hiveColumns),true));
+  if (isEvolutionEnabled || !destinationTableMeta.isPresent()) {
+    ddl.append(generateAvroToHiveColumnMapping(schema,Optional.of(hiveColumns),true));
+  }
+ else {
+    ddl.append(generateDestinationToHiveColumnMapping(Optional.of(hiveColumns),destinationTableMeta.get()));
+  }
   ddl.append(") \n");
   if (optionalPartitionDDLInfo.isPresent() && optionalPartitionDDLInfo.get().size() > 0) {
     ddl.append("PARTITIONED BY ( ");

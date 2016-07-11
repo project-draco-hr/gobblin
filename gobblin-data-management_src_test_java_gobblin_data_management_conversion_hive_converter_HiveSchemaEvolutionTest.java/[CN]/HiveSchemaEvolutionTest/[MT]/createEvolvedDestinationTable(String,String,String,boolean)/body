@@ -1,0 +1,13 @@
+{
+  List<FieldSchema> cols=new ArrayList<>();
+  cols.add(new FieldSchema("parentFieldRecord__nestedFieldRecord__superNestedFieldString","string",withComment ? "from flatten_source parentFieldRecord.nestedFieldRecord.superNestedFieldString" : ""));
+  cols.add(new FieldSchema("parentFieldRecord__nestedFieldRecord__superNestedFieldInt","int",withComment ? "from flatten_source parentFieldRecord.nestedFieldRecord.superNestedFieldInt" : ""));
+  cols.add(new FieldSchema("parentFieldRecord__nestedFieldString","string",withComment ? "from flatten_source parentFieldRecord.nestedFieldString" : ""));
+  cols.add(new FieldSchema("parentFieldInt","int",withComment ? "from flatten_source parentFieldInt" : ""));
+  cols.add(new FieldSchema("parentFieldRecord__nestedFieldString2","string",withComment ? "from flatten_source parentFieldRecord.nestedFieldString2" : ""));
+  String inputFormat="org.apache.hadoop.hive.ql.io.orc.OrcInputFormat";
+  String outputFormat="org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat";
+  StorageDescriptor storageDescriptor=new StorageDescriptor(cols,location,inputFormat,outputFormat,false,0,new SerDeInfo(),null,Lists.<Order>newArrayList(),null);
+  Table table=new Table(tableName,dbName,"ketl_dev",0,0,0,storageDescriptor,Lists.<FieldSchema>newArrayList(),Maps.<String,String>newHashMap(),"","","");
+  return Optional.of(table);
+}
