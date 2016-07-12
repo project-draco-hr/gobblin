@@ -1,3 +1,0 @@
-{
-  state.setProp(HiveAvroORCQueryUtils.SERIALIZED_CLEANUP_COMMANDS,GSON.toJson(commands));
-}

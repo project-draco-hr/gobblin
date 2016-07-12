@@ -1,5 +1,0 @@
-{
-  String schemaName="nonRecordRootSchema";
-  Schema schema=Schema.create(Schema.Type.STRING);
-  String q=HiveAvroORCQueryUtils.generateCreateTableDDL(schema,schemaName,"file:/user/hive/warehouse/" + schemaName,Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
-}
