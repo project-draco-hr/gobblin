@@ -8,7 +8,7 @@
       }
  catch (      IOException|ConfigurationException e) {
         LOGGER.error("Failed to fetch job configurations",e);
-        throw Throwables.propagate(e);
+        throw new RuntimeException("Failed to fetch job configurations",e);
       }
     }
   }
