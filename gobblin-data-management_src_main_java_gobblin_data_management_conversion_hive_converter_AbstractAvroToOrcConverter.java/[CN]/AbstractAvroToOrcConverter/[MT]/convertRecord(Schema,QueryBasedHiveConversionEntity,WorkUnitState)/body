@@ -16,6 +16,7 @@
   Optional<Table> destinationTableMeta=getDestinationTableMeta(orcTableDatabase,orcTableName,workUnit);
   Optional<List<String>> clusterBy=getConversionConfig().getClusterBy().isEmpty() ? Optional.<List<String>>absent() : Optional.of(getConversionConfig().getClusterBy());
   Optional<Integer> numBuckets=getConversionConfig().getNumBuckets();
+  Optional<Integer> rowLimit=getConversionConfig().getRowLimit();
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
   populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
@@ -26,7 +27,7 @@
   String createTargetTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
   conversionEntity.getQueries().add(createTargetTableDDL);
   log.debug("Create DDL: " + createTargetTableDDL);
-  String insertInORCTableDML=HiveAvroORCQueryGenerator.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcStagingTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta);
+  String insertInORCTableDML=HiveAvroORCQueryGenerator.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcStagingTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta,rowLimit);
   conversionEntity.getQueries().add(insertInORCTableDML);
   log.debug("Conversion DML: " + insertInORCTableDML);
   StringBuilder publishTableQueries=new StringBuilder();

@@ -1,8 +1,9 @@
 {
   String schemaName="testRecordWithinRecordWithinRecordDDL";
   Schema schema=ConversionHiveTestUtils.readSchemaFromJsonFile(resourceDir,"recordWithinRecordWithinRecord_nested.json");
+  Optional<Integer> rowLimit=Optional.of(1);
   AvroFlattener avroFlattener=new AvroFlattener();
   Schema flattenedSchema=avroFlattener.flatten(schema,true);
   String q=HiveAvroORCQueryGenerator.generateTableMappingDML(schema,flattenedSchema,schemaName,schemaName + "_orc",Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta,rowLimit);
-  Assert.assertEquals(q.trim(),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinRecordWithinRecord.dml"));
+  Assert.assertEquals(q.trim(),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"flattenedWithRowLimit.dml"));
 }
