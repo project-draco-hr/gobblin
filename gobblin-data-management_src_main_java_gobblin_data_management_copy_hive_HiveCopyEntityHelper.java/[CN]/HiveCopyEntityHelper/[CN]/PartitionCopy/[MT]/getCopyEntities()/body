@@ -20,7 +20,8 @@
           log.error("Source and target partitions are not compatible. Aborting copy of partition " + this.partition,ioe);
           return Lists.newArrayList();
         }
-        log.warn("Source and target partitions are not compatible. Will override target partition.",ioe);
+        log.warn("Source and target partitions are not compatible. Will override target partition: " + ioe.getMessage());
+        log.debug("Incompatibility details:",ioe);
         stepPriority=addPartitionDeregisterSteps(copyEntities,fileSet,stepPriority,HiveCopyEntityHelper.this.targetTable,this.existingTargetPartition.get());
         this.existingTargetPartition=Optional.absent();
       }

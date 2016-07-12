@@ -1,0 +1,20 @@
+{
+  String nonInterned=new String("myKey");
+  String interned=new String("myInternedKey").intern();
+  Assert.assertFalse(isInterned(nonInterned));
+  Assert.assertTrue(isInterned(interned));
+  State state=new State();
+  state.setProp(new String("someKey"),new String("someValue"));
+  ByteArrayOutputStream outputStream=new ByteArrayOutputStream();
+  DataOutput dataOutput=new DataOutputStream(outputStream);
+  state.write(dataOutput);
+  outputStream.flush();
+  ByteArrayInputStream inputStream=new ByteArrayInputStream(outputStream.toByteArray());
+  DataInput dataInput=new DataInputStream(inputStream);
+  State readState=new State();
+  readState.readFields(dataInput);
+  inputStream.close();
+  Assert.assertEquals(state,readState);
+  assertInterned(state.getProperties(),false);
+  assertInterned(readState.getProperties(),true);
+}
