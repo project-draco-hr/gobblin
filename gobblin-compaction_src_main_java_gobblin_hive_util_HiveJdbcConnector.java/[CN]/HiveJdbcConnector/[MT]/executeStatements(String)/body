@@ -1,7 +1,12 @@
 {
   Preconditions.checkNotNull(this.conn,"The Hive connection must be set before any queries can be run");
   for (  String statement : statements) {
-    LOG.info("RUNNING STATEMENT: " + choppedStatement(statement));
-    this.stmt.execute(statement);
+    if (isSimulate) {
+      LOG.info("[SIMULATE MODE] STATEMENT NOT RUN: " + choppedStatement(statement));
+    }
+ else {
+      LOG.info("RUNNING STATEMENT: " + choppedStatement(statement));
+      this.stmt.execute(statement);
+    }
   }
 }
