@@ -1,0 +1,10 @@
+{
+  for (  Map.Entry<Object,Object> entry : map.entrySet()) {
+    if (entry.getKey() instanceof String) {
+      Assert.assertEquals(isInterned((String)entry.getKey()),interned);
+    }
+    if (entry.getValue() instanceof String) {
+      Assert.assertEquals(isInterned((String)entry.getValue()),interned);
+    }
+  }
+}
