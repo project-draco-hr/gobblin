@@ -9,3 +9,4 @@ Optional<Boolean> optionalOverwriteTable
 Optional<Boolean> optionalCreateIfNotExists
 boolean isEvolutionEnabled
 Optional<Table> destinationTableMeta
+Optional<Integer> rowLimit

@@ -96,5 +96,8 @@
       dmlQuery.append(" \n");
     }
   }
+  if (rowLimit.isPresent()) {
+    dmlQuery.append(String.format("LIMIT %s",rowLimit.get()));
+  }
   return dmlQuery.toString();
 }
