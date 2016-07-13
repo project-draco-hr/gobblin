@@ -1,0 +1,8 @@
+{
+  Assert.assertEquals(ConfigUtils.getStringList(ConfigFactory.parseMap(ImmutableMap.of("key1","value1,value2")),"key1"),ImmutableList.of("value1","value2"));
+  Assert.assertEquals(ConfigUtils.getStringList(ConfigFactory.empty().withValue("key1",ConfigValueFactory.fromIterable(ImmutableList.of("value1","value2"))),"key1"),ImmutableList.of("value1","value2"));
+  Assert.assertEquals(ConfigUtils.getStringList(ConfigFactory.parseMap(ImmutableMap.of("key1","value1,value2")),"key2"),ImmutableList.of());
+  Map<String,String> configMap=Maps.newHashMap();
+  configMap.put("key1",null);
+  Assert.assertEquals(ConfigUtils.getStringList(ConfigFactory.parseMap(configMap),"key1"),ImmutableList.of());
+}

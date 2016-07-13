@@ -1,8 +1,0 @@
-{
-  String schemaName="testRecordWithinRecordWithinRecordDDL";
-  Schema schema=ConversionHiveTestUtils.readSchemaFromJsonFile(resourceDir,"recordWithinRecordWithinRecord_nested.json");
-  AvroFlattener avroFlattener=new AvroFlattener();
-  Schema flattenedSchema=avroFlattener.flatten(schema,true);
-  String q=HiveAvroORCQueryUtils.generateTableMappingDML(schema,flattenedSchema,schemaName,schemaName + "_orc",Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<Boolean>absent(),Optional.<Boolean>absent());
-  Assert.assertEquals(q.trim().replaceAll(" ",""),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinRecordWithinRecord.dml").replaceAll(" ",""));
-}

@@ -1,4 +1,0 @@
-WorkUnitState workUnit
-String avroDataLocation
-String orcTableName
-Optional<String> postfix

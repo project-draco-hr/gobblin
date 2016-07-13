@@ -1,0 +1,12 @@
+{
+  KafkaSchemaRegistry<Integer,String> baseRegistry=mock(KafkaSchemaRegistry.class);
+  CachingKafkaSchemaRegistry<Integer,String> cachingReg=new CachingKafkaSchemaRegistry<>(baseRegistry,2);
+  String name="test";
+  String schema1=new String("schema");
+  Integer id1=1;
+  when(baseRegistry.register(name,schema1)).thenReturn(id1);
+  Assert.assertEquals(cachingReg.register(name,schema1),id1);
+  when(baseRegistry.getById(id1)).thenReturn(new String("schema2"));
+  Assert.assertEquals(cachingReg.getById(id1),schema1);
+  verify(baseRegistry,times(0)).getById(anyInt());
+}

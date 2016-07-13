@@ -1,0 +1,8 @@
+{
+  if (config.hasPath(ConfigurationKeys.SCHEMA_NAME_KEY)) {
+    String name=config.getString(ConfigurationKeys.SCHEMA_NAME_KEY);
+    String value=config.getString(ConfigurationKeys.SCHEMA_VALUE_KEY);
+    Schema schema=new Schema.Parser().parse(value);
+    register(name,schema);
+  }
+}

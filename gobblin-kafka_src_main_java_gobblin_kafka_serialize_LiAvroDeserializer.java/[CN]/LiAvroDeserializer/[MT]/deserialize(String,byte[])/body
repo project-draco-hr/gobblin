@@ -1,0 +1,22 @@
+{
+  try {
+    if (data[0] != LiAvroSerDeHelper.MAGIC_BYTE) {
+      throw new SerializationException(String.format("Unknown magic byte for topic: %s ",topic));
+    }
+    MD5Digest schemaId=MD5Digest.fromBytes(data,1);
+    Schema schema=_schemaRegistry.getById(schemaId);
+    Decoder decoder=DecoderFactory.get().binaryDecoder(data,1 + MD5Digest.MD5_BYTES_LENGTH,data.length - MD5Digest.MD5_BYTES_LENGTH - 1,null);
+    _datumReader.setSchema(schema);
+    try {
+      GenericRecord record=_datumReader.read(null,decoder);
+      return record;
+    }
+ catch (    IOException e) {
+      log.error(String.format("Error during decoding record for topic %s: ",topic));
+      throw e;
+    }
+  }
+ catch (  IOException|SchemaRegistryException e) {
+    throw new SerializationException("Error during Deserialization",e);
+  }
+}

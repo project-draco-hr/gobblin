@@ -1,0 +1,35 @@
+{
+  boolean storeCheckpoints=(checkpointFile != null);
+  if (storeCheckpoints) {
+    boolean newFileCreated=checkpointFile.createNewFile();
+    if (newFileCreated) {
+      log.info("Created new checkpoint file: " + checkpointFile.getAbsolutePath());
+    }
+  }
+  while (true) {
+    MessageAndMetadata<byte[],byte[]> messagePlusMeta;
+    try {
+      if (!iterator.hasNext()) {
+        return;
+      }
+      messagePlusMeta=iterator.next();
+      if (messagePlusMeta != null) {
+        byte[] payload=messagePlusMeta.message();
+        GenericRecord record=deserializer.deserialize(topic,payload);
+        System.out.println(record.toString());
+        checkpoint.update(messagePlusMeta.partition(),messagePlusMeta.offset());
+      }
+    }
+ catch (    RuntimeException e) {
+      log.warn("Error detected",e);
+    }
+ finally {
+      if (storeCheckpoints) {
+        if (checkpoint != KafkaCheckpoint.emptyCheckpoint()) {
+          System.out.println("Storing checkpoint to file: " + checkpointFile.getAbsolutePath());
+          KafkaCheckpoint.serialize(checkpoint,checkpointFile);
+        }
+      }
+    }
+  }
+}

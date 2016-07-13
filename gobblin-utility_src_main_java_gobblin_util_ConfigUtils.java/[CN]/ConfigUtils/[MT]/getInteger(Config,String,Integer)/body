@@ -1,6 +1,0 @@
-{
-  if (config.hasPath(path)) {
-    return config.getInt(path);
-  }
-  return def;
-}

@@ -1,0 +1,11 @@
+{
+  if (this == obj)   return true;
+  if (!(obj instanceof MD5Digest))   return false;
+  MD5Digest other=(MD5Digest)obj;
+  if (this.md5String == null) {
+    return (other.md5String == null);
+  }
+ else {
+    return this.md5String.equals(other.md5String);
+  }
+}

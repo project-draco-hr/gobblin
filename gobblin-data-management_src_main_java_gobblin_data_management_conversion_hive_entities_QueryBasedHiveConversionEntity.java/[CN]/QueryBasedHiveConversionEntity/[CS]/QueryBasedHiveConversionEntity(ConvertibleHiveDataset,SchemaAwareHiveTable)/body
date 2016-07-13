@@ -1,0 +1,3 @@
+{
+  this(convertibleHiveDataset,hiveTable,Optional.<SchemaAwareHivePartition>absent());
+}

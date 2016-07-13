@@ -1,0 +1,10 @@
+{
+  String orcStagingTableName=schemaName + "_staging";
+  String orcTableName=schemaName;
+  Optional<Table> destinationTableMeta=createEvolvedDestinationTable(schemaName,"default","",true);
+  String generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishTableDDL(orcStagingTableName,orcTableName,destinationTableMeta);
+  Assert.assertEquals(generatePublishDDL,"","Generated publish table DDL did not match for existing destination table");
+  destinationTableMeta=Optional.absent();
+  generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishTableDDL(orcStagingTableName,orcTableName,destinationTableMeta);
+  Assert.assertEquals(generatePublishDDL,"DROP TABLE IF EXISTS sourceSchema;\n" + "ALTER TABLE sourceSchema_staging RENAME TO sourceSchema;\n","Generated publish table DDL did not match for new destination table");
+}

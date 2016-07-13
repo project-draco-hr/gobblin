@@ -1,0 +1,2 @@
+Optional<Map<String,String>> hiveColumns
+Table destinationTableMeta

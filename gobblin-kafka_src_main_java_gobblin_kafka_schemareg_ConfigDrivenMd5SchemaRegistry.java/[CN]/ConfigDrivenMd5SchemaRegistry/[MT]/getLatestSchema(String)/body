@@ -1,0 +1,8 @@
+{
+  if (_topicSchemaMap.containsKey(name)) {
+    return _topicSchemaMap.get(name);
+  }
+ else {
+    throw new SchemaRegistryException("Could not find any schema for " + name);
+  }
+}

@@ -1,4 +1,0 @@
-{
-  String orcTableAlternateDB=workUnit.getJobState().getProp(ORC_TABLE_ALTERNATE_DATABASE);
-  return StringUtils.isNotBlank(orcTableAlternateDB) ? orcTableAlternateDB : conversionEntity.getHiveTable().getDbName();
-}

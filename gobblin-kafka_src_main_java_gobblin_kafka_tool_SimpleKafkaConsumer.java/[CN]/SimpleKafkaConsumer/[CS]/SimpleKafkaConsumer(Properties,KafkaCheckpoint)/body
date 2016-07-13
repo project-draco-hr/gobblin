@@ -1,0 +1,20 @@
+{
+  Config config=ConfigFactory.parseProperties(props);
+  topic=config.getString("topic");
+  String zkConnect=config.getString("zookeeper.connect");
+  schemaRegistry=KafkaSchemaRegistryFactory.getSchemaRegistry(props);
+  deserializer=new LiAvroDeserializer(schemaRegistry);
+  Properties consumeProps=new Properties();
+  consumeProps.put("zookeeper.connect",zkConnect);
+  consumeProps.put("group.id","testConsumer2");
+  consumeProps.put("zookeeper.session.timeout.ms","10000");
+  consumeProps.put("zookeeper.sync.time.ms","10000");
+  consumeProps.put("auto.commit.interval.ms","10000");
+  consumeProps.put("auto.offset.reset","smallest");
+  consumeProps.put("auto.commit.enable","false");
+  consumer=Consumer.createJavaConsumerConnector(new ConsumerConfig(consumeProps));
+  Map<String,List<KafkaStream<byte[],byte[]>>> consumerMap=consumer.createMessageStreams(ImmutableMap.of(topic,1));
+  List<KafkaStream<byte[],byte[]>> streams=consumerMap.get(this.topic);
+  stream=streams.get(0);
+  iterator=stream.iterator();
+}

@@ -1,9 +1,0 @@
-{
-  Config config=ConfigFactory.parseMap(ImmutableMap.of(ConvertibleHiveDataset.DESTINATION_DB_KEY,"dest_db",ConvertibleHiveDataset.DESTINATION_TABLE_KEY,"dest_tb",ConvertibleHiveDataset.DESTINATION_DATA_PATH_KEY,"dest_data",ConvertibleHiveDataset.DESTINATION_CONVERSION_FORMATS_KEY,"a,b"));
-  Table table=getTestTable("db1","tb1");
-  ConvertibleHiveDataset cd=new ConvertibleHiveDataset(Mockito.mock(FileSystem.class),Mockito.mock(HiveMetastoreClientPool.class),new org.apache.hadoop.hive.ql.metadata.Table(table),config);
-  Assert.assertEquals(cd.getDestinationDbName().get(),"dest_db");
-  Assert.assertEquals(cd.getDestinationTableName().get(),"dest_tb");
-  Assert.assertEquals(cd.getDestinationDataPath().get(),"dest_data");
-  Assert.assertEquals(cd.getFormats().get(),ImmutableSet.of("a","b"));
-}

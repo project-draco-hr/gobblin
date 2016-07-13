@@ -1,0 +1,11 @@
+Schema inputAvroSchema
+Schema outputOrcSchema
+String inputTblName
+String outputTblName
+Optional<String> optionalInputDbName
+Optional<String> optionalOutputDbName
+Optional<Map<String,String>> optionalPartitionDMLInfo
+Optional<Boolean> optionalOverwriteTable
+Optional<Boolean> optionalCreateIfNotExists
+boolean isEvolutionEnabled
+Optional<Table> destinationTableMeta

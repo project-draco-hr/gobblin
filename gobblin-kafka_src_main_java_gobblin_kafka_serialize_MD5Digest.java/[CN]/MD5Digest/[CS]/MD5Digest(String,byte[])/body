@@ -1,0 +1,4 @@
+{
+  this.bytes=md5bytes;
+  this.md5String=md5String;
+}

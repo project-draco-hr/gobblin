@@ -1,0 +1,14 @@
+{
+  String testConfFilePath="convertibleHiveDatasetTest/flattenedAndNestedOrc.properties";
+  Properties jobProps=new Properties();
+  try (final InputStream stream=ConvertibleHiveDatasetTest.class.getClassLoader().getResourceAsStream(testConfFilePath)){
+    jobProps.load(stream);
+  }
+   Config config=ConfigUtils.propertiesToConfig(jobProps).getConfig("hive.conversion.avro");
+  ConvertibleHiveDataset cd=createTestConvertibleDataset(config);
+  Assert.assertEquals(cd.getDestFormats(),ImmutableSet.of("flattenedOrc","nestedOrc"));
+  Assert.assertTrue(cd.getConversionConfigForFormat("flattenedOrc").isPresent());
+  Assert.assertTrue(cd.getConversionConfigForFormat("nestedOrc").isPresent());
+  validateFlattenedConfig(cd.getConversionConfigForFormat("flattenedOrc").get());
+  validateNestedOrc(cd.getConversionConfigForFormat("nestedOrc").get());
+}

@@ -1,0 +1,6 @@
+{
+  _schemaRegistry=schemaRegistry;
+  _datumReader=new GenericDatumReader<>();
+  Preconditions.checkState(_schemaRegistry != null,"Schema Registry is not initialized");
+  Preconditions.checkState(_datumReader != null,"Datum Reader is not initialized");
+}

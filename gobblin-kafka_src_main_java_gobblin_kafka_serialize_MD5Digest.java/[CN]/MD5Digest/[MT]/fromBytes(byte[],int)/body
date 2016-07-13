@@ -1,0 +1,5 @@
+{
+  byte[] md5BytesCopy=Arrays.copyOfRange(md5Bytes,offset,offset + MD5_BYTES_LENGTH);
+  String md5String=Hex.encodeHexString(md5BytesCopy);
+  return new MD5Digest(md5String,md5BytesCopy);
+}

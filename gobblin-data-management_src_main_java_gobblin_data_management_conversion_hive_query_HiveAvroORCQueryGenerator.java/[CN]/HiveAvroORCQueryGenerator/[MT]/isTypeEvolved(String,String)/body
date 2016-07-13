@@ -1,0 +1,16 @@
+{
+  if (evolvedType.equalsIgnoreCase(destinationType)) {
+    return false;
+  }
+  if (HIVE_COMPATIBLE_TYPES.containsKey(destinationType)) {
+    if (HIVE_COMPATIBLE_TYPES.get(destinationType).contains(evolvedType)) {
+      return true;
+    }
+ else {
+      throw new RuntimeException(String.format("Incompatible type evolution from: %s to: %s",destinationType,evolvedType));
+    }
+  }
+ else {
+    return true;
+  }
+}

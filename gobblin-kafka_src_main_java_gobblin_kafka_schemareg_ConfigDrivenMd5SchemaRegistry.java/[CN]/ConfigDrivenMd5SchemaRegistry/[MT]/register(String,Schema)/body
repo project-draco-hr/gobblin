@@ -1,0 +1,8 @@
+{
+  MD5Digest md5Digest=generateId(schema);
+  if (!_schemaHashMap.containsKey(md5Digest)) {
+    _schemaHashMap.put(md5Digest,schema);
+    _topicSchemaMap.put(name,schema);
+  }
+  return md5Digest;
+}

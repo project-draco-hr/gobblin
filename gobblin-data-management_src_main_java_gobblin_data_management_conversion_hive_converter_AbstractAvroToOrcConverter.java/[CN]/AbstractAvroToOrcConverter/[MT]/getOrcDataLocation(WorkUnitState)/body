@@ -1,0 +1,7 @@
+{
+  String orcDataLocation=getConversionConfig().getDestinationDataPath();
+  if (StringUtils.isNotBlank(workUnit.getJobState().getId())) {
+    orcDataLocation+=Path.SEPARATOR + workUnit.getJobState().getId();
+  }
+  return orcDataLocation;
+}

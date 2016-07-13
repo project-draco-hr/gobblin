@@ -1,0 +1,3 @@
+String stagingTableName
+String finalTableName
+Optional<Table> destinationTableMeta

@@ -4,13 +4,12 @@
     LongWatermark lowWatermark=this.watermarker.getPreviousHighWatermark(hiveDataset.getTable());
     if (shouldCreateWorkunit(updateTime,lowWatermark)) {
       log.debug(String.format("Processing table: %s",hiveDataset.getTable()));
-      WorkUnit workUnit=WorkUnit.createEmpty();
-      workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,hiveDataset.getTable().getCompleteName());
-      HiveSourceUtils.serializeTable(workUnit,hiveDataset.getTable(),this.avroSchemaManager);
-      workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
-      HiveSourceUtils.setTableSlaEventMetadata(workUnit,hiveDataset.getTable(),updateTime,lowWatermark.getValue());
-      this.workunits.add(workUnit);
-      log.debug(String.format("Workunit added for table: %s",workUnit));
+      HiveWorkUnit hiveWorkUnit=new HiveWorkUnit(hiveDataset);
+      hiveWorkUnit.setTableSchemaUrl(this.avroSchemaManager.getSchemaUrl(hiveDataset.getTable()));
+      hiveWorkUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
+      EventWorkunitUtils.setTableSlaEventMetadata(hiveWorkUnit,hiveDataset.getTable(),updateTime,lowWatermark.getValue());
+      this.workunits.add(hiveWorkUnit);
+      log.debug(String.format("Workunit added for table: %s",hiveWorkUnit));
     }
  else {
       log.info(String.format("Not creating workunit for table %s as updateTime %s is lesser than low watermark %s",hiveDataset.getTable().getCompleteName(),updateTime,lowWatermark.getValue()));
