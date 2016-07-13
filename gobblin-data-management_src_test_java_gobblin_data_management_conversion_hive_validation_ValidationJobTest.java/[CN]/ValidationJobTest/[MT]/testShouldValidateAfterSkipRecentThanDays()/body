@@ -1,0 +1,4 @@
+{
+  boolean shouldValidate=ValidationJob.shouldValidate(this.currentTime,this.maxLookbackTime,this.skipRecentThanDays);
+  Assert.assertEquals(shouldValidate,false,"Should not validate newer than skipRecentThanDays");
+}

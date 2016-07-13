@@ -1,0 +1,3 @@
+String datasetIdentifier
+long conversionInstance
+List<ResultSet> resultSets

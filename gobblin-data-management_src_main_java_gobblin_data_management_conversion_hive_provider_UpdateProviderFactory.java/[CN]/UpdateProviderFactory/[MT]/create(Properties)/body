@@ -1,0 +1,8 @@
+{
+  try {
+    return (HiveUnitUpdateProvider)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(properties.getProperty(OPTIONAL_HIVE_UNIT_UPDATE_PROVIDER_CLASS_KEY,DEFAULT_HIVE_UNIT_UPDATE_PROVIDER_CLASS)),ImmutableList.<Object>of(FileSystem.get(HadoopUtils.getConfFromProperties(properties))),ImmutableList.of());
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException|IOException e) {
+    throw new RuntimeException(e);
+  }
+}

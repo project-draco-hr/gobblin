@@ -1,0 +1,2 @@
+ConvertibleHiveDataset hiveDataset
+AutoReturnableObject<IMetaStoreClient> client

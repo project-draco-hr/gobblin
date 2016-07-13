@@ -1,0 +1,3 @@
+HiveDataset hiveDataset
+Optional<Partition> sourcePartition
+ConvertibleHiveDataset.ConversionConfig conversionConfig
