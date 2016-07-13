@@ -1,6 +1,6 @@
 {
   final StringBuilder cloudInitCmds=new StringBuilder().append("#!/bin/bash").append("\n");
-  final String clusterMasterClassName=GobblinAWSClusterMaster.class.getSimpleName();
+  final String clusterMasterClassName=GobblinAWSClusterManager.class.getSimpleName();
   final String nfsDir=nfsParentDir + clusterName;
   final String nfsShareDirCmd=String.format("echo '%s %s(%s)' | tee --append %s",nfsDir,NFS_SHARE_ALL_IPS,NFS_SHARE_DEFAULT_OPTS,NFS_CONF_FILE);
   cloudInitCmds.append("mkdir -p ").append(nfsDir).append(File.separator).append("1").append("\n");
@@ -28,7 +28,7 @@
     cloudInitCmds.append(String.format("wget -P \"${jr}\" \"${jrS3}\"%s",awsJar)).append("\n");
   }
   classpath.append(":").append(masterJarsDir).append("*");
-  final StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(masterJvmMemory).append(" ").append(masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterMaster.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(clusterName).append(" --").append(GobblinAWSConfigurationKeys.APP_WORK_DIR).append(" ").append(appWorkDir).append(" 1>").append(sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(CloudInitScriptBuilder.STDOUT).append(" 2>").append(sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(CloudInitScriptBuilder.STDERR);
+  final StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(masterJvmMemory).append(" ").append(masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterManager.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(clusterName).append(" --").append(GobblinAWSConfigurationKeys.APP_WORK_DIR).append(" ").append(appWorkDir).append(" 1>").append(sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(CloudInitScriptBuilder.STDOUT).append(" 2>").append(sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(CloudInitScriptBuilder.STDERR);
   cloudInitCmds.append(launchGobblinClusterMasterCmd).append("\n");
   final String cloudInitScript=cloudInitCmds.toString();
   LOGGER.info("Cloud-init script for master node: " + cloudInitScript);

@@ -1,4 +1,0 @@
-{
-  final HelpFormatter formatter=new HelpFormatter();
-  formatter.printHelp(GobblinAWSClusterMaster.class.getSimpleName(),options);
-}

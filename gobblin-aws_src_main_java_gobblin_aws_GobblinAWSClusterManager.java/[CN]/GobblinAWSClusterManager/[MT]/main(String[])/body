@@ -6,10 +6,10 @@
       printUsage(options);
       System.exit(1);
     }
-    Log4jConfigHelper.updateLog4jConfiguration(GobblinAWSClusterMaster.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
+    Log4jConfigHelper.updateLog4jConfiguration(GobblinAWSClusterManager.class,GobblinAWSConfigurationKeys.GOBBLIN_AWS_LOG4J_CONFIGURATION_FILE);
     final String applicationId="1";
     final String appWorkDir=cmd.getOptionValue(GobblinAWSConfigurationKeys.APP_WORK_DIR);
-    try (GobblinAWSClusterMaster clusterMaster=new GobblinAWSClusterMaster(cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME),applicationId,ConfigFactory.load(),Optional.of(new Path(appWorkDir)))){
+    try (GobblinAWSClusterManager clusterMaster=new GobblinAWSClusterManager(cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME),applicationId,ConfigFactory.load(),Optional.of(new Path(appWorkDir)))){
       clusterMaster.start();
     }
    }
