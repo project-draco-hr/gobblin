@@ -1,0 +1,16 @@
+{
+  LOGGER.info("Starting the " + AWSJobConfigurationManager.class.getSimpleName());
+  LOGGER.info(String.format("Scheduling the job configuration refresh task with an interval of %d second(s)",this.refreshIntervalInSeconds));
+  this.fetchJobConfExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        fetchJobConf();
+      }
+ catch (      IOException|ConfigurationException e) {
+        LOGGER.error("Failed to fetch job configurations",e);
+        throw new RuntimeException("Failed to fetch job configurations",e);
+      }
+    }
+  }
+,0,this.refreshIntervalInSeconds,TimeUnit.SECONDS);
+}

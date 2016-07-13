@@ -1,0 +1,3 @@
+{
+  return EC2MetadataUtils.getNetworkInterfaces().get(0).getPublicIPv4s().get(0);
+}

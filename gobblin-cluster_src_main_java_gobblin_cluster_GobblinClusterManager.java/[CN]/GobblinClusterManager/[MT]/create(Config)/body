@@ -1,0 +1,13 @@
+{
+  try {
+    if (config.hasPath(GobblinClusterConfigurationKeys.JOB_CONFIGURATION_MANAGER_KEY)) {
+      return (JobConfigurationManager)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(config.getString(GobblinClusterConfigurationKeys.JOB_CONFIGURATION_MANAGER_KEY)),ImmutableList.<Object>of(this.eventBus,config));
+    }
+ else {
+      return new JobConfigurationManager(this.eventBus,config);
+    }
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new RuntimeException(e);
+  }
+}

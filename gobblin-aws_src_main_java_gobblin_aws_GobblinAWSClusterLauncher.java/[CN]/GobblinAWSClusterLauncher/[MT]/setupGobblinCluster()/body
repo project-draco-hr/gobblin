@@ -1,0 +1,14 @@
+{
+  final String uuid=UUID.randomUUID().toString();
+  final String securityGroupName="GobblinSecurityGroup_" + uuid;
+  this.awsSdkClient.createSecurityGroup(securityGroupName,"Gobblin cluster security group");
+  this.awsSdkClient.addPermissionsToSecurityGroup(securityGroupName,"0.0.0.0/0","tcp",0,65535);
+  final String keyName="GobblinKey_" + uuid;
+  final String material=this.awsSdkClient.createKeyValuePair(keyName);
+  LOGGER.debug("Material is: " + material);
+  FileUtils.writeStringToFile(new File(keyName + ".pem"),material);
+  final List<AvailabilityZone> availabilityZones=this.awsSdkClient.getAvailabilityZones();
+  final String clusterId=launchClusterMaster(uuid,keyName,securityGroupName,availabilityZones.get(0));
+  launchWorkUnitRunners(uuid,keyName,securityGroupName,availabilityZones.get(0));
+  return clusterId;
+}

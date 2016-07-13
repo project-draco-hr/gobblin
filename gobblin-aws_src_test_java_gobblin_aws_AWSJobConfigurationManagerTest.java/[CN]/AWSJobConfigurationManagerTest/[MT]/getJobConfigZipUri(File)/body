@@ -1,0 +1,10 @@
+{
+  final File destination=new File(StringUtils.substringBeforeLast(source.toString(),File.separator) + File.separator + URI_ZIP_NAME);
+  if (destination.exists()) {
+    if (!destination.delete()) {
+      throw new IOException("Cannot clean destination job conf zip file: " + destination);
+    }
+  }
+  FileUtils.copyFile(source,destination);
+  return destination.toURI().toString();
+}

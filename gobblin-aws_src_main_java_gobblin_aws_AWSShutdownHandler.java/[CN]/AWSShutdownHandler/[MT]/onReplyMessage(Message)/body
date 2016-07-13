@@ -1,0 +1,4 @@
+{
+  LOGGER.info("Successfully shutdown Helix controller and participants shutdown. " + "Moving ahead with graceful shutdown of Amazon AutoScaling group");
+  shutdownASG();
+}

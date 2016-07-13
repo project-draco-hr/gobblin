@@ -1,0 +1,11 @@
+{
+  this.helixManager.connect();
+  this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new TestShutdownMessageHandlerFactory(this));
+  this.gobblinAwsClusterLauncher.connectHelixManager();
+  this.gobblinAwsClusterLauncher.sendShutdownRequest();
+  Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s/CONTROLLER/MESSAGES",this.helixClusterName)).getVersion(),0);
+  GetControllerMessageNumFunc getCtrlMessageNum=new GetControllerMessageNumFunc(this.helixClusterName,this.curatorFramework);
+  AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(LoggerFactory.getLogger("testSendShutdownRequest")).timeoutMs(20000);
+  assertWithBackoff.assertEquals(getCtrlMessageNum,1,"1 controller message queued");
+  assertWithBackoff.assertEquals(getCtrlMessageNum,0,"all controller messages processed");
+}

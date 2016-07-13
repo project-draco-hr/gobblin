@@ -1,0 +1,3 @@
+{
+  return workUnitState.contains(key) || workUnitState.getWorkunit().contains(key) || workUnitState.getJobState().contains(key);
+}

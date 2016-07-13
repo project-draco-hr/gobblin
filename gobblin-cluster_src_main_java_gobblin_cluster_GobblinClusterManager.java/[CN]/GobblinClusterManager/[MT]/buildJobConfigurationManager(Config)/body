@@ -1,4 +1,3 @@
 {
-  Optional<String> jobConfPackagePath=config.hasPath(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY) ? Optional.of(config.getString(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY)) : Optional.<String>absent();
-  return new JobConfigurationManager(this.eventBus,jobConfPackagePath);
+  return create(config);
 }

@@ -1,0 +1,28 @@
+{
+  if (optionalLaunchConfigurationNames.isPresent()) {
+    for (    String launchConfigurationName : optionalLaunchConfigurationNames.get()) {
+      try {
+        this.awsSdkClient.deleteLaunchConfiguration(launchConfigurationName);
+      }
+ catch (      Exception e) {
+        LOGGER.warn("Issue in deleting launch configuration, please delete manually: " + launchConfigurationName + " Continuing to cleanup AutoScalingGroups",e);
+      }
+    }
+  }
+  if (optionalAutoScalingGroupNames.isPresent()) {
+    for (    String autoScalingGroupName : optionalAutoScalingGroupNames.get()) {
+      try {
+        this.awsSdkClient.deleteAutoScalingGroup(autoScalingGroupName,false);
+      }
+ catch (      Exception e1) {
+        LOGGER.warn("Issue in deleting auto scaling group (in graceful mode): " + autoScalingGroupName + " Going to try forceful cleanup.",e1);
+        try {
+          this.awsSdkClient.deleteAutoScalingGroup(autoScalingGroupName,true);
+        }
+ catch (        Exception e2) {
+          LOGGER.warn("Issue in deleting auto scaling group (in forced mode), please delete manually: " + autoScalingGroupName + " Continuing to cleanup other resources",e2);
+        }
+      }
+    }
+  }
+}

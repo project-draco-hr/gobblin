@@ -1,0 +1,5 @@
+{
+  this.awsSdkClient=awsSdkClient;
+  this.optionalLaunchConfigurationNames=optionalLaunchConfigurationNames;
+  this.optionalAutoScalingGroupNames=optionalAutoScalingGroupNames;
+}

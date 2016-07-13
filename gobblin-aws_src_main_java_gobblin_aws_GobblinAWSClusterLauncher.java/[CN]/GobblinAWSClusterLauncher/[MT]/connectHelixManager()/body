@@ -1,0 +1,9 @@
+{
+  try {
+    this.helixManager.connect();
+  }
+ catch (  Exception e) {
+    LOGGER.error("HelixManager failed to connect",e);
+    throw Throwables.propagate(e);
+  }
+}

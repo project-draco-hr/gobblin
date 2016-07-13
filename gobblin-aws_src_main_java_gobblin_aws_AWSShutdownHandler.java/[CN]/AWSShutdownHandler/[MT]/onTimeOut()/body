@@ -1,0 +1,4 @@
+{
+  LOGGER.warn("Timeout while waiting for Helix controller and participants shutdown. " + "Moving ahead with forced shutdown of Amazon AutoScaling group");
+  shutdownASG();
+}

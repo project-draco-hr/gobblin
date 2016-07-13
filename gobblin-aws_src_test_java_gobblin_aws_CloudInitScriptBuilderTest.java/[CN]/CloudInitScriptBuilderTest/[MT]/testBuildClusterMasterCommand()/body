@@ -1,0 +1,5 @@
+{
+  final String script=CloudInitScriptBuilder.buildClusterMasterCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterS3ConfUri,this.masterS3ConfFiles,this.masterS3JarsUri,this.masterS3JarFiles,this.masterJarsDir,this.masterJvmMemory,Optional.<String>absent(),gobblinVersion);
+  final String decodedScript=new String(Base64.decodeBase64(script));
+  Assert.assertEquals(decodedScript,this.expectedMasterCloudInitScript,"Master launcher cloud-init script not built as expected");
+}

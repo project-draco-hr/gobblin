@@ -1,0 +1,13 @@
+{
+  final String subject=String.format("Gobblin AWS cluster %s completed",this.clusterName);
+  final StringBuilder messageBuilder=new StringBuilder("Gobblin AWS cluster was shutdown at: " + new Date());
+  if (report.isPresent()) {
+    messageBuilder.append(' ').append(report.get());
+  }
+  try {
+    EmailUtils.sendEmail(ConfigUtils.configToState(this.config),subject,messageBuilder.toString());
+  }
+ catch (  EmailException ee) {
+    LOGGER.error("Failed to send email notification on shutdown",ee);
+  }
+}
