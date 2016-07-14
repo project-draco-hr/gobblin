@@ -1,7 +1,7 @@
 {
   try {
     initialize(state);
-    EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.FIND_HIVE_TABLES_EVENT);
+    EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.CONVERSION_FIND_HIVE_TABLES_EVENT);
     Iterator<HiveDataset> iterator=this.datasetFinder.getDatasetsIterator();
     while (iterator.hasNext()) {
       HiveDataset hiveDataset=iterator.next();

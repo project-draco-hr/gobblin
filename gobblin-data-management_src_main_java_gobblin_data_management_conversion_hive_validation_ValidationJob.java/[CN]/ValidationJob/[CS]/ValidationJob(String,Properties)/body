@@ -1,0 +1,21 @@
+{
+  super(jobId,log);
+  Config config=ConfigFactory.parseProperties(props);
+  this.props=props;
+  this.metricContext=Instrumented.getMetricContext(ConfigUtils.configToState(config),ValidationJob.class);
+  this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
+  this.updateProvider=UpdateProviderFactory.create(props);
+  this.datasetFinder=new ConvertibleHiveDatasetFinder(getSourceFs(),props,this.eventSubmitter);
+  int maxLookBackDays=Integer.parseInt(props.getProperty(HiveSource.HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,DEFAULT_HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS));
+  int skipRecentThanDays=Integer.parseInt(props.getProperty(HIVE_SOURCE_SKIP_RECENT_THAN_DAYS_KEY,DEFAULT_HIVE_SOURCE_SKIP_RECENT_THAN_DAYS));
+  this.maxLookBackTime=new DateTime().minusDays(maxLookBackDays).getMillis();
+  this.skipRecentThanTime=new DateTime().minusDays(skipRecentThanDays).getMillis();
+  this.destFormats=Sets.newHashSet(ConfigUtils.getStringList(config,ConvertibleHiveDataset.DESTINATION_CONVERSION_FORMATS_KEY));
+  try {
+    this.hiveJdbcConnector=HiveJdbcConnector.newConnectorWithProps(props);
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+  EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.VALIDATION_SETUP_EVENT);
+}

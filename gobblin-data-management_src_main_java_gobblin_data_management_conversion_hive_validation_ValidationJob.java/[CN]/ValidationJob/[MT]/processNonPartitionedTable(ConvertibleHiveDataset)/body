@@ -1,0 +1,27 @@
+{
+  try {
+    long updateTime=this.updateProvider.getUpdateTime(hiveDataset.getTable());
+    if (shouldValidate(updateTime,this.maxLookBackTime,this.skipRecentThanTime)) {
+      log.debug(String.format("Validating table: %s",hiveDataset.getTable()));
+      for (      String format : this.destFormats) {
+        Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
+        if (conversionConfigOptional.isPresent()) {
+          ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
+          List<String> validationQueries=HiveValidationQueryGenerator.generateValidationQueries(hiveDataset,Optional.<Partition>absent(),conversionConfig);
+          log.info(String.format("Going to execute queries: %s for format: %s",validationQueries,format));
+          List<ResultSet> resultSets=this.executeQueries(validationQueries);
+          validateAndPopulateReport(hiveDataset.getTable().getCompleteName(),updateTime,resultSets);
+        }
+ else {
+          log.info(String.format("No config found for format: %s So skipping table: %s for this format",format,hiveDataset.getTable().getCompleteName()));
+        }
+      }
+    }
+ else {
+      log.info(String.format("Not validating table: %s as updateTime: %s is not in range of max look back: %s " + "and skip recent than: %s",hiveDataset.getTable().getCompleteName(),updateTime,this.maxLookBackTime,this.skipRecentThanTime));
+    }
+  }
+ catch (  UpdateNotFoundException e) {
+    log.info(String.format("Not validating table: %s as update time was not found. %s",hiveDataset.getTable().getCompleteName(),e.getMessage()));
+  }
+}

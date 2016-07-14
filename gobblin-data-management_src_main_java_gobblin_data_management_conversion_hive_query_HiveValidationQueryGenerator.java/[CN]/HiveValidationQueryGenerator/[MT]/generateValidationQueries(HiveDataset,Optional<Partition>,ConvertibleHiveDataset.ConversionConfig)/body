@@ -1,0 +1,16 @@
+{
+  String sourceDatabase=hiveDataset.getDbAndTable().getDb();
+  String sourceTable=hiveDataset.getDbAndTable().getDb();
+  String destinationDatabase=conversionConfig.getDestinationDbName();
+  String destinationTable=conversionConfig.getDestinationTableName();
+  List<String> queries=Lists.newArrayList();
+  if (sourcePartition.isPresent()) {
+    queries.add(String.format("SELECT count(*) FROM `%s`.`%s` WHERE `%s`;",sourceDatabase,sourceTable,sourcePartition.get().getName()));
+    queries.add(String.format("SELECT count(*) FROM `%s`.`%s` WHERE `%s`;",destinationDatabase,destinationTable,sourcePartition.get().getName()));
+  }
+ else {
+    queries.add(String.format("SELECT count(*) FROM `%s`.`%s`; ",sourceDatabase,sourceTable));
+    queries.add(String.format("SELECT count(*) FROM `%s`.`%s`;",destinationDatabase,destinationTable));
+  }
+  return queries;
+}

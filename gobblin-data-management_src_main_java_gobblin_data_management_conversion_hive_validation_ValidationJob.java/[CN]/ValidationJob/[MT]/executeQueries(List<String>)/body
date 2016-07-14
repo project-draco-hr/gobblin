@@ -1,0 +1,12 @@
+{
+  if (null == queries || queries.size() == 0) {
+    log.warn("No queries specified to be executed");
+    return Collections.emptyList();
+  }
+  try {
+    return this.hiveJdbcConnector.executeStatementsWithResult(queries.toArray(new String[queries.size()]));
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+}
