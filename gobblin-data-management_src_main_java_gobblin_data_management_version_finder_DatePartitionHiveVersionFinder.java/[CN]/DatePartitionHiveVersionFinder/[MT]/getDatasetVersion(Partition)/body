@@ -1,0 +1,10 @@
+{
+  int index=Iterables.indexOf(partition.getTable().getPartitionKeys(),this.partitionKeyNamePredicate);
+  if (index == -1) {
+    throw new IllegalArgumentException(String.format("Failed to find partition key %s in the table %s",this.partitionKeyName,partition.getTable().getCompleteName()));
+  }
+  if (index >= partition.getValues().size()) {
+    throw new IllegalArgumentException(String.format("Failed to find partition value for key %s in the partition %s",this.partitionKeyName,partition.getName()));
+  }
+  return new TimestampedHiveDatasetVersion(this.formatter.parseDateTime(partition.getValues().get(index).trim()),partition);
+}

@@ -1,0 +1,4 @@
+{
+  super(version,partition.getDataLocation());
+  this.partition=partition;
+}

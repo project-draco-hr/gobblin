@@ -1,0 +1,3 @@
+{
+  return new CleanableHiveDataset(super.fs,super.clientPool,new org.apache.hadoop.hive.ql.metadata.Table(table),super.properties,datasetConfig);
+}

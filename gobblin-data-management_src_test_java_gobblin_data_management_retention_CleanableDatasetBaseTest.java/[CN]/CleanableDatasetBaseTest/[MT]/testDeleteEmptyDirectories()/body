@@ -6,6 +6,7 @@
   DatasetVersion dataset1Version2=new StringDatasetVersion("version2",new Path(datasetRoot,"parent/version2"));
   when(fs.delete(any(Path.class),anyBoolean())).thenReturn(true);
   when(trash.moveToTrash(any(Path.class))).thenReturn(true);
+  when(fs.exists(any(Path.class))).thenReturn(true);
   DatasetImpl dataset=new DatasetImpl(fs,false,false,true,false,datasetRoot);
   when(dataset.versionFinder.findDatasetVersions(dataset)).thenReturn(Lists.newArrayList(dataset1Version1,dataset1Version2));
   when(fs.listStatus(any(Path.class))).thenReturn(new FileStatus[]{});

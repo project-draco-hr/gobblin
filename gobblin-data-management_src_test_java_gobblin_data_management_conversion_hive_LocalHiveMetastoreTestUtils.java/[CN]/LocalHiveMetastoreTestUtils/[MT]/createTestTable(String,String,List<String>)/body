@@ -1,0 +1,3 @@
+{
+  return createTestTable(dbName,tableName,"/tmp/" + tableName,partitionFieldNames,true);
+}

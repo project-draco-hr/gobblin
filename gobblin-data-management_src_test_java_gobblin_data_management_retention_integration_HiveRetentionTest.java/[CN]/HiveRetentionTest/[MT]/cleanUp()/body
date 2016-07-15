@@ -1,0 +1,7 @@
+{
+  try {
+    fs.delete(this.testTempPath,true);
+  }
+ catch (  Exception e) {
+  }
+}

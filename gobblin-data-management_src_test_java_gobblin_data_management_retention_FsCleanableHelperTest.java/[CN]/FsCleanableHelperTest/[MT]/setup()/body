@@ -1,0 +1,5 @@
+{
+  this.fs=FileSystem.getLocal(new Configuration());
+  this.testTempPath=new Path(this.getClass().getClassLoader().getResource("").getFile(),"FsCleanableHelperTest");
+  this.fs.mkdirs(this.testTempPath);
+}

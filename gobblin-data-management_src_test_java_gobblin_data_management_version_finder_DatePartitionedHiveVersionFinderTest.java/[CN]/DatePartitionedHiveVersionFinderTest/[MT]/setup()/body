@@ -1,0 +1,6 @@
+{
+  this.fs=FileSystem.getLocal(new Configuration());
+  this.hiveMetastoreTestUtils=LocalHiveMetastoreTestUtils.getInstance();
+  this.hiveMetastoreTestUtils.dropDatabaseIfExists(this.dbName);
+  this.hiveMetastoreTestUtils.createTestDb(this.dbName);
+}

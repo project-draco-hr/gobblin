@@ -1,0 +1,34 @@
+{
+  Properties additionalJobProps=new Properties();
+  if (additionalJobPropsClasspathResource.isPresent()) {
+    try (final InputStream stream=RetentionTestHelper.class.getClassLoader().getResourceAsStream(additionalJobPropsClasspathResource.get().toString())){
+      additionalJobProps.load(stream);
+    }
+   }
+  if (retentionConfigClasspathResource.getName().endsWith(".job")) {
+    Properties jobProps=new Properties();
+    try (final InputStream stream=RetentionTestHelper.class.getClassLoader().getResourceAsStream(retentionConfigClasspathResource.toString())){
+      jobProps.load(stream);
+      for (      Entry<Object,Object> entry : jobProps.entrySet()) {
+        jobProps.put(entry.getKey(),StringUtils.replace((String)entry.getValue(),"${testNameTempPath}",testNameTempPath.toString()));
+      }
+    }
+     MultiCleanableDatasetFinder finder=new MultiCleanableDatasetFinder(fs,jobProps);
+    for (    Dataset dataset : finder.findDatasets()) {
+      ((CleanableDataset)dataset).clean();
+    }
+  }
+ else {
+    Config testConfig=ConfigFactory.parseResources(retentionConfigClasspathResource.toString()).withFallback(ConfigFactory.parseMap(ImmutableMap.of("testNameTempPath",PathUtils.getPathWithoutSchemeAndAuthority(testNameTempPath).toString()))).resolve();
+    ConfigClient client=mock(ConfigClient.class);
+    when(client.getConfig(any(String.class))).thenReturn(testConfig);
+    Properties jobProps=new Properties();
+    jobProps.setProperty(CleanableDatasetBase.SKIP_TRASH_KEY,Boolean.toString(true));
+    jobProps.setProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI,"dummy");
+    jobProps.putAll(additionalJobProps);
+    @SuppressWarnings("unchecked") DatasetsFinder<CleanableDataset> finder=(DatasetsFinder<CleanableDataset>)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(testConfig.getString(MultiCleanableDatasetFinder.DATASET_FINDER_CLASS_KEY)),ImmutableList.of(fs,jobProps,testConfig,client),ImmutableList.of(fs,jobProps,client));
+    for (    CleanableDataset dataset : finder.findDatasets()) {
+      dataset.clean();
+    }
+  }
+}

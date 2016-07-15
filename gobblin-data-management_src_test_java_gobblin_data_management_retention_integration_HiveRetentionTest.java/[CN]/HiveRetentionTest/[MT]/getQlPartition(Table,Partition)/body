@@ -1,0 +1,8 @@
+{
+  try {
+    return new org.apache.hadoop.hive.ql.metadata.Partition(new org.apache.hadoop.hive.ql.metadata.Table(table),partition);
+  }
+ catch (  HiveException e) {
+    throw new RuntimeException(e);
+  }
+}

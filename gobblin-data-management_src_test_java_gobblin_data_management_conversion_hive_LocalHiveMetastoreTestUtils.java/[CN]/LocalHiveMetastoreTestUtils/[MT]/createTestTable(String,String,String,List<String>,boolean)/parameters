@@ -1,0 +1,5 @@
+String dbName
+String tableName
+String tableSdLoc
+List<String> partitionFieldNames
+boolean ignoreDbCreation

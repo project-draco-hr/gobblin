@@ -1,0 +1,3 @@
+{
+  return super.equals(obj) && obj instanceof TimestampedHiveDatasetVersion && compareTo((TimestampedHiveDatasetVersion)obj) == 0;
+}

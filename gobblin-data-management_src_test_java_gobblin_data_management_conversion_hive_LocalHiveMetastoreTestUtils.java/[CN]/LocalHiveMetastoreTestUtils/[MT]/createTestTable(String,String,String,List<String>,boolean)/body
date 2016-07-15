@@ -1,0 +1,13 @@
+{
+  if (!ignoreDbCreation) {
+    createTestDb(dbName);
+  }
+  Table tbl=org.apache.hadoop.hive.ql.metadata.Table.getEmptyTable(dbName,tableName);
+  tbl.getSd().setLocation(tableSdLoc);
+  tbl.getSd().getSerdeInfo().setParameters(ImmutableMap.of(HiveAvroSerDeManager.SCHEMA_URL,"/tmp/dummy"));
+  for (  String partitionFieldName : partitionFieldNames) {
+    tbl.addToPartitionKeys(new FieldSchema(partitionFieldName,"string","some comment"));
+  }
+  this.localMetastoreClient.createTable(tbl);
+  return tbl;
+}
