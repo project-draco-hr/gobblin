@@ -1,8 +1,6 @@
 {
   Path jobConfigPath=new Path(this.subDir11.getAbsolutePath(),"test111.pull");
-  System.err.println("[testloadGenericJobConfig]" + jobConfigPath);
   Properties properties=new Properties();
-  System.err.println("this.jobConfigDir.getAbsolutePath(): " + this.jobConfigDir.getAbsolutePath());
   properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getAbsolutePath());
   Properties jobProps=SchedulerUtils.loadGenericJobConfig(properties,jobConfigPath,new Path(this.jobConfigDir.getAbsolutePath()));
   Assert.assertEquals(jobProps.stringPropertyNames().size(),7);

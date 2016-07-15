@@ -3,9 +3,6 @@
   Properties properties=new Properties();
   properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getAbsolutePath());
   List<Properties> jobConfigs=SchedulerUtils.loadGenericJobConfigs(properties);
-  for (  Properties aProperty : jobConfigs) {
-    System.err.println("property: " + aProperty);
-  }
   Assert.assertEquals(jobConfigs.size(),3);
   Properties jobProps1=getJobConfigForFile(jobConfigs,"test111.pull");
   Assert.assertEquals(jobProps1.stringPropertyNames().size(),7);

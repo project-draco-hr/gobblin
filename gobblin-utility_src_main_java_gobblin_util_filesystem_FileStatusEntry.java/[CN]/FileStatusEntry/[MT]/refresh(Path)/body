@@ -1,15 +1,20 @@
 {
   final boolean origExists=exists;
-  final long origLastModified=lastModified;
-  final boolean origDirectory=directory;
-  final long origLength=length;
-  Configuration conf=new Configuration();
-  try (FileSystem fileSystem=path.getFileSystem(conf)){
-    name=path.getName();
-    exists=fileSystem.exists(path);
-    directory=exists && fileSystem.isDirectory(path);
-    lastModified=exists ? fileSystem.getFileStatus(path).getModificationTime() : 0;
-    length=exists && !directory ? fileSystem.getFileStatus(path).getLen() : 0;
-    return exists != origExists || lastModified != origLastModified || directory != origDirectory || length != origLength;
+  if (_fileStatus.isPresent()) {
+    FileStatus oldStatus=_fileStatus.get();
+    Configuration conf=new Configuration();
+    try (FileSystem fileSystem=path.getFileSystem(conf)){
+      exists=fileSystem.exists(path);
+      this._fileStatus=Optional.of(fileSystem.getFileStatus(path));
+      if (_fileStatus.isPresent()) {
+        return exists != origExists || _fileStatus.get().getModificationTime() != oldStatus.getModificationTime() || _fileStatus.get().isDirectory() != oldStatus.isDirectory() || _fileStatus.get().getLen() != oldStatus.getLen();
+      }
+ else {
+        throw new NullPointerException("Path is missing ");
+      }
+    }
+   }
+ else {
+    throw new IllegalArgumentException("Path is missing");
   }
- }
+}

@@ -1,8 +1,7 @@
 {
   if (path == null) {
-    throw new IllegalArgumentException("File is missing");
+    throw new IllegalArgumentException("Path is missing");
   }
-  this.path=path;
   this.parent=parent;
-  this.name=path.getName();
+  this._fileStatus=Optional.of(path.getFileSystem(new Configuration()).getFileStatus(path));
 }

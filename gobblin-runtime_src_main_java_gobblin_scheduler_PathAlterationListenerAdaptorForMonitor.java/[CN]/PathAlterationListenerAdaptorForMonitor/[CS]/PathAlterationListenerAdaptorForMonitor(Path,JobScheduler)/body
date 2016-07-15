@@ -1,0 +1,4 @@
+{
+  this.jobConfigFileDirPath=jobConfigFileDirPath;
+  this.jobScheduler=jobScheduler;
+}

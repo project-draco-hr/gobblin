@@ -6,8 +6,14 @@
   try (final FileSystem fileSystem=rootDirPath.getFileSystem(conf)){
     FileStatus[] subDirsStatus=fileSystem.listStatus(rootDirPath,new PathFilter(){
       @Override public boolean accept(      Path path){
-        FileStatusEntry fileStatusEntry=new FileStatusEntry(path);
-        return fileStatusEntry.isExists();
+        try {
+          FileStatusEntry fileStatusEntry=new FileStatusEntry(path);
+          return fileStatusEntry.isExists();
+        }
+ catch (        IOException e) {
+          e.printStackTrace();
+        }
+        return false;
       }
     }
 );
