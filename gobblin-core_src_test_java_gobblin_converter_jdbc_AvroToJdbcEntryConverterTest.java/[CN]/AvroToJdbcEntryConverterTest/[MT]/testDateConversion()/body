@@ -1,11 +1,12 @@
 {
+  final String db="db";
   final String table="users";
   Map<String,JdbcType> dateColums=new HashMap<>();
   dateColums.put("date_of_birth",JdbcType.DATE);
   dateColums.put("last_modified",JdbcType.TIME);
   dateColums.put("created",JdbcType.TIMESTAMP);
   JdbcWriterCommands mockWriterCommands=mock(JdbcWriterCommands.class);
-  when(mockWriterCommands.retrieveDateColumns(table)).thenReturn(dateColums);
+  when(mockWriterCommands.retrieveDateColumns(db,table)).thenReturn(dateColums);
   JdbcWriterCommandsFactory factory=mock(JdbcWriterCommandsFactory.class);
   when(factory.newInstance(any(State.class),any(Connection.class))).thenReturn(mockWriterCommands);
   List<JdbcEntryMetaDatum> jdbcEntryMetaData=new ArrayList<>();

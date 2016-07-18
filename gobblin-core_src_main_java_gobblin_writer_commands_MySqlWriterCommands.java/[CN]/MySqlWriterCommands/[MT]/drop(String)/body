@@ -1,5 +1,0 @@
-{
-  LOG.info("Dropping table " + table);
-  String sql=String.format(DROP_TABLE_SQL_FORMAT,table);
-  execute(sql);
-}

@@ -5,6 +5,7 @@
   this.branches=branches;
   this.branchId=branchId;
   this.jdbcWriterCommandsFactory=jdbcWriterCommandsFactory;
+  this.database=getProp(this.state,JdbcPublisher.JDBC_PUBLISHER_DATABASE_NAME,this.branches,this.branchId);
   this.createdStagingTables=Sets.newHashSet();
   state.setProp(ConfigurationKeys.CLEANUP_STAGING_DATA_BY_INITIALIZER,Boolean.toString(true));
 }

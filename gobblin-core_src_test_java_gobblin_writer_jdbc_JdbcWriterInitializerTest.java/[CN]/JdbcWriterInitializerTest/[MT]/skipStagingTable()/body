@@ -4,7 +4,7 @@
   this.initializer.initialize();
   this.initializer.close();
   Assert.assertEquals(DEST_TABLE,this.workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
-  verify(this.commands,never()).createTableStructure(anyString(),anyString());
-  verify(this.commands,never()).truncate(anyString());
-  verify(this.commands,never()).drop(anyString());
+  verify(this.commands,never()).createTableStructure(anyString(),anyString(),anyString());
+  verify(this.commands,never()).truncate(anyString(),anyString());
+  verify(this.commands,never()).drop(anyString(),anyString());
 }

@@ -5,12 +5,12 @@
     if (!this.createdStagingTables.isEmpty()) {
       for (      String stagingTable : this.createdStagingTables) {
         LOG.info("Dropping staging table " + this.createdStagingTables);
-        commands.drop(stagingTable);
+        commands.drop(database,stagingTable);
       }
     }
     if (this.userCreatedStagingTable != null) {
       LOG.info("Truncating staging table " + this.userCreatedStagingTable);
-      commands.truncate(this.userCreatedStagingTable);
+      commands.truncate(database,this.userCreatedStagingTable);
     }
   }
  catch (  SQLException e) {

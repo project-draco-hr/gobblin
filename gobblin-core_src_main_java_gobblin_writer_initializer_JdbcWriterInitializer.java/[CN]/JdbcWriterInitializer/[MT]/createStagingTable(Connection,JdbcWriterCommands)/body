@@ -8,14 +8,14 @@
   for (int i=0; i < NAMING_STAGING_TABLE_TRIAL; i++) {
     String tmp=String.format(STAGING_TABLE_FORMAT,System.nanoTime());
     LOG.info("Check if staging table " + tmp + " exists.");
-    ResultSet res=conn.getMetaData().getTables(null,null,tmp,new String[]{"TABLE"});
+    ResultSet res=conn.getMetaData().getTables(null,database,tmp,new String[]{"TABLE"});
     if (!res.next()) {
       LOG.info("Staging table " + tmp + " does not exist. Creating.");
       try {
-        commands.createTableStructure(destinationTable,tmp);
+        commands.createTableStructure(database,destinationTable,tmp);
         LOG.info("Test if staging table can be dropped. Test by dropping and Creating staging table.");
-        commands.drop(tmp);
-        commands.createTableStructure(destinationTable,tmp);
+        commands.drop(database,tmp);
+        commands.createTableStructure(database,destinationTable,tmp);
         stagingTable=tmp;
         break;
       }
