@@ -11,9 +11,11 @@
   ddl.append(String.format("CREATE EXTERNAL TABLE IF NOT EXISTS `%s.%s` ",dbName,tblName));
   ddl.append("( \n");
   if (isEvolutionEnabled || !destinationTableMeta.isPresent()) {
+    log.info("Generating DDL using source schema");
     ddl.append(generateAvroToHiveColumnMapping(schema,Optional.of(hiveColumns),true));
   }
  else {
+    log.info("Generating DDL using destination schema");
     ddl.append(generateDestinationToHiveColumnMapping(Optional.of(hiveColumns),destinationTableMeta.get()));
   }
   ddl.append(") \n");

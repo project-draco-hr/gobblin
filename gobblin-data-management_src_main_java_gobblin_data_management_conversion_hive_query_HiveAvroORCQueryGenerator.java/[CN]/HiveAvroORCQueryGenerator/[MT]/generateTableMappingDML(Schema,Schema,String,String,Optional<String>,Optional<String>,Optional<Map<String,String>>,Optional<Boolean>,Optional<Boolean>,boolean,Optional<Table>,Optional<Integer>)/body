@@ -30,6 +30,7 @@
   }
   dmlQuery.append("SELECT \n");
   if (isEvolutionEnabled || !destinationTableMeta.isPresent()) {
+    log.info("Generating DML using source schema");
     boolean isFirst=true;
     List<Schema.Field> fieldList=outputOrcSchema.getFields();
     for (    Schema.Field field : fieldList) {
@@ -52,6 +53,7 @@
     }
   }
  else {
+    log.info("Generating DML using destination schema");
     boolean isFirst=true;
     List<FieldSchema> fieldList=destinationTableMeta.get().getSd().getCols();
     for (    FieldSchema field : fieldList) {
