@@ -1,0 +1,12 @@
+{
+  if (!destinationTableMeta.isPresent() || partitionsDMLInfo.size() == 0) {
+    return StringUtils.EMPTY;
+  }
+  StringBuilder ddl=new StringBuilder();
+  String stagingDbName=optionalStagingDbName.isPresent() ? optionalStagingDbName.get() : DEFAULT_DB_NAME;
+  String finalDbName=optionalFinalDbName.isPresent() ? optionalFinalDbName.get() : DEFAULT_DB_NAME;
+  for (  Map.Entry<String,String> partition : partitionsDMLInfo.entrySet()) {
+    ddl.append(String.format("ALTER TABLE `%s`.`%s` EXCHANGE PARTITION (%s='%s') WITH TABLE `%s`.`%s`",finalDbName,finalTableName,partition.getKey(),partition.getValue(),stagingDbName,stagingTableName)).append("\n");
+  }
+  return ddl.toString();
+}

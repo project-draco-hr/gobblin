@@ -1,9 +1,0 @@
-{
-  StringBuilder ddl=new StringBuilder();
-  if (!destinationTableMeta.isPresent()) {
-    ddl.append(String.format("DROP TABLE IF EXISTS %s;",finalTableName)).append("\n");
-    ddl.append(String.format("ALTER TABLE %s RENAME TO %s;",stagingTableName,finalTableName)).append("\n");
-    return ddl.toString();
-  }
-  return StringUtils.EMPTY;
-}

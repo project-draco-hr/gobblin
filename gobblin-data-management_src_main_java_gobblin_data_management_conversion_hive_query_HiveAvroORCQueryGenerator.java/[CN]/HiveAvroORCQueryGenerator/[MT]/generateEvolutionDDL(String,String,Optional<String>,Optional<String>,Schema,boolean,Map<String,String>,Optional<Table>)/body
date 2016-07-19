@@ -2,6 +2,8 @@
   if (!isEvolutionEnabled || !destinationTableMeta.isPresent()) {
     return StringUtils.EMPTY;
   }
+  String stagingDbName=optionalStagingDbName.isPresent() ? optionalStagingDbName.get() : DEFAULT_DB_NAME;
+  String finalDbName=optionalFinalDbName.isPresent() ? optionalFinalDbName.get() : DEFAULT_DB_NAME;
   StringBuilder ddl=new StringBuilder();
   Table destinationTable=destinationTableMeta.get();
   for (  Map.Entry<String,String> evolvedColumn : evolvedColumns.entrySet()) {
@@ -9,7 +11,7 @@
     for (    FieldSchema destinationField : destinationTable.getSd().getCols()) {
       if (destinationField.getName().equalsIgnoreCase(evolvedColumn.getKey())) {
         if (isTypeEvolved(evolvedColumn.getValue(),destinationField.getType())) {
-          ddl.append(String.format("ALTER TABLE %s CHANGE COLUMN %s %s %s COMMENT '%s';",finalTableName,evolvedColumn.getKey(),evolvedColumn.getKey(),evolvedColumn.getValue(),destinationField.getComment())).append("\n");
+          ddl.append(String.format("ALTER TABLE `%s`.`%s` CHANGE COLUMN %s %s %s COMMENT '%s'",finalDbName,finalTableName,evolvedColumn.getKey(),evolvedColumn.getKey(),evolvedColumn.getValue(),destinationField.getComment())).append("\n");
         }
         found=true;
         break;
@@ -20,7 +22,7 @@
       if (StringUtils.isBlank(flattenSource)) {
         flattenSource=evolvedSchema.getField(evolvedColumn.getKey()).name();
       }
-      ddl.append(String.format("ALTER TABLE %s ADD COLUMNS (%s %s COMMENT 'from flatten_source %s');",finalTableName,evolvedColumn.getKey(),evolvedColumn.getValue(),flattenSource)).append("\n");
+      ddl.append(String.format("ALTER TABLE `%s`.`%s` ADD COLUMNS (%s %s COMMENT 'from flatten_source %s')",finalDbName,finalTableName,evolvedColumn.getKey(),evolvedColumn.getValue(),flattenSource)).append("\n");
     }
   }
   return ddl.toString();
