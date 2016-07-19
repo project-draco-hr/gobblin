@@ -1,0 +1,11 @@
+{
+  StringBuilder ddl=new StringBuilder();
+  String stagingDbName=optionalStagingDbName.isPresent() ? optionalStagingDbName.get() : DEFAULT_DB_NAME;
+  String finalDbName=optionalFinalDbName.isPresent() ? optionalFinalDbName.get() : DEFAULT_DB_NAME;
+  if (!destinationTableMeta.isPresent()) {
+    ddl.append(String.format("DROP TABLE IF EXISTS `%s`.`%s`",finalDbName,finalTableName)).append("\n");
+    ddl.append(String.format("ALTER TABLE `%s`.`%s` RENAME TO `%s`.`%s`",stagingDbName,stagingTableName,finalDbName,finalTableName)).append("\n");
+    return ddl.toString();
+  }
+  return StringUtils.EMPTY;
+}

@@ -1,3 +1,5 @@
 String stagingTableName
 String finalTableName
+Optional<String> optionalStagingDbName
+Optional<String> optionalFinalDbName
 Optional<Table> destinationTableMeta

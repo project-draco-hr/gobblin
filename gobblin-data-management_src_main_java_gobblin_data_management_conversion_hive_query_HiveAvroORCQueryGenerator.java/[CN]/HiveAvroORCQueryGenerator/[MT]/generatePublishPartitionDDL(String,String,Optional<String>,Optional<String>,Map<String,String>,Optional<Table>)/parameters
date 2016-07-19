@@ -1,4 +1,6 @@
 String stagingTableName
 String finalTableName
+Optional<String> optionalStagingDbName
+Optional<String> optionalFinalDbName
 Map<String,String> partitionsDMLInfo
 Optional<Table> destinationTableMeta

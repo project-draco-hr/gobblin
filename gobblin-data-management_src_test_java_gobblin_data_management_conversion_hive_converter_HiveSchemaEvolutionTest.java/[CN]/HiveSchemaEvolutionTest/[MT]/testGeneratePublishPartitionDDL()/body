@@ -3,11 +3,11 @@
   String orcTableName=schemaName;
   Map<String,String> partitionInfo=ImmutableMap.<String,String>builder().put("datepartition","20160101").build();
   Optional<Table> destinationTableMeta=createEvolvedDestinationTable(schemaName,"default","",true);
-  String generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,partitionInfo,destinationTableMeta);
-  Assert.assertEquals(generatePublishDDL,"ALTER TABLE sourceSchema EXCHANGE PARTITION (datepartition='20160101') WITH TABLE sourceSchema_staging;\n","Generated publish partition DDL did not match");
+  String generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(hiveDbName),Optional.of(hiveDbName),partitionInfo,destinationTableMeta);
+  Assert.assertEquals(generatePublishDDL,"ALTER TABLE `hiveDb`.`sourceSchema` EXCHANGE PARTITION (datepartition='20160101') " + "WITH TABLE `hiveDb`.`sourceSchema_staging`\n","Generated publish partition DDL did not match");
   destinationTableMeta=Optional.absent();
-  generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,partitionInfo,destinationTableMeta);
+  generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(hiveDbName),Optional.of(hiveDbName),partitionInfo,destinationTableMeta);
   Assert.assertEquals(generatePublishDDL,"","Generated publish partition DDL did not match");
-  generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,new HashMap<String,String>(),destinationTableMeta);
+  generatePublishDDL=HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(hiveDbName),Optional.of(hiveDbName),new HashMap<String,String>(),destinationTableMeta);
   Assert.assertEquals(generatePublishDDL,"","Generated publish partition DDL did not match");
 }
