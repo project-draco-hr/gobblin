@@ -4,3 +4,4 @@ Optional<String> optionalStagingDbName
 Optional<String> optionalFinalDbName
 Map<String,String> partitionsDMLInfo
 Optional<Table> destinationTableMeta
+Optional<String> hiveVersion

@@ -17,6 +17,7 @@
   Optional<List<String>> clusterBy=getConversionConfig().getClusterBy().isEmpty() ? Optional.<List<String>>absent() : Optional.of(getConversionConfig().getClusterBy());
   Optional<Integer> numBuckets=getConversionConfig().getNumBuckets();
   Optional<Integer> rowLimit=getConversionConfig().getRowLimit();
+  Optional<String> hiveVersion=getConversionConfig().getHiveVersion();
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
   populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
@@ -36,7 +37,7 @@
   HiveAvroORCQueryGenerator.serializePublishTableCommands(workUnit,publishTableQueries.toString());
   log.debug("Publish table queries: " + publishTableQueries);
   StringBuilder publishPartitionQueries=new StringBuilder();
-  publishPartitionQueries.append(HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),partitionsDMLInfo,destinationTableMeta)).append("\n");
+  publishPartitionQueries.append(HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),partitionsDMLInfo,destinationTableMeta,hiveVersion)).append("\n");
   HiveAvroORCQueryGenerator.serializePublishPartitionCommands(workUnit,publishPartitionQueries.toString());
   log.debug("Publish partition queries: " + publishPartitionQueries);
   StringBuilder cleanupQueries=new StringBuilder();
