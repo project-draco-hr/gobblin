@@ -3,7 +3,8 @@
     return;
   }
   try {
-    this.hiveJdbcConnector.executeStatements(queries);
+    List<String> queryList=Splitter.on("\n").omitEmptyStrings().trimResults().splitToList(queries);
+    this.hiveJdbcConnector.executeStatements(queryList.toArray(new String[queryList.size()]));
   }
  catch (  SQLException e) {
     throw new RuntimeException(e);
