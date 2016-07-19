@@ -20,7 +20,9 @@
         cleanupCommands=HiveAvroORCQueryGenerator.deserializeCleanupCommands(wus);
         isFirst=false;
       }
+      String dirToDelete=HiveAvroORCQueryGenerator.deserializeDirToDeleteBeforePartitionPublish(wus);
       String publishPartitionCommands=HiveAvroORCQueryGenerator.deserializePublishPartitionCommands(wus);
+      deleteDirectory(dirToDelete);
       executeQueries(publishPartitionCommands);
       wus.setWorkingState(WorkingState.COMMITTED);
       wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));

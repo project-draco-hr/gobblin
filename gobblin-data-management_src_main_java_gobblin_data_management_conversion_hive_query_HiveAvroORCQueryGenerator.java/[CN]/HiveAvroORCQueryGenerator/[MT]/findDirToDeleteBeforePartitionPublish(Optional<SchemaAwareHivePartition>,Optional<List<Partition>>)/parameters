@@ -1,0 +1,2 @@
+Optional<SchemaAwareHivePartition> sourcePartition
+Optional<List<Partition>> destinationPartitionsMeta
