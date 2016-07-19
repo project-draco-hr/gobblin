@@ -1,0 +1,3 @@
+{
+  return GSON.fromJson(state.getProp(HiveAvroORCQueryGenerator.SERIALIZED_DIR_TO_DELETE_BEFORE_PARTITION_PUBLISH),String.class);
+}

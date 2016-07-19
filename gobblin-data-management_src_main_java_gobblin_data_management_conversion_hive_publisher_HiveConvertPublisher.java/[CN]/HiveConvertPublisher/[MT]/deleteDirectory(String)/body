@@ -1,0 +1,7 @@
+{
+  if (StringUtils.isBlank(dirToDelete)) {
+    return;
+  }
+  log.info("Going to delete existing partition data: " + dirToDelete);
+  this.fs.delete(new Path(dirToDelete),true);
+}
