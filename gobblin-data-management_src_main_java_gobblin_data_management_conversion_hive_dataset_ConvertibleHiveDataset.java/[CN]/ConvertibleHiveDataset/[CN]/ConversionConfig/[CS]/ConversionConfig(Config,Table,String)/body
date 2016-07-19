@@ -12,4 +12,5 @@
   this.hiveRuntimeProperties=ConfigUtils.configToProperties(ConfigUtils.getConfig(config,HIVE_RUNTIME_PROPERTIES_KEY_PREFIX,ConfigFactory.empty()));
   this.evolutionEnabled=ConfigUtils.getBoolean(config,EVOLUTION_ENABLED,false);
   this.rowLimit=Optional.fromNullable(ConfigUtils.getInt(config,ROW_LIMIT_KEY,null));
+  this.hiveVersion=Optional.fromNullable(ConfigUtils.getString(config,HIVE_VERSION_KEY,null));
 }
