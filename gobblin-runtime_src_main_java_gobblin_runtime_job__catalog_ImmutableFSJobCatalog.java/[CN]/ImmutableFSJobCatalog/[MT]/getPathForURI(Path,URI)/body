@@ -1,0 +1,3 @@
+{
+  return PathUtils.mergePaths(jobConfDirPath,new Path(uri));
+}

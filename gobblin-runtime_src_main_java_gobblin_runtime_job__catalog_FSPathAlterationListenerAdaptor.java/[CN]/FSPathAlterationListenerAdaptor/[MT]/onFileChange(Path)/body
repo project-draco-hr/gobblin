@@ -1,0 +1,9 @@
+{
+  try {
+    JobSpec updatedJobSpec=this.converter.apply(loader.loadPullFile(rawPath,sysConfig,false));
+    listeners.onUpdateJob(updatedJobSpec);
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e.getMessage());
+  }
+}

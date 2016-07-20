@@ -1,0 +1,7 @@
+{
+  URI uri=PathUtils.relativizePath(filePath,jobConfigDirPath).toUri();
+  if (this.extensionToStrip.isPresent()) {
+    uri=PathUtils.removeExtension(new Path(uri),this.extensionToStrip.get()).toUri();
+  }
+  return uri;
+}

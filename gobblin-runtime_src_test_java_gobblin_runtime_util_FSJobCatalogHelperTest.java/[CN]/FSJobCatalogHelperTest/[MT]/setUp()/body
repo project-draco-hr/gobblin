@@ -1,0 +1,38 @@
+{
+  this.jobConfigDir=java.nio.file.Files.createTempDirectory(String.format("gobblin-test_%s_job-conf",this.getClass().getSimpleName())).toFile();
+  FileUtils.forceDeleteOnExit(this.jobConfigDir);
+  this.subDir1=new File(this.jobConfigDir,"test1");
+  this.subDir11=new File(this.subDir1,"test11");
+  this.subDir2=new File(this.jobConfigDir,"test2");
+  this.subDir1.mkdirs();
+  this.subDir11.mkdirs();
+  this.subDir2.mkdirs();
+  this.sysProps=new Properties();
+  this.sysConfig=ConfigUtils.propertiesToConfig(sysProps);
+  this.loader=new PullFileLoader(new Path(jobConfigDir.toURI()),FileSystem.get(new Configuration()),FSJobCatalogHelper.getJobConfigurationFileExtensions(sysProps),PullFileLoader.DEFAULT_HOCON_PULL_FILE_EXTENSIONS);
+  this.converter=new FSJobCatalogHelper.JobSpecConverter(new Path(this.jobConfigDir.toURI()),Optional.of(FSJobCatalog.CONF_EXTENSION));
+  Properties rootProps=new Properties();
+  rootProps.setProperty("k1","a1");
+  rootProps.setProperty("k2","a2");
+  rootProps.store(new FileWriter(new File(this.jobConfigDir,"root.properties")),"");
+  Properties jobProps1=new Properties();
+  jobProps1.setProperty("k1","c1");
+  jobProps1.setProperty("k3","b3");
+  jobProps1.setProperty("k6","a6");
+  jobProps1.store(new FileWriter(new File(this.subDir1,"test11.pull")),"");
+  Properties jobProps2=new Properties();
+  jobProps2.setProperty("k7","a7");
+  jobProps2.store(new FileWriter(new File(this.subDir1,"test12.PULL")),"");
+  Properties jobProps3=new Properties();
+  jobProps3.setProperty("k1","d1");
+  jobProps3.setProperty("k8","a8");
+  jobProps3.setProperty("k9","${k8}");
+  jobProps3.store(new FileWriter(new File(this.subDir11,"test111.pull")),"");
+  Properties props2=new Properties();
+  props2.setProperty("k2","b2");
+  props2.setProperty("k5","a5");
+  props2.store(new FileWriter(new File(this.subDir2,"test.PROPERTIES")),"");
+  Properties jobProps4=new Properties();
+  jobProps4.setProperty("k5","b5");
+  jobProps4.store(new FileWriter(new File(this.subDir2,"test21.PULL")),"");
+}

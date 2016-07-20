@@ -1,0 +1,4 @@
+{
+  URI jobSpecUri=this.converter.computeURI(rawPath);
+  listeners.onDeleteJob(jobSpecUri,null);
+}

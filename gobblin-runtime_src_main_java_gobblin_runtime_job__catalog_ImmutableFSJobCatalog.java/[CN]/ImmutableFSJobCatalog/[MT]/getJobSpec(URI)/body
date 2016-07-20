@@ -1,0 +1,9 @@
+{
+  try {
+    Path targetJobSpecFullPath=getPathForURI(this.jobConfDirPath,uri);
+    return this.converter.apply(loader.loadPullFile(targetJobSpecFullPath,this.sysConfig,shouldLoadGlobalConf()));
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("IO exception thrown on loading single job configuration file:" + e.getMessage());
+  }
+}

@@ -1,0 +1,14 @@
+{
+  try {
+    Path jobSpecPath=getPathForURI(this.jobConfDirPath,jobURI);
+    if (fs.exists(jobSpecPath)) {
+      fs.delete(jobSpecPath,false);
+    }
+ else {
+      LOGGER.warn("No file with URI:" + jobSpecPath + " is found. Deletion failed.");
+    }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("When removing a JobConf. file, issues unexpected happen:" + e.getMessage());
+  }
+}

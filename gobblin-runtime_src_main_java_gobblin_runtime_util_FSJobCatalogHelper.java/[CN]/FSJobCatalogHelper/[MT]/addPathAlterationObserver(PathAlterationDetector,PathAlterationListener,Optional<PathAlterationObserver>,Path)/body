@@ -1,0 +1,11 @@
+{
+  PathAlterationObserver observer;
+  if (observerOptional.isPresent()) {
+    observer=observerOptional.get();
+  }
+ else {
+    observer=new PathAlterationObserver(rootDirPath);
+  }
+  observer.addListener(listener);
+  detector.addObserver(observer);
+}
