@@ -1,4 +1,23 @@
 {
+  if (this.verifyBeforeRegistering) {
+    if (!this.hiveSpec.getTable().getLocation().isPresent()) {
+      throw getException("Table does not have a location parameter.");
+    }
+    Path tablePath=new Path(this.hiveSpec.getTable().getLocation().get());
+    FileSystem fs=this.hiveSpec.getPath().getFileSystem(new Configuration());
+    if (!fs.exists(tablePath)) {
+      throw getException(String.format("Table location %s does not exist.",tablePath));
+    }
+    if (this.hiveSpec.getPartition().isPresent()) {
+      if (!this.hiveSpec.getPartition().get().getLocation().isPresent()) {
+        throw getException("Partition does not have a location parameter.");
+      }
+      Path partitionPath=new Path(this.hiveSpec.getPartition().get().getLocation().get());
+      if (!fs.exists(this.hiveSpec.getPath())) {
+        throw getException(String.format("Partition location %s does not exist.",partitionPath));
+      }
+    }
+  }
   try (HiveRegister hiveRegister=HiveRegister.get(this.props,this.metastoreURI)){
     log.info("Registering Hive Spec " + this.hiveSpec);
     ListenableFuture<Void> future=hiveRegister.register(this.hiveSpec);
