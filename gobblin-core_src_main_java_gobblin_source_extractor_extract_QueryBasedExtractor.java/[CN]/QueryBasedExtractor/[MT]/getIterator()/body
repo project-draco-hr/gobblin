@@ -1,5 +1,5 @@
 {
-  if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_SPECIFIC_API_ACTIVE))) {
+  if (Boolean.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_SPECIFIC_API_ACTIVE))) {
     return this.getRecordSetFromSourceApi(this.schema,this.entity,this.workUnit,this.predicateList);
   }
   return this.getRecordSet(this.schema,this.entity,this.workUnit,this.predicateList);

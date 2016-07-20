@@ -1,7 +1,7 @@
 {
   this.workUnitState=workUnitState;
   this.workUnit=this.workUnitState.getWorkunit();
-  this.schema=this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SCHEMA);
-  this.entity=this.workUnit.getProp(ConfigurationKeys.SOURCE_ENTITY);
+  this.schema=this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SCHEMA);
+  this.entity=this.workUnitState.getProp(ConfigurationKeys.SOURCE_ENTITY);
   MDC.put("tableName",getWorkUnitName());
 }

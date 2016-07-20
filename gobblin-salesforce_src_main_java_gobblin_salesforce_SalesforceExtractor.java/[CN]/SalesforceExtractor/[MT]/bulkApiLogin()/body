@@ -1,8 +1,8 @@
 {
   log.info("Authenticating salesforce bulk api");
   boolean success=false;
-  String hostName=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
-  String apiVersion=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_VERSION);
+  String hostName=this.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
+  String apiVersion=this.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_VERSION);
   if (Strings.isNullOrEmpty(apiVersion)) {
     apiVersion="29.0";
   }
@@ -12,9 +12,9 @@
     if (super.workUnitState.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && !super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL).isEmpty()) {
       partnerConfig.setProxy(super.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),super.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
     }
-    String securityToken=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_SECURITY_TOKEN);
-    String password=PasswordManager.getInstance(this.workUnit).readPassword(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
-    partnerConfig.setUsername(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME));
+    String securityToken=this.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_SECURITY_TOKEN);
+    String password=PasswordManager.getInstance(this.workUnitState).readPassword(this.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_PASSWORD));
+    partnerConfig.setUsername(this.workUnitState.getProp(ConfigurationKeys.SOURCE_CONN_USERNAME));
     partnerConfig.setPassword(password + securityToken);
     partnerConfig.setAuthEndpoint(soapAuthEndPoint);
     new PartnerConnection(partnerConfig);

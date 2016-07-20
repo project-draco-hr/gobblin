@@ -1,17 +1,17 @@
 {
-  String watermarkColumn=this.workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+  String watermarkColumn=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
   long lwm=this.workUnit.getLowWatermark(LongWatermark.class).getValue();
   long hwm=this.workUnit.getExpectedHighWatermark(LongWatermark.class).getValue();
   log.info("Low water mark: " + lwm + "; and High water mark: "+ hwm);
   WatermarkType watermarkType;
-  if (StringUtils.isBlank(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
+  if (StringUtils.isBlank(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE))) {
     watermarkType=null;
   }
  else {
-    watermarkType=WatermarkType.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE).toUpperCase());
+    watermarkType=WatermarkType.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_WATERMARK_TYPE).toUpperCase());
   }
   try {
-    this.setTimeOut(this.workUnit.getPropAsInt(ConfigurationKeys.SOURCE_CONN_TIMEOUT,ConfigurationKeys.DEFAULT_CONN_TIMEOUT));
+    this.setTimeOut(this.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_CONN_TIMEOUT,ConfigurationKeys.DEFAULT_CONN_TIMEOUT));
     this.extractMetadata(this.schema,this.entity,this.workUnit);
     if (StringUtils.isNotBlank(watermarkColumn)) {
       this.highWatermark=this.getLatestWatermark(watermarkColumn,watermarkType,lwm,hwm);
@@ -21,7 +21,7 @@
       this.setRangePredicates(watermarkColumn,watermarkType,lwm,currentRunHighWatermark);
       this.highWatermark=currentRunHighWatermark;
     }
-    if (!Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SKIP_COUNT_CALC))) {
+    if (!Boolean.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SKIP_COUNT_CALC))) {
       this.sourceRecordCount=this.getSourceCount(this.schema,this.entity,this.workUnit,this.predicateList);
     }
  else {
