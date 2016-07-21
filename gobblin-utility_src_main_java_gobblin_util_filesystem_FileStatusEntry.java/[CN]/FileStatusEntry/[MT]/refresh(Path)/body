@@ -4,17 +4,22 @@
     FileStatus oldStatus=_fileStatus.get();
     Configuration conf=new Configuration();
     try (FileSystem fileSystem=path.getFileSystem(conf)){
-      exists=fileSystem.exists(path);
-      this._fileStatus=Optional.of(fileSystem.getFileStatus(path));
+      this._fileStatus=Optional.fromNullable(fileSystem.getFileStatus(path));
+      exists=this._fileStatus.isPresent();
       if (_fileStatus.isPresent()) {
         return exists != origExists || _fileStatus.get().getModificationTime() != oldStatus.getModificationTime() || _fileStatus.get().isDirectory() != oldStatus.isDirectory() || _fileStatus.get().getLen() != oldStatus.getLen();
       }
  else {
-        throw new NullPointerException("Path is missing ");
+        throw new IllegalArgumentException("Path is missing ");
       }
     }
    }
  else {
-    throw new IllegalArgumentException("Path is missing");
+    if (!exists) {
+      throw new IllegalArgumentException("Path is missing");
+    }
+ else {
+      return false;
+    }
   }
 }

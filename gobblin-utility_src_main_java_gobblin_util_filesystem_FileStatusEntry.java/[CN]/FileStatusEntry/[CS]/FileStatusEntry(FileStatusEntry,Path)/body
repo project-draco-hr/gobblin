@@ -3,5 +3,5 @@
     throw new IllegalArgumentException("Path is missing");
   }
   this.parent=parent;
-  this._fileStatus=Optional.of(path.getFileSystem(new Configuration()).getFileStatus(path));
+  this._fileStatus=Optional.fromNullable(path.getFileSystem(new Configuration()).getFileStatus(path));
 }
