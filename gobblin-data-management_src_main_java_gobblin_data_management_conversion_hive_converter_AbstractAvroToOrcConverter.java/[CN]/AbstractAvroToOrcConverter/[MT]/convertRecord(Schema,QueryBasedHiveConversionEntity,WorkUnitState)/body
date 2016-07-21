@@ -48,6 +48,7 @@
   }
   StringBuilder publishPartitionQueries=new StringBuilder();
   publishPartitionQueries.append(HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),partitionsDMLInfo,destinationTableMeta,hiveVersion)).append("\n");
+  publishPartitionQueries.append(HiveAvroORCQueryGenerator.generateDropPartitionsDDL(orcTableDatabase,orcTableName,getDropPartitionsDDLInfo(conversionEntity))).append("\n");
   HiveAvroORCQueryGenerator.serializePublishPartitionCommands(workUnit,publishPartitionQueries.toString());
   log.debug("Publish partition queries: " + publishPartitionQueries);
   StringBuilder cleanupQueries=new StringBuilder();
