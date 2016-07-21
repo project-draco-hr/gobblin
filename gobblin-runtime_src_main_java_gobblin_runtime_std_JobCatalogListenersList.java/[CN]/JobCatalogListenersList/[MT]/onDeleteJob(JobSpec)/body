@@ -1,0 +1,4 @@
+{
+  Preconditions.checkNotNull(deletedJob);
+  callbackAllListeners(new DeleteJobCallback(deletedJob));
+}

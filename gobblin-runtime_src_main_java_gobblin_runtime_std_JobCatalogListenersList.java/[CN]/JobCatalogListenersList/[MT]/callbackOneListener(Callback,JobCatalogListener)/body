@@ -1,0 +1,19 @@
+{
+  String callbackMsg=null;
+  if (_debugLogEnabled) {
+    callbackMsg="callback " + callback + " on "+ listener;
+    _log.debug("Started: " + callbackMsg);
+  }
+  try {
+    callback.invoke(listener);
+  }
+ catch (  RuntimeException e) {
+    if (null == callbackMsg) {
+      callbackMsg="callback " + callback + " on "+ listener;
+    }
+    _log.error("FAILED: " + callbackMsg + " ; error : "+ e);
+  }
+  if (_debugLogEnabled) {
+    _log.debug("Finished: " + callbackMsg);
+  }
+}

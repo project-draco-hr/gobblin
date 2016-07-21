@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(originalJob);
+  Preconditions.checkNotNull(updatedJob);
+  callbackAllListeners(new UpdateJobCallback(originalJob,updatedJob));
+}

@@ -1,0 +1,8 @@
+{
+  Preconditions.checkNotNull(jobListener);
+  this.listeners.addListener(jobListener);
+  for (  Map.Entry<URI,JobSpec> jobSpecEntry : this.jobSpecs.entrySet()) {
+    AddJobCallback addJobCallback=new AddJobCallback(jobSpecEntry.getValue());
+    this.listeners.callbackOneListener(addJobCallback,jobListener);
+  }
+}

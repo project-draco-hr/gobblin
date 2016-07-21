@@ -1,0 +1,12 @@
+{
+  Properties props=new Properties();
+  props.put("a1","a_value");
+  props.put("a2.b","1");
+  props.put("a2.c.d","12.34");
+  props.put("a2.c.d2","true");
+  DefaultConfigurableImpl c=DefaultConfigurableImpl.createFromProperties(props);
+  Assert.assertEquals(c.getConfig().getString("a1"),"a_value");
+  Assert.assertEquals(c.getConfig().getLong("a2.b"),1L);
+  Assert.assertEquals(c.getConfig().getDouble("a2.c.d"),12.34);
+  Assert.assertTrue(c.getConfig().getBoolean("a2.c.d2"));
+}
