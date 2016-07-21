@@ -4,8 +4,10 @@
       throw new IOException("Table " + table.getTableName() + " in db "+ table.getDbName()+ " does not exist");
     }
     client.get().alter_table(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getTable(table));
+    HiveMetaStoreEventHelper.submitSuccessfulTableAlter(eventSubmitter,table);
   }
  catch (  TException e) {
+    HiveMetaStoreEventHelper.submitFailedTableAlter(eventSubmitter,table,e);
     throw new IOException("Unable to alter table " + table.getTableName() + " in db "+ table.getDbName(),e);
   }
 }

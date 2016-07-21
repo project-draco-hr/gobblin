@@ -7,8 +7,10 @@
     if (partition.isPresent()) {
       addOrAlterPartition(client.get(),table,HiveMetaStoreUtils.getPartition(partition.get()),spec);
     }
+    HiveMetaStoreEventHelper.submitSuccessfulPathRegistration(eventSubmitter,spec);
   }
  catch (  TException e) {
+    HiveMetaStoreEventHelper.submitFailedPathRegistration(eventSubmitter,spec,e);
     throw new IOException(e);
   }
 }

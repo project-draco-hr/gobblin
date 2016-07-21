@@ -6,10 +6,12 @@
     }
  catch (    NoSuchObjectException e) {
       client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
+      HiveMetaStoreEventHelper.submitSuccessfulPartitionAdd(this.eventSubmitter,table,partition);
       return true;
     }
   }
  catch (  TException e) {
+    HiveMetaStoreEventHelper.submitFailedPartitionAdd(this.eventSubmitter,table,partition,e);
     throw new IOException(String.format("Unable to add partition %s in table %s in db %s",partition.getValues(),table.getTableName(),table.getDbName()),e);
   }
 }

@@ -1,0 +1,10 @@
+{
+  ImmutableMap.Builder<String,String> builder=ImmutableMap.<String,String>builder().put(DB_NAME,spec.getTable().getDbName()).put(TABLE_NAME,spec.getTable().getTableName()).put("Path",spec.getPath().toString());
+  if (spec.getPartition().isPresent()) {
+    builder.put(PARTITIONS,spec.getPartition().get().toString());
+  }
+  if (error.isPresent()) {
+    builder.put(ERROR_MESSAGE,error.get().getMessage());
+  }
+  return builder.build();
+}

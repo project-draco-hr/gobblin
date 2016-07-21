@@ -1,0 +1,13 @@
+{
+  ImmutableMap.Builder<String,String> builder=ImmutableMap.<String,String>builder().put(DB_NAME,table.getDbName()).put(TABLE_NAME,table.getTableName());
+  if (table.getLocation().isPresent()) {
+    builder.put("Location",table.getLocation().get());
+  }
+  if (partition.isPresent()) {
+    builder.put("Partition",partition.get().toString());
+  }
+  if (error.isPresent()) {
+    builder.put(ERROR_MESSAGE,error.get().getMessage());
+  }
+  return builder.build();
+}

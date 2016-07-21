@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(PATH_REGISTRATION + FAILED_POSTFIX,getAdditionalMetadata(spec,Optional.<Exception>of(error)));
+}

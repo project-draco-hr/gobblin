@@ -16,12 +16,14 @@ catch (    TException te) {
     try {
       client.createDatabase(db);
       log.info("Created database " + dbName);
+      HiveMetaStoreEventHelper.submitSuccessfulDBCreation(this.eventSubmitter,dbName);
       return true;
     }
  catch (    AlreadyExistsException e) {
       return false;
     }
 catch (    TException e) {
+      HiveMetaStoreEventHelper.submitFailedDBCreation(this.eventSubmitter,dbName,e);
       throw new IOException("Unable to create Hive database " + dbName,e);
     }
   }

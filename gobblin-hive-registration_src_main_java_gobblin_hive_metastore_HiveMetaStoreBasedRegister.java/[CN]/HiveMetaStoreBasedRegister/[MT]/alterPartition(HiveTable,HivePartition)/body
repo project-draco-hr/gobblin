@@ -1,8 +1,10 @@
 {
   try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
+    HiveMetaStoreEventHelper.submitSuccessfulPartitionAlter(eventSubmitter,table,partition);
   }
  catch (  TException e) {
+    HiveMetaStoreEventHelper.submitFailedPartitionAlter(eventSubmitter,table,partition,e);
     throw new IOException(String.format("Unable to alter partition %s in table %s in db %s",partition.getValues(),table.getTableName(),table.getDbName()),e);
   }
 }

@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(TABLE_ALTER + FAILED_POSTFIX,getAdditionalMetadata(table,Optional.<HivePartition>absent(),Optional.<Exception>of(error)));
+}

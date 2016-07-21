@@ -1,0 +1,10 @@
+{
+  int randomId=new Random().nextInt(Integer.MAX_VALUE);
+  List<Tag<?>> generatedTags=Lists.newArrayList();
+  if (!klazz.isAnonymousClass()) {
+    generatedTags.add(new Tag<>("class",klazz.getCanonicalName()));
+  }
+  Optional<GobblinMetrics> gobblinMetrics=state.contains(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY) ? GobblinMetricsRegistry.getInstance().get(state.getProp(ConfigurationKeys.METRIC_CONTEXT_NAME_KEY)) : Optional.<GobblinMetrics>absent();
+  MetricContext.Builder builder=gobblinMetrics.isPresent() ? gobblinMetrics.get().getMetricContext().childBuilder(klazz.getCanonicalName() + "." + randomId) : MetricContext.builder(klazz.getCanonicalName() + "." + randomId);
+  return builder.addTags(generatedTags).addTags(tags).build();
+}
