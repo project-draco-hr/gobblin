@@ -1,0 +1,9 @@
+{
+  String urlPrefix="jdbc:teradata://";
+  String host=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_HOST_NAME);
+  checkArgument(!isNullOrEmpty(host),"Connectionn host cannot be null or empty at %s",ConfigurationKeys.SOURCE_CONN_HOST_NAME);
+  String port=this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_PORT,"1025");
+  String database=this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_SCHEMA);
+  String defaultUrl=urlPrefix + host.trim() + "/TYPE=FASTEXPORT,DATABASE="+ database.trim()+ ",DBS_PORT="+ port.trim();
+  return host.contains(urlPrefix) ? host.trim() : defaultUrl;
+}

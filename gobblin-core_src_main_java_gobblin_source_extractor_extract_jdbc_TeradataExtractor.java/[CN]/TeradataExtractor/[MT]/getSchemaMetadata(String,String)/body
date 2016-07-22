@@ -1,0 +1,15 @@
+{
+  log.debug("Build query to get schema");
+  List<Command> commands=new ArrayList<Command>();
+  String inputQuery=this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_QUERY);
+  String metadataSql, predicate="1=0";
+  if (isNullOrEmpty(inputQuery)) {
+    metadataSql="select * from " + schema + "."+ entity;
+  }
+ else {
+    metadataSql=this.removeSampleClauseFromQuery(inputQuery);
+  }
+  metadataSql=SqlQueryUtils.addPredicate(metadataSql,predicate);
+  commands.add(JdbcExtractor.getCommand(metadataSql,JdbcCommand.JdbcCommandType.QUERY));
+  return commands;
+}

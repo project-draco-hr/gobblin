@@ -1,0 +1,7 @@
+{
+  long sampleRowCount=this.getSampleRecordCount();
+  if (sampleRowCount >= 0) {
+    return TERADATA_SAMPLE_CLAUSE + sampleRowCount;
+  }
+  return "";
+}

@@ -1,0 +1,37 @@
+{
+  log.debug("Extract schema from resultset");
+  ResultSet resultset=null;
+  Iterator<ResultSet> itr=(Iterator<ResultSet>)response.getResults().values().iterator();
+  if (itr.hasNext()) {
+    resultset=itr.next();
+  }
+ else {
+    throw new SchemaException("Failed to get schema from Teradata - empty schema resultset");
+  }
+  JsonArray fieldJsonArray=new JsonArray();
+  try {
+    Schema schema=new Schema();
+    ResultSetMetaData rsmd=resultset.getMetaData();
+    String columnName, columnTypeName;
+    for (int i=1; i <= rsmd.getColumnCount(); i++) {
+      columnName=rsmd.getColumnName(i);
+      columnTypeName=rsmd.getColumnTypeName(i);
+      schema.setColumnName(columnName);
+      List<String> mapSymbols=null;
+      JsonObject newDataType=this.convertDataType(columnName,columnTypeName,ELEMENT_DATA_TYPE,mapSymbols);
+      schema.setDataType(newDataType);
+      schema.setLength(rsmd.getColumnDisplaySize(i));
+      schema.setPrecision(rsmd.getPrecision(i));
+      schema.setScale(rsmd.getScale(i));
+      schema.setNullable(rsmd.isNullable(i) == ResultSetMetaData.columnNullable);
+      schema.setComment(rsmd.getColumnLabel(i));
+      String jsonStr=gson.toJson(schema);
+      JsonObject obj=gson.fromJson(jsonStr,JsonObject.class).getAsJsonObject();
+      fieldJsonArray.add(obj);
+    }
+  }
+ catch (  Exception e) {
+    throw new SchemaException("Failed to get schema from Teradaa; error - " + e.getMessage(),e);
+  }
+  return fieldJsonArray;
+}

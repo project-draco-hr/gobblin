@@ -1,0 +1,4 @@
+String column
+long value
+String valueFormat
+String operator
