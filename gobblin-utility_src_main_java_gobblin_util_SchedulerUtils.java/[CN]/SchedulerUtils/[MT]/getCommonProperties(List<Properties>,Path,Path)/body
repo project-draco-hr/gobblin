@@ -2,7 +2,7 @@
   Configuration conf=new Configuration();
   try (FileSystem fileSystem=jobConfigPathDir.getFileSystem(conf)){
     Preconditions.checkArgument(configPathParent.toUri().normalize().getPath().startsWith(jobConfigPathDir.toUri().normalize().getPath()),String.format("%s is not an ancestor directory of %s",jobConfigPathDir,configPathParent));
-    while (!configPathParent.equals(PathUtils.addFilePrefixForComparison(jobConfigPathDir.getParent(),"file:")) && !configPathParent.equals(jobConfigPathDir.getParent())) {
+    while (!PathUtils.compareWithoutSchemeAndAuthority(configPathParent,jobConfigPathDir.getParent())) {
       FileStatus[] propertiesFilesStatus=fileSystem.listStatus(configPathParent,PROPERTIES_PATH_FILTER);
       ArrayList<String> propertiesFilesList=new ArrayList<>();
       if (propertiesFilesStatus != null && propertiesFilesStatus.length > 0) {
