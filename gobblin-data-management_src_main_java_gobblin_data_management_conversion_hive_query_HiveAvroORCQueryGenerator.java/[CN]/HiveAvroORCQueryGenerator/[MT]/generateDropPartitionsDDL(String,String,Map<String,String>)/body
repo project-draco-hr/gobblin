@@ -1,0 +1,22 @@
+{
+  if (null == partitionsDMLInfo || partitionsDMLInfo.isEmpty()) {
+    return Collections.emptyList();
+  }
+  StringBuilder partitionSpecs=new StringBuilder();
+  partitionSpecs.append("PARTITION (");
+  boolean isFirstPartitionSpec=true;
+  for (  Map.Entry<String,String> partition : partitionsDMLInfo.entrySet()) {
+    if (isFirstPartitionSpec) {
+      isFirstPartitionSpec=false;
+    }
+ else {
+      partitionSpecs.append(", ");
+    }
+    partitionSpecs.append(String.format("`%s`='%s'",partition.getKey(),partition.getValue()));
+  }
+  partitionSpecs.append(") ");
+  List<String> ddls=Lists.newArrayList();
+  ddls.add(String.format("USE %s%n",dbName));
+  ddls.add(String.format("ALTER TABLE %s DROP IF EXISTS %s",finalTableName,partitionSpecs));
+  return ddls;
+}

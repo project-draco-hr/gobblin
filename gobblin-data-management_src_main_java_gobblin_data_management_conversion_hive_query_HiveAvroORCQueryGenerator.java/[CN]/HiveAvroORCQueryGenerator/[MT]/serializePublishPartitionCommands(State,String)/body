@@ -1,3 +1,0 @@
-{
-  state.setProp(HiveAvroORCQueryGenerator.SERIALIZED_PUBLISH_PARTITION_COMMANDS,GSON.toJson(commands));
-}

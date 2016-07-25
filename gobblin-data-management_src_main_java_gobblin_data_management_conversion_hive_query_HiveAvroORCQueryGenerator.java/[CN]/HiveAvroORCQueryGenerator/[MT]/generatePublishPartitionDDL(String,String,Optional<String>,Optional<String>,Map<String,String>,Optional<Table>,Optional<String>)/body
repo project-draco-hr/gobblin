@@ -1,19 +1,19 @@
 {
   if (!destinationTableMeta.isPresent() || partitionsDMLInfo.size() == 0) {
-    return StringUtils.EMPTY;
+    return Collections.emptyList();
   }
-  StringBuilder ddl=new StringBuilder();
+  List<String> ddl=Lists.newArrayList();
   String stagingDbName=optionalStagingDbName.isPresent() ? optionalStagingDbName.get() : DEFAULT_DB_NAME;
   String finalDbName=optionalFinalDbName.isPresent() ? optionalFinalDbName.get() : DEFAULT_DB_NAME;
   for (  Map.Entry<String,String> partition : partitionsDMLInfo.entrySet()) {
-    ddl.append(String.format("USE `%s`",finalDbName)).append("\n");
-    ddl.append(String.format("ALTER TABLE `%s` DROP IF EXISTS PARTITION (%s='%s')",finalTableName,partition.getKey(),partition.getValue())).append("\n");
+    ddl.add(String.format("USE `%s`",finalDbName));
+    ddl.add(String.format("ALTER TABLE `%s` DROP IF EXISTS PARTITION (%s='%s')",finalTableName,partition.getKey(),partition.getValue()));
     if (hiveVersion.isPresent() && !"0.13".equalsIgnoreCase(hiveVersion.get()) && !"0.12".equalsIgnoreCase(hiveVersion.get())) {
-      ddl.append(String.format("ALTER TABLE `%s`.`%s` EXCHANGE PARTITION (%s='%s') WITH TABLE `%s`.`%s`",stagingDbName,stagingTableName,partition.getKey(),partition.getValue(),finalDbName,finalTableName)).append("\n");
+      ddl.add(String.format("ALTER TABLE `%s`.`%s` EXCHANGE PARTITION (%s='%s') WITH TABLE `%s`.`%s`",stagingDbName,stagingTableName,partition.getKey(),partition.getValue(),finalDbName,finalTableName));
     }
  else {
-      ddl.append(String.format("ALTER TABLE `%s`.`%s` EXCHANGE PARTITION (%s='%s') WITH TABLE `%s`.`%s`",finalDbName,finalTableName,partition.getKey(),partition.getValue(),stagingDbName,stagingTableName)).append("\n");
+      ddl.add(String.format("ALTER TABLE `%s`.`%s` EXCHANGE PARTITION (%s='%s') WITH TABLE `%s`.`%s`",finalDbName,finalTableName,partition.getKey(),partition.getValue(),stagingDbName,stagingTableName));
     }
   }
-  return ddl.toString();
+  return ddl;
 }
