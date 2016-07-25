@@ -1,0 +1,3 @@
+{
+  return PathUtils.getPathWithoutSchemeAndAuthority(path1).equals(getPathWithoutSchemeAndAuthority(path2));
+}

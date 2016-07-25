@@ -1,0 +1,14 @@
+{
+  for (  final PathAlterationListener listener : listeners) {
+    if (entry.isDirectory()) {
+      listener.onDirectoryCreate(entry.getPath());
+    }
+ else {
+      listener.onFileCreate(entry.getPath());
+    }
+  }
+  final FileStatusEntry[] children=entry.getChildren();
+  for (  final FileStatusEntry aChildren : children) {
+    doCreate(aChildren);
+  }
+}

@@ -1,0 +1,5 @@
+{
+  PathAlterationObserver observer=new PathAlterationObserver(rootDirPath);
+  observer.addListener(listener);
+  monitor.addObserver(observer);
+}

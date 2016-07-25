@@ -1,0 +1,7 @@
+{
+  final FileStatusEntry entry=parent.newChildInstance(childPath);
+  entry.refresh(childPath);
+  final FileStatusEntry[] children=doListPathsEntry(childPath,entry);
+  entry.setChildren(children);
+  return entry;
+}

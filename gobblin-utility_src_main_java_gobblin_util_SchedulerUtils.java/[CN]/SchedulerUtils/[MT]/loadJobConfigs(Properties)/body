@@ -1,6 +1,0 @@
-{
-  Preconditions.checkArgument(properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY),"Missing configuration property: " + ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY);
-  List<Properties> jobConfigs=Lists.newArrayList();
-  loadJobConfigsRecursive(jobConfigs,properties,getJobConfigurationFileExtensions(properties),new File(properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)));
-  return jobConfigs;
-}

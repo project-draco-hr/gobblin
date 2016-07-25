@@ -1,0 +1,6 @@
+{
+  if (listener != null) {
+    while (listeners.remove(listener)) {
+    }
+  }
+}

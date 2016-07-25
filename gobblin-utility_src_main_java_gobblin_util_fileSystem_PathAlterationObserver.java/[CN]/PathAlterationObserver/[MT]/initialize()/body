@@ -1,0 +1,5 @@
+{
+  rootEntry.refresh(rootEntry.getPath());
+  final FileStatusEntry[] children=doListPathsEntry(rootEntry.getPath(),rootEntry);
+  rootEntry.setChildren(children);
+}
