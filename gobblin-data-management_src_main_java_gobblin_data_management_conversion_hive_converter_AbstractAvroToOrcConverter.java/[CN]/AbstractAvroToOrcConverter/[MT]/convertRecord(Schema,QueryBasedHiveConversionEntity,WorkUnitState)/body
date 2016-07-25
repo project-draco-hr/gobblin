@@ -56,7 +56,7 @@
   log.info("Evolve final table DDLs: " + evolutionDDLs);
   publishQueries.addAll(evolutionDDLs);
   if (partitionsDDLInfo.size() == 0) {
-    log.info("Partition directory to move: " + orcStagingDataLocation + " to: "+ orcDataLocation);
+    log.info("Snapshot directory to move: " + orcStagingDataLocation + " to: "+ orcDataLocation);
     publishDirectories.put(orcStagingDataLocation,orcDataLocation);
     String dropStagingTableDDL=HiveAvroORCQueryGenerator.generateDropTableDDL(orcTableDatabase,orcStagingTableName);
     log.info("Drop staging table DDL: " + dropStagingTableDDL);
