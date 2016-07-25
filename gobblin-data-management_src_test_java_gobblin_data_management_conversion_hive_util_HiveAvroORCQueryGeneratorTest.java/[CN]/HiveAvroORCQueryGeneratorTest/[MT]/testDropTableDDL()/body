@@ -1,0 +1,4 @@
+{
+  String ddl=HiveAvroORCQueryGenerator.generateDropTableDDL("db1","table1");
+  Assert.assertEquals(ddl,"DROP TABLE IF EXISTS `db1`.`table1`");
+}
