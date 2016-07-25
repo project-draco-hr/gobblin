@@ -1,2 +1,0 @@
-String stagingTableName
-Optional<String> optionalStagingDbName

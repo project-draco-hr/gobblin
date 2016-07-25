@@ -1,6 +1,0 @@
-{
-  List<String> ddls=Lists.newArrayList();
-  String stagingDbName=optionalStagingDbName.isPresent() ? optionalStagingDbName.get() : DEFAULT_DB_NAME;
-  ddls.add(String.format("DROP TABLE IF EXISTS `%s`.`%s`",stagingDbName,stagingTableName));
-  return ddls;
-}
