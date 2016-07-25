@@ -1,0 +1,13 @@
+{
+  Properties cleanedTemplate;
+  if (template.containsKey(ConfigurationKeys.USER_SPECIFIED_ATTR_LIST)) {
+    template.remove(ConfigurationKeys.USER_SPECIFIED_ATTR_LIST);
+  }
+  cleanedTemplate=template;
+  Properties cleanedUserCustomized;
+  if (userCustomized.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
+    userCustomized.remove(ConfigurationKeys.JOB_TEMPLATE_PATH);
+  }
+  cleanedUserCustomized=userCustomized;
+  return PropertiesUtils.combineProperties(cleanedTemplate,cleanedUserCustomized);
+}
