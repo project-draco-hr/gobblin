@@ -1,0 +1,50 @@
+{
+  TypeInfo typeInfo=TypeInfoUtils.getTypeInfoFromTypeString(type);
+  if (ObjectInspector.Category.PRIMITIVE.equals(typeInfo.getCategory())) {
+    return type;
+  }
+ else   if (ObjectInspector.Category.LIST.equals(typeInfo.getCategory())) {
+    ListTypeInfo listTypeInfo=(ListTypeInfo)typeInfo;
+    return org.apache.hadoop.hive.serde.serdeConstants.LIST_TYPE_NAME + "<" + escapeHiveType(listTypeInfo.getListElementTypeInfo().getTypeName())+ ">";
+  }
+ else   if (ObjectInspector.Category.MAP.equals(typeInfo.getCategory())) {
+    MapTypeInfo mapTypeInfo=(MapTypeInfo)typeInfo;
+    return org.apache.hadoop.hive.serde.serdeConstants.MAP_TYPE_NAME + "<" + escapeHiveType(mapTypeInfo.getMapKeyTypeInfo().getTypeName())+ ","+ escapeHiveType(mapTypeInfo.getMapValueTypeInfo().getTypeName())+ ">";
+  }
+ else   if (ObjectInspector.Category.STRUCT.equals(typeInfo.getCategory())) {
+    StructTypeInfo structTypeInfo=(StructTypeInfo)typeInfo;
+    List<String> allStructFieldNames=structTypeInfo.getAllStructFieldNames();
+    List<TypeInfo> allStructFieldTypeInfos=structTypeInfo.getAllStructFieldTypeInfos();
+    StringBuilder sb=new StringBuilder();
+    sb.append(serdeConstants.STRUCT_TYPE_NAME + "<");
+    for (int i=0; i < allStructFieldNames.size(); i++) {
+      if (i > 0) {
+        sb.append(",");
+      }
+      sb.append("`");
+      sb.append(allStructFieldNames.get(i));
+      sb.append("`");
+      sb.append(":");
+      sb.append(escapeHiveType(allStructFieldTypeInfos.get(i).getTypeName()));
+    }
+    sb.append(">");
+    return sb.toString();
+  }
+ else   if (ObjectInspector.Category.UNION.equals(typeInfo.getCategory())) {
+    UnionTypeInfo unionTypeInfo=(UnionTypeInfo)typeInfo;
+    List<TypeInfo> allUnionObjectTypeInfos=unionTypeInfo.getAllUnionObjectTypeInfos();
+    StringBuilder sb=new StringBuilder();
+    sb.append(serdeConstants.UNION_TYPE_NAME + "<");
+    for (int i=0; i < allUnionObjectTypeInfos.size(); i++) {
+      if (i > 0) {
+        sb.append(",");
+      }
+      sb.append(escapeHiveType(allUnionObjectTypeInfos.get(i).getTypeName()));
+    }
+    sb.append(">");
+    return sb.toString();
+  }
+ else {
+    throw new RuntimeException("Unknown type encountered: " + type);
+  }
+}
