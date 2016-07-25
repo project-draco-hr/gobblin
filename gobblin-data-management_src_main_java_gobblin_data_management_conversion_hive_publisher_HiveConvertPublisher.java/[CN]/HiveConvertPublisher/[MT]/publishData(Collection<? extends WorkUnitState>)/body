@@ -1,33 +1,33 @@
 {
-  String cleanupCommands=StringUtils.EMPTY;
-  boolean isFirst=true;
+  List<String> cleanUpQueries=Lists.newArrayList();
+  List<String> directoriesToDelete=Lists.newArrayList();
   if (Iterables.tryFind(states,UNSUCCESSFUL_WORKUNIT).isPresent()) {
     for (    WorkUnitState wus : states) {
-      if (isFirst) {
-        cleanupCommands=HiveAvroORCQueryGenerator.deserializeCleanupCommands(wus);
-        isFirst=false;
-      }
+      QueryBasedHivePublishEntity publishEntity=HiveAvroORCQueryGenerator.deserializePublishCommands(wus);
+      cleanUpQueries.addAll(publishEntity.getCleanupQueries());
+      directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
       wus.setWorkingState(WorkingState.FAILED);
       new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_FAILED_EVENT,wus.getProperties()).submit();
     }
   }
  else {
-    String publishTableCommands=StringUtils.EMPTY;
     for (    WorkUnitState wus : states) {
-      if (isFirst) {
-        publishTableCommands=HiveAvroORCQueryGenerator.deserializePublishTableCommands(wus);
-        executeQueries(publishTableCommands);
-        cleanupCommands=HiveAvroORCQueryGenerator.deserializeCleanupCommands(wus);
-        isFirst=false;
+      QueryBasedHivePublishEntity publishEntity=HiveAvroORCQueryGenerator.deserializePublishCommands(wus);
+      cleanUpQueries.addAll(publishEntity.getCleanupQueries());
+      directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
+      Map<String,String> publishDirectories=publishEntity.getPublishDirectories();
+      for (      Map.Entry<String,String> publishDir : publishDirectories.entrySet()) {
+        moveDirectory(publishDir.getKey(),publishDir.getValue());
       }
-      String dirToDelete=HiveAvroORCQueryGenerator.deserializeDirToDeleteBeforePartitionPublish(wus);
-      String publishPartitionCommands=HiveAvroORCQueryGenerator.deserializePublishPartitionCommands(wus);
-      deleteDirectory(dirToDelete);
-      executeQueries(publishPartitionCommands);
+      List<String> publishQueries=publishEntity.getPublishQueries();
+      executeQueries(publishQueries);
       wus.setWorkingState(WorkingState.COMMITTED);
       wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
       new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
     }
   }
-  executeQueries(cleanupCommands);
+  executeQueries(cleanUpQueries);
+  for (  String directory : directoriesToDelete) {
+    deleteDirectory(directory);
+  }
 }

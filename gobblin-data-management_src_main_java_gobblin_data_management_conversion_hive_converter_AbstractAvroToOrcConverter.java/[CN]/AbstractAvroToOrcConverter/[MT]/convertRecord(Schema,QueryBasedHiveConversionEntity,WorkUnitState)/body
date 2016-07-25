@@ -8,18 +8,20 @@
     return new SingleRecordIterable<>(conversionEntity);
   }
   String avroTableName=conversionEntity.getHiveTable().getTableName();
+  int randomNumber=new Random().nextInt(10);
+  String uniqueStagingTableQualifier=String.format("%s%s",System.currentTimeMillis(),randomNumber);
   String orcTableName=getConversionConfig().getDestinationTableName();
-  String orcStagingTableName=getConversionConfig().getDestinationStagingTableName();
+  String orcStagingTableName=getConversionConfig().getDestinationStagingTableName() + "_" + uniqueStagingTableQualifier;
   String orcTableDatabase=getConversionConfig().getDestinationDbName();
-  String orcDataLocation=getOrcDataLocation(workUnit);
+  String orcDataLocation=getOrcDataLocation();
+  String orcStagingDataLocation=getOrcStagingDataLocation(orcStagingTableName);
   boolean isEvolutionEnabled=getConversionConfig().isEvolutionEnabled();
   Pair<Optional<Table>,Optional<List<Partition>>> destinationMeta=getDestinationTableMeta(orcTableDatabase,orcTableName,workUnit);
   Optional<Table> destinationTableMeta=destinationMeta.getLeft();
-  Optional<List<Partition>> destinationPartitionsMeta=destinationMeta.getRight();
   Optional<List<String>> clusterBy=getConversionConfig().getClusterBy().isEmpty() ? Optional.<List<String>>absent() : Optional.of(getConversionConfig().getClusterBy());
   Optional<Integer> numBuckets=getConversionConfig().getNumBuckets();
   Optional<Integer> rowLimit=getConversionConfig().getRowLimit();
-  Optional<String> hiveVersion=getConversionConfig().getHiveVersion();
+  List<String> partitionDirPrefixHint=getConversionConfig().getPartitionDirPrefixHint();
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
   populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
@@ -27,34 +29,61 @@
     conversionEntity.getQueries().add(String.format("SET %s=%s;",entry.getKey(),entry.getValue()));
   }
   Map<String,String> hiveColumns=new HashMap<String,String>();
-  String createTargetTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
-  conversionEntity.getQueries().add(createTargetTableDDL);
-  log.debug("Create DDL: " + createTargetTableDDL);
-  String insertInORCTableDML=HiveAvroORCQueryGenerator.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcStagingTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta,rowLimit);
-  conversionEntity.getQueries().add(insertInORCTableDML);
-  log.debug("Conversion DML: " + insertInORCTableDML);
-  StringBuilder publishTableQueries=new StringBuilder();
-  publishTableQueries.append(HiveAvroORCQueryGenerator.generateEvolutionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),outputAvroSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta)).append("\n");
-  publishTableQueries.append(HiveAvroORCQueryGenerator.generatePublishTableDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),destinationTableMeta)).append("\n");
-  HiveAvroORCQueryGenerator.serializePublishTableCommands(workUnit,publishTableQueries.toString());
-  log.debug("Publish table queries: " + publishTableQueries);
-  Optional<String> dirToDeleteBeforePartitionPublish=HiveAvroORCQueryGenerator.findDirToDeleteBeforePartitionPublish(conversionEntity.getHivePartition(),destinationPartitionsMeta);
-  HiveAvroORCQueryGenerator.serializeDirToDeleteBeforePartitionPublish(workUnit,dirToDeleteBeforePartitionPublish);
-  if (dirToDeleteBeforePartitionPublish.isPresent()) {
-    log.info("Directory to delete before publish partition: " + dirToDeleteBeforePartitionPublish.get());
+  String createStagingTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcStagingDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
+  conversionEntity.getQueries().add(createStagingTableDDL);
+  log.info("Create staging table DDL: " + createStagingTableDDL);
+  String orcStagingDataPartitionDirName=getOrcStagingDataPartitionDirName(conversionEntity,partitionDirPrefixHint);
+  String orcStagingDataPartitionLocation=orcStagingDataLocation + Path.SEPARATOR + orcStagingDataPartitionDirName;
+  if (partitionsDMLInfo.size() > 0) {
+    List<String> createStagingPartitionDDL=HiveAvroORCQueryGenerator.generateCreatePartitionDDL(orcTableDatabase,orcStagingTableName,orcStagingDataPartitionLocation,partitionsDMLInfo);
+    conversionEntity.getQueries().addAll(createStagingPartitionDDL);
+    log.info("Create staging partition DDL: " + createStagingPartitionDDL);
+  }
+  String insertInORCStagingTableDML=HiveAvroORCQueryGenerator.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcStagingTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta,rowLimit);
+  conversionEntity.getQueries().add(insertInORCStagingTableDML);
+  log.info("Conversion staging DML: " + insertInORCStagingTableDML);
+  QueryBasedHivePublishEntity publishEntity=new QueryBasedHivePublishEntity();
+  List<String> publishQueries=publishEntity.getPublishQueries();
+  Map<String,String> publishDirectories=publishEntity.getPublishDirectories();
+  List<String> cleanupQueries=publishEntity.getCleanupQueries();
+  List<String> cleanupDirectories=publishEntity.getCleanupDirectories();
+  if (!destinationTableMeta.isPresent()) {
+    String createTargetTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
+    publishQueries.add(createTargetTableDDL);
+    log.info("Create final table DDL: " + createTargetTableDDL);
+  }
+  List<String> evolutionDDLs=HiveAvroORCQueryGenerator.generateEvolutionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),outputAvroSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta);
+  log.info("Evolve final table DDLs: " + evolutionDDLs);
+  publishQueries.addAll(evolutionDDLs);
+  if (partitionsDDLInfo.size() == 0) {
+    log.info("Partition directory to move: " + orcStagingDataLocation + " to: "+ orcDataLocation);
+    publishDirectories.put(orcStagingDataLocation,orcDataLocation);
+    String dropStagingTableDDL=HiveAvroORCQueryGenerator.generateDropTableDDL(orcTableDatabase,orcStagingTableName);
+    log.info("Drop staging table DDL: " + dropStagingTableDDL);
+    cleanupQueries.add(dropStagingTableDDL);
+    log.info("Staging table directory to delete: " + orcStagingDataLocation);
+    cleanupDirectories.add(orcStagingDataLocation);
   }
  else {
-    log.info("No pre-existing partition directory to delete before publish partition.");
+    List<String> dropPartitionsDDL=HiveAvroORCQueryGenerator.generateDropPartitionsDDL(orcTableDatabase,orcTableName,partitionsDMLInfo);
+    log.info("Drop partitions if exist in final table: " + dropPartitionsDDL);
+    publishQueries.addAll(dropPartitionsDDL);
+    String orcFinalDataPartitionLocation=orcDataLocation + Path.SEPARATOR + orcStagingDataPartitionDirName;
+    log.info("Partition directory to move: " + orcStagingDataPartitionLocation + " to: "+ orcFinalDataPartitionLocation);
+    publishDirectories.put(orcStagingDataPartitionLocation,orcFinalDataPartitionLocation);
+    String orcDataPartitionLocation=orcDataLocation + Path.SEPARATOR + orcStagingDataPartitionDirName;
+    List<String> createFinalPartitionDDL=HiveAvroORCQueryGenerator.generateCreatePartitionDDL(orcTableDatabase,orcTableName,orcDataPartitionLocation,partitionsDMLInfo);
+    log.info("Create final partition DDL: " + createFinalPartitionDDL);
+    publishQueries.addAll(createFinalPartitionDDL);
+    String dropStagingTableDDL=HiveAvroORCQueryGenerator.generateDropTableDDL(orcTableDatabase,orcStagingTableName);
+    log.info("Drop staging table DDL: " + dropStagingTableDDL);
+    cleanupQueries.add(dropStagingTableDDL);
+    log.info("Staging table directory to delete: " + orcStagingDataLocation);
+    cleanupDirectories.add(orcStagingDataLocation);
   }
-  StringBuilder publishPartitionQueries=new StringBuilder();
-  publishPartitionQueries.append(HiveAvroORCQueryGenerator.generatePublishPartitionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),partitionsDMLInfo,destinationTableMeta,hiveVersion)).append("\n");
-  publishPartitionQueries.append(HiveAvroORCQueryGenerator.generateDropPartitionsDDL(orcTableDatabase,orcTableName,getDropPartitionsDDLInfo(conversionEntity))).append("\n");
-  HiveAvroORCQueryGenerator.serializePublishPartitionCommands(workUnit,publishPartitionQueries.toString());
-  log.debug("Publish partition queries: " + publishPartitionQueries);
-  StringBuilder cleanupQueries=new StringBuilder();
-  cleanupQueries.append(HiveAvroORCQueryGenerator.generateCleanupDDL(orcStagingTableName,Optional.of(orcTableDatabase))).append("\n");
-  HiveAvroORCQueryGenerator.serializedCleanupCommands(workUnit,cleanupQueries.toString());
-  log.debug("Cleanup queries: " + cleanupQueries);
+  publishQueries.addAll(HiveAvroORCQueryGenerator.generateDropPartitionsDDL(orcTableDatabase,orcTableName,getDropPartitionsDDLInfo(conversionEntity)));
+  HiveAvroORCQueryGenerator.serializePublishCommands(workUnit,publishEntity);
+  log.info("Publish partition entity: " + publishEntity);
   log.debug("Conversion Query " + conversionEntity.getQueries());
   return new SingleRecordIterable<>(conversionEntity);
 }
