@@ -21,7 +21,7 @@
   Optional<List<String>> clusterBy=getConversionConfig().getClusterBy().isEmpty() ? Optional.<List<String>>absent() : Optional.of(getConversionConfig().getClusterBy());
   Optional<Integer> numBuckets=getConversionConfig().getNumBuckets();
   Optional<Integer> rowLimit=getConversionConfig().getRowLimit();
-  List<String> partitionDirPrefixHint=getConversionConfig().getPartitionDirPrefixHint();
+  List<String> partitionDirPrefixHint=getConversionConfig().getSourceDataPathIdentifier();
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
   populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
