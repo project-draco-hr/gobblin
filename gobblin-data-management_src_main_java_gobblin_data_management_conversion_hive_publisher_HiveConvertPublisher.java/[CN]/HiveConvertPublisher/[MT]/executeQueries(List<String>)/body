@@ -1,0 +1,11 @@
+{
+  if (null == queries || queries.size() == 0) {
+    return;
+  }
+  try {
+    this.hiveJdbcConnector.executeStatements(queries.toArray(new String[queries.size()]));
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+}

@@ -15,7 +15,11 @@
     QueryBasedHiveConversionEntity queryBasedHiveConversionEntity=conversionEntities.get(0);
     List<String> queries=queryBasedHiveConversionEntity.getQueries();
     Assert.assertEquals(queries.size(),2,"One DDL and one DML query should be returned");
-    Assert.assertEquals(queries.get(0).trim().replaceAll(" ",""),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinRecordWithinRecord_nested.ddl").replaceAll(" ",""));
-    Assert.assertEquals(queries.get(1).trim().replaceAll(" ",""),ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinRecordWithinRecord_nested.dml").replaceAll(" ",""));
+    String actualDDLQuery=StringUtils.substringAfter("(",queries.get(0).trim());
+    String actualDMLQuery=StringUtils.substringAfter("SELECT",queries.get(0).trim());
+    String expectedDDLQuery=StringUtils.substringAfter("(",ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinRecordWithinRecord_nested.ddl"));
+    String expectedDMLQuery=StringUtils.substringAfter("SELECT",ConversionHiveTestUtils.readQueryFromFile(resourceDir,"recordWithinRecordWithinRecord_nested.dml"));
+    Assert.assertEquals(actualDDLQuery,expectedDDLQuery);
+    Assert.assertEquals(actualDMLQuery,expectedDMLQuery);
   }
  }

@@ -1,0 +1,5 @@
+{
+  for (  String directory : directoriesToDelete) {
+    deleteDirectory(directory);
+  }
+}

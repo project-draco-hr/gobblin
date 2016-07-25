@@ -1,0 +1,10 @@
+{
+  if (this.fs.exists(new Path(targetDir))) {
+    deleteDirectory(targetDir);
+  }
+  WriterUtils.mkdirsWithRecursivePermission(this.fs,new Path(targetDir).getParent(),FsPermission.getCachePoolDefault());
+  log.info("Moving directory: " + sourceDir + " to: "+ targetDir);
+  if (!this.fs.rename(new Path(sourceDir),new Path(targetDir))) {
+    throw new IOException(String.format("Unable to move %s to %s",sourceDir,targetDir));
+  }
+}

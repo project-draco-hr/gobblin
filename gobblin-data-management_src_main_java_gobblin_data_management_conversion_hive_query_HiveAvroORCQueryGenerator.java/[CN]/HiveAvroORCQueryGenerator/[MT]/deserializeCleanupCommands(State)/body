@@ -1,3 +1,0 @@
-{
-  return GSON.fromJson(state.getProp(HiveAvroORCQueryGenerator.SERIALIZED_CLEANUP_COMMANDS),String.class);
-}

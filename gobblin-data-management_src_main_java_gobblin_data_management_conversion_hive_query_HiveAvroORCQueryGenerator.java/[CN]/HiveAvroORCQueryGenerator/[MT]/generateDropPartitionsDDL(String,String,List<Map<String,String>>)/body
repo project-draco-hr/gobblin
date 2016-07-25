@@ -1,10 +1,9 @@
 {
   if (partitionDMLInfos.isEmpty()) {
-    return StringUtils.EMPTY;
+    return Collections.emptyList();
   }
-  StringBuilder ddl=new StringBuilder(String.format("USE %s%n",dbName));
-  ddl.append(String.format("ALTER TABLE %s DROP IF EXISTS ",finalTableName));
-  ddl.append(Joiner.on(",").join(Iterables.transform(partitionDMLInfos,PARTITION_SPEC_GENERATOR)));
-  ddl.append("\n");
-  return ddl.toString();
+  List<String> ddls=Lists.newArrayList();
+  ddls.add(String.format("USE %s %n",dbName));
+  ddls.add(String.format("ALTER TABLE %s DROP IF EXISTS %s",finalTableName,Joiner.on(",").join(Iterables.transform(partitionDMLInfos,PARTITION_SPEC_GENERATOR))));
+  return ddls;
 }

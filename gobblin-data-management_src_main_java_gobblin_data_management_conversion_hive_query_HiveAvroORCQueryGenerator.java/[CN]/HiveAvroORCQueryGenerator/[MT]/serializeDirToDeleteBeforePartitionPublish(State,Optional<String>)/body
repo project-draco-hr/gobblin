@@ -1,8 +1,0 @@
-{
-  if (dirName.isPresent()) {
-    state.setProp(HiveAvroORCQueryGenerator.SERIALIZED_DIR_TO_DELETE_BEFORE_PARTITION_PUBLISH,GSON.toJson(dirName.get()));
-  }
- else {
-    state.setProp(HiveAvroORCQueryGenerator.SERIALIZED_DIR_TO_DELETE_BEFORE_PARTITION_PUBLISH,GSON.toJson(StringUtils.EMPTY));
-  }
-}

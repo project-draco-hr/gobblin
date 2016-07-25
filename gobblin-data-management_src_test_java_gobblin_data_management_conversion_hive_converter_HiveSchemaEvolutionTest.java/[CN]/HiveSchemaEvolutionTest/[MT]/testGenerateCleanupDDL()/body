@@ -1,5 +1,0 @@
-{
-  String orcStagingTableName=schemaName + "_staging";
-  String generateCleanupDDL=HiveAvroORCQueryGenerator.generateCleanupDDL(orcStagingTableName,Optional.of(hiveDbName));
-  Assert.assertEquals(generateCleanupDDL,"DROP TABLE IF EXISTS `hiveDb`.`sourceSchema_staging`\n","Generated cleanup staging DDL did not match");
-}

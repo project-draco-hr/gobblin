@@ -1,0 +1,6 @@
+{
+  this.publishQueries=Lists.newArrayList();
+  this.publishDirectories=Maps.newHashMap();
+  this.cleanupQueries=Lists.newArrayList();
+  this.cleanupDirectories=Lists.newArrayList();
+}

@@ -1,4 +1,0 @@
-{
-  String stagingDbName=optionalStagingDbName.isPresent() ? optionalStagingDbName.get() : DEFAULT_DB_NAME;
-  return String.format("DROP TABLE IF EXISTS `%s`.`%s`",stagingDbName,stagingTableName) + "\n";
-}

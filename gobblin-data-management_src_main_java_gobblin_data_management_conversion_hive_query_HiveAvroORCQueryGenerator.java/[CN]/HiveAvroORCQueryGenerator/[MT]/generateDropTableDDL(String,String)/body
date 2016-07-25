@@ -1,0 +1,3 @@
+{
+  return String.format("DROP TABLE IF EXISTS `%s`.`%s`",dbName,tableName);
+}

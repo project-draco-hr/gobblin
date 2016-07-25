@@ -13,4 +13,5 @@
   this.evolutionEnabled=ConfigUtils.getBoolean(config,EVOLUTION_ENABLED,false);
   this.rowLimit=Optional.fromNullable(ConfigUtils.getInt(config,ROW_LIMIT_KEY,null));
   this.hiveVersion=Optional.fromNullable(ConfigUtils.getString(config,HIVE_VERSION_KEY,null));
+  this.partitionDirPrefixHint=ConfigUtils.getStringList(config,PARTITION_DIR_PREFIX_LOCATION_HINT);
 }
