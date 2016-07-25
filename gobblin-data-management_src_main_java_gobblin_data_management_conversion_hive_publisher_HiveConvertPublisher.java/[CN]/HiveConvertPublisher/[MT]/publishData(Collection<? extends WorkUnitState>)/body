@@ -7,7 +7,12 @@
       cleanUpQueries.addAll(publishEntity.getCleanupQueries());
       directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
       wus.setWorkingState(WorkingState.FAILED);
-      new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_FAILED_EVENT,wus.getProperties()).submit();
+      try {
+        new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_FAILED_EVENT,wus.getProperties()).submit();
+      }
+ catch (      Exception e) {
+        log.error("Failed while emitting SLA event, but ignoring and moving forward to curate " + "all clean up comamnds",e);
+      }
     }
   }
  else {
@@ -23,11 +28,14 @@
       executeQueries(publishQueries);
       wus.setWorkingState(WorkingState.COMMITTED);
       wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
-      new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
+      try {
+        new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
+      }
+ catch (      Exception e) {
+        log.error("Failed while emitting SLA event, but ignoring and moving forward to curate " + "all clean up commands",e);
+      }
     }
   }
   executeQueries(cleanUpQueries);
-  for (  String directory : directoriesToDelete) {
-    deleteDirectory(directory);
-  }
+  deleteDirectories(directoriesToDelete);
 }
