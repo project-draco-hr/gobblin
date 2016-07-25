@@ -10,7 +10,7 @@
       columns.append(", \n");
     }
     String name=field.getName();
-    String type=field.getType();
+    String type=escapeHiveType(field.getType());
     String comment=field.getComment();
     if (hiveColumns.isPresent()) {
       hiveColumns.get().put(name,type);
