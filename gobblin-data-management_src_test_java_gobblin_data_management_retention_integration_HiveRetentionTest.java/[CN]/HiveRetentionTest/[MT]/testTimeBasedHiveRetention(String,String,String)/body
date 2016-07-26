@@ -30,4 +30,5 @@
   Assert.assertTrue(this.fs.exists(new Path(pRetained2.getSd().getLocation())));
   Assert.assertFalse(this.fs.exists(new Path(pDeleted1.getSd().getLocation())));
   Assert.assertFalse(this.fs.exists(new Path(pDeleted2.getSd().getLocation())));
+  DateTimeUtils.setCurrentMillisSystem();
 }
