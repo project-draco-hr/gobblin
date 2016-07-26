@@ -26,7 +26,7 @@
   for (  Map.Entry<Object,Object> entry : getConversionConfig().getHiveRuntimeProperties().entrySet()) {
     conversionEntity.getQueries().add(String.format("SET %s=%s;",entry.getKey(),entry.getValue()));
   }
-  Map<String,String> hiveColumns=new HashMap<String,String>();
+  Map<String,String> hiveColumns=new HashMap<>();
   String createStagingTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcStagingDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
   conversionEntity.getQueries().add(createStagingTableDDL);
   log.info("Create staging table DDL: " + createStagingTableDDL);

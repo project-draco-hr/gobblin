@@ -1,0 +1,13 @@
+{
+  long currentTime=System.currentTimeMillis();
+  long partitionCreateTime=new DateTime(currentTime).minusDays(25).getMillis();
+  Map<String,String> parameters=Maps.newHashMap();
+  parameters.put(HiveSource.DISTCP_REGISTRATION_GENERATION_TIME_KEY,partitionCreateTime + "");
+  org.apache.hadoop.hive.ql.metadata.Partition partition=this.hiveMetastoreTestUtils.createDummyPartition(0);
+  partition.getTPartition().setParameters(parameters);
+  SourceState testState=getTestState("testDb6");
+  HiveSource source=new HiveSource();
+  source.initialize(testState);
+  boolean isOlderThanLookback=source.isOlderThanLookback(partition);
+  Assert.assertEquals(isOlderThanLookback,false,"Should create workunits newer than lookback");
+}
