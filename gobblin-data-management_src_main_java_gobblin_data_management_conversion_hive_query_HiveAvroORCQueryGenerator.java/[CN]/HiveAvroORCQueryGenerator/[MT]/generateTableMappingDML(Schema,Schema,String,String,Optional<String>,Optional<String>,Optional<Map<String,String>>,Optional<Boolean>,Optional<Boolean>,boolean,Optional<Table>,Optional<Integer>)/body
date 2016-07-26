@@ -11,10 +11,10 @@
   log.debug("Output Schema: " + outputOrcSchema.toString());
   StringBuilder dmlQuery=new StringBuilder();
   if (shouldOverwriteTable) {
-    dmlQuery.append(String.format("INSERT OVERWRITE TABLE `%s.%s` %n",outputDbName,outputTblName));
+    dmlQuery.append(String.format("INSERT OVERWRITE TABLE `%s`.`%s` %n",outputDbName,outputTblName));
   }
  else {
-    dmlQuery.append(String.format("INSERT INTO TABLE `%s.%s` %n",outputDbName,outputTblName));
+    dmlQuery.append(String.format("INSERT INTO TABLE `%s`.`%s` %n",outputDbName,outputTblName));
   }
   if (optionalPartitionDMLInfo.isPresent()) {
     if (optionalPartitionDMLInfo.get().size() > 0) {
@@ -95,7 +95,7 @@
       }
     }
   }
-  dmlQuery.append(String.format(" %n FROM `%s.%s` ",inputDbName,inputTblName));
+  dmlQuery.append(String.format(" %n FROM `%s`.`%s` ",inputDbName,inputTblName));
   if (optionalPartitionDMLInfo.isPresent()) {
     if (optionalPartitionDMLInfo.get().size() > 0) {
       dmlQuery.append("WHERE ");

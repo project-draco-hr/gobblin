@@ -13,8 +13,14 @@
       continue;
     }
     if (rowCount != rowCountCached) {
-      this.failedConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Row counts did not match across all conversions");
-      new SlaEventSubmitter(this.eventSubmitter,EventConstants.VALIDATION_FAILED_SLA_EVENT,props).submit();
+      if (rowCount == 0) {
+        this.warnConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Row counts found 0, may be the conversion is delayed.");
+        new SlaEventSubmitter(this.eventSubmitter,EventConstants.VALIDATION_NOOP_SLA_EVENT,props).submit();
+      }
+ else {
+        this.failedConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Row counts did not match across all conversions");
+        new SlaEventSubmitter(this.eventSubmitter,EventConstants.VALIDATION_FAILED_SLA_EVENT,props).submit();
+      }
       return;
     }
   }

@@ -1,0 +1,59 @@
+{
+  if (null == queries || queries.size() == 0) {
+    log.warn("No queries specified to be executed");
+    return Collections.emptyList();
+  }
+  List<Long> rowCounts=Lists.newArrayList();
+  Closer closer=Closer.create();
+  try {
+    for (    String query : queries) {
+      String hiveOutput="hiveConversionValidationOutput_" + UUID.randomUUID().toString();
+      Path hiveTempDir=new Path("/tmp" + Path.SEPARATOR + hiveOutput);
+      query="INSERT OVERWRITE DIRECTORY '" + hiveTempDir + "' "+ query;
+      log.info("Executing query: " + query);
+      try {
+        this.hiveJdbcConnector.executeStatements("SET hive.exec.compress.output=false",query);
+        FileStatus[] files=this.fs.listStatus(hiveTempDir);
+        if (files.length > 0) {
+          log.warn("Found more than one output file. Should have been one.");
+        }
+        if (files.length == 0) {
+          log.warn("Found no output file. Should have been one.");
+        }
+ else {
+          String theString=IOUtils.toString(new InputStreamReader(this.fs.open(files[0].getPath()),Charsets.UTF_8));
+          log.info("Found row count: " + theString.trim());
+          if (StringUtils.isBlank(theString.trim())) {
+            rowCounts.add(0l);
+          }
+ else {
+            try {
+              rowCounts.add(Long.parseLong(theString.trim()));
+            }
+ catch (            NumberFormatException e) {
+              throw new RuntimeException("Could not parse Hive output: " + theString.trim(),e);
+            }
+          }
+        }
+      }
+  finally {
+        if (this.fs.exists(hiveTempDir)) {
+          log.info("Deleting temp dir: " + hiveTempDir);
+          this.fs.delete(hiveTempDir,true);
+        }
+      }
+    }
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+ finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      log.warn("Could not close HiveJdbcConnector",e);
+    }
+  }
+  return rowCounts;
+}
