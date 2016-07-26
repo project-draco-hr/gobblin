@@ -1,5 +1,0 @@
-{
-  Schema topicSchema=new Schema.Parser().parse(new File("gobblin-test/resource/dedup-schema/dedup-schema-without-pkey.avsc"));
-  Schema actualKeySchema=this.runner.getKeySchema(this.job,topicSchema);
-  Assert.assertEquals(actualKeySchema,AvroUtils.removeUncomparableFields(topicSchema).get());
-}

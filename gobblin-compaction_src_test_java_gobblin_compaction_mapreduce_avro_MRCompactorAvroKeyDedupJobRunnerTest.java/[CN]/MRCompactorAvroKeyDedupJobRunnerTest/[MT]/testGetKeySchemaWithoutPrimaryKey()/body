@@ -1,0 +1,7 @@
+{
+  try (InputStream schemaNoPkey=getClass().getClassLoader().getResourceAsStream("dedup-schema/dedup-schema-without-pkey.avsc")){
+    Schema topicSchema=new Schema.Parser().parse(schemaNoPkey);
+    Schema actualKeySchema=this.runner.getKeySchema(this.job,topicSchema);
+    Assert.assertEquals(actualKeySchema,AvroUtils.removeUncomparableFields(topicSchema).get());
+  }
+ }
