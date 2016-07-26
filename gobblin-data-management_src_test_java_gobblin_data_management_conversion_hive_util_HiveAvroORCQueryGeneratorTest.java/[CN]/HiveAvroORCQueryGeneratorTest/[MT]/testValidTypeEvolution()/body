@@ -1,0 +1,7 @@
+{
+  Assert.assertTrue(HiveAvroORCQueryGenerator.isTypeEvolved("float","int"));
+  Assert.assertTrue(HiveAvroORCQueryGenerator.isTypeEvolved("double","float"));
+  Assert.assertTrue(HiveAvroORCQueryGenerator.isTypeEvolved("string","varchar"));
+  Assert.assertTrue(HiveAvroORCQueryGenerator.isTypeEvolved("double","string"));
+  Assert.assertFalse(HiveAvroORCQueryGenerator.isTypeEvolved("int","int"));
+}

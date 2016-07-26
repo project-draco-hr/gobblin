@@ -1,0 +1,3 @@
+{
+  HiveAvroORCQueryGenerator.isTypeEvolved("boolean","int");
+}
