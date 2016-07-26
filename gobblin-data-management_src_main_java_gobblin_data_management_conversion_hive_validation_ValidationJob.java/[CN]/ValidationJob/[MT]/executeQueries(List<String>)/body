@@ -3,10 +3,30 @@
     log.warn("No queries specified to be executed");
     return Collections.emptyList();
   }
+  Statement statement=null;
+  List<Long> rowCounts=Lists.newArrayList();
   try {
-    return this.hiveJdbcConnector.executeStatementsWithResult(queries.toArray(new String[queries.size()]));
+    statement=this.hiveJdbcConnector.getConnection().createStatement();
+    for (    String query : queries) {
+      log.info("Executing query: " + query);
+      ResultSet resultSet=statement.executeQuery(query);
+      if (resultSet.next()) {
+        rowCounts.add(resultSet.getLong(1));
+      }
+    }
   }
  catch (  SQLException e) {
     throw new RuntimeException(e);
   }
+ finally {
+    if (null != statement) {
+      try {
+        statement.close();
+      }
+ catch (      SQLException e) {
+        log.warn("Issue in closing SQL statement",e);
+      }
+    }
+  }
+  return rowCounts;
 }
