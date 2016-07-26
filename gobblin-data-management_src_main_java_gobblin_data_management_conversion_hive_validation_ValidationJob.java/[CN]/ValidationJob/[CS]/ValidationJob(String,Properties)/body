@@ -1,5 +1,6 @@
 {
   super(jobId,log);
+  props.setProperty(HiveDatasetFinder.HIVE_DATASET_CONFIG_PREFIX_KEY,HIVE_DATASET_CONFIG_AVRO_PREFIX);
   Config config=ConfigFactory.parseProperties(props);
   this.props=props;
   this.metricContext=Instrumented.getMetricContext(ConfigUtils.configToState(config),ValidationJob.class);
@@ -10,7 +11,7 @@
   int skipRecentThanDays=Integer.parseInt(props.getProperty(HIVE_SOURCE_SKIP_RECENT_THAN_DAYS_KEY,DEFAULT_HIVE_SOURCE_SKIP_RECENT_THAN_DAYS));
   this.maxLookBackTime=new DateTime().minusDays(maxLookBackDays).getMillis();
   this.skipRecentThanTime=new DateTime().minusDays(skipRecentThanDays).getMillis();
-  this.destFormats=Sets.newHashSet(ConfigUtils.getStringList(config,ConvertibleHiveDataset.DESTINATION_CONVERSION_FORMATS_KEY));
+  this.destFormats=Sets.newHashSet(ConfigUtils.getStringList(config,HIVE_DATASET_CONFIG_AVRO_PREFIX + "." + ConvertibleHiveDataset.DESTINATION_CONVERSION_FORMATS_KEY));
   try {
     this.hiveJdbcConnector=HiveJdbcConnector.newConnectorWithProps(props);
   }
