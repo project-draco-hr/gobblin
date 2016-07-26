@@ -1,9 +1,0 @@
-{
-  Preconditions.checkNotNull(this.conn,"The Hive connection must be set before any queries can be run");
-  List<ResultSet> resultSets=Lists.newArrayList();
-  for (  String statement : statements) {
-    LOG.info("RUNNING STATEMENT: " + choppedStatement(statement));
-    resultSets.add(this.stmt.executeQuery(statement));
-  }
-  return resultSets;
-}

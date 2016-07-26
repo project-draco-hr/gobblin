@@ -1,0 +1,23 @@
+{
+  if (null == rowCounts || rowCounts.size() == 0) {
+    this.successfulConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"No conversion details found");
+    new SlaEventSubmitter(this.eventSubmitter,EventConstants.VALIDATION_NOOP_SLA_EVENT,props).submit();
+    return;
+  }
+  long rowCountCached=-1;
+  boolean isFirst=true;
+  for (  Long rowCount : rowCounts) {
+    if (isFirst) {
+      rowCountCached=rowCount;
+      isFirst=false;
+      continue;
+    }
+    if (rowCount != rowCountCached) {
+      this.failedConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Row counts did not match across all conversions");
+      new SlaEventSubmitter(this.eventSubmitter,EventConstants.VALIDATION_FAILED_SLA_EVENT,props).submit();
+      return;
+    }
+  }
+  this.successfulConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Row counts matched across all conversions");
+  new SlaEventSubmitter(this.eventSubmitter,EventConstants.VALIDATION_SUCCESSFUL_SLA_EVENT,props).submit();
+}

@@ -11,8 +11,8 @@
             ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
             List<String> validationQueries=HiveValidationQueryGenerator.generateValidationQueries(hiveDataset,Optional.of(sourcePartition),conversionConfig);
             log.info(String.format("Going to execute queries: %s for format: %s",validationQueries,format));
-            List<ResultSet> resultSets=this.executeQueries(validationQueries);
-            validateAndPopulateReport(sourcePartition.getCompleteName(),updateTime,resultSets);
+            List<Long> rowCounts=this.executeQueries(validationQueries);
+            validateAndPopulateReport(sourcePartition.getCompleteName(),updateTime,rowCounts);
           }
  else {
             log.info(String.format("No config found for format: %s So skipping partition: %s for this format",format,sourcePartition.getCompleteName()));
