@@ -2,6 +2,7 @@
   try {
     this.successfulConversions=Maps.newHashMap();
     this.failedConversions=Maps.newHashMap();
+    this.warnConversions=Maps.newHashMap();
     Iterator<HiveDataset> iterator=this.datasetFinder.getDatasetsIterator();
     EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.VALIDATION_FIND_HIVE_TABLES_EVENT);
     while (iterator.hasNext()) {
@@ -19,11 +20,11 @@
     for (    Map.Entry<String,String> successfulConversion : this.successfulConversions.entrySet()) {
       log.info(String.format("Successful conversion: %s [%s]",successfulConversion.getKey(),successfulConversion.getValue()));
     }
-    for (    Map.Entry<String,String> failedConverion : this.failedConversions.entrySet()) {
-      log.warn(String.format("Failed conversion: %s [%s]",failedConverion.getKey(),failedConverion.getValue()));
+    for (    Map.Entry<String,String> successfulConversion : this.warnConversions.entrySet()) {
+      log.warn(String.format("No conversion found for: %s [%s]",successfulConversion.getKey(),successfulConversion.getValue()));
     }
-    if (failedConversions.size() > 0) {
-      throw new RuntimeException("Atleast one conversion failed. Please review report above");
+    for (    Map.Entry<String,String> failedConverion : this.failedConversions.entrySet()) {
+      log.error(String.format("Failed conversion: %s [%s]",failedConverion.getKey(),failedConverion.getValue()));
     }
   }
  catch (  IOException e) {

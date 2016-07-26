@@ -5,13 +5,20 @@
   }
   Statement statement=null;
   List<Long> rowCounts=Lists.newArrayList();
+  Closer closer=Closer.create();
   try {
     statement=this.hiveJdbcConnector.getConnection().createStatement();
     for (    String query : queries) {
       log.info("Executing query: " + query);
-      ResultSet resultSet=statement.executeQuery(query);
-      if (resultSet.next()) {
-        rowCounts.add(resultSet.getLong(1));
+      boolean result=statement.execute(query);
+      if (result) {
+        ResultSet resultSet=statement.getResultSet();
+        if (resultSet.next()) {
+          rowCounts.add(resultSet.getLong(1));
+        }
+      }
+ else {
+        log.warn("Query output for: " + query + " : "+ result);
       }
     }
   }
@@ -19,12 +26,18 @@
     throw new RuntimeException(e);
   }
  finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      log.warn("Could not close HiveJdbcConnector",e);
+    }
     if (null != statement) {
       try {
         statement.close();
       }
  catch (      SQLException e) {
-        log.warn("Issue in closing SQL statement",e);
+        log.warn("Could not close Hive statement",e);
       }
     }
   }

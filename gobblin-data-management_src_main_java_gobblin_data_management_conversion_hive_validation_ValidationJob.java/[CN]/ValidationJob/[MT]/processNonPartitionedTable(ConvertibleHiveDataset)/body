@@ -9,7 +9,7 @@
           ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
           List<String> validationQueries=HiveValidationQueryGenerator.generateValidationQueries(hiveDataset,Optional.<Partition>absent(),conversionConfig);
           log.info(String.format("Going to execute queries: %s for format: %s",validationQueries,format));
-          List<Long> rowCounts=this.executeQueries(validationQueries);
+          List<Long> rowCounts=this.getValidationOutputFromHive(validationQueries);
           validateAndPopulateReport(hiveDataset.getTable().getCompleteName(),updateTime,rowCounts);
         }
  else {
