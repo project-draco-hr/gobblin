@@ -1,7 +1,0 @@
-{
-  Properties jobPropsWithPotentialTemplate=userProps;
-  if (userProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
-    jobPropsWithPotentialTemplate=TemplateUtils.mergeTemplateWithUserCustomizedFile(getRawTemplateConfig(),userProps);
-  }
-  return jobPropsWithPotentialTemplate;
-}

@@ -1,7 +1,6 @@
 {
   LOGGER.info("Load the job configuration template : " + this.getClass().getName());
   this.templatePath=templatePath;
-  this.userProps=userProps;
   try {
     InputStream inputStream=getClass().getResourceAsStream(this.templatePath);
     if (inputStream != null) {
@@ -14,5 +13,5 @@
  catch (  IOException e) {
     throw new RuntimeException("Failure to loading template files into i/o stream");
   }
-  this._userSpecifiedAttributesList=Arrays.asList(configTemplate.getProperty(ConfigurationKeys.USER_SPECIFIED_ATTR_LIST).split(","));
+  this._userSpecifiedAttributesList=Arrays.asList(configTemplate.getProperty(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST).split(","));
 }

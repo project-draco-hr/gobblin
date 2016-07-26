@@ -1,13 +1,11 @@
 {
-  Properties cleanedTemplate;
-  if (template.containsKey(ConfigurationKeys.USER_SPECIFIED_ATTR_LIST)) {
-    template.remove(ConfigurationKeys.USER_SPECIFIED_ATTR_LIST);
+  Properties cleanedTemplate=new Properties(template);
+  if (cleanedTemplate.containsKey(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST)) {
+    cleanedTemplate.remove(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST);
   }
-  cleanedTemplate=template;
-  Properties cleanedUserCustomized;
-  if (userCustomized.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
-    userCustomized.remove(ConfigurationKeys.JOB_TEMPLATE_PATH);
+  Properties cleanedUserCustomized=new Properties(userCustomized);
+  if (cleanedUserCustomized.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
+    cleanedUserCustomized.remove(ConfigurationKeys.JOB_TEMPLATE_PATH);
   }
-  cleanedUserCustomized=userCustomized;
-  return PropertiesUtils.combineProperties(cleanedTemplate,cleanedUserCustomized);
+  return ConfigFactory.parseProperties(PropertiesUtils.combineProperties(cleanedTemplate,cleanedUserCustomized));
 }
