@@ -1,2 +1,2 @@
 QueryBasedHiveConversionEntity conversionEntity
-List<String> partitionDirPrefixHint
+List<String> sourceDataPathIdentifier

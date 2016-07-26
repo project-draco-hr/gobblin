@@ -2,8 +2,8 @@
   if (conversionEntity.getHivePartition().isPresent()) {
     StringBuilder dirNamePrefix=new StringBuilder();
     String sourceHivePartitionLocation=conversionEntity.getHivePartition().get().getDataLocation().toString();
-    if (null != partitionDirPrefixHint && null != sourceHivePartitionLocation) {
-      for (      String hint : partitionDirPrefixHint) {
+    if (null != sourceDataPathIdentifier && null != sourceHivePartitionLocation) {
+      for (      String hint : sourceDataPathIdentifier) {
         if (sourceHivePartitionLocation.toLowerCase().contains(hint.toLowerCase())) {
           dirNamePrefix.append(hint.toLowerCase()).append("_");
         }
