@@ -1,7 +1,7 @@
 {
   Config jobPropsWithPotentialTemplate=ConfigFactory.parseProperties(userProps);
   if (userProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
-    jobPropsWithPotentialTemplate=TemplateUtils.mergeTemplateWithUserCustomizedFile(this.configTemplate,userProps);
+    jobPropsWithPotentialTemplate=ConfigFactory.parseProperties(TemplateUtils.mergeTemplateWithUserCustomizedFile(this.configTemplate,userProps));
   }
   return jobPropsWithPotentialTemplate;
 }

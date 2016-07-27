@@ -43,7 +43,7 @@
         try (InputStreamReader inputStreamReader=new InputStreamReader(filesystem.open(configFilePath),Charsets.UTF_8)){
           propertiesConfiguration.load(inputStreamReader);
           jobProps.putAll(ConfigurationConverter.getProperties(propertiesConfiguration));
-          jobProps=(new SimpleGeneralJobTemplate(ConfigurationKeys.JOB_TEMPLATE_PATH)).getResolvedConfig(jobProps);
+          jobProps=(new SimpleGeneralJobTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfigAsProperties(jobProps);
           jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,configFilePath.toString());
           jobConfigs.add(jobProps);
         }

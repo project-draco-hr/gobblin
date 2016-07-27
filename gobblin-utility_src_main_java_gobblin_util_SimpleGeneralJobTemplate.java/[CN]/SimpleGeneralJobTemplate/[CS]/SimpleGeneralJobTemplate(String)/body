@@ -1,0 +1,18 @@
+{
+  LOGGER.info("Load the job configuration template : " + this.getClass().getName());
+  this.templatePath=templatePath;
+  if (this.templatePath != null && this.templatePath.length() > 0) {
+    try (InputStream inputStream=getClass().getResourceAsStream("/" + this.templatePath)){
+      if (inputStream != null) {
+        configTemplate.load(inputStream);
+      }
+ else {
+        throw new FileNotFoundException("Template file " + this.templatePath + " doesn't exist");
+      }
+    }
+ catch (    IOException e) {
+      throw new RuntimeException("Failure to loading template files into i/o stream");
+    }
+  }
+  this._userSpecifiedAttributesList=Arrays.asList(configTemplate.getProperty(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST).split(","));
+}

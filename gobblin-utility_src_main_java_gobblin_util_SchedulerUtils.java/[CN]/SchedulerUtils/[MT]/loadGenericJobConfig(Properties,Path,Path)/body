@@ -7,7 +7,7 @@
     jobProps.putAll(commonProps);
   }
   jobProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(new Path("file://",jobConfigPath).toUri().toURL())));
-  jobProps=(new SimpleGeneralJobTemplate(ConfigurationKeys.JOB_TEMPLATE_PATH)).getResolvedConfig(jobProps);
+  jobProps=(new SimpleGeneralJobTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfigAsProperties(jobProps);
   jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,jobConfigPath.toString());
   return jobProps;
 }

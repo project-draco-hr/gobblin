@@ -1,4 +1,0 @@
-{
-  sampleTemplateName=this.getClass().getClassLoader().getResource("/templates/wikiSample.template");
-  this.sampleTemplate=new File(sampleTemplateName.toURI());
-}

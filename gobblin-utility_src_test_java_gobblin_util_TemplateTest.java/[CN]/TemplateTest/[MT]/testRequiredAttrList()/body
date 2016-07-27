@@ -1,0 +1,8 @@
+{
+  Properties jobProps=this.userProp;
+  List<String> requiredConfigList=(new SimpleGeneralJobTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getRequiredConfigList();
+  Assert.assertEquals(requiredConfigList.size(),3);
+  Assert.assertEquals(requiredConfigList.get(0),"required0");
+  Assert.assertEquals(requiredConfigList.get(1),"required1");
+  Assert.assertEquals(requiredConfigList.get(2),"required2");
+}

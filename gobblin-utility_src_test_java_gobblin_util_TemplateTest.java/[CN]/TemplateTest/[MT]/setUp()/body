@@ -1,0 +1,9 @@
+{
+  this.jobConfigDir=Files.createTempDirectory(String.format("gobblin-test_%s_job-conf",this.getClass().getSimpleName())).toFile();
+  FileUtils.forceDeleteOnExit(this.jobConfigDir);
+  this.userProp=new Properties();
+  userProp.setProperty("a","1");
+  userProp.setProperty("b","2");
+  userProp.setProperty("job.template","templates/test.template");
+  userProp.store(new FileWriter(new File(this.jobConfigDir,"user.attr")),"");
+}
