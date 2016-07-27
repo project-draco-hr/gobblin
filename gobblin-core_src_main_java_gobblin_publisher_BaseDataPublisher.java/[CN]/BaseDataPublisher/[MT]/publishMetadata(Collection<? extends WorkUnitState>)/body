@@ -1,2 +1,5 @@
 {
+  for (  WorkUnitState workUnitState : states) {
+    publishMetadata(workUnitState);
+  }
 }

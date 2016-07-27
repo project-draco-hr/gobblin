@@ -1,2 +1,32 @@
 {
+  String metadataValue=state.getProp(ConfigurationKeys.DATA_PUBLISHER_METADATA_STR);
+  if (metadataValue == null) {
+    return;
+  }
+  if (state.getProp(ConfigurationKeys.DATA_PUBLISHER_METADATA_OUTPUT_DIR) == null) {
+    LOG.error("Missing metadata output directory path : " + ConfigurationKeys.DATA_PUBLISHER_METADATA_OUTPUT_DIR + " in the config");
+    return;
+  }
+  for (int branchId=0; branchId < this.numBranches; branchId++) {
+    FileSystem fs=this.metaDataWriterFileSystemByBranches.get(branchId);
+    String filePrefix=state.getProp(ConfigurationKeys.DATA_PUBLISHER_METADATA_OUTPUT_FILE);
+    String fileName=ForkOperatorUtils.getPropertyNameForBranch(filePrefix,this.numBranches,branchId);
+    String metaDataOutputDirStr=state.getProp(ConfigurationKeys.DATA_PUBLISHER_METADATA_OUTPUT_DIR);
+    Path metaDataOutputPath=new Path(metaDataOutputDirStr);
+    try {
+      if (!fs.exists(metaDataOutputPath)) {
+        WriterUtils.mkdirsWithRecursivePermission(fs,metaDataOutputPath,this.permissions.get(branchId));
+      }
+      Path metaFilepath=new Path(metaDataOutputDirStr,fileName);
+      if (fs.exists(metaFilepath)) {
+        HadoopUtils.deletePath(fs,metaFilepath,false);
+      }
+      try (FSDataOutputStream outputStream=this.closer.register(fs.create(metaFilepath))){
+        outputStream.write(metadataValue.getBytes("UTF-8"));
+      }
+     }
+ catch (    IOException e) {
+      LOG.error("metadata file is not generated: " + e,e);
+    }
+  }
 }
