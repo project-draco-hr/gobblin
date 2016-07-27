@@ -1,0 +1,3 @@
+{
+  ((MutableJobCatalog)_fallback).remove(uri);
+}
