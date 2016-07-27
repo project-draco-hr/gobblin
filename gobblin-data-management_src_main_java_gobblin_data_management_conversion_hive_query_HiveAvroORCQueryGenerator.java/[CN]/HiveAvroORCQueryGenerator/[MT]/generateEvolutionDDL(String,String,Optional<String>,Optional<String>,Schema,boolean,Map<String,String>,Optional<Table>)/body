@@ -11,7 +11,8 @@
     for (    FieldSchema destinationField : destinationTable.getSd().getCols()) {
       if (destinationField.getName().equalsIgnoreCase(evolvedColumn.getKey())) {
         if (isTypeEvolved(evolvedColumn.getValue(),destinationField.getType())) {
-          ddl.add(String.format("ALTER TABLE `%s`.`%s` CHANGE COLUMN %s %s %s COMMENT '%s'",finalDbName,finalTableName,evolvedColumn.getKey(),evolvedColumn.getKey(),evolvedColumn.getValue(),destinationField.getComment()));
+          ddl.add(String.format("USE %s%n",finalDbName));
+          ddl.add(String.format("ALTER TABLE `%s` CHANGE COLUMN %s %s %s COMMENT '%s'",finalTableName,evolvedColumn.getKey(),evolvedColumn.getKey(),evolvedColumn.getValue(),destinationField.getComment()));
         }
         found=true;
         break;
@@ -22,7 +23,8 @@
       if (StringUtils.isBlank(flattenSource)) {
         flattenSource=evolvedSchema.getField(evolvedColumn.getKey()).name();
       }
-      ddl.add(String.format("ALTER TABLE `%s`.`%s` ADD COLUMNS (%s %s COMMENT 'from flatten_source %s')",finalDbName,finalTableName,evolvedColumn.getKey(),evolvedColumn.getValue(),flattenSource));
+      ddl.add(String.format("USE %s%n",finalDbName));
+      ddl.add(String.format("ALTER TABLE `%s` ADD COLUMNS (%s %s COMMENT 'from flatten_source %s')",finalTableName,evolvedColumn.getKey(),evolvedColumn.getValue(),flattenSource));
     }
   }
   return ddl;
