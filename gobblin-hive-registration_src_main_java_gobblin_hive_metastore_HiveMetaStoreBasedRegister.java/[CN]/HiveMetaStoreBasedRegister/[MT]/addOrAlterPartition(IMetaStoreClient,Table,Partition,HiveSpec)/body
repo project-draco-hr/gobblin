@@ -2,7 +2,9 @@
   Preconditions.checkArgument(table.getPartitionKeysSize() == partition.getValues().size(),String.format("Partition key size is %s but partition value size is %s",table.getPartitionKeys().size(),partition.getValues().size()));
   try (AutoCloseableLock lock=this.locks.getPartitionLock(table.getDbName(),table.getTableName(),partition.getValues())){
     try {
-      client.add_partition(partition);
+      Partition actualPartition=partition.deepCopy();
+      actualPartition.setCreateTime(Ints.checkedCast(DateTime.now().getMillis() / 1000));
+      client.add_partition(actualPartition);
       log.info(String.format("Added partition %s to table %s with location %s",stringifyPartition(partition),table.getTableName(),partition.getSd().getLocation()));
     }
  catch (    TException e) {

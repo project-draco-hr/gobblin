@@ -3,7 +3,9 @@
   String tableName=table.getTableName();
   try (AutoCloseableLock lock=this.locks.getTableLock(dbName,tableName)){
     try {
-      client.createTable(table);
+      Table actualTable=table.deepCopy();
+      actualTable.setCreateTime(Ints.checkedCast(DateTime.now().getMillis() / 1000));
+      client.createTable(actualTable);
       log.info(String.format("Created Hive table %s in db %s",tableName,dbName));
     }
  catch (    TException e) {
