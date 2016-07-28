@@ -1,3 +1,4 @@
 {
+  super(jobExecution);
   this.jobSpec=jobSpec;
 }
