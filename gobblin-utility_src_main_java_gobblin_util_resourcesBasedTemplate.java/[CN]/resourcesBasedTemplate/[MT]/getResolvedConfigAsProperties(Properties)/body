@@ -3,5 +3,10 @@
   if (jobPropsWithPotentialTemplate.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
     jobPropsWithPotentialTemplate=TemplateUtils.mergeTemplateWithUserCustomizedFile(this.configTemplate,userProps);
   }
+  for (  String aRequiredAttr : _userSpecifiedAttributesList) {
+    if (!jobPropsWithPotentialTemplate.containsKey(aRequiredAttr)) {
+      throw new RuntimeException("Required attributes is not provided for resolution");
+    }
+  }
   return jobPropsWithPotentialTemplate;
 }

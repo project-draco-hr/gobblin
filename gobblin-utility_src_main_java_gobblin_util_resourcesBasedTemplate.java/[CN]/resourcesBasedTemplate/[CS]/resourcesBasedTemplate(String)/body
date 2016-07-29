@@ -1,5 +1,5 @@
 {
-  LOGGER.info("Load the job configuration template : " + this.getClass().getName());
+  LOGGER.info("Load the job configuration template : " + templatePath);
   this.templatePath=templatePath;
   if (this.templatePath != null && this.templatePath.length() > 0) {
     try (InputStream inputStream=getClass().getResourceAsStream("/" + this.templatePath)){
@@ -14,5 +14,8 @@
       throw new RuntimeException("Failure to loading template files into i/o stream");
     }
   }
-  this._userSpecifiedAttributesList=Arrays.asList(configTemplate.getProperty(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST).split(","));
+ else {
+    throw new RuntimeException("Template Path doesn't exist");
+  }
+  this._userSpecifiedAttributesList=new HashSet<String>(Arrays.asList(configTemplate.getProperty(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST).split(",")));
 }
