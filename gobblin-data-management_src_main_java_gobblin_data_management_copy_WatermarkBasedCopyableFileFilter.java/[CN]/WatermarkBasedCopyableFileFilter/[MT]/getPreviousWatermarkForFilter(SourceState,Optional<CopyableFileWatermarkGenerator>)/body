@@ -1,32 +1,10 @@
 {
-  Class<? extends ComparableWatermark> watermarkClass=watermarkGenerator.get().getWatermarkClass();
   Map<String,Iterable<WorkUnitState>> previousWorkUnitStatesByDatasetUrns=state.getPreviousWorkUnitStatesByDatasetUrns();
   Map<String,IncludeExcludeWatermark> previousActualWatermarkByDatasetUrns=new HashMap<>();
   for (  Map.Entry<String,Iterable<WorkUnitState>> workUnitStatesPerDatasetURN : previousWorkUnitStatesByDatasetUrns.entrySet()) {
-    String datasetURN=workUnitStatesPerDatasetURN.getKey();
-    List<ComparableWatermark> watermarksOfCommittedWus=new ArrayList<>();
-    List<ComparableWatermark> watermarksOfUncommittedWus=new ArrayList<>();
-    for (    WorkUnitState workUnitState : workUnitStatesPerDatasetURN.getValue()) {
-      if (workUnitState.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
-        Watermark curWatermark=WatermarkSerializerHelper.convertJsonToWatermark(workUnitState.getWorkunit().getExpectedHighWatermark(),watermarkClass);
-        if (curWatermark != null) {
-          watermarksOfCommittedWus.add((ComparableWatermark)curWatermark);
-        }
-      }
- else {
-        Watermark curWatermark=WatermarkSerializerHelper.convertJsonToWatermark(workUnitState.getWorkunit().getLowWatermark(),watermarkClass);
-        if (curWatermark != null) {
-          watermarksOfUncommittedWus.add((ComparableWatermark)curWatermark);
-        }
-      }
-    }
-    Collections.sort(watermarksOfCommittedWus);
-    Collections.sort(watermarksOfUncommittedWus);
-    if (!watermarksOfUncommittedWus.isEmpty()) {
-      previousActualWatermarkByDatasetUrns.put(datasetURN,new IncludeExcludeWatermark(watermarksOfUncommittedWus.get(0),true));
-    }
- else     if (!watermarksOfCommittedWus.isEmpty()) {
-      previousActualWatermarkByDatasetUrns.put(datasetURN,new IncludeExcludeWatermark(watermarksOfCommittedWus.get(watermarksOfCommittedWus.size() - 1),false));
+    IncludeExcludeWatermark previousWatermark=this.getPreviousWatermarkPerDataset(workUnitStatesPerDatasetURN.getValue(),watermarkGenerator);
+    if (previousWatermark != null) {
+      previousActualWatermarkByDatasetUrns.put(workUnitStatesPerDatasetURN.getKey(),previousWatermark);
     }
   }
   return previousActualWatermarkByDatasetUrns;
