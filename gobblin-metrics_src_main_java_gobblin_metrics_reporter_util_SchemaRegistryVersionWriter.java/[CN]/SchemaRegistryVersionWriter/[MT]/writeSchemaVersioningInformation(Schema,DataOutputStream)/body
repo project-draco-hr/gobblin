@@ -1,16 +1,8 @@
 {
-  if (!this.registrySchemaIds.containsKey(schema)) {
-    try {
-      String schemaId=this.registry.register(schema,this.topic);
-      this.registrySchemaIds.put(schema,schemaId);
-    }
- catch (    SchemaRegistryException e) {
-      throw Throwables.propagate(e);
-    }
-  }
+  String schemaId=this.schemaId.isPresent() ? this.schemaId.get() : this.getIdForSchema(schema);
   outputStream.writeByte(KafkaAvroSchemaRegistry.MAGIC_BYTE);
   try {
-    outputStream.write(Hex.decodeHex(this.registrySchemaIds.get(schema).toCharArray()));
+    outputStream.write(Hex.decodeHex(schemaId.toCharArray()));
   }
  catch (  DecoderException exception) {
     throw new IOException(exception);

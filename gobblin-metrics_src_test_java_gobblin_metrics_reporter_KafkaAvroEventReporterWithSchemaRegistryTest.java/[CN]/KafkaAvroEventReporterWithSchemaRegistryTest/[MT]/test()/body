@@ -1,0 +1,43 @@
+{
+  MetricContext context=MetricContext.builder("context").build();
+  MockKafkaPusher pusher=new MockKafkaPusher();
+  KafkaAvroSchemaRegistry registry=Mockito.mock(KafkaAvroSchemaRegistry.class);
+  Mockito.when(registry.register(Mockito.any(Schema.class))).thenAnswer(new Answer<String>(){
+    @Override public String answer(    InvocationOnMock invocation) throws Throwable {
+      return register((Schema)invocation.getArguments()[0]);
+    }
+  }
+);
+  Mockito.when(registry.register(Mockito.any(Schema.class),Mockito.anyString())).thenAnswer(new Answer<String>(){
+    @Override public String answer(    InvocationOnMock invocation) throws Throwable {
+      return register((Schema)invocation.getArguments()[0]);
+    }
+  }
+);
+  KafkaEventReporter kafkaReporter=KafkaAvroEventReporter.forContext(context).withKafkaPusher(pusher).withSchemaRegistry(registry).build("localhost:0000","topic");
+  GobblinTrackingEvent event=new GobblinTrackingEvent(0l,"namespace","name",Maps.<String,String>newHashMap());
+  context.submitEvent(event);
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  kafkaReporter.report();
+  try {
+    Thread.sleep(100);
+  }
+ catch (  InterruptedException ex) {
+    Thread.currentThread().interrupt();
+  }
+  byte[] nextMessage=pusher.messageIterator().next();
+  DataInputStream is=new DataInputStream(new ByteArrayInputStream(nextMessage));
+  Assert.assertEquals(is.readByte(),KafkaAvroSchemaRegistry.MAGIC_BYTE);
+  byte[] readId=new byte[20];
+  Assert.assertEquals(is.read(readId),20);
+  String readStringId=Hex.toHexString(readId);
+  Assert.assertTrue(this.schemas.containsKey(readStringId));
+  Schema schema=this.schemas.get(readStringId);
+  Assert.assertFalse(schema.toString().contains("avro.java.string"));
+  is.close();
+}

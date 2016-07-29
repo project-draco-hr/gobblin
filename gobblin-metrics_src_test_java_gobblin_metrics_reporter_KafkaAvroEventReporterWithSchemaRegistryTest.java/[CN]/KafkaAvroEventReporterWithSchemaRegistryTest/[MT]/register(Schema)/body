@@ -1,0 +1,5 @@
+{
+  String id=DigestUtils.sha1Hex(schema.toString().getBytes());
+  this.schemas.put(id,schema);
+  return id;
+}

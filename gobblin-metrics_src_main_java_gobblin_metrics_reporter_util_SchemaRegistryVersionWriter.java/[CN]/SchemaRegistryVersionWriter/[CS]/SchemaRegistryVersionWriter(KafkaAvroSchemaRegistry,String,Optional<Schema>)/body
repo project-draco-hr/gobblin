@@ -1,0 +1,17 @@
+{
+  this.registry=registry;
+  this.registrySchemaIds=Maps.newConcurrentMap();
+  this.topic=topic;
+  this.schema=singleSchema;
+  if (this.schema.isPresent()) {
+    try {
+      this.schemaId=Optional.of(this.registry.register(this.schema.get(),this.topic));
+    }
+ catch (    SchemaRegistryException e) {
+      throw Throwables.propagate(e);
+    }
+  }
+ else {
+    this.schemaId=Optional.absent();
+  }
+}

@@ -1,0 +1,12 @@
+{
+  if (!this.registrySchemaIds.containsKey(schema)) {
+    try {
+      String schemaId=this.registry.register(schema,this.topic);
+      this.registrySchemaIds.put(schema,schemaId);
+    }
+ catch (    SchemaRegistryException e) {
+      throw Throwables.propagate(e);
+    }
+  }
+  return this.registrySchemaIds.get(schema);
+}
