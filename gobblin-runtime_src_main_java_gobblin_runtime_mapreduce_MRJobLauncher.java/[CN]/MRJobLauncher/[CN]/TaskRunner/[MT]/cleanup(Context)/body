@@ -9,7 +9,10 @@
       try {
         this.jobMetrics.get().stopMetricsReporting();
       }
-  finally {
+ catch (      Throwable throwable) {
+        LOG.error("Failed to stop job metrics reporting.",throwable);
+      }
+ finally {
         GobblinMetrics.remove(this.jobMetrics.get().getName());
       }
     }
