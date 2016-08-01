@@ -1,0 +1,5 @@
+{
+  if (_log.isPresent()) {
+    _log.get().info("JobSpec changed: " + originalJob.toShortString() + " --> "+ updatedJob.toShortString());
+  }
+}

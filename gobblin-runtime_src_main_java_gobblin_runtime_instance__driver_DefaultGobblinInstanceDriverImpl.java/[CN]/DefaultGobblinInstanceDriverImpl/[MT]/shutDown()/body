@@ -1,0 +1,5 @@
+{
+  if (null != _jobSpecListener) {
+    _jobCatalog.removeListener(_jobSpecListener);
+  }
+}

@@ -1,0 +1,3 @@
+{
+  super(LoggerFactory.getLogger(DefaultGobblinInstanceDriverImpl.this._log.getName() + "_jobSpecListener"));
+}

@@ -1,0 +1,9 @@
+{
+  Preconditions.checkNotNull(jobCatalog);
+  Preconditions.checkNotNull(jobScheduler);
+  Preconditions.checkNotNull(jobLauncher);
+  _jobCatalog=jobCatalog;
+  _jobScheduler=jobScheduler;
+  _jobLauncher=jobLauncher;
+  _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+}

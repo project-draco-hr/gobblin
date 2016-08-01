@@ -1,0 +1,4 @@
+{
+  _jobSpecListener=new JobSpecListener();
+  _jobCatalog.addListener(_jobSpecListener);
+}

@@ -1,4 +1,5 @@
 {
   super(jobExecution);
   this.jobSpec=jobSpec;
+  this.executionMetadata=new HashMap<>();
 }

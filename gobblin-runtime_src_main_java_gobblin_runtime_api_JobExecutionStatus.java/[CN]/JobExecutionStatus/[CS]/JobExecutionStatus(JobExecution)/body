@@ -1,4 +1,5 @@
 {
   this.jobExecution=jobExecution;
   this.status=JobState.RunningState.PENDING;
+  this.stage=UKNOWN_STAGE;
 }
