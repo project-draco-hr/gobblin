@@ -1,4 +1,6 @@
 WorkUnit state
 Table table
+Partition partition
 long updateTime
 long lowWatermark
+long beginGetWorkunitsTime

@@ -1,0 +1,3 @@
+{
+  state.setProp(EventConstants.END_DDL_BUILD_TIME,Long.toString(time));
+}

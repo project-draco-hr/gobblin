@@ -3,6 +3,7 @@
   Preconditions.checkNotNull(conversionEntity,"Conversion entity must not be null");
   Preconditions.checkNotNull(workUnit,"Workunit state must not be null");
   Preconditions.checkNotNull(conversionEntity.getHiveTable(),"Hive table within conversion entity must not be null");
+  EventWorkunitUtils.setBeginDDLBuildTimeMetadata(workUnit,System.currentTimeMillis());
   this.hiveDataset=conversionEntity.getConvertibleHiveDataset();
   if (!hasConversionConfig()) {
     return new SingleRecordIterable<>(conversionEntity);
@@ -52,6 +53,7 @@
   }
   List<String> evolutionDDLs=HiveAvroORCQueryGenerator.generateEvolutionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),outputAvroSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta);
   log.info("Evolve final table DDLs: " + evolutionDDLs);
+  EventWorkunitUtils.setEvolutionMetadata(workUnit,evolutionDDLs);
   publishQueries.addAll(evolutionDDLs);
   if (partitionsDDLInfo.size() == 0) {
     log.info("Snapshot directory to move: " + orcStagingDataLocation + " to: "+ orcDataLocation);
@@ -83,5 +85,6 @@
   HiveAvroORCQueryGenerator.serializePublishCommands(workUnit,publishEntity);
   log.info("Publish partition entity: " + publishEntity);
   log.debug("Conversion Query " + conversionEntity.getQueries());
+  EventWorkunitUtils.setEndDDLBuildTimeMetadata(workUnit,System.currentTimeMillis());
   return new SingleRecordIterable<>(conversionEntity);
 }

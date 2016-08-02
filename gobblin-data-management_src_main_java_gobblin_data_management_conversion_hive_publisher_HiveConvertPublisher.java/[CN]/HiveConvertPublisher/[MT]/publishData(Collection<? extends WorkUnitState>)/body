@@ -4,6 +4,7 @@
   if (Iterables.tryFind(states,UNSUCCESSFUL_WORKUNIT).isPresent()) {
     for (    WorkUnitState wus : states) {
       QueryBasedHivePublishEntity publishEntity=HiveAvroORCQueryGenerator.deserializePublishCommands(wus);
+      EventWorkunitUtils.setBeginPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
       cleanUpQueries.addAll(publishEntity.getCleanupQueries());
       directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
       wus.setWorkingState(WorkingState.FAILED);
@@ -25,7 +26,9 @@
         moveDirectory(publishDir.getKey(),publishDir.getValue());
       }
       List<String> publishQueries=publishEntity.getPublishQueries();
+      EventWorkunitUtils.setBeginPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
       executeQueries(publishQueries);
+      EventWorkunitUtils.setEndPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
       wus.setWorkingState(WorkingState.COMMITTED);
       wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
       try {

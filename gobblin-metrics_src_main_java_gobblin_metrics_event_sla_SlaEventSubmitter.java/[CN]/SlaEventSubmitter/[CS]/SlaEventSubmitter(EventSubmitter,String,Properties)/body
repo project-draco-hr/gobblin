@@ -2,6 +2,12 @@
   this.eventName=name;
   this.eventSubmitter=submitter;
   this.datasetUrn=props.getProperty(SlaEventKeys.DATASET_URN_KEY);
+  if (props.containsKey(SlaEventKeys.DATASET_URN_KEY)) {
+    this.datasetUrn=props.getProperty(SlaEventKeys.DATASET_URN_KEY);
+  }
+ else {
+    this.datasetUrn=props.getProperty(ConfigurationKeys.DATASET_URN_KEY);
+  }
   this.partition=props.getProperty(SlaEventKeys.PARTITION_KEY);
   this.originTimestamp=props.getProperty(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY);
   this.upstreamTimestamp=props.getProperty(SlaEventKeys.UPSTREAM_TS_IN_MILLI_SECS_KEY);
@@ -9,4 +15,10 @@
   this.recordCount=props.getProperty(SlaEventKeys.RECORD_COUNT_KEY);
   this.previousPublishTimestamp=props.getProperty(SlaEventKeys.PREVIOUS_PUBLISH_TS_IN_MILLI_SECS_KEY);
   this.dedupeStatus=props.getProperty(SlaEventKeys.DEDUPE_STATUS_KEY);
+  this.additionalMetadata=Maps.newHashMap();
+  for (  Entry<Object,Object> entry : props.entrySet()) {
+    if (StringUtils.startsWith(entry.getKey().toString(),SlaEventKeys.EVENT_ADDITIONAL_METADATA_PREFIX)) {
+      this.additionalMetadata.put(StringUtils.removeStart(entry.getKey().toString(),SlaEventKeys.EVENT_ADDITIONAL_METADATA_PREFIX),entry.getValue().toString());
+    }
+  }
 }

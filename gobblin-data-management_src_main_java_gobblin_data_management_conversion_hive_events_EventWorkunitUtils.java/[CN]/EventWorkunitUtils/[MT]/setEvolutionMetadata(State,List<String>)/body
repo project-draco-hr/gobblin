@@ -1,0 +1,3 @@
+{
+  state.setProp(EventConstants.SCHEMA_EVOLUTION_DDLS_NUM,evolutionDDLs == null ? 0 : evolutionDDLs.size());
+}

@@ -14,7 +14,7 @@
         hiveWorkUnit.setPartitionSchemaUrl(this.avroSchemaManager.getSchemaUrl(sourcePartition));
         hiveWorkUnit.setPartitionName(sourcePartition.getName());
         hiveWorkUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
-        EventWorkunitUtils.setPartitionSlaEventMetadata(hiveWorkUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue());
+        EventWorkunitUtils.setPartitionSlaEventMetadata(hiveWorkUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue(),this.beginGetWorkunitsTime);
         workunits.add(hiveWorkUnit);
         log.debug(String.format("Workunit added for partition: %s",hiveWorkUnit));
       }

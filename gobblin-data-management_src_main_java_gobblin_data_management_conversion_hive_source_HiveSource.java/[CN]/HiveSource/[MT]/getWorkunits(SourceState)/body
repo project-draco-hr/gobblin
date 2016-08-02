@@ -1,5 +1,6 @@
 {
   try {
+    this.beginGetWorkunitsTime=System.currentTimeMillis();
     initialize(state);
     EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.CONVERSION_FIND_HIVE_TABLES_EVENT);
     Iterator<HiveDataset> iterator=this.datasetFinder.getDatasetsIterator();
@@ -20,5 +21,6 @@
  catch (  IOException e) {
     throw new RuntimeException(e);
   }
+  log.info(String.format("Created %s workunits",this.workunits.size()));
   return this.workunits;
 }
