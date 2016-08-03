@@ -1,0 +1,17 @@
+{
+  if (initialWait <= 0) {
+    initialWait=1;
+  }
+  long currentWait=initialWait;
+  long totalWait=0;
+  do {
+    Thread.sleep(timeUnit.toMillis(currentWait));
+    totalWait+=currentWait;
+    if (condition.call()) {
+      return true;
+    }
+    currentWait*=2;
+  }
+ while (totalWait < timeout);
+  return false;
+}
