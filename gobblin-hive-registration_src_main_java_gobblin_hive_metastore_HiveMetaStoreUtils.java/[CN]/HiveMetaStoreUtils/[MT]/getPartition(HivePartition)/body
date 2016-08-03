@@ -5,7 +5,10 @@
   partition.setTableName(hivePartition.getTableName());
   partition.setValues(hivePartition.getValues());
   partition.setParameters(getParameters(props));
-  if (props.contains(HiveConstants.CREATE_TIME)) {
+  if (hivePartition.getCreateTime().isPresent()) {
+    partition.setCreateTime(Ints.checkedCast(hivePartition.getCreateTime().get()));
+  }
+ else   if (props.contains(HiveConstants.CREATE_TIME)) {
     partition.setCreateTime(props.getPropAsInt(HiveConstants.CREATE_TIME));
   }
   if (props.contains(HiveConstants.LAST_ACCESS_TIME)) {

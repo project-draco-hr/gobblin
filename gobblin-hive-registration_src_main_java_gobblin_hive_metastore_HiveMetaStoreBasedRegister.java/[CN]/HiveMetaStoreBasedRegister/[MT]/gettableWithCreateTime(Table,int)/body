@@ -1,0 +1,8 @@
+{
+  if (table.isSetCreateTime() && table.getCreateTime() > 0) {
+    return table;
+  }
+  Table actualtable=table.deepCopy();
+  actualtable.setCreateTime(createTime);
+  return actualtable;
+}

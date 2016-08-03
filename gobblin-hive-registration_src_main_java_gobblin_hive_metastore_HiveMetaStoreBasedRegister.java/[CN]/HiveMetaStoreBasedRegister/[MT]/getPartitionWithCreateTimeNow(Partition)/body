@@ -1,0 +1,3 @@
+{
+  return getPartitionWithCreateTime(partition,Ints.checkedCast(DateTime.now().getMillis() / 1000));
+}

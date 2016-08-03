@@ -1,0 +1,8 @@
+{
+  if (partition.isSetCreateTime() && partition.getCreateTime() > 0) {
+    return partition;
+  }
+  Partition actualPartition=partition.deepCopy();
+  actualPartition.setCreateTime(createTime);
+  return actualPartition;
+}
