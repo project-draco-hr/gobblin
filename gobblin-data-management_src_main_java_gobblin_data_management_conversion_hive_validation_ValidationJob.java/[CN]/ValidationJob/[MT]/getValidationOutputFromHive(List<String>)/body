@@ -6,13 +6,14 @@
   List<Long> rowCounts=Lists.newArrayList();
   Closer closer=Closer.create();
   try {
+    HiveJdbcConnector hiveJdbcConnector=closer.register(HiveJdbcConnector.newConnectorWithProps(props));
     for (    String query : queries) {
       String hiveOutput="hiveConversionValidationOutput_" + UUID.randomUUID().toString();
       Path hiveTempDir=new Path("/tmp" + Path.SEPARATOR + hiveOutput);
       query="INSERT OVERWRITE DIRECTORY '" + hiveTempDir + "' "+ query;
       log.info("Executing query: " + query);
       try {
-        this.hiveJdbcConnector.executeStatements("SET hive.exec.compress.output=false",query);
+        hiveJdbcConnector.executeStatements("SET hive.exec.compress.output=false",query);
         FileStatus[] files=this.fs.listStatus(hiveTempDir);
         if (files.length > 0) {
           log.warn("Found more than one output file. Should have been one.");

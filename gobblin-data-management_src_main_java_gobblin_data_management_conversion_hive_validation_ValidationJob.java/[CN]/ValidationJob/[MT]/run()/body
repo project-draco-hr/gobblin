@@ -1,8 +1,8 @@
 {
   try {
-    this.successfulConversions=Maps.newHashMap();
-    this.failedConversions=Maps.newHashMap();
-    this.warnConversions=Maps.newHashMap();
+    this.successfulConversions=Maps.newConcurrentMap();
+    this.failedConversions=Maps.newConcurrentMap();
+    this.warnConversions=Maps.newConcurrentMap();
     Iterator<HiveDataset> iterator=this.datasetFinder.getDatasetsIterator();
     EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.VALIDATION_FIND_HIVE_TABLES_EVENT);
     while (iterator.hasNext()) {
@@ -17,6 +17,19 @@
         }
       }
      }
+    log.info(String.format("Waiting for %d futures to complete",this.futures.size()));
+    this.exec.shutdown();
+    this.exec.awaitTermination(4,TimeUnit.HOURS);
+    boolean oneFutureFailure=false;
+    for (    Future<Void> future : this.futures) {
+      try {
+        future.get();
+      }
+ catch (      Throwable t) {
+        log.error("getValidationOutputFromHive failed",t);
+        oneFutureFailure=true;
+      }
+    }
     for (    Map.Entry<String,String> successfulConversion : this.successfulConversions.entrySet()) {
       log.info(String.format("Successful conversion: %s [%s]",successfulConversion.getKey(),successfulConversion.getValue()));
     }
@@ -28,6 +41,9 @@
     }
     if (!failedConversions.isEmpty()) {
       throw new RuntimeException(String.format("Validation failed for %s conversions. See previous logs for exact validation failures",failedConversions.size()));
+    }
+    if (oneFutureFailure) {
+      throw new RuntimeException("At least one hive ddl failed. Check previous logs");
     }
   }
  catch (  IOException e) {

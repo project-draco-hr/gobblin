@@ -7,7 +7,8 @@
   List<Long> rowCounts=Lists.newArrayList();
   Closer closer=Closer.create();
   try {
-    statement=this.hiveJdbcConnector.getConnection().createStatement();
+    HiveJdbcConnector hiveJdbcConnector=HiveJdbcConnector.newConnectorWithProps(props);
+    statement=hiveJdbcConnector.getConnection().createStatement();
     for (    String query : queries) {
       log.info("Executing query: " + query);
       boolean result=statement.execute(query);
