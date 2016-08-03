@@ -1,2 +1,3 @@
 KafkaAvroSchemaRegistry registry
 String topic
+Optional<Schema> singleSchema

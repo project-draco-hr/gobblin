@@ -1,6 +1,7 @@
 {
   super(builder,config);
   if (builder.registry.isPresent()) {
-    this.serializer.setSchemaVersionWriter(new SchemaRegistryVersionWriter(builder.registry.get(),builder.topic));
+    Schema schema=new Schema.Parser().parse(getClass().getClassLoader().getResourceAsStream("MetricReport.avsc"));
+    this.serializer.setSchemaVersionWriter(new SchemaRegistryVersionWriter(builder.registry.get(),builder.topic,Optional.of(schema)));
   }
 }
