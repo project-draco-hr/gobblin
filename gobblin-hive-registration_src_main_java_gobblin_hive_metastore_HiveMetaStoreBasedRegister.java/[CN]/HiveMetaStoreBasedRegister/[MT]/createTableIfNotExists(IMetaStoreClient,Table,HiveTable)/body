@@ -5,7 +5,9 @@
     if (client.tableExists(table.getDbName(),table.getTableName())) {
       return false;
     }
-    client.createTable(table);
+    Table actualTable=table.deepCopy();
+    actualTable.setCreateTime(Ints.checkedCast(DateTime.now().getMillis() / 1000));
+    client.createTable(actualTable);
     log.info(String.format("Created Hive table %s in db %s",tableName,dbName));
     HiveMetaStoreEventHelper.submitSuccessfulTableCreation(this.eventSubmitter,hiveTable);
     return true;

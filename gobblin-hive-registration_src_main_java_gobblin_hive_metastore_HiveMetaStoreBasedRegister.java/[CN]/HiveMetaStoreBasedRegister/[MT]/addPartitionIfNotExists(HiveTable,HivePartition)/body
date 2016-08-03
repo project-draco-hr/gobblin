@@ -5,7 +5,9 @@
       return false;
     }
  catch (    NoSuchObjectException e) {
-      client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
+      Partition actualPartition=HiveMetaStoreUtils.getPartition(partition);
+      actualPartition.setCreateTime(Ints.checkedCast(DateTime.now().getMillis() / 1000));
+      client.get().alter_partition(table.getDbName(),table.getTableName(),actualPartition);
       HiveMetaStoreEventHelper.submitSuccessfulPartitionAdd(this.eventSubmitter,table,partition);
       return true;
     }
