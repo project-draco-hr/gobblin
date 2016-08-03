@@ -1,0 +1,5 @@
+{
+  super("topic",createMockCatalog(jobSpecs),config);
+  this.jobSpecs=jobSpecs;
+  this.mockKafkaStream=new MockKafkaStream(1);
+}

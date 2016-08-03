@@ -1,0 +1,8 @@
+{
+  AssertWithBackoff.assertTrue(new Predicate<Void>(){
+    @Override public boolean apply(    @Nullable Void input){
+      return MockedHighLevelConsumer.this.messages.size() >= n;
+    }
+  }
+,1000,n + " messages",log,2,1000);
+}

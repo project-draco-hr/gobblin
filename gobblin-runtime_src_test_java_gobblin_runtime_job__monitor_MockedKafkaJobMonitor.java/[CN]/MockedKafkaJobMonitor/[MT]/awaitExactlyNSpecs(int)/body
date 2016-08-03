@@ -1,0 +1,8 @@
+{
+  AssertWithBackoff.assertTrue(new Predicate<Void>(){
+    @Override public boolean apply(    @Nullable Void input){
+      return MockedKafkaJobMonitor.this.jobSpecs.size() == n;
+    }
+  }
+,1000,n + " specs",log,2,1000);
+}

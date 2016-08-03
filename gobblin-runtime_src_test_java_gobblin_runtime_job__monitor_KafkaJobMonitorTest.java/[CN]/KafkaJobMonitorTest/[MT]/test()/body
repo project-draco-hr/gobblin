@@ -1,0 +1,23 @@
+{
+  MockedKafkaJobMonitor monitor=MockedKafkaJobMonitor.create(ConfigFactory.empty());
+  monitor.startAsync();
+  monitor.getMockKafkaStream().pushToStream("job1:1");
+  monitor.awaitExactlyNSpecs(1);
+  Assert.assertTrue(monitor.getJobSpecs().containsKey(new URI("job1")));
+  Assert.assertEquals(monitor.getJobSpecs().get(new URI("job1")).getVersion(),"1");
+  monitor.getMockKafkaStream().pushToStream("job2:1");
+  monitor.awaitExactlyNSpecs(2);
+  Assert.assertTrue(monitor.getJobSpecs().containsKey(new URI("job2")));
+  Assert.assertEquals(monitor.getJobSpecs().get(new URI("job2")).getVersion(),"1");
+  monitor.getMockKafkaStream().pushToStream(MockedKafkaJobMonitor.REMOVE + ":job1");
+  monitor.awaitExactlyNSpecs(1);
+  Assert.assertFalse(monitor.getJobSpecs().containsKey(new URI("job1")));
+  Assert.assertTrue(monitor.getJobSpecs().containsKey(new URI("job2")));
+  monitor.getMockKafkaStream().pushToStream("job1:2,job2:2");
+  monitor.awaitExactlyNSpecs(2);
+  Assert.assertTrue(monitor.getJobSpecs().containsKey(new URI("job1")));
+  Assert.assertEquals(monitor.getJobSpecs().get(new URI("job1")).getVersion(),"2");
+  Assert.assertTrue(monitor.getJobSpecs().containsKey(new URI("job2")));
+  Assert.assertEquals(monitor.getJobSpecs().get(new URI("job2")).getVersion(),"2");
+  monitor.shutDown();
+}

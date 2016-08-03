@@ -1,0 +1,12 @@
+{
+  this.queues=Lists.newArrayList();
+  this.mockStreams=Lists.newArrayList();
+  this.offsets=Lists.newArrayList();
+  for (int i=0; i < numStreams; i++) {
+    BlockingQueue<FetchedDataChunk> queue=Queues.newLinkedBlockingQueue();
+    this.queues.add(queue);
+    this.mockStreams.add(createMockStream(queue));
+    this.offsets.add(new AtomicLong(0));
+  }
+  this.nextStream=new AtomicLong(-1);
+}

@@ -1,0 +1,8 @@
+{
+  if (config.hasPath(key)) {
+    return config.getConfig(key);
+  }
+ else {
+    return ConfigFactory.empty();
+  }
+}

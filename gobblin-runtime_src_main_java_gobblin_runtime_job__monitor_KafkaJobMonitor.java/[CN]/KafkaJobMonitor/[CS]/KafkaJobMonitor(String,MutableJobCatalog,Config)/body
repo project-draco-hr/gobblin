@@ -1,0 +1,4 @@
+{
+  super(topic,ConfigUtils.getConfigOrEmpty(config,KAFKA_JOB_MONITOR_PREFIX),1);
+  this.jobCatalog=catalog;
+}

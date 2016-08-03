@@ -1,0 +1,3 @@
+{
+  this.messages.add(new String(message.message(),Charsets.UTF_8));
+}
