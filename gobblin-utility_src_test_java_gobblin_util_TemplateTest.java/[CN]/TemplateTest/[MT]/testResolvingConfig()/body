@@ -1,7 +1,7 @@
 {
   Properties jobProps=this.userProp;
   Assert.assertEquals(jobProps.size(),3);
-  jobProps=(new ResourcesBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfigAsProperties(jobProps);
+  jobProps=(new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfigAsProperties(jobProps);
   Assert.assertEquals(jobProps.size(),5);
   Properties targetResolvedJobProps=new Properties();
   targetResolvedJobProps.setProperty("a","1");

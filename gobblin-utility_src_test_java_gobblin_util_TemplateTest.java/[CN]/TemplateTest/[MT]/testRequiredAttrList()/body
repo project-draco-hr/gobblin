@@ -1,6 +1,6 @@
 {
   Properties jobProps=this.userProp;
-  Set<String> requiredConfigList=(new ResourcesBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getRequiredConfigList();
+  Set<String> requiredConfigList=(new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getRequiredConfigList();
   Assert.assertEquals(requiredConfigList.size(),3);
   Assert.assertTrue(requiredConfigList.contains("required0"));
   Assert.assertTrue(requiredConfigList.contains("required1"));
