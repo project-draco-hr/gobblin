@@ -1,0 +1,16 @@
+{
+  Config srcConfig=ConfigFactory.parseString(inputRecord.toString(),ConfigParseOptions.defaults().setSyntax(ConfigSyntax.JSON));
+  String resourceKey=workUnit.getProp(CONVERTER_AVRO_REST_ENTRY_RESOURCE_KEY,"");
+  if (!StringUtils.isEmpty(resourceKey)) {
+    final String dummyKey="DUMMY";
+    Config tmpConfig=ConfigFactory.parseString(dummyKey + "=" + resourceKey).resolveWith(srcConfig);
+    resourceKey=tmpConfig.getString(dummyKey);
+  }
+  String hoconInput=workUnit.getProp(CONVERTER_AVRO_REST_JSON_ENTRY_TEMPLATE);
+  if (StringUtils.isEmpty(hoconInput)) {
+    return new SingleRecordIterable<>(new RestEntry<>(resourceKey,parser.parse(inputRecord.toString()).getAsJsonObject()));
+  }
+  Config destConfig=ConfigFactory.parseString(hoconInput).resolveWith(srcConfig);
+  JsonObject json=parser.parse(destConfig.root().render(ConfigRenderOptions.concise())).getAsJsonObject();
+  return new SingleRecordIterable<>(new RestEntry<>(resourceKey,json));
+}

@@ -1,0 +1,13 @@
+{
+  this.writer=writer;
+  this.type=ThrottleType.valueOf(state.getProp(WRITER_THROTTLE_TYPE_KEY));
+  int rateLimit=computeRateLimit(state);
+  LOG.info("Rate limit for each writer: " + rateLimit + " "+ type);
+  this.limiter=new RateBasedLimiter(computeRateLimit(state));
+  if (GobblinMetrics.isEnabled(state)) {
+    throttledTimer=Optional.of(Instrumented.getMetricContext(state,getClass()).timer(WRITES_THROTTLED_TIMER));
+  }
+ else {
+    throttledTimer=Optional.absent();
+  }
+}

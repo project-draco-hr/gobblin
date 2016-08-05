@@ -1,3 +1,0 @@
-{
-  return getFallback().onNewRecord(record,request);
-}

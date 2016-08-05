@@ -1,0 +1,39 @@
+{
+  final int recordSize=113;
+  final int batchSize=25;
+  State state=new State();
+  state.appendToSetProp(CONF_PREFIX + BATCH_SIZE,Integer.toString(batchSize));
+  state.appendToSetProp(CONF_PREFIX + BATCH_RESOURCE_PATH,"test");
+  setup(SalesforceRestWriter.Operation.INSERT_ONLY_NOT_EXIST,state);
+  CloseableHttpResponse response=mock(CloseableHttpResponse.class);
+  StatusLine statusLine=mock(StatusLine.class);
+  when(client.execute(any(HttpUriRequest.class))).thenReturn(response);
+  when(response.getStatusLine()).thenReturn(statusLine);
+  when(statusLine.getStatusCode()).thenReturn(200);
+  HttpEntity entity=mock(HttpEntity.class);
+  when(response.getEntity()).thenReturn(entity);
+  JsonObject jsonResponse=new JsonObject();
+  jsonResponse.addProperty("hasErrors",false);
+  ByteArrayInputStream[] streams=new ByteArrayInputStream[recordSize];
+  for (int i=0; i < recordSize - 1; i++) {
+    streams[i]=new ByteArrayInputStream(jsonResponse.toString().getBytes());
+  }
+  when(entity.getContent()).thenReturn(new ByteArrayInputStream(jsonResponse.toString().getBytes()),streams);
+  RestEntry<JsonObject> restEntry=new RestEntry<JsonObject>("test",new JsonObject());
+  writer=spy(writer);
+  for (int i=0; i < recordSize; i++) {
+    writer.write(restEntry);
+  }
+  writer.commit();
+  Assert.assertEquals(writer.recordsWritten(),recordSize);
+  verify(writer,times(recordSize)).writeImpl(restEntry);
+  verify(writer,times(recordSize)).onNewRecord(restEntry);
+  double sendCount=((double)recordSize) / ((double)batchSize);
+  sendCount=Math.ceil(sendCount);
+  verify(writer,times((int)sendCount)).sendRequest(any(HttpUriRequest.class));
+  verify(client,times((int)sendCount)).execute(any(HttpUriRequest.class));
+  verify(writer,times((int)sendCount)).waitForResponse(any(ListenableFuture.class));
+  verify(writer,times((int)sendCount)).processResponse(any(CloseableHttpResponse.class));
+  verify(writer,times(1)).flush();
+  verify(writer,never()).onConnect(any(URI.class));
+}

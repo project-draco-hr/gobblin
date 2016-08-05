@@ -1,0 +1,15 @@
+{
+  String jobLauncherType=state.getProp(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,"LOCAL");
+  int parallelism=1;
+  if (LOCAL_JOB_LAUNCHER_TYPE.equals(jobLauncherType)) {
+    parallelism=state.getPropAsInt(ConfigurationKeys.TASK_EXECUTOR_THREADPOOL_SIZE_KEY,ConfigurationKeys.DEFAULT_TASK_EXECUTOR_THREADPOOL_SIZE);
+  }
+ else {
+    parallelism=state.getPropAsInt(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY,ConfigurationKeys.DEFAULT_MR_JOB_MAX_MAPPERS);
+  }
+  parallelism=Math.min(parallelism,state.getPropAsInt(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS,ConfigurationKeys.DEFAULT_MAX_NUMBER_OF_PARTITIONS));
+  parallelism=Math.max(parallelism,1);
+  int rateLimit=state.getPropAsInt(WRITER_LIMIT_RATE_LIMIT_KEY) / parallelism;
+  rateLimit=Math.max(rateLimit,1);
+  return rateLimit;
+}

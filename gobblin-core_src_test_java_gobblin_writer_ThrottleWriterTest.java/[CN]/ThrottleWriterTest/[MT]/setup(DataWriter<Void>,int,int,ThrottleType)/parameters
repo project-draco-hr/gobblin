@@ -1,0 +1,4 @@
+DataWriter<Void> writer
+int parallelism
+int rate
+ThrottleType type

@@ -1,0 +1,22 @@
+{
+  Schema schema=new Schema.Parser().parse(getClass().getResourceAsStream("/converter/nested.avsc"));
+  GenericDatumReader<GenericRecord> datumReader=new GenericDatumReader<GenericRecord>(schema);
+  File tmp=File.createTempFile(this.getClass().getSimpleName(),null);
+  tmp.deleteOnExit();
+  try {
+    FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/converter/nested.avro"),tmp);
+    DataFileReader<GenericRecord> dataFileReader=new DataFileReader<GenericRecord>(tmp,datumReader);
+    GenericRecord avroRecord=dataFileReader.next();
+    AvroToRestJsonEntryConverter converter=new AvroToRestJsonEntryConverter();
+    RestEntry<JsonObject> actual=converter.convertRecord(null,avroRecord,actualWorkUnitState).iterator().next();
+    Assert.assertEquals(actual.getResourcePath(),expected.getResourcePath());
+    JSONAssert.assertEquals(expected.getRestEntryVal().toString(),actual.getRestEntryVal().toString(),false);
+    converter.close();
+    dataFileReader.close();
+  }
+  finally {
+    if (tmp != null) {
+      tmp.delete();
+    }
+  }
+}

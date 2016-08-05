@@ -1,0 +1,8 @@
+{
+  return singleThreadPool.submit(new Callable<CloseableHttpResponse>(){
+    @Override public CloseableHttpResponse call() throws Exception {
+      return client.execute(request);
+    }
+  }
+);
+}

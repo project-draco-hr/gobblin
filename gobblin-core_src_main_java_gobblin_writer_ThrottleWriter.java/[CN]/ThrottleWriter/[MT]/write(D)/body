@@ -1,0 +1,21 @@
+{
+  try {
+    if (ThrottleType.QPS.equals(type)) {
+      acquirePermits(1L);
+    }
+    long beforeWrittenBytes=writer.bytesWritten();
+    writer.write(record);
+    if (ThrottleType.Bytes.equals(type)) {
+      long delta=writer.bytesWritten() - beforeWrittenBytes;
+      if (delta < 0) {
+        throw new UnsupportedOperationException("Cannot throttle on bytes because " + writer.getClass().getSimpleName() + " does not supports bytesWritten");
+      }
+      if (delta > 0) {
+        acquirePermits(delta);
+      }
+    }
+  }
+ catch (  InterruptedException e) {
+    throw new RuntimeException(e);
+  }
+}

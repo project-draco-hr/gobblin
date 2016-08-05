@@ -1,0 +1,28 @@
+{
+  setup(SalesforceRestWriter.Operation.INSERT_ONLY_NOT_EXIST);
+  CloseableHttpResponse response=mock(CloseableHttpResponse.class);
+  StatusLine statusLine=mock(StatusLine.class);
+  when(client.execute(any(HttpUriRequest.class))).thenReturn(response);
+  when(response.getStatusLine()).thenReturn(statusLine);
+  when(statusLine.getStatusCode()).thenReturn(400);
+  HttpEntity entity=mock(HttpEntity.class);
+  when(response.getEntity()).thenReturn(entity);
+  JsonObject json=new JsonObject();
+  json.addProperty("errorCode",SalesforceRestWriter.DUPLICATE_VALUE_ERR_CODE);
+  JsonArray jsonArray=new JsonArray();
+  jsonArray.add(json);
+  when(entity.getContent()).thenReturn(new ByteArrayInputStream(jsonArray.toString().getBytes()));
+  RestEntry<JsonObject> restEntry=new RestEntry<JsonObject>("test",new JsonObject());
+  Optional<HttpUriRequest> request=writer.onNewRecord(restEntry);
+  Assert.assertTrue(request.isPresent(),"No HttpUriRequest from onNewRecord");
+  Assert.assertEquals("POST",request.get().getMethod());
+  writer=spy(writer);
+  writer.write(restEntry);
+  verify(writer,times(1)).writeImpl(restEntry);
+  verify(writer,times(1)).onNewRecord(restEntry);
+  verify(writer,times(1)).sendRequest(any(HttpUriRequest.class));
+  verify(client,times(1)).execute(any(HttpUriRequest.class));
+  verify(writer,times(1)).waitForResponse(any(ListenableFuture.class));
+  verify(writer,times(1)).processResponse(any(CloseableHttpResponse.class));
+  verify(writer,never()).onConnect(any(URI.class));
+}

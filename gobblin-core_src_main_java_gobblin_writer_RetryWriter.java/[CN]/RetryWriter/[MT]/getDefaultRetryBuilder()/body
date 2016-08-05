@@ -1,0 +1,9 @@
+{
+  Predicate<Throwable> transients=new Predicate<Throwable>(){
+    @Override public boolean apply(    Throwable t){
+      return !(t instanceof NonTransientException);
+    }
+  }
+;
+  return RetryerBuilder.<Void>newBuilder().retryIfException(transients).withWaitStrategy(WaitStrategies.exponentialWait(500,10,TimeUnit.SECONDS)).withStopStrategy(StopStrategies.stopAfterAttempt(5));
+}

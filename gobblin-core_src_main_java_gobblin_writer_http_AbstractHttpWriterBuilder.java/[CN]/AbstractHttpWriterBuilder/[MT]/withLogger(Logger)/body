@@ -1,0 +1,4 @@
+{
+  this.logger=Optional.fromNullable(logger);
+  return typedSelf();
+}

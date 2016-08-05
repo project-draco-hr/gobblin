@@ -1,0 +1,2 @@
+DataWriter<D> writer
+State state

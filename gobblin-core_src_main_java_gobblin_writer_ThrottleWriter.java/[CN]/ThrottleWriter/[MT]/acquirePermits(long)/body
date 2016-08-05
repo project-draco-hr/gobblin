@@ -1,0 +1,9 @@
+{
+  if (!throttledTimer.isPresent()) {
+    limiter.acquirePermits(permits);
+    return;
+  }
+  long startMs=System.currentTimeMillis();
+  limiter.acquirePermits(permits);
+  Instrumented.updateTimer(throttledTimer,System.currentTimeMillis() - startMs,TimeUnit.MILLISECONDS);
+}

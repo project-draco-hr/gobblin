@@ -1,0 +1,12 @@
+{
+  try {
+    builder.addHeader(HttpHeaders.CONTENT_TYPE,ContentType.APPLICATION_JSON.getMimeType()).addHeader(HttpHeaders.AUTHORIZATION,"OAuth " + accessToken).setEntity(new StringEntity(payload.toString(),ContentType.APPLICATION_JSON));
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+  if (getLog().isDebugEnabled()) {
+    getLog().debug("Request builder: " + ToStringBuilder.reflectionToString(builder,ToStringStyle.SHORT_PREFIX_STYLE));
+  }
+  return builder.build();
+}

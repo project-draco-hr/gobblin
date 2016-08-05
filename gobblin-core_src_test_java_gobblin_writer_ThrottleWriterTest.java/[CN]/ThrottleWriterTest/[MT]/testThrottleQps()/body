@@ -1,0 +1,17 @@
+{
+  DataWriter<Void> writer=mock(DataWriter.class);
+  int parallelism=2;
+  int qps=4;
+  DataWriter<Void> throttleWriter=setup(writer,parallelism,qps,ThrottleType.QPS);
+  int count=0;
+  long duration=10L;
+  Stopwatch stopwatch=Stopwatch.createStarted();
+  while (stopwatch.elapsed(TimeUnit.SECONDS) <= duration) {
+    throttleWriter.write(null);
+    count++;
+  }
+  System.out.println(count);
+  int expected=(int)(qps * duration);
+  Assert.assertTrue(count <= expected + qps * 2,"Request too high " + count + " , QPS "+ qps+ " for duration "+ duration+ " second ");
+  Assert.assertTrue(count >= expected - qps * 2,"Request too low " + count + " , QPS "+ qps+ " for duration "+ duration+ " second ");
+}

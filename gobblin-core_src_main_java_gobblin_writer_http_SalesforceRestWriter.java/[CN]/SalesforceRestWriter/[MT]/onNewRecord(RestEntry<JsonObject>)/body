@@ -1,0 +1,32 @@
+{
+  Preconditions.checkArgument(!StringUtils.isEmpty(accessToken),"Access token has not been acquired.");
+  Preconditions.checkNotNull(record,"Record should not be null");
+  RequestBuilder builder=null;
+  JsonObject payload=null;
+  if (batchSize > 1) {
+    if (!batchRecords.isPresent()) {
+      batchRecords=Optional.of(new JsonArray());
+    }
+    batchRecords.get().add(newSubrequest(record));
+    if (batchRecords.get().size() < batchSize) {
+      return Optional.absent();
+    }
+    payload=newPayloadForBatch();
+    builder=RequestBuilder.post().setUri(combineUrl(getCurServerHost(),batchResourcePath.get()));
+  }
+ else {
+switch (operation) {
+case INSERT_ONLY_NOT_EXIST:
+      builder=RequestBuilder.post();
+    break;
+case UPSERT:
+  builder=RequestBuilder.patch();
+break;
+default :
+throw new IllegalArgumentException(operation + " is not supported.");
+}
+builder.setUri(combineUrl(getCurServerHost(),record.getResourcePath()));
+payload=record.getRestEntryVal();
+}
+return Optional.of(newRequest(builder,payload));
+}

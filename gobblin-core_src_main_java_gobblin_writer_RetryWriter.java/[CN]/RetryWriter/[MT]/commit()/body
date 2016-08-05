@@ -1,0 +1,18 @@
+{
+  if (isFailure) {
+    throw new RuntimeException();
+  }
+  Callable<Void> commitCall=new Callable<Void>(){
+    @Override public Void call() throws Exception {
+      writer.commit();
+      return null;
+    }
+  }
+;
+  try {
+    this.retryer.wrap(commitCall).call();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}

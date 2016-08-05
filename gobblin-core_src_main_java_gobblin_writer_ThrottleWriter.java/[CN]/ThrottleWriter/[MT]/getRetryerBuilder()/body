@@ -1,0 +1,6 @@
+{
+  if (writer instanceof Retriable) {
+    return ((Retriable)writer).getRetryerBuilder();
+  }
+  return RetryWriter.getDefaultRetryBuilder();
+}

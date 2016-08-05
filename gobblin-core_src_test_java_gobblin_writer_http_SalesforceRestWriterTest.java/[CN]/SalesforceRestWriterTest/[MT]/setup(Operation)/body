@@ -1,0 +1,3 @@
+{
+  setup(operation,new State());
+}

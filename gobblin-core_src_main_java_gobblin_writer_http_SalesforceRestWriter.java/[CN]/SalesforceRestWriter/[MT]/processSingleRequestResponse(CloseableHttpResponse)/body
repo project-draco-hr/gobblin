@@ -1,0 +1,21 @@
+{
+  int statusCode=response.getStatusLine().getStatusCode();
+  if (statusCode < 400) {
+    return;
+  }
+  String entityStr=EntityUtils.toString(response.getEntity());
+  if (statusCode == 400 && Operation.INSERT_ONLY_NOT_EXIST.equals(operation) && response.getEntity() != null && response.getEntity().getContent() != null) {
+    try {
+      JsonArray jsonArray=new JsonParser().parse(entityStr).getAsJsonArray();
+      JsonObject jsonObject=jsonArray.get(0).getAsJsonObject();
+      JsonElement val=jsonObject.get("errorCode");
+      if (val != null && val.getAsString().equals(DUPLICATE_VALUE_ERR_CODE)) {
+        return;
+      }
+    }
+ catch (    Exception e) {
+      throw new RuntimeException("Unexpected response format. Response entity: " + entityStr,e);
+    }
+  }
+  throw new RuntimeException("Failed due to " + entityStr + " (Detail: "+ ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE)+ " )");
+}

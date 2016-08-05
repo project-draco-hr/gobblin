@@ -1,0 +1,9 @@
+{
+  try {
+    HttpUriRequest uriRequest=RequestBuilder.post().addHeader(HttpHeaders.CONTENT_TYPE,ContentType.TEXT_PLAIN.getMimeType()).setUri(getCurServerHost()).setEntity(new StringEntity(record.toString(),ContentType.TEXT_PLAIN.toString())).build();
+    return Optional.of(uriRequest);
+  }
+ catch (  Exception e) {
+    throw new RuntimeException(e);
+  }
+}
