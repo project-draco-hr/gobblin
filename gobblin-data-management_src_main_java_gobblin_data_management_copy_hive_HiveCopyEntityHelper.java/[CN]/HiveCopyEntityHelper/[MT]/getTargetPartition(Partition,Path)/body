@@ -6,6 +6,7 @@
     targetPartition.getTPartition().putToParameters(HiveDataset.REGISTERER,GOBBLIN_DISTCP);
     targetPartition.getTPartition().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(this.startTime));
     targetPartition.setLocation(targetLocation.toString());
+    targetPartition.getTPartition().unsetCreateTime();
     return targetPartition;
   }
  catch (  HiveException he) {

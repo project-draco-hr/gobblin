@@ -1,0 +1,3 @@
+{
+  return gettableWithCreateTime(table,Ints.checkedCast(DateTime.now().getMillis() / 1000));
+}

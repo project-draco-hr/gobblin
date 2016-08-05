@@ -1,6 +1,6 @@
 {
   try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
-    client.get().alter_partition(table.getDbName(),table.getTableName(),HiveMetaStoreUtils.getPartition(partition));
+    client.get().alter_partition(table.getDbName(),table.getTableName(),getPartitionWithCreateTimeNow(HiveMetaStoreUtils.getPartition(partition)));
     HiveMetaStoreEventHelper.submitSuccessfulPartitionAlter(eventSubmitter,table,partition);
   }
  catch (  TException e) {

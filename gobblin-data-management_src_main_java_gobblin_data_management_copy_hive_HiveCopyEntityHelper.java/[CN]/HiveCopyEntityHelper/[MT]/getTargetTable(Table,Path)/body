@@ -6,6 +6,7 @@
     targetTable.setOwner(UserGroupInformation.getCurrentUser().getShortUserName());
     targetTable.getTTable().putToParameters(HiveDataset.REGISTERER,GOBBLIN_DISTCP);
     targetTable.getTTable().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(this.startTime));
+    targetTable.getTTable().unsetCreateTime();
     HiveAvroCopyEntityHelper.updateTableAttributesIfAvro(targetTable,this);
     return targetTable;
   }

@@ -3,6 +3,9 @@
   State storageProps=getStorageProps(table.getSd());
   State serDeProps=getSerDeProps(table.getSd().getSerdeInfo());
   HiveTable hiveTable=new HiveTable.Builder().withDbName(table.getDbName()).withTableName(table.getTableName()).withPartitionKeys(getColumns(table.getPartitionKeys())).withProps(tableProps).withStorageProps(storageProps).withSerdeProps(serDeProps).build();
+  if (table.getCreateTime() > 0) {
+    hiveTable.setCreateTime(table.getCreateTime());
+  }
   if (table.getSd().getCols() != null) {
     hiveTable.setColumns(getColumns(table.getSd().getCols()));
   }
