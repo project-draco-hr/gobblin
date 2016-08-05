@@ -1,0 +1,17 @@
+{
+  if (!acceptEvent(event)) {
+    this.rejectedEvents.inc();
+    return Lists.newArrayList();
+  }
+  String datasetURN=event.getMetadata().get(SlaEventKeys.DATASET_URN_KEY);
+  URI jobSpecURI=PathUtils.mergePaths(new Path(this.baseURI),new Path(datasetURN)).toUri();
+  Map<String,String> jobConfigMap=Maps.newHashMap();
+  for (  Map.Entry<String,String> entry : this.extractKeys.entrySet()) {
+    if (event.getMetadata().containsKey(entry.getKey())) {
+      jobConfigMap.put(entry.getValue(),event.getMetadata().get(entry.getKey()));
+    }
+  }
+  Config jobConfig=ConfigFactory.parseMap(jobConfigMap);
+  JobSpec jobSpec=JobSpec.builder(jobSpecURI).withTemplate(this.template).withConfig(jobConfig).build();
+  return Lists.newArrayList(Either.<JobSpec,URI>left(jobSpec));
+}

@@ -1,7 +1,7 @@
 {
   if (!this.registrySchemaIds.containsKey(schema)) {
     try {
-      String schemaId=this.registry.register(schema,this.topic);
+      String schemaId=this.overrideName.isPresent() ? this.registry.register(schema,this.overrideName.get()) : this.registry.register(schema);
       this.registrySchemaIds.put(schema,schemaId);
     }
  catch (    SchemaRegistryException e) {

@@ -1,0 +1,15 @@
+{
+  SLAEventKafkaJobMonitor monitor=new SLAEventKafkaJobMonitor("topic",null,new URI("/base/URI"),HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX)),new NoopSchemaVersionWriter(),Optional.<Pattern>absent(),Optional.of(Pattern.compile("^accept.*")),this.templateURI,ImmutableMap.<String,String>of());
+  monitor.buildMetricsContextAndMetrics();
+  GobblinTrackingEvent event;
+  Collection<Either<JobSpec,URI>> jobSpecs;
+  event=createSLAEvent("acceptthis",new URI("/data/myDataset"),Maps.<String,String>newHashMap());
+  jobSpecs=monitor.parseJobSpec(event);
+  Assert.assertEquals(jobSpecs.size(),1);
+  Assert.assertEquals(monitor.getRejectedEvents().getCount(),0);
+  event=createSLAEvent("donotacceptthis",new URI("/data/myDataset"),Maps.<String,String>newHashMap());
+  jobSpecs=monitor.parseJobSpec(event);
+  Assert.assertEquals(jobSpecs.size(),0);
+  Assert.assertEquals(monitor.getRejectedEvents().getCount(),1);
+  monitor.shutdownMetrics();
+}

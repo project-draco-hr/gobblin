@@ -1,0 +1,5 @@
+{
+  super.createMetrics();
+  this.newSpecs=this.getMetricContext().counter(RuntimeMetrics.GOBBLIN_JOB_MONITOR_KAFKA_NEW_SPECS);
+  this.remmovedSpecs=this.getMetricContext().counter(RuntimeMetrics.GOBBLIN_JOB_MONITOR_KAFKA_REMOVED_SPECS);
+}

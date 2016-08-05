@@ -1,0 +1,41 @@
+{
+  Preconditions.checkArgument(limitedScopeConfig.hasPath(TEMPLATE_KEY));
+  Preconditions.checkArgument(limitedScopeConfig.hasPath(TOPIC_KEY));
+  String topic=limitedScopeConfig.getString(TOPIC_KEY);
+  URI baseUri;
+  try {
+    baseUri=new URI(limitedScopeConfig.getString(BASE_URI_KEY));
+  }
+ catch (  URISyntaxException use) {
+    throw new IOException("Invalid base URI " + limitedScopeConfig.getString(BASE_URI_KEY),use);
+  }
+  String templateURIString=limitedScopeConfig.getString(TEMPLATE_KEY);
+  URI template;
+  try {
+    template=new URI(templateURIString);
+  }
+ catch (  URISyntaxException uri) {
+    throw new IOException("Invalid template URI " + templateURIString);
+  }
+  ImmutableMap.Builder<String,String> mapBuilder=ImmutableMap.builder();
+  if (limitedScopeConfig.hasPath(EXTRACT_KEYS)) {
+    Config extractKeys=limitedScopeConfig.getConfig(EXTRACT_KEYS);
+    for (    Map.Entry<String,ConfigValue> entry : extractKeys.entrySet()) {
+      Object unwrappedValue=entry.getValue().unwrapped();
+      if (unwrappedValue instanceof String) {
+        mapBuilder.put(entry.getKey(),(String)unwrappedValue);
+      }
+    }
+  }
+  Map<String,String> extractKeys=mapBuilder.build();
+  Optional<Pattern> urnFilter=limitedScopeConfig.hasPath(DATASET_URN_FILTER_KEY) ? Optional.of(Pattern.compile(limitedScopeConfig.getString(DATASET_URN_FILTER_KEY))) : Optional.<Pattern>absent();
+  Optional<Pattern> nameFilter=limitedScopeConfig.hasPath(EVENT_NAME_FILTER_KEY) ? Optional.of(Pattern.compile(limitedScopeConfig.getString(EVENT_NAME_FILTER_KEY))) : Optional.<Pattern>absent();
+  SchemaVersionWriter versionWriter;
+  try {
+    versionWriter=(SchemaVersionWriter)GobblinConstructorUtils.invokeLongestConstructor(Class.forName(limitedScopeConfig.getString(SCHEMA_VERSION_READER_CLASS)),limitedScopeConfig);
+  }
+ catch (  ReflectiveOperationException roe) {
+    throw new IOException(roe);
+  }
+  return new SLAEventKafkaJobMonitor(topic,jobCatalog,baseUri,limitedScopeConfig,versionWriter,urnFilter,nameFilter,template,extractKeys);
+}

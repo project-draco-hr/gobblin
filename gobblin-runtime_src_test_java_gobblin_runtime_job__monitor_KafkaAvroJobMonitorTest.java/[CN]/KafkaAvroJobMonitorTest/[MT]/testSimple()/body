@@ -1,0 +1,11 @@
+{
+  TestKafkaAvroJobMonitor monitor=new TestKafkaAvroJobMonitor(GobblinTrackingEvent.SCHEMA$,new NoopSchemaVersionWriter());
+  monitor.buildMetricsContextAndMetrics();
+  AvroSerializer<GobblinTrackingEvent> serializer=new AvroBinarySerializer<>(GobblinTrackingEvent.SCHEMA$,new NoopSchemaVersionWriter());
+  GobblinTrackingEvent event=new GobblinTrackingEvent(0L,"namespace","event",Maps.<String,String>newHashMap());
+  Collection<Either<JobSpec,URI>> results=monitor.parseJobSpec(serializer.serializeRecord(event));
+  Assert.assertEquals(results.size(),1);
+  Assert.assertEquals(monitor.events.size(),1);
+  Assert.assertEquals(monitor.events.get(0),event);
+  monitor.shutdownMetrics();
+}

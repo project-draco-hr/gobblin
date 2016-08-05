@@ -1,0 +1,8 @@
+{
+  super(topic,catalog,config);
+  InputStream dummyInputStream=new ByteArrayInputStream(new byte[0]);
+  this.decoder=DecoderFactory.get().binaryDecoder(dummyInputStream,null);
+  this.schema=schema;
+  this.reader=new SpecificDatumReader<>(schema);
+  this.versionWriter=versionWriter;
+}

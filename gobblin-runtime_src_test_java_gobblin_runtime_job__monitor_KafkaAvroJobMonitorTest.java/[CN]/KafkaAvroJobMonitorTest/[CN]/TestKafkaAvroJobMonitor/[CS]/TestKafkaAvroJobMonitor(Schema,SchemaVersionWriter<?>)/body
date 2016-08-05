@@ -1,0 +1,3 @@
+{
+  super("dummy",null,HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX)),schema,versionWriter);
+}

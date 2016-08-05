@@ -1,0 +1,4 @@
+{
+  Config config=instanceDriver.getSysConfig().getConfig().getConfig(CONFIG_PREFIX).withFallback(DEFAULTS);
+  return forConfig(config,jobCatalog);
+}

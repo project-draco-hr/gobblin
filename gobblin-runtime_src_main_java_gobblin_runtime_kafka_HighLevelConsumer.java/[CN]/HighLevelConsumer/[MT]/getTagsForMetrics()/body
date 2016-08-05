@@ -1,0 +1,6 @@
+{
+  List<Tag<?>> tags=Lists.newArrayList();
+  tags.add(new Tag<>(RuntimeMetrics.TOPIC,this.topic));
+  tags.add(new Tag<>(RuntimeMetrics.GROUP_ID,this.consumerConfig.groupId()));
+  return tags;
+}

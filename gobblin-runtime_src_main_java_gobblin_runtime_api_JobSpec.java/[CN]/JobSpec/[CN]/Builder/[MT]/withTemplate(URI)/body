@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(templateURI);
+  this.templateURI=Optional.of(templateURI);
+  return this;
+}
