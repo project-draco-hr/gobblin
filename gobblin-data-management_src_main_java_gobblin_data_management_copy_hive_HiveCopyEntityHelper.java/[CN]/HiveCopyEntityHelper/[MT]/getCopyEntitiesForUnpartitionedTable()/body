@@ -27,7 +27,7 @@
   DiffPathSet diffPathSet=fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer,this);
   multiTimer.nextStage(Stages.FULL_PATH_DIFF);
   DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(this.targetFs,diffPathSet.pathsToDelete,this.dataset.getProperties());
-  copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deleteStep,stepPriority++));
+  copyEntities.add(new PrePublishStep(fileSet,Maps.<String,String>newHashMap(),deleteStep,stepPriority++));
   for (  CopyableFile.Builder builder : getCopyableFilesFromPaths(diffPathSet.filesToCopy,this.configuration,Optional.<Partition>absent())) {
     copyEntities.add(builder.fileSet(fileSet).build());
   }

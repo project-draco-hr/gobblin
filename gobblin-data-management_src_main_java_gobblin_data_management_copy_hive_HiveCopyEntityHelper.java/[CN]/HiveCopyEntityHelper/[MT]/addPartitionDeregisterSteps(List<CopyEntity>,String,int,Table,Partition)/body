@@ -14,9 +14,9 @@
   }
   if (!partitionPaths.isEmpty()) {
     DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(this.targetFs,partitionPaths,this.dataset.getProperties(),table.getDataLocation());
-    copyEntities.add(new PostPublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
+    copyEntities.add(new PostPublishStep(fileSet,Maps.<String,String>newHashMap(),deletePaths,stepPriority++));
   }
   PartitionDeregisterStep deregister=new PartitionDeregisterStep(table.getTTable(),partition.getTPartition(),this.targetURI,this.hiveRegProps);
-  copyEntities.add(new PostPublishStep(fileSet,Maps.<String,Object>newHashMap(),deregister,stepPriority++));
+  copyEntities.add(new PostPublishStep(fileSet,Maps.<String,String>newHashMap(),deregister,stepPriority++));
   return stepPriority;
 }
