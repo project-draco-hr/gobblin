@@ -1,0 +1,3 @@
+{
+  this(ConfigFactory.parseReader(new InputStreamReader(inputStream)),uri,catalog);
+}

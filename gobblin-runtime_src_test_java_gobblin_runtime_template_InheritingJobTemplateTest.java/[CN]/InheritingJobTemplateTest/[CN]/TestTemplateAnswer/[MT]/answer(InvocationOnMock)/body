@@ -1,0 +1,3 @@
+{
+  return new TestTemplate((URI)invocation.getArguments()[0],this.superTemplateUris,this.rawTemplate,this.required,this.catalog);
+}

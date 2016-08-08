@@ -1,4 +1,3 @@
 {
-  super("No JobSpec with URI " + missingJobSpecURI);
-  _missingJobSpecURI=missingJobSpecURI;
+  super(missingJobSpecURI);
 }

@@ -1,0 +1,8 @@
+{
+  super(superTemplateUris,catalog);
+  this.uri=uri;
+  this.version=version;
+  this.description=description;
+  this.rawConfig=config;
+  this.requiredAttributes=config.hasPath(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST) ? new HashSet<>(Arrays.asList(config.getString(ConfigurationKeys.REQUIRED_ATRRIBUTES_LIST).split(","))) : Sets.<String>newHashSet();
+}

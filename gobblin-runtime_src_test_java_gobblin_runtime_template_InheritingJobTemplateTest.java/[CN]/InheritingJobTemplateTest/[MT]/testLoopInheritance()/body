@@ -1,0 +1,20 @@
+{
+  JobCatalogWithTemplates catalog=Mockito.mock(JobCatalogWithTemplates.class);
+  Mockito.when(catalog.getTemplate(new URI("template2"))).thenAnswer(new TestTemplateAnswer(Lists.newArrayList(new URI("template3")),ImmutableMap.of("key2","value2"),Lists.<String>newArrayList(),catalog));
+  Mockito.when(catalog.getTemplate(new URI("template3"))).thenAnswer(new TestTemplateAnswer(Lists.newArrayList(new URI("template1")),ImmutableMap.of("key3","value3"),Lists.newArrayList("required3"),catalog));
+  TestTemplate template=new TestTemplate(new URI("template1"),Lists.newArrayList(new URI("template2")),ImmutableMap.of("key1","value1"),Lists.newArrayList("required"),catalog);
+  Collection<String> required=template.getRequiredConfigList();
+  Assert.assertEquals(required.size(),2);
+  Assert.assertTrue(required.contains("required"));
+  Assert.assertTrue(required.contains("required3"));
+  Config rawTemplate=template.getRawTemplateConfig();
+  Assert.assertEquals(rawTemplate.getString("key1"),"value1");
+  Assert.assertEquals(rawTemplate.getString("key2"),"value2");
+  Assert.assertEquals(rawTemplate.getString("key3"),"value3");
+  Config resolved=template.getResolvedConfig(ConfigFactory.parseMap(ImmutableMap.of("required","r1","required3","r3")));
+  Assert.assertEquals(resolved.getString("key1"),"value1");
+  Assert.assertEquals(resolved.getString("key2"),"value2");
+  Assert.assertEquals(resolved.getString("key3"),"value3");
+  Assert.assertEquals(resolved.getString("required"),"r1");
+  Assert.assertEquals(resolved.getString("required3"),"r3");
+}

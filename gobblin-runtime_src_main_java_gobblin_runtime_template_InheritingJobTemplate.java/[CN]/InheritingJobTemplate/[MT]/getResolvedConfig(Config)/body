@@ -1,0 +1,4 @@
+{
+  ensureTemplatesResolved();
+  return getResolvedConfigHelper(userConfig,Sets.<JobTemplate>newHashSet());
+}

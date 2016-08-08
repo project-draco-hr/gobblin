@@ -1,0 +1,3 @@
+{
+  this(uri,version,description,config,getSuperTemplateUris(config),catalog);
+}

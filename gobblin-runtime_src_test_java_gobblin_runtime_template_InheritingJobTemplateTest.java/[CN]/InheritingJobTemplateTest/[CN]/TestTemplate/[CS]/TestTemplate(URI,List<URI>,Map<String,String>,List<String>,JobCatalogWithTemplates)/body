@@ -1,0 +1,6 @@
+{
+  super(superTemplateUris,catalog);
+  this.uri=uri;
+  this.rawTemplate=rawTemplate;
+  this.required=required;
+}

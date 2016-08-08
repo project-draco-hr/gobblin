@@ -1,0 +1,10 @@
+{
+  Set<String> requiredConfigs=Sets.newHashSet(getLocallyRequiredConfigList());
+  for (  JobTemplate template : this.superTemplates) {
+    if (!alreadyLoadedTemplates.contains(template)) {
+      alreadyLoadedTemplates.add(template);
+      requiredConfigs.addAll(template instanceof InheritingJobTemplate ? ((InheritingJobTemplate)template).getRequiredConfigListHelper(alreadyLoadedTemplates) : template.getRequiredConfigList());
+    }
+  }
+  return requiredConfigs;
+}

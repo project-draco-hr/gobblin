@@ -1,0 +1,22 @@
+{
+  TestTemplate template1=new TestTemplate(new URI("template1"),Lists.<JobTemplate>newArrayList(),ImmutableMap.of("key1","value1"),Lists.newArrayList("required"));
+  TestTemplate template2=new TestTemplate(new URI("template2"),Lists.<JobTemplate>newArrayList(template1),ImmutableMap.of("key2","value2"),Lists.newArrayList("required2"));
+  Collection<String> required=template2.getRequiredConfigList();
+  Assert.assertEquals(required.size(),2);
+  Assert.assertTrue(required.contains("required"));
+  Assert.assertTrue(required.contains("required2"));
+  Config rawTemplate=template2.getRawTemplateConfig();
+  Assert.assertEquals(rawTemplate.getString("key1"),"value1");
+  Assert.assertEquals(rawTemplate.getString("key2"),"value2");
+  Config resolved=template2.getResolvedConfig(ConfigFactory.parseMap(ImmutableMap.of("required","r1","required2","r2")));
+  Assert.assertEquals(resolved.getString("key1"),"value1");
+  Assert.assertEquals(resolved.getString("key2"),"value2");
+  Assert.assertEquals(resolved.getString("required"),"r1");
+  Assert.assertEquals(resolved.getString("required2"),"r2");
+  try {
+    resolved=template2.getResolvedConfig(ConfigFactory.parseMap(ImmutableMap.of("required","r1")));
+    Assert.fail();
+  }
+ catch (  JobTemplate.TemplateException te) {
+  }
+}

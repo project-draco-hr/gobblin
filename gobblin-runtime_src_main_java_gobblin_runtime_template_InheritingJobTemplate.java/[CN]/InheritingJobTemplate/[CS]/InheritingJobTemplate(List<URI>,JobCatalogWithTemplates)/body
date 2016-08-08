@@ -1,0 +1,5 @@
+{
+  this.superTemplateUris=superTemplateUris;
+  this.catalog=catalog;
+  this.resolved=false;
+}

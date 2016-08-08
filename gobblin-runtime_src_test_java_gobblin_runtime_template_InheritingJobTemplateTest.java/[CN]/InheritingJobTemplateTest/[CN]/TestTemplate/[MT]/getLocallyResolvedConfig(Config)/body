@@ -1,0 +1,8 @@
+{
+  for (  String required : this.required) {
+    if (!userConfig.hasPath(required)) {
+      throw new TemplateException("Missing required property " + required);
+    }
+  }
+  return userConfig.withFallback(getLocalRawTemplate());
+}

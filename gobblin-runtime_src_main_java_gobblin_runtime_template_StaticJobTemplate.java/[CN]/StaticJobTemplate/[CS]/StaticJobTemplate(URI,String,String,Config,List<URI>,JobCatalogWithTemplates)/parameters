@@ -1,0 +1,6 @@
+URI uri
+String version
+String description
+Config config
+List<URI> superTemplateUris
+JobCatalogWithTemplates catalog

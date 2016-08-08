@@ -1,0 +1,17 @@
+{
+  if (config.hasPath(SUPER_TEMPLATE_KEY)) {
+    List<URI> uris=Lists.newArrayList();
+    for (    String uriString : config.getString(SUPER_TEMPLATE_KEY).split(",")) {
+      try {
+        uris.add(new URI(uriString));
+      }
+ catch (      URISyntaxException use) {
+        throw new TemplateException("Super template uri is malformed: " + uriString,use);
+      }
+    }
+    return uris;
+  }
+ else {
+    return Lists.newArrayList();
+  }
+}

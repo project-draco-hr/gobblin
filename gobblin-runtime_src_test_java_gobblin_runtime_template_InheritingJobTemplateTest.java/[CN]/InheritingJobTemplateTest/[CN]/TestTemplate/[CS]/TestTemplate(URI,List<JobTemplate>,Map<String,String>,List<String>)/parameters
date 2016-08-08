@@ -1,0 +1,4 @@
+URI uri
+List<JobTemplate> superTemplates
+Map<String,String> rawTemplate
+List<String> required

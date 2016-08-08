@@ -1,0 +1,4 @@
+{
+  ensureTemplatesResolved();
+  return getRawTemplateConfigHelper(Sets.<JobTemplate>newHashSet());
+}

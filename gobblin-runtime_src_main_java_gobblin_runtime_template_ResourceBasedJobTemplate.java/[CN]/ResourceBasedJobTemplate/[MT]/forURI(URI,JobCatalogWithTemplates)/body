@@ -1,0 +1,5 @@
+{
+  try (InputStream is=getInputStreamForURI(uri)){
+    return new ResourceBasedJobTemplate(is,uri,catalog);
+  }
+ }

@@ -1,0 +1,17 @@
+{
+  if (this.resolved) {
+    return;
+  }
+  this.superTemplates=Lists.newArrayList();
+  for (  URI uri : superTemplateUris) {
+    if (!loadedTemplates.containsKey(uri)) {
+      JobTemplate newTemplate=this.catalog.getTemplate(uri);
+      loadedTemplates.put(uri,newTemplate);
+      if (newTemplate instanceof InheritingJobTemplate) {
+        ((InheritingJobTemplate)newTemplate).resolveTemplates(loadedTemplates);
+      }
+    }
+    this.superTemplates.add(loadedTemplates.get(uri));
+  }
+  this.resolved=true;
+}
