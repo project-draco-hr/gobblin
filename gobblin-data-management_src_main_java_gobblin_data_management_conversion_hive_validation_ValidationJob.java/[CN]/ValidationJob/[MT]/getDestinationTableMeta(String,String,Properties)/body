@@ -1,0 +1,22 @@
+{
+  Optional<org.apache.hadoop.hive.metastore.api.Table> table=Optional.absent();
+  Optional<List<Partition>> partitions=Optional.absent();
+  try {
+    try (AutoReturnableObject<IMetaStoreClient> client=pool.getClient()){
+      table=Optional.of(client.get().getTable(dbName,tableName));
+      if (table.isPresent()) {
+        org.apache.hadoop.hive.ql.metadata.Table qlTable=new org.apache.hadoop.hive.ql.metadata.Table(table.get());
+        if (HiveUtils.isPartitioned(qlTable)) {
+          partitions=Optional.of(HiveUtils.getPartitions(client.get(),qlTable,Optional.<String>absent()));
+        }
+      }
+    }
+   }
+ catch (  NoSuchObjectException e) {
+    return ImmutablePair.of(table,partitions);
+  }
+catch (  IOException|TException e) {
+    throw new RuntimeException("Could not fetch destination table metadata",e);
+  }
+  return ImmutablePair.of(table,partitions);
+}

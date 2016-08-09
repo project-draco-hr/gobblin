@@ -1,0 +1,37 @@
+{
+  if (null == rowCounts || rowCounts.size() == 0) {
+    this.warnConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"No conversion details found");
+    this.eventSubmitter.submit(EventConstants.VALIDATION_NOOP_EVENT,ImmutableMap.of("datasetUrn",datasetIdentifier));
+    return;
+  }
+  long rowCountCached=-1;
+  boolean isFirst=true;
+  for (  Long rowCount : rowCounts) {
+    if (isFirst) {
+      rowCountCached=rowCount;
+      isFirst=false;
+      continue;
+    }
+    if (rowCount != rowCountCached) {
+      if (rowCount == 0) {
+        this.warnConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Row counts found 0, may be the conversion is delayed.");
+        this.eventSubmitter.submit(EventConstants.VALIDATION_NOOP_EVENT,ImmutableMap.of("datasetUrn",datasetIdentifier));
+      }
+ else {
+        this.failedConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),String.format("Row counts did not match across all conversions. Row count expected: %d, Row count got: %d",rowCountCached,rowCount));
+        this.eventSubmitter.submit(EventConstants.VALIDATION_FAILED_EVENT,ImmutableMap.of("datasetUrn",datasetIdentifier));
+        return;
+      }
+    }
+ else {
+      this.successfulConversions.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),String.format("Row counts matched across all conversions. Row count expected: %d, Row count got: %d",rowCountCached,rowCount));
+      this.eventSubmitter.submit(EventConstants.VALIDATION_SUCCESSFUL_EVENT,ImmutableMap.of("datasetUrn",datasetIdentifier));
+    }
+  }
+  if (rowCountCached == rowDataValidatedCount) {
+    this.dataValidationSuccessful.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Common rows matched expected value. Expected: " + rowCountCached + " Found: "+ rowDataValidatedCount);
+  }
+ else {
+    this.dataValidationFailed.put(String.format("Dataset: %s Instance: %s",datasetIdentifier,conversionInstance),"Common rows did not match expected value. Expected: " + rowCountCached + " Found: "+ rowDataValidatedCount);
+  }
+}

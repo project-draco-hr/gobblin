@@ -1,0 +1,7 @@
+{
+  BackfillHiveSource backfillHiveSource=new BackfillHiveSource();
+  SourceState state=new SourceState();
+  backfillHiveSource.initialize(state);
+  Partition sourcePartition=Mockito.mock(Partition.class,Mockito.RETURNS_SMART_NULLS);
+  Assert.assertTrue(backfillHiveSource.shouldCreateWorkunit(sourcePartition,new LongWatermark(0)));
+}

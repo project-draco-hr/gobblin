@@ -1,0 +1,4 @@
+String sourceTable
+String sourceDb
+Table targetTable
+Optional<Partition> optionalPartition

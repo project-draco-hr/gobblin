@@ -1,0 +1,3 @@
+{
+  this.partitionsWhitelist=Sets.newHashSet(Splitter.on(",").omitEmptyStrings().trimResults().split(state.getProp(BACKFILL_SOURCE_PARTITION_WHITELIST_KEY,StringUtils.EMPTY)));
+}

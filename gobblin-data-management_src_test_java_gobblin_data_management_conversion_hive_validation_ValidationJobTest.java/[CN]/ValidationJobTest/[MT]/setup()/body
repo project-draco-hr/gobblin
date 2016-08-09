@@ -1,6 +1,0 @@
-{
-  this.currentTime=System.currentTimeMillis();
-  this.updateTime=new DateTime(currentTime).minusDays(35).getMillis();
-  this.maxLookbackTime=new DateTime(currentTime).minusDays(3).getMillis();
-  this.skipRecentThanDays=new DateTime(currentTime).minusDays(1).getMillis();
-}

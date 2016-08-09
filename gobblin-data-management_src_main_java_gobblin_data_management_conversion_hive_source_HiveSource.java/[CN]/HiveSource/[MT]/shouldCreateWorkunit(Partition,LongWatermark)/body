@@ -1,0 +1,5 @@
+{
+  long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
+  long createTime=getCreateTime(sourcePartition);
+  return shouldCreateWorkunit(createTime,updateTime,lowWatermark);
+}

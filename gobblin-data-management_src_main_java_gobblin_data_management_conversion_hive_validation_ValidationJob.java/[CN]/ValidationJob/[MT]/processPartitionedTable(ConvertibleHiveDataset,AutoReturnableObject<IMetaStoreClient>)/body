@@ -1,36 +1,42 @@
 {
   List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
-  for (  final Partition sourcePartition : sourcePartitions) {
-    try {
-      final long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
-      if (shouldValidate(updateTime,this.maxLookBackTime,this.skipRecentThanTime)) {
-        log.info(String.format("Validating partition: %s",sourcePartition));
-        for (        String format : this.destFormats) {
-          Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
-          if (conversionConfigOptional.isPresent()) {
-            ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
-            final List<String> validationQueries=HiveValidationQueryGenerator.generateValidationQueries(hiveDataset,Optional.of(sourcePartition),conversionConfig);
-            log.info(String.format("Going to execute queries: %s for format: %s",validationQueries,format));
+  for (  final String format : this.destFormats) {
+    Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
+    if (conversionConfigOptional.isPresent()) {
+      ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
+      String orcTableName=conversionConfig.getDestinationTableName();
+      String orcTableDatabase=conversionConfig.getDestinationDbName();
+      Pair<Optional<org.apache.hadoop.hive.metastore.api.Table>,Optional<List<Partition>>> destinationMeta=getDestinationTableMeta(orcTableDatabase,orcTableName,this.props);
+      for (      final Partition sourcePartition : sourcePartitions) {
+        try {
+          final long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
+          if (shouldValidate(sourcePartition)) {
+            log.info(String.format("Validating partition: %s",sourcePartition.getCompleteName()));
+            final List<String> countValidationQueries=HiveValidationQueryGenerator.generateCountValidationQueries(hiveDataset,Optional.of(sourcePartition),conversionConfig);
+            final List<String> dataValidationQueries=Lists.newArrayList(HiveValidationQueryGenerator.generateDataValidationQuery(hiveDataset.getTable().getTableName(),hiveDataset.getTable().getDbName(),destinationMeta.getKey().get(),Optional.of(sourcePartition)));
             this.futures.add(this.exec.submit(new Callable<Void>(){
               @Override public Void call() throws Exception {
-                List<Long> rowCounts=ValidationJob.this.getValidationOutputFromHive(validationQueries);
-                validateAndPopulateReport(sourcePartition.getCompleteName(),updateTime,rowCounts);
+                log.debug(String.format("Going to execute count validation queries queries: %s for format: %s " + "and partition %s",countValidationQueries,format,sourcePartition.getCompleteName()));
+                List<Long> rowCounts=ValidationJob.this.getValidationOutputFromHive(countValidationQueries);
+                log.debug(String.format("Going to execute data validation queries: %s for format: %s and partition %s",dataValidationQueries,format,sourcePartition.getCompleteName()));
+                List<Long> rowDataValidatedCount=ValidationJob.this.getValidationOutputFromHive(dataValidationQueries);
+                validateAndPopulateReport(sourcePartition.getCompleteName(),updateTime,rowCounts,rowDataValidatedCount.get(0));
                 return null;
               }
             }
 ));
           }
  else {
-            log.info(String.format("No config found for format: %s So skipping partition: %s for this format",format,sourcePartition.getCompleteName()));
+            log.debug(String.format("Not validating partition: %s as updateTime: %s is not in range of max look back: %s " + "and skip recent than: %s",sourcePartition.getCompleteName(),updateTime,this.maxLookBackTime,this.skipRecentThanTime));
           }
         }
-      }
- else {
-        log.debug(String.format("Not validating partition: %s as updateTime: %s is not in range of max look back: %s " + "and skip recent than: %s",sourcePartition.getCompleteName(),updateTime,this.maxLookBackTime,this.skipRecentThanTime));
+ catch (        UpdateNotFoundException e) {
+          log.warn(String.format("Not validating partition: %s as update time was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
+        }
       }
     }
- catch (    UpdateNotFoundException e) {
-      log.warn(String.format("Not validating partition: %s as update time was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
+ else {
+      log.info(String.format("No conversion config found for format %s. Ignoring data validation",format));
     }
   }
 }

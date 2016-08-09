@@ -1,3 +1,0 @@
-String datasetIdentifier
-long conversionInstance
-List<Long> rowCounts

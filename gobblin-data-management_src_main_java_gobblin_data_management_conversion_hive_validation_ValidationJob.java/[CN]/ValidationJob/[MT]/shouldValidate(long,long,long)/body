@@ -1,4 +1,0 @@
-{
-  DateTime updateDateTime=new DateTime(updateTime);
-  return updateDateTime.isAfter(maxLookBackTime) && updateDateTime.isBefore(skipRecentThanTime);
-}

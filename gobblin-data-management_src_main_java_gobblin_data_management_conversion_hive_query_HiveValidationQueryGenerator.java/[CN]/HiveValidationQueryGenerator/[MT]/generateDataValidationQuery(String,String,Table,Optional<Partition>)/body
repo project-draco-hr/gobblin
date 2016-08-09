@@ -1,0 +1,42 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append("SELECT count(*) FROM `").append(sourceDb).append("`.`").append(sourceTable).append("` s JOIN `").append(targetTable.getDbName()).append("`.`").append(targetTable.getTableName()).append("` t ON \n");
+  boolean isFirst=true;
+  List<FieldSchema> fieldList=targetTable.getSd().getCols();
+  for (  FieldSchema field : fieldList) {
+    if (StringUtils.startsWithIgnoreCase(field.getType(),"map")) {
+      continue;
+    }
+    if (isFirst) {
+      isFirst=false;
+    }
+ else {
+      sb.append(" AND \n");
+    }
+    String colName=field.getComment().replaceAll("from flatten_source ","").trim();
+    sb.append("\ts.`").append(colName.replaceAll("\\.","`.`")).append("`<=>");
+    sb.append("t.`").append(field.getName()).append("` ");
+  }
+  sb.append("\n");
+  if (optionalPartition.isPresent()) {
+    Partition partition=optionalPartition.get();
+    String partitionsInfoString=partition.getName();
+    List<String> pInfo=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsInfoString);
+    for (int i=0; i < pInfo.size(); i++) {
+      List<String> partitionInfoParts=Splitter.on("=").omitEmptyStrings().trimResults().splitToList(pInfo.get(i));
+      if (partitionInfoParts.size() != 2) {
+        throw new IllegalArgumentException(String.format("Partition details should be of the format partitionName=partitionValue. Recieved: %s",pInfo.get(i)));
+      }
+      if (i == 0) {
+        sb.append(" WHERE \n");
+      }
+ else {
+        sb.append(" AND ");
+      }
+      sb.append(String.format("s.`%s`='%s' ",partitionInfoParts.get(0),partitionInfoParts.get(1)));
+      sb.append(" AND ");
+      sb.append(String.format("t.`%s`='%s' ",partitionInfoParts.get(0),partitionInfoParts.get(1)));
+    }
+  }
+  return sb.toString();
+}

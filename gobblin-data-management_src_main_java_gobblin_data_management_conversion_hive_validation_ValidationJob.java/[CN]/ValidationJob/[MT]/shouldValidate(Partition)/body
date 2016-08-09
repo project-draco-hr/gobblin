@@ -1,0 +1,4 @@
+{
+  long createTime=HiveSource.getCreateTime(partition);
+  return new DateTime(createTime).isAfter(this.maxLookBackTime) && new DateTime(createTime).isBefore(this.skipRecentThanTime);
+}

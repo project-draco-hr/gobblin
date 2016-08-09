@@ -17,4 +17,5 @@
   this.exec=Executors.newFixedThreadPool(maxThreadCount,ExecutorsUtils.newThreadFactory(Optional.of(LoggerFactory.getLogger(ValidationJob.class)),Optional.of("getValidationOutputFromHive")));
   this.futures=Lists.newArrayList();
   EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.VALIDATION_SETUP_EVENT);
+  this.pool=HiveMetastoreClientPool.get(props,Optional.fromNullable(props.getProperty(HiveDatasetFinder.HIVE_METASTORE_URI_KEY)));
 }

@@ -2,7 +2,7 @@
   try {
     long updateTime=this.updateProvider.getUpdateTime(hiveDataset.getTable());
     LongWatermark lowWatermark=this.watermarker.getPreviousHighWatermark(hiveDataset.getTable());
-    if (shouldCreateWorkunit(updateTime,lowWatermark)) {
+    if (shouldCreateWorkunit(hiveDataset.getTable().getTTable().getCreateTime(),updateTime,lowWatermark)) {
       log.debug(String.format("Processing table: %s",hiveDataset.getTable()));
       HiveWorkUnit hiveWorkUnit=new HiveWorkUnit(hiveDataset);
       hiveWorkUnit.setTableSchemaUrl(this.avroSchemaManager.getSchemaUrl(hiveDataset.getTable()));

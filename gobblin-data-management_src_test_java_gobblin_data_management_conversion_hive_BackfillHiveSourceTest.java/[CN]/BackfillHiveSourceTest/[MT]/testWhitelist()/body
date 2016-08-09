@@ -1,0 +1,15 @@
+{
+  BackfillHiveSource backfillHiveSource=new BackfillHiveSource();
+  SourceState state=new SourceState();
+  state.setProp(BackfillHiveSource.BACKFILL_SOURCE_PARTITION_WHITELIST_KEY,"service@logEvent@datepartition=2016-08-04-00,service@logEvent@datepartition=2016-08-05-00");
+  backfillHiveSource.initialize(state);
+  Partition pass1=Mockito.mock(Partition.class,Mockito.RETURNS_SMART_NULLS);
+  Mockito.when(pass1.getCompleteName()).thenReturn("service@logEvent@datepartition=2016-08-04-00");
+  Partition pass2=Mockito.mock(Partition.class,Mockito.RETURNS_SMART_NULLS);
+  Mockito.when(pass2.getCompleteName()).thenReturn("service@logEvent@datepartition=2016-08-05-00");
+  Partition fail=Mockito.mock(Partition.class,Mockito.RETURNS_SMART_NULLS);
+  Mockito.when(fail.getCompleteName()).thenReturn("service@logEvent@datepartition=2016-08-06-00");
+  Assert.assertTrue(backfillHiveSource.shouldCreateWorkunit(pass1,new LongWatermark(0)));
+  Assert.assertTrue(backfillHiveSource.shouldCreateWorkunit(pass2,new LongWatermark(0)));
+  Assert.assertFalse(backfillHiveSource.shouldCreateWorkunit(fail,new LongWatermark(0)));
+}

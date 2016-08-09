@@ -1,27 +1,34 @@
 {
   try {
-    long updateTime=this.updateProvider.getUpdateTime(hiveDataset.getTable());
-    if (shouldValidate(updateTime,this.maxLookBackTime,this.skipRecentThanTime)) {
-      log.debug(String.format("Validating table: %s",hiveDataset.getTable()));
-      for (      String format : this.destFormats) {
-        Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
-        if (conversionConfigOptional.isPresent()) {
-          ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
-          List<String> validationQueries=HiveValidationQueryGenerator.generateValidationQueries(hiveDataset,Optional.<Partition>absent(),conversionConfig);
-          log.info(String.format("Going to execute queries: %s for format: %s",validationQueries,format));
-          List<Long> rowCounts=this.getValidationOutputFromHive(validationQueries);
-          validateAndPopulateReport(hiveDataset.getTable().getCompleteName(),updateTime,rowCounts);
+    final long updateTime=this.updateProvider.getUpdateTime(hiveDataset.getTable());
+    log.info(String.format("Validating table: %s",hiveDataset.getTable()));
+    for (    final String format : this.destFormats) {
+      Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
+      if (conversionConfigOptional.isPresent()) {
+        ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();
+        String orcTableName=conversionConfig.getDestinationTableName();
+        String orcTableDatabase=conversionConfig.getDestinationDbName();
+        Pair<Optional<org.apache.hadoop.hive.metastore.api.Table>,Optional<List<Partition>>> destinationMeta=getDestinationTableMeta(orcTableDatabase,orcTableName,this.props);
+        final List<String> validationQueries=HiveValidationQueryGenerator.generateCountValidationQueries(hiveDataset,Optional.<Partition>absent(),conversionConfig);
+        final List<String> dataValidationQueries=Lists.newArrayList(HiveValidationQueryGenerator.generateDataValidationQuery(hiveDataset.getTable().getTableName(),hiveDataset.getTable().getDbName(),destinationMeta.getKey().get(),Optional.<Partition>absent()));
+        this.futures.add(this.exec.submit(new Callable<Void>(){
+          @Override public Void call() throws Exception {
+            log.debug(String.format("Going to execute queries: %s for format: %s",validationQueries,format));
+            List<Long> rowCounts=ValidationJob.this.getValidationOutputFromHive(validationQueries);
+            log.debug(String.format("Going to execute queries: %s for format: %s",dataValidationQueries,format));
+            List<Long> rowDataValidatedCount=ValidationJob.this.getValidationOutputFromHive(dataValidationQueries);
+            validateAndPopulateReport(hiveDataset.getTable().getCompleteName(),updateTime,rowCounts,rowDataValidatedCount.get(0));
+            return null;
+          }
         }
- else {
-          log.info(String.format("No config found for format: %s So skipping table: %s for this format",format,hiveDataset.getTable().getCompleteName()));
-        }
+));
       }
-    }
  else {
-      log.info(String.format("Not validating table: %s as updateTime: %s is not in range of max look back: %s " + "and skip recent than: %s",hiveDataset.getTable().getCompleteName(),updateTime,this.maxLookBackTime,this.skipRecentThanTime));
+        log.warn(String.format("No config found for format: %s So skipping table: %s for this format",format,hiveDataset.getTable().getCompleteName()));
+      }
     }
   }
  catch (  UpdateNotFoundException e) {
-    log.info(String.format("Not validating table: %s as update time was not found. %s",hiveDataset.getTable().getCompleteName(),e.getMessage()));
+    log.warn(String.format("Not validating table: %s as update time was not found. %s",hiveDataset.getTable().getCompleteName(),e.getMessage()));
   }
 }

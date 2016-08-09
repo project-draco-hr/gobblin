@@ -39,7 +39,7 @@
       }
   finally {
         if (this.fs.exists(hiveTempDir)) {
-          log.info("Deleting temp dir: " + hiveTempDir);
+          log.debug("Deleting temp dir: " + hiveTempDir);
           this.fs.delete(hiveTempDir,true);
         }
       }

@@ -7,7 +7,7 @@
     LongWatermark lowWatermark=watermarker.getPreviousHighWatermark(sourcePartition);
     try {
       long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
-      if (shouldCreateWorkunit(updateTime,lowWatermark)) {
+      if (shouldCreateWorkunit(sourcePartition,lowWatermark)) {
         log.debug(String.format("Processing partition: %s",sourcePartition));
         HiveWorkUnit hiveWorkUnit=new HiveWorkUnit(hiveDataset);
         hiveWorkUnit.setTableSchemaUrl(this.avroSchemaManager.getSchemaUrl(hiveDataset.getTable()));
@@ -16,7 +16,7 @@
         hiveWorkUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedDatasetHighWatermark));
         EventWorkunitUtils.setPartitionSlaEventMetadata(hiveWorkUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue(),this.beginGetWorkunitsTime);
         workunits.add(hiveWorkUnit);
-        log.debug(String.format("Workunit added for partition: %s",hiveWorkUnit));
+        log.info(String.format("Creating workunit for partition %s as updateTime %s is greater than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));
       }
  else {
         log.info(String.format("Not creating workunit for partition %s as updateTime %s is lesser than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));

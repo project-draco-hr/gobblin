@@ -1,5 +1,0 @@
-{
-  long updateTime=new DateTime(this.currentTime).minusDays(2).getMillis();
-  boolean shouldValidate=ValidationJob.shouldValidate(updateTime,this.maxLookbackTime,this.skipRecentThanDays);
-  Assert.assertEquals(shouldValidate,true,"Should validate when update time is between " + "maxLookbackDays and skipRecentThanDays");
-}

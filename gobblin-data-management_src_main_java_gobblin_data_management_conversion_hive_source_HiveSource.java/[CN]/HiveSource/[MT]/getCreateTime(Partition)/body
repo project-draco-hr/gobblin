@@ -1,0 +1,12 @@
+{
+  if (partition.getTPartition().getCreateTime() > 0) {
+    return TimeUnit.MILLISECONDS.convert(partition.getTPartition().getCreateTime(),TimeUnit.SECONDS);
+  }
+ else   if (partition.getTPartition().isSetParameters() && partition.getTPartition().getParameters().containsKey(DISTCP_REGISTRATION_GENERATION_TIME_KEY)) {
+    log.debug("Did not find createTime in Hive partition, used distcp registration generation time.");
+    return Long.parseLong(partition.getTPartition().getParameters().get(DISTCP_REGISTRATION_GENERATION_TIME_KEY));
+  }
+ else {
+    throw new IllegalStateException(String.format("Could not find create time in hive metastore for partition %s",partition.getCompleteName()));
+  }
+}

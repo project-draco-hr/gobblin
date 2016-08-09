@@ -1,14 +1,3 @@
 {
-  if (partition.getTPartition().getCreateTime() > 0) {
-    DateTime createTime=new DateTime(TimeUnit.MILLISECONDS.convert(partition.getTPartition().getCreateTime(),TimeUnit.SECONDS));
-    return createTime.isBefore(this.maxLookBackTime);
-  }
- else   if (partition.getTPartition().isSetParameters() && partition.getTPartition().getParameters().containsKey(DISTCP_REGISTRATION_GENERATION_TIME_KEY)) {
-    Long registrationGenerationTime=Long.parseLong(partition.getTPartition().getParameters().get(DISTCP_REGISTRATION_GENERATION_TIME_KEY));
-    DateTime createTime=new DateTime(registrationGenerationTime);
-    log.debug("Did not find createTime in Hive partition, used distcp registration generation time.");
-    return createTime.isBefore(this.maxLookBackTime);
-  }
-  log.warn("Did not find createTime in Hive partition or distcp registration generation time. " + "Marking partitions as old for safely skipping processing.");
-  return true;
+  return new DateTime(getCreateTime(partition)).isBefore(this.maxLookBackTime);
 }

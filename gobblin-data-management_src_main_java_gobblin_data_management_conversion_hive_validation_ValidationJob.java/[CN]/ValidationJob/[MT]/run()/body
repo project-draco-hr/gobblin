@@ -3,6 +3,8 @@
     this.successfulConversions=Maps.newConcurrentMap();
     this.failedConversions=Maps.newConcurrentMap();
     this.warnConversions=Maps.newConcurrentMap();
+    this.dataValidationFailed=Maps.newConcurrentMap();
+    this.dataValidationSuccessful=Maps.newConcurrentMap();
     Iterator<HiveDataset> iterator=this.datasetFinder.getDatasetsIterator();
     EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.VALIDATION_FIND_HIVE_TABLES_EVENT);
     while (iterator.hasNext()) {
@@ -39,7 +41,13 @@
     for (    Map.Entry<String,String> failedConverion : this.failedConversions.entrySet()) {
       log.error(String.format("Failed conversion: %s [%s]",failedConverion.getKey(),failedConverion.getValue()));
     }
-    if (!failedConversions.isEmpty()) {
+    for (    Map.Entry<String,String> success : this.dataValidationSuccessful.entrySet()) {
+      log.info(String.format("Data validation successful: %s [%s]",success.getKey(),success.getValue()));
+    }
+    for (    Map.Entry<String,String> failed : this.dataValidationFailed.entrySet()) {
+      log.error(String.format("Data validation failed: %s [%s]",failed.getKey(),failed.getValue()));
+    }
+    if (!this.failedConversions.isEmpty() || !this.dataValidationFailed.isEmpty()) {
       throw new RuntimeException(String.format("Validation failed for %s conversions. See previous logs for exact validation failures",failedConversions.size()));
     }
     if (oneFutureFailure) {
@@ -47,6 +55,6 @@
     }
   }
  catch (  IOException e) {
-    throw new RuntimeException(e);
+    Throwables.propagate(e);
   }
 }
