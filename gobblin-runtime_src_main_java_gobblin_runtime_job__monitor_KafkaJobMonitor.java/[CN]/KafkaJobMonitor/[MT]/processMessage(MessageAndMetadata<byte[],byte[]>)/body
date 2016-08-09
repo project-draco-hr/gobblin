@@ -1,0 +1,17 @@
+{
+  try {
+    Collection<Either<JobSpec,URI>> parsedCollection=parseJobSpec(message.message());
+    for (    Either<JobSpec,URI> parsedMessage : parsedCollection) {
+      if (parsedMessage instanceof Either.Left) {
+        this.jobCatalog.put(((Either.Left<JobSpec,URI>)parsedMessage).getLeft());
+      }
+ else       if (parsedMessage instanceof Either.Right) {
+        this.jobCatalog.remove(((Either.Right<JobSpec,URI>)parsedMessage).getRight());
+      }
+    }
+  }
+ catch (  IOException ioe) {
+    String messageStr=new String(message.message(),Charsets.UTF_8);
+    log.error(String.format("Failed to parse kafka message with offset %d: %s.",message.offset(),messageStr),ioe);
+  }
+}

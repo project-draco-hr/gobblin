@@ -1,0 +1,6 @@
+{
+  KafkaStream<byte[],byte[]> stream=(KafkaStream<byte[],byte[]>)Mockito.mock(KafkaStream.class);
+  ConsumerIterator<byte[],byte[]> it=new ConsumerIterator<>(queue,-1,new DefaultDecoder(new VerifiableProperties()),new DefaultDecoder(new VerifiableProperties()),"clientId");
+  Mockito.when(stream.iterator()).thenReturn(it);
+  return stream;
+}

@@ -1,0 +1,6 @@
+{
+  Map<String,Integer> topicCountMap=Maps.newHashMap();
+  topicCountMap.put(this.topic,this.numThreads);
+  Map<String,List<KafkaStream<byte[],byte[]>>> consumerMap=this.consumer.createMessageStreams(topicCountMap);
+  return consumerMap.get(this.topic);
+}

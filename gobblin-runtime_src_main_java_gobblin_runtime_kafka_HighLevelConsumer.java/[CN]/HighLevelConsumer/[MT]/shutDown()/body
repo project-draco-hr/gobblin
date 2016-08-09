@@ -1,0 +1,8 @@
+{
+  if (this.consumer != null) {
+    this.consumer.shutdown();
+  }
+  if (this.executor != null) {
+    ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log),5000,TimeUnit.MILLISECONDS);
+  }
+}

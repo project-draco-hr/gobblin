@@ -1,0 +1,2 @@
+Config config
+Map<URI,JobSpec> jobSpecs
