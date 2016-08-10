@@ -6,6 +6,7 @@
   }
   Collections.sort(versions,Collections.reverseOrder());
   Collection<HiveDatasetVersion> deletableVersions=this.hiveSelectionPolicy.listSelectedVersions(versions);
+  log.info(String.format("Cleaning dataset %s .Will drop %s out of %s partitions.",datasetURN(),deletableVersions.size(),versions.size()));
   List<Exception> exceptions=Lists.newArrayList();
   Set<Path> possiblyEmptyDirectories=new HashSet<>();
   try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
