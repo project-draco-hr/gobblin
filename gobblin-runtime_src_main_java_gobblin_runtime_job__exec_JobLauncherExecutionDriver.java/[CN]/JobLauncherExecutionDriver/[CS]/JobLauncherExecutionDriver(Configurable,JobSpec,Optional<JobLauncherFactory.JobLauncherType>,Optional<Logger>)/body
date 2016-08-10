@@ -1,0 +1,9 @@
+{
+  _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+  _sysConfig=sysConfig;
+  _jobSpec=jobSpec;
+  _jobExec=JobExecutionUpdatable.createFromJobSpec(jobSpec);
+  _callbackDispatcher=new JobExecutionStateListeners(_log);
+  _jobState=new JobExecutionState(_jobSpec,_jobExec,Optional.<JobExecutionStateListener>of(_callbackDispatcher));
+  _legacyLauncher=createLauncher(jobLauncherType.isPresent() ? Optional.of(jobLauncherType.get().toString()) : Optional.<String>absent());
+}

@@ -1,16 +1,4 @@
 {
   String launcherTypeValue=sysProps.getProperty(ConfigurationKeys.JOB_LAUNCHER_TYPE_KEY,JobLauncherType.LOCAL.name());
-  Optional<JobLauncherType> launcherType=Enums.getIfPresent(JobLauncherType.class,launcherTypeValue);
-  if (launcherType.isPresent()) {
-switch (launcherType.get()) {
-case LOCAL:
-      return new LocalJobLauncher(JobConfigurationUtils.combineSysAndJobProperties(sysProps,jobProps));
-case MAPREDUCE:
-    return new MRJobLauncher(JobConfigurationUtils.combineSysAndJobProperties(sysProps,jobProps));
-default :
-  throw new RuntimeException("Unsupported job launcher type: " + launcherType.get().name());
-}
-}
-@SuppressWarnings("unchecked") Class<? extends AbstractJobLauncher> launcherClass=(Class<? extends AbstractJobLauncher>)Class.forName(launcherTypeValue);
-return launcherClass.getDeclaredConstructor(Properties.class).newInstance(JobConfigurationUtils.combineSysAndJobProperties(sysProps,jobProps));
+  return newJobLauncher(sysProps,jobProps,launcherTypeValue);
 }

@@ -1,0 +1,4 @@
+{
+  _log=Optional.of(log);
+  return this;
+}

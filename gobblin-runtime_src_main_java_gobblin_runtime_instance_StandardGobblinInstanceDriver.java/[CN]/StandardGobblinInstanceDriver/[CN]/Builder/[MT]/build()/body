@@ -1,0 +1,3 @@
+{
+  return new StandardGobblinInstanceDriver(getJobCatalog(),getJobScheduler(),getJobLauncher(),Optional.of(getLog()));
+}

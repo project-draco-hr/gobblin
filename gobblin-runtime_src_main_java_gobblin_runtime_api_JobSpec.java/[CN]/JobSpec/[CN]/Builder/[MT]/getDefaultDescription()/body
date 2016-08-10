@@ -1,0 +1,4 @@
+{
+  Config jobConf=getConfig();
+  return jobConf.hasPath(ConfigurationKeys.JOB_DESCRIPTION_KEY) ? jobConf.getString(ConfigurationKeys.JOB_DESCRIPTION_KEY) : "Gobblin job " + getURI();
+}

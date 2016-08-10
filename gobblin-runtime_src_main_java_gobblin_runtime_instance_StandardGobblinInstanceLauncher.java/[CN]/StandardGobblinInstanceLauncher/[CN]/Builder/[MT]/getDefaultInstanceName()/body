@@ -1,0 +1,3 @@
+{
+  return StandardGobblinInstanceLauncher.class.getSimpleName() + "-" + INSTANCE_COUNT.getAndIncrement();
+}

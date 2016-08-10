@@ -1,3 +1,0 @@
-{
-  return sb.append(js.getUri().toString()).append(',').append(js.getVersion());
-}

@@ -1,0 +1,8 @@
+{
+  try {
+    return new URI(DEFAULT_JOB_CATALOG_SCHEME,null,"/",null,null);
+  }
+ catch (  URISyntaxException e) {
+    throw new Error("Unexpected exception: " + e,e);
+  }
+}

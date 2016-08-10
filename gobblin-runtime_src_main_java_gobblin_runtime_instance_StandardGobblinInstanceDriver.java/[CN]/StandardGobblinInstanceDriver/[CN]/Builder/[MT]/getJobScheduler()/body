@@ -1,0 +1,6 @@
+{
+  if (!_jobScheduler.isPresent()) {
+    _jobScheduler=Optional.of(getDefaultJobScheduler());
+  }
+  return _jobScheduler.get();
+}

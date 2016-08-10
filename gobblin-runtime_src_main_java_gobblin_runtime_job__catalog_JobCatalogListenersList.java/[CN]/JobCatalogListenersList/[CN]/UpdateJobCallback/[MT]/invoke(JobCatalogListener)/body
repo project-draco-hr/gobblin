@@ -1,3 +1,0 @@
-{
-  listener.onUpdateJob(this.param1,this.param2);
-}

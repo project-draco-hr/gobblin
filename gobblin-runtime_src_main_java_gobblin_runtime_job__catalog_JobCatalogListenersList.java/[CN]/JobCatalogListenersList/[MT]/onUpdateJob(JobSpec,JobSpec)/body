@@ -1,5 +1,10 @@
 {
   Preconditions.checkNotNull(originalJob);
   Preconditions.checkNotNull(updatedJob);
-  callbackAllListeners(new UpdateJobCallback(originalJob,updatedJob));
+  try {
+    _disp.execCallbacks(new UpdateJobCallback(originalJob,updatedJob));
+  }
+ catch (  InterruptedException e) {
+    getLog().warn("onUpdateJob interrupted.");
+  }
 }

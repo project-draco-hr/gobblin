@@ -1,0 +1,6 @@
+{
+  if (!this.jobCatalogURI.isPresent()) {
+    this.jobCatalogURI=Optional.of(getDefaultJobCatalogURI());
+  }
+  return this.jobCatalogURI.get();
+}

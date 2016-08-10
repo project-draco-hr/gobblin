@@ -1,0 +1,6 @@
+{
+  if (!_jobLauncher.isPresent()) {
+    _jobLauncher=Optional.of(getDefaultJobLauncher());
+  }
+  return _jobLauncher.get();
+}

@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(listener);
+  _log.info("Removing listener:" + listener);
+  _listeners.remove(listener);
+}

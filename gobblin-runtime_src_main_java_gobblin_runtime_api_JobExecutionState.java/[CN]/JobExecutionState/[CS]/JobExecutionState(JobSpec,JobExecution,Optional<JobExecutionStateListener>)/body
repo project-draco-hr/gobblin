@@ -1,0 +1,8 @@
+{
+  this.jobExecution=jobExecution;
+  this.runningState=null;
+  this.stage=UKNOWN_STAGE;
+  this.jobSpec=jobSpec;
+  this.listener=listener;
+  this.executionMetadata=new HashMap<>();
+}

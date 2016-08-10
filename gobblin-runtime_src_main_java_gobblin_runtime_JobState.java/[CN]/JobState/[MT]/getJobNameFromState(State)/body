@@ -1,0 +1,3 @@
+{
+  return state.getProp(ConfigurationKeys.JOB_NAME_KEY);
+}

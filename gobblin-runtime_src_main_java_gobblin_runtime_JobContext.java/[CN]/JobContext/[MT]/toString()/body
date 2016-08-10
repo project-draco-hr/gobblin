@@ -1,0 +1,3 @@
+{
+  return Objects.toStringHelper(JobContext.class.getSimpleName()).add("jobName",getJobName()).add("jobId",getJobId()).add("jobState",getJobState()).toString();
+}

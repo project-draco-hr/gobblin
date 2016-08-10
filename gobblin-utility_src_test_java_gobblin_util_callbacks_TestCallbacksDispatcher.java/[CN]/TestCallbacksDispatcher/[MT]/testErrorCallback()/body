@@ -1,0 +1,19 @@
+{
+  final Logger log=LoggerFactory.getLogger(TestCallbacksDispatcher.class.getSimpleName() + ".testErrorCallback");
+  CallbacksDispatcher<MyListener> disp1=new CallbacksDispatcher<>(log);
+  MyListener l1=Mockito.mock(MyListener.class);
+  MyListener l2=Mockito.mock(MyListener.class);
+  MyListener l3=Mockito.mock(MyListener.class);
+  Mockito.doThrow(new RuntimeException("injected error")).when(l2).voidCallback();
+  disp1.addListener(l1);
+  disp1.addListener(l2);
+  disp1.addListener(l3);
+  final VoidCallback voidCallback=new VoidCallback();
+  CallbacksDispatcher.CallbackResults<MyListener,Void> voidRes=disp1.execCallbacks(voidCallback);
+  Assert.assertEquals(voidRes.getSuccesses().size(),2);
+  Assert.assertEquals(voidRes.getFailures().size(),1);
+  Assert.assertEquals(voidRes.getCancellations().size(),0);
+  Assert.assertTrue(voidRes.getSuccesses().get(l1).isSuccessful());
+  Assert.assertTrue(voidRes.getSuccesses().get(l3).isSuccessful());
+  Assert.assertTrue(voidRes.getFailures().get(l2).hasFailed());
+}

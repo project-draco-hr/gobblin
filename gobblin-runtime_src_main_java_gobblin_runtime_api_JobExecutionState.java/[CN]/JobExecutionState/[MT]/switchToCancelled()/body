@@ -1,0 +1,4 @@
+{
+  Preconditions.checkState(RunningState.PENDING == this.runningState || RunningState.RUNNING == this.runningState || RunningState.SUCCESSFUL == this.runningState,"unexpected state:" + this.runningState);
+  doRunningStateChange(RunningState.CANCELLED);
+}

@@ -1,4 +1,9 @@
 {
   Preconditions.checkNotNull(deletedJob);
-  callbackAllListeners(new DeleteJobCallback(deletedJob));
+  try {
+    _disp.execCallbacks(new DeleteJobCallback(deletedJob));
+  }
+ catch (  InterruptedException e) {
+    getLog().warn("onDeleteJob interrupted.");
+  }
 }

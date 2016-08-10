@@ -1,0 +1,6 @@
+{
+  super.onJobPrepare(jobContext);
+  _jobContext=jobContext;
+  _jobState.switchToPending();
+  ;
+}

@@ -1,4 +1,4 @@
 {
   Preconditions.checkNotNull(jobSpecUri);
-  this.uri=jobSpecUri;
+  this.uri=Optional.of(jobSpecUri);
 }

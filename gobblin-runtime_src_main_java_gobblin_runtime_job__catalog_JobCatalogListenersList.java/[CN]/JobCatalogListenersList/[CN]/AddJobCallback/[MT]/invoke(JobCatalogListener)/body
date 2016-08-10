@@ -1,3 +1,0 @@
-{
-  listener.onAddJob(this.param1);
-}

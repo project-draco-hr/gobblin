@@ -1,0 +1,6 @@
+{
+  if (!this.config.isPresent()) {
+    this.config=this.configAsProperties.isPresent() ? Optional.of(ConfigUtils.propertiesToTypedConfig(this.configAsProperties.get(),Optional.<String>absent())) : Optional.of(getDefaultConfig());
+  }
+  return this.config.get();
+}

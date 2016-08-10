@@ -1,0 +1,4 @@
+{
+  super.onJobStart(jobContext);
+  _jobState.switchToRunning();
+}

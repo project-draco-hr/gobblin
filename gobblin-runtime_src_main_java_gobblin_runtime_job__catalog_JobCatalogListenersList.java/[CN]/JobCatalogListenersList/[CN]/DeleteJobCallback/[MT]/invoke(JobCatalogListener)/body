@@ -1,3 +1,0 @@
-{
-  listener.onDeleteJob(this.param1);
-}

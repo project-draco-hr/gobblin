@@ -1,0 +1,6 @@
+{
+  if (!this.uri.isPresent()) {
+    this.uri=Optional.of(getDefaultURI());
+  }
+  return this.uri.get();
+}

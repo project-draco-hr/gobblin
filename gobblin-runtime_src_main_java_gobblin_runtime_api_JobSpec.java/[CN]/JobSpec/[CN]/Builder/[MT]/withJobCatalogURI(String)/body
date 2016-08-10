@@ -1,0 +1,9 @@
+{
+  try {
+    this.jobCatalogURI=Optional.of(new URI(jobCatalogURI));
+  }
+ catch (  URISyntaxException e) {
+    throw new RuntimeException("Unable to set job catalog URI: " + e,e);
+  }
+  return this;
+}

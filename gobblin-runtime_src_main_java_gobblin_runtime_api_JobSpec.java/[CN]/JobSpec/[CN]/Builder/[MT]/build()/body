@@ -1,17 +1,5 @@
 {
   Preconditions.checkNotNull(this.uri);
   Preconditions.checkNotNull(this.version);
-  if (!this.config.isPresent() && !this.configAsProperties.isPresent()) {
-    this.config=Optional.of(ConfigFactory.empty());
-  }
-  if (!this.configAsProperties.isPresent()) {
-    this.configAsProperties=Optional.of(ConfigUtils.configToProperties(this.config.get()));
-  }
-  if (!this.config.isPresent()) {
-    this.config=Optional.of(ConfigUtils.propertiesToTypedConfig(this.configAsProperties.get(),Optional.<String>absent()));
-  }
-  if (!this.description.isPresent()) {
-    this.description=Optional.of("Gobblin job " + this.uri);
-  }
-  return new JobSpec(this.uri,this.version,this.description.get(),this.config.get(),this.configAsProperties.get());
+  return new JobSpec(getURI(),getVersion(),getDescription(),getConfig(),getConfigAsProperties());
 }

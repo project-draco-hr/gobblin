@@ -1,4 +1,3 @@
 {
-  Preconditions.checkNotNull(oldListener);
-  _listeners.remove(oldListener);
+  _disp.removeListener(oldListener);
 }

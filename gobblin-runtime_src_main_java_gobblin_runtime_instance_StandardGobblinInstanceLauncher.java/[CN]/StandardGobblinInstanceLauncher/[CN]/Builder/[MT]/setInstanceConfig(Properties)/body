@@ -1,0 +1,4 @@
+{
+  _instanceConfig=Optional.of(DefaultConfigurableImpl.createFromProperties(instanceConfig));
+  return this;
+}

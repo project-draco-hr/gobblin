@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(listener);
+  _log.info("Adding listener:" + listener);
+  _listeners.add(listener);
+}

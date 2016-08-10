@@ -2,7 +2,7 @@
   Preconditions.checkNotNull(jobSpecUri);
   Preconditions.checkNotNull(jobSpecUri);
   try {
-    this.uri=new URI(jobSpecUri);
+    this.uri=Optional.of(new URI(jobSpecUri));
   }
  catch (  URISyntaxException e) {
     throw new RuntimeException("Invalid JobSpec config: " + e,e);

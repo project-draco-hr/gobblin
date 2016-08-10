@@ -1,0 +1,24 @@
+{
+switch (runningState) {
+case PENDING:
+    this.switchToPending();
+  break;
+case RUNNING:
+this.switchToRunning();
+break;
+case SUCCESSFUL:
+this.switchToSuccessful();
+break;
+case FAILED:
+this.switchToFailed();
+break;
+case COMMITTED:
+this.switchToCommitted();
+break;
+case CANCELLED:
+this.switchToCancelled();
+break;
+default :
+throw new Error("Unexpected state");
+}
+}

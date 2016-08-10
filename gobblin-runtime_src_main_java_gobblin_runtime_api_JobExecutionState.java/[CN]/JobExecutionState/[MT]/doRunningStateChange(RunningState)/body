@@ -1,0 +1,8 @@
+{
+  RunningState oldState=this.runningState;
+  this.runningState=newState;
+  ;
+  if (this.listener.isPresent()) {
+    this.listener.get().onStatusChange(this,oldState,this.runningState);
+  }
+}

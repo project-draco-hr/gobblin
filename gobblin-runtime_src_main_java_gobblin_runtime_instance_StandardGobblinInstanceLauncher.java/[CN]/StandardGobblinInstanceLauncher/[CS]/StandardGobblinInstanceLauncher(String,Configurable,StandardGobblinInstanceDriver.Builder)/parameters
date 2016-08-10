@@ -1,0 +1,3 @@
+String name
+Configurable instanceConf
+StandardGobblinInstanceDriver.Builder driverBuilder

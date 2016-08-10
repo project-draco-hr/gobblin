@@ -1,5 +1,0 @@
-{
-  for (  JobCatalogListener listener : _listeners) {
-    callbackOneListener(callback,listener);
-  }
-}

@@ -1,3 +1,0 @@
-{
-  _jobLauncher.launchJob(_jobSpec,new JobExecutionListener());
-}

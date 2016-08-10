@@ -1,4 +1,4 @@
 {
-  String jobIdSuffix=String.format("%s_%d",jobName,System.currentTimeMillis());
-  return "job_" + jobIdSuffix;
+  String jobId=String.format("job_%s_%d",jobName,System.currentTimeMillis());
+  return jobId;
 }
