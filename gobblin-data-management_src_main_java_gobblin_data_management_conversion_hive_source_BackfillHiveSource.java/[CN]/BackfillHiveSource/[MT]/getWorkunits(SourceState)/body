@@ -1,4 +1,4 @@
 {
-  initialize(state);
+  initBackfillHiveSource(state);
   return super.getWorkunits(state);
 }
