@@ -7,4 +7,4 @@ PreserveAttributes preserve
 String fileSet
 long originTimestamp
 long upstreamTimestamp
-Map<String,Object> additionalMetadata
+Map<String,String> additionalMetadata
