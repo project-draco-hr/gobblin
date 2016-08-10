@@ -1,6 +1,16 @@
 {
-  if (this.fs.exists(path)) {
-    return this.fs.getFileStatus(path).getModificationTime();
+  try {
+    return PATH_TO_MOD_TIME_CACHE.get(path,new Callable<Long>(){
+      @Override public Long call() throws Exception {
+        if (HdfsBasedUpdateProvider.this.fs.exists(path)) {
+          return HdfsBasedUpdateProvider.this.fs.getFileStatus(path).getModificationTime();
+        }
+        throw new UpdateNotFoundException(String.format("Data file does not exist at path %s",path));
+      }
+    }
+);
   }
-  throw new UpdateNotFoundException(String.format("Data file does not exist at path %s",path));
+ catch (  ExecutionException e) {
+    throw new IOException(e);
+  }
 }
