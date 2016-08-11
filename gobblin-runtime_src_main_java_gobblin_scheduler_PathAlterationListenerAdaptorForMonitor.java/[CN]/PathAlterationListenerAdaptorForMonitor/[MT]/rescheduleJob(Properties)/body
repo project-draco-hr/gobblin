@@ -3,5 +3,5 @@
   jobScheduler.unscheduleJob(jobName);
   boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
   jobScheduler.scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
-  LOG.info("[JobScheduler]" + "" + ""+ "The new job " + jobName + " is rescheduled.");
+  LOG.debug("[JobScheduler]" + "" + ""+ "The new job " + jobName + " is rescheduled.");
 }
