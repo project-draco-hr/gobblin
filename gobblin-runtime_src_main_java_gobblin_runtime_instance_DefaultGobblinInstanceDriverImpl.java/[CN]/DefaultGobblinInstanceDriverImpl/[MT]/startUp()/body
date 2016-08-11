@@ -1,4 +1,6 @@
 {
+  getLog().info("Default driver: starting ...");
   _jobSpecListener=new JobSpecListener();
   _jobCatalog.addListener(_jobSpecListener);
+  getLog().info("Default driver: started.");
 }

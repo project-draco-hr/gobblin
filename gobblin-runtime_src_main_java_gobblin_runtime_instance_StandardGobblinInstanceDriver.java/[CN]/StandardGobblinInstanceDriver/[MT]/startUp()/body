@@ -1,0 +1,13 @@
+{
+  getLog().info("Starting driver ...");
+  if (null != _subservices) {
+    getLog().info("Starting subservices");
+    _subservices.startAsync();
+    _subservices.awaitHealthy(getInstanceCfg().getStartTimeoutMs(),TimeUnit.MILLISECONDS);
+    getLog().info("All subservices have been started.");
+  }
+ else {
+    getLog().info("No subservices found.");
+  }
+  super.startUp();
+}

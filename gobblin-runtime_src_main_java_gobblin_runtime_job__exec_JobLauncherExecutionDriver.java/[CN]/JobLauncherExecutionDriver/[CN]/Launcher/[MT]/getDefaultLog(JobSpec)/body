@@ -1,0 +1,3 @@
+{
+  return getGobblinInstance().isPresent() ? getJobLogger(getGobblinInstance().get().getLog(),jobSpec) : getJobLogger(LoggerFactory.getLogger(JobLauncherExecutionDriver.class),jobSpec);
+}

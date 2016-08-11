@@ -5,7 +5,7 @@ switch (_jobContext.getJobState().getState()) {
 case PENDING:
 case RUNNING:
 {
-        _legacyLauncher.cancelJob(new MyJobListener());
+        _legacyLauncher.cancelJob(new JobListenerToJobStateBridge());
         break;
       }
 case SUCCESSFUL:

@@ -2,8 +2,11 @@
   Preconditions.checkNotNull(jobCatalog);
   Preconditions.checkNotNull(jobScheduler);
   Preconditions.checkNotNull(jobLauncher);
+  Preconditions.checkNotNull(sysConfig);
   _jobCatalog=jobCatalog;
   _jobScheduler=jobScheduler;
   _jobLauncher=jobLauncher;
+  _sysConfig=sysConfig;
+  _instanceCfg=ConfigAccessor.createFromGlobalConfig(_sysConfig.getConfig());
   _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
 }

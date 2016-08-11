@@ -1,3 +1,0 @@
-{
-  super(jobCatalog,jobScheduler,jobLauncher,log);
-}
