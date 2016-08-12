@@ -6,4 +6,5 @@
   Assert.assertEquals(dataset.getVersionFindersAndPolicies().get(0).getVersionFinder().getClass(),WatermarkDatasetVersionFinder.class);
   Assert.assertEquals(dataset.getVersionFindersAndPolicies().get(1).getVersionSelectionPolicy().getClass(),NewestKSelectionPolicy.class);
   Assert.assertEquals(dataset.getVersionFindersAndPolicies().get(1).getVersionFinder().getClass(),WatermarkDatasetVersionFinder.class);
+  Assert.assertEquals(dataset.isDatasetBlacklisted(),false);
 }

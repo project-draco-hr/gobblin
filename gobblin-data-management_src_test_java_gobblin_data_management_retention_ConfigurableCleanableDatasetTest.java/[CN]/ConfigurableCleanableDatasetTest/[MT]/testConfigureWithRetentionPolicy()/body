@@ -3,4 +3,5 @@
   ConfigurableCleanableDataset<FileSystemDatasetVersion> dataset=new ConfigurableCleanableDataset<FileSystemDatasetVersion>(FileSystem.get(new URI(ConfigurationKeys.LOCAL_FS_URI),new Configuration()),new Properties(),new Path("/someroot"),conf,LoggerFactory.getLogger(ConfigurableCleanableDatasetTest.class));
   Assert.assertEquals(dataset.getVersionFindersAndPolicies().get(0).getVersionSelectionPolicy().getClass(),EmbeddedRetentionSelectionPolicy.class);
   Assert.assertEquals(dataset.getVersionFindersAndPolicies().get(0).getVersionFinder().getClass(),WatermarkDatasetVersionFinder.class);
+  Assert.assertEquals(dataset.isDatasetBlacklisted(),false);
 }
