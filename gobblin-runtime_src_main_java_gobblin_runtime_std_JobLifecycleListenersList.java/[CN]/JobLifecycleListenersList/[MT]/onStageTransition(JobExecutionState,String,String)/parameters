@@ -1,0 +1,3 @@
+JobExecutionState state
+String previousStage
+String newStage

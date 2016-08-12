@@ -1,0 +1,5 @@
+{
+  if (this.filter.apply(updatedJob)) {
+    this.delegate.onUpdateJob(updatedJob);
+  }
+}

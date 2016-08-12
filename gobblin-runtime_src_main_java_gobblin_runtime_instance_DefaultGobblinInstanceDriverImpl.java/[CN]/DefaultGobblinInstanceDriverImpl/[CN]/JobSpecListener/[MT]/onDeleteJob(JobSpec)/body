@@ -1,4 +1,0 @@
-{
-  super.onDeleteJob(deletedJob);
-  _jobScheduler.unscheduleJob(deletedJob.getUri());
-}

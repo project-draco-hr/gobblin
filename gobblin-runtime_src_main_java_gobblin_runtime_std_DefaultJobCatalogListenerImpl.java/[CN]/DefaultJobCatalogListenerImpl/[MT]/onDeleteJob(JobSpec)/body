@@ -1,5 +1,0 @@
-{
-  if (_log.isPresent()) {
-    _log.get().info("JobSpec deleted: " + deletedJob.toShortString());
-  }
-}

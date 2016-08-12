@@ -9,4 +9,5 @@
   _sysConfig=sysConfig;
   _instanceCfg=ConfigAccessor.createFromGlobalConfig(_sysConfig.getConfig());
   _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+  _dispatcher=new JobLifecycleListenersList(_log);
 }

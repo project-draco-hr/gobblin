@@ -1,0 +1,9 @@
+{
+  Preconditions.checkNotNull(deletedJobURI);
+  try {
+    _dispatcher.execCallbacks(new DeleteJobCallback(deletedJobURI,deletedJobVersion));
+  }
+ catch (  InterruptedException e) {
+    _dispatcher.getLog().warn("onDeleteJob interrupted.");
+  }
+}

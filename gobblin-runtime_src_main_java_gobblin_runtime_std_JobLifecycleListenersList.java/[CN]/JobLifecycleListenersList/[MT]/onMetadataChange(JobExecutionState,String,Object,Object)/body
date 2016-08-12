@@ -1,0 +1,8 @@
+{
+  try {
+    _dispatcher.execCallbacks(new MetadataChangeCallback(state,key,oldValue,newValue));
+  }
+ catch (  InterruptedException e) {
+    _dispatcher.getLog().warn("onMetadataChange interrupted.");
+  }
+}

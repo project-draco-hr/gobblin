@@ -1,0 +1,5 @@
+{
+  if (_log.isPresent()) {
+    _log.get().info("JobExection stage change for " + state.getJobSpec().toShortString() + ": "+ previousStage+ " --> "+ newStage);
+  }
+}
