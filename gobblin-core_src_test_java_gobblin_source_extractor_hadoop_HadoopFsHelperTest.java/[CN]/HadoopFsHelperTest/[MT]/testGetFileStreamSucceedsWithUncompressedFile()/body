@@ -3,7 +3,7 @@
   URL rootUrl=getClass().getResource("/source/");
   String rootPath=rootUrl.toString();
   sourceState.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,rootPath);
-  AvroFsHelper fsHelper=new AvroFsHelper(sourceState);
+  HadoopFsHelper fsHelper=new HadoopFsHelper(sourceState);
   fsHelper.connect();
   URL url=getClass().getResource("/source/simple.tsv");
   String path=url.toString();
