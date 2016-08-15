@@ -1,0 +1,34 @@
+{
+  List<Config> pullFiles=Lists.newArrayList();
+  try {
+    if (loadGlobalProperties) {
+      fallback=findAndLoadGlobalConfigInDirectory(path,fallback);
+    }
+    FileStatus[] statuses=this.fs.listStatus(path);
+    if (statuses == null) {
+      log.error("Path does not exist: " + path);
+      return pullFiles;
+    }
+    for (    FileStatus status : statuses) {
+      try {
+        if (status.isDirectory()) {
+          pullFiles.addAll(loadPullFilesRecursivelyHelper(status.getPath(),fallback,loadGlobalProperties));
+        }
+ else         if (this.javaPropsPullFileFilter.accept(status.getPath())) {
+          pullFiles.add(loadJavaPropsWithFallback(status.getPath(),fallback).resolve());
+        }
+ else         if (this.hoconPullFileFilter.accept(status.getPath())) {
+          pullFiles.add(loadHoconConfigAtPath(status.getPath()).withFallback(fallback).resolve());
+        }
+      }
+ catch (      IOException ioe) {
+        log.error(String.format("Failed to load %s. Skipping.",status.getPath()));
+      }
+    }
+    return pullFiles;
+  }
+ catch (  IOException ioe) {
+    log.error("Could not load properties at path: " + path,ioe);
+    return Lists.newArrayList();
+  }
+}

@@ -1,0 +1,11 @@
+{
+  FileStatus[] files=this.fs.listStatus(path,GLOBAL_PROPS_PATH_FILTER);
+  if (files == null) {
+    log.warn("Could not list files at path " + path);
+    return ConfigFactory.empty();
+  }
+  if (files.length > 1) {
+    throw new IOException("Found more than one global properties file at path " + path);
+  }
+  return files.length == 1 ? loadJavaPropsWithFallback(files[0].getPath(),fallback) : fallback;
+}

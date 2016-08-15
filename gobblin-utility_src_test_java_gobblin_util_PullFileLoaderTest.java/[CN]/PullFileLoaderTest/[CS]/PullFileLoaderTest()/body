@@ -1,0 +1,4 @@
+{
+  this.basePath=new Path(this.getClass().getClassLoader().getResource("pullFileLoaderTest").getFile());
+  this.loader=new PullFileLoader(this.basePath,FileSystem.getLocal(new Configuration()),PullFileLoader.DEFAULT_JAVA_PROPS_PULL_FILE_EXTENSIONS,PullFileLoader.DEFAULT_HOCON_PULL_FILE_EXTENSIONS);
+}

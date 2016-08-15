@@ -1,0 +1,4 @@
+Path rootDirectory
+FileSystem fs
+Collection<String> javaPropsPullFileExtensions
+Collection<String> hoconPullFileExtensions

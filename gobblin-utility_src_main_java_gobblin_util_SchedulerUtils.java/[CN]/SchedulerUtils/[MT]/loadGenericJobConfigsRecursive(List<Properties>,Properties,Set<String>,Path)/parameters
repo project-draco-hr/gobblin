@@ -1,4 +1,0 @@
-List<Properties> jobConfigs
-Properties rootProps
-Set<String> jobConfigFileExtensions
-Path configDirPath

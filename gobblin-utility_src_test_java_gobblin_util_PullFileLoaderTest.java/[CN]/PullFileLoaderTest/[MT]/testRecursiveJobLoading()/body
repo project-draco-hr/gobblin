@@ -1,0 +1,27 @@
+{
+  Path path;
+  Config pullFile;
+  Properties sysProps=new Properties();
+  sysProps.put("key1","sysProps1");
+  Collection<Config> configs=loader.loadPullFilesRecursively(this.basePath,ConfigFactory.parseProperties(sysProps),false);
+  path=new Path(this.basePath,"ajob.pull");
+  pullFile=pullFileFromPath(configs,path);
+  Assert.assertEquals(pullFile.getString("key1"),"sysProps1");
+  Assert.assertEquals(pullFile.getString("key2"),"aValue");
+  Assert.assertEquals(pullFile.getString("key10"),"aValue");
+  Assert.assertEquals(pullFile.getString(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY),path.toString());
+  Assert.assertEquals(pullFile.entrySet().size(),4);
+  path=new Path(this.basePath,"dir1/job.pull");
+  pullFile=pullFileFromPath(configs,path);
+  Assert.assertEquals(pullFile.getString("key1"),"jobValue1,jobValue2,jobValue3");
+  Assert.assertEquals(pullFile.getString("key2"),"jobValue2");
+  Assert.assertEquals(pullFile.getString(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY),path.toString());
+  Assert.assertEquals(pullFile.entrySet().size(),3);
+  path=new Path(this.basePath,"dir1/job.conf");
+  pullFile=pullFileFromPath(configs,path);
+  Assert.assertEquals(pullFile.getString("key1"),"jobValue1,jobValue2,jobValue3");
+  Assert.assertEquals(pullFile.getString("key2"),"jobValue2");
+  Assert.assertEquals(pullFile.getString("key10"),"jobValue2");
+  Assert.assertEquals(pullFile.getString(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY),path.toString());
+  Assert.assertEquals(pullFile.entrySet().size(),4);
+}
