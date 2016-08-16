@@ -1,9 +1,9 @@
 {
   InputStream is=new ByteArrayInputStream(message);
   this.versionWriter.readSchemaVersioningInformation(new DataInputStream(is));
-  Decoder decoder=DecoderFactory.get().binaryDecoder(is,this.decoder);
+  Decoder decoder=DecoderFactory.get().binaryDecoder(is,this.decoder.get());
   try {
-    T decodedMessage=this.reader.read(null,decoder);
+    T decodedMessage=this.reader.get().read(null,decoder);
     return parseJobSpec(decodedMessage);
   }
  catch (  AvroRuntimeException|IOException exc) {
