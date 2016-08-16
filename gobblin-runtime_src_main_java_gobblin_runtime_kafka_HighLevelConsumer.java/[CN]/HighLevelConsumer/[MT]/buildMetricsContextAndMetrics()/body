@@ -1,0 +1,4 @@
+{
+  this.metricContext=Instrumented.getMetricContext(new gobblin.configuration.State(ConfigUtils.configToProperties(config)),this.getClass(),getTagsForMetrics());
+  createMetrics();
+}

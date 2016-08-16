@@ -1,6 +1,6 @@
 {
   MockKafkaStream mockKafkaStream=new MockKafkaStream(5);
-  MockedHighLevelConsumer consumer=new MockedHighLevelConsumer(ConfigFactory.empty(),5,mockKafkaStream);
+  MockedHighLevelConsumer consumer=new MockedHighLevelConsumer(getSimpleConfig(Optional.<String>absent()),5,mockKafkaStream);
   consumer.startAsync();
   consumer.awaitRunning();
   Assert.assertTrue(consumer.getMessages().isEmpty());

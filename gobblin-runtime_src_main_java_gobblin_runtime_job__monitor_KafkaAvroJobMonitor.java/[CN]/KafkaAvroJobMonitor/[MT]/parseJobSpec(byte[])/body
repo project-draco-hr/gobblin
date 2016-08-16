@@ -1,0 +1,19 @@
+{
+  InputStream is=new ByteArrayInputStream(message);
+  this.versionWriter.readSchemaVersioningInformation(new DataInputStream(is));
+  Decoder decoder=DecoderFactory.get().binaryDecoder(is,this.decoder.get());
+  try {
+    T decodedMessage=this.reader.get().read(null,decoder);
+    return parseJobSpec(decodedMessage);
+  }
+ catch (  AvroRuntimeException|IOException exc) {
+    this.messageParseFailures.mark();
+    if (this.messageParseFailures.getFiveMinuteRate() < 1) {
+      log.warn("Unable to decode input message.",exc);
+    }
+ else {
+      log.warn("Unable to decode input message.");
+    }
+    return Lists.newArrayList();
+  }
+}

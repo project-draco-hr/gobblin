@@ -1,0 +1,4 @@
+{
+  super.createMetrics();
+  this.rejectedEvents=getMetricContext().counter(RuntimeMetrics.GOBBLIN_JOB_MONITOR_SLAEVENT_REJECTEDEVENTS);
+}

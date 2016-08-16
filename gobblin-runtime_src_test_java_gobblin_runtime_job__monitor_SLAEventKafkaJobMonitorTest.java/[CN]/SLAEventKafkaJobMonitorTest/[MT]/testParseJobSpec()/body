@@ -1,0 +1,12 @@
+{
+  SLAEventKafkaJobMonitor monitor=new SLAEventKafkaJobMonitor("topic",null,new URI("/base/URI"),HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX)),new NoopSchemaVersionWriter(),Optional.<Pattern>absent(),Optional.<Pattern>absent(),this.templateURI,ImmutableMap.of("metadataKey1","key1"));
+  monitor.buildMetricsContextAndMetrics();
+  GobblinTrackingEvent event=createSLAEvent("DatasetPublish",new URI("/data/myDataset"),ImmutableMap.of("metadataKey1","value1","key1","value2"));
+  Collection<Either<JobSpec,URI>> jobSpecs=monitor.parseJobSpec(event);
+  Assert.assertEquals(jobSpecs.size(),1);
+  JobSpec jobSpec=(JobSpec)jobSpecs.iterator().next().get();
+  Assert.assertEquals(jobSpec.getUri(),new URI("/base/URI/data/myDataset"));
+  Assert.assertEquals(jobSpec.getTemplateURI().get(),templateURI);
+  Assert.assertEquals(jobSpec.getConfig().getString("key1"),"value1");
+  monitor.shutdownMetrics();
+}

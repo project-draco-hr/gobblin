@@ -1,5 +1,5 @@
 {
-  MockedKafkaJobMonitor monitor=MockedKafkaJobMonitor.create(ConfigFactory.empty());
+  MockedKafkaJobMonitor monitor=MockedKafkaJobMonitor.create(HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX)));
   monitor.startAsync();
   monitor.getMockKafkaStream().pushToStream("job1:1");
   monitor.awaitExactlyNSpecs(1);

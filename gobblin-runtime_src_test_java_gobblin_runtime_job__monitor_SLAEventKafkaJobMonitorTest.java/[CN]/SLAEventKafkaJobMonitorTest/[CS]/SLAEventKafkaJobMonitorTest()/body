@@ -1,0 +1,4 @@
+{
+  this.templateURI=new URI("/templates/uri");
+  this.superConfig=HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX));
+}

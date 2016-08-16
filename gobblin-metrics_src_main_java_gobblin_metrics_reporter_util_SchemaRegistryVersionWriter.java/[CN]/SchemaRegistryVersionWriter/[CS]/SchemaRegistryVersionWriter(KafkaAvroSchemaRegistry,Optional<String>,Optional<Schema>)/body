@@ -1,0 +1,18 @@
+{
+  this.registry=registry;
+  this.registrySchemaIds=Maps.newConcurrentMap();
+  this.overrideName=overrideName;
+  this.schema=singleSchema;
+  this.schemaIdLengthBytes=registry.getSchemaIdLengthByte();
+  if (this.schema.isPresent()) {
+    try {
+      this.schemaId=this.overrideName.isPresent() ? Optional.of(this.registry.register(this.schema.get(),this.overrideName.get())) : Optional.of(this.registry.register(this.schema.get()));
+    }
+ catch (    SchemaRegistryException e) {
+      throw Throwables.propagate(e);
+    }
+  }
+ else {
+    this.schemaId=Optional.absent();
+  }
+}

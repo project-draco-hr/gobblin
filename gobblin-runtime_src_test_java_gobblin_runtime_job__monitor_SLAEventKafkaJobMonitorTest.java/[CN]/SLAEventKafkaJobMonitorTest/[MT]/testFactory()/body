@@ -1,0 +1,15 @@
+{
+  Pattern urnFilter=Pattern.compile("filter");
+  Pattern nameFilter=Pattern.compile("filtername");
+  Map<String,String> configMap=ImmutableMap.<String,String>builder().put(SLAEventKafkaJobMonitor.DATASET_URN_FILTER_KEY,urnFilter.pattern()).put(SLAEventKafkaJobMonitor.EVENT_NAME_FILTER_KEY,nameFilter.pattern()).put(SLAEventKafkaJobMonitor.TEMPLATE_KEY,"template").put(SLAEventKafkaJobMonitor.EXTRACT_KEYS + ".key1","value1").put(SLAEventKafkaJobMonitor.BASE_URI_KEY,"uri").put(SLAEventKafkaJobMonitor.TOPIC_KEY,"topic").put(SLAEventKafkaJobMonitor.SCHEMA_VERSION_READER_CLASS,FixedSchemaVersionWriter.class.getName()).build();
+  Config config=ConfigFactory.parseMap(configMap).withFallback(HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX)));
+  SLAEventKafkaJobMonitor monitor=(SLAEventKafkaJobMonitor)(new SLAEventKafkaJobMonitor.Factory()).forConfig(config,null);
+  Assert.assertEquals(monitor.getUrnFilter().get().pattern(),urnFilter.pattern());
+  Assert.assertEquals(monitor.getNameFilter().get().pattern(),nameFilter.pattern());
+  Assert.assertEquals(monitor.getTemplate(),new URI("template"));
+  Assert.assertEquals(monitor.getExtractKeys().size(),1);
+  Assert.assertEquals(monitor.getExtractKeys().get("key1"),"value1");
+  Assert.assertEquals(monitor.getBaseURI(),new URI("uri"));
+  Assert.assertEquals(monitor.getTopic(),"topic");
+  Assert.assertEquals(monitor.getVersionWriter().getClass(),FixedSchemaVersionWriter.class);
+}

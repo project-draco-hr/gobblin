@@ -1,0 +1,4 @@
+{
+  this.events.add(message);
+  return Lists.newArrayList(Either.<JobSpec,URI>left(JobSpec.builder(message.getName()).build()));
+}

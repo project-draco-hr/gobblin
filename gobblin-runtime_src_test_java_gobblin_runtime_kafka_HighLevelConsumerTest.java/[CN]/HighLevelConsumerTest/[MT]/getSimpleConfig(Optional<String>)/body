@@ -1,0 +1,5 @@
+{
+  Properties properties=new Properties();
+  properties.put(getConfigKey(prefix,"zookeeper.connect"),"zookeeper");
+  return ConfigFactory.parseProperties(properties);
+}

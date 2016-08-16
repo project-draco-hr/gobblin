@@ -5,4 +5,10 @@
   if (this.executor != null) {
     ExecutorsUtils.shutdownExecutorService(this.executor,Optional.of(log),5000,TimeUnit.MILLISECONDS);
   }
+  try {
+    this.shutdownMetrics();
+  }
+ catch (  IOException ioe) {
+    log.warn("Failed to shutdown metrics for " + this.getClass().getSimpleName());
+  }
 }

@@ -2,5 +2,16 @@
   if (inputStream.readByte() != KafkaAvroSchemaRegistry.MAGIC_BYTE) {
     throw new IOException("MAGIC_BYTE not found in Avro message.");
   }
-  throw new UnsupportedOperationException("readSchemaVersioningInformation not implemented for schema registry.");
+  byte[] byteKey=new byte[schemaIdLengthBytes];
+  int bytesRead=inputStream.read(byteKey,0,schemaIdLengthBytes);
+  if (bytesRead != schemaIdLengthBytes) {
+    throw new IOException(String.format("Could not read enough bytes for schema id. Expected: %d, found: %d.",schemaIdLengthBytes,bytesRead));
+  }
+  String hexKey=Hex.encodeHexString(byteKey);
+  try {
+    return this.registry.getSchemaByKey(hexKey);
+  }
+ catch (  SchemaRegistryException sre) {
+    throw new IOException("Failed to retrieve schema for key " + hexKey,sre);
+  }
 }

@@ -1,0 +1,7 @@
+{
+  Properties props=ConfigUtils.configToProperties(config);
+  if (!props.containsKey(GROUP_ID_KEY)) {
+    props.setProperty(GROUP_ID_KEY,DEFAULT_GROUP_ID);
+  }
+  return new ConsumerConfig(props);
+}

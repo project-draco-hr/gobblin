@@ -1,5 +1,6 @@
 {
-  this.consumer=createConsumerConnector(config);
   this.topic=topic;
   this.numThreads=numThreads;
+  this.config=config;
+  this.consumerConfig=createConsumerConfig(config);
 }

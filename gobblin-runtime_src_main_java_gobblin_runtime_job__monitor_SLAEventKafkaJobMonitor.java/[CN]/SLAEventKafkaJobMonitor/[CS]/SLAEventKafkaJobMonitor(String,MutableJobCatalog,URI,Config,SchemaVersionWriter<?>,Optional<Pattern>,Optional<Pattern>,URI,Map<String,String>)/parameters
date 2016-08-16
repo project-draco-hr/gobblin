@@ -1,0 +1,9 @@
+String topic
+MutableJobCatalog catalog
+URI baseURI
+Config limitedScopeConfig
+SchemaVersionWriter<?> versionWriter
+Optional<Pattern> urnFilter
+Optional<Pattern> nameFilter
+URI template
+Map<String,String> extractKeys
