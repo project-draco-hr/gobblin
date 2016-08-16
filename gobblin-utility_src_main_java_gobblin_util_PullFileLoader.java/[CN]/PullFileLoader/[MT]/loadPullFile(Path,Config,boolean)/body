@@ -1,0 +1,12 @@
+{
+  Config fallback=loadGlobalProperties ? loadAncestorGlobalConfigs(path,sysProps) : sysProps;
+  if (this.javaPropsPullFileFilter.accept(path)) {
+    return loadJavaPropsWithFallback(path,fallback).resolve();
+  }
+ else   if (this.hoconPullFileFilter.accept(path)) {
+    return loadHoconConfigAtPath(path).withFallback(fallback).resolve();
+  }
+ else {
+    throw new IOException(String.format("Cannot load pull file %s due to unrecognized extension.",path));
+  }
+}

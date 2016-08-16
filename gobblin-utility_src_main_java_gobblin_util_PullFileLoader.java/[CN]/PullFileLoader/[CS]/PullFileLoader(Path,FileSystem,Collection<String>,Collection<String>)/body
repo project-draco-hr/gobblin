@@ -1,0 +1,8 @@
+{
+  Set<String> commonExtensions=Sets.intersection(Sets.newHashSet(javaPropsPullFileExtensions),Sets.newHashSet(hoconPullFileExtensions));
+  Preconditions.checkArgument(commonExtensions.isEmpty(),"Java props and HOCON pull file extensions intersect: " + Arrays.toString(commonExtensions.toArray()));
+  this.rootDirectory=rootDirectory;
+  this.fs=fs;
+  this.javaPropsPullFileFilter=new ExtensionFilter(javaPropsPullFileExtensions);
+  this.hoconPullFileFilter=new ExtensionFilter(hoconPullFileExtensions);
+}

@@ -1,15 +1,5 @@
 {
-  List<Properties> commonPropsList=Lists.newArrayList();
-  getCommonProperties(commonPropsList,jobConfigPathDir,jobConfigPath.getParent());
-  commonPropsList.add(properties);
-  Properties jobProps=new Properties();
-  for (  Properties commonProps : Lists.reverse(commonPropsList)) {
-    jobProps.putAll(commonProps);
-  }
-  jobProps.putAll(ConfigurationConverter.getProperties(new PropertiesConfiguration(new Path("file://",jobConfigPath).toUri().toURL())));
-  if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
-    jobProps=(new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfigAsProperties(jobProps);
-  }
-  jobProps.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,jobConfigPath.toString());
-  return jobProps;
+  PullFileLoader loader=new PullFileLoader(jobConfigPathDir,jobConfigPathDir.getFileSystem(new Configuration()),getJobConfigurationFileExtensions(properties),PullFileLoader.DEFAULT_HOCON_PULL_FILE_EXTENSIONS);
+  Config config=loader.loadPullFile(jobConfigPath,ConfigFactory.parseProperties(properties),true);
+  return ConfigUtils.configToProperties(config);
 }

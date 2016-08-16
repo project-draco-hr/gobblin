@@ -1,0 +1,10 @@
+{
+  PropertiesConfiguration propertiesConfiguration=new PropertiesConfiguration();
+  try (InputStreamReader inputStreamReader=new InputStreamReader(this.fs.open(path),Charsets.UTF_8)){
+    propertiesConfiguration.load(inputStreamReader);
+    return ConfigFactory.parseMap(ImmutableMap.of(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,PathUtils.getPathWithoutSchemeAndAuthority(path).toString())).withFallback(ConfigFactory.parseProperties(ConfigurationConverter.getProperties(propertiesConfiguration))).withFallback(fallback);
+  }
+ catch (  ConfigurationException ce) {
+    throw new IOException(ce);
+  }
+}

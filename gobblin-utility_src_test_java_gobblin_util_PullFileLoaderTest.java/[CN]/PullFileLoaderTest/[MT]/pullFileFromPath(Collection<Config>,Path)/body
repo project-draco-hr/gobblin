@@ -1,0 +1,8 @@
+{
+  for (  Config config : configs) {
+    if (config.getString(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY).equals(path.toString())) {
+      return config;
+    }
+  }
+  throw new IOException("Not found.");
+}
