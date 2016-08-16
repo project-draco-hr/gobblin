@@ -1,3 +1,9 @@
 {
-  return Objects.toStringHelper(JobExecutionState.class.getSimpleName()).add("jobExecution",this.jobExecution).add("runningState",this.runningState).add("stage",this.stage).toString();
+  this.changeLock.lock();
+  try {
+    return Objects.toStringHelper(JobExecutionState.class.getSimpleName()).add("jobExecution",this.jobExecution).add("runningState",this.runningState).add("stage",this.stage).toString();
+  }
+  finally {
+    this.changeLock.unlock();
+  }
 }

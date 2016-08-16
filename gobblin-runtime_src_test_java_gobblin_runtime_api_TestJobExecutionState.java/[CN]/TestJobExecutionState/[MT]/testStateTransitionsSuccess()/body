@@ -1,0 +1,32 @@
+{
+  final Logger log=LoggerFactory.getLogger(getClass().getSimpleName() + ".testStateTransitionsSuccess");
+  JobSpec js1=JobSpec.builder("gobblin:/testStateTransitionsSuccess/job1").build();
+  JobExecution je1=JobExecutionUpdatable.createFromJobSpec(js1);
+  final JobExecutionStateListener listener=mock(JobExecutionStateListener.class);
+  final JobExecutionState jes1=new JobExecutionState(js1,je1,Optional.<JobExecutionStateListener>absent());
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.COMMITTED);
+  assertFailedStateTransition(jes1,RunningState.SUCCESSFUL);
+  assertFailedStateTransition(jes1,RunningState.FAILED);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.CANCELLED);
+  assertTransition(jes1,listener,null,RunningState.PENDING,log);
+  assertFailedStateTransition(jes1,RunningState.PENDING);
+  assertFailedStateTransition(jes1,RunningState.COMMITTED);
+  assertFailedStateTransition(jes1,RunningState.SUCCESSFUL);
+  assertTransition(jes1,listener,RunningState.PENDING,RunningState.RUNNING,log);
+  assertFailedStateTransition(jes1,RunningState.PENDING);
+  assertFailedStateTransition(jes1,RunningState.COMMITTED);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertTransition(jes1,listener,RunningState.RUNNING,RunningState.SUCCESSFUL,log);
+  assertFailedStateTransition(jes1,RunningState.PENDING);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.SUCCESSFUL);
+  assertTransition(jes1,listener,RunningState.SUCCESSFUL,RunningState.COMMITTED,log);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.COMMITTED);
+  assertFailedStateTransition(jes1,RunningState.SUCCESSFUL);
+  assertFailedStateTransition(jes1,RunningState.FAILED);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.CANCELLED);
+}

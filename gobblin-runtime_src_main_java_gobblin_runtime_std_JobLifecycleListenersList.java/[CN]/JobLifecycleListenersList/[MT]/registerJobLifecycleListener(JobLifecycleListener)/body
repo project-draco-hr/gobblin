@@ -1,3 +1,5 @@
 {
   _dispatcher.addListener(listener);
+  _jobCatalogDelegate.addListener(listener);
+  _jobSchedulerDelegate.registerJobSpecSchedulerListener(listener);
 }

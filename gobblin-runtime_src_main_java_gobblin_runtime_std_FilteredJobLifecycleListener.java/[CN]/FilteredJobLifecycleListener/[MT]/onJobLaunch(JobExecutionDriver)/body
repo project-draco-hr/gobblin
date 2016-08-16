@@ -1,0 +1,5 @@
+{
+  if (this.filter.apply(jobDriver.getJobExecutionState().getJobSpec())) {
+    this.delegate.onJobLaunch(jobDriver);
+  }
+}

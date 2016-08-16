@@ -1,0 +1,11 @@
+{
+  Preconditions.checkNotNull(input);
+  boolean res=true;
+  if (this.uriPredicate.isPresent()) {
+    res&=this.uriPredicate.get().apply(input.getUri());
+  }
+  if (res && this.versionPredicate.isPresent()) {
+    res&=this.versionPredicate.get().apply(input.getVersion());
+  }
+  return res;
+}

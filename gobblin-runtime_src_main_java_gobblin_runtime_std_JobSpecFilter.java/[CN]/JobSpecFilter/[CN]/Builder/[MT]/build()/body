@@ -1,0 +1,3 @@
+{
+  return new JobSpecFilter(Optional.fromNullable(this.uriPredicate),Optional.fromNullable(this.versionPredicate));
+}

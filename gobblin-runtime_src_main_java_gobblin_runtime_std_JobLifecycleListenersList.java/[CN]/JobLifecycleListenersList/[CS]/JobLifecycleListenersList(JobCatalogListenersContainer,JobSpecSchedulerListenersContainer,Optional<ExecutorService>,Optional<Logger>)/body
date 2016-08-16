@@ -1,0 +1,5 @@
+{
+  _dispatcher=new CallbacksDispatcher<>(execService,log);
+  _jobCatalogDelegate=jobCatalogDelegate;
+  _jobSchedulerDelegate=jobSchedulerDelegate;
+}

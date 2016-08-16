@@ -1,0 +1,23 @@
+{
+  Preconditions.checkArgument(timeoutMs >= 0);
+  if (0 == timeoutMs) {
+    timeoutMs=Long.MAX_VALUE;
+  }
+  long startTimeMs=System.currentTimeMillis();
+  long millisRemaining=timeoutMs;
+  this.changeLock.lock();
+  try {
+    while (!predicate.apply(this) && millisRemaining > 0) {
+      if (!this.runningStateChanged.await(millisRemaining,TimeUnit.MILLISECONDS)) {
+        break;
+      }
+      millisRemaining=timeoutMs - (System.currentTimeMillis() - startTimeMs);
+    }
+    if (!predicate.apply(this)) {
+      throw new TimeoutException("Timeout waiting for state predicate: " + predicate);
+    }
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

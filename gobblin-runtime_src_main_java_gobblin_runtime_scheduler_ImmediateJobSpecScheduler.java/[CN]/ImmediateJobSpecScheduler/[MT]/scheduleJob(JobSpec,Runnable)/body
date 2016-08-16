@@ -1,7 +1,3 @@
 {
-  Thread runThread=_jobRunnablesThreadFactory.newThread(jobRunnable);
-  _log.info("Starting JobSpec " + jobSpec + " in thread "+ runThread.getName());
-  JobSpecSchedule schedule=DefaultJobSpecScheduleImpl.createImmediateSchedule(jobSpec,jobRunnable);
-  runThread.start();
-  return schedule;
+  return scheduleOnce(jobSpec,jobRunnable);
 }

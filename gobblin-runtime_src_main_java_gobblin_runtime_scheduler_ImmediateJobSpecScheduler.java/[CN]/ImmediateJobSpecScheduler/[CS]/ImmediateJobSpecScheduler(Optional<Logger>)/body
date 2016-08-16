@@ -1,4 +1,5 @@
 {
   _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
   _jobRunnablesThreadFactory=(new ThreadFactoryBuilder()).setDaemon(false).setNameFormat(_log.getName() + "-%d").setUncaughtExceptionHandler(new LoggingUncaughtExceptionHandler(Optional.of(_log))).build();
+  _callbacksDispatcher=new JobSpecSchedulerListeners(_log);
 }

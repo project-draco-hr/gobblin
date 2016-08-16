@@ -1,0 +1,5 @@
+{
+  if (_log.isPresent()) {
+    _log.get().info("Job scheduled: " + jobSchedule);
+  }
+}

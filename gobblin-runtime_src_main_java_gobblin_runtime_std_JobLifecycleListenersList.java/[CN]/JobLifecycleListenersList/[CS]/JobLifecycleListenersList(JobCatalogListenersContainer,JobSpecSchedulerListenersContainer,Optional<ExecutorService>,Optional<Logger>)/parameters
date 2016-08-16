@@ -1,0 +1,4 @@
+JobCatalogListenersContainer jobCatalogDelegate
+JobSpecSchedulerListenersContainer jobSchedulerDelegate
+Optional<ExecutorService> execService
+Optional<Logger> log

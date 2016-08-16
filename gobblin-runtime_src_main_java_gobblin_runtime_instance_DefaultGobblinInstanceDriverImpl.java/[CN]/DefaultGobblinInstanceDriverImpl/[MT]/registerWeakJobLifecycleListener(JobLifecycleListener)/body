@@ -1,0 +1,3 @@
+{
+  _callbacksDispatcher.registerWeakJobLifecycleListener(listener);
+}

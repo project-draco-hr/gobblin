@@ -1,0 +1,11 @@
+{
+  awaitForStatePredicate(new Predicate<JobExecutionState>(){
+    @Override public boolean apply(    JobExecutionState state){
+      return null != state.getRunningState() && state.getRunningState().equals(targetState);
+    }
+    @Override public String toString(){
+      return "runningState == " + targetState;
+    }
+  }
+,timeoutMs);
+}

@@ -1,0 +1,4 @@
+{
+  this.versionPredicate=Predicates.equalTo(version);
+  return this;
+}

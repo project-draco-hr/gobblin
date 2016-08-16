@@ -1,0 +1,9 @@
+{
+  try {
+    this.uriPredicate=Predicates.equalTo(new URI(uri));
+  }
+ catch (  URISyntaxException e) {
+    throw new RuntimeException("invalid URI: " + uri,e);
+  }
+  return this;
+}

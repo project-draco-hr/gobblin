@@ -1,0 +1,8 @@
+{
+  try {
+    _dispatcher.execCallbacks(new JobUnscheduledCallback(jobSchedule));
+  }
+ catch (  InterruptedException e) {
+    _dispatcher.getLog().warn("onJobUnscheduled interrupted.");
+  }
+}

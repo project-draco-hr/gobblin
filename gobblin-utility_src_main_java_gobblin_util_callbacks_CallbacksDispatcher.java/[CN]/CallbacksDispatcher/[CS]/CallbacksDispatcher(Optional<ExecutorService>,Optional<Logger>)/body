@@ -2,5 +2,5 @@
   Preconditions.checkNotNull(execService);
   Preconditions.checkNotNull(log);
   _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
-  _execService=execService.isPresent() ? execService.get() : Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(_log),Optional.of(_log.getName() + "-%d")));
+  _execService=execService.isPresent() ? execService.get() : getDefaultExecutor(_log);
 }
