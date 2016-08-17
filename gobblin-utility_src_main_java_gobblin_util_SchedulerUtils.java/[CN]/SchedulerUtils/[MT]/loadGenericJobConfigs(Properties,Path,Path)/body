@@ -3,7 +3,7 @@
   Collection<Config> configs=loader.loadPullFilesRecursively(commonPropsPath.getParent(),ConfigFactory.parseProperties(properties),true);
   List<Properties> jobConfigs=Lists.newArrayList();
   for (  Config config : configs) {
-    jobConfigs.add(ConfigUtils.configToProperties(config));
+    jobConfigs.add(resolveTemplate(ConfigUtils.configToProperties(config)));
   }
   return jobConfigs;
 }
