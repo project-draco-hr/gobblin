@@ -15,5 +15,11 @@
   this.configStoreUri=StringUtils.isNotBlank(properties.getProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI)) ? Optional.of(properties.getProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI)) : Optional.<String>absent();
   this.datasetConfigPrefix=properties.getProperty(HIVE_DATASET_CONFIG_PREFIX_KEY,DEFAULT_HIVE_DATASET_CONIFG_PREFIX);
   this.configClient=configClient;
+  try {
+    this.configStoreDatasetUriBuilder=properties.containsKey(CONFIG_STORE_DATASET_URI_BUILDER_CLASS) ? (Function<DbAndTable,String>)ConstructorUtils.invokeConstructor(Class.forName(properties.getProperty(CONFIG_STORE_DATASET_URI_BUILDER_CLASS))) : DEFAULT_CONFIG_STORE_DATASET_URI_BUILDER;
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new RuntimeException(e);
+  }
   this.jobConfig=ConfigUtils.propertiesToConfig(properties);
 }

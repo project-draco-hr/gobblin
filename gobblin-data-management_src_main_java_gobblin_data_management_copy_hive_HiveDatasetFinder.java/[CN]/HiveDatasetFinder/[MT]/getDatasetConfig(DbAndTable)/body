@@ -1,7 +1,7 @@
 {
   Config datasetConfig;
   if (this.configStoreUri.isPresent()) {
-    datasetConfig=this.configClient.getConfig(this.configStoreUri.get() + Path.SEPARATOR + HiveConfigClientUtils.getDatasetUri(dbAndTable));
+    datasetConfig=this.configClient.getConfig(this.configStoreUri.get() + Path.SEPARATOR + this.configStoreDatasetUriBuilder.apply(dbAndTable));
   }
  else {
     datasetConfig=this.jobConfig;
