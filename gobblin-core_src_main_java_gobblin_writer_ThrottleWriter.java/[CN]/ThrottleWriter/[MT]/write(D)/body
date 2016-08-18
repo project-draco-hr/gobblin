@@ -16,6 +16,6 @@
     }
   }
  catch (  InterruptedException e) {
-    throw new RuntimeException(e);
+    throw new IOException("Failed while acquiring permits.",e);
   }
 }

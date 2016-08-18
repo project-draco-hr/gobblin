@@ -12,7 +12,7 @@
       return Optional.absent();
     }
     payload=newPayloadForBatch();
-    builder=RequestBuilder.post().setUri(combineUrl(getCurServerHost(),batchResourcePath.get()));
+    builder=RequestBuilder.post().setUri(combineUrl(getCurServerHost(),batchResourcePath));
   }
  else {
 switch (operation) {

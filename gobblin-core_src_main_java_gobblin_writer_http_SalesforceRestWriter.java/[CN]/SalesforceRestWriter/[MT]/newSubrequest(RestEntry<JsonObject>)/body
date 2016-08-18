@@ -1,6 +1,7 @@
 {
+  Preconditions.checkArgument(record.getResourcePath().isPresent(),"Resource path is not defined");
   JsonObject subReq=new JsonObject();
-  subReq.addProperty("url",Preconditions.checkNotNull(record.getResourcePath(),"Resource path is not defined"));
+  subReq.addProperty("url",record.getResourcePath().get());
   subReq.add("richInput",record.getRestEntryVal());
 switch (operation) {
 case INSERT_ONLY_NOT_EXIST:

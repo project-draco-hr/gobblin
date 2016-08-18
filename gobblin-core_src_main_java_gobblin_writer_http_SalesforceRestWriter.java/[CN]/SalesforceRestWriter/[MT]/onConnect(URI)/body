@@ -13,7 +13,10 @@
  catch (  OAuthProblemException e) {
     throw new NonTransientException("Error while authenticating with Oauth2",e);
   }
-catch (  Exception e) {
+catch (  OAuthSystemException e) {
     throw new RuntimeException("Failed getting access token",e);
+  }
+catch (  URISyntaxException e) {
+    throw new RuntimeException("Failed due to invalid instance url",e);
   }
 }

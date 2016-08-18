@@ -6,11 +6,5 @@
     }
   }
 ;
-  try {
-    this.retryer.wrap(writeCall).call();
-  }
- catch (  Exception e) {
-    isFailure=true;
-    throw new RuntimeException(e);
-  }
+  callWithRetry(writeCall);
 }

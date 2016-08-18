@@ -24,6 +24,6 @@ break;
 default :
 throw new IllegalArgumentException(connMgrStr + " is not supported");
 }
-LOG.info("Using " + httpConnManager);
+LOG.info("Using " + httpConnManager.getClass().getSimpleName());
 return typedSelf();
 }

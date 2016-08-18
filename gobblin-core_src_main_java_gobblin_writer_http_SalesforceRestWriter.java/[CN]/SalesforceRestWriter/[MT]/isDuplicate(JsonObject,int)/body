@@ -1,0 +1,3 @@
+{
+  return Operation.INSERT_ONLY_NOT_EXIST.equals(operation) && responseJsonObject.get("errorCode").getAsString().equals(DUPLICATE_VALUE_ERR_CODE);
+}

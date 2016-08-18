@@ -4,7 +4,7 @@
     builder=((Retriable)writer).getRetryerBuilder();
   }
  else {
-    builder=getDefaultRetryBuilder();
+    builder=createRetryBuilder(state);
   }
   if (GobblinMetrics.isEnabled(state)) {
     final Optional<Meter> retryMeter=Optional.of(Instrumented.getMetricContext(state,getClass()).meter(FAILED_RETRY_WRITES_METER));

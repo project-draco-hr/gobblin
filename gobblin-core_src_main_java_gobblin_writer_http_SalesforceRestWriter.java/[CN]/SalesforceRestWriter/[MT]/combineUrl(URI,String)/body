@@ -1,8 +1,0 @@
-{
-  try {
-    return new URL(getCurServerHost().toURL(),resourcePath).toURI();
-  }
- catch (  Exception e) {
-    throw new RuntimeException(e);
-  }
-}

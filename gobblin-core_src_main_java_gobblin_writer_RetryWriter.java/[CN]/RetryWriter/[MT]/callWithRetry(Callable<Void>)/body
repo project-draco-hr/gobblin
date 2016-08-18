@@ -1,0 +1,8 @@
+{
+  try {
+    this.retryer.wrap(callable).call();
+  }
+ catch (  ExecutionException|RetryException e) {
+    throw new IOException(e);
+  }
+}

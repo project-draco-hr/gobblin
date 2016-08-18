@@ -6,7 +6,7 @@
     }
     if (batchRecords.isPresent() && batchRecords.get().size() > 0) {
       getLog().info("Flusing remaining subrequest of batch. # of subrequests: " + batchRecords.get().size());
-      curRequest=Optional.of(newRequest(RequestBuilder.post().setUri(combineUrl(getCurServerHost(),batchResourcePath.get())),newPayloadForBatch()));
+      curRequest=Optional.of(newRequest(RequestBuilder.post().setUri(combineUrl(getCurServerHost(),batchResourcePath)),newPayloadForBatch()));
       super.writeImpl(null);
     }
   }
