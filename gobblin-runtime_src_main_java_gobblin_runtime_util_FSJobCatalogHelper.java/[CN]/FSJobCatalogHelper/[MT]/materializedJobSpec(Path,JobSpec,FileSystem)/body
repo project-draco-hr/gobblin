@@ -1,0 +1,18 @@
+{
+  Path shadowDirectoryPath=new Path("/tmp");
+  Path shadowFilePath=new Path(shadowDirectoryPath,UUID.randomUUID().toString());
+  if (fs.exists(shadowFilePath)) {
+    fs.delete(shadowFilePath,false);
+  }
+  Map<String,String> injectedKeys=ImmutableMap.of(DESCRIPTION_KEY_IN_JOBSPEC,jobSpec.getDescription(),VERSION_KEY_IN_JOBSPEC,jobSpec.getVersion());
+  String renderedConfig=ConfigFactory.parseMap(injectedKeys).withFallback(jobSpec.getConfig()).root().render(ConfigRenderOptions.defaults());
+  try (DataOutputStream os=fs.create(shadowFilePath);Writer writer=new OutputStreamWriter(os,Charsets.UTF_8)){
+    writer.write(renderedConfig);
+  }
+ synchronized (FSJobCatalog.class) {
+    if (fs.exists(jobSpecPath)) {
+      fs.delete(jobSpecPath,false);
+    }
+    fs.rename(shadowFilePath,jobSpecPath);
+  }
+}

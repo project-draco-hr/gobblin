@@ -1,0 +1,8 @@
+{
+  for (  Map.Entry<String,ConfigValue> entry : subConfig.entrySet()) {
+    if (!superConfig.hasPath(entry.getKey()) || !superConfig.getValue(entry.getKey()).unwrapped().equals(entry.getValue().unwrapped())) {
+      return false;
+    }
+  }
+  return true;
+}

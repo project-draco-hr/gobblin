@@ -1,0 +1,64 @@
+{
+  this.jobConfigDir=java.nio.file.Files.createTempDirectory(String.format("gobblin-test_%s_job-conf",this.getClass().getSimpleName())).toFile();
+  this.jobConfigDirPath=new Path(this.jobConfigDir.getPath());
+  Properties properties=new Properties();
+  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getPath());
+  PathAlterationObserver observer=new PathAlterationObserver(this.jobConfigDirPath);
+  FSJobCatalog cat=new FSJobCatalog(ConfigUtils.propertiesToConfig(properties),observer);
+  final Map<URI,JobSpec> specs=Maps.newHashMap();
+  JobCatalogListener l=Mockito.mock(JobCatalogListener.class);
+  Mockito.doAnswer(new Answer(){
+    @Override public Void answer(    InvocationOnMock invocation) throws Throwable {
+      JobSpec spec=(JobSpec)invocation.getArguments()[0];
+      specs.put(spec.getUri(),spec);
+      return null;
+    }
+  }
+).when(l).onAddJob(Mockito.any(JobSpec.class));
+  Mockito.doAnswer(new Answer(){
+    @Override public Void answer(    InvocationOnMock invocation) throws Throwable {
+      JobSpec spec=(JobSpec)invocation.getArguments()[0];
+      specs.put(spec.getUri(),spec);
+      return null;
+    }
+  }
+).when(l).onUpdateJob(Mockito.any(JobSpec.class));
+  Mockito.doAnswer(new Answer(){
+    @Override public Void answer(    InvocationOnMock invocation) throws Throwable {
+      URI uri=(URI)invocation.getArguments()[0];
+      specs.remove(uri);
+      return null;
+    }
+  }
+).when(l).onDeleteJob(Mockito.any(URI.class),Mockito.anyString());
+  JobSpec js1_1=JobSpec.builder("test_job1").withVersion("1").build();
+  JobSpec js1_2=JobSpec.builder("test_job1").withVersion("2").build();
+  JobSpec js1_3=JobSpec.builder("test_job1").withVersion("3").build();
+  JobSpec js2=JobSpec.builder("test_job2").withVersion("1").build();
+  cat.addListener(l);
+  observer.initialize();
+  cat.put(js1_1);
+  observer.checkAndNotify();
+  Assert.assertTrue(specs.containsKey(js1_1.getUri()));
+  JobSpec js1_1_notified=specs.get(js1_1.getUri());
+  Assert.assertTrue(ConfigUtils.verifySubset(js1_1_notified.getConfig(),js1_1.getConfig()));
+  Assert.assertEquals(js1_1.getVersion(),js1_1_notified.getVersion());
+  Thread.sleep(1000);
+  cat.put(js1_2);
+  observer.checkAndNotify();
+  Assert.assertTrue(specs.containsKey(js1_2.getUri()));
+  JobSpec js1_2_notified=specs.get(js1_2.getUri());
+  Assert.assertTrue(ConfigUtils.verifySubset(js1_2_notified.getConfig(),js1_2.getConfig()));
+  Assert.assertEquals(js1_2.getVersion(),js1_2_notified.getVersion());
+  Thread.sleep(1000);
+  cat.put(js2);
+  observer.checkAndNotify();
+  Assert.assertTrue(specs.containsKey(js2.getUri()));
+  JobSpec js2_notified=specs.get(js2.getUri());
+  Assert.assertTrue(ConfigUtils.verifySubset(js2_notified.getConfig(),js2.getConfig()));
+  Assert.assertEquals(js2.getVersion(),js2_notified.getVersion());
+  Thread.sleep(1000);
+  cat.remove(js2.getUri());
+  observer.checkAndNotify();
+  Assert.assertFalse(specs.containsKey(js2.getUri()));
+}

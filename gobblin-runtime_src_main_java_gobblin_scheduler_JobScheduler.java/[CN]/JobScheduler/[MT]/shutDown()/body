@@ -1,7 +1,7 @@
 {
   LOG.info("Stopping the job scheduler");
   if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY) || this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
-    this.pathAlterationMonitor.stop(1000);
+    this.pathAlterationDetector.stop(1000);
   }
   try {
     ExecutorsUtils.shutdownExecutorService(this.jobExecutor,Optional.of(LOG));

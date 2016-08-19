@@ -1,0 +1,3 @@
+{
+  return Lists.transform(Lists.newArrayList(loader.loadPullFilesRecursively(loader.getRootDirectory(),this.sysConfig,shouldLoadGlobalConf())),this.converter);
+}

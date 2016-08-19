@@ -1,0 +1,18 @@
+{
+  URI jobConfigURI=computeURI(new Path(rawConfig.getString(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY)));
+  String version;
+  if (rawConfig.hasPath(VERSION_KEY_IN_JOBSPEC)) {
+    version=rawConfig.getString(VERSION_KEY_IN_JOBSPEC);
+  }
+ else {
+    version="1";
+  }
+  String description;
+  if (rawConfig.hasPath(DESCRIPTION_KEY_IN_JOBSPEC)) {
+    description=rawConfig.getString(DESCRIPTION_KEY_IN_JOBSPEC);
+  }
+ else {
+    description="Gobblin job " + jobConfigURI;
+  }
+  return JobSpec.builder(jobConfigURI).withConfig(rawConfig).withDescription(description).withVersion(version).build();
+}

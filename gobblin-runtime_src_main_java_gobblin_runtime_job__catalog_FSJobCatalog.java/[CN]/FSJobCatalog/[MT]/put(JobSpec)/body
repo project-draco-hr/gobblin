@@ -1,0 +1,13 @@
+{
+  Preconditions.checkNotNull(jobSpec);
+  try {
+    Path jobSpecPath=getPathForURI(this.jobConfDirPath,jobSpec.getUri());
+    FSJobCatalogHelper.materializedJobSpec(jobSpecPath,jobSpec,this.fs);
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("When persisting a new JobSpec, unexpected issues happen:" + e.getMessage());
+  }
+catch (  JobSpecNotFoundException e) {
+    throw new RuntimeException("When replacing a existed JobSpec, unexpected issue happen:" + e.getMessage());
+  }
+}

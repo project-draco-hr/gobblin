@@ -1,0 +1,32 @@
+{
+  PathAlterationDetector detector=new PathAlterationDetector(1000);
+  final Set<Path> fileAltered=Sets.newHashSet();
+  final Semaphore semaphore=new Semaphore(0);
+  PathAlterationListener listener=new PathAlterationListenerAdaptor(){
+    @Override public void onFileCreate(    Path path){
+      fileAltered.add(path);
+      semaphore.release();
+    }
+    @Override public void onFileChange(    Path path){
+      fileAltered.add(path);
+      semaphore.release();
+    }
+  }
+;
+  FSJobCatalogHelper.addPathAlterationObserver(detector,listener,Optional.<PathAlterationObserver>absent(),new Path(this.jobConfigDir.getPath()));
+  try {
+    detector.start();
+    Thread.sleep(1000);
+    File jobConfigFile=new File(this.subDir11,"test111.pull");
+    Files.touch(jobConfigFile);
+    File newJobConfigFile=new File(this.subDir11,"test112.pull");
+    Files.append("k1=v1",newJobConfigFile,ConfigurationKeys.DEFAULT_CHARSET_ENCODING);
+    semaphore.acquire(2);
+    Assert.assertEquals(fileAltered.size(),2);
+    Assert.assertTrue(fileAltered.contains(new Path("file:" + jobConfigFile)));
+    Assert.assertTrue(fileAltered.contains(new Path("file:" + newJobConfigFile)));
+  }
+  finally {
+    detector.stop();
+  }
+}

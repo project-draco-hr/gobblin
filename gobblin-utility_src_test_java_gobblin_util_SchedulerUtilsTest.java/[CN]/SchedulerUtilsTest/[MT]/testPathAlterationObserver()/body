@@ -1,5 +1,5 @@
 {
-  PathAlterationMonitor monitor=new PathAlterationMonitor(1000);
+  PathAlterationDetector monitor=new PathAlterationDetector(1000);
   final Set<Path> fileAltered=Sets.newHashSet();
   final Semaphore semaphore=new Semaphore(0);
   PathAlterationListener listener=new PathAlterationListenerAdaptor(){

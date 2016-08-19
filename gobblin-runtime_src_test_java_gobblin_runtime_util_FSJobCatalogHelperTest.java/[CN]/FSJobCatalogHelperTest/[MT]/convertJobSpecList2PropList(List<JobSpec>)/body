@@ -1,0 +1,15 @@
+{
+  List<Properties> result=Lists.newArrayList();
+  for (  JobSpec js : jobConfigs) {
+    Properties propToBeAdded;
+    if (js.getConfigAsProperties() != null) {
+      propToBeAdded=js.getConfigAsProperties();
+    }
+ else {
+      propToBeAdded=ConfigUtils.configToProperties(js.getConfig());
+    }
+    propToBeAdded.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,js.getUri().toString());
+    result.add(propToBeAdded);
+  }
+  return result;
+}

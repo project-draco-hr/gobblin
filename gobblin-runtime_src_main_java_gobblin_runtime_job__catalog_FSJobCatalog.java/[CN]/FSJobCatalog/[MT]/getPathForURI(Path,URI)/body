@@ -1,0 +1,3 @@
+{
+  return super.getPathForURI(jobConfDirPath,uri).suffix(CONF_EXTENSION);
+}

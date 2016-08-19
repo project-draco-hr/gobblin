@@ -1,0 +1,7 @@
+{
+  this.jobConfDirPath=jobConfDirPath;
+  this.loader=loader;
+  this.sysConfig=sysConfig;
+  this.listeners=listeners;
+  this.converter=converter;
+}
