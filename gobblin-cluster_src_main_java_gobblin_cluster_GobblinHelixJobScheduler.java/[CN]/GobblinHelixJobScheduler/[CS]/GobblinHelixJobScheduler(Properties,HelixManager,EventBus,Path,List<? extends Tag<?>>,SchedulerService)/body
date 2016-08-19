@@ -1,5 +1,5 @@
 {
-  super(properties);
+  super(properties,schedulerService);
   this.properties=properties;
   this.helixManager=helixManager;
   this.eventBus=eventBus;

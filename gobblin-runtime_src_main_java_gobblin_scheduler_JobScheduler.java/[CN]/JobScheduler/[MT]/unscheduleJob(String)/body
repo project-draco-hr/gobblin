@@ -1,7 +1,7 @@
 {
   if (this.scheduledJobs.containsKey(jobName)) {
     try {
-      this.scheduler.deleteJob(this.scheduledJobs.remove(jobName));
+      this.scheduler.getScheduler().deleteJob(this.scheduledJobs.remove(jobName));
     }
  catch (    SchedulerException se) {
       LOG.error("Failed to unschedule and delete job " + jobName,se);

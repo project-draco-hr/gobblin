@@ -1,4 +1,6 @@
 {
   super(properties,getAppName(properties));
-  addService(new JobScheduler(properties));
+  SchedulerService schedulerService=new SchedulerService(properties);
+  addService(schedulerService);
+  addService(new JobScheduler(properties,schedulerService));
 }
