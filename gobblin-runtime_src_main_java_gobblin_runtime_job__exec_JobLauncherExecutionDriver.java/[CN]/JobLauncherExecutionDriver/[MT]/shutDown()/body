@@ -1,0 +1,21 @@
+{
+  _log.info("Shutting down " + getClass().getSimpleName());
+  if (null != _jobContext) {
+switch (_jobContext.getJobState().getState()) {
+case PENDING:
+case RUNNING:
+{
+        _legacyLauncher.cancelJob(new JobListenerToJobStateBridge());
+        break;
+      }
+case SUCCESSFUL:
+case FAILED:
+case COMMITTED:
+case CANCELLED:
+{
+      break;
+    }
+}
+}
+_legacyLauncher.close();
+}

@@ -1,0 +1,6 @@
+{
+  if (config.hasPath(path)) {
+    return Long.valueOf(config.getLong(path));
+  }
+  return def;
+}

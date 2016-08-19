@@ -1,0 +1,20 @@
+{
+  Map<S,K> schemaIdMap;
+  if (_namedSchemaCache.containsKey(name)) {
+    schemaIdMap=_namedSchemaCache.get(name);
+  }
+ else {
+    schemaIdMap=new IdentityHashMap<>();
+    _namedSchemaCache.put(name,schemaIdMap);
+  }
+  if (schemaIdMap.containsKey(schema)) {
+    return schemaIdMap.get(schema);
+  }
+ else {
+    Preconditions.checkState(schemaIdMap.size() < _maxSchemaReferences,"Too many schema objects for " + name + ". Cache is overfull.");
+  }
+  K id=_kafkaSchemaRegistry.register(name,schema);
+  schemaIdMap.put(schema,id);
+  _idBasedCache.put(id,schema);
+  return id;
+}

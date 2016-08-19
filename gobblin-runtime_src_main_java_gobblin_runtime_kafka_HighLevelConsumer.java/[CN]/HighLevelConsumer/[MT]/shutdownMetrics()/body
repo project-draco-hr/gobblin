@@ -1,0 +1,5 @@
+{
+  if (this.metricContext != null) {
+    this.metricContext.close();
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return new CallbackResult<R>(result,null,false);
+}

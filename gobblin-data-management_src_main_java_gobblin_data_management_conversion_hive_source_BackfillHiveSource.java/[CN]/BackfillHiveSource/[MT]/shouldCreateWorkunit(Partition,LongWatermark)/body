@@ -1,0 +1,6 @@
+{
+  if (!this.partitionsWhitelist.isEmpty()) {
+    return this.partitionsWhitelist.contains(sourcePartition.getCompleteName());
+  }
+  return true;
+}

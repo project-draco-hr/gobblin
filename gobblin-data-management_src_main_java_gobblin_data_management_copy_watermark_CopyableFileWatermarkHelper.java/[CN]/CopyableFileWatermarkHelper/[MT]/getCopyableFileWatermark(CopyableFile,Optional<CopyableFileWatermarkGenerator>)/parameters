@@ -1,0 +1,2 @@
+CopyableFile copyableFile
+Optional<CopyableFileWatermarkGenerator> watermarkGenerator

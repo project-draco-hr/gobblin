@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(jobDescription);
+  this.description=Optional.of(jobDescription);
+  return this;
+}

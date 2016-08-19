@@ -1,0 +1,12 @@
+{
+  URI jobCatalogURI=getJobCatalogURI();
+  Config jobCfg=getConfig();
+  String name=jobCfg.hasPath(ConfigurationKeys.JOB_NAME_KEY) ? jobCfg.getString(ConfigurationKeys.JOB_NAME_KEY) : "default";
+  String group=jobCfg.hasPath(ConfigurationKeys.JOB_GROUP_KEY) ? jobCfg.getString(ConfigurationKeys.JOB_GROUP_KEY) : "default";
+  try {
+    return new URI(jobCatalogURI.getScheme(),jobCatalogURI.getAuthority(),"/" + group + "/"+ name,null,null);
+  }
+ catch (  URISyntaxException e) {
+    throw new RuntimeException("Unable to create default JobSpec URI:" + e,e);
+  }
+}

@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(PARTITION_CREATION + SUCCESS_POSTFIX,getAdditionalMetadata(table,Optional.<HivePartition>of(partition),Optional.<Exception>absent()));
+}

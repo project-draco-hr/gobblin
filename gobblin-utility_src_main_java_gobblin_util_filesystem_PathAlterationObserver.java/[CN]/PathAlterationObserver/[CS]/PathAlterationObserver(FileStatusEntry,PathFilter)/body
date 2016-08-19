@@ -1,0 +1,16 @@
+{
+  if (rootEntry == null) {
+    throw new IllegalArgumentException("Root entry is missing");
+  }
+  if (rootEntry.getPath() == null) {
+    throw new IllegalArgumentException("Root directory is missing");
+  }
+  this.rootEntry=rootEntry;
+  this.pathFilter=pathFilter;
+  this.comparator=new Comparator<Path>(){
+    @Override public int compare(    Path o1,    Path o2){
+      return IOCase.SENSITIVE.checkCompareTo(o1.toUri().toString(),o2.toUri().toString());
+    }
+  }
+;
+}

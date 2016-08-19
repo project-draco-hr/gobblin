@@ -1,0 +1,5 @@
+{
+  HelixUtils.createGobblinHelixCluster(this.config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY),this.config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
+  Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s",this.helixClusterName)).getVersion(),0);
+  Assert.assertEquals(this.curatorFramework.checkExists().forPath(String.format("/%s/CONTROLLER",this.helixClusterName)).getVersion(),0);
+}

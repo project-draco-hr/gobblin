@@ -1,0 +1,25 @@
+{
+  try {
+    Path workUnitFilePath=new Path(this.taskConfig.getConfigMap().get(GobblinClusterConfigurationKeys.WORK_UNIT_FILE_PATH));
+    WorkUnit workUnit=workUnitFilePath.getName().endsWith(AbstractJobLauncher.MULTI_WORK_UNIT_FILE_EXTENSION) ? MultiWorkUnit.createEmpty() : WorkUnit.createEmpty();
+    SerializationUtils.deserializeState(this.fs,workUnitFilePath,workUnit);
+    List<WorkUnit> workUnits=Lists.newArrayList();
+    if (workUnit instanceof MultiWorkUnit) {
+      List<WorkUnit> flattenedWorkUnits=JobLauncherUtils.flattenWorkUnits(((MultiWorkUnit)workUnit).getWorkUnits());
+      workUnits.addAll(flattenedWorkUnits);
+    }
+ else {
+      workUnits.add(workUnit);
+    }
+    AbstractJobLauncher.runWorkUnits(this.jobId,this.participantId,this.jobState,workUnits,this.taskStateTracker,this.taskExecutor,this.taskStateStore,LOGGER);
+    return new TaskResult(TaskResult.Status.COMPLETED,String.format("completed tasks: %d",workUnits.size()));
+  }
+ catch (  InterruptedException ie) {
+    Thread.currentThread().interrupt();
+    return new TaskResult(TaskResult.Status.CANCELED,"");
+  }
+catch (  Throwable t) {
+    LOGGER.error("GobblinHelixTask failed due to " + t.getMessage(),t);
+    return new TaskResult(TaskResult.Status.ERROR,Throwables.getStackTraceAsString(t));
+  }
+}

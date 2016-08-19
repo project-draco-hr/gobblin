@@ -4,10 +4,10 @@
   this.state.setProp(JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,Boolean.toString(true));
   this.initializer.initialize();
   Assert.assertEquals(DEST_TABLE,this.workUnit.getProp(ConfigurationKeys.WRITER_STAGING_TABLE));
-  verify(this.commands,never()).createTableStructure(anyString(),anyString());
+  verify(this.commands,never()).createTableStructure(anyString(),anyString(),anyString());
   InOrder inOrder=inOrder(this.commands);
-  inOrder.verify(this.commands,times(1)).truncate(DEST_TABLE);
+  inOrder.verify(this.commands,times(1)).truncate(DB,DEST_TABLE);
   this.initializer.close();
-  inOrder.verify(this.commands,never()).truncate(anyString());
-  verify(this.commands,never()).drop(anyString());
+  inOrder.verify(this.commands,never()).truncate(anyString(),anyString());
+  verify(this.commands,never()).drop(anyString(),anyString());
 }

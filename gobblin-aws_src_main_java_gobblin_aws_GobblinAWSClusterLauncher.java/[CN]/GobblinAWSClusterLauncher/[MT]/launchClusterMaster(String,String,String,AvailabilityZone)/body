@@ -1,0 +1,17 @@
+{
+  final String userData=CloudInitScriptBuilder.buildClusterMasterCommand(this.clusterName,this.nfsParentDir,this.sinkLogRootDir,this.awsConfDir,this.appWorkDir,this.masterS3ConfUri,this.masterS3ConfFiles,this.masterS3JarsUri,this.masterS3JarsFiles,this.masterJarsDir,this.masterJvmMemory,this.masterJvmArgs,this.gobblinVersion);
+  this.masterLaunchConfigName=MASTER_LAUNCH_CONFIG_NAME_PREFIX + uuid;
+  this.awsSdkClient.createLaunchConfig(this.masterLaunchConfigName,this.masterAmiId,this.masterInstanceType,keyName,securityGroups,Optional.<String>absent(),Optional.<String>absent(),Optional.<BlockDeviceMapping>absent(),Optional.<String>absent(),Optional.<InstanceMonitoring>absent(),userData);
+  this.masterAutoScalingGroupName=MASTER_ASG_NAME_PREFIX + uuid;
+  final int minNumMasters=1;
+  final int maxNumMasters=1;
+  final int desiredNumMasters=1;
+  final Tag clusterNameTag=new Tag().withKey(CLUSTER_NAME_ASG_TAG).withValue(this.clusterName);
+  final Tag clusterUuidTag=new Tag().withKey(CLUSTER_ID_ASG_TAG).withValue(uuid);
+  final Tag asgTypeTag=new Tag().withKey(ASG_TYPE_ASG_TAG).withValue(ASG_TYPE_MASTER);
+  this.awsSdkClient.createAutoScalingGroup(this.masterAutoScalingGroupName,this.masterLaunchConfigName,minNumMasters,maxNumMasters,desiredNumMasters,Optional.of(availabilityZone.getZoneName()),Optional.<Integer>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Lists.newArrayList(clusterNameTag,clusterUuidTag,asgTypeTag));
+  LOGGER.info("Waiting for cluster master to launch");
+  this.masterPublicIp=getMasterPublicIp();
+  LOGGER.info("Master public ip: " + this.masterPublicIp);
+  return uuid;
+}

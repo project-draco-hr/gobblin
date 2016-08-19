@@ -1,0 +1,3 @@
+String dbName
+String finalTableName
+Map<String,String> partitionsDMLInfo

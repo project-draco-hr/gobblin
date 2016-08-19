@@ -1,0 +1,8 @@
+{
+  try (InputStream schemaWithPKey=getClass().getClassLoader().getResourceAsStream("dedup-schema/dedup-schema-with-pkey.avsc");InputStream dedupKeySchema=getClass().getClassLoader().getResourceAsStream("dedup-schema/dedup-schema.avsc")){
+    Schema topicSchema=new Schema.Parser().parse(schemaWithPKey);
+    Schema actualKeySchema=this.runner.getKeySchema(this.job,topicSchema);
+    Schema expectedKeySchema=new Schema.Parser().parse(dedupKeySchema);
+    Assert.assertEquals(actualKeySchema,expectedKeySchema);
+  }
+ }

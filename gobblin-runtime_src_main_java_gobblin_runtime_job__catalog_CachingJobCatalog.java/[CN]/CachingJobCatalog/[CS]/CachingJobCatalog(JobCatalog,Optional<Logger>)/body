@@ -1,0 +1,6 @@
+{
+  _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+  _fallback=fallback;
+  _cache=new InMemoryJobCatalog(log);
+  _fallback.addListener(new FallbackCatalogListener());
+}

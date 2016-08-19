@@ -1,9 +1,10 @@
 {
   Map<String,JdbcType> dateColums=new HashMap<>();
   dateColums.put("last_updated",JdbcType.TIMESTAMP);
+  final String db="db";
   final String table="users";
   JdbcWriterCommands mockWriterCommands=mock(JdbcWriterCommands.class);
-  when(mockWriterCommands.retrieveDateColumns(table)).thenReturn(dateColums);
+  when(mockWriterCommands.retrieveDateColumns(db,table)).thenReturn(dateColums);
   JdbcWriterCommandsFactory factory=mock(JdbcWriterCommandsFactory.class);
   when(factory.newInstance(any(State.class),any(Connection.class))).thenReturn(mockWriterCommands);
   WorkUnitState workUnitState=new WorkUnitState();

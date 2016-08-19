@@ -1,10 +1,10 @@
 {
   URL url=new URL(urlStr);
   Proxy proxy=Proxy.NO_PROXY;
-  if (this.workUnit.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL) && this.workUnit.contains(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT)) {
-    LOG.info("Use proxy host: " + this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL));
-    LOG.info("Use proxy port: " + this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT));
-    InetSocketAddress proxyAddress=new InetSocketAddress(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL),Integer.parseInt(this.workUnit.getProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT)));
+  if (isPropPresent(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL,this.workUnitState) && isPropPresent(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,this.workUnitState)) {
+    LOG.info("Use proxy host: " + readProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL,this.workUnitState));
+    LOG.info("Use proxy port: " + readProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,this.workUnitState));
+    InetSocketAddress proxyAddress=new InetSocketAddress(readProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_URL,this.workUnitState),Integer.parseInt(readProp(ConfigurationKeys.SOURCE_CONN_USE_PROXY_PORT,this.workUnitState)));
     proxy=new Proxy(Proxy.Type.HTTP,proxyAddress);
   }
   return (HttpURLConnection)url.openConnection(proxy);

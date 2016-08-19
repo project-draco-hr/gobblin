@@ -1,0 +1,9 @@
+{
+  final Optional<String> reconnectableClusterId=getReconnectableClusterId();
+  if (reconnectableClusterId.isPresent()) {
+    LOGGER.info("Found reconnectable cluster with cluster ID: " + reconnectableClusterId.get());
+    return reconnectableClusterId;
+  }
+  LOGGER.info("No reconnectable cluster found so creating a cluster");
+  return Optional.of(setupGobblinCluster());
+}

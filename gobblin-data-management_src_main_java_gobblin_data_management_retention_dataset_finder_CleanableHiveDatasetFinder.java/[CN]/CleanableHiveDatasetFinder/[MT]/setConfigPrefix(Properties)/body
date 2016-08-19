@@ -1,0 +1,6 @@
+{
+  if (!props.containsKey(HIVE_DATASET_CONFIG_PREFIX_KEY)) {
+    props.setProperty(HIVE_DATASET_CONFIG_PREFIX_KEY,ConfigurableCleanableDataset.RETENTION_CONFIGURATION_KEY);
+  }
+  return props;
+}

@@ -1,0 +1,10 @@
+{
+  for (  final PathAlterationListener listener : listeners) {
+    if (entry.isDirectory()) {
+      listener.onDirectoryDelete(entry.getPath());
+    }
+ else {
+      listener.onFileDelete(entry.getPath());
+    }
+  }
+}

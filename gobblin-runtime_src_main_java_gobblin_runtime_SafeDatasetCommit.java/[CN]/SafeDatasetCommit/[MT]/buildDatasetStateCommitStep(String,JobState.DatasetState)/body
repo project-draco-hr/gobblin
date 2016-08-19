@@ -1,0 +1,4 @@
+{
+  log.info("Creating " + DatasetStateCommitStep.class.getSimpleName() + " for dataset "+ datasetUrn);
+  return Optional.of(new DatasetStateCommitStep.Builder<>().withProps(datasetState).withDatasetUrn(datasetUrn).withDatasetState(datasetState).build());
+}

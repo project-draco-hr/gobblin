@@ -1,0 +1,13 @@
+{
+  for (  final PathAlterationObserver observer : observers) {
+    try {
+      observer.checkAndNotify();
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+    }
+  }
+  if (!running) {
+    return;
+  }
+}

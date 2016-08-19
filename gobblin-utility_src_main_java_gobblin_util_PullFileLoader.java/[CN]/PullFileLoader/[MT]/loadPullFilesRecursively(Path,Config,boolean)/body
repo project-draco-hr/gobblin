@@ -1,0 +1,12 @@
+{
+  try {
+    Config fallback=sysProps;
+    if (loadGlobalProperties && PathUtils.isAncestor(this.rootDirectory,path.getParent())) {
+      fallback=loadAncestorGlobalConfigs(path.getParent(),fallback);
+    }
+    return loadPullFilesRecursivelyHelper(path,fallback,loadGlobalProperties);
+  }
+ catch (  IOException ioe) {
+    return Lists.newArrayList();
+  }
+}

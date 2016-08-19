@@ -1,8 +1,8 @@
 {
-  File commonPropsFile=new File(this.subDir1,"test.properties");
+  Path commonPropsPath=new Path(this.subDir1.getAbsolutePath() + "/test.properties");
   Properties properties=new Properties();
-  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,this.jobConfigDir.getAbsolutePath());
-  List<Properties> jobConfigs=SchedulerUtils.loadJobConfigs(properties,commonPropsFile,this.jobConfigDir);
+  properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getAbsolutePath());
+  List<Properties> jobConfigs=SchedulerUtils.loadGenericJobConfigs(properties,commonPropsPath,new Path(this.jobConfigDir.getAbsolutePath()));
   Assert.assertEquals(jobConfigs.size(),3);
   Properties jobProps1=getJobConfigForFile(jobConfigs,"test111.pull");
   Assert.assertEquals(jobProps1.stringPropertyNames().size(),7);

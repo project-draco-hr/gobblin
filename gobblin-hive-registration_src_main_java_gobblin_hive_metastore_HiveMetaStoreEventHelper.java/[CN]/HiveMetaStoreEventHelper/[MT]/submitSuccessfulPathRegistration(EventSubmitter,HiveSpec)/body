@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(PATH_REGISTRATION + SUCCESS_POSTFIX,getAdditionalMetadata(spec,Optional.<Exception>absent()));
+}

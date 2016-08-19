@@ -1,0 +1,3 @@
+{
+  _disp=new CallbacksDispatcher<JobCatalogListener>(Optional.<ExecutorService>absent(),log);
+}

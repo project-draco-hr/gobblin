@@ -1,0 +1,3 @@
+{
+  return parseDateForLocation(table.getTTable().getSd().getLocation());
+}

@@ -1,0 +1,13 @@
+{
+  this.changeLock.lock();
+  try {
+    String oldStage=this.stage;
+    this.stage=newStage;
+    if (this.listener.isPresent()) {
+      this.listener.get().onStageTransition(this,oldStage,this.stage);
+    }
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

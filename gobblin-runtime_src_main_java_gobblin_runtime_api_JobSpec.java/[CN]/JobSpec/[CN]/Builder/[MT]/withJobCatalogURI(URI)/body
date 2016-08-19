@@ -1,0 +1,4 @@
+{
+  this.jobCatalogURI=Optional.of(jobCatalogURI);
+  return this;
+}

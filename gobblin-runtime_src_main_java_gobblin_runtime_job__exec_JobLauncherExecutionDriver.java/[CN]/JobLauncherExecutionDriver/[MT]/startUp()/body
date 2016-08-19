@@ -1,0 +1,4 @@
+{
+  _log.info("Starting " + getClass().getSimpleName());
+  _legacyLauncher.launchJob(new JobListenerToJobStateBridge());
+}

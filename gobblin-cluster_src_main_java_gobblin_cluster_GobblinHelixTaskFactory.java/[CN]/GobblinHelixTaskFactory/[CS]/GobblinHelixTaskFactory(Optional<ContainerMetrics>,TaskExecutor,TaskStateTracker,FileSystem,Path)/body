@@ -1,0 +1,13 @@
+{
+  this.containerMetrics=containerMetrics;
+  if (this.containerMetrics.isPresent()) {
+    this.newTasksCounter=Optional.of(this.containerMetrics.get().getCounter(GOBBLIN_CLUSTER_NEW_HELIX_TASK_COUNTER));
+  }
+ else {
+    this.newTasksCounter=Optional.absent();
+  }
+  this.taskExecutor=taskExecutor;
+  this.taskStateTracker=taskStateTracker;
+  this.fs=fs;
+  this.appWorkDir=appWorkDir;
+}

@@ -18,7 +18,7 @@
         Predicate predicate=i.next();
         query=SqlQueryUtils.addPredicate(query,predicate.getCondition());
       }
-      if (Boolean.valueOf(this.workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_SPECIFIC_API_ACTIVE))) {
+      if (Boolean.valueOf(this.workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_IS_SPECIFIC_API_ACTIVE))) {
         query=SqlQueryUtils.addPredicate(query,"IsDeleted = true");
       }
       query=query + limitString;

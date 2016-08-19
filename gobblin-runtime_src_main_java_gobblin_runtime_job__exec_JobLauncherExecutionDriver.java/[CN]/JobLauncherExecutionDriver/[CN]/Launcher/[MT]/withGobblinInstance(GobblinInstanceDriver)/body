@@ -1,0 +1,4 @@
+{
+  _gobblinInstance=Optional.of(gobblinInstance);
+  return this;
+}

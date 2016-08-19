@@ -1,5 +1,6 @@
 {
-  HiveJdbcConnector hiveJdbcConnector=new HiveJdbcConnector();
+  boolean isSimulate=Boolean.valueOf(compactRunProps.getProperty(HIVE_EXECUTION_SIMULATE));
+  HiveJdbcConnector hiveJdbcConnector=new HiveJdbcConnector(isSimulate);
   hiveJdbcConnector.withHiveServerVersion(Integer.parseInt(compactRunProps.getProperty(HIVESERVER_VERSION,DEFAULT_HIVESERVER_VERSION)));
   if (compactRunProps.containsKey(HIVESITE_DIR)) {
     HiveJdbcConnector.addHiveSiteDirToClasspath(compactRunProps.getProperty(HIVESITE_DIR));

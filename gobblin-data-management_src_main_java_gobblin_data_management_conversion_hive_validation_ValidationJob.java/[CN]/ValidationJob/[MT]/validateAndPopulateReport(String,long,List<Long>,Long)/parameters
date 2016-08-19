@@ -1,0 +1,4 @@
+String datasetIdentifier
+long conversionInstance
+List<Long> rowCounts
+Long rowDataValidatedCount

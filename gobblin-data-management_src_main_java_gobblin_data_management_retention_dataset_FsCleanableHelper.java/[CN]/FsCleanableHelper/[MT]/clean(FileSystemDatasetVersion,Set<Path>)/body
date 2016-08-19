@@ -1,0 +1,23 @@
+{
+  log.info("Deleting dataset version " + versionToDelete);
+  Set<Path> pathsToDelete=versionToDelete.getPaths();
+  log.info("Deleting paths: " + Arrays.toString(pathsToDelete.toArray()));
+  boolean deletedAllPaths=true;
+  for (  Path path : pathsToDelete) {
+    if (!this.fs.exists(path)) {
+      log.info(String.format("Path %s in dataset version %s does not exist",path,versionToDelete));
+      continue;
+    }
+    boolean successfullyDeleted=deleteAsOwner ? trash.moveToTrashAsOwner(path) : trash.moveToTrash(path);
+    if (successfullyDeleted) {
+      possiblyEmptyDirectories.add(path.getParent());
+    }
+ else {
+      log.error("Failed to delete path " + path + " in dataset version "+ versionToDelete);
+      deletedAllPaths=false;
+    }
+  }
+  if (!deletedAllPaths) {
+    log.error("Failed to delete some paths in dataset version " + versionToDelete);
+  }
+}

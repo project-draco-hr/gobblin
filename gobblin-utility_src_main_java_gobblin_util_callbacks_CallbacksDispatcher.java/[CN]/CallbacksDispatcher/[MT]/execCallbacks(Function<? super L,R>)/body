@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(callback);
+  List<L> listeners=getListeners();
+  return execCallbacks(callback,listeners);
+}

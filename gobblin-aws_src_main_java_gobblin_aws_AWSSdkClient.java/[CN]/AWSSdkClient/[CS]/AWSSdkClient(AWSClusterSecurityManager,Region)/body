@@ -1,0 +1,4 @@
+{
+  this.awsClusterSecurityManager=awsClusterSecurityManager;
+  this.region=region;
+}

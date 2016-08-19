@@ -1,0 +1,36 @@
+{
+  final StringBuilder cloudInitCmds=new StringBuilder().append("#!/bin/bash").append("\n");
+  final String clusterMasterClassName=GobblinAWSClusterManager.class.getSimpleName();
+  final String nfsDir=nfsParentDir + clusterName;
+  final String nfsShareDirCmd=String.format("echo '%s %s(%s)' | tee --append %s",nfsDir,NFS_SHARE_ALL_IPS,NFS_SHARE_DEFAULT_OPTS,NFS_CONF_FILE);
+  cloudInitCmds.append("mkdir -p ").append(nfsDir).append(File.separator).append("1").append("\n");
+  cloudInitCmds.append(NFS_SERVER_INSTALL_CMD).append("\n");
+  cloudInitCmds.append(nfsShareDirCmd).append("\n");
+  cloudInitCmds.append(NFS_SERVER_START_CMD).append("\n");
+  cloudInitCmds.append(NFS_EXPORT_FS_CMD).append("\n");
+  cloudInitCmds.append("mkdir -p ").append(sinkLogRootDir).append("\n");
+  cloudInitCmds.append("chown -R ec2-user:ec2-user /home/ec2-user/*").append("\n");
+  if (gobblinVersion.isPresent()) {
+    cloudInitCmds.append("vr=").append(gobblinVersion.get()).append("\n");
+  }
+  cloudInitCmds.append("cgS3=").append(masterS3ConfUri).append("\n");
+  cloudInitCmds.append("cg=").append(awsConfDir).append("\n");
+  cloudInitCmds.append("jrS3=").append(masterS3JarsUri).append("\n");
+  cloudInitCmds.append("jr=").append(masterJarsDir).append("\n");
+  final StringBuilder classpath=new StringBuilder();
+  final List<String> awsConfs=SPLITTER.splitToList(masterS3ConfFiles);
+  for (  String awsConf : awsConfs) {
+    cloudInitCmds.append(String.format("wget -P \"${cg}\" \"${cgS3}\"%s",awsConf)).append("\n");
+  }
+  classpath.append(awsConfDir);
+  final List<String> awsJars=SPLITTER.splitToList(masterS3JarsFiles);
+  for (  String awsJar : awsJars) {
+    cloudInitCmds.append(String.format("wget -P \"${jr}\" \"${jrS3}\"%s",awsJar)).append("\n");
+  }
+  classpath.append(":").append(masterJarsDir).append("*");
+  final StringBuilder launchGobblinClusterMasterCmd=new StringBuilder().append("java").append(" -cp ").append(classpath).append(" -Xmx").append(masterJvmMemory).append(" ").append(masterJvmArgs.or("")).append(" ").append(GobblinAWSClusterManager.class.getName()).append(" --").append(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME).append(" ").append(clusterName).append(" --").append(GobblinAWSConfigurationKeys.APP_WORK_DIR).append(" ").append(appWorkDir).append(" 1>").append(sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(CloudInitScriptBuilder.STDOUT).append(" 2>").append(sinkLogRootDir).append(clusterMasterClassName).append(".").append("master").append(".").append(CloudInitScriptBuilder.STDERR);
+  cloudInitCmds.append(launchGobblinClusterMasterCmd).append("\n");
+  final String cloudInitScript=cloudInitCmds.toString();
+  LOGGER.info("Cloud-init script for master node: " + cloudInitScript);
+  return encodeBase64(cloudInitScript);
+}

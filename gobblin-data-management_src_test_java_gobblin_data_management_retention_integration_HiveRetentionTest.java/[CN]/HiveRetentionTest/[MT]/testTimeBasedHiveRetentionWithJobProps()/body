@@ -1,0 +1,5 @@
+{
+  String dbName="hiveTestDb";
+  String tableName="testTable";
+  this.testTimeBasedHiveRetention(dbName,tableName,"hive-retention.job");
+}

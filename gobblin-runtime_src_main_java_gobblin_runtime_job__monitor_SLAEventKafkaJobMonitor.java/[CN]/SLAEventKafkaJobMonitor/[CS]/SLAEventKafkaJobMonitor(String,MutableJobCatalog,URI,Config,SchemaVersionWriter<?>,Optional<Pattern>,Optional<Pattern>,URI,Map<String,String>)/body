@@ -1,0 +1,8 @@
+{
+  super(topic,catalog,limitedScopeConfig,GobblinTrackingEvent.SCHEMA$,versionWriter);
+  this.baseURI=baseURI;
+  this.urnFilter=urnFilter;
+  this.nameFilter=nameFilter;
+  this.template=template;
+  this.extractKeys=extractKeys;
+}

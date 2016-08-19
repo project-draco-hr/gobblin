@@ -7,7 +7,12 @@
   List<CommitStep> postPublish=getCommitSequence(datasetWorkUnitStates,PostPublishStep.class);
   log.info(String.format("[%s] Found %d prePublish steps and %d postPublish steps.",datasetAndPartition.identifier(),prePublish.size(),postPublish.size()));
   executeCommitSequence(prePublish);
-  HadoopUtils.renameRecursively(this.fs,datasetWriterOutputPath,new Path("/"));
+  if (hasCopyableFiles(datasetWorkUnitStates)) {
+    HadoopUtils.renameRecursively(this.fs,datasetWriterOutputPath,new Path("/"));
+  }
+ else {
+    log.info(String.format("[%s] No copyable files in dataset. Proceeding to postpublish steps.",datasetAndPartition.identifier()));
+  }
   executeCommitSequence(postPublish);
   this.fs.delete(datasetWriterOutputPath,true);
   long datasetOriginTimestamp=Long.MAX_VALUE;

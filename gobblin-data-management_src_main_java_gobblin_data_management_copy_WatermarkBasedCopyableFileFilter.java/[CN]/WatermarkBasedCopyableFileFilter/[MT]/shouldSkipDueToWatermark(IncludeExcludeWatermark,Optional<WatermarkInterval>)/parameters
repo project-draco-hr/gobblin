@@ -1,0 +1,2 @@
+IncludeExcludeWatermark previousWatermark
+Optional<WatermarkInterval> curWatermarkIntervalOptional

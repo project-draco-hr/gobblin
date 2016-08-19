@@ -1,0 +1,5 @@
+{
+  if (this.filter.apply(state.getJobSpec())) {
+    this.delegate.onMetadataChange(state,key,oldValue,newValue);
+  }
+}

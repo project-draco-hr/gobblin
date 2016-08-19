@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(TABLE_DROP + SUCCESS_POSTFIX,ImmutableMap.<String,String>builder().put(DB_NAME,dbName).put(TABLE_NAME,tableName).build());
+}

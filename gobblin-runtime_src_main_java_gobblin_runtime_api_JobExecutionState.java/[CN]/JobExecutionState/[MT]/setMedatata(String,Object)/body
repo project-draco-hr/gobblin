@@ -1,0 +1,13 @@
+{
+  this.changeLock.lock();
+  try {
+    Object oldValue=this.executionMetadata.get(key);
+    this.executionMetadata.put(key,value);
+    if (this.listener.isPresent()) {
+      this.listener.get().onMetadataChange(this,key,oldValue,value);
+    }
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

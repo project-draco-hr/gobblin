@@ -1,0 +1,4 @@
+{
+  String orcDataLocation=getConversionConfig().getDestinationDataPath();
+  return orcDataLocation + Path.SEPARATOR + PUBLISHED_TABLE_SUBDIRECTORY;
+}

@@ -1,0 +1,2 @@
+Predicate<JobExecutionState> predicate
+long timeoutMs

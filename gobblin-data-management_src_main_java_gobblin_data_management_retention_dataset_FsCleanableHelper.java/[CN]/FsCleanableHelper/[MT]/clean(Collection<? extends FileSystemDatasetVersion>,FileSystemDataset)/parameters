@@ -1,0 +1,2 @@
+Collection<? extends FileSystemDatasetVersion> deletableVersions
+FileSystemDataset fsDataset

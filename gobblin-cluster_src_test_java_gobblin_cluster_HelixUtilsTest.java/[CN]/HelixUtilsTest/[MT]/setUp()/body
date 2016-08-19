@@ -1,0 +1,8 @@
+{
+  this.configuration=new Configuration();
+  this.fileSystem=FileSystem.getLocal(this.configuration);
+  this.tokenFilePath=new Path(HelixUtilsTest.class.getSimpleName(),"token");
+  this.token=new Token<>();
+  this.token.setKind(new Text("test"));
+  this.token.setService(new Text("test"));
+}

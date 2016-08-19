@@ -1,0 +1,6 @@
+{
+  if (observer != null) {
+    while (observers.remove(observer)) {
+    }
+  }
+}

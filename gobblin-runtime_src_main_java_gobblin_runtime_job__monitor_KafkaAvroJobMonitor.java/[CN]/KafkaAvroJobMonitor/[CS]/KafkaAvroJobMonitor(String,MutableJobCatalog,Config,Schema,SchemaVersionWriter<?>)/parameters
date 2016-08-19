@@ -1,0 +1,5 @@
+String topic
+MutableJobCatalog catalog
+Config config
+Schema schema
+SchemaVersionWriter<?> versionWriter

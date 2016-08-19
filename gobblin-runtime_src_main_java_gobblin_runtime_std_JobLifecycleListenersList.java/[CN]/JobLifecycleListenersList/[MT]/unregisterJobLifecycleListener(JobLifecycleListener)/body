@@ -1,0 +1,5 @@
+{
+  _jobSchedulerDelegate.unregisterJobSpecSchedulerListener(listener);
+  _jobCatalogDelegate.removeListener(listener);
+  _dispatcher.removeListener(listener);
+}

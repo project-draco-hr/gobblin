@@ -1,0 +1,19 @@
+{
+  Schema schema=data.getSchema();
+  try {
+    MD5Digest schemaId=schemaRegistry.register(topic,schema);
+    ByteArrayOutputStream out=new ByteArrayOutputStream();
+    out.write(LiAvroSerDeHelper.MAGIC_BYTE);
+    out.write(schemaId.asBytes());
+    BinaryEncoder encoder=encoderFactory.directBinaryEncoder(out,null);
+    DatumWriter<GenericRecord> writer=new GenericDatumWriter<>(schema);
+    writer.write(data,encoder);
+    encoder.flush();
+    byte[] bytes=out.toByteArray();
+    out.close();
+    return bytes;
+  }
+ catch (  IOException|IllegalArgumentException|SchemaRegistryException e) {
+    throw new SerializationException(e);
+  }
+}

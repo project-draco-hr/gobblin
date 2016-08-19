@@ -1,0 +1,14 @@
+{
+  StorageDescriptor partitionSd=new StorageDescriptor();
+  if (StringUtils.isNotBlank(tbl.getSd().getLocation())) {
+    partitionSd.setLocation(tbl.getSd().getLocation() + values);
+  }
+ else {
+    partitionSd.setLocation("/tmp/" + tbl.getTableName() + "/part1");
+  }
+  partitionSd.setSerdeInfo(new SerDeInfo("name","serializationLib",ImmutableMap.of(HiveAvroSerDeManager.SCHEMA_URL,"/tmp/dummy")));
+  partitionSd.setCols(tbl.getPartitionKeys());
+  Partition partition=new Partition(values,tbl.getDbName(),tbl.getTableName(),1,1,partitionSd,new HashMap<String,String>());
+  partition.setCreateTime(createTime);
+  return this.getLocalMetastoreClient().add_partition(partition);
+}

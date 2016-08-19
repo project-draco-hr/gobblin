@@ -1,0 +1,10 @@
+{
+  byte[] bytes;
+  try {
+    bytes=Hex.decodeHex(md5String.toCharArray());
+    return new MD5Digest(md5String,bytes);
+  }
+ catch (  DecoderException e) {
+    throw new IllegalArgumentException("Unable to convert md5string",e);
+  }
+}

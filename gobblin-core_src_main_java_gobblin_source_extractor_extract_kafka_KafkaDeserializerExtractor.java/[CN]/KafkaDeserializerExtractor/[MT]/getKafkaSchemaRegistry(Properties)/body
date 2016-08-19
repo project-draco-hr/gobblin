@@ -1,0 +1,10 @@
+{
+  Optional<Deserializers> deserializerType=Enums.getIfPresent(Deserializers.class,props.getProperty(KAFKA_DESERIALIZER_TYPE).toUpperCase());
+  if (deserializerType.isPresent()) {
+    return ConstructorUtils.invokeConstructor(deserializerType.get().getSchemaRegistryClass(),props);
+  }
+  if (props.containsKey(KafkaSchemaRegistry.KAFKA_SCHEMA_REGISTRY_CLASS)) {
+    return KafkaSchemaRegistry.get(props);
+  }
+  return new SimpleKafkaSchemaRegistry(props);
+}

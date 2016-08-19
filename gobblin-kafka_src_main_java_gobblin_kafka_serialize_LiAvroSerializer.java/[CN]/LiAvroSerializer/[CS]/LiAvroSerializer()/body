@@ -1,0 +1,4 @@
+{
+  isKey=false;
+  encoderFactory=EncoderFactory.get();
+}

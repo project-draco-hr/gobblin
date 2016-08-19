@@ -1,0 +1,3 @@
+{
+  this(new KafkaAvroSchemaRegistry(ConfigUtils.configToProperties(config)),Optional.<String>absent(),Optional.<Schema>absent());
+}

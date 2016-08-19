@@ -1,0 +1,3 @@
+{
+  return scheduleOnce(jobSpec,jobRunnable);
+}

@@ -1,0 +1,6 @@
+{
+  if (!_instanceName.isPresent()) {
+    _instanceName=Optional.of(getDefaultInstanceName());
+  }
+  return _instanceName.get();
+}

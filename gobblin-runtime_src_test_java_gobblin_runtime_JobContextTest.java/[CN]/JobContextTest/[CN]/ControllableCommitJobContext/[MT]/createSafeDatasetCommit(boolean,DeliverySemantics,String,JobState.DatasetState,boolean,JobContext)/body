@@ -1,0 +1,11 @@
+{
+  ControllableCallable<Void> callable;
+  if (this.successPredicate.apply(datasetUrn)) {
+    callable=new ControllableCallable<>(Either.<Void,Exception>left(null),datasetUrn);
+  }
+ else {
+    callable=new ControllableCallable<>(Either.<Void,Exception>right(new RuntimeException("Fail!")),datasetUrn);
+  }
+  this.callablesQueue.add(callable);
+  return callable;
+}

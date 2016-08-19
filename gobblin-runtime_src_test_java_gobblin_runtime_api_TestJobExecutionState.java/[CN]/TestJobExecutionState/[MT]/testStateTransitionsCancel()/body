@@ -1,0 +1,24 @@
+{
+  final Logger log=LoggerFactory.getLogger(getClass().getSimpleName() + ".testStateTransitionsCancel");
+  JobSpec js1=JobSpec.builder("gobblin:/testStateTransitionsCancel/job1").build();
+  JobExecution je1=JobExecutionUpdatable.createFromJobSpec(js1);
+  final JobExecutionStateListener listener=mock(JobExecutionStateListener.class);
+  final JobExecutionState jes1=new JobExecutionState(js1,je1,Optional.<JobExecutionStateListener>absent());
+  assertTransition(jes1,listener,null,RunningState.PENDING,log);
+  assertTransition(jes1,listener,RunningState.PENDING,RunningState.CANCELLED,log);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.COMMITTED);
+  assertFailedStateTransition(jes1,RunningState.SUCCESSFUL);
+  assertFailedStateTransition(jes1,RunningState.FAILED);
+  assertFailedStateTransition(jes1,RunningState.RUNNING);
+  assertFailedStateTransition(jes1,RunningState.CANCELLED);
+  final JobExecutionState jes2=new JobExecutionState(js1,je1,Optional.<JobExecutionStateListener>absent());
+  assertTransition(jes2,listener,null,RunningState.PENDING,log);
+  assertTransition(jes2,listener,RunningState.PENDING,RunningState.RUNNING,log);
+  assertTransition(jes2,listener,RunningState.RUNNING,RunningState.CANCELLED,log);
+  final JobExecutionState je3=new JobExecutionState(js1,je1,Optional.<JobExecutionStateListener>absent());
+  assertTransition(je3,listener,null,RunningState.PENDING,log);
+  assertTransition(je3,listener,RunningState.PENDING,RunningState.RUNNING,log);
+  assertTransition(je3,listener,RunningState.RUNNING,RunningState.SUCCESSFUL,log);
+  assertTransition(je3,listener,RunningState.SUCCESSFUL,RunningState.CANCELLED,log);
+}

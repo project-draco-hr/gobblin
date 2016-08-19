@@ -1,0 +1,5 @@
+{
+  for (  BlockingQueue<FetchedDataChunk> queue : this.queues) {
+    queue.add(ZookeeperConsumerConnector.shutdownCommand());
+  }
+}

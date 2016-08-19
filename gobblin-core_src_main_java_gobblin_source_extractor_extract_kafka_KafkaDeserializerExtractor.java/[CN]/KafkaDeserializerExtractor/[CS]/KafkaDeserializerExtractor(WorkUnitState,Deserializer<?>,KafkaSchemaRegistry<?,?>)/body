@@ -1,0 +1,5 @@
+{
+  super(state);
+  this.kafkaDeserializer=kafkaDeserializer;
+  this.kafkaSchemaRegistry=kafkaSchemaRegistry;
+}

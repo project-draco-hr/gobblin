@@ -1,0 +1,4 @@
+{
+  super.onMetadataChange(state,key,oldValue,newValue);
+  _callbacksDispatcher.onMetadataChange(state,key,oldValue,newValue);
+}

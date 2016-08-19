@@ -1,0 +1,10 @@
+{
+  State state=new State();
+  state.setProp(ConfigurationKeys.JOB_NAME_KEY,"MRCompactorAvroKeyDedupJobRunnerTest");
+  state.setProp(MRCompactor.COMPACTION_SHOULD_DEDUPLICATE,"true");
+  Dataset.Builder datasetBuilder=(new Dataset.Builder()).withInputPath(new Path("/tmp"));
+  Dataset dataset=datasetBuilder.build();
+  dataset.setJobProps(state);
+  this.runner=new MRCompactorAvroKeyDedupJobRunner(dataset,FileSystem.get(new Configuration()));
+  this.job=Job.getInstance();
+}

@@ -1,0 +1,8 @@
+{
+  for (  WorkUnitState state : states) {
+    if (state.getWorkingState() == WorkUnitState.WorkingState.SUCCESSFUL) {
+      state.setWorkingState(WorkUnitState.WorkingState.COMMITTED);
+      log.warn("Marking state committed");
+    }
+  }
+}

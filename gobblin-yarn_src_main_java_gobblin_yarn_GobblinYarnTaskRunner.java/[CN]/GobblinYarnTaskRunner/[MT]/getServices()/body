@@ -1,0 +1,8 @@
+{
+  List<Service> services=new ArrayList<>();
+  if (this.config.hasPath(GobblinYarnConfigurationKeys.KEYTAB_FILE_PATH)) {
+    LOGGER.info("Adding YarnContainerSecurityManager since login is keytab based");
+    services.add(new YarnContainerSecurityManager(this.config,this.fs,this.eventBus));
+  }
+  return services;
+}

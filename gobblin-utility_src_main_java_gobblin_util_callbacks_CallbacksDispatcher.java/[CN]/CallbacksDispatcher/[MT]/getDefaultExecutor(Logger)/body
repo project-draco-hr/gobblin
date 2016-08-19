@@ -1,0 +1,3 @@
+{
+  return Executors.newSingleThreadExecutor(ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of(log.getName() + "-%d")));
+}

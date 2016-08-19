@@ -1,0 +1,15 @@
+{
+  Preconditions.checkNotNull(state);
+  this.sourcestate=state;
+  this.copyableFileWatermarkGeneratorOptional=CopyableFileWatermarkHelper.getCopyableFileWatermarkGenerator(state);
+  Preconditions.checkArgument(this.copyableFileWatermarkGeneratorOptional.isPresent());
+  this.copyableDatasetMetadata=new CopyableDatasetMetadata(copyableDataset);
+  this.callablePrevWatermarkMap=new Callable<Map<String,IncludeExcludeWatermark>>(){
+    @Override public Map<String,IncludeExcludeWatermark> call() throws Exception {
+      return getPreviousWatermarkForFilter(sourcestate,copyableFileWatermarkGeneratorOptional);
+    }
+  }
+;
+  Config conf=ConfigUtils.propertiesToConfig(state.getProperties());
+  this.filterPolicy=conf.hasPath(WATERMARK_FILTER_POLICY) ? FILTER_POLICY.valueOf(conf.getString(WATERMARK_FILTER_POLICY)) : FILTER_POLICY.UNCOMMITTED_FIRST;
+}

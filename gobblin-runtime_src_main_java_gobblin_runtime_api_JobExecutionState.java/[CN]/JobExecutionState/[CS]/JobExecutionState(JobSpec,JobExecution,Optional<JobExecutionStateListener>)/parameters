@@ -1,0 +1,3 @@
+JobSpec jobSpec
+JobExecution jobExecution
+Optional<JobExecutionStateListener> listener

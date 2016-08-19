@@ -3,7 +3,7 @@
   this.eventBus.register(this);
   this.amrmClientAsync.start();
   this.nmClientAsync.start();
-  RegisterApplicationMasterResponse response=this.amrmClientAsync.registerApplicationMaster(YarnHelixUtils.getHostname(),-1,"");
+  RegisterApplicationMasterResponse response=this.amrmClientAsync.registerApplicationMaster(GobblinClusterUtils.getHostname(),-1,"");
   LOGGER.info("ApplicationMaster registration response: " + response);
   this.maxResourceCapacity=Optional.of(response.getMaximumResourceCapability());
   LOGGER.info("Requesting initial containers");

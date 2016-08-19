@@ -1,0 +1,4 @@
+JobExecutionState state
+String key
+Object oldValue
+Object newValue

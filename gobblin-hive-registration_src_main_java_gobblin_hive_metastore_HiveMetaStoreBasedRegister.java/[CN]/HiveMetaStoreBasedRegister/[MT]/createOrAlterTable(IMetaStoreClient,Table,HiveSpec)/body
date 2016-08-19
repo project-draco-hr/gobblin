@@ -3,14 +3,14 @@
   String tableName=table.getTableName();
   try (AutoCloseableLock lock=this.locks.getTableLock(dbName,tableName)){
     try {
-      client.createTable(table);
+      client.createTable(getTableWithCreateTimeNow(table));
       log.info(String.format("Created Hive table %s in db %s",tableName,dbName));
     }
  catch (    TException e) {
       try {
         HiveTable existingTable=HiveMetaStoreUtils.getHiveTable(client.getTable(dbName,tableName));
         if (needToUpdateTable(existingTable,spec.getTable())) {
-          client.alter_table(dbName,tableName,table);
+          client.alter_table(dbName,tableName,getTableWithCreateTime(table,existingTable));
           log.info(String.format("updated Hive table %s in db %s",tableName,dbName));
         }
       }

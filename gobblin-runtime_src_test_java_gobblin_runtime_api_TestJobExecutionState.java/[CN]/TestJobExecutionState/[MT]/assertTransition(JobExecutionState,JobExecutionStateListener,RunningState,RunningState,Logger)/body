@@ -1,0 +1,15 @@
+{
+  jes1.setRunningState(toState);
+  Assert.assertEquals(jes1.getRunningState(),toState);
+  AssertWithBackoff.assertTrue(new Predicate<Void>(){
+    @Override public boolean apply(    Void input){
+      try {
+        verify(listener).onStatusChange(eq(jes1),eq(fromState),eq(toState));
+      }
+ catch (      Throwable t) {
+      }
+      return true;
+    }
+  }
+,50,"expecting state callback",log,2.0,10);
+}

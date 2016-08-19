@@ -1,0 +1,21 @@
+{
+  StringBuilder columns=new StringBuilder();
+  boolean isFirst=true;
+  List<FieldSchema> fieldList=destinationTableMeta.getSd().getCols();
+  for (  FieldSchema field : fieldList) {
+    if (isFirst) {
+      isFirst=false;
+    }
+ else {
+      columns.append(", \n");
+    }
+    String name=field.getName();
+    String type=escapeHiveType(field.getType());
+    String comment=field.getComment();
+    if (hiveColumns.isPresent()) {
+      hiveColumns.get().put(name,type);
+    }
+    columns.append(String.format("  `%s` %s COMMENT '%s'",name,type,comment));
+  }
+  return columns.toString();
+}

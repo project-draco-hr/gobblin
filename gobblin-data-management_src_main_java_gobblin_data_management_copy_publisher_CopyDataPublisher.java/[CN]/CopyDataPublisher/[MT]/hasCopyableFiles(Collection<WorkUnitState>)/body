@@ -1,0 +1,8 @@
+{
+  for (  WorkUnitState wus : workUnits) {
+    if (CopyableFile.class.isAssignableFrom(CopySource.getCopyEntityClass(wus))) {
+      return true;
+    }
+  }
+  return false;
+}

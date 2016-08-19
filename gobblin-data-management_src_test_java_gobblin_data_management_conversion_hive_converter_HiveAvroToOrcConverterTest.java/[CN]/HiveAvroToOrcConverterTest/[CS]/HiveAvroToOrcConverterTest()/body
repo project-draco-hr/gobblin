@@ -1,0 +1,3 @@
+{
+  this.hiveMetastoreTestUtils=LocalHiveMetastoreTestUtils.getInstance();
+}

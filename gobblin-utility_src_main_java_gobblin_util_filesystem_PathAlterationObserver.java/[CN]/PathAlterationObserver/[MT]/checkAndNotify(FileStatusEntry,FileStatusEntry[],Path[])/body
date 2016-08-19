@@ -1,0 +1,26 @@
+{
+  int c=0;
+  final FileStatusEntry[] current=paths.length > 0 ? new FileStatusEntry[paths.length] : FileStatusEntry.EMPTY_ENTRIES;
+  for (  final FileStatusEntry entry : previous) {
+    while (c < paths.length && comparator.compare(entry.getPath(),paths[c]) > 0) {
+      current[c]=createPathEntry(parent,paths[c]);
+      doCreate(current[c]);
+      c++;
+    }
+    if (c < paths.length && comparator.compare(entry.getPath(),paths[c]) == 0) {
+      doMatch(entry,paths[c]);
+      checkAndNotify(entry,entry.getChildren(),listPaths(paths[c]));
+      current[c]=entry;
+      c++;
+    }
+ else {
+      checkAndNotify(entry,entry.getChildren(),EMPTY_PATH_ARRAY);
+      doDelete(entry);
+    }
+  }
+  for (; c < paths.length; c++) {
+    current[c]=createPathEntry(parent,paths[c]);
+    doCreate(current[c]);
+  }
+  parent.setChildren(current);
+}

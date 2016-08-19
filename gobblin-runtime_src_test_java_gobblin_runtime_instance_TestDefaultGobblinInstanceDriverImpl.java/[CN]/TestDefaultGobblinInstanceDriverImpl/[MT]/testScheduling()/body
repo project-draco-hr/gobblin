@@ -1,0 +1,24 @@
+{
+  final Logger log=LoggerFactory.getLogger(getClass().getName() + ".testBasicFlow");
+  final Optional<Logger> loggerOpt=Optional.of(log);
+  InMemoryJobCatalog jobCatalog=new InMemoryJobCatalog(loggerOpt);
+  JobSpecScheduler scheduler=Mockito.mock(JobSpecScheduler.class);
+  JobExecutionLauncher jobLauncher=Mockito.mock(JobExecutionLauncher.class);
+  Configurable sysConfig=DefaultConfigurableImpl.createFromConfig(ConfigFactory.empty());
+  DefaultGobblinInstanceDriverImpl driver=new DefaultGobblinInstanceDriverImpl(sysConfig,jobCatalog,scheduler,jobLauncher,loggerOpt);
+  JobSpec js1_1=JobSpec.builder("test.job1").withVersion("1").build();
+  JobSpec js1_2=JobSpec.builder("test.job1").withVersion("2").build();
+  JobSpec js2=JobSpec.builder("test.job2").withVersion("1").build();
+  jobCatalog.put(js1_1);
+  driver.startAsync().awaitRunning(100,TimeUnit.MILLISECONDS);
+  jobCatalog.put(js2);
+  jobCatalog.put(js1_2);
+  jobCatalog.remove(js2.getUri());
+  Mockito.when(scheduler.scheduleJob(Mockito.eq(js1_1),Mockito.any(DefaultGobblinInstanceDriverImpl.JobSpecRunnable.class))).thenReturn(DefaultJobSpecScheduleImpl.createNoSchedule(js1_1,null));
+  Mockito.when(scheduler.scheduleJob(Mockito.eq(js2),Mockito.any(DefaultGobblinInstanceDriverImpl.JobSpecRunnable.class))).thenReturn(DefaultJobSpecScheduleImpl.createNoSchedule(js2,null));
+  Mockito.when(scheduler.scheduleJob(Mockito.eq(js1_2),Mockito.any(DefaultGobblinInstanceDriverImpl.JobSpecRunnable.class))).thenReturn(DefaultJobSpecScheduleImpl.createNoSchedule(js1_2,null));
+  Mockito.verify(scheduler).scheduleJob(Mockito.eq(js1_1),Mockito.any(DefaultGobblinInstanceDriverImpl.JobSpecRunnable.class));
+  Mockito.verify(scheduler).scheduleJob(Mockito.eq(js2),Mockito.any(DefaultGobblinInstanceDriverImpl.JobSpecRunnable.class));
+  Mockito.verify(scheduler).scheduleJob(Mockito.eq(js1_2),Mockito.any(DefaultGobblinInstanceDriverImpl.JobSpecRunnable.class));
+  Mockito.verify(scheduler).unscheduleJob(Mockito.eq(js2.getUri()));
+}

@@ -1,0 +1,14 @@
+{
+  this.testingZKServer=new TestingServer(TEST_ZK_PORT);
+  URL url=GobblinClusterManagerTest.class.getClassLoader().getResource(GobblinClusterManager.class.getSimpleName() + ".conf");
+  Assert.assertNotNull(url,"Could not find resource " + url);
+  Config config=ConfigFactory.parseURL(url).resolve();
+  String zkConnectionString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  HelixUtils.createGobblinHelixCluster(zkConnectionString,config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY));
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.PARTICIPANT,zkConnectionString);
+  this.helixManager.connect();
+  this.helixManager.getMessagingService().registerMessageHandlerFactory(Message.MessageType.SHUTDOWN.toString(),new TestShutdownMessageHandlerFactory(this));
+  this.gobblinClusterManager=new GobblinClusterManager(TestHelper.TEST_APPLICATION_NAME,TestHelper.TEST_APPLICATION_ID,config,Optional.<Path>absent());
+  this.gobblinClusterManager.getEventBus().register(this.gobblinClusterManager);
+  this.gobblinClusterManager.connectHelixManager();
+}

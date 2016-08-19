@@ -1,0 +1,6 @@
+{
+  if (!this.configAsProperties.isPresent()) {
+    this.configAsProperties=Optional.of(ConfigUtils.configToProperties(this.config.get()));
+  }
+  return this.configAsProperties.get();
+}

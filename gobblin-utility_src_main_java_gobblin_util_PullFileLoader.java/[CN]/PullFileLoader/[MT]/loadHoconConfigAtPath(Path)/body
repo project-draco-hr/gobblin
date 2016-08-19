@@ -1,0 +1,5 @@
+{
+  try (InputStream is=fs.open(path);Reader reader=new InputStreamReader(is,Charsets.UTF_8)){
+    return ConfigFactory.parseMap(ImmutableMap.of(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY,PathUtils.getPathWithoutSchemeAndAuthority(path).toString())).withFallback(ConfigFactory.parseReader(reader,ConfigParseOptions.defaults().setSyntax(ConfigSyntax.CONF)));
+  }
+ }

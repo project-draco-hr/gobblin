@@ -13,6 +13,6 @@
   inOrder.verify(conn,times(1)).rollback();
   inOrder.verify(conn,times(1)).close();
   verify(conn,never()).commit();
-  verify(commands,never()).deleteAll(destinationTable);
+  verify(commands,never()).deleteAll(database,destinationTable);
   verify(workUnitState,never()).setWorkingState(any(WorkUnitState.WorkingState.class));
 }

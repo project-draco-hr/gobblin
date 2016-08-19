@@ -1,0 +1,38 @@
+{
+  List<ComparableWatermark> watermarksOfCommittedWus=new ArrayList<>();
+  List<ComparableWatermark> watermarksOfUncommittedWus=new ArrayList<>();
+  Class<? extends ComparableWatermark> watermarkClass=watermarkGenerator.get().getWatermarkClass();
+  for (  WorkUnitState workUnitState : workUnitStates) {
+    if (workUnitState.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
+      Watermark curWatermark=WatermarkSerializerHelper.convertJsonToWatermark(workUnitState.getWorkunit().getExpectedHighWatermark(),watermarkClass);
+      if (curWatermark != null) {
+        watermarksOfCommittedWus.add((ComparableWatermark)curWatermark);
+      }
+    }
+ else {
+      Watermark curWatermark=WatermarkSerializerHelper.convertJsonToWatermark(workUnitState.getWorkunit().getLowWatermark(),watermarkClass);
+      if (curWatermark != null) {
+        watermarksOfUncommittedWus.add((ComparableWatermark)curWatermark);
+      }
+    }
+  }
+  Collections.sort(watermarksOfCommittedWus);
+  Collections.sort(watermarksOfUncommittedWus);
+  if (this.filterPolicy == FILTER_POLICY.UNCOMMITTED_FIRST) {
+    if (!watermarksOfUncommittedWus.isEmpty()) {
+      return new IncludeExcludeWatermark(watermarksOfUncommittedWus.get(0),true);
+    }
+ else     if (!watermarksOfCommittedWus.isEmpty()) {
+      return new IncludeExcludeWatermark(watermarksOfCommittedWus.get(watermarksOfCommittedWus.size() - 1),false);
+    }
+  }
+ else {
+    if (!watermarksOfCommittedWus.isEmpty()) {
+      return new IncludeExcludeWatermark(watermarksOfCommittedWus.get(watermarksOfCommittedWus.size() - 1),false);
+    }
+ else     if (!watermarksOfUncommittedWus.isEmpty()) {
+      return new IncludeExcludeWatermark(watermarksOfUncommittedWus.get(0),true);
+    }
+  }
+  return null;
+}

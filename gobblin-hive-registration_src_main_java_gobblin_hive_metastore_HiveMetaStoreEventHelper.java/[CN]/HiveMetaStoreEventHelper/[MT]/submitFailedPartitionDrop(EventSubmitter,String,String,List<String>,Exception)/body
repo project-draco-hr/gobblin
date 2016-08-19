@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(PARTITION_DROP + FAILED_POSTFIX,ImmutableMap.<String,String>builder().put(DB_NAME,dbName).put(TABLE_NAME,tableName).put("PartitionValues",partitionValues.toString()).put(ERROR_MESSAGE,error.getMessage()).build());
+}

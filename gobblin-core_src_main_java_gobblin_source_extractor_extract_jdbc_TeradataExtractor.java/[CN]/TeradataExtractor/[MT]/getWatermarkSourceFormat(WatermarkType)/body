@@ -1,0 +1,19 @@
+{
+  String columnFormat=null;
+switch (watermarkType) {
+case TIMESTAMP:
+    columnFormat=TERADATA_TIMESTAMP_FORMAT;
+  break;
+case DATE:
+columnFormat=TERADATA_DATE_FORMAT;
+break;
+case HOUR:
+columnFormat=TERADATA_HOUR_FORMAT;
+break;
+case SIMPLE:
+break;
+default :
+log.error("Watermark type {} not recognized",watermarkType.toString());
+}
+return columnFormat;
+}

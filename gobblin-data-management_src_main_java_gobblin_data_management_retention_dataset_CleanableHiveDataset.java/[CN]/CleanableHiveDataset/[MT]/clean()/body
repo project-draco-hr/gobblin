@@ -1,0 +1,37 @@
+{
+  List versions=Lists.newArrayList(this.hiveDatasetVersionFinder.findDatasetVersions(this));
+  if (versions.isEmpty()) {
+    log.warn(String.format("No dataset version can be found. Ignoring %s",this.getTable().getCompleteName()));
+    return;
+  }
+  Collections.sort(versions,Collections.reverseOrder());
+  Collection<HiveDatasetVersion> deletableVersions=this.hiveSelectionPolicy.listSelectedVersions(versions);
+  log.info(String.format("Cleaning dataset %s .Will drop %s out of %s partitions.",datasetURN(),deletableVersions.size(),versions.size()));
+  List<Exception> exceptions=Lists.newArrayList();
+  Set<Path> possiblyEmptyDirectories=new HashSet<>();
+  try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
+    for (    HiveDatasetVersion hiveDatasetVersion : deletableVersions) {
+      Partition partition=hiveDatasetVersion.getPartition();
+      try {
+        if (!this.simulate) {
+          client.get().dropPartition(partition.getTable().getDbName(),partition.getTable().getTableName(),partition.getValues(),false);
+          log.info("Successfully dropped partition " + partition.getCompleteName());
+        }
+ else {
+          log.info("Simulating drop partition " + partition.getCompleteName());
+        }
+        if (this.shouldDeleteData) {
+          this.fsCleanableHelper.clean(hiveDatasetVersion,possiblyEmptyDirectories);
+        }
+      }
+ catch (      TException|IOException e) {
+        log.warn(String.format("Failed to completely delete partition %s.",partition.getCompleteName()),e);
+        exceptions.add(e);
+      }
+    }
+    this.fsCleanableHelper.cleanEmptyDirectories(possiblyEmptyDirectories,this);
+  }
+   if (!exceptions.isEmpty()) {
+    throw new RuntimeException(String.format("Deletion failed for %s partitions",exceptions.size()));
+  }
+}

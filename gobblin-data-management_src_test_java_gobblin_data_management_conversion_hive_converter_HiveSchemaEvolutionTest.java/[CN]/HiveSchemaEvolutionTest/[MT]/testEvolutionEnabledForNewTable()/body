@@ -1,0 +1,8 @@
+{
+  boolean isEvolutionEnabled=true;
+  Optional<Table> destinationTableMeta=Optional.absent();
+  String ddl=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputSchema,schemaName,"file:/user/hive/warehouse/" + schemaName,Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
+  Assert.assertEquals(ddl,ConversionHiveTestUtils.readQueryFromFile(resourceDir,"source_schema_evolution_enabled.ddl"),"Generated DDL did not match expected for evolution enabled");
+  String dml=HiveAvroORCQueryGenerator.generateTableMappingDML(inputSchema,outputSchema,schemaName,schemaName + "_orc",Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta,rowLimit);
+  Assert.assertEquals(dml,ConversionHiveTestUtils.readQueryFromFile(resourceDir,"source_schema_evolution_enabled.dml"),"Generated DML did not match expected for evolution enabled");
+}

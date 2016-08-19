@@ -1,0 +1,13 @@
+{
+  List<Either<T,ExecutionException>> results=Lists.newArrayList();
+  List<Future<T>> futures=execute();
+  for (  Future<T> future : futures) {
+    try {
+      results.add(Either.<T,ExecutionException>left(future.get()));
+    }
+ catch (    ExecutionException ee) {
+      results.add(Either.<T,ExecutionException>right(ee));
+    }
+  }
+  return results;
+}

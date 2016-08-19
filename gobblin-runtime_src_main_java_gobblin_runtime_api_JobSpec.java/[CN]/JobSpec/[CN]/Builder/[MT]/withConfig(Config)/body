@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(jobConfig);
+  this.config=Optional.of(jobConfig);
+  return this;
+}

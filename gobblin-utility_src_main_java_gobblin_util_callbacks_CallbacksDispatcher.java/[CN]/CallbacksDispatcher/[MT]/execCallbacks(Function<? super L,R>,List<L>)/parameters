@@ -1,0 +1,2 @@
+Function<? super L,R> callback
+List<L> listeners

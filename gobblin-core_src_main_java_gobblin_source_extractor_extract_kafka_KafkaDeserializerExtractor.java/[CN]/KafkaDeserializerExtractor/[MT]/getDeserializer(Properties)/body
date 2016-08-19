@@ -1,0 +1,13 @@
+{
+  Preconditions.checkArgument(props.containsKey(KAFKA_DESERIALIZER_TYPE),"Missing required property " + KAFKA_DESERIALIZER_TYPE);
+  Optional<Deserializers> deserializerType=Enums.getIfPresent(Deserializers.class,props.getProperty(KAFKA_DESERIALIZER_TYPE).toUpperCase());
+  Deserializer<?> deserializer;
+  if (deserializerType.isPresent()) {
+    deserializer=ConstructorUtils.invokeConstructor(deserializerType.get().getDeserializerClass());
+  }
+ else {
+    deserializer=Deserializer.class.cast(ConstructorUtils.invokeConstructor(Class.forName(props.getProperty(KAFKA_DESERIALIZER_TYPE))));
+  }
+  deserializer.configure(PropertiesUtils.propsToStringKeyMap(props),false);
+  return deserializer;
+}

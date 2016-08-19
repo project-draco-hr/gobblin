@@ -1,0 +1,16 @@
+{
+  Logger log=LoggerFactory.getLogger("testSendShutdownRequest");
+  Closer closer=Closer.create();
+  try {
+    CuratorFramework curatorFramework=TestHelper.createZkClient(this.testingZKServer,closer);
+    final GetInstanceMessageNumFunc getMessageNumFunc=new GetInstanceMessageNumFunc(GobblinClusterManagerTest.class.getSimpleName(),curatorFramework);
+    AssertWithBackoff assertWithBackoff=AssertWithBackoff.create().logger(log).timeoutMs(30000);
+    this.gobblinClusterManager.sendShutdownRequest();
+    Assert.assertEquals(curatorFramework.checkExists().forPath(String.format("/%s/INSTANCES/%s/MESSAGES",GobblinClusterManagerTest.class.getSimpleName(),TestHelper.TEST_HELIX_INSTANCE_NAME)).getVersion(),0);
+    assertWithBackoff.assertEquals(getMessageNumFunc,1,"1 message queued");
+    assertWithBackoff.assertEquals(getMessageNumFunc,0,"all messages processed");
+  }
+  finally {
+    closer.close();
+  }
+}

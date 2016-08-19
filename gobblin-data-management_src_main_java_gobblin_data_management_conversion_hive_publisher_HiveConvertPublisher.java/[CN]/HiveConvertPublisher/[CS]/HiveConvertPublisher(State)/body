@@ -3,4 +3,18 @@
   this.avroSchemaManager=new AvroSchemaManager(FileSystem.get(HadoopUtils.newConfiguration()),state);
   this.metricContext=Instrumented.getMetricContext(state,HiveConvertPublisher.class);
   this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
+  Configuration conf=new Configuration();
+  Optional<String> uri=Optional.fromNullable(this.state.getProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI));
+  if (uri.isPresent()) {
+    this.fs=FileSystem.get(URI.create(uri.get()),conf);
+  }
+ else {
+    this.fs=FileSystem.get(conf);
+  }
+  try {
+    this.hiveJdbcConnector=HiveJdbcConnector.newConnectorWithProps(state.getProperties());
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
 }

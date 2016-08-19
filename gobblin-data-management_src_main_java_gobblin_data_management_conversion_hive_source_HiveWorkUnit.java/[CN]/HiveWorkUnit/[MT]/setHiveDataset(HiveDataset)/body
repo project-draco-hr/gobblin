@@ -1,0 +1,4 @@
+{
+  this.setProp(HIVE_DATASET_SERIALIZED_KEY,HiveSource.GENERICS_AWARE_GSON.toJson(hiveDataset,HiveDataset.class));
+  setDatasetUrn(hiveDataset.getTable().getCompleteName());
+}

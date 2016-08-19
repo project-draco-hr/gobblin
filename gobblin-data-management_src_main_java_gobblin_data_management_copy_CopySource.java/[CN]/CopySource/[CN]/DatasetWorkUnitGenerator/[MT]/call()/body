@@ -21,10 +21,13 @@
         workUnit.setProp(SlaEventKeys.DATASET_URN_KEY,this.copyableDataset.datasetURN());
         workUnit.setProp(SlaEventKeys.PARTITION_KEY,copyEntity.getFileSet());
         setWorkUnitWeight(workUnit,copyEntity,minWorkUnitWeight);
+        setWorkUnitWatermark(workUnit,watermarkGenerator,copyEntity);
         computeAndSetWorkUnitGuid(workUnit);
         workUnitsForPartition.add(workUnit);
       }
-      this.workUnitList.addFileSet(fileSet,workUnitsForPartition);
+      if (workUnitsForPartition.size() > 0) {
+        this.workUnitList.addFileSet(fileSet,workUnitsForPartition);
+      }
     }
   }
  catch (  IOException ioe) {

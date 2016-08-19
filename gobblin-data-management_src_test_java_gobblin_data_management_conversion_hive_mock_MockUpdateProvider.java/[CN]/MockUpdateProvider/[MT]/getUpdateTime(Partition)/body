@@ -1,6 +1,0 @@
-{
-  if (this.mock_updates_map.containsKey(partition.getCompleteName())) {
-    return this.mock_updates_map.get(partition.getCompleteName());
-  }
-  return 0;
-}

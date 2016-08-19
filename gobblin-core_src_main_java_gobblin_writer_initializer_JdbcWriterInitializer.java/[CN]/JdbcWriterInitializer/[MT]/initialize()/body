@@ -18,7 +18,7 @@
         if (i == 0) {
           if (getPropAsBoolean(this.state,JdbcPublisher.JDBC_PUBLISHER_REPLACE_FINAL_TABLE,this.branches,this.branchId)) {
             LOG.info("User chose to replace final table " + publishTable + " on branch "+ this.branchId+ " workunit "+ i);
-            commands.truncate(publishTable);
+            commands.truncate(database,publishTable);
           }
         }
         continue;
@@ -29,9 +29,9 @@
         if (i == 0) {
           if (this.state.getPropAsBoolean(ForkOperatorUtils.getPropertyNameForBranch(ConfigurationKeys.WRITER_TRUNCATE_STAGING_TABLE,this.branches,this.branchId),false)) {
             LOG.info("Truncating staging table " + stagingTable + " as requested.");
-            commands.truncate(stagingTable);
+            commands.truncate(database,stagingTable);
           }
-          if (!commands.isEmpty(stagingTable)) {
+          if (!commands.isEmpty(database,stagingTable)) {
             LOG.error("Staging table " + stagingTable + " is not empty. Failing.");
             throw new IllegalArgumentException("Staging table " + stagingTable + " should be empty.");
           }

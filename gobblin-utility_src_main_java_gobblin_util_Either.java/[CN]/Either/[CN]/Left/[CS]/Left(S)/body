@@ -1,3 +1,3 @@
 {
-  super(Optional.of(s),Optional.<T>absent());
+  super(Optional.fromNullable(s),Optional.<T>absent());
 }

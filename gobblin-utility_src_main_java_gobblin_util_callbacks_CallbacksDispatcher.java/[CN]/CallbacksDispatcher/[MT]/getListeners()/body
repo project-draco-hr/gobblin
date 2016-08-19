@@ -1,0 +1,7 @@
+{
+  ArrayList<L> res=new ArrayList<>(_listeners);
+  for (  Map.Entry<L,Void> entry : _autoListeners.entrySet()) {
+    res.add(entry.getKey());
+  }
+  return res;
+}

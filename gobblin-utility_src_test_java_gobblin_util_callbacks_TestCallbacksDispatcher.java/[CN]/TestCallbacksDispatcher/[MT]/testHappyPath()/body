@@ -1,0 +1,7 @@
+{
+  final Logger log=LoggerFactory.getLogger(TestCallbacksDispatcher.class.getSimpleName() + ".testHappyPath");
+  CallbacksDispatcher<MyListener> disp1=new CallbacksDispatcher<>(log);
+  runHappyPath(disp1);
+  CallbacksDispatcher<MyListener> disp2=new CallbacksDispatcher<>(Executors.newFixedThreadPool(2),log);
+  runHappyPath(disp2);
+}

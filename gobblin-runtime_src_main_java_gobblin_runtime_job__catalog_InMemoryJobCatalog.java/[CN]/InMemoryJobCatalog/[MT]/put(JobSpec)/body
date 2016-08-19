@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(jobSpec);
+  JobSpec oldSpec=this.jobSpecs.put(jobSpec.getUri(),jobSpec);
+  if (null == oldSpec) {
+    this.listeners.onAddJob(jobSpec);
+  }
+ else {
+    this.listeners.onUpdateJob(jobSpec);
+  }
+}

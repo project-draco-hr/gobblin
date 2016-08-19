@@ -1,0 +1,2 @@
+FileSystemDatasetVersion versionToDelete
+Set<Path> possiblyEmptyDirectories

@@ -1,3 +1,0 @@
-{
-  super(name(containerId),null,tagsForContainer(containerState,applicationName,containerId));
-}

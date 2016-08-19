@@ -1,0 +1,6 @@
+{
+  Map<String,String> metadata=Maps.newHashMap();
+  metadata.put(SlaEventKeys.DATASET_URN_KEY,urn.toString());
+  metadata.putAll(additionalMetadata);
+  return new GobblinTrackingEvent(0L,"namespace",name,metadata);
+}

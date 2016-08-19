@@ -1,0 +1,21 @@
+{
+  if (isNullOrEmpty(query)) {
+    return SAMPLE_RECORD_COUNT;
+  }
+  long recordcount=SAMPLE_RECORD_COUNT;
+  String limit=null;
+  String inputQuery=query.toLowerCase();
+  int limitIndex=inputQuery.indexOf(TERADATA_SAMPLE_CLAUSE);
+  if (limitIndex > 0) {
+    limit=query.substring(limitIndex + TERADATA_SAMPLE_CLAUSE.length()).trim();
+  }
+  if (!isNullOrEmpty(limit)) {
+    try {
+      recordcount=Long.parseLong(limit);
+    }
+ catch (    Exception e) {
+      log.error("Ignoring incorrect limit value in input query: {}",limit);
+    }
+  }
+  return recordcount;
+}

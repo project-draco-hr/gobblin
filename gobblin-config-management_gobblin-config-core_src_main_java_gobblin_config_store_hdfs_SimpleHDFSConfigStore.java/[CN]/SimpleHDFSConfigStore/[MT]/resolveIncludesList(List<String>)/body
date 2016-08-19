@@ -1,7 +1,4 @@
 {
-  if (includes.isEmpty()) {
-    return includes;
-  }
   StringBuilder includesBuilder=new StringBuilder();
   for (  String include : includes) {
     if (StringUtils.isNotBlank(include) && !StringUtils.startsWith(include,"#")) {
@@ -11,5 +8,5 @@
   if (includesBuilder.length() > 0) {
     return ConfigFactory.parseString(includesBuilder.toString()).withFallback(ConfigFactory.defaultOverrides()).withFallback(ConfigFactory.systemEnvironment()).resolve().getStringList(INCLUDES_KEY_NAME);
   }
-  return includes;
+  return Collections.emptyList();
 }

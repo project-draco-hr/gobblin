@@ -1,0 +1,10 @@
+{
+  Map<String,Object> typedProps=guessPropertiesTypes(properties);
+  ImmutableMap.Builder<String,Object> immutableMapBuilder=ImmutableMap.builder();
+  for (  Map.Entry<String,Object> entry : typedProps.entrySet()) {
+    if (StringUtils.startsWith(entry.getKey(),prefix.or(StringUtils.EMPTY))) {
+      immutableMapBuilder.put(entry.getKey(),entry.getValue());
+    }
+  }
+  return ConfigFactory.parseMap(immutableMapBuilder.build());
+}

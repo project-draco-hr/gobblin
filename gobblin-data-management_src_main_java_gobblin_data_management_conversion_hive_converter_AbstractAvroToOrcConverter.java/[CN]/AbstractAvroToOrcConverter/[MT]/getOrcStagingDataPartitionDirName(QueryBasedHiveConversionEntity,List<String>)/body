@@ -1,0 +1,17 @@
+{
+  if (conversionEntity.getHivePartition().isPresent()) {
+    StringBuilder dirNamePrefix=new StringBuilder();
+    String sourceHivePartitionLocation=conversionEntity.getHivePartition().get().getDataLocation().toString();
+    if (null != sourceDataPathIdentifier && null != sourceHivePartitionLocation) {
+      for (      String hint : sourceDataPathIdentifier) {
+        if (sourceHivePartitionLocation.toLowerCase().contains(hint.toLowerCase())) {
+          dirNamePrefix.append(hint.toLowerCase()).append("_");
+        }
+      }
+    }
+    return dirNamePrefix + conversionEntity.getHivePartition().get().getName();
+  }
+ else {
+    return StringUtils.EMPTY;
+  }
+}

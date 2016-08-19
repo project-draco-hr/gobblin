@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(message.getMsgType(),Message.MessageType.SHUTDOWN.toString());
+  Assert.assertEquals(message.getMsgSubType(),HelixMessageSubTypes.APPLICATION_MASTER_SHUTDOWN.toString());
+}

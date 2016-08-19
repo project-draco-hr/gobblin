@@ -1,0 +1,12 @@
+{
+  if (isNullOrEmpty(query)) {
+    return null;
+  }
+  String limitString="";
+  String inputQuery=query.toLowerCase();
+  int limitIndex=inputQuery.indexOf(TERADATA_SAMPLE_CLAUSE);
+  if (limitIndex > 0) {
+    limitString=query.substring(limitIndex);
+  }
+  return query.replace(limitString,"");
+}

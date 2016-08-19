@@ -21,7 +21,9 @@
     }
     Map<Long,Long> sortedPartitions=Maps.newTreeMap();
     sortedPartitions.putAll(new Partitioner(combinedState).getPartitions(previousWatermark));
-    Extract extract=createExtract(tableType,nameSpaceName,tableName);
+    String outputTableName=state.contains(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY) ? state.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY) : tableName;
+    log.info("Create extract output with table name is " + outputTableName);
+    Extract extract=createExtract(tableType,nameSpaceName,outputTableName);
     if (Boolean.valueOf(combinedState.getProp(ConfigurationKeys.EXTRACT_IS_FULL_KEY))) {
       extract.setFullTrue(System.currentTimeMillis());
     }

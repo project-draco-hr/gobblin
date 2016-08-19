@@ -1,0 +1,11 @@
+{
+  String tableName="VfTb2";
+  Config conf=ConfigFactory.parseMap(ImmutableMap.<String,String>of(DatePartitionHiveVersionFinder.PARTITION_KEY_NAME_KEY,"field1",DatePartitionHiveVersionFinder.PARTITION_VALUE_DATE_TIME_PATTERN_KEY,"yyyy/MM/dd/HH"));
+  DatePartitionHiveVersionFinder versionFinder=new DatePartitionHiveVersionFinder(this.fs,conf);
+  Table tbl=this.hiveMetastoreTestUtils.createTestTable(dbName,tableName,ImmutableList.of("field1"));
+  org.apache.hadoop.hive.metastore.api.Partition tp=this.hiveMetastoreTestUtils.addTestPartition(tbl,ImmutableList.of("2016/01/01/20"),(int)System.currentTimeMillis());
+  Partition partition=new Partition(new org.apache.hadoop.hive.ql.metadata.Table(tbl),tp);
+  Assert.assertEquals(URLDecoder.decode(partition.getName(),"UTF-8"),"field1=2016/01/01/20");
+  TimestampedHiveDatasetVersion dv=versionFinder.getDatasetVersion(partition);
+  Assert.assertEquals(dv.getDateTime(),formatter.parseDateTime("2016/01/01/20"));
+}

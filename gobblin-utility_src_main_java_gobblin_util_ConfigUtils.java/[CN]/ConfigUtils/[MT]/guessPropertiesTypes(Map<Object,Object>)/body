@@ -1,0 +1,28 @@
+{
+  Map<String,Object> res=new HashMap<>();
+  for (  Map.Entry<Object,Object> prop : srcProperties.entrySet()) {
+    Object value=prop.getValue();
+    if (null != value && value instanceof String && !Strings.isNullOrEmpty(value.toString())) {
+      try {
+        value=Long.parseLong(value.toString());
+      }
+ catch (      NumberFormatException e) {
+        try {
+          value=Double.parseDouble(value.toString());
+        }
+ catch (        NumberFormatException e2) {
+          if (value.toString().equalsIgnoreCase("true") || value.toString().equalsIgnoreCase("yes")) {
+            value=Boolean.TRUE;
+          }
+ else           if (value.toString().equalsIgnoreCase("false") || value.toString().equalsIgnoreCase("no")) {
+            value=Boolean.FALSE;
+          }
+ else {
+          }
+        }
+      }
+    }
+    res.put(prop.getKey().toString(),value);
+  }
+  return res;
+}

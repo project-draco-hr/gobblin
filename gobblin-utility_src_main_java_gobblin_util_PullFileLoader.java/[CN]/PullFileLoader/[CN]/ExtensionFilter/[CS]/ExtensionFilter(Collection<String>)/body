@@ -1,0 +1,6 @@
+{
+  this.extensions=Lists.newArrayList();
+  for (  String ext : extensions) {
+    this.extensions.add(ext.startsWith(".") ? ext : "." + ext);
+  }
+}

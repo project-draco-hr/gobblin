@@ -1,0 +1,3 @@
+{
+  this.messagesRead=this.metricContext.counter(RuntimeMetrics.GOBBLIN_KAFKA_HIGH_LEVEL_CONSUMER_MESSAGES_READ);
+}

@@ -1,0 +1,3 @@
+{
+  return parseDateForLocation(partition.getTPartition().getSd().getLocation());
+}

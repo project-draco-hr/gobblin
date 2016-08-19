@@ -1,0 +1,9 @@
+{
+  Table table=new Table();
+  table.setDbName(dbName);
+  table.setTableName(tableName);
+  StorageDescriptor sd=new StorageDescriptor();
+  sd.setLocation("/tmp/test");
+  table.setSd(sd);
+  return table;
+}

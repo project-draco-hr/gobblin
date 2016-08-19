@@ -1,0 +1,9 @@
+{
+  if (partitionDMLInfos.isEmpty()) {
+    return Collections.emptyList();
+  }
+  List<String> ddls=Lists.newArrayList();
+  ddls.add(String.format("USE %s %n",dbName));
+  ddls.add(String.format("ALTER TABLE %s DROP IF EXISTS %s",finalTableName,Joiner.on(",").join(Iterables.transform(partitionDMLInfos,PARTITION_SPEC_GENERATOR))));
+  return ddls;
+}

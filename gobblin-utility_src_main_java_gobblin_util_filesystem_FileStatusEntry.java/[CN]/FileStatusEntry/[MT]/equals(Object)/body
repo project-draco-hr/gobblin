@@ -1,0 +1,7 @@
+{
+  if (o == null || this.getClass() != o.getClass()) {
+    return false;
+  }
+  FileStatusEntry other=(FileStatusEntry)o;
+  return this._fileStatus.get().equals(other._fileStatus.get());
+}

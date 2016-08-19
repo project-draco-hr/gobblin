@@ -1,0 +1,3 @@
+{
+  this(registry,Optional.of(overrideName),singleSchema);
+}

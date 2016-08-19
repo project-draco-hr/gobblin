@@ -1,0 +1,7 @@
+{
+  final URL url=GobblinAWSClusterLauncherTest.class.getClassLoader().getResource(JOB_SECOND_ZIP);
+  final String jobConfZipUri=getJobConfigZipUri(new File(url.toURI()));
+  this.countDownLatchUpdate.await();
+  Assert.assertEquals(this.receivedJobConfigs.size(),2);
+  Assert.assertEquals(this.receivedJobConfigs.get(1).getProperty(JOB_NAME_KEY),JOB_SECOND_NAME);
+}

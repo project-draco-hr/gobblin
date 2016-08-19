@@ -1,8 +1,10 @@
 {
   testMetastoreDatabase=TestMetastoreDatabaseFactory.get();
   this.launcherProps=new Properties();
-  this.launcherProps.load(new FileReader("gobblin-test/resource/gobblin.mr-test.properties"));
-  this.launcherProps.setProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,"true");
+  try (InputStream propsReader=getClass().getClassLoader().getResourceAsStream("gobblin.mr-test.properties")){
+    this.launcherProps.load(propsReader);
+  }
+   this.launcherProps.setProperty(ConfigurationKeys.JOB_HISTORY_STORE_ENABLED_KEY,"true");
   this.launcherProps.setProperty(ConfigurationKeys.METRICS_ENABLED_KEY,"true");
   this.launcherProps.setProperty(ConfigurationKeys.METRICS_REPORTING_FILE_ENABLED_KEY,"false");
   this.launcherProps.setProperty(ConfigurationKeys.JOB_HISTORY_STORE_URL_KEY,testMetastoreDatabase.getJdbcUrl());

@@ -1,0 +1,4 @@
+{
+  this.uriPredicate=Predicates.equalTo(uri);
+  return this;
+}

@@ -1,0 +1,9 @@
+{
+  Partition mockPartition=Mockito.mock(Partition.class,Mockito.RETURNS_SMART_NULLS);
+  org.apache.hadoop.hive.metastore.api.Partition mockTPartition=Mockito.mock(org.apache.hadoop.hive.metastore.api.Partition.class,Mockito.RETURNS_SMART_NULLS);
+  StorageDescriptor mockSd=Mockito.mock(StorageDescriptor.class,Mockito.RETURNS_SMART_NULLS);
+  Mockito.when(mockSd.getLocation()).thenReturn(location);
+  Mockito.when(mockTPartition.getSd()).thenReturn(mockSd);
+  Mockito.when(mockPartition.getTPartition()).thenReturn(mockTPartition);
+  return mockPartition;
+}

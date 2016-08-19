@@ -1,0 +1,6 @@
+{
+  JobExecutionDriver driver=_jobLauncher.launchJob(_jobSpec);
+  _callbacksDispatcher.onJobLaunch(driver);
+  driver.registerStateListener(new JobStateTracker());
+  driver.startAsync();
+}

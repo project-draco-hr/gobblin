@@ -1,0 +1,8 @@
+{
+  try {
+    close();
+  }
+ catch (  Exception e) {
+    System.err.println("Failed to close Kafka server.");
+  }
+}

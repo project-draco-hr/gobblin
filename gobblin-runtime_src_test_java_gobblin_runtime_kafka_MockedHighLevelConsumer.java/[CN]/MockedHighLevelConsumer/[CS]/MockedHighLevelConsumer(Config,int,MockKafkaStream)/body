@@ -1,0 +1,5 @@
+{
+  super("topic",config,numThreads);
+  this.mockKafkaStream=stream;
+  this.messages=Lists.newArrayList();
+}

@@ -1,0 +1,13 @@
+{
+  if (!event.getMetadata().containsKey(SlaEventKeys.DATASET_URN_KEY)) {
+    return false;
+  }
+  String datasetURN=event.getMetadata().get(SlaEventKeys.DATASET_URN_KEY);
+  if (this.urnFilter.isPresent() && !this.urnFilter.get().matcher(datasetURN).find()) {
+    return false;
+  }
+  if (this.nameFilter.isPresent() && !this.nameFilter.get().matcher(event.getName()).find()) {
+    return false;
+  }
+  return true;
+}

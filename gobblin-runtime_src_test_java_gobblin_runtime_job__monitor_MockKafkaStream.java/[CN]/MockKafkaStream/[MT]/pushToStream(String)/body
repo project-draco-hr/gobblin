@@ -1,0 +1,11 @@
+{
+  int streamNo=(int)this.nextStream.incrementAndGet() % this.queues.size();
+  AtomicLong offset=this.offsets.get(streamNo);
+  BlockingQueue<FetchedDataChunk> queue=this.queues.get(streamNo);
+  AtomicLong thisOffset=new AtomicLong(offset.incrementAndGet());
+  List<Message> seq=Lists.newArrayList();
+  seq.add(new Message(message.getBytes(Charsets.UTF_8)));
+  ByteBufferMessageSet messageSet=new ByteBufferMessageSet(NoCompressionCodec$.MODULE$,offset,JavaConversions.asScalaBuffer(seq));
+  FetchedDataChunk chunk=new FetchedDataChunk(messageSet,new PartitionTopicInfo("topic",streamNo,queue,thisOffset,thisOffset,new AtomicInteger(1),"clientId"),thisOffset.get());
+  queue.add(chunk);
+}

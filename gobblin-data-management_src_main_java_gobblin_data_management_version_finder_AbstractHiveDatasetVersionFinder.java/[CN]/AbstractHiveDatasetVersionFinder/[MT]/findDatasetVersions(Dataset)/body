@@ -1,0 +1,24 @@
+{
+  if (!(dataset instanceof HiveDataset)) {
+    throw new IllegalArgumentException("HiveDatasetVersionFinder is only compatible with HiveDataset");
+  }
+  final HiveDataset hiveDataset=(HiveDataset)dataset;
+  if (!HiveUtils.isPartitioned(hiveDataset.getTable())) {
+    throw new IllegalArgumentException("HiveDatasetVersionFinder is only compatible with partitioned hive tables");
+  }
+  try (AutoReturnableObject<IMetaStoreClient> client=hiveDataset.getClientPool().getClient()){
+    List<Partition> partitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
+    return Lists.newArrayList(Iterables.filter(Iterables.transform(partitions,new Function<Partition,HiveDatasetVersion>(){
+      @Override public HiveDatasetVersion apply(      Partition partition){
+        try {
+          return getDatasetVersion(partition);
+        }
+ catch (        Throwable e) {
+          log.warn(String.format("Failed to get DatasetVersion %s. Skipping.",partition.getCompleteName()),e);
+          return null;
+        }
+      }
+    }
+),Predicates.notNull()));
+  }
+ }

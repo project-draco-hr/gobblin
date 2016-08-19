@@ -1,0 +1,6 @@
+{
+  JobSpec fakeJobSpec=JobSpec.builder(deletedJobURI).withVersion(deletedJobVersion).build();
+  if (this.filter.apply(fakeJobSpec)) {
+    this.delegate.onDeleteJob(deletedJobURI,deletedJobVersion);
+  }
+}

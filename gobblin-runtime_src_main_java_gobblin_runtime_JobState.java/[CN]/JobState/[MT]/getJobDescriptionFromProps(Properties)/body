@@ -1,0 +1,3 @@
+{
+  return props.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY);
+}

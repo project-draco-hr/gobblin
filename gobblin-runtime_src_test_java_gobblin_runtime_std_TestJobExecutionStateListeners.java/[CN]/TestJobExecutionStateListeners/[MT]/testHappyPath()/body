@@ -1,0 +1,28 @@
+{
+  final Logger log=LoggerFactory.getLogger(getClass() + ".testHappyPath");
+  JobExecutionStateListeners listeners=new JobExecutionStateListeners(log);
+  JobSpec js1=JobSpec.builder("gobblin:test/job").build();
+  JobExecutionUpdatable je1=JobExecutionUpdatable.createFromJobSpec(js1);
+  JobExecutionStateListener l1=Mockito.mock(JobExecutionStateListener.class);
+  JobExecutionStateListener l2=Mockito.mock(JobExecutionStateListener.class);
+  JobExecutionStateListener l3=Mockito.mock(JobExecutionStateListener.class);
+  listeners.registerStateListener(l1);
+  JobExecutionState state=new JobExecutionState(js1,je1,Optional.<JobExecutionStateListener>of(listeners));
+  state.setRunningState(RunningState.PENDING);
+  state.setRunningState(RunningState.RUNNING);
+  listeners.registerStateListener(l2);
+  listeners.registerStateListener(l3);
+  state.setStage("Stage1");
+  listeners.unregisterStateListener(l2);
+  listeners.onMetadataChange(state,"key","oldValue","newValue");
+  Mockito.verify(l1).onStatusChange(Mockito.eq(state),Mockito.eq((RunningState)null),Mockito.eq(RunningState.PENDING));
+  Mockito.verify(l1).onStatusChange(Mockito.eq(state),Mockito.eq(RunningState.PENDING),Mockito.eq(RunningState.RUNNING));
+  Mockito.verify(l1).onStageTransition(Mockito.eq(state),Mockito.eq(JobExecutionState.UKNOWN_STAGE),Mockito.eq("Stage1"));
+  Mockito.verify(l1).onMetadataChange(Mockito.eq(state),Mockito.eq("key"),Mockito.eq("oldValue"),Mockito.eq("newValue"));
+  Mockito.verify(l2).onStageTransition(Mockito.eq(state),Mockito.eq(JobExecutionState.UKNOWN_STAGE),Mockito.eq("Stage1"));
+  Mockito.verify(l3).onStageTransition(Mockito.eq(state),Mockito.eq(JobExecutionState.UKNOWN_STAGE),Mockito.eq("Stage1"));
+  Mockito.verify(l3).onMetadataChange(Mockito.eq(state),Mockito.eq("key"),Mockito.eq("oldValue"),Mockito.eq("newValue"));
+  Mockito.verifyNoMoreInteractions(l1);
+  Mockito.verifyNoMoreInteractions(l2);
+  Mockito.verifyNoMoreInteractions(l3);
+}

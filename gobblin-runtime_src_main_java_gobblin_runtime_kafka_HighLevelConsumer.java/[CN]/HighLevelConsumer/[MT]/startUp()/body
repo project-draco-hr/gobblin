@@ -1,0 +1,11 @@
+{
+  buildMetricsContextAndMetrics();
+  this.consumer=createConsumerConnector();
+  List<KafkaStream<byte[],byte[]>> streams=createStreams();
+  this.executor=Executors.newFixedThreadPool(this.numThreads);
+  int threadNumber=0;
+  for (  final KafkaStream stream : streams) {
+    this.executor.execute(new MonitorConsumer(stream));
+    threadNumber++;
+  }
+}

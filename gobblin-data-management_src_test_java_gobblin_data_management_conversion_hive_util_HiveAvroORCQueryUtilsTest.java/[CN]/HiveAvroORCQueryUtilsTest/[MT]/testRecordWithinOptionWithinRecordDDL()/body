@@ -1,6 +1,0 @@
-{
-  String schemaName="testRecordWithinOptionWithinRecordDDL";
-  Schema schema=readSchemaFromJsonFile("recordWithinOptionWithinRecord_nested.json");
-  String q=HiveAvroORCQueryUtils.generateCreateTableDDL(schema,schemaName,"file:/user/hive/warehouse/" + schemaName,Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryUtils.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent());
-  Assert.assertEquals(q.trim().replaceAll(" ",""),readQueryFromFile("recordWithinOptionWithinRecord_nested.ddl").replaceAll(" ",""));
-}

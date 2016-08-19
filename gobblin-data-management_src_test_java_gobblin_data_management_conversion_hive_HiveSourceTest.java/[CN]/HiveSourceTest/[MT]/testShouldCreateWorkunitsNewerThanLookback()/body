@@ -1,0 +1,10 @@
+{
+  long currentTime=System.currentTimeMillis();
+  long partitionCreateTime=new DateTime(currentTime).minusDays(25).getMillis();
+  org.apache.hadoop.hive.ql.metadata.Partition partition=this.hiveMetastoreTestUtils.createDummyPartition(partitionCreateTime);
+  SourceState testState=getTestState("testDb7");
+  HiveSource source=new HiveSource();
+  source.initialize(testState);
+  boolean isOlderThanLookback=source.isOlderThanLookback(partition);
+  Assert.assertEquals(isOlderThanLookback,false,"Should create workunits newer than lookback");
+}

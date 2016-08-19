@@ -1,0 +1,30 @@
+{
+  File tmpTestDir=Files.createTempDir();
+  try {
+    File localJobRootDir=new File(tmpTestDir,"localJobRoot");
+    Assert.assertTrue(localJobRootDir.mkdir());
+    final Logger log=LoggerFactory.getLogger(getClass().getSimpleName() + ".testConstructor");
+    Config jobConf1=ConfigFactory.empty().withValue(ConfigurationKeys.JOB_NAME_KEY,ConfigValueFactory.fromAnyRef("myJob")).withValue(ConfigurationKeys.JOB_GROUP_KEY,ConfigValueFactory.fromAnyRef("myGroup")).withValue(ConfigurationKeys.JOB_DESCRIPTION_KEY,ConfigValueFactory.fromAnyRef("Awesome job")).withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(localJobRootDir.getPath())).withValue(ConfigurationKeys.SOURCE_CLASS_KEY,ConfigValueFactory.fromAnyRef(TestingSource.class.getName()));
+    JobSpec jobSpec1=JobSpec.builder().withConfig(jobConf1).build();
+    JobLauncherExecutionDriver jled=null;
+    jled=new JobLauncherExecutionDriver(DefaultConfigurableImpl.createFromConfig(ConfigFactory.empty()),jobSpec1,Optional.of(JobLauncherFactory.JobLauncherType.LOCAL),Optional.of(log));
+    Assert.assertTrue(jled.getLegacyLauncher() instanceof LocalJobLauncher);
+    JobExecution jex1=jled.getJobExecution();
+    Assert.assertEquals(jex1.getJobSpecURI(),jobSpec1.getUri());
+    Assert.assertEquals(jex1.getJobSpecVersion(),jobSpec1.getVersion());
+    Thread.sleep(5000);
+    File mrJobRootDir=new File(tmpTestDir,"mrJobRoot");
+    Assert.assertTrue(mrJobRootDir.mkdir());
+    Config jobConf2=ConfigFactory.empty().withValue(ConfigurationKeys.JOB_NAME_KEY,ConfigValueFactory.fromAnyRef("myJob2")).withValue(ConfigurationKeys.JOB_GROUP_KEY,ConfigValueFactory.fromAnyRef("myGroup")).withValue(ConfigurationKeys.JOB_DESCRIPTION_KEY,ConfigValueFactory.fromAnyRef("Awesome job")).withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(mrJobRootDir.getPath())).withValue(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(mrJobRootDir.getPath())).withValue(ConfigurationKeys.SOURCE_CLASS_KEY,ConfigValueFactory.fromAnyRef(TestingSource.class.getName()));
+    JobSpec jobSpec2=JobSpec.builder().withConfig(jobConf2).build();
+    jled=new JobLauncherExecutionDriver(DefaultConfigurableImpl.createFromConfig(ConfigFactory.empty()),jobSpec2,Optional.of(JobLauncherFactory.JobLauncherType.MAPREDUCE),Optional.of(log));
+    Assert.assertTrue(jled.getLegacyLauncher() instanceof MRJobLauncher);
+    JobExecution jex2=jled.getJobExecution();
+    Assert.assertEquals(jex2.getJobSpecURI(),jobSpec2.getUri());
+    Assert.assertEquals(jex2.getJobSpecVersion(),jobSpec2.getVersion());
+    Assert.assertTrue(jex2.getLaunchTimeMillis() >= jex1.getLaunchTimeMillis());
+  }
+  finally {
+    FileUtils.deleteDirectory(tmpTestDir);
+  }
+}

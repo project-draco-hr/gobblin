@@ -1,3 +1,0 @@
-{
-  return state.contains(HIVE_PARTITION_SERIALIZED_KEY);
-}

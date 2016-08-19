@@ -1,0 +1,4 @@
+FileSystem fs
+Path retentionConfigClasspathResource
+Optional<Path> additionalJobPropsClasspathResource
+Path testNameTempPath

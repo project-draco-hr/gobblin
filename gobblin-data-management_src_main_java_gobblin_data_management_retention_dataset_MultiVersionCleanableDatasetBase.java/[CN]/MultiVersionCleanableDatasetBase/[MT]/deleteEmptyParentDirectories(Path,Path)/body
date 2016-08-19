@@ -1,3 +1,0 @@
-{
-  PathUtils.deleteEmptyParentDirectories(this.fs,datasetRoot,parent);
-}

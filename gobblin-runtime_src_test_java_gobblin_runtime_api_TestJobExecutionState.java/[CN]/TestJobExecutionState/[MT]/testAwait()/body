@@ -1,0 +1,44 @@
+{
+  final Logger log=LoggerFactory.getLogger(getClass().getSimpleName() + ".testAwait");
+  JobSpec js1=JobSpec.builder("gobblin:/testAwaitForDone/job1").build();
+  JobExecution je1=JobExecutionUpdatable.createFromJobSpec(js1);
+  final JobExecutionState jes1=new JobExecutionState(js1,je1,Optional.<JobExecutionStateListener>absent());
+  final AtomicBoolean doneDetected=new AtomicBoolean(false);
+  ThreadFactory doneThreadFactory=ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("doneDetectionThread"));
+  Thread doneDetectionThread=doneThreadFactory.newThread(new Runnable(){
+    @Override public void run(){
+      try {
+        jes1.awaitForDone(0);
+      }
+ catch (      InterruptedException|TimeoutException e) {
+        log.error("Error detected: " + e);
+      }
+      doneDetected.set(jes1.getRunningState().isDone());
+    }
+  }
+);
+  doneDetectionThread.start();
+  long startTime=System.currentTimeMillis();
+  try {
+    jes1.awaitForState(RunningState.RUNNING,10);
+    Assert.fail("Timeout expected");
+  }
+ catch (  TimeoutException e) {
+    long now=System.currentTimeMillis();
+    Assert.assertTrue(now - startTime >= 10,"Insufficient wait: " + (now - startTime));
+  }
+  jes1.switchToPending();
+  jes1.switchToRunning();
+  try {
+    jes1.awaitForState(RunningState.RUNNING,10);
+    Assert.assertEquals(jes1.getRunningState(),RunningState.RUNNING);
+  }
+ catch (  TimeoutException e) {
+    Assert.fail("Timeout: ");
+  }
+  Assert.assertTrue(doneDetectionThread.isAlive());
+  jes1.switchToFailed();
+  doneDetectionThread.join(50);
+  Assert.assertFalse(doneDetectionThread.isAlive());
+  Assert.assertTrue(doneDetected.get());
+}

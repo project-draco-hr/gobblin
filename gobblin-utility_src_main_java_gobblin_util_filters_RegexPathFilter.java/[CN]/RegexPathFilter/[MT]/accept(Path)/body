@@ -1,0 +1,4 @@
+{
+  boolean matches=this.regex.matcher(path.getName()).matches();
+  return include ? matches : !matches;
+}

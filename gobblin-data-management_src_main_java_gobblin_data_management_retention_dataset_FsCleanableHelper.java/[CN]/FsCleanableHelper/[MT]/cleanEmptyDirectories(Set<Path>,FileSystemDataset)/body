@@ -1,0 +1,7 @@
+{
+  if (this.deleteEmptyDirectories && !this.simulate) {
+    for (    Path parentDirectory : possiblyEmptyDirectories) {
+      PathUtils.deleteEmptyParentDirectories(fs,fsDataset.datasetRoot(),parentDirectory);
+    }
+  }
+}

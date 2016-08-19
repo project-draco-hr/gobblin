@@ -1,0 +1,5 @@
+{
+  int randomNumber=new Random().nextInt(10);
+  String uniqueStagingTableQualifier=String.format("%s%s",System.currentTimeMillis(),randomNumber);
+  return stagingTableNamePrefix + "_" + uniqueStagingTableQualifier;
+}

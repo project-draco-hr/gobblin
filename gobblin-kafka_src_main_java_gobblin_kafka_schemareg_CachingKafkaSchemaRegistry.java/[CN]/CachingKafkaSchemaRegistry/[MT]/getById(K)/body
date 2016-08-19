@@ -1,0 +1,10 @@
+{
+  if (_idBasedCache.containsKey(id)) {
+    return _idBasedCache.get(id);
+  }
+ else {
+    S schema=_kafkaSchemaRegistry.getById(id);
+    _idBasedCache.put(id,schema);
+    return schema;
+  }
+}

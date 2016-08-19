@@ -1,0 +1,9 @@
+{
+  this.changeLock.lock();
+  try {
+    return this.stage;
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

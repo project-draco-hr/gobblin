@@ -1,0 +1,6 @@
+{
+  Config config=ConfigFactory.parseMap(ImmutableMap.<String,String>builder().put("destinationFormats","flattenedOrc").put("flattenedOrc.destination.tableName","d").put("flattenedOrc.destination.dbName","d").put("flattenedOrc.destination.dataPath","d").put("nestedOrc.destination.tableName","d").put("nestedOrc.destination.dbName","d").put("nestedOrc.destination.dataPath","d").build());
+  ConvertibleHiveDataset cd=createTestConvertibleDataset(config);
+  Assert.assertTrue(cd.getConversionConfigForFormat("flattenedOrc").isPresent());
+  Assert.assertFalse(cd.getConversionConfigForFormat("nestedOrc").isPresent());
+}

@@ -1,0 +1,25 @@
+{
+  this.properties=properties;
+  this.clientPool=clientPool;
+  this.fs=fs;
+  String whitelistKey=HIVE_DATASET_PREFIX + "." + WhitelistBlacklist.WHITELIST;
+  Preconditions.checkArgument(properties.containsKey(DB_KEY) || properties.containsKey(whitelistKey),String.format("Must specify %s or %s.",DB_KEY,whitelistKey));
+  Config config=ConfigFactory.parseProperties(properties);
+  if (properties.containsKey(DB_KEY)) {
+    this.whitelistBlacklist=new WhitelistBlacklist(this.properties.getProperty(DB_KEY) + "." + this.properties.getProperty(TABLE_PATTERN_KEY,DEFAULT_TABLE_PATTERN),"");
+  }
+ else {
+    this.whitelistBlacklist=new WhitelistBlacklist(config.getConfig(HIVE_DATASET_PREFIX));
+  }
+  this.eventSubmitter=Optional.fromNullable(eventSubmitter);
+  this.configStoreUri=StringUtils.isNotBlank(properties.getProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI)) ? Optional.of(properties.getProperty(ConfigurationKeys.CONFIG_MANAGEMENT_STORE_URI)) : Optional.<String>absent();
+  this.datasetConfigPrefix=properties.getProperty(HIVE_DATASET_CONFIG_PREFIX_KEY,DEFAULT_HIVE_DATASET_CONIFG_PREFIX);
+  this.configClient=configClient;
+  try {
+    this.configStoreDatasetUriBuilder=properties.containsKey(CONFIG_STORE_DATASET_URI_BUILDER_CLASS) ? (Function<DbAndTable,String>)ConstructorUtils.invokeConstructor(Class.forName(properties.getProperty(CONFIG_STORE_DATASET_URI_BUILDER_CLASS))) : DEFAULT_CONFIG_STORE_DATASET_URI_BUILDER;
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new RuntimeException(e);
+  }
+  this.jobConfig=ConfigUtils.propertiesToConfig(properties);
+}

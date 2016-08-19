@@ -11,4 +11,12 @@
   }
  catch (  NoSuchMethodException nsme) {
   }
+  obj=GobblinConstructorUtils.invokeLongestConstructor(ConstructorTestClassWithNoArgs.class);
+  Assert.assertEquals(obj.id.intValue(),0);
+  Assert.assertEquals(obj.str,"noArgs");
+  Assert.assertNull(obj.props);
+  obj=GobblinConstructorUtils.invokeLongestConstructor(ConstructorTestClassWithNoArgs.class,Integer.valueOf(1));
+  Assert.assertEquals(obj.id.intValue(),0);
+  Assert.assertEquals(obj.str,"noArgs");
+  Assert.assertNull(obj.props);
 }

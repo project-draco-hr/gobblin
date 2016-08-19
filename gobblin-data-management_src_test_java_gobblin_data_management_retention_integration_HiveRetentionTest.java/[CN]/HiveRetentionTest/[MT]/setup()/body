@@ -1,0 +1,6 @@
+{
+  this.hiveMetastoreTestUtils=LocalHiveMetastoreTestUtils.getInstance();
+  fs=FileSystem.getLocal(new Configuration());
+  testTempPath=new Path(this.getClass().getClassLoader().getResource("").getFile(),"HiveRetentionTest");
+  fs.mkdirs(testTempPath);
+}

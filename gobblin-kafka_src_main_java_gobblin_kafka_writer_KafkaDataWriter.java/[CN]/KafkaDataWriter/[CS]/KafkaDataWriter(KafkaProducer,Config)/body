@@ -1,0 +1,14 @@
+{
+  recordsWritten=new AtomicInteger(0);
+  bytesWritten=new AtomicInteger(-1);
+  this.topic=config.getString(KafkaWriterConfigurationKeys.KAFKA_TOPIC);
+  this.producer=producer;
+  this.producerCallback=new Callback(){
+    @Override public void onCompletion(    RecordMetadata metadata,    Exception exception){
+      if (null == exception) {
+        recordsWritten.incrementAndGet();
+      }
+    }
+  }
+;
+}

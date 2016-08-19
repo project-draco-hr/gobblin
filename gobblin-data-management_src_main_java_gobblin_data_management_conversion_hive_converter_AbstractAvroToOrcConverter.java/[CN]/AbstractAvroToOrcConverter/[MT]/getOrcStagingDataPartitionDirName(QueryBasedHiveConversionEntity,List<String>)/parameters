@@ -1,0 +1,2 @@
+QueryBasedHiveConversionEntity conversionEntity
+List<String> sourceDataPathIdentifier

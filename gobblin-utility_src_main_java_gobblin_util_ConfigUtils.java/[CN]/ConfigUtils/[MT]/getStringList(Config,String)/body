@@ -1,0 +1,12 @@
+{
+  if (!config.hasPath(path)) {
+    return Collections.emptyList();
+  }
+  try {
+    return config.getStringList(path);
+  }
+ catch (  ConfigException.WrongType e) {
+    Splitter tokenSplitter=Splitter.on(",").omitEmptyStrings().trimResults();
+    return tokenSplitter.splitToList(config.getString(path));
+  }
+}

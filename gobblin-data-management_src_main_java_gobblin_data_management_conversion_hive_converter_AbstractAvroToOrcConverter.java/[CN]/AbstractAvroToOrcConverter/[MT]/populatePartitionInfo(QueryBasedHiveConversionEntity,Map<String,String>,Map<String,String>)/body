@@ -1,0 +1,27 @@
+{
+  String partitionsInfoString=null;
+  String partitionsTypeString=null;
+  if (conversionEntity.getHivePartition().isPresent()) {
+    partitionsInfoString=conversionEntity.getHivePartition().get().getName();
+    partitionsTypeString=conversionEntity.getHivePartition().get().getSchema().getProperty("partition_columns.types");
+  }
+  if (StringUtils.isNotBlank(partitionsInfoString) || StringUtils.isNotBlank(partitionsTypeString)) {
+    if (StringUtils.isBlank(partitionsInfoString) || StringUtils.isBlank(partitionsTypeString)) {
+      throw new IllegalArgumentException("Both partitions info and partitions must be present, if one is specified");
+    }
+    List<String> pInfo=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsInfoString);
+    List<String> pType=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsTypeString);
+    if (pInfo.size() != pType.size()) {
+      throw new IllegalArgumentException("partitions info and partitions type list should of same size");
+    }
+    for (int i=0; i < pInfo.size(); i++) {
+      List<String> partitionInfoParts=Splitter.on("=").omitEmptyStrings().trimResults().splitToList(pInfo.get(i));
+      String partitionType=pType.get(i);
+      if (partitionInfoParts.size() != 2) {
+        throw new IllegalArgumentException(String.format("Partition details should be of the format partitionName=partitionValue. Recieved: %s",pInfo.get(i)));
+      }
+      partitionsDDLInfo.put(partitionInfoParts.get(0),partitionType);
+      partitionsDMLInfo.put(partitionInfoParts.get(0),partitionInfoParts.get(1));
+    }
+  }
+}

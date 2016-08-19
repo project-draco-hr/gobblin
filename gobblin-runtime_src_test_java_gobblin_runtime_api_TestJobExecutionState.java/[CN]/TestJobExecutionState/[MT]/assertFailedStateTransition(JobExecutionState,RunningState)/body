@@ -1,0 +1,8 @@
+{
+  try {
+    jes1.setRunningState(newState);
+    Assert.fail("Exception expected");
+  }
+ catch (  IllegalStateException e) {
+  }
+}

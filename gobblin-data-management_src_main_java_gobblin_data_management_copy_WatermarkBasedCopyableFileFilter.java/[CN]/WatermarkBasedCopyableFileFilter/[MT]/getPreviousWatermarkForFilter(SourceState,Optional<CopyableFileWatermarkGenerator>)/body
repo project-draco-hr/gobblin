@@ -1,0 +1,11 @@
+{
+  Map<String,Iterable<WorkUnitState>> previousWorkUnitStatesByDatasetUrns=state.getPreviousWorkUnitStatesByDatasetUrns();
+  Map<String,IncludeExcludeWatermark> previousActualWatermarkByDatasetUrns=new HashMap<>();
+  for (  Map.Entry<String,Iterable<WorkUnitState>> workUnitStatesPerDatasetURN : previousWorkUnitStatesByDatasetUrns.entrySet()) {
+    IncludeExcludeWatermark previousWatermark=this.getPreviousWatermarkPerDataset(workUnitStatesPerDatasetURN.getValue(),watermarkGenerator);
+    if (previousWatermark != null) {
+      previousActualWatermarkByDatasetUrns.put(workUnitStatesPerDatasetURN.getKey(),previousWatermark);
+    }
+  }
+  return previousActualWatermarkByDatasetUrns;
+}

@@ -1,0 +1,28 @@
+{
+  Properties props=new Properties();
+  props.setProperty(FsCleanableHelper.SKIP_TRASH_KEY,Boolean.toString(true));
+  FsCleanableHelper fsCleanableHelper=new FsCleanableHelper(this.fs,props,ConfigFactory.empty(),log);
+  FileSystemDataset fsDataset=mock(FileSystemDataset.class);
+  Path datasetRoot=new Path(testTempPath,"dataset1");
+  when(fsDataset.datasetRoot()).thenReturn(datasetRoot);
+  Path deleted1=new Path(datasetRoot,"2016/01/01/13");
+  Path deleted2=new Path(datasetRoot,"2016/01/01/14");
+  Path deleted3=new Path(datasetRoot,"2016/01/02/15");
+  Path notDeleted1=new Path(datasetRoot,"2016/01/02/16");
+  this.fs.mkdirs(deleted1);
+  this.fs.mkdirs(deleted2);
+  this.fs.mkdirs(deleted3);
+  this.fs.mkdirs(notDeleted1);
+  Assert.assertTrue(this.fs.exists(deleted1));
+  Assert.assertTrue(this.fs.exists(deleted2));
+  Assert.assertTrue(this.fs.exists(deleted3));
+  Assert.assertTrue(this.fs.exists(notDeleted1));
+  List<FileSystemDatasetVersion> deletableVersions=ImmutableList.<FileSystemDatasetVersion>of(new MockFileSystemDatasetVersion(deleted1),new MockFileSystemDatasetVersion(deleted2),new MockFileSystemDatasetVersion(deleted3));
+  fsCleanableHelper.clean(deletableVersions,fsDataset);
+  Assert.assertFalse(this.fs.exists(deleted1));
+  Assert.assertFalse(this.fs.exists(deleted2));
+  Assert.assertFalse(this.fs.exists(deleted3));
+  Assert.assertTrue(this.fs.exists(notDeleted1));
+  Assert.assertFalse(this.fs.exists(deleted1.getParent()));
+  Assert.assertTrue(this.fs.exists(notDeleted1.getParent()));
+}

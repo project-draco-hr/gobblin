@@ -1,0 +1,11 @@
+{
+  if (deletableVersions.isEmpty()) {
+    log.warn("No deletable dataset version can be found. Ignoring.");
+    return;
+  }
+  Set<Path> possiblyEmptyDirectories=new HashSet<>();
+  for (  FileSystemDatasetVersion fsdv : deletableVersions) {
+    clean(fsdv,possiblyEmptyDirectories);
+  }
+  cleanEmptyDirectories(possiblyEmptyDirectories,fsDataset);
+}

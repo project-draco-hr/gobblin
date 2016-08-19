@@ -1,0 +1,6 @@
+{
+  Properties props=new Properties();
+  props.setProperty(FsCleanableHelper.SIMULATE_KEY,Boolean.toString(true));
+  FsCleanableHelper fsCleanableHelper=new FsCleanableHelper(this.fs,props,ConfigFactory.empty(),log);
+  assertThat(fsCleanableHelper.getTrash(),instanceOf(MockTrash.class));
+}

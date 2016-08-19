@@ -1,0 +1,7 @@
+{
+  super(fs,props);
+  this.identifierPattern=Pattern.compile(props.getProperty(IDENTIFIER_PATTERN,DEFAULT_IDENTIFIER_PATTERN));
+  this.pathFilter=new RegexPathFilter(props.getProperty(SUBSETFILES_REGEX_FILTER,DEFAULT_SUBSETFILES_REGEX_FILTER));
+  this.rootPath=PathUtils.deepestNonGlobPath(this.datasetPattern);
+  this.idToFileStatuses=new HashMap<>();
+}

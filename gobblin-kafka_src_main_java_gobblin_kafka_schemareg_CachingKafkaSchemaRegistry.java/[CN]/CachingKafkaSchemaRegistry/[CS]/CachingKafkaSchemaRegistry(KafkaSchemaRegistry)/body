@@ -1,0 +1,3 @@
+{
+  this(kafkaSchemaRegistry,DEFAULT_MAX_SCHEMA_REFERENCES);
+}

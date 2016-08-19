@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(jobContext.getJobState().getState() == RunningState.SUCCESSFUL || jobContext.getJobState().getState() == RunningState.COMMITTED || jobContext.getJobState().getState() == RunningState.FAILED,"Unexpected state: " + jobContext.getJobState().getState() + " in "+ jobContext);
+  super.onJobCompletion(jobContext);
+  if (jobContext.getJobState().getState() == RunningState.FAILED) {
+    _jobState.switchToFailed();
+  }
+ else {
+    _jobState.switchToSuccessful();
+  }
+}

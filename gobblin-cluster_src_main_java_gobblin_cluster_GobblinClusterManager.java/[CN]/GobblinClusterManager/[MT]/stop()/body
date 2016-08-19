@@ -1,0 +1,17 @@
+{
+  if (this.stopInProgress) {
+    return;
+  }
+  this.stopInProgress=true;
+  LOGGER.info("Stopping the Gobblin Cluster Manager");
+  sendShutdownRequest();
+  try {
+    this.applicationLauncher.stop();
+  }
+ catch (  ApplicationException ae) {
+    LOGGER.error("Error while stopping Gobblin Cluster Manager",ae);
+  }
+ finally {
+    disconnectHelixManager();
+  }
+}

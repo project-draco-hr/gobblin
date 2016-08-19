@@ -1,0 +1,5 @@
+{
+  log.debug("Getting timestamp predicate for Teradata");
+  String formattedvalue=Utils.toDateTimeFormat(Long.toString(value),valueFormat,TERADATA_TIMESTAMP_FORMAT);
+  return Utils.getCoalesceColumnNames(column) + " " + operator+ " '"+ formattedvalue+ "'";
+}

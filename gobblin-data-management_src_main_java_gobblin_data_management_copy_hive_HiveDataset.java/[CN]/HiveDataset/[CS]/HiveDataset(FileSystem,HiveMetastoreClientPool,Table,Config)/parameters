@@ -1,0 +1,4 @@
+FileSystem fs
+HiveMetastoreClientPool clientPool
+Table table
+Config datasetConfig

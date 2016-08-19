@@ -1,0 +1,9 @@
+{
+  this.changeLock.lock();
+  try {
+    return this.runningState;
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

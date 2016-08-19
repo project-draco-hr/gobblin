@@ -1,0 +1,14 @@
+String clusterName
+String nfsParentDir
+String sinkLogRootDir
+String awsConfDir
+String appWorkDir
+String masterPublicIp
+String workerS3ConfUri
+String workerS3ConfFiles
+String workerS3JarsUri
+String workerS3JarsFiles
+String workerJarsDir
+String workerJvmMemory
+Optional<String> workerJvmArgs
+Optional<String> gobblinVersion

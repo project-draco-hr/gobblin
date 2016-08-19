@@ -1,0 +1,15 @@
+{
+  this.changeLock.lock();
+  try {
+    RunningState oldState=this.runningState;
+    this.runningState=newState;
+    ;
+    if (this.listener.isPresent()) {
+      this.listener.get().onStatusChange(this,oldState,this.runningState);
+    }
+    this.runningStateChanged.signalAll();
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

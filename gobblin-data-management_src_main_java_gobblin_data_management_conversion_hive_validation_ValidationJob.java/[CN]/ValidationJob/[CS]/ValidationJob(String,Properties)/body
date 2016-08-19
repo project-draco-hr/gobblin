@@ -1,0 +1,21 @@
+{
+  super(jobId,log);
+  props.setProperty(HiveDatasetFinder.HIVE_DATASET_CONFIG_PREFIX_KEY,HIVE_DATASET_CONFIG_AVRO_PREFIX);
+  Config config=ConfigFactory.parseProperties(props);
+  this.props=props;
+  this.metricContext=Instrumented.getMetricContext(ConfigUtils.configToState(config),ValidationJob.class);
+  this.eventSubmitter=new EventSubmitter.Builder(this.metricContext,EventConstants.CONVERSION_NAMESPACE).build();
+  this.updateProvider=UpdateProviderFactory.create(props);
+  this.datasetFinder=new ConvertibleHiveDatasetFinder(getSourceFs(),props,this.eventSubmitter);
+  this.fs=FileSystem.get(new Configuration());
+  int maxLookBackDays=Integer.parseInt(props.getProperty(HiveSource.HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,DEFAULT_HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS));
+  int skipRecentThanDays=Integer.parseInt(props.getProperty(HIVE_SOURCE_SKIP_RECENT_THAN_DAYS_KEY,DEFAULT_HIVE_SOURCE_SKIP_RECENT_THAN_DAYS));
+  this.maxLookBackTime=new DateTime().minusDays(maxLookBackDays).getMillis();
+  this.skipRecentThanTime=new DateTime().minusDays(skipRecentThanDays).getMillis();
+  this.destFormats=Sets.newHashSet(ConfigUtils.getStringList(config,HIVE_DATASET_CONFIG_AVRO_PREFIX + "." + ConvertibleHiveDataset.DESTINATION_CONVERSION_FORMATS_KEY));
+  int maxThreadCount=Integer.parseInt(props.getProperty(MAX_THREAD_COUNT,DEFAULT_MAX_THREAD_COUNT));
+  this.exec=Executors.newFixedThreadPool(maxThreadCount,ExecutorsUtils.newThreadFactory(Optional.of(LoggerFactory.getLogger(ValidationJob.class)),Optional.of("getValidationOutputFromHive")));
+  this.futures=Lists.newArrayList();
+  EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.VALIDATION_SETUP_EVENT);
+  this.pool=HiveMetastoreClientPool.get(props,Optional.fromNullable(props.getProperty(HiveDatasetFinder.HIVE_METASTORE_URI_KEY)));
+}

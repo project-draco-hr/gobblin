@@ -1,0 +1,4 @@
+{
+  super.createMetrics();
+  this.messageParseFailures=this.getMetricContext().meter(RuntimeMetrics.GOBBLIN_JOB_MONITOR_KAFKA_MESSAGE_PARSE_FAILURES);
+}

@@ -1,0 +1,3 @@
+KafkaAvroSchemaRegistry registry
+String overrideName
+Optional<Schema> singleSchema

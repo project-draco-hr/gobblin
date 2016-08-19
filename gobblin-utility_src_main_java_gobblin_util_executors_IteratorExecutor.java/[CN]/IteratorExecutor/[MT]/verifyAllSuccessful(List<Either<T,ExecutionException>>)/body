@@ -1,0 +1,8 @@
+{
+  return Iterables.all(results,new Predicate<Either<T,ExecutionException>>(){
+    @Override public boolean apply(    @Nullable Either<T,ExecutionException> input){
+      return input instanceof Either.Left;
+    }
+  }
+);
+}

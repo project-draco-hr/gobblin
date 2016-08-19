@@ -6,5 +6,5 @@
   inOrder.verify(workUnitState,times(1)).setWorkingState(WorkUnitState.WorkingState.COMMITTED);
   inOrder.verify(conn,times(1)).commit();
   inOrder.verify(conn,times(1)).close();
-  verify(commands,never()).deleteAll(destinationTable);
+  verify(commands,never()).deleteAll(database,destinationTable);
 }

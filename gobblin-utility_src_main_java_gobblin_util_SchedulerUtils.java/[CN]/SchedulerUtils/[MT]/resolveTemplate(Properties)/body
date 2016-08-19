@@ -1,0 +1,8 @@
+{
+  if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
+    return (new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfigAsProperties(jobProps);
+  }
+ else {
+    return jobProps;
+  }
+}

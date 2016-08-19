@@ -1,0 +1,3 @@
+{
+  _callbackDispatcher.registerWeakStateListener(listener);
+}

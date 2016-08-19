@@ -1,7 +1,9 @@
 {
   try {
     List<String> conversionQueries=hiveConversionEntity.getQueries();
+    EventWorkunitUtils.setBeginConversionDDLExecuteTimeMetadata(this.workUnit,System.currentTimeMillis());
     this.hiveJdbcConnector.executeStatements(conversionQueries.toArray(new String[conversionQueries.size()]));
+    EventWorkunitUtils.setEndConversionDDLExecuteTimeMetadata(this.workUnit,System.currentTimeMillis());
   }
  catch (  SQLException e) {
     throw new IOException(e);

@@ -1,0 +1,3 @@
+{
+  eventSubmitter.submit(DB_CREATION + FAILED_POSTFIX,ImmutableMap.<String,String>builder().put(DB_NAME,dbName).put(ERROR_MESSAGE,error.getMessage()).build());
+}

@@ -1,0 +1,8 @@
+{
+  if (GobblinMetrics.isEnabled(properties)) {
+    return Optional.of(ContainerMetrics.get(ConfigUtils.configToState(config),applicationName,workerId));
+  }
+ else {
+    return Optional.absent();
+  }
+}

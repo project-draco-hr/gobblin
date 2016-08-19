@@ -1,0 +1,23 @@
+{
+  Map<String,JdbcType> targetDataTypes=ImmutableMap.<String,JdbcType>builder().put("DATE",JdbcType.DATE).put("DATETIME",JdbcType.TIMESTAMP).put("TIME",JdbcType.TIME).put("TIMESTAMP",JdbcType.TIMESTAMP).build();
+  ImmutableMap.Builder<String,JdbcType> dateColumnsBuilder=ImmutableMap.builder();
+  try (PreparedStatement pstmt=this.conn.prepareStatement(INFORMATION_SCHEMA_SELECT_SQL_PSTMT)){
+    pstmt.setString(1,database);
+    pstmt.setString(2,table);
+    LOG.info("Retrieving column type information from SQL: " + pstmt);
+    try (ResultSet rs=pstmt.executeQuery()){
+      if (!rs.first()) {
+        throw new IllegalArgumentException("No result from information_schema.columns");
+      }
+      do {
+        String type=rs.getString("column_type").toUpperCase();
+        JdbcType convertedType=targetDataTypes.get(type);
+        if (convertedType != null) {
+          dateColumnsBuilder.put(rs.getString("column_name"),convertedType);
+        }
+      }
+ while (rs.next());
+    }
+   }
+   return dateColumnsBuilder.build();
+}

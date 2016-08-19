@@ -4,19 +4,17 @@
   String tableSdLoc1="/tmp/testtable1";
   String tableName2="testtable2";
   String tableSdLoc2="/tmp/testtable2";
-  this.localMetastoreClient.dropDatabase(dbName,false,true,true);
+  this.hiveMetastoreTestUtils.getLocalMetastoreClient().dropDatabase(dbName,false,true,true);
+  this.hiveMetastoreTestUtils.createTestTable(dbName,tableName1,tableSdLoc1,Optional.<String>absent());
+  this.hiveMetastoreTestUtils.createTestTable(dbName,tableName2,tableSdLoc2,Optional.<String>absent(),true);
   List<WorkUnitState> previousWorkUnitStates=Lists.newArrayList();
-  previousWorkUnitStates.add(createPreviousWus(dbName,tableName1,10));
-  previousWorkUnitStates.add(createPreviousWus(dbName,tableName2,10));
+  Table table1=this.hiveMetastoreTestUtils.getLocalMetastoreClient().getTable(dbName,tableName1);
+  previousWorkUnitStates.add(ConversionHiveTestUtils.createWus(dbName,tableName1,TimeUnit.MILLISECONDS.convert(table1.getCreateTime(),TimeUnit.SECONDS)));
   SourceState testState=new SourceState(getTestState(dbName),previousWorkUnitStates);
-  createTestTable(dbName,tableName1,tableSdLoc1,Optional.<String>absent());
-  createTestTable(dbName,tableName2,tableSdLoc2,Optional.<String>absent(),true);
-  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName1,10);
-  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName2,15);
   List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
-  SerializableHiveTable serializedHiveTable=HiveSourceUtils.deserializeTable(wu);
-  Assert.assertEquals(serializedHiveTable.getDbName(),dbName);
-  Assert.assertEquals(serializedHiveTable.getTableName(),tableName2);
+  HiveWorkUnit hwu=new HiveWorkUnit(wu);
+  Assert.assertEquals(hwu.getHiveDataset().getDbAndTable().getDb(),dbName);
+  Assert.assertEquals(hwu.getHiveDataset().getDbAndTable().getTable(),tableName2);
 }

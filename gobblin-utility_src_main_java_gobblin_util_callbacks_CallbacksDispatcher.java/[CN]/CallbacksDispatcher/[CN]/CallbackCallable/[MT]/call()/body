@@ -1,0 +1,4 @@
+{
+  _log.info("Calling " + _callback + " on "+ _listener);
+  return _callback.apply(_listener);
+}

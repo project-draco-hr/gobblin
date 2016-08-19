@@ -1,0 +1,9 @@
+{
+  this.changeLock.lock();
+  try {
+    return Collections.unmodifiableMap(this.executionMetadata);
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

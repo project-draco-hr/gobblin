@@ -1,0 +1,18 @@
+{
+  super(topic,catalog,config);
+  this.schema=schema;
+  this.decoder=new ThreadLocal<BinaryDecoder>(){
+    @Override protected BinaryDecoder initialValue(){
+      InputStream dummyInputStream=new ByteArrayInputStream(new byte[0]);
+      return DecoderFactory.get().binaryDecoder(dummyInputStream,null);
+    }
+  }
+;
+  this.reader=new ThreadLocal<SpecificDatumReader<T>>(){
+    @Override protected SpecificDatumReader<T> initialValue(){
+      return new SpecificDatumReader<>(KafkaAvroJobMonitor.this.schema);
+    }
+  }
+;
+  this.versionWriter=versionWriter;
+}

@@ -1,0 +1,5 @@
+{
+  if (this.filter.apply(jobSchedule.getJobSpec())) {
+    this.delegate.onJobUnscheduled(jobSchedule);
+  }
+}

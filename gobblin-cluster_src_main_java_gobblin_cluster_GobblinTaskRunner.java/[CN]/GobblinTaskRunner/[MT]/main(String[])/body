@@ -1,0 +1,19 @@
+{
+  Options options=buildOptions();
+  try {
+    CommandLine cmd=new DefaultParser().parse(options,args);
+    if (!cmd.hasOption(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME) || !cmd.hasOption(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME)) {
+      printUsage(options);
+      System.exit(1);
+    }
+    Log4jConfigurationHelper.updateLog4jConfiguration(GobblinTaskRunner.class,GobblinClusterConfigurationKeys.GOBBLIN_CLUSTER_LOG4J_CONFIGURATION_FILE,GobblinClusterConfigurationKeys.GOBBLIN_CLUSTER_LOG4J_CONFIGURATION_FILE);
+    String applicationName=cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME);
+    String helixInstanceName=cmd.getOptionValue(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME);
+    GobblinTaskRunner gobblinWorkUnitRunner=new GobblinTaskRunner(applicationName,helixInstanceName,getApplicationId(),getTaskRunnerId(),ConfigFactory.load(),Optional.<Path>absent());
+    gobblinWorkUnitRunner.start();
+  }
+ catch (  ParseException pe) {
+    printUsage(options);
+    System.exit(1);
+  }
+}

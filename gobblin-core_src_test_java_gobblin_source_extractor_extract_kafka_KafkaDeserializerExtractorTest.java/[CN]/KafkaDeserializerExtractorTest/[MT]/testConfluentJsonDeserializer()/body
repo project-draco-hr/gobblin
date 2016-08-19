@@ -1,0 +1,14 @@
+{
+  WorkUnitState mockWorkUnitState=getMockWorkUnitState();
+  mockWorkUnitState.setProp("json.value.type",KafkaRecord.class.getName());
+  KafkaRecord testKafkaRecord=new KafkaRecord("Hello World");
+  Serializer<KafkaRecord> kafkaEncoder=new KafkaJsonSerializer<>();
+  kafkaEncoder.configure(PropertiesUtils.propsToStringKeyMap(mockWorkUnitState.getProperties()),false);
+  Deserializer<KafkaRecord> kafkaDecoder=new KafkaJsonDeserializer<>();
+  kafkaDecoder.configure(PropertiesUtils.propsToStringKeyMap(mockWorkUnitState.getProperties()),false);
+  ByteBuffer testKafkaRecordByteBuffer=ByteBuffer.wrap(kafkaEncoder.serialize(TEST_TOPIC_NAME,testKafkaRecord));
+  KafkaSchemaRegistry<?,?> mockKafkaSchemaRegistry=mock(KafkaSchemaRegistry.class);
+  KafkaDeserializerExtractor kafkaDecoderExtractor=new KafkaDeserializerExtractor(mockWorkUnitState,kafkaDecoder,mockKafkaSchemaRegistry);
+  MessageAndOffset mockMessageAndOffset=getMockMessageAndOffset(testKafkaRecordByteBuffer);
+  Assert.assertEquals(kafkaDecoderExtractor.decodeRecord(mockMessageAndOffset),testKafkaRecord);
+}

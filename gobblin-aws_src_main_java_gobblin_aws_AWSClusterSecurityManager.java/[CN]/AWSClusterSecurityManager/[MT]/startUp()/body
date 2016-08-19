@@ -1,0 +1,16 @@
+{
+  LOGGER.info("Starting the " + AWSClusterSecurityManager.class.getSimpleName());
+  LOGGER.info(String.format("Scheduling the credentials refresh task with an interval of %d minute(s)",this.refreshIntervalInMinutes));
+  this.loginExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      try {
+        login();
+      }
+ catch (      IOException ioe) {
+        LOGGER.error("Failed to login",ioe);
+        throw Throwables.propagate(ioe);
+      }
+    }
+  }
+,0,this.refreshIntervalInMinutes,TimeUnit.MINUTES);
+}

@@ -1,0 +1,12 @@
+{
+  if (!props.containsKey(COPYABLE_FILE_FILTER_KEY)) {
+    return ACCEPT_ALL_COPYABLE_FILE_FILTER;
+  }
+  try {
+    Class<?> copyableFileFilterClass=Class.forName(props.getProperty(COPYABLE_FILE_FILTER_KEY));
+    return (CopyableFileFilter)GobblinConstructorUtils.invokeLongestConstructor(copyableFileFilterClass,additionalArgs);
+  }
+ catch (  ReflectiveOperationException exception) {
+    throw new RuntimeException(exception);
+  }
+}

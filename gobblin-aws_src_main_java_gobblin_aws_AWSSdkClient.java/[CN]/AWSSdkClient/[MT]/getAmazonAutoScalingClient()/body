@@ -1,0 +1,17 @@
+{
+  if (lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+    return amazonAutoScaling;
+  }
+synchronized (AWSSdkClient.class) {
+    if (!(lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis())) {
+      if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+        amazonAutoScaling=new AmazonAutoScalingClient(awsClusterSecurityManager.getBasicSessionCredentials());
+      }
+ else {
+        amazonAutoScaling=new AmazonAutoScalingClient(awsClusterSecurityManager.getBasicAWSCredentials());
+      }
+      amazonAutoScaling.setRegion(region);
+    }
+  }
+  return amazonAutoScaling;
+}

@@ -1,0 +1,5 @@
+{
+  if (this.filter.apply(state.getJobSpec())) {
+    this.delegate.onStageTransition(state,previousStage,newStage);
+  }
+}

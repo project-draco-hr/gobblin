@@ -1,0 +1,4 @@
+{
+  this.expectedMasterCloudInitScript=IOUtils.toString(GobblinAWSClusterLauncherTest.class.getClassLoader().getResourceAsStream(MASTER_CLOUD_INIT_SCRIPT),"UTF-8");
+  this.expectedWorkerCloudInitScript=IOUtils.toString(GobblinAWSClusterLauncherTest.class.getClassLoader().getResourceAsStream(WORKER_CLOUD_INIT_SCRIPT),"UTF-8");
+}

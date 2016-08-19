@@ -1,0 +1,9 @@
+{
+  Preconditions.checkNotNull(updatedJob);
+  try {
+    _disp.execCallbacks(new UpdateJobCallback(updatedJob));
+  }
+ catch (  InterruptedException e) {
+    getLog().warn("onUpdateJob interrupted.");
+  }
+}

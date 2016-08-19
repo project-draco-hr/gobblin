@@ -1,11 +1,3 @@
 {
-  if (!overwrite) {
-    Preconditions.checkState(!fs.exists(filePath),filePath + " already exists");
-  }
- else {
-    HadoopUtils.deletePath(fs,filePath,true);
-  }
-  try (DataOutputStream dos=fs.create(filePath)){
-    dos.writeChars(schema.toString());
-  }
- }
+  writeSchemaToFile(schema,filePath,fs,overwrite,new FsPermission(FsAction.ALL,FsAction.ALL,FsAction.READ));
+}

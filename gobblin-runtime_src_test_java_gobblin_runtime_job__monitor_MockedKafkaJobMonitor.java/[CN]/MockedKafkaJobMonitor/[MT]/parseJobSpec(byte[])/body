@@ -1,0 +1,23 @@
+{
+  try {
+    String messageString=new String(message,Charsets.UTF_8);
+    List<Either<JobSpec,URI>> jobSpecs=Lists.newArrayList();
+    for (    String oneInstruction : SPLITTER_COMMA.split(messageString)) {
+      List<String> tokens=SPLITTER_COLON.splitToList(oneInstruction);
+      if (tokens.get(0).equals(REMOVE)) {
+        URI uri=new URI(tokens.get(1));
+        jobSpecs.add(Either.<JobSpec,URI>right(uri));
+      }
+ else {
+        URI uri=new URI(tokens.get(0));
+        String version=tokens.get(1);
+        JobSpec jobSpec=new JobSpec.Builder(uri).withConfig(ConfigFactory.empty()).withVersion(version).build();
+        jobSpecs.add(Either.<JobSpec,URI>left(jobSpec));
+      }
+    }
+    return jobSpecs;
+  }
+ catch (  URISyntaxException use) {
+    throw new IOException(use);
+  }
+}

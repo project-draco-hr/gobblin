@@ -1,0 +1,5 @@
+{
+  Options options=new Options();
+  options.addOption("a",GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME,true,"Gobblin application name");
+  return options;
+}

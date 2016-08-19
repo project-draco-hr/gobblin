@@ -1,0 +1,6 @@
+{
+  if (!_log.isPresent()) {
+    _log=Optional.of(getDefaultLog(jobSpec));
+  }
+  return _log.get();
+}

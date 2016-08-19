@@ -1,0 +1,6 @@
+{
+  if (!_jobCatalog.isPresent()) {
+    _jobCatalog=Optional.of(getDefaultJobCatalog());
+  }
+  return _jobCatalog.get();
+}

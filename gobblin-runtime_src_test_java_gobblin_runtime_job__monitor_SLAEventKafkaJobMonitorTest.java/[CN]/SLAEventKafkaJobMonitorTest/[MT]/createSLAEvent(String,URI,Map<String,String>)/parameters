@@ -1,0 +1,3 @@
+String name
+URI urn
+Map<String,String> additionalMetadata

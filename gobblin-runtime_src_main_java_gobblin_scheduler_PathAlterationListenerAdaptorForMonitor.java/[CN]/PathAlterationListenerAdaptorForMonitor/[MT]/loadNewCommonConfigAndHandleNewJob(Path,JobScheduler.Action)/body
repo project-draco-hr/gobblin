@@ -1,0 +1,37 @@
+{
+  String customizedInfoAction="";
+  String customizedInfoResult="";
+  try {
+    for (    Properties jobProps : SchedulerUtils.loadGenericJobConfigs(jobScheduler.properties,path,jobConfigFileDirPath)) {
+      try {
+switch (action) {
+case SCHEDULE:
+          boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
+        customizedInfoAction="schedule";
+      customizedInfoResult="creation or equivalent action";
+    jobScheduler.scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
+  break;
+case RESCHEDULE:
+customizedInfoAction="reschedule";
+customizedInfoResult="change";
+rescheduleJob(jobProps);
+break;
+case UNSCHEDULE:
+String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
+customizedInfoAction="unschedule";
+customizedInfoResult="deletion";
+jobScheduler.unscheduleJob(jobName);
+break;
+default :
+break;
+}
+}
+ catch (JobException je) {
+LOG.error("Failed to " + customizedInfoAction + " job reloaded from job configuration file "+ jobProps.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY),je);
+}
+}
+}
+ catch (ConfigurationException|IOException e) {
+LOG.error("Failed to reload job configuration files affected by " + customizedInfoResult + " to "+ path.toString(),e);
+}
+}

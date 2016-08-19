@@ -1,0 +1,20 @@
+{
+  final long startTime=System.currentTimeMillis();
+  final long launchTimeout=TimeUnit.MINUTES.toMillis(10);
+  boolean isMasterLaunched=false;
+  List<Instance> instanceIds=Collections.emptyList();
+  while (!isMasterLaunched && (System.currentTimeMillis() - startTime) < launchTimeout) {
+    try {
+      Thread.sleep(5000);
+    }
+ catch (    InterruptedException e) {
+      throw new RuntimeException("Interrupted while waiting for cluster master to boot up",e);
+    }
+    instanceIds=this.awsSdkClient.getInstancesForGroup(this.masterAutoScalingGroupName,"running");
+    isMasterLaunched=instanceIds.size() > 0;
+  }
+  if (!isMasterLaunched) {
+    throw new RuntimeException("Timed out while waiting for cluster master. " + "Check for issue manually for ASG: " + this.masterAutoScalingGroupName);
+  }
+  return instanceIds.get(0).getPublicIpAddress();
+}

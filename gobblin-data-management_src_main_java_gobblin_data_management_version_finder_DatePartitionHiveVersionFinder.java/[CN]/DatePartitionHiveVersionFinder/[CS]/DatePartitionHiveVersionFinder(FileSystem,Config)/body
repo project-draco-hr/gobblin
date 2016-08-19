@@ -1,0 +1,16 @@
+{
+  String pattern=ConfigUtils.getString(config,PARTITION_VALUE_DATE_TIME_PATTERN_KEY,DEFAULT_PARTITION_VALUE_DATE_TIME_PATTERN);
+  if (config.hasPath(PARTITION_VALUE_DATE_TIME_TIMEZONE_KEY)) {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(config.getString(PARTITION_VALUE_DATE_TIME_TIMEZONE_KEY)));
+  }
+ else {
+    this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(DEFAULT_PARTITION_VALUE_DATE_TIME_TIMEZONE));
+  }
+  this.partitionKeyName=ConfigUtils.getString(config,PARTITION_KEY_NAME_KEY,DEFAULT_PARTITION_KEY_NAME);
+  this.partitionKeyNamePredicate=new Predicate<FieldSchema>(){
+    @Override public boolean apply(    FieldSchema input){
+      return StringUtils.equalsIgnoreCase(input.getName(),DatePartitionHiveVersionFinder.this.partitionKeyName);
+    }
+  }
+;
+}

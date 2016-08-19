@@ -1,0 +1,6 @@
+{
+  CommitSequence commitSequence=builder.addStep(buildDatasetStateCommitStep(datasetUrn,datasetState).get()).build();
+  this.jobContext.getCommitSequenceStore().get().put(commitSequence.getJobName(),datasetUrn,commitSequence);
+  commitSequence.execute();
+  this.jobContext.getCommitSequenceStore().get().delete(commitSequence.getJobName(),datasetUrn);
+}

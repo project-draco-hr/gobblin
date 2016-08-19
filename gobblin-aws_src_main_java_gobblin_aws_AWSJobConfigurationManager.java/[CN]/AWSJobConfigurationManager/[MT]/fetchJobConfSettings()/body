@@ -1,0 +1,4 @@
+{
+  this.jobConfDirPath=config.hasPath(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY) ? Optional.of(config.getString(GobblinClusterConfigurationKeys.JOB_CONF_PATH_KEY)) : Optional.<String>absent();
+  this.jobConfS3Uri=config.hasPath(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY) ? Optional.of(config.getString(GobblinAWSConfigurationKeys.JOB_CONF_S3_URI_KEY)) : Optional.<String>absent();
+}

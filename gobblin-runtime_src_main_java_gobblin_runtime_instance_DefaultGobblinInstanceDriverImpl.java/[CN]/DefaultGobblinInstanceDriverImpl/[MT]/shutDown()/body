@@ -1,0 +1,7 @@
+{
+  getLog().info("Default driver: shuttind down ...");
+  if (null != _jobSpecListener) {
+    _jobCatalog.removeListener(_jobSpecListener);
+  }
+  getLog().info("Default driver: shut down.");
+}

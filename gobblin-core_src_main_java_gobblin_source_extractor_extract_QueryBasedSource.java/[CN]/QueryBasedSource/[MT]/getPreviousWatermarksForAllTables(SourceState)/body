@@ -5,15 +5,38 @@
   Set<String> tablesWithFailedTasks=Sets.newHashSet();
   boolean commitOnFullSuccess=JobCommitPolicy.getCommitPolicy(state) == JobCommitPolicy.COMMIT_ON_FULL_SUCCESS;
   for (  WorkUnitState previousWus : state.getPreviousWorkUnitStates()) {
-    String table=previousWus.getExtract().getTable();
-    long lowWm=previousWus.getWorkunit().getLowWatermark(LongWatermark.class).getValue();
+    String table;
+    if (previousWus.getWorkunit().contains(ConfigurationKeys.SOURCE_ENTITY)) {
+      table=previousWus.getWorkunit().getProp(ConfigurationKeys.SOURCE_ENTITY);
+    }
+ else {
+      table=previousWus.getExtract().getTable();
+      log.warn(String.format("Can not find %s entry in workunit, based on %s to set table name as %s",ConfigurationKeys.SOURCE_ENTITY,ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,table));
+    }
+    long lowWm=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+    LongWatermark waterMarkObj=previousWus.getWorkunit().getLowWatermark(LongWatermark.class);
+    if (waterMarkObj != null) {
+      lowWm=waterMarkObj.getValue();
+    }
+ else     if (previousWus.getProperties().containsKey(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY)) {
+      lowWm=Long.parseLong(previousWus.getProperties().getProperty(ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY));
+      log.warn("can not find low water mark in json format, getting value from " + ConfigurationKeys.WORK_UNIT_LOW_WATER_MARK_KEY + " low water mark "+ lowWm);
+    }
     if (!prevLowWatermarksByTable.containsKey(table)) {
       prevLowWatermarksByTable.put(table,lowWm);
     }
  else {
       prevLowWatermarksByTable.put(table,Math.min(prevLowWatermarksByTable.get(table),lowWm));
     }
-    long highWm=previousWus.getActualHighWatermark(LongWatermark.class).getValue();
+    long highWm=ConfigurationKeys.DEFAULT_WATERMARK_VALUE;
+    waterMarkObj=previousWus.getActualHighWatermark(LongWatermark.class);
+    if (waterMarkObj != null) {
+      highWm=waterMarkObj.getValue();
+    }
+ else     if (previousWus.getProperties().containsKey(ConfigurationKeys.WORK_UNIT_STATE_RUNTIME_HIGH_WATER_MARK)) {
+      highWm=Long.parseLong(previousWus.getProperties().getProperty(ConfigurationKeys.WORK_UNIT_STATE_RUNTIME_HIGH_WATER_MARK));
+      log.warn("can not find high water mark in json format, getting value from " + ConfigurationKeys.WORK_UNIT_STATE_RUNTIME_HIGH_WATER_MARK + " high water mark "+ highWm);
+    }
     if (!prevActualHighWatermarksByTable.containsKey(table)) {
       prevActualHighWatermarksByTable.put(table,highWm);
     }

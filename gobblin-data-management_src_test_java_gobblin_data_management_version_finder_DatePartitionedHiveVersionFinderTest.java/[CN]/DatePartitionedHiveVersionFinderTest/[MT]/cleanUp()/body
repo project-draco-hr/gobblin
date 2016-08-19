@@ -1,0 +1,7 @@
+{
+  try {
+    this.hiveMetastoreTestUtils.dropDatabaseIfExists(this.dbName);
+  }
+ catch (  Exception e) {
+  }
+}

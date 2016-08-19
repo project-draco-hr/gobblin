@@ -1,7 +1,44 @@
 {
-  for (  WorkUnitState wus : states) {
-    wus.setWorkingState(WorkingState.COMMITTED);
-    wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
-    new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SLA_EVENT,wus.getProperties()).submit();
+  List<String> cleanUpQueries=Lists.newArrayList();
+  List<String> directoriesToDelete=Lists.newArrayList();
+  if (Iterables.tryFind(states,UNSUCCESSFUL_WORKUNIT).isPresent()) {
+    for (    WorkUnitState wus : states) {
+      QueryBasedHivePublishEntity publishEntity=HiveAvroORCQueryGenerator.deserializePublishCommands(wus);
+      EventWorkunitUtils.setBeginPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
+      cleanUpQueries.addAll(publishEntity.getCleanupQueries());
+      directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
+      wus.setWorkingState(WorkingState.FAILED);
+      try {
+        new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_FAILED_EVENT,wus.getProperties()).submit();
+      }
+ catch (      Exception e) {
+        log.error("Failed while emitting SLA event, but ignoring and moving forward to curate " + "all clean up comamnds",e);
+      }
+    }
   }
+ else {
+    for (    WorkUnitState wus : states) {
+      QueryBasedHivePublishEntity publishEntity=HiveAvroORCQueryGenerator.deserializePublishCommands(wus);
+      cleanUpQueries.addAll(publishEntity.getCleanupQueries());
+      directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
+      Map<String,String> publishDirectories=publishEntity.getPublishDirectories();
+      for (      Map.Entry<String,String> publishDir : publishDirectories.entrySet()) {
+        moveDirectory(publishDir.getKey(),publishDir.getValue());
+      }
+      List<String> publishQueries=publishEntity.getPublishQueries();
+      EventWorkunitUtils.setBeginPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
+      executeQueries(publishQueries);
+      EventWorkunitUtils.setEndPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
+      wus.setWorkingState(WorkingState.COMMITTED);
+      wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
+      try {
+        new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
+      }
+ catch (      Exception e) {
+        log.error("Failed while emitting SLA event, but ignoring and moving forward to curate " + "all clean up commands",e);
+      }
+    }
+  }
+  executeQueries(cleanUpQueries);
+  deleteDirectories(directoriesToDelete);
 }

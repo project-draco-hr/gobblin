@@ -1,0 +1,4 @@
+{
+  this.mockKafkaStream.shutdown();
+  super.shutDown();
+}

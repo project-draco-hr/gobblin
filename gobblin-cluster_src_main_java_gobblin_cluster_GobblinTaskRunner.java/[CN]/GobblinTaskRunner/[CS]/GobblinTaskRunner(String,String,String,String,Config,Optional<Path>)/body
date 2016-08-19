@@ -1,0 +1,22 @@
+{
+  this.helixInstanceName=helixInstanceName;
+  this.config=config;
+  this.taskRunnerId=taskRunnerId;
+  Configuration conf=HadoopUtils.newConfiguration();
+  this.fs=buildFileSystem(this.config,conf);
+  String zkConnectionString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  LOGGER.info("Using ZooKeeper connection string: " + zkConnectionString);
+  this.helixManager=HelixManagerFactory.getZKHelixManager(config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY),helixInstanceName,InstanceType.PARTICIPANT,zkConnectionString);
+  Properties properties=ConfigUtils.configToProperties(config);
+  TaskExecutor taskExecutor=new TaskExecutor(properties);
+  TaskStateTracker taskStateTracker=new GobblinHelixTaskStateTracker(properties,this.helixManager);
+  Path appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : GobblinClusterUtils.getAppWorkDirPath(this.fs,applicationName,applicationId);
+  List<Service> services=Lists.newArrayList(taskExecutor,taskStateTracker,new JMXReportingService());
+  services.addAll(getServices());
+  this.serviceManager=new ServiceManager(services);
+  this.containerMetrics=buildContainerMetrics(this.config,properties,applicationName,this.taskRunnerId);
+  Map<String,TaskFactory> taskFactoryMap=Maps.newHashMap();
+  taskFactoryMap.put(GOBBLIN_TASK_FACTORY_NAME,new GobblinHelixTaskFactory(this.containerMetrics,taskExecutor,taskStateTracker,this.fs,appWorkDir));
+  this.taskStateModelFactory=new TaskStateModelFactory(this.helixManager,taskFactoryMap);
+  this.helixManager.getStateMachineEngine().registerStateModelFactory("Task",this.taskStateModelFactory);
+}

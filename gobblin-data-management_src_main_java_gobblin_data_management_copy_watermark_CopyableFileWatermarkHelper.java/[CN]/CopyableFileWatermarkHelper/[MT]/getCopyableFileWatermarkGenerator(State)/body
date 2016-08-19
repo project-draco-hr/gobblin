@@ -1,0 +1,14 @@
+{
+  try {
+    if (state.contains(WATERMARK_CREATOR)) {
+      Class<?> watermarkCreatorClass=Class.forName(state.getProp(WATERMARK_CREATOR));
+      return Optional.of((CopyableFileWatermarkGenerator)watermarkCreatorClass.newInstance());
+    }
+ else {
+      return Optional.absent();
+    }
+  }
+ catch (  ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+    throw new IOException("Failed to instantiate watermarkCreator.");
+  }
+}

@@ -1,0 +1,18 @@
+{
+  Properties props=new Properties();
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,TOPIC);
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "bootstrap.servers","localhost:" + this.kafkaPort);
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "value.serializer","org.apache.kafka.common.serialization.ByteArraySerializer");
+  KafkaDataWriter<byte[]> kafkaWriter=new KafkaDataWriter<>(props);
+  byte[] messageBytes=generateRandomBytes();
+  try {
+    kafkaWriter.write(messageBytes);
+  }
+  finally {
+    kafkaWriter.close();
+  }
+  Thread.sleep(500);
+  Assert.assertEquals(kafkaWriter.recordsWritten(),1);
+  byte[] message=iterator.next().message();
+  Assert.assertEquals(message,messageBytes);
+}

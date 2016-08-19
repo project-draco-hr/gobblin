@@ -1,0 +1,11 @@
+{
+  this.eventBus.register(this);
+  HelixUtils.createGobblinHelixCluster(this.zkConnectionString,this.helixClusterName);
+  LOGGER.info("Created Helix cluster " + this.helixClusterName);
+  connectHelixManager();
+  List<Service> services=Lists.newArrayList();
+  services.add(this.awsClusterSecurityManager);
+  this.serviceManager=Optional.of(new ServiceManager(services));
+  this.serviceManager.get().startAsync();
+  this.clusterId=getClusterId();
+}

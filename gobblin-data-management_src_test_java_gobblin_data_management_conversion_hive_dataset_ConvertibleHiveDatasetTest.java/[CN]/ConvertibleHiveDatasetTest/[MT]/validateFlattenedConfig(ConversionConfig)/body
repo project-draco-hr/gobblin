@@ -1,0 +1,11 @@
+{
+  Assert.assertEquals(conversionConfig.getDestinationDbName(),"db1_flattenedOrcDb");
+  Assert.assertEquals(conversionConfig.getDestinationTableName(),"tb1_flattenedOrc");
+  Assert.assertEquals(conversionConfig.getDestinationDataPath(),"/tmp/data_flattenedOrc/db1/tb1");
+  Assert.assertEquals(conversionConfig.getClusterBy(),ImmutableList.of("c1","c2"));
+  Assert.assertEquals(conversionConfig.getNumBuckets().get(),Integer.valueOf(4));
+  Properties hiveProps=new Properties();
+  hiveProps.setProperty("mapred.map.tasks","10");
+  hiveProps.setProperty("hive.merge.mapfiles","false");
+  Assert.assertEquals(conversionConfig.getHiveRuntimeProperties(),hiveProps);
+}

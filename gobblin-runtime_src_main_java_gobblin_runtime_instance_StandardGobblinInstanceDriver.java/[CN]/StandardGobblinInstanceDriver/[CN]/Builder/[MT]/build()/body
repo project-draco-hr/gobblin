@@ -1,0 +1,4 @@
+{
+  Configurable sysConfig=_instanceLauncher.isPresent() ? _instanceLauncher.get() : DefaultConfigurableImpl.createFromConfig(ConfigFactory.empty());
+  return new StandardGobblinInstanceDriver(sysConfig,getJobCatalog(),getJobScheduler(),getJobLauncher(),Optional.of(getLog()));
+}

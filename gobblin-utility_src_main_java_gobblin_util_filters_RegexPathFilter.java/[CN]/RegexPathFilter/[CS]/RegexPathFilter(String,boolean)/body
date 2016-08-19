@@ -1,0 +1,4 @@
+{
+  this.regex=Pattern.compile(regex);
+  this.include=include;
+}

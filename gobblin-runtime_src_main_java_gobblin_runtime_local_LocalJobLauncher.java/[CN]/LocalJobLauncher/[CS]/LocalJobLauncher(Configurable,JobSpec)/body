@@ -1,0 +1,3 @@
+{
+  this(JobConfigurationUtils.combineSysAndJobProperties(instanceConf.getConfigAsProperties(),jobSpec.getConfigAsProperties()));
+}

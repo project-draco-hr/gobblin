@@ -1,0 +1,30 @@
+{
+  try (ZipFile zipFile=new ZipFile(file)){
+    final Enumeration<? extends ZipEntry> entries=zipFile.entries();
+    while (entries.hasMoreElements()) {
+      final ZipEntry entry=entries.nextElement();
+      final File entryDestination=new File(outputDir,entry.getName());
+      if (entry.isDirectory()) {
+        if (!entryDestination.mkdirs() && !entryDestination.exists()) {
+          throw new IOException("Could not create directory: " + entryDestination + " while un-archiving zip: "+ file);
+        }
+      }
+ else {
+        if (!entryDestination.getParentFile().mkdirs() && !entryDestination.getParentFile().exists()) {
+          throw new IOException("Could not create parent directory for: " + entryDestination + " while un-archiving zip: "+ file);
+        }
+        InputStream in=null;
+        OutputStream out=null;
+        try {
+          in=zipFile.getInputStream(entry);
+          out=new FileOutputStream(entryDestination);
+          IOUtils.copy(in,out);
+        }
+  finally {
+          if (null != in)           IOUtils.closeQuietly(in);
+          if (null != out)           IOUtils.closeQuietly(out);
+        }
+      }
+    }
+  }
+ }

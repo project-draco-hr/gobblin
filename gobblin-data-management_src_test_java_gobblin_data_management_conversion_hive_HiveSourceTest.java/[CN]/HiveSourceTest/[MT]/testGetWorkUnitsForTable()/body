@@ -2,15 +2,14 @@
   String dbName="testdb2";
   String tableName="testtable2";
   String tableSdLoc="/tmp/testtable2";
-  this.localMetastoreClient.dropDatabase(dbName,false,true,true);
+  this.hiveMetastoreTestUtils.getLocalMetastoreClient().dropDatabase(dbName,false,true,true);
   SourceState testState=getTestState(dbName);
-  createTestTable(dbName,tableName,tableSdLoc,Optional.<String>absent());
-  this.updateProvider.addMockUpdateTime(dbName + "@" + tableName,10);
-  List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
+  this.hiveMetastoreTestUtils.createTestTable(dbName,tableName,tableSdLoc,Optional.<String>absent());
+  List<WorkUnit> workUnits=hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);
-  SerializableHiveTable serializedHiveTable=HiveSourceUtils.deserializeTable(wu);
-  Assert.assertEquals(serializedHiveTable.getDbName(),dbName);
-  Assert.assertEquals(serializedHiveTable.getTableName(),tableName);
-  Assert.assertEquals(serializedHiveTable.getSchemaUrl(),new Path("/tmp/dummy"));
+  HiveWorkUnit hwu=new HiveWorkUnit(wu);
+  Assert.assertEquals(hwu.getHiveDataset().getDbAndTable().getDb(),dbName);
+  Assert.assertEquals(hwu.getHiveDataset().getDbAndTable().getTable(),tableName);
+  Assert.assertEquals(hwu.getTableSchemaUrl(),new Path("/tmp/dummy"));
 }

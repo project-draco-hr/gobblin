@@ -1,0 +1,4 @@
+{
+  final byte[] encodedBytes=Base64.encodeBase64(data.getBytes());
+  return new String(encodedBytes);
+}

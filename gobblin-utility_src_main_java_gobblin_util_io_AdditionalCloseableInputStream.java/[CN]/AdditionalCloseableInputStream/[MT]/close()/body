@@ -1,0 +1,6 @@
+{
+  super.close();
+  for (  Closeable closeable : this.closeables) {
+    closeable.close();
+  }
+}

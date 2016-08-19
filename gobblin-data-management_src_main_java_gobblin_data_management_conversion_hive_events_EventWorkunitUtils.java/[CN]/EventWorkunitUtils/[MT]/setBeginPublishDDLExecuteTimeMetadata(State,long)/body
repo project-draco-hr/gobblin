@@ -1,0 +1,3 @@
+{
+  state.setProp(EventConstants.BEGIN_PUBLISH_DDL_EXECUTE_TIME,Long.toString(time));
+}

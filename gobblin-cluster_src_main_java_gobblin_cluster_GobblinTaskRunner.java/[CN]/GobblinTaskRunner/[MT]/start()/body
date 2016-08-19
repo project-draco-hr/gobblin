@@ -1,0 +1,10 @@
+{
+  LOGGER.info(String.format("Starting %s in container %s",this.helixInstanceName,this.taskRunnerId));
+  addShutdownHook();
+  connectHelixManager();
+  if (this.containerMetrics.isPresent()) {
+    this.containerMetrics.get().startMetricReportingWithFileSuffix(ConfigUtils.configToState(this.config),this.taskRunnerId);
+  }
+  this.serviceManager.startAsync();
+  this.serviceManager.awaitStopped();
+}

@@ -1,0 +1,3 @@
+JobExecutionState state
+RunningState previousStatus
+RunningState newStatus

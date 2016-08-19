@@ -1,0 +1,2 @@
+Optional<ExecutorService> execService
+Optional<Logger> log

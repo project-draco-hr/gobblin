@@ -1,0 +1,10 @@
+{
+  this.changeLock.lock();
+  try {
+    Preconditions.checkState(RunningState.SUCCESSFUL == this.runningState,"unexpected state:" + this.runningState);
+    doRunningStateChange(RunningState.COMMITTED);
+  }
+  finally {
+    this.changeLock.unlock();
+  }
+}

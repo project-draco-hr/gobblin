@@ -8,7 +8,8 @@
         log.info(String.format("Instantiated datasetfinder %s ",jobProps.getProperty(datasetFinderClassKey())));
       }
  catch (      NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
-        log.warn(String.format("Retention ignored could not instantiate datasetfinder %s.",jobProps.getProperty(datasetFinderClassKey())),e);
+        log.error(String.format("Retention ignored could not instantiate datasetfinder %s.",jobProps.getProperty(datasetFinderClassKey())),e);
+        Throwables.propagate(e);
       }
     }
  else {
@@ -17,16 +18,17 @@
       for (      URI importedBy : importedBys) {
         Config datasetClassConfig=client.getConfig(importedBy);
         try {
-          this.datasetFinders.add((DatasetsFinder)ConstructorUtils.invokeConstructor(Class.forName(datasetClassConfig.getString(datasetFinderClassKey())),fs,jobProps,datasetClassConfig));
+          this.datasetFinders.add((DatasetsFinder)GobblinConstructorUtils.invokeFirstConstructor(Class.forName(datasetClassConfig.getString(datasetFinderClassKey())),ImmutableList.of(fs,jobProps,datasetClassConfig),ImmutableList.of(fs,jobProps)));
           log.info(String.format("Instantiated datasetfinder %s for %s.",datasetClassConfig.getString(datasetFinderClassKey()),importedBy));
         }
  catch (        InstantiationException|IllegalAccessException|IllegalArgumentException|InvocationTargetException|NoSuchMethodException|SecurityException|ClassNotFoundException e) {
-          log.warn(String.format("Retention ignored for %s. Could not instantiate datasetfinder %s.",importedBy,datasetClassConfig.getString(datasetFinderClassKey())),e);
+          log.error(String.format("Retention ignored for %s. Could not instantiate datasetfinder %s.",importedBy,datasetClassConfig.getString(datasetFinderClassKey())),e);
+          Throwables.propagate(e);
         }
       }
     }
   }
  catch (  IllegalArgumentException|VersionDoesNotExistException|ConfigStoreFactoryDoesNotExistsException|ConfigStoreCreationException|URISyntaxException e) {
-    throw new RuntimeException(e);
+    Throwables.propagate(e);
   }
 }

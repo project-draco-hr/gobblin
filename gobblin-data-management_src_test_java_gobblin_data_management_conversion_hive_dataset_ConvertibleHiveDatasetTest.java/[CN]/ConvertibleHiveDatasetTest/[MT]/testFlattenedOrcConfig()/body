@@ -1,0 +1,8 @@
+{
+  String testConfFilePath="convertibleHiveDatasetTest/flattenedOrc.conf";
+  Config config=ConfigFactory.parseResources(testConfFilePath).getConfig("hive.conversion.avro");
+  ConvertibleHiveDataset cd=createTestConvertibleDataset(config);
+  Assert.assertEquals(cd.getDestFormats(),ImmutableSet.of("flattenedOrc"));
+  Assert.assertTrue(cd.getConversionConfigForFormat("flattenedOrc").isPresent());
+  validateFlattenedConfig(cd.getConversionConfigForFormat("flattenedOrc").get());
+}

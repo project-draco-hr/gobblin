@@ -1,0 +1,8 @@
+{
+  List<CopyableDataset> datasets=Lists.newArrayList();
+  FileStatus[] fileStatuss=this.getDatasetDirs();
+  for (  FileStatus datasetRootDir : fileStatuss) {
+    datasets.addAll(this.generateDatasetsByIdentifier(datasetRootDir.getPath()));
+  }
+  return datasets;
+}

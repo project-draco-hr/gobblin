@@ -2,14 +2,14 @@
   Preconditions.checkArgument(table.getPartitionKeysSize() == partition.getValues().size(),String.format("Partition key size is %s but partition value size is %s",table.getPartitionKeys().size(),partition.getValues().size()));
   try (AutoCloseableLock lock=this.locks.getPartitionLock(table.getDbName(),table.getTableName(),partition.getValues())){
     try {
-      client.add_partition(partition);
+      client.add_partition(getPartitionWithCreateTimeNow(partition));
       log.info(String.format("Added partition %s to table %s with location %s",stringifyPartition(partition),table.getTableName(),partition.getSd().getLocation()));
     }
  catch (    TException e) {
       try {
         HivePartition existingPartition=HiveMetaStoreUtils.getHivePartition(client.getPartition(table.getDbName(),table.getTableName(),partition.getValues()));
         if (needToUpdatePartition(existingPartition,spec.getPartition().get())) {
-          client.alter_partition(table.getDbName(),table.getTableName(),partition);
+          client.alter_partition(table.getDbName(),table.getTableName(),getPartitionWithCreateTime(partition,existingPartition));
           log.info(String.format("Updated partition %s in table %s with location %s",stringifyPartition(partition),table.getTableName(),partition.getSd().getLocation()));
         }
  else {

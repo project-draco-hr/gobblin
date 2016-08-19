@@ -1,0 +1,8 @@
+{
+  if (this.jobSpecs.containsKey(uri)) {
+    return this.jobSpecs.get(uri);
+  }
+ else {
+    throw new JobSpecNotFoundException(uri);
+  }
+}

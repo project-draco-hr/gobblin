@@ -1,11 +1,13 @@
 {
   try (AutoReturnableObject<IMetaStoreClient> client=this.clientPool.getClient()){
     client.get().dropPartition(dbName,tableName,partitionValues,false);
+    HiveMetaStoreEventHelper.submitSuccessfulPartitionDrop(eventSubmitter,dbName,tableName,partitionValues);
     log.info("Dropped partition " + partitionValues + " in table "+ tableName+ " in db "+ dbName);
   }
  catch (  NoSuchObjectException e) {
   }
 catch (  TException e) {
+    HiveMetaStoreEventHelper.submitFailedPartitionDrop(eventSubmitter,dbName,tableName,partitionValues,e);
     throw new IOException(String.format("Unable to check existence of Hive partition %s in table %s in db %s",partitionValues,tableName,dbName),e);
   }
 }

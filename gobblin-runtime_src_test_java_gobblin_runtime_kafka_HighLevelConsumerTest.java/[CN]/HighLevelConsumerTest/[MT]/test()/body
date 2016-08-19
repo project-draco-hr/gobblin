@@ -1,0 +1,21 @@
+{
+  MockKafkaStream mockKafkaStream=new MockKafkaStream(5);
+  MockedHighLevelConsumer consumer=new MockedHighLevelConsumer(getSimpleConfig(Optional.<String>absent()),5,mockKafkaStream);
+  consumer.startAsync();
+  consumer.awaitRunning();
+  Assert.assertTrue(consumer.getMessages().isEmpty());
+  mockKafkaStream.pushToStream("message");
+  consumer.awaitAtLeastNMessages(1);
+  Assert.assertEquals(consumer.getMessages().get(0),"message");
+  mockKafkaStream.pushToStream("message2");
+  consumer.awaitAtLeastNMessages(2);
+  Assert.assertEquals(consumer.getMessages().get(1),"message2");
+  consumer.shutDown();
+  mockKafkaStream.pushToStream("message3");
+  try {
+    consumer.awaitAtLeastNMessages(3);
+    Assert.fail();
+  }
+ catch (  TimeoutException ie) {
+  }
+}

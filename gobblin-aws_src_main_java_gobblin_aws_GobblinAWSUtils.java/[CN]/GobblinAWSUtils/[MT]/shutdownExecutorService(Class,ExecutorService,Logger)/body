@@ -1,0 +1,8 @@
+{
+  executorService.shutdown();
+  if (!executorService.awaitTermination(DEFAULT_EXECUTOR_SERVICE_SHUTDOWN_TIME_IN_MINUTES,TimeUnit.MINUTES)) {
+    logger.warn("Executor service shutdown timed out.");
+    List<Runnable> pendingTasks=executorService.shutdownNow();
+    logger.warn(String.format("%s was shutdown instantly. %s tasks were not executed: %s",clazz.getName(),pendingTasks.size(),StringUtils.join(pendingTasks,",")));
+  }
+}

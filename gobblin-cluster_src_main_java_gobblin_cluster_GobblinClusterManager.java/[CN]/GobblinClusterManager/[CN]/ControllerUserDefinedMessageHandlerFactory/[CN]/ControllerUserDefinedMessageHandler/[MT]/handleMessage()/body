@@ -1,0 +1,6 @@
+{
+  LOGGER.warn(String.format("No handling setup for %s message of subtype: %s",Message.MessageType.USER_DEFINE_MSG.toString(),this._message.getMsgSubType()));
+  HelixTaskResult helixTaskResult=new HelixTaskResult();
+  helixTaskResult.setSuccess(true);
+  return helixTaskResult;
+}

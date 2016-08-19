@@ -1,0 +1,3 @@
+{
+  GobblinAWSUtils.shutdownExecutorService(this.getClass(),this.fetchJobConfExecutor,LOGGER);
+}

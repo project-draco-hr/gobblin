@@ -1,0 +1,8 @@
+String stagingTableName
+String finalTableName
+Optional<String> optionalStagingDbName
+Optional<String> optionalFinalDbName
+Schema evolvedSchema
+boolean isEvolutionEnabled
+Map<String,String> evolvedColumns
+Optional<Table> destinationTableMeta

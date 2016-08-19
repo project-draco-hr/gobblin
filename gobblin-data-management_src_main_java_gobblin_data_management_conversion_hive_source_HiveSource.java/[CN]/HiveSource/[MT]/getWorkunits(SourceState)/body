@@ -1,0 +1,26 @@
+{
+  try {
+    this.beginGetWorkunitsTime=System.currentTimeMillis();
+    initialize(state);
+    EventSubmitter.submit(Optional.of(this.eventSubmitter),EventConstants.CONVERSION_FIND_HIVE_TABLES_EVENT);
+    Iterator<HiveDataset> iterator=this.datasetFinder.getDatasetsIterator();
+    while (iterator.hasNext()) {
+      HiveDataset hiveDataset=iterator.next();
+      try (AutoReturnableObject<IMetaStoreClient> client=hiveDataset.getClientPool().getClient()){
+        LongWatermark expectedDatasetHighWatermark=new LongWatermark(new DateTime().getMillis());
+        log.debug(String.format("Processing dataset: %s",hiveDataset));
+        if (HiveUtils.isPartitioned(hiveDataset.getTable())) {
+          createWorkunitsForPartitionedTable(hiveDataset,client,expectedDatasetHighWatermark);
+        }
+ else {
+          createWorkunitForNonPartitionedTable(hiveDataset,expectedDatasetHighWatermark);
+        }
+      }
+     }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
+  log.info(String.format("Created %s workunits",this.workunits.size()));
+  return this.workunits;
+}

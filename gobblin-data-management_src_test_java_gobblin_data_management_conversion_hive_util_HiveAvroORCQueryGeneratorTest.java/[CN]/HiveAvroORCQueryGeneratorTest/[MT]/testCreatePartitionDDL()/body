@@ -1,0 +1,6 @@
+{
+  List<String> ddl=HiveAvroORCQueryGenerator.generateCreatePartitionDDL("db1","table1","/tmp",ImmutableMap.of("datepartition","2016-01-01","sizepartition","10"));
+  Assert.assertEquals(ddl.size(),2);
+  Assert.assertEquals(ddl.get(0),"USE db1\n");
+  Assert.assertEquals(ddl.get(1),"ALTER TABLE `table1` ADD IF NOT EXISTS PARTITION (`datepartition`='2016-01-01', `sizepartition`='10') \n" + " LOCATION '/tmp' ");
+}

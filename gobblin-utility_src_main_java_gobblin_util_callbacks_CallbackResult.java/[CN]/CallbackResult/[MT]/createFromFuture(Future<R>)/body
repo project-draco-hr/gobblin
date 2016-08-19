@@ -1,0 +1,18 @@
+{
+  Preconditions.checkNotNull(execFuture);
+  if (execFuture.isCancelled()) {
+    return createCancelled();
+  }
+  try {
+    R res=execFuture.get();
+    return createSuccessful(res);
+  }
+ catch (  ExecutionException e) {
+    if (execFuture.isCancelled()) {
+      return createCancelled();
+    }
+ else {
+      return createFailed(e.getCause());
+    }
+  }
+}

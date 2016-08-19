@@ -18,9 +18,9 @@ tablePaths=Lists.newArrayList();
 }
 if (!tablePaths.isEmpty()) {
 DeleteFileCommitStep deletePaths=DeleteFileCommitStep.fromPaths(this.getTargetFs(),tablePaths,this.getDataset().getProperties(),table.getDataLocation());
-copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deletePaths,stepPriority++));
+copyEntities.add(new PostPublishStep(fileSet,Maps.<String,String>newHashMap(),deletePaths,stepPriority++));
 }
 TableDeregisterStep deregister=new TableDeregisterStep(table.getTTable(),this.getTargetURI(),this.getHiveRegProps());
-copyEntities.add(new PrePublishStep(fileSet,Maps.<String,Object>newHashMap(),deregister,stepPriority++));
+copyEntities.add(new PostPublishStep(fileSet,Maps.<String,String>newHashMap(),deregister,stepPriority++));
 return stepPriority;
 }

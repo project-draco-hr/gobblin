@@ -1,0 +1,3 @@
+Table tbl
+List<String> values
+int createTime

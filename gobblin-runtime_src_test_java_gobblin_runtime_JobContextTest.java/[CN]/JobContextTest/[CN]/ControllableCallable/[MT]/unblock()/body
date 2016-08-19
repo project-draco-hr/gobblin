@@ -1,0 +1,5 @@
+{
+  if (!this.queue.isEmpty()) {
+    this.queue.poll();
+  }
+}

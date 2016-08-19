@@ -1,0 +1,19 @@
+{
+  Properties props=new Properties();
+  props.put(SLAEventKafkaJobMonitor.TEMPLATE_KEY,templateURI.toString());
+  props.put(SLAEventKafkaJobMonitor.DATASET_URN_FILTER_KEY,"^/accept.*");
+  Config config=ConfigFactory.parseProperties(props).withFallback(superConfig);
+  SLAEventKafkaJobMonitor monitor=new SLAEventKafkaJobMonitor("topic",null,new URI("/base/URI"),HighLevelConsumerTest.getSimpleConfig(Optional.of(KafkaJobMonitor.KAFKA_JOB_MONITOR_PREFIX)),new NoopSchemaVersionWriter(),Optional.of(Pattern.compile("^/accept.*")),Optional.<Pattern>absent(),this.templateURI,ImmutableMap.<String,String>of());
+  monitor.buildMetricsContextAndMetrics();
+  GobblinTrackingEvent event;
+  Collection<Either<JobSpec,URI>> jobSpecs;
+  event=createSLAEvent("event",new URI("/accept/myDataset"),Maps.<String,String>newHashMap());
+  jobSpecs=monitor.parseJobSpec(event);
+  Assert.assertEquals(jobSpecs.size(),1);
+  Assert.assertEquals(monitor.getRejectedEvents().getCount(),0);
+  event=createSLAEvent("event",new URI("/reject/myDataset"),Maps.<String,String>newHashMap());
+  jobSpecs=monitor.parseJobSpec(event);
+  Assert.assertEquals(jobSpecs.size(),0);
+  Assert.assertEquals(monitor.getRejectedEvents().getCount(),1);
+  monitor.shutdownMetrics();
+}

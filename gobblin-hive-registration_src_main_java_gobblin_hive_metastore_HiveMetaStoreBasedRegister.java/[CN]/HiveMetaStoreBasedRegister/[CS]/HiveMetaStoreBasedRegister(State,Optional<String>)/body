@@ -4,4 +4,6 @@
   config.setMaxTotal(this.props.getNumThreads());
   config.setMaxIdle(this.props.getNumThreads());
   this.clientPool=HiveMetastoreClientPool.get(this.props.getProperties(),metastoreURI);
+  MetricContext metricContext=GobblinMetricsRegistry.getInstance().getMetricContext(state,HiveMetaStoreBasedRegister.class,GobblinMetrics.getCustomTagsFromState(state));
+  this.eventSubmitter=new EventSubmitter.Builder(metricContext,"gobblin.hive.HiveMetaStoreBasedRegister").build();
 }

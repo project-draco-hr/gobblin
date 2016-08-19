@@ -1,0 +1,10 @@
+{
+  getLog().info("Shutting down driver ...");
+  super.shutDown();
+  if (null != _subservices) {
+    getLog().info("Shutting down subservices ...");
+    _subservices.stopAsync();
+    _subservices.awaitStopped(getInstanceCfg().getShutdownTimeoutMs(),TimeUnit.MILLISECONDS);
+    getLog().info("All subservices have been shutdown.");
+  }
+}

@@ -1,4 +1,0 @@
-{
-  String sql=String.format(CREATE_TABLE_SQL_FORMAT,targetTableName,fromStructure);
-  execute(sql);
-}

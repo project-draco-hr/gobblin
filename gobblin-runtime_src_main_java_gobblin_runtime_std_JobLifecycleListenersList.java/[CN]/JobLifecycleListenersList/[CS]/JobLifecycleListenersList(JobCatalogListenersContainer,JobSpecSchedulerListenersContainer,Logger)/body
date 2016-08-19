@@ -1,0 +1,3 @@
+{
+  this(jobCatalogDelegate,jobSchedulerDelegate,Optional.<ExecutorService>absent(),Optional.of(log));
+}

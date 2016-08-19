@@ -1,0 +1,6 @@
+{
+  JsonObject jsonObject=new JsonObject();
+  jsonObject.addProperty("testKey","testValue");
+  Deserializer<JsonElement> deserializer=new KafkaGsonDeserializer();
+  Assert.assertEquals(deserializer.deserialize("testTopic",new Gson().toJson(jsonObject).getBytes(KafkaGsonDeserializer.CHARSET)),jsonObject);
+}

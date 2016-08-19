@@ -1,0 +1,18 @@
+{
+  List<CopyableFile> filteredCopyableFiles=new ArrayList<>();
+  try {
+    for (    CopyableFile copyableFile : copyableFiles) {
+      Optional<WatermarkInterval> watermarkIntervalOptional=CopyableFileWatermarkHelper.getCopyableFileWatermark(copyableFile,this.copyableFileWatermarkGeneratorOptional);
+      Map<String,IncludeExcludeWatermark> prevWatermarkMap=STATE_TO_PREV_WATERMARK_MAP_CAHCE.get(this.sourcestate,this.callablePrevWatermarkMap);
+      String datasetURN=copyableFile.getDatasetAndPartition(this.copyableDatasetMetadata).toString();
+      if (!shouldSkipDueToWatermark(prevWatermarkMap.get(datasetURN),watermarkIntervalOptional)) {
+        log.info("Adding one copyableFile after checking watermark: " + copyableFile);
+        filteredCopyableFiles.add(copyableFile);
+      }
+    }
+    return filteredCopyableFiles;
+  }
+ catch (  IOException|ExecutionException e) {
+    throw new RuntimeException("Failed to filter copyableFiles.",e);
+  }
+}

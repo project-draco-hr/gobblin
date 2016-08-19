@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(listener);
+  _log.info("Adding a weak listener " + listener);
+  _autoListeners.put(listener,null);
+}

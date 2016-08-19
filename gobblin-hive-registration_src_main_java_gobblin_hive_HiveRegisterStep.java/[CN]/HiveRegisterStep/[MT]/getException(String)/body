@@ -1,0 +1,3 @@
+{
+  return new IOException(String.format("Failed to register Hive Spec %s. %s",this.hiveSpec,message));
+}

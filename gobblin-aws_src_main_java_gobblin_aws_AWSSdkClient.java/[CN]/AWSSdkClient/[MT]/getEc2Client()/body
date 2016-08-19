@@ -1,0 +1,17 @@
+{
+  if (lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis()) {
+    return amazonEC2;
+  }
+synchronized (AWSSdkClient.class) {
+    if (!(lastCacheRefreshTime > 0 && lastCacheRefreshTime >= awsClusterSecurityManager.getLastRefreshTimeInMillis())) {
+      if (awsClusterSecurityManager.isAssumeRoleEnabled()) {
+        amazonEC2=new AmazonEC2Client(awsClusterSecurityManager.getBasicSessionCredentials());
+      }
+ else {
+        amazonEC2=new AmazonEC2Client(awsClusterSecurityManager.getBasicAWSCredentials());
+      }
+      amazonEC2.setRegion(region);
+    }
+  }
+  return amazonEC2;
+}

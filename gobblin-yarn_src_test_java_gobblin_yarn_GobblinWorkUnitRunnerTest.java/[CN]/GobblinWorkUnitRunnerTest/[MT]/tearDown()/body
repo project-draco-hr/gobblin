@@ -1,9 +1,0 @@
-{
-  try {
-    this.gobblinApplicationMaster.disconnectHelixManager();
-    this.gobblinWorkUnitRunner.disconnectHelixManager();
-  }
-  finally {
-    this.testingZKServer.close();
-  }
-}

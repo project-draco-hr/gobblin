@@ -3,6 +3,9 @@
   State storageProps=getStorageProps(partition.getSd());
   State serDeProps=getSerDeProps(partition.getSd().getSerdeInfo());
   HivePartition hivePartition=new HivePartition.Builder().withDbName(partition.getDbName()).withTableName(partition.getTableName()).withPartitionValues(partition.getValues()).withProps(partitionProps).withStorageProps(storageProps).withSerdeProps(serDeProps).build();
+  if (partition.getCreateTime() > 0) {
+    hivePartition.setCreateTime(partition.getCreateTime());
+  }
   if (partition.getSd().getCols() != null) {
     hivePartition.setColumns(getColumns(partition.getSd().getCols()));
   }

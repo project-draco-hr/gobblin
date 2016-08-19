@@ -1,0 +1,8 @@
+{
+  ConsumerIterator<K,V> it=this.stream.iterator();
+  while (it.hasNext()) {
+    MessageAndMetadata<K,V> message=it.next();
+    HighLevelConsumer.this.messagesRead.inc();
+    HighLevelConsumer.this.processMessage(message);
+  }
+}

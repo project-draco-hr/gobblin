@@ -1,0 +1,18 @@
+{
+  Config config=sysProps;
+  if (!PathUtils.isAncestor(this.rootDirectory,path)) {
+    log.warn(String.format("Loaded path %s is not a descendant of root path %s. Cannot load global properties.",path,this.rootDirectory));
+  }
+ else {
+    List<Path> ancestorPaths=Lists.newArrayList();
+    while (PathUtils.isAncestor(this.rootDirectory,path)) {
+      ancestorPaths.add(path);
+      path=path.getParent();
+    }
+    List<Path> reversedAncestors=Lists.reverse(ancestorPaths);
+    for (    Path ancestor : reversedAncestors) {
+      config=findAndLoadGlobalConfigInDirectory(ancestor,config);
+    }
+  }
+  return config;
+}

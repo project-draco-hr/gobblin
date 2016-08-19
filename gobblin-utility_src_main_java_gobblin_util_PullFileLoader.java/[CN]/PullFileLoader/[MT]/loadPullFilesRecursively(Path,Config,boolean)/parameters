@@ -1,0 +1,3 @@
+Path path
+Config sysProps
+boolean loadGlobalProperties

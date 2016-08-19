@@ -1,0 +1,8 @@
+{
+  try {
+    _dispatcher.execCallbacks(new StatusChangeCallback(state,previousStatus,newStatus));
+  }
+ catch (  InterruptedException e) {
+    _dispatcher.getLog().warn("onStatusChange interrupted.");
+  }
+}

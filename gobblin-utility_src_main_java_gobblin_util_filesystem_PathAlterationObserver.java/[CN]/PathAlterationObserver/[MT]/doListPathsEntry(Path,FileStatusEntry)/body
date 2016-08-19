@@ -1,0 +1,8 @@
+{
+  final Path[] paths=listPaths(path);
+  final FileStatusEntry[] children=paths.length > 0 ? new FileStatusEntry[paths.length] : FileStatusEntry.EMPTY_ENTRIES;
+  for (int i=0; i < paths.length; i++) {
+    children[i]=createPathEntry(entry,paths[i]);
+  }
+  return children;
+}

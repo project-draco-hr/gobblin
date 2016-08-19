@@ -1,0 +1,6 @@
+{
+  if (!this.description.isPresent()) {
+    this.description=Optional.of(getDefaultDescription());
+  }
+  return this.description.get();
+}

@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(execService);
+  Preconditions.checkNotNull(log);
+  _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+  _execService=execService.isPresent() ? execService.get() : getDefaultExecutor(_log);
+}

@@ -1,0 +1,20 @@
+{
+  Options options=buildOptions();
+  try {
+    CommandLine cmd=new DefaultParser().parse(options,args);
+    if (!cmd.hasOption(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME) || !cmd.hasOption(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME)) {
+      printUsage(options);
+      System.exit(1);
+    }
+    Log4jConfigurationHelper.updateLog4jConfiguration(GobblinTaskRunner.class,GobblinYarnConfigurationKeys.GOBBLIN_YARN_LOG4J_CONFIGURATION_FILE,GobblinYarnConfigurationKeys.GOBBLIN_YARN_LOG4J_CONFIGURATION_FILE);
+    ContainerId containerId=ConverterUtils.toContainerId(System.getenv().get(ApplicationConstants.Environment.CONTAINER_ID.key()));
+    String applicationName=cmd.getOptionValue(GobblinClusterConfigurationKeys.APPLICATION_NAME_OPTION_NAME);
+    String helixInstanceName=cmd.getOptionValue(GobblinClusterConfigurationKeys.HELIX_INSTANCE_NAME_OPTION_NAME);
+    GobblinTaskRunner gobblinTaskRunner=new GobblinYarnTaskRunner(applicationName,helixInstanceName,containerId,ConfigFactory.load(),Optional.<Path>absent());
+    gobblinTaskRunner.start();
+  }
+ catch (  ParseException pe) {
+    printUsage(options);
+    System.exit(1);
+  }
+}

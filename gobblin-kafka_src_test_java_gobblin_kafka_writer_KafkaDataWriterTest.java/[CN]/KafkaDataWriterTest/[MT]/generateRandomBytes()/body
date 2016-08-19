@@ -1,0 +1,7 @@
+{
+  Random rng=new Random();
+  int length=rng.nextInt(200);
+  byte[] messageBytes=new byte[length];
+  rng.nextBytes(messageBytes);
+  return messageBytes;
+}

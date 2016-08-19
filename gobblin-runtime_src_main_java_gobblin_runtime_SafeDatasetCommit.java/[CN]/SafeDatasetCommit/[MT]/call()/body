@@ -1,0 +1,65 @@
+{
+  finalizeDatasetStateBeforeCommit(this.datasetState);
+  Class<? extends DataPublisher> dataPublisherClass;
+  try (Closer closer=Closer.create()){
+    dataPublisherClass=JobContext.getJobDataPublisherClass(this.jobContext.getJobState()).or((Class<? extends DataPublisher>)Class.forName(ConfigurationKeys.DEFAULT_DATA_PUBLISHER_TYPE));
+    if (!canCommitDataset(datasetState)) {
+      log.warn(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",this.datasetUrn,this.jobContext.getJobId(),this.jobContext.getJobCommitPolicy(),this.datasetState.getState()));
+      checkForUnpublishedWUHandling(this.datasetUrn,this.datasetState,dataPublisherClass,closer);
+      throw new RuntimeException(String.format("Not committing dataset %s of job %s with commit policy %s and state %s",this.datasetUrn,this.jobContext.getJobId(),this.jobContext.getJobCommitPolicy(),this.datasetState.getState()));
+    }
+  }
+ catch (  ReflectiveOperationException roe) {
+    log.error("Failed to instantiate data publisher for dataset %s of job %s.",this.datasetUrn,this.jobContext.getJobId(),roe);
+    throw new RuntimeException(roe);
+  }
+  Optional<CommitSequence.Builder> commitSequenceBuilder=Optional.absent();
+  try (Closer closer=Closer.create()){
+    if (this.shouldCommitDataInJob) {
+      log.info(String.format("Committing dataset %s of job %s with commit policy %s and state %s",this.datasetUrn,this.jobContext.getJobId(),this.jobContext.getJobCommitPolicy(),this.datasetState.getState()));
+      if (this.deliverySemantics == DeliverySemantics.EXACTLY_ONCE) {
+        generateCommitSequenceBuilder(this.datasetState);
+      }
+ else {
+        DataPublisher publisher=closer.register(DataPublisher.getInstance(dataPublisherClass,this.jobContext.getJobState()));
+        if (this.isMultithreaded && !publisher.isThreadSafe()) {
+          log.warn(String.format("Gobblin is set up to parallelize publishing, however the publisher %s is not thread-safe. " + "Falling back to serial publishing.",publisher.getClass().getName()));
+          safeCommitDataset(this.datasetState,publisher);
+        }
+ else {
+          commitDataset(this.datasetState,publisher);
+        }
+      }
+    }
+ else {
+      if (this.datasetState.getState() == JobState.RunningState.SUCCESSFUL) {
+        this.datasetState.setState(JobState.RunningState.COMMITTED);
+      }
+    }
+  }
+ catch (  ReflectiveOperationException roe) {
+    log.error(String.format("Failed to instantiate data publisher for dataset %s of job %s.",this.datasetUrn,this.jobContext.getJobId()),roe);
+    throw new RuntimeException(roe);
+  }
+catch (  IOException ioe) {
+    log.error(String.format("Failed to commit dataset state for dataset %s of job %s",this.datasetUrn,this.jobContext.getJobId()),ioe);
+    throw new RuntimeException(ioe);
+  }
+ finally {
+    try {
+      finalizeDatasetState(datasetState,datasetUrn);
+      if (commitSequenceBuilder.isPresent()) {
+        buildAndExecuteCommitSequence(commitSequenceBuilder.get(),datasetState,datasetUrn);
+        datasetState.setState(JobState.RunningState.COMMITTED);
+      }
+ else {
+        persistDatasetState(datasetUrn,datasetState);
+      }
+    }
+ catch (    IOException|RuntimeException ioe) {
+      log.error(String.format("Failed to persist dataset state for dataset %s of job %s",datasetUrn,this.jobContext.getJobId()),ioe);
+      throw new RuntimeException(ioe);
+    }
+  }
+  return null;
+}

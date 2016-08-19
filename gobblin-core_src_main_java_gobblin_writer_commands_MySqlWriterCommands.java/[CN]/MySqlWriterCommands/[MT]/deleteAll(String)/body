@@ -1,4 +1,0 @@
-{
-  String deleteSql=String.format(DELETE_STATEMENT_FORMAT,table);
-  execute(deleteSql);
-}

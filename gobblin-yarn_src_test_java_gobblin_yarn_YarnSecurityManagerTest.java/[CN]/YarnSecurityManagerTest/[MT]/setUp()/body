@@ -5,9 +5,9 @@
   URL url=YarnSecurityManagerTest.class.getClassLoader().getResource(YarnSecurityManagerTest.class.getSimpleName() + ".conf");
   Assert.assertNotNull(url,"Could not find resource " + url);
   Config config=ConfigFactory.parseURL(url).resolve();
-  String zkConnectingString=config.getString(GobblinYarnConfigurationKeys.ZK_CONNECTION_STRING_KEY);
-  String helixClusterName=config.getString(GobblinYarnConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
-  YarnHelixUtils.createGobblinYarnHelixCluster(zkConnectingString,helixClusterName);
+  String zkConnectingString=config.getString(GobblinClusterConfigurationKeys.ZK_CONNECTION_STRING_KEY);
+  String helixClusterName=config.getString(GobblinClusterConfigurationKeys.HELIX_CLUSTER_NAME_KEY);
+  HelixUtils.createGobblinHelixCluster(zkConnectingString,helixClusterName);
   this.helixManager=HelixManagerFactory.getZKHelixManager(helixClusterName,TestHelper.TEST_HELIX_INSTANCE_NAME,InstanceType.SPECTATOR,zkConnectingString);
   this.helixManager.connect();
   this.configuration=new Configuration();

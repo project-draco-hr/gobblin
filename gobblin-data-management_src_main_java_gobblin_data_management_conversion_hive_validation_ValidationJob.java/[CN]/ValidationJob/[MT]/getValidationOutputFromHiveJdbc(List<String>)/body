@@ -1,0 +1,46 @@
+{
+  if (null == queries || queries.size() == 0) {
+    log.warn("No queries specified to be executed");
+    return Collections.emptyList();
+  }
+  Statement statement=null;
+  List<Long> rowCounts=Lists.newArrayList();
+  Closer closer=Closer.create();
+  try {
+    HiveJdbcConnector hiveJdbcConnector=HiveJdbcConnector.newConnectorWithProps(props);
+    statement=hiveJdbcConnector.getConnection().createStatement();
+    for (    String query : queries) {
+      log.info("Executing query: " + query);
+      boolean result=statement.execute(query);
+      if (result) {
+        ResultSet resultSet=statement.getResultSet();
+        if (resultSet.next()) {
+          rowCounts.add(resultSet.getLong(1));
+        }
+      }
+ else {
+        log.warn("Query output for: " + query + " : "+ result);
+      }
+    }
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
+ finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      log.warn("Could not close HiveJdbcConnector",e);
+    }
+    if (null != statement) {
+      try {
+        statement.close();
+      }
+ catch (      SQLException e) {
+        log.warn("Could not close Hive statement",e);
+      }
+    }
+  }
+  return rowCounts;
+}

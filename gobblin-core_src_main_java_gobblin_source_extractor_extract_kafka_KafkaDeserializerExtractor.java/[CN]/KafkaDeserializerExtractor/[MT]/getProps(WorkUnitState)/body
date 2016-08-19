@@ -1,0 +1,7 @@
+{
+  Properties properties=workUnitState.getProperties();
+  if (properties.containsKey(KafkaSchemaRegistry.KAFKA_SCHEMA_REGISTRY_URL)) {
+    properties.setProperty(CONFLUENT_SCHEMA_REGISTRY_URL,properties.getProperty(KafkaSchemaRegistry.KAFKA_SCHEMA_REGISTRY_URL));
+  }
+  return properties;
+}

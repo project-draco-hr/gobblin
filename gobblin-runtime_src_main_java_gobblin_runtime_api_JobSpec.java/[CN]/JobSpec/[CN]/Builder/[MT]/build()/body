@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(this.uri);
+  Preconditions.checkNotNull(this.version);
+  return new JobSpec(getURI(),getVersion(),getDescription(),getConfig(),getConfigAsProperties(),getTemplateURI());
+}

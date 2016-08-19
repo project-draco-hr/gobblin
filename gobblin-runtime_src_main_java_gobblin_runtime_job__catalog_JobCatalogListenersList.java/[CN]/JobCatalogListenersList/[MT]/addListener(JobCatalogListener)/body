@@ -1,0 +1,3 @@
+{
+  _disp.addListener(newListener);
+}
