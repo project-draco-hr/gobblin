@@ -1,0 +1,10 @@
+{
+  ConsoleWriter<String> consoleWriter=new ConsoleWriter<>();
+  String foo=null;
+  try {
+    consoleWriter.write(foo);
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw an exception on null");
+  }
+}

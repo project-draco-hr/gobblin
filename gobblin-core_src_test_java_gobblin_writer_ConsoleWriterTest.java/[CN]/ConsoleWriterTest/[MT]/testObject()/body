@@ -1,0 +1,17 @@
+{
+  TestObject testObject=new TestObject();
+  ConsoleWriter<TestObject> consoleWriter=new ConsoleWriter<>();
+  try {
+    consoleWriter.write(testObject);
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw an exception on writing an object that doesn't explicitly implement toString");
+  }
+  testObject=null;
+  try {
+    consoleWriter.write(testObject);
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw an exception on writing a null object");
+  }
+}

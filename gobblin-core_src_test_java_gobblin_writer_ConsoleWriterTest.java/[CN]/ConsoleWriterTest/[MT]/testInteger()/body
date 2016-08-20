@@ -1,0 +1,10 @@
+{
+  ConsoleWriter<Integer> consoleWriter=new ConsoleWriter<>();
+  Integer foo=1;
+  try {
+    consoleWriter.write(foo);
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw an exception on writing an Integer");
+  }
+}

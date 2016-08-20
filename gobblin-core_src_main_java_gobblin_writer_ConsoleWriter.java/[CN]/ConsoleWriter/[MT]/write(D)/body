@@ -1,0 +1,10 @@
+{
+  System.out.println(record);
+  if (record != null) {
+    log.info(record.toString());
+  }
+ else {
+    log.info("null record");
+  }
+  ++_recordsWritten;
+}
