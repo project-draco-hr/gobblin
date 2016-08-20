@@ -1,0 +1,10 @@
+{
+  SchemaRegistryClient schemaRegistryClient=new MockSchemaRegistryClient();
+  KafkaSchemaRegistry<Integer,Schema> kafkaSchemaRegistry=new ConfluentKafkaSchemaRegistry(properties,schemaRegistryClient);
+  Schema schema1=SchemaBuilder.record(TEST_RECORD_NAME + "1").namespace(TEST_NAMESPACE).fields().name(TEST_FIELD_NAME).type().stringType().noDefault().endRecord();
+  Schema schema2=SchemaBuilder.record(TEST_RECORD_NAME + "2").namespace(TEST_NAMESPACE).fields().name(TEST_FIELD_NAME).type().stringType().noDefault().endRecord();
+  kafkaSchemaRegistry.register(schema1,TEST_TOPIC_NAME);
+  kafkaSchemaRegistry.register(schema2,TEST_TOPIC_NAME);
+  Assert.assertNotEquals(schema1,kafkaSchemaRegistry.getLatestSchemaByTopic(TEST_TOPIC_NAME));
+  Assert.assertEquals(schema2,kafkaSchemaRegistry.getLatestSchemaByTopic(TEST_TOPIC_NAME));
+}

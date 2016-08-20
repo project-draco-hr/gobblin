@@ -1,4 +1,5 @@
 {
   super(props);
   this.schemaRegistryClient=schemaRegistryClient;
+  this.schemaNameSuffix=props.getProperty(CONFLUENT_SCHEMA_NAME_SUFFIX,DEFAULT_CONFLUENT_SCHEMA_NAME_SUFFIX);
 }

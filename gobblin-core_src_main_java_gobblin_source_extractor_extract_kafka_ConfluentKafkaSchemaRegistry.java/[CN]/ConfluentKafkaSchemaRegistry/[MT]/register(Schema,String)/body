@@ -1,6 +1,7 @@
 {
   try {
-    return this.schemaRegistryClient.register(name,schema);
+    String schemaName=name + this.schemaNameSuffix;
+    return this.schemaRegistryClient.register(schemaName,schema);
   }
  catch (  IOException|RestClientException e) {
     throw new SchemaRegistryException(e);

@@ -1,6 +1,7 @@
 {
   try {
-    return new Schema.Parser().parse(this.schemaRegistryClient.getLatestSchemaMetadata(topic).getSchema());
+    String schemaName=topic + this.schemaNameSuffix;
+    return new Schema.Parser().parse(this.schemaRegistryClient.getLatestSchemaMetadata(schemaName).getSchema());
   }
  catch (  IOException|RestClientException e) {
     throw new SchemaRegistryException(e);
