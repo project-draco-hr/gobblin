@@ -1,0 +1,6 @@
+{
+  if (this.useNewKafkaAPI) {
+    return new KafkaNewAPI(config);
+  }
+  return new KafkaOldAPI(config);
+}

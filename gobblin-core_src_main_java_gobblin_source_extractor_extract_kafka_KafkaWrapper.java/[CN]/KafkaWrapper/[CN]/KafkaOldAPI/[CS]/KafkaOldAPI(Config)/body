@@ -1,0 +1,12 @@
+{
+  super(config);
+  socketTimeoutMillis=ConfigUtils.getInt(config,CONFIG_KAFKA_SOCKET_TIMEOUT_VALUE,CONFIG_KAFKA_SOCKET_TIMEOUT_VALUE_DEFAULT);
+  bufferSize=ConfigUtils.getInt(config,CONFIG_KAFKA_BUFFER_SIZE_BYTES,CONFIG_KAFKA_BUFFER_SIZE_BYTES_DEFAULT);
+  clientName=ConfigUtils.getString(config,CONFIG_KAFKA_CLIENT_NAME,CONFIG_KAFKA_CLIENT_NAME_DEFAULT);
+  fetchCorrelationId=ConfigUtils.getInt(config,CONFIG_KAFKA_FETCH_REQUEST_CORRELATION_ID,CONFIG_KAFKA_FETCH_REQUEST_CORRELATION_ID_DEFAULT);
+  fetchTimeoutMillis=ConfigUtils.getInt(config,CONFIG_KAFKA_FETCH_TIMEOUT_VALUE,CONFIG_KAFKA_FETCH_TIMEOUT_VALUE_DEFAULT);
+  fetchMinBytes=ConfigUtils.getInt(config,CONFIG_KAFKA_FETCH_REQUEST_MIN_BYTES,CONFIG_KAFKA_FETCH_REQUEST_MIN_BYTES_DEFAULT);
+  fetchTopicRetries=ConfigUtils.getInt(config,CONFIG_KAFKA_FETCH_TOPIC_NUM_TRIES,CONFIG_KAFKA_FETCH_TOPIC_NUM_TRIES_DEFAULT);
+  fetchOffsetRetries=ConfigUtils.getInt(config,CONFIG_KAFKA_FETCH_OFFSET_NUM_TRIES,CONFIG_KAFKA_FETCH_OFFSET_NUM_TRIES_DEFAULT);
+  Preconditions.checkArgument((this.fetchTimeoutMillis < this.socketTimeoutMillis),"Kafka Source configuration error: FetchTimeout " + this.fetchTimeoutMillis + " must be smaller than SocketTimeout "+ this.socketTimeoutMillis);
+}

@@ -4,5 +4,6 @@
   if (state.getPropAsBoolean(USE_NEW_KAFKA_API,DEFAULT_USE_NEW_KAFKA_API)) {
     builder=builder.withNewKafkaAPI();
   }
-  return builder.withBrokers(state.getPropAsList(ConfigurationKeys.KAFKA_BROKERS)).build();
+  Config config=ConfigUtils.propertiesToConfig(state.getProperties());
+  return builder.withBrokers(state.getPropAsList(ConfigurationKeys.KAFKA_BROKERS)).withConfig(config).build();
 }

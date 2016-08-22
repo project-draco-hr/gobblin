@@ -1,8 +1,8 @@
 {
   SimpleConsumer consumer=this.getSimpleConsumer(partition.getLeader().getHostAndPort());
-  for (int i=0; i < NUM_TRIES_FETCH_OFFSET; i++) {
+  for (int i=0; i < this.fetchOffsetRetries; i++) {
     try {
-      OffsetResponse offsetResponse=consumer.getOffsetsBefore(new OffsetRequest(offsetRequestInfo,kafka.api.OffsetRequest.CurrentVersion(),DEFAULT_KAFKA_CLIENT_NAME));
+      OffsetResponse offsetResponse=consumer.getOffsetsBefore(new OffsetRequest(offsetRequestInfo,kafka.api.OffsetRequest.CurrentVersion(),this.clientName));
       if (offsetResponse.hasError()) {
         throw new RuntimeException("offsetReponse has error: " + offsetResponse.errorCode(partition.getTopicName(),partition.getId()));
       }
@@ -10,7 +10,7 @@
     }
  catch (    Exception e) {
       LOG.warn(String.format("Fetching offset for partition %s has failed %d time(s). Reason: %s",partition,i + 1,e));
-      if (i < NUM_TRIES_FETCH_OFFSET - 1) {
+      if (i < this.fetchOffsetRetries - 1) {
         try {
           Thread.sleep((long)((i + Math.random()) * 1000));
         }

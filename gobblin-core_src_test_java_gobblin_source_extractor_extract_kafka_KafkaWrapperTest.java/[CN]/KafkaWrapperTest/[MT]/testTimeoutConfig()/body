@@ -1,0 +1,19 @@
+{
+  String brokerList="localhost:9092";
+  Properties props=new Properties();
+  props.setProperty(ConfigurationKeys.KAFKA_BROKERS,brokerList);
+  props.setProperty("source.kafka.fetchTimeoutMillis","10000");
+  props.setProperty("source.kafka.socketTimeoutMillis","1000");
+  State state=new State(props);
+  try {
+    KafkaWrapper wrapper=KafkaWrapper.create(state);
+    Assert.fail("KafkaWrapper should fail to initialize if fetchTimeout is greater than socketTimeout");
+  }
+ catch (  IllegalArgumentException e) {
+    log.info("Found exception as expected");
+    log.debug("Exception trace",e);
+  }
+catch (  Exception e) {
+    Assert.fail("Should only throw IllegalArgumentException",e);
+  }
+}

@@ -1,6 +1,6 @@
 {
   TopicAndPartition topicAndPartition=new TopicAndPartition(partition.getTopicName(),partition.getId());
-  PartitionFetchInfo partitionFetchInfo=new PartitionFetchInfo(nextOffset,DEFAULT_KAFKA_BUFFER_SIZE);
+  PartitionFetchInfo partitionFetchInfo=new PartitionFetchInfo(nextOffset,this.bufferSize);
   Map<TopicAndPartition,PartitionFetchInfo> fetchInfo=Collections.singletonMap(topicAndPartition,partitionFetchInfo);
-  return new FetchRequest(DEFAULT_KAFKA_FETCH_REQUEST_CORRELATION_ID,DEFAULT_KAFKA_CLIENT_NAME,DEFAULT_KAFKA_TIMEOUT_VALUE,DEFAULT_KAFKA_FETCH_REQUEST_MIN_BYTES,fetchInfo);
+  return new FetchRequest(this.fetchCorrelationId,this.clientName,this.fetchTimeoutMillis,this.fetchMinBytes,fetchInfo);
 }

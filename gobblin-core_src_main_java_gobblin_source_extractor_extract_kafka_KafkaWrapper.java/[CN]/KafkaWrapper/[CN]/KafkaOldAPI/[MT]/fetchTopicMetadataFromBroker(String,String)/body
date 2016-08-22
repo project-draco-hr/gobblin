@@ -3,7 +3,7 @@
   SimpleConsumer consumer=null;
   try {
     consumer=getSimpleConsumer(broker);
-    for (int i=0; i < NUM_TRIES_FETCH_TOPIC; i++) {
+    for (int i=0; i < this.fetchTopicRetries; i++) {
       try {
         return consumer.send(new TopicMetadataRequest(Arrays.asList(selectedTopics))).topicsMetadata();
       }
