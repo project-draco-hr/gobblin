@@ -1,0 +1,3 @@
+{
+  return keyValuesRead * 1.0f;
+}
