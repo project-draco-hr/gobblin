@@ -5,7 +5,7 @@
   this.conf.set("mapreduce.map.failures.maxpercent","100");
   this.conf.setBoolean("mapreduce.job.complete.cancel.delegation.tokens",false);
   this.fs=buildFileSystem(jobProps,this.conf);
-  this.mrJobDir=new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),this.jobContext.getJobName());
+  this.mrJobDir=new Path(new Path(this.jobProps.getProperty(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY),this.jobContext.getJobName()),this.jobContext.getJobId());
   if (this.fs.exists(this.mrJobDir)) {
     LOG.warn("Job working directory already exists for job " + this.jobContext.getJobName());
     this.fs.delete(this.mrJobDir,true);

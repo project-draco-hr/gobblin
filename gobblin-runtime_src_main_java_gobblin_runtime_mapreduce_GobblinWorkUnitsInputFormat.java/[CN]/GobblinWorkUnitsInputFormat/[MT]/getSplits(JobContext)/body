@@ -1,0 +1,19 @@
+{
+  Path[] inputPaths=FileInputFormat.getInputPaths(context);
+  if (inputPaths == null || inputPaths.length == 0) {
+    throw new IOException("No input found!");
+  }
+  List<InputSplit> splits=Lists.newArrayList();
+  for (  Path path : inputPaths) {
+    FileSystem fs=path.getFileSystem(context.getConfiguration());
+    FileStatus[] inputs=fs.listStatus(path);
+    if (inputs == null) {
+      throw new IOException(String.format("Path %s does not exist.",path));
+    }
+    log.info(String.format("Found %d input files at %s: %s",inputs.length,path,Arrays.toString(inputs)));
+    for (    FileStatus input : inputs) {
+      splits.add(new GobblinSplit(input.getPath().toString()));
+    }
+  }
+  return splits;
+}

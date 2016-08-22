@@ -3,13 +3,13 @@
   this.job.setJarByClass(MRJobLauncher.class);
   this.job.setMapperClass(TaskRunner.class);
   this.job.setNumReduceTasks(0);
-  this.job.setInputFormatClass(NLineInputFormat.class);
+  this.job.setInputFormatClass(GobblinWorkUnitsInputFormat.class);
   this.job.setOutputFormatClass(GobblinOutputFormat.class);
   this.job.setMapOutputKeyClass(NullWritable.class);
   this.job.setMapOutputValueClass(NullWritable.class);
   this.job.setSpeculativeExecution(false);
-  Path jobInputFile=prepareJobInput(workUnits);
-  FileInputFormat.addInputPath(this.job,jobInputFile);
+  prepareJobInput(workUnits);
+  FileInputFormat.addInputPath(this.job,this.jobInputPath);
   FileOutputFormat.setOutputPath(this.job,this.jobOutputPath);
   serializeJobState(this.fs,this.mrJobDir,this.conf,this.jobContext.getJobState(),this.job);
   if (this.jobProps.containsKey(ConfigurationKeys.MR_JOB_MAX_MAPPERS_KEY)) {
