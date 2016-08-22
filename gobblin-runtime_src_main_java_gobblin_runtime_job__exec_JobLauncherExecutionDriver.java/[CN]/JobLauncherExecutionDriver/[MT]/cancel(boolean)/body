@@ -1,0 +1,18 @@
+{
+  RunningState runState=getJobExecutionStatus().getRunningState();
+  if (runState.isCancelled()) {
+    return true;
+  }
+ else   if (runState.isDone()) {
+    return false;
+  }
+  try {
+    _legacyLauncher.cancelJob(new AbstractJobListener(){
+    }
+);
+  }
+ catch (  JobException e) {
+    throw new RuntimeException("Unable to cancel job " + _jobSpec + ": "+ e,e);
+  }
+  return true;
+}

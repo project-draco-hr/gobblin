@@ -1,3 +1,5 @@
 {
   _dispatcher.addWeakListener(listener);
+  _jobCatalogDelegate.registerWeakJobCatalogListener(listener);
+  _jobSchedulerDelegate.registerWeakJobSpecSchedulerListener(listener);
 }

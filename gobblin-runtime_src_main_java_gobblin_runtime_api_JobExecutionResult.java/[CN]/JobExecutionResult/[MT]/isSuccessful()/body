@@ -1,0 +1,3 @@
+{
+  return RunningState.COMMITTED == getFinalState();
+}

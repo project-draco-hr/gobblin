@@ -1,0 +1,9 @@
+{
+  Preconditions.checkNotNull(unit);
+  if (0 == timeout) {
+    timeout=Long.MAX_VALUE;
+    unit=TimeUnit.SECONDS;
+  }
+  getJobExecutionState().awaitForDone(unit.toMillis(timeout));
+  return null;
+}

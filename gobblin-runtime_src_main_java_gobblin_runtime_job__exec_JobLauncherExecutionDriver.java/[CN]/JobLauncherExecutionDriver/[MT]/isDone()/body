@@ -1,0 +1,4 @@
+{
+  RunningState runState=getJobExecutionStatus().getRunningState();
+  return runState.isDone();
+}

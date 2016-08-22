@@ -1,0 +1,13 @@
+{
+  Preconditions.checkArgument(null != state.getRunningState());
+  Preconditions.checkArgument(state.getRunningState().isDone());
+  if (state.getRunningState().isSuccess()) {
+    return JobExecutionResult.createSuccessResult();
+  }
+ else   if (state.getRunningState().isCancelled()) {
+    return JobExecutionResult.createCancelledResult();
+  }
+ else {
+    return JobExecutionResult.createFailureResult(new RuntimeException("Gobblin job failed:" + state.getJobExecution()));
+  }
+}
