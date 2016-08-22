@@ -1,13 +1,13 @@
 {
-  this.curRequest=onNewRecord(record,this.curRequest);
-  if (this.curRequest.isPresent()) {
-    ListenableFuture<HttpResponse> responseFuture=sendRequest(this.curRequest.get());
-    waitForResponse(responseFuture);
-    try {
-      processResponse(responseFuture.get());
-    }
- catch (    InterruptedException|ExecutionException e) {
-      throw new RuntimeException(e);
-    }
+  if (!isRetry()) {
+    curRequest=onNewRecord(record);
   }
+  if (curRequest.isPresent()) {
+    ListenableFuture<CloseableHttpResponse> responseFuture=sendRequest(curRequest.get());
+    try (CloseableHttpResponse response=waitForResponse(responseFuture)){
+      processResponse(response);
+    }
+     curRequest=Optional.absent();
+  }
+  numRecordsWritten++;
 }

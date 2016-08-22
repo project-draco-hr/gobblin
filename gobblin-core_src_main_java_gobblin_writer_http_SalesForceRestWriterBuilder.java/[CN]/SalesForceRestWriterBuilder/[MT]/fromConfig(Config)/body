@@ -1,0 +1,25 @@
+{
+  super.fromConfig(config);
+  initializedFromConfig=true;
+  config=config.withFallback(FALLBACK);
+  clientId=config.getString(CLIENT_ID);
+  clientSecret=config.getString(CLIENT_SECRET);
+  userId=config.getString(USER_ID);
+  password=config.getString(PASSWORD);
+  securityToken=config.getString(SECURITY_TOKEN);
+  operation=Operation.valueOf(config.getString(OPERATION).toUpperCase());
+  batchSize=config.getInt(BATCH_SIZE);
+  Preconditions.checkArgument(batchSize > 0,BATCH_SIZE + " cannot be negative: " + batchSize);
+  if (batchSize > 1) {
+    batchResourcePath=Optional.of(config.getString(BATCH_RESOURCE_PATH));
+  }
+  if (config.hasPath(SFDC_ENCRYPT_KEY_LOC)) {
+    Properties props=new Properties();
+    if (config.hasPath(USE_STRONG_ENCRYPTION)) {
+      props.put(ConfigurationKeys.ENCRYPT_USE_STRONG_ENCRYPTOR,config.getString(USE_STRONG_ENCRYPTION));
+    }
+    props.put(ConfigurationKeys.ENCRYPT_KEY_LOC,config.getString(SFDC_ENCRYPT_KEY_LOC));
+    password=PasswordManager.getInstance(props).readPassword(password);
+  }
+  return typedSelf();
+}

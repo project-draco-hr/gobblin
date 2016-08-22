@@ -1,0 +1,7 @@
+{
+  DataWriter<Void> writer=mock(DataWriter.class);
+  DataWriterWrapperBuilder<Void> builder=new DataWriterWrapperBuilder<>(writer,new State());
+  DataWriter<Void> retryWriter=builder.build();
+  retryWriter.write(null);
+  verify(writer,times(1)).write(null);
+}

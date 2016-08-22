@@ -1,0 +1,25 @@
+{
+  DataWriter<Void> writer=mock(DataWriter.class);
+  final MutableLong mockBytes=new MutableLong();
+  when(writer.bytesWritten()).thenAnswer(new Answer<Long>(){
+    @Override public Long answer(    InvocationOnMock invocation) throws Throwable {
+      mockBytes.add(1L);
+      return mockBytes.getValue();
+    }
+  }
+);
+  int parallelism=2;
+  int bps=2;
+  DataWriter<Void> throttleWriter=setup(writer,parallelism,bps,ThrottleType.Bytes);
+  int count=0;
+  long duration=10L;
+  Stopwatch stopwatch=Stopwatch.createStarted();
+  while (stopwatch.elapsed(TimeUnit.SECONDS) <= duration) {
+    throttleWriter.write(null);
+    count++;
+  }
+  System.out.println(count);
+  int expected=(int)(bps * duration);
+  Assert.assertTrue(count <= expected + bps * 2);
+  Assert.assertTrue(count >= expected - bps * 2);
+}

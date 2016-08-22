@@ -1,0 +1,10 @@
+{
+  Callable<Void> writeCall=new Callable<Void>(){
+    @Override public Void call() throws Exception {
+      writer.write(record);
+      return null;
+    }
+  }
+;
+  callWithRetry(writeCall);
+}

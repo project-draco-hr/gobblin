@@ -1,0 +1,10 @@
+{
+  Callable<Void> commitCall=new Callable<Void>(){
+    @Override public Void call() throws Exception {
+      writer.commit();
+      return null;
+    }
+  }
+;
+  callWithRetry(commitCall);
+}

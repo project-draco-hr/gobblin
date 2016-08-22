@@ -1,0 +1,1 @@
+AbstractHttpWriterBuilder<Void,RestEntry<String>,RestWriterBuilder>

@@ -1,0 +1,12 @@
+{
+  Predicate<Throwable> transients=new Predicate<Throwable>(){
+    @Override public boolean apply(    Throwable t){
+      return !(t instanceof NonTransientException);
+    }
+  }
+;
+  long multiplier=state.getPropAsLong(RETRY_MULTIPLIER,500L);
+  long maxWaitMsPerInterval=state.getPropAsLong(RETRY_MAX_WAIT_MS_PER_INTERVAL,10000);
+  int maxAttempts=state.getPropAsInt(RETRY_MAX_ATTEMPTS,5);
+  return RetryerBuilder.<Void>newBuilder().retryIfException(transients).withWaitStrategy(WaitStrategies.exponentialWait(multiplier,maxWaitMsPerInterval,TimeUnit.MILLISECONDS)).withStopStrategy(StopStrategies.stopAfterAttempt(maxAttempts));
+}

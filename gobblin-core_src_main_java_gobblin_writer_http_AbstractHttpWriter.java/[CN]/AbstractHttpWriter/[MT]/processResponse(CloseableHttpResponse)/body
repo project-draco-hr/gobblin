@@ -1,0 +1,8 @@
+{
+  if (response.getStatusLine().getStatusCode() >= 400) {
+    if (response.getEntity() != null) {
+      throw new RuntimeException("Failed. " + EntityUtils.toString(response.getEntity()) + " , response: "+ ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE));
+    }
+    throw new RuntimeException("Failed. Response: " + ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE));
+  }
+}

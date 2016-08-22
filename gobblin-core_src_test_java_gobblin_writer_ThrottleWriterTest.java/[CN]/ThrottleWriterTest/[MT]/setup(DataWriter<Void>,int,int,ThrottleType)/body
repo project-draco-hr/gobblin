@@ -1,0 +1,9 @@
+{
+  State state=new State();
+  state.appendToSetProp(ThrottleWriter.WRITER_LIMIT_RATE_LIMIT_KEY,Integer.toString(rate * parallelism));
+  state.appendToSetProp(ThrottleWriter.WRITER_THROTTLE_TYPE_KEY,type.name());
+  state.appendToSetProp(ConfigurationKeys.TASK_EXECUTOR_THREADPOOL_SIZE_KEY,Integer.toString(parallelism));
+  state.appendToSetProp(ConfigurationKeys.SOURCE_MAX_NUMBER_OF_PARTITIONS,Integer.toString(parallelism));
+  DataWriterWrapperBuilder<Void> builder=new DataWriterWrapperBuilder<>(writer,state);
+  return builder.build();
+}

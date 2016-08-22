@@ -1,0 +1,4 @@
+{
+  this.resourcePath=Optional.fromNullable(resourcePath);
+  this.restEntryVal=restEntryVal;
+}

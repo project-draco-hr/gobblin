@@ -1,0 +1,28 @@
+{
+  String entityStr=EntityUtils.toString(response.getEntity());
+  int statusCode=response.getStatusLine().getStatusCode();
+  if (statusCode >= 400) {
+    throw new RuntimeException("Failed due to " + entityStr + " (Detail: "+ ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE)+ " )");
+  }
+  JsonObject jsonBody=new JsonParser().parse(entityStr).getAsJsonObject();
+  if (!jsonBody.get("hasErrors").getAsBoolean()) {
+    return;
+  }
+  JsonArray results=jsonBody.get("results").getAsJsonArray();
+  for (  JsonElement jsonElem : results) {
+    JsonObject json=jsonElem.getAsJsonObject();
+    int subStatusCode=json.get("statusCode").getAsInt();
+    if (subStatusCode < 400) {
+      continue;
+    }
+ else     if (subStatusCode == 400 && Operation.INSERT_ONLY_NOT_EXIST.equals(operation)) {
+      JsonElement resultJsonElem=json.get("result");
+      Preconditions.checkNotNull(resultJsonElem,"Error response should contain result property");
+      JsonObject resultJsonObject=resultJsonElem.getAsJsonArray().get(0).getAsJsonObject();
+      if (isDuplicate(resultJsonObject,subStatusCode)) {
+        continue;
+      }
+    }
+    throw new RuntimeException("Failed due to " + jsonBody + " (Detail: "+ ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE)+ " )");
+  }
+}

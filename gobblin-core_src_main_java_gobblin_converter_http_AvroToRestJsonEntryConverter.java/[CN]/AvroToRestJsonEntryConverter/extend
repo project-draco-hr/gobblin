@@ -1,0 +1,1 @@
+Converter<Schema,Void,GenericRecord,RestEntry<JsonObject>>

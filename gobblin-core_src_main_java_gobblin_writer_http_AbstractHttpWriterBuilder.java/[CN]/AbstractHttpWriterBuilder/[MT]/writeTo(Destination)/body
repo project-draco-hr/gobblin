@@ -1,0 +1,5 @@
+{
+  super.writeTo(destination);
+  fromState(destination.getProperties());
+  return typedSelf();
+}

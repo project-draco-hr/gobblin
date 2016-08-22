@@ -1,0 +1,3 @@
+Void outputSchema
+GenericRecord inputRecord
+WorkUnitState workUnit

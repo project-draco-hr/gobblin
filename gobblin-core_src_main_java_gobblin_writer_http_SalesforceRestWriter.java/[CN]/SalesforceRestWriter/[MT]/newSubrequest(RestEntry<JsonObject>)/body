@@ -1,0 +1,17 @@
+{
+  Preconditions.checkArgument(record.getResourcePath().isPresent(),"Resource path is not defined");
+  JsonObject subReq=new JsonObject();
+  subReq.addProperty("url",record.getResourcePath().get());
+  subReq.add("richInput",record.getRestEntryVal());
+switch (operation) {
+case INSERT_ONLY_NOT_EXIST:
+    subReq.addProperty("method","POST");
+  break;
+case UPSERT:
+subReq.addProperty("method","PATCH");
+break;
+default :
+throw new IllegalArgumentException(operation + " is not supported.");
+}
+return subReq;
+}

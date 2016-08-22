@@ -1,0 +1,14 @@
+{
+  super(builder);
+  this.oauthEndPoint=builder.getSvcEndpoint().get();
+  this.clientId=builder.getClientId();
+  this.clientSecret=builder.getClientSecret();
+  this.userId=builder.getUserId();
+  this.password=builder.getPassword();
+  this.securityToken=builder.getSecurityToken();
+  this.operation=builder.getOperation();
+  this.batchSize=builder.getBatchSize();
+  this.batchResourcePath=builder.getBatchResourcePath();
+  Preconditions.checkArgument(batchSize == 1 || batchResourcePath.isPresent(),"Batch resource path is missing");
+  this.accessToken=accessToken;
+}

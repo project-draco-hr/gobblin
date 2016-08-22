@@ -1,0 +1,11 @@
+{
+  JsonParser parser=new JsonParser();
+  String expectedResourceKey="/sobject/user/John";
+  String expectedJsonStr="{ \"name\" : \"John\", \"favoriteNumber\" : 9, \"address\" : { \"city\" : \"Mountain view\"} }";
+  RestEntry<JsonObject> expected=new RestEntry<JsonObject>(expectedResourceKey,parser.parse(expectedJsonStr).getAsJsonObject());
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.setProp(AvroToRestJsonEntryConverter.CONVERTER_AVRO_REST_ENTRY_RESOURCE_KEY,"/sobject/user/${name}");
+  String template="name=${name},favoriteNumber=${favorite_number},address.city=${address.city}";
+  workUnitState.setProp(AvroToRestJsonEntryConverter.CONVERTER_AVRO_REST_JSON_ENTRY_TEMPLATE,template);
+  testConversion(expected,workUnitState);
+}

@@ -1,4 +1,6 @@
 {
   DataWriterBuilder<Object,Object> builder=this.taskContext.getDataWriterBuilder(this.branches,this.index).writeTo(Destination.of(this.taskContext.getDestinationType(this.branches,this.index),this.taskState)).writeInFormat(this.taskContext.getWriterOutputFormat(this.branches,this.index)).withWriterId(this.taskId).withSchema(this.convertedSchema.orNull()).withBranches(this.branches).forBranch(this.index);
-  return new PartitionedDataWriter<>(builder,this.taskContext.getTaskState());
+  DataWriter<Object> writer=new PartitionedDataWriter<>(builder,this.taskContext.getTaskState());
+  logger.info("Wrapping writer " + writer);
+  return new DataWriterWrapperBuilder<>(writer,this.taskState).build();
 }

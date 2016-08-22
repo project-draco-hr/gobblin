@@ -1,0 +1,12 @@
+{
+  super(builder.getState());
+  this.log=builder.getLogger().isPresent() ? (Logger)builder.getLogger() : LoggerFactory.getLogger(this.getClass());
+  this.debugLogEnabled=this.log.isDebugEnabled();
+  HttpClientBuilder httpClientBuilder=builder.getHttpClientBuilder();
+  httpClientBuilder.setConnectionManager(new HttpClientConnectionManagerWithConnTracking(builder.getHttpConnManager()));
+  this.client=httpClientBuilder.build();
+  this.singleThreadPool=MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
+  if (builder.getSvcEndpoint().isPresent()) {
+    setCurServerHost((URI)builder.getSvcEndpoint().get());
+  }
+}

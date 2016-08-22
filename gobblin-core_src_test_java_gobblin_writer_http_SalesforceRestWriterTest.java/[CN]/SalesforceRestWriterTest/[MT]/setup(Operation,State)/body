@@ -1,0 +1,19 @@
+{
+  state.appendToSetProp(CONF_PREFIX + STATIC_SVC_ENDPOINT,"test");
+  state.appendToSetProp(CONF_PREFIX + CLIENT_ID,"test");
+  state.appendToSetProp(CONF_PREFIX + CLIENT_SECRET,"test");
+  state.appendToSetProp(CONF_PREFIX + USER_ID,"test");
+  state.appendToSetProp(CONF_PREFIX + PASSWORD,"test");
+  state.appendToSetProp(CONF_PREFIX + USE_STRONG_ENCRYPTION,"test");
+  state.appendToSetProp(CONF_PREFIX + SECURITY_TOKEN,"test");
+  state.appendToSetProp(CONF_PREFIX + OPERATION,operation.name());
+  SalesForceRestWriterBuilder builder=new SalesForceRestWriterBuilder();
+  builder=spy(builder);
+  HttpClientBuilder httpClientBuilder=mock(HttpClientBuilder.class);
+  doReturn(httpClientBuilder).when(builder).getHttpClientBuilder();
+  client=mock(CloseableHttpClient.class);
+  when(httpClientBuilder.build()).thenReturn(client);
+  builder.fromState(state);
+  writer=new SalesforceRestWriter(builder,"test");
+  writer.setCurServerHost(new URI("http://test.nowhere.com"));
+}

@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(getState(),"State is required for " + this.getClass().getSimpleName());
+  Preconditions.checkNotNull(getHttpClientBuilder(),"HttpClientBuilder is required for " + this.getClass().getSimpleName());
+  Preconditions.checkNotNull(getHttpConnManager(),"HttpConnManager is required for " + this.getClass().getSimpleName());
+}

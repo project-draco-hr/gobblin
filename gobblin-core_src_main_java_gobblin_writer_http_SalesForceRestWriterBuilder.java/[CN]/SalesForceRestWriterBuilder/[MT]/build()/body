@@ -1,0 +1,6 @@
+{
+  validate();
+  Preconditions.checkArgument(initializedFromConfig,this.getClass().getSimpleName() + " must be build via fromConfig method.");
+  Preconditions.checkArgument(getSvcEndpoint().isPresent(),"Service end point is required for Oauth2 end point of Salesforce.com");
+  return new SalesforceRestWriter(this);
+}

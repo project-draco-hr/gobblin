@@ -1,0 +1,13 @@
+{
+  DataWriter<Void> writer=mock(DataWriter.class);
+  doThrow(new RuntimeException()).when(writer).write(null);
+  DataWriterWrapperBuilder<Void> builder=new DataWriterWrapperBuilder<>(writer,new State());
+  DataWriter<Void> retryWriter=builder.build();
+  try {
+    retryWriter.write(null);
+    Assert.fail("Should have failed.");
+  }
+ catch (  Exception e) {
+  }
+  verify(writer,times(5)).write(null);
+}

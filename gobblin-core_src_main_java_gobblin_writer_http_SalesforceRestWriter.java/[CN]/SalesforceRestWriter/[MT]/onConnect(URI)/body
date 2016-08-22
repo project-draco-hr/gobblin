@@ -1,0 +1,22 @@
+{
+  if (!StringUtils.isEmpty(accessToken)) {
+    return;
+  }
+  try {
+    getLog().info("Getting Oauth2 access token.");
+    OAuthClientRequest request=OAuthClientRequest.tokenLocation(serverHost.toString()).setGrantType(GrantType.PASSWORD).setClientId(clientId).setClientSecret(clientSecret).setUsername(userId).setPassword(password + securityToken).buildQueryMessage();
+    OAuthClient client=new OAuthClient(new URLConnectionClient());
+    OAuthJSONAccessTokenResponse response=client.accessToken(request,OAuth.HttpMethod.POST);
+    accessToken=response.getAccessToken();
+    setCurServerHost(new URI(response.getParam("instance_url")));
+  }
+ catch (  OAuthProblemException e) {
+    throw new NonTransientException("Error while authenticating with Oauth2",e);
+  }
+catch (  OAuthSystemException e) {
+    throw new RuntimeException("Failed getting access token",e);
+  }
+catch (  URISyntaxException e) {
+    throw new RuntimeException("Failed due to invalid instance url",e);
+  }
+}

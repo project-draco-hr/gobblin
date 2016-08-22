@@ -1,4 +1,0 @@
-State state
-Optional<Logger> log
-HttpClientBuilder httpClientInject
-HttpClientConnectionManager connManager

@@ -1,0 +1,21 @@
+{
+  if (getLog().isDebugEnabled()) {
+    getLog().debug("Received response " + ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE));
+  }
+  int statusCode=response.getStatusLine().getStatusCode();
+  if (statusCode == 401 || statusCode == 403) {
+    getLog().info("Reacquiring access token.");
+    accessToken=null;
+    onConnect(oauthEndPoint);
+    throw new RuntimeException("Access denied. Access token has been reacquired and retry may solve the problem. " + ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE));
+  }
+  if (batchSize > 1) {
+    processBatchRequestResponse(response);
+    numRecordsWritten+=batchRecords.get().size();
+    batchRecords=Optional.absent();
+  }
+ else {
+    processSingleRequestResponse(response);
+    numRecordsWritten++;
+  }
+}

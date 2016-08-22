@@ -1,0 +1,49 @@
+{
+  final int recordSize=25;
+  final int batchSize=recordSize;
+  State state=new State();
+  state.appendToSetProp(CONF_PREFIX + BATCH_SIZE,Integer.toString(batchSize));
+  state.appendToSetProp(CONF_PREFIX + BATCH_RESOURCE_PATH,"test");
+  setup(SalesforceRestWriter.Operation.INSERT_ONLY_NOT_EXIST,state);
+  CloseableHttpResponse response=mock(CloseableHttpResponse.class);
+  StatusLine statusLine=mock(StatusLine.class);
+  when(client.execute(any(HttpUriRequest.class))).thenReturn(response);
+  when(response.getStatusLine()).thenReturn(statusLine);
+  when(statusLine.getStatusCode()).thenReturn(200);
+  HttpEntity entity=mock(HttpEntity.class);
+  when(response.getEntity()).thenReturn(entity);
+  JsonObject jsonResponse=new JsonObject();
+  jsonResponse.addProperty("hasErrors",true);
+  JsonArray resultJsonArr=new JsonArray();
+  jsonResponse.add("results",resultJsonArr);
+  JsonObject subResult1=new JsonObject();
+  subResult1.addProperty("statusCode",201);
+  JsonObject subResult2=new JsonObject();
+  subResult2.addProperty("statusCode",500);
+  resultJsonArr.add(subResult1);
+  resultJsonArr.add(subResult2);
+  when(entity.getContent()).thenReturn(new ByteArrayInputStream(jsonResponse.toString().getBytes()));
+  RestEntry<JsonObject> restEntry=new RestEntry<JsonObject>("test",new JsonObject());
+  writer=spy(writer);
+  for (int i=0; i < recordSize - 1; i++) {
+    writer.write(restEntry);
+  }
+  try {
+    writer.write(restEntry);
+    Assert.fail("Should have failed with failed response. " + jsonResponse.toString());
+  }
+ catch (  Exception e) {
+    Assert.assertTrue(e instanceof RuntimeException);
+  }
+  Assert.assertEquals(writer.recordsWritten(),(long)0L);
+  verify(writer,times(recordSize)).writeImpl(restEntry);
+  verify(writer,times(recordSize)).onNewRecord(restEntry);
+  double sendCount=((double)recordSize) / ((double)batchSize);
+  sendCount=Math.ceil(sendCount);
+  verify(writer,times((int)sendCount)).sendRequest(any(HttpUriRequest.class));
+  verify(client,times((int)sendCount)).execute(any(HttpUriRequest.class));
+  verify(writer,times((int)sendCount)).waitForResponse(any(ListenableFuture.class));
+  verify(writer,times((int)sendCount)).processResponse(any(CloseableHttpResponse.class));
+  verify(writer,never()).flush();
+  verify(writer,never()).onConnect(any(URI.class));
+}

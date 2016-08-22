@@ -1,0 +1,22 @@
+{
+  RetryerBuilder<Void> builder=null;
+  if (writer instanceof Retriable) {
+    builder=((Retriable)writer).getRetryerBuilder();
+  }
+ else {
+    builder=createRetryBuilder(state);
+  }
+  if (GobblinMetrics.isEnabled(state)) {
+    final Optional<Meter> retryMeter=Optional.of(Instrumented.getMetricContext(state,getClass()).meter(FAILED_RETRY_WRITES_METER));
+    builder.withRetryListener(new RetryListener(){
+      @Override public <V>void onRetry(      Attempt<V> attempt){
+        if (attempt.hasException()) {
+          LOG.warn("Caught exception. This may be retried.",attempt.getExceptionCause());
+          Instrumented.markMeter(retryMeter);
+        }
+      }
+    }
+);
+  }
+  return builder.build();
+}

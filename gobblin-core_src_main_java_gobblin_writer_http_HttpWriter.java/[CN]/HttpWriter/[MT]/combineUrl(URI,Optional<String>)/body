@@ -1,0 +1,11 @@
+{
+  if (!resourcePath.isPresent()) {
+    return uri;
+  }
+  try {
+    return new URL(getCurServerHost().toURL(),resourcePath.get()).toURI();
+  }
+ catch (  MalformedURLException|URISyntaxException e) {
+    throw new RuntimeException("Failed combining URL",e);
+  }
+}

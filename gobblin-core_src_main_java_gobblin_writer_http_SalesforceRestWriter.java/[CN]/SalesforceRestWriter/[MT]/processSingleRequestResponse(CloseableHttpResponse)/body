@@ -1,0 +1,15 @@
+{
+  int statusCode=response.getStatusLine().getStatusCode();
+  if (statusCode < 400) {
+    return;
+  }
+  String entityStr=EntityUtils.toString(response.getEntity());
+  if (statusCode == 400 && Operation.INSERT_ONLY_NOT_EXIST.equals(operation) && entityStr != null) {
+    JsonArray jsonArray=new JsonParser().parse(entityStr).getAsJsonArray();
+    JsonObject jsonObject=jsonArray.get(0).getAsJsonObject();
+    if (isDuplicate(jsonObject,statusCode)) {
+      return;
+    }
+  }
+  throw new RuntimeException("Failed due to " + entityStr + " (Detail: "+ ToStringBuilder.reflectionToString(response,ToStringStyle.SHORT_PREFIX_STYLE)+ " )");
+}
