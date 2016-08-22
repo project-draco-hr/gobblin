@@ -3,3 +3,4 @@ HelixManager helixManager
 EventBus eventBus
 Path appWorkDir
 List<? extends Tag<?>> metadataTags
+SchedulerService schedulerService

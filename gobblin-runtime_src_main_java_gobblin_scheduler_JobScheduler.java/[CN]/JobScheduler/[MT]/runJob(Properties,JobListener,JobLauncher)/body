@@ -11,7 +11,7 @@
     closer.register(jobLauncher).launchJob(jobListener);
     boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
     if (runOnce && this.scheduledJobs.containsKey(jobName)) {
-      this.scheduler.deleteJob(this.scheduledJobs.remove(jobName));
+      this.scheduler.getScheduler().deleteJob(this.scheduledJobs.remove(jobName));
     }
   }
  catch (  Throwable t) {

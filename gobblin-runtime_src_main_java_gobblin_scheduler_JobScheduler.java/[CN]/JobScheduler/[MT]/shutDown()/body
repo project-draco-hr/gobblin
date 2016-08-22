@@ -3,10 +3,5 @@
   if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY) || this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
     this.pathAlterationDetector.stop(1000);
   }
-  try {
-    ExecutorsUtils.shutdownExecutorService(this.jobExecutor,Optional.of(LOG));
-  }
-  finally {
-    this.scheduler.shutdown(this.waitForJobCompletion);
-  }
+  ExecutorsUtils.shutdownExecutorService(this.jobExecutor,Optional.of(LOG));
 }

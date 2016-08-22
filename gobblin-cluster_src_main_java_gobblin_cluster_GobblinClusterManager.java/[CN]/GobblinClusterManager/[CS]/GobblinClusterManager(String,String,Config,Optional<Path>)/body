@@ -10,6 +10,8 @@
   this.helixManager=buildHelixManager(config,zkConnectionString);
   this.fs=buildFileSystem(config);
   this.appWorkDir=appWorkDirOptional.isPresent() ? appWorkDirOptional.get() : GobblinClusterUtils.getAppWorkDirPath(this.fs,clusterName,applicationId);
-  this.applicationLauncher.addService(buildGobblinHelixJobScheduler(config,this.appWorkDir,getMetadataTags(clusterName,applicationId)));
+  SchedulerService schedulerService=new SchedulerService(properties);
+  this.applicationLauncher.addService(schedulerService);
+  this.applicationLauncher.addService(buildGobblinHelixJobScheduler(config,this.appWorkDir,getMetadataTags(clusterName,applicationId),schedulerService));
   this.applicationLauncher.addService(buildJobConfigurationManager(config));
 }
