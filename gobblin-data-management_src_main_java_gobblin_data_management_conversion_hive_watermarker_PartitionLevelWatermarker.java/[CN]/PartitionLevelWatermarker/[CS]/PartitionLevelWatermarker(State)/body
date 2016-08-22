@@ -1,0 +1,34 @@
+{
+  this.expectedHighWatermarks=new TableWatermarks();
+  this.previousWatermarks=new TableWatermarks();
+  this.tableLevelWatermarker=new TableLevelWatermarker(state);
+  this.updateProvider=UpdateProviderFactory.create(state);
+  int maxLookBackDays=state.getPropAsInt(HiveSource.HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,HiveSource.DEFAULT_HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS) + BUFFER_WATERMARK_DAYS_TO_PERSIST;
+  this.leastWatermarkToPersistInState=new DateTime().minusDays(maxLookBackDays).getMillis();
+  if (state instanceof SourceState) {
+    SourceState sourceState=(SourceState)state;
+    for (    Map.Entry<String,Iterable<WorkUnitState>> datasetWorkUnitStates : sourceState.getPreviousWorkUnitStatesByDatasetUrns().entrySet()) {
+      List<WorkUnitState> watermarkWorkUnits=Lists.newArrayList(Iterables.filter(datasetWorkUnitStates.getValue(),WATERMARK_WORKUNIT_PREDICATE));
+      if (watermarkWorkUnits.isEmpty()) {
+        log.info(String.format("No previous partition watermarks for table %s",datasetWorkUnitStates.getKey()));
+        continue;
+      }
+ else       if (watermarkWorkUnits.size() > 1) {
+        throw new IllegalStateException(String.format("Each table should have only 1 watermark workunit that contains watermarks for all it's partitions. Found %s",watermarkWorkUnits.size()));
+      }
+ else {
+        MultiKeyValueLongWatermark multiKeyValueLongWatermark=watermarkWorkUnits.get(0).getActualHighWatermark(MultiKeyValueLongWatermark.class);
+        if (multiKeyValueLongWatermark != null) {
+          this.previousWatermarks.setPartitionWatermarks(datasetWorkUnitStates.getKey(),multiKeyValueLongWatermark.getWatermarks());
+        }
+ else {
+          log.warn(String.format("Previous workunit for %s has %s set but null MultiKeyValueLongWatermark found",datasetWorkUnitStates.getKey(),IS_WATERMARK_WORKUNIT_KEY));
+        }
+      }
+    }
+    log.info("Loaded watermarks from previous state " + this.previousWatermarks);
+    for (    String tableKey : this.previousWatermarks.keySet()) {
+      this.expectedHighWatermarks.setPartitionWatermarks(tableKey,Maps.newHashMap(this.previousWatermarks.getPartitionWatermarks(tableKey)));
+    }
+  }
+}

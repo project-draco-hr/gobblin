@@ -17,20 +17,28 @@
     }
   }
  else {
-    for (    WorkUnitState wus : states) {
+    for (    WorkUnitState wus : PARTITION_PUBLISH_ORDERING.sortedCopy(states)) {
       QueryBasedHivePublishEntity publishEntity=HiveAvroORCQueryGenerator.deserializePublishCommands(wus);
-      cleanUpQueries.addAll(publishEntity.getCleanupQueries());
-      directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
-      Map<String,String> publishDirectories=publishEntity.getPublishDirectories();
-      for (      Map.Entry<String,String> publishDir : publishDirectories.entrySet()) {
-        moveDirectory(publishDir.getKey(),publishDir.getValue());
+      if (publishEntity.getCleanupQueries() != null) {
+        cleanUpQueries.addAll(publishEntity.getCleanupQueries());
       }
-      List<String> publishQueries=publishEntity.getPublishQueries();
-      EventWorkunitUtils.setBeginPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
-      executeQueries(publishQueries);
-      EventWorkunitUtils.setEndPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
+      if (publishEntity.getCleanupDirectories() != null) {
+        directoriesToDelete.addAll(publishEntity.getCleanupDirectories());
+      }
+      if (publishEntity.getPublishDirectories() != null) {
+        Map<String,String> publishDirectories=publishEntity.getPublishDirectories();
+        for (        Map.Entry<String,String> publishDir : publishDirectories.entrySet()) {
+          moveDirectory(publishDir.getKey(),publishDir.getValue());
+        }
+      }
+      if (publishEntity.getPublishQueries() != null) {
+        List<String> publishQueries=publishEntity.getPublishQueries();
+        EventWorkunitUtils.setBeginPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
+        executeQueries(publishQueries);
+        EventWorkunitUtils.setEndPublishDDLExecuteTimeMetadata(wus,System.currentTimeMillis());
+      }
       wus.setWorkingState(WorkingState.COMMITTED);
-      wus.setActualHighWatermark(TableLevelWatermarker.GSON.fromJson(wus.getWorkunit().getExpectedHighWatermark(),LongWatermark.class));
+      this.watermarker.setActualHighWatermark(wus);
       try {
         new SlaEventSubmitter(eventSubmitter,EventConstants.CONVERSION_SUCCESSFUL_SLA_EVENT,wus.getProperties()).submit();
       }

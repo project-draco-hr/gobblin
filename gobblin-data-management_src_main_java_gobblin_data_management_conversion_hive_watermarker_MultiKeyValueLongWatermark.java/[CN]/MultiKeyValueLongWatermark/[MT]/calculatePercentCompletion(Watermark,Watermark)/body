@@ -1,0 +1,21 @@
+{
+  Preconditions.checkArgument(lowWatermark instanceof MultiKeyValueLongWatermark && highWatermark instanceof MultiKeyValueLongWatermark,String.format("lowWatermark and highWatermark are not instances of %s",MultiKeyValueLongWatermark.class.getSimpleName()));
+  MultiKeyValueLongWatermark low=(MultiKeyValueLongWatermark)lowWatermark;
+  MultiKeyValueLongWatermark high=(MultiKeyValueLongWatermark)highWatermark;
+  long total=0;
+  long pulled=0;
+  for (  Map.Entry<String,Long> entry : low.watermarks.entrySet()) {
+    if (high.watermarks.containsKey(entry.getKey())) {
+      total+=(high.watermarks.get(entry.getKey()) - entry.getValue());
+    }
+  }
+  for (  Map.Entry<String,Long> entry : low.watermarks.entrySet()) {
+    if (this.watermarks.containsKey(entry.getKey())) {
+      pulled+=(this.watermarks.get(entry.getKey()) - entry.getValue());
+    }
+  }
+  if (pulled > total) {
+    return 100;
+  }
+  return (short)LongMath.divide(pulled * 100,total,RoundingMode.CEILING);
+}

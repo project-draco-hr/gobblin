@@ -1,0 +1,17 @@
+{
+  for (  Map.Entry<String,Map<String,Long>> tableWatermark : this.expectedHighWatermarks.entrySet()) {
+    String tableKey=tableWatermark.getKey();
+    Map<String,Long> partitionWatermarks=tableWatermark.getValue();
+    Map<String,Long> expectedPartitionWatermarks=ImmutableMap.copyOf(Maps.filterEntries(partitionWatermarks,new Predicate<Map.Entry<String,Long>>(){
+      @Override public boolean apply(      @Nonnull Map.Entry<String,Long> input){
+        return Long.compare(input.getValue(),PartitionLevelWatermarker.this.leastWatermarkToPersistInState) >= 0;
+      }
+    }
+));
+    WorkUnit watermarkWorkunit=WorkUnit.createEmpty();
+    watermarkWorkunit.setProp(IS_WATERMARK_WORKUNIT_KEY,true);
+    watermarkWorkunit.setProp(ConfigurationKeys.DATASET_URN_KEY,tableKey);
+    watermarkWorkunit.setWatermarkInterval(new WatermarkInterval(new MultiKeyValueLongWatermark(this.previousWatermarks.get(tableKey)),new MultiKeyValueLongWatermark(expectedPartitionWatermarks)));
+    workunits.add(watermarkWorkunit);
+  }
+}

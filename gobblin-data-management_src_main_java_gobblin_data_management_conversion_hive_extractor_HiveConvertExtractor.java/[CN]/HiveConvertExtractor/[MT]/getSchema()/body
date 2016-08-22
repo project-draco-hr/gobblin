@@ -1,6 +1,6 @@
 {
   if (this.conversionEntities.isEmpty()) {
-    return null;
+    return Schema.create(Type.NULL);
   }
   QueryBasedHiveConversionEntity conversionEntity=this.conversionEntities.get(0);
   return conversionEntity.getHiveTable().getAvroSchema();

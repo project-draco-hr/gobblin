@@ -11,6 +11,7 @@
   Table table1=this.hiveMetastoreTestUtils.getLocalMetastoreClient().getTable(dbName,tableName1);
   previousWorkUnitStates.add(ConversionHiveTestUtils.createWus(dbName,tableName1,TimeUnit.MILLISECONDS.convert(table1.getCreateTime(),TimeUnit.SECONDS)));
   SourceState testState=new SourceState(getTestState(dbName),previousWorkUnitStates);
+  testState.setProp(HiveSource.HIVE_SOURCE_WATERMARKER_FACTORY_CLASS_KEY,TableLevelWatermarker.Factory.class.getName());
   List<WorkUnit> workUnits=this.hiveSource.getWorkunits(testState);
   Assert.assertEquals(workUnits.size(),1);
   WorkUnit wu=workUnits.get(0);

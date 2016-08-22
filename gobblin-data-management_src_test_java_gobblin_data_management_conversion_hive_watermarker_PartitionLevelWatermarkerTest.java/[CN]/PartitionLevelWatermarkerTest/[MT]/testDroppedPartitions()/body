@@ -1,0 +1,14 @@
+{
+  WorkUnitState previousWus=new WorkUnitState();
+  previousWus.setProp(ConfigurationKeys.DATASET_URN_KEY,"test_dataset_urn");
+  previousWus.setProp(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY,true);
+  previousWus.setActualHighWatermark(new MultiKeyValueLongWatermark(ImmutableMap.of("2015-01",100l,"2015-02",101l)));
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Table table=mockTable("test_dataset_urn");
+  Mockito.when(table.getPartitionKeys()).thenReturn(ImmutableList.of(new FieldSchema("year","string","")));
+  Partition partition2015=mockPartition(table,ImmutableList.of("2015"));
+  Mockito.when(partition2015.getParameters()).thenReturn(ImmutableMap.of(AbstractAvroToOrcConverter.REPLACED_PARTITIONS_HIVE_METASTORE_KEY,"2015-01|2015-02"));
+  watermarker.onPartitionProcessBegin(partition2015,0l,0l);
+  Assert.assertEquals(watermarker.getExpectedHighWatermarks().get("test_dataset_urn"),ImmutableMap.of("2015",0l));
+}

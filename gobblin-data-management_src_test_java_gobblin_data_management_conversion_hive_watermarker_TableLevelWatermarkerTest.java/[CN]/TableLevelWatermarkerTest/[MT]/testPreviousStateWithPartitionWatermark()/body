@@ -1,0 +1,12 @@
+{
+  WorkUnitState previousWus=new WorkUnitState();
+  previousWus.setProp(ConfigurationKeys.DATASET_URN_KEY,"test_table");
+  previousWus.setActualHighWatermark(new LongWatermark(100l));
+  WorkUnitState previousWus1=new WorkUnitState();
+  previousWus1.setProp(ConfigurationKeys.DATASET_URN_KEY,"test_table");
+  previousWus1.setProp(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY,true);
+  previousWus1.setActualHighWatermark(new MultiKeyValueLongWatermark(ImmutableMap.of("part1",200l)));
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  TableLevelWatermarker watermarker=new TableLevelWatermarker(state);
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(mockTable("test_table")),new LongWatermark(100l));
+}

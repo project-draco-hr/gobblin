@@ -1,0 +1,5 @@
+{
+  Table table=Mockito.mock(Table.class,Mockito.RETURNS_SMART_NULLS);
+  Mockito.when(table.getCompleteName()).thenReturn(name);
+  return table;
+}

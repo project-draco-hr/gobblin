@@ -1,0 +1,3 @@
+{
+  this.get(tableKey).put(partitionKey,watermark);
+}

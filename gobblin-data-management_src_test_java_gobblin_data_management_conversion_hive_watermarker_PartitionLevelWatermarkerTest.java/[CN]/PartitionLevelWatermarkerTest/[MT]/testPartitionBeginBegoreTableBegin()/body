@@ -1,0 +1,7 @@
+{
+  SourceState state=new SourceState();
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Table table=mockTable("test_dataset_urn");
+  Partition partition=mockPartition(table,ImmutableList.of(""));
+  watermarker.onPartitionProcessBegin(partition,0l,0l);
+}

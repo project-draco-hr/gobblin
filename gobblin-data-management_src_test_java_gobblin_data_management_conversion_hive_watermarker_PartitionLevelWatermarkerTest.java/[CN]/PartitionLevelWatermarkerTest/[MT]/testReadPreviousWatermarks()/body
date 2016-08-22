@@ -1,0 +1,11 @@
+{
+  WorkUnitState previousWus=new WorkUnitState();
+  previousWus.setProp(ConfigurationKeys.DATASET_URN_KEY,"test_dataset_urn");
+  previousWus.setProp(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY,true);
+  previousWus.setActualHighWatermark(new MultiKeyValueLongWatermark(ImmutableMap.of("2015",100l,"2016",101l)));
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Assert.assertEquals(watermarker.getPreviousWatermarks().size(),1);
+  Assert.assertEquals(watermarker.getPreviousWatermarks().get("test_dataset_urn"),ImmutableMap.of("2015",100l,"2016",101l));
+  Assert.assertEquals(watermarker.getPreviousWatermarks(),watermarker.getExpectedHighWatermarks());
+}

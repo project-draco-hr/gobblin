@@ -1,0 +1,11 @@
+{
+  WorkUnitState previousWus=new WorkUnitState();
+  previousWus.setProp(ConfigurationKeys.DATASET_URN_KEY,"test_table");
+  previousWus.setActualHighWatermark(new LongWatermark(100l));
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  TableLevelWatermarker watermarker=new TableLevelWatermarker(state);
+  Table mockTable=mockTable("test_table");
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(mockTable),new LongWatermark(100l));
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(mockPartition(mockTable,ImmutableList.of("2015"))),new LongWatermark(100l));
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(mockPartition(mockTable,ImmutableList.of("2016"))),new LongWatermark(100l));
+}

@@ -1,4 +1,8 @@
 {
+  if (Boolean.valueOf(state.getPropAsBoolean(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY))) {
+    log.info("Ignoring Watermark workunit for {}",state.getProp(ConfigurationKeys.DATASET_URN_KEY));
+    return;
+  }
   HiveWorkUnit hiveWokUnit=new HiveWorkUnit(state.getWorkunit());
   if (!(hiveWokUnit.getHiveDataset() instanceof ConvertibleHiveDataset)) {
     throw new IllegalStateException("HiveConvertExtractor is only compatible with ConvertibleHiveDataset");

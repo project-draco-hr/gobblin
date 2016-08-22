@@ -1,0 +1,17 @@
+{
+  this.tableWatermarks=Maps.newHashMap();
+  if (state instanceof SourceState) {
+    SourceState sourceState=(SourceState)state;
+    for (    Map.Entry<String,Iterable<WorkUnitState>> datasetWorkUnitStates : sourceState.getPreviousWorkUnitStatesByDatasetUrns().entrySet()) {
+      List<LongWatermark> previousWatermarks=FluentIterable.from(datasetWorkUnitStates.getValue()).filter(Predicates.not(PartitionLevelWatermarker.WATERMARK_WORKUNIT_PREDICATE)).transform(new Function<WorkUnitState,LongWatermark>(){
+        @Override public LongWatermark apply(        WorkUnitState w){
+          return w.getActualHighWatermark(LongWatermark.class);
+        }
+      }
+).toList();
+      if (!previousWatermarks.isEmpty()) {
+        this.tableWatermarks.put(datasetWorkUnitStates.getKey(),Collections.min(previousWatermarks));
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(table);
+  if (!this.expectedHighWatermarks.hasPartitionWatermarks(tableKey(table))) {
+    this.expectedHighWatermarks.setPartitionWatermarks(tableKey(table),Maps.<String,Long>newHashMap());
+  }
+}

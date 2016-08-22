@@ -2,21 +2,5 @@
   if (!conversionEntity.getHivePartition().isPresent()) {
     return Collections.emptyList();
   }
-  Table table=conversionEntity.getHiveTable().getTTable();
-  Partition hivePartition=conversionEntity.getHivePartition().get();
-  List<Map<String,String>> replacedPartitionsDDLInfo=Lists.newArrayList();
-  List<FieldSchema> partitionKeys=table.getPartitionKeys();
-  if (StringUtils.isNotBlank(hivePartition.getParameters().get(REPLACED_PARTITIONS_HIVE_METASTORE_KEY))) {
-    for (    String partitionsInfoString : Splitter.on("|").omitEmptyStrings().split(hivePartition.getParameters().get(REPLACED_PARTITIONS_HIVE_METASTORE_KEY))) {
-      List<String> partitionValues=Splitter.on(",").omitEmptyStrings().trimResults().splitToList(partitionsInfoString);
-      if (!partitionValues.equals(hivePartition.getValues())) {
-        ImmutableMap.Builder<String,String> partitionDDLInfoMap=ImmutableMap.builder();
-        for (int i=0; i < partitionKeys.size(); i++) {
-          partitionDDLInfoMap.put(partitionKeys.get(i).getName(),partitionValues.get(i));
-        }
-        replacedPartitionsDDLInfo.add(partitionDDLInfoMap.build());
-      }
-    }
-  }
-  return replacedPartitionsDDLInfo;
+  return getDropPartitionsDDLInfo(conversionEntity.getHivePartition().get());
 }

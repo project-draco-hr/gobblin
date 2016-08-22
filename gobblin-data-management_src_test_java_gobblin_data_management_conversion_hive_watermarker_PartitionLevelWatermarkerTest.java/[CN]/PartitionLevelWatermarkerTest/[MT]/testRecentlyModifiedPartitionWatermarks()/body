@@ -1,0 +1,23 @@
+{
+  SourceState state=new SourceState();
+  state.setProp(HiveSource.HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,3);
+  long time5DaysAgo=new DateTime().minusDays(5).getMillis();
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Table table=mockTable("testTable2");
+  Partition part2010=mockPartition(table,ImmutableList.of("2010"));
+  Partition part2011=mockPartition(table,ImmutableList.of("2011"));
+  Partition part2012=mockPartition(table,ImmutableList.of("2012"));
+  Partition part2013=mockPartition(table,ImmutableList.of("2013"));
+  Partition part2014=mockPartition(table,ImmutableList.of("2014"));
+  watermarker.onTableProcessBegin(table,0l);
+  watermarker.onPartitionProcessBegin(part2010,0l,time5DaysAgo - 100l);
+  watermarker.onPartitionProcessBegin(part2011,0l,time5DaysAgo - 101l);
+  watermarker.onPartitionProcessBegin(part2012,0l,time5DaysAgo + 102l);
+  watermarker.onPartitionProcessBegin(part2013,0l,time5DaysAgo + 103l);
+  watermarker.onPartitionProcessBegin(part2014,0l,time5DaysAgo + 104l);
+  List<WorkUnit> workunits=Lists.newArrayList();
+  watermarker.onGetWorkunitsEnd(workunits);
+  Assert.assertEquals(workunits.size(),1);
+  WorkUnit watermarkWu=workunits.get(0);
+  Assert.assertEquals(watermarkWu.getExpectedHighWatermark(MultiKeyValueLongWatermark.class).getWatermarks(),ImmutableMap.of("2014",time5DaysAgo + 104l,"2013",time5DaysAgo + 103l,"2012",time5DaysAgo + 102l));
+}

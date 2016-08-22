@@ -1,3 +1,0 @@
-HiveDataset hiveDataset
-AutoReturnableObject<IMetaStoreClient> client
-LongWatermark expectedDatasetHighWatermark

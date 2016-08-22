@@ -1,0 +1,34 @@
+{
+  long tableProcessTime=new DateTime().getMillis();
+  this.watermarker.onTableProcessBegin(hiveDataset.getTable(),tableProcessTime);
+  List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
+  for (  Partition sourcePartition : sourcePartitions) {
+    if (isOlderThanLookback(sourcePartition)) {
+      continue;
+    }
+    LongWatermark lowWatermark=watermarker.getPreviousHighWatermark(sourcePartition);
+    try {
+      long updateTime=this.updateProvider.getUpdateTime(sourcePartition);
+      if (shouldCreateWorkunit(sourcePartition,lowWatermark)) {
+        log.debug(String.format("Processing partition: %s",sourcePartition));
+        long partitionProcessTime=new DateTime().getMillis();
+        this.watermarker.onPartitionProcessBegin(sourcePartition,partitionProcessTime,updateTime);
+        LongWatermark expectedPartitionHighWatermark=this.watermarker.getExpectedHighWatermark(sourcePartition,tableProcessTime,partitionProcessTime);
+        HiveWorkUnit hiveWorkUnit=new HiveWorkUnit(hiveDataset);
+        hiveWorkUnit.setTableSchemaUrl(this.avroSchemaManager.getSchemaUrl(hiveDataset.getTable()));
+        hiveWorkUnit.setPartitionSchemaUrl(this.avroSchemaManager.getSchemaUrl(sourcePartition));
+        hiveWorkUnit.setPartitionName(sourcePartition.getName());
+        hiveWorkUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedPartitionHighWatermark));
+        EventWorkunitUtils.setPartitionSlaEventMetadata(hiveWorkUnit,hiveDataset.getTable(),sourcePartition,updateTime,lowWatermark.getValue(),this.beginGetWorkunitsTime);
+        workunits.add(hiveWorkUnit);
+        log.info(String.format("Creating workunit for partition %s as updateTime %s is greater than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));
+      }
+ else {
+        log.info(String.format("Not creating workunit for partition %s as updateTime %s is lesser than low watermark %s",sourcePartition.getCompleteName(),updateTime,lowWatermark.getValue()));
+      }
+    }
+ catch (    UpdateNotFoundException e) {
+      log.error(String.format("Not Creating workunit for %s as update time was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
+    }
+  }
+}

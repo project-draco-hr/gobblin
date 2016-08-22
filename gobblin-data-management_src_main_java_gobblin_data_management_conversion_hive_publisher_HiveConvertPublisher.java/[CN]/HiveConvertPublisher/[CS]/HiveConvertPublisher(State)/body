@@ -17,4 +17,5 @@
  catch (  SQLException e) {
     throw new RuntimeException(e);
   }
+  this.watermarker=GobblinConstructorUtils.invokeConstructor(HiveSourceWatermarkerFactory.class,state.getProp(HiveSource.HIVE_SOURCE_WATERMARKER_FACTORY_CLASS_KEY,HiveSource.DEFAULT_HIVE_SOURCE_WATERMARKER_FACTORY_CLASS)).createFromState(state);
 }

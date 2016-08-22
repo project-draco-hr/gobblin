@@ -1,0 +1,23 @@
+{
+  long time5DaysAgo=new DateTime().minusDays(5).getMillis();
+  WorkUnitState previousWus=new WorkUnitState();
+  previousWus.setProp(ConfigurationKeys.DATASET_URN_KEY,"testTable2");
+  previousWus.setProp(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY,true);
+  previousWus.setActualHighWatermark(new MultiKeyValueLongWatermark(ImmutableMap.of("2010",time5DaysAgo - 100l,"2011",time5DaysAgo - 101l,"2012",time5DaysAgo + 102l)));
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  state.setProp(HiveSource.HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,3);
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Table table=mockTable("testTable2");
+  Partition part2009=mockPartition(table,ImmutableList.of("2009"));
+  Partition part2013=mockPartition(table,ImmutableList.of("2013"));
+  Partition part2014=mockPartition(table,ImmutableList.of("2014"));
+  watermarker.onTableProcessBegin(table,0l);
+  watermarker.onPartitionProcessBegin(part2009,0l,time5DaysAgo - 99l);
+  watermarker.onPartitionProcessBegin(part2013,0l,time5DaysAgo + 103l);
+  watermarker.onPartitionProcessBegin(part2014,0l,time5DaysAgo + 104l);
+  List<WorkUnit> workunits=Lists.newArrayList();
+  watermarker.onGetWorkunitsEnd(workunits);
+  Assert.assertEquals(workunits.size(),1);
+  WorkUnit watermarkWu=workunits.get(0);
+  Assert.assertEquals(watermarkWu.getExpectedHighWatermark(MultiKeyValueLongWatermark.class).getWatermarks(),ImmutableMap.of("2014",time5DaysAgo + 104l,"2013",time5DaysAgo + 103l,"2012",time5DaysAgo + 102l));
+}

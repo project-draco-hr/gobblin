@@ -1,0 +1,3 @@
+{
+  this.watermarks=watermarks == null ? Maps.<String,Long>newConcurrentMap() : new ConcurrentHashMap<>(watermarks);
+}

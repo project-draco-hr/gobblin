@@ -1,0 +1,8 @@
+{
+  WorkUnitState previousWus=new WorkUnitState();
+  previousWus.setProp(ConfigurationKeys.DATASET_URN_KEY,"test_dataset_urn");
+  previousWus.setProp(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY,true);
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Assert.assertEquals(watermarker.getPreviousWatermarks().size(),0);
+}

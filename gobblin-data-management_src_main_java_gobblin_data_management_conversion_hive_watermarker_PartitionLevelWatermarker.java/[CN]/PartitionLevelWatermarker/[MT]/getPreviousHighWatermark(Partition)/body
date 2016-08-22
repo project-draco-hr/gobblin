@@ -1,0 +1,8 @@
+{
+  if (this.previousWatermarks.hasPartitionWatermarks(tableKey(partition.getTable()))) {
+    if (this.previousWatermarks.get(tableKey(partition.getTable())).containsKey(partitionKey(partition))) {
+      return new LongWatermark(this.previousWatermarks.getPartitionWatermark(tableKey(partition.getTable()),partitionKey(partition)));
+    }
+  }
+  return new LongWatermark(0);
+}

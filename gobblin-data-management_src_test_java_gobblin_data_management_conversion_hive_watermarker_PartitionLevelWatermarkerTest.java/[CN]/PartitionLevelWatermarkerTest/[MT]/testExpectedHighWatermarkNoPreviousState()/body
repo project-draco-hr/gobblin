@@ -1,0 +1,32 @@
+{
+  long now=new DateTime().getMillis();
+  SourceState state=new SourceState();
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Table table=mockTable("testTable1");
+  Partition part1=mockPartition(table,ImmutableList.of("2015"));
+  watermarker.onTableProcessBegin(table,0l);
+  watermarker.onPartitionProcessBegin(part1,0l,now + 2015l);
+  Table table2=mockTable("testTable2");
+  Partition part2=mockPartition(table2,ImmutableList.of("16"));
+  watermarker.onTableProcessBegin(table2,0l);
+  watermarker.onPartitionProcessBegin(part2,0l,now + 16l);
+  List<WorkUnit> workunits=Lists.newArrayList();
+  watermarker.onGetWorkunitsEnd(workunits);
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(part1).getValue(),0l);
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(table).getValue(),0l);
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(part2).getValue(),0l);
+  Assert.assertEquals(watermarker.getPreviousHighWatermark(table2).getValue(),0l);
+  Assert.assertEquals(workunits.size(),2);
+  Assert.assertEquals(workunits.get(0).getPropAsBoolean(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY),true);
+  Assert.assertEquals(workunits.get(1).getPropAsBoolean(PartitionLevelWatermarker.IS_WATERMARK_WORKUNIT_KEY),true);
+  Collections.sort(workunits,new Comparator<WorkUnit>(){
+    @Override public int compare(    WorkUnit o1,    WorkUnit o2){
+      return o1.getProp(ConfigurationKeys.DATASET_URN_KEY).compareTo(o2.getProp(ConfigurationKeys.DATASET_URN_KEY));
+    }
+  }
+);
+  Assert.assertEquals(workunits.get(0).getProp(ConfigurationKeys.DATASET_URN_KEY),table.getCompleteName());
+  Assert.assertEquals(workunits.get(1).getProp(ConfigurationKeys.DATASET_URN_KEY),table2.getCompleteName());
+  Assert.assertEquals(workunits.get(0).getExpectedHighWatermark(MultiKeyValueLongWatermark.class).getWatermarks(),ImmutableMap.of(PartitionLevelWatermarker.partitionKey(part1),now + 2015l));
+  Assert.assertEquals(workunits.get(1).getExpectedHighWatermark(MultiKeyValueLongWatermark.class).getWatermarks(),ImmutableMap.of(PartitionLevelWatermarker.partitionKey(part2),now + 16l));
+}

@@ -1,0 +1,15 @@
+{
+  PartitionLevelWatermarker watermarker0=new PartitionLevelWatermarker(new SourceState());
+  Table mockTable=mockTable("table1");
+  watermarker0.onTableProcessBegin(mockTable,0l);
+  long now=new DateTime().getMillis();
+  watermarker0.onPartitionProcessBegin(mockPartition(mockTable,ImmutableList.of("2016")),0,now);
+  List<WorkUnit> workunits=Lists.newArrayList();
+  watermarker0.onGetWorkunitsEnd(workunits);
+  @SuppressWarnings("deprecation") WorkUnitState previousWus=new WorkUnitState(workunits.get(0));
+  watermarker0.setActualHighWatermark(previousWus);
+  SourceState state=new SourceState(new State(),Lists.newArrayList(previousWus));
+  PartitionLevelWatermarker watermarker=new PartitionLevelWatermarker(state);
+  Assert.assertEquals(watermarker.getPreviousWatermarks().size(),1);
+  Assert.assertEquals(watermarker.getPreviousWatermarks().get("table1"),ImmutableMap.of("2016",now));
+}

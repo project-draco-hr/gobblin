@@ -1,0 +1,15 @@
+{
+  Preconditions.checkNotNull(partition);
+  Preconditions.checkNotNull(partition.getTable());
+  if (!this.expectedHighWatermarks.hasPartitionWatermarks(tableKey(partition.getTable()))) {
+    throw new IllegalStateException(String.format("onPartitionProcessBegin called before onTableProcessBegin for table: %s, partitions: %s",tableKey(partition.getTable()),partitionKey(partition)));
+  }
+  Collection<String> droppedPartitions=Collections2.transform(AbstractAvroToOrcConverter.getDropPartitionsDDLInfo(partition),new Function<Map<String,String>,String>(){
+    @Override public String apply(    Map<String,String> input){
+      return PARTITION_VALUES_JOINER.join(input.values());
+    }
+  }
+);
+  this.expectedHighWatermarks.removePartitionWatermarks(tableKey(partition.getTable()),droppedPartitions);
+  this.expectedHighWatermarks.addPartitionWatermark(tableKey(partition.getTable()),partitionKey(partition),partitionUpdateTime);
+}

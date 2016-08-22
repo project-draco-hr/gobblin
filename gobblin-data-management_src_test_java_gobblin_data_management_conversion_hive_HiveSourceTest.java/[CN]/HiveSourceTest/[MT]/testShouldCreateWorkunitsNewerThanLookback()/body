@@ -1,6 +1,6 @@
 {
   long currentTime=System.currentTimeMillis();
-  long partitionCreateTime=new DateTime(currentTime).minusDays(25).getMillis();
+  long partitionCreateTime=new DateTime(currentTime).minusDays(2).getMillis();
   org.apache.hadoop.hive.ql.metadata.Partition partition=this.hiveMetastoreTestUtils.createDummyPartition(partitionCreateTime);
   SourceState testState=getTestState("testDb7");
   HiveSource source=new HiveSource();

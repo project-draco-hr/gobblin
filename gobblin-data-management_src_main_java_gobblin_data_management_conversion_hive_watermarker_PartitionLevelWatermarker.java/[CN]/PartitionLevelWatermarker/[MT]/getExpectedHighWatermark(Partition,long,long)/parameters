@@ -1,0 +1,3 @@
+Partition partition
+long tableProcessTime
+long partitionProcessTime

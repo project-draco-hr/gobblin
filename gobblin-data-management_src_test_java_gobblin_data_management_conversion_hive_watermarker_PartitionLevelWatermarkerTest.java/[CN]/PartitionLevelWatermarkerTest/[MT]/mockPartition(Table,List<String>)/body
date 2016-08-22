@@ -1,0 +1,6 @@
+{
+  Partition partition=Mockito.mock(Partition.class,Mockito.RETURNS_SMART_NULLS);
+  Mockito.when(partition.getTable()).thenReturn(table);
+  Mockito.when(partition.getValues()).thenReturn(values);
+  return partition;
+}

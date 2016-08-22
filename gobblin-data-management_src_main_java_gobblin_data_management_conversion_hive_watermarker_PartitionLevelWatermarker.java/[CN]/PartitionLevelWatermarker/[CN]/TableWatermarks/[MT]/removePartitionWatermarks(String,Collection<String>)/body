@@ -1,0 +1,3 @@
+{
+  this.get(tableKey).keySet().removeAll(partitionKeys);
+}

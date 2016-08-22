@@ -1,0 +1,2 @@
+String tableKey
+Map<String,Long> partitionWatermarks

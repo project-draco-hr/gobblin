@@ -7,13 +7,12 @@
     while (iterator.hasNext()) {
       HiveDataset hiveDataset=iterator.next();
       try (AutoReturnableObject<IMetaStoreClient> client=hiveDataset.getClientPool().getClient()){
-        LongWatermark expectedDatasetHighWatermark=new LongWatermark(new DateTime().getMillis());
         log.debug(String.format("Processing dataset: %s",hiveDataset));
         if (HiveUtils.isPartitioned(hiveDataset.getTable())) {
-          createWorkunitsForPartitionedTable(hiveDataset,client,expectedDatasetHighWatermark);
+          createWorkunitsForPartitionedTable(hiveDataset,client);
         }
  else {
-          createWorkunitForNonPartitionedTable(hiveDataset,expectedDatasetHighWatermark);
+          createWorkunitForNonPartitionedTable(hiveDataset);
         }
       }
      }
@@ -21,6 +20,8 @@
  catch (  IOException e) {
     throw new RuntimeException(e);
   }
-  log.info(String.format("Created %s workunits",this.workunits.size()));
+  int realWorkunits=this.workunits.size();
+  this.watermarker.onGetWorkunitsEnd(this.workunits);
+  log.info(String.format("Created %s real workunits and %s watermark workunits",realWorkunits,(this.workunits.size() - realWorkunits)));
   return this.workunits;
 }
