@@ -1,7 +1,7 @@
 {
   if (!HAS_FAILED.get()) {
     HAS_FAILED.set(true);
-    throw new IOException();
+    throw new IOException("Injected failure");
   }
   return null;
 }
