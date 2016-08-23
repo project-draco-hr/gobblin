@@ -1,0 +1,9 @@
+{
+  Properties props=new Properties();
+  props.setProperty(ErrorManager.ERROR_TYPE_CONFIGURATION_KEY,"regex");
+  props.setProperty(ErrorManager.FLAKY_ERROR_REGEX_PATTERN_KEY,":index:0");
+  Config config=ConfigFactory.parseProperties(props);
+  ErrorManager<String> errorManager=new ErrorManager<>(config);
+  Assert.assertEquals(errorManager.nextError(":index:0:seq:1"),true);
+  Assert.assertEquals(errorManager.nextError(":index:1:seq:1"),false);
+}

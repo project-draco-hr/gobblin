@@ -1,0 +1,5 @@
+{
+  super(properties);
+  Config config=ConfigFactory.parseProperties(properties);
+  errorManager=new ErrorManager(config);
+}

@@ -2,6 +2,9 @@
   Map<String,List<WorkUnit>> workUnits=Maps.newConcurrentMap();
   this.kafkaWrapper=this.closer.register(KafkaWrapper.create(state));
   List<KafkaTopic> topics=getFilteredTopics(state);
+  for (  KafkaTopic topic : topics) {
+    LOG.info("Discovered topic " + topic.getName());
+  }
   Map<String,State> topicSpecificStateMap=DatasetUtils.getDatasetSpecificProps(Iterables.transform(topics,new Function<KafkaTopic,String>(){
     @Override public String apply(    KafkaTopic topic){
       return topic.getName();

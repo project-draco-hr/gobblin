@@ -1,0 +1,4 @@
+{
+  File file=new File("gobblin-kafka/testOutput");
+  FileUtils.deleteDirectory(file);
+}

@@ -1,0 +1,17 @@
+{
+  String type=ConfigUtils.getString(config,ERROR_TYPE_CONFIGURATION_KEY,"");
+  num=ConfigUtils.getInt(config,FLAKY_ERROR_EVERY_CONFIGURATION_KEY,DEFAULT_N);
+  String patternStr=ConfigUtils.getString(config,FLAKY_ERROR_REGEX_PATTERN_KEY,null);
+  if (null == patternStr) {
+    pattern=null;
+  }
+ else {
+    pattern=Pattern.compile(patternStr);
+  }
+  if (!type.isEmpty()) {
+    errorType=ErrorType.valueOf(type.toUpperCase());
+  }
+ else {
+    errorType=DEFAULT_ERROR_TYPE;
+  }
+}

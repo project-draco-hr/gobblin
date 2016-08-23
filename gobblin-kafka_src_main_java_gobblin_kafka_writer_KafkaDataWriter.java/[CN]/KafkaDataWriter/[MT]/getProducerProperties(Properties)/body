@@ -1,10 +1,7 @@
 {
-  Properties producerProperties=stripPrefix(props,KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX);
-  if (!producerProperties.containsKey(KEY_SERIALIZER_CONFIG)) {
-    producerProperties.setProperty(KEY_SERIALIZER_CONFIG,DEFAULT_KEY_SERIALIZER);
-  }
-  if (!producerProperties.containsKey(VALUE_SERIALIZER_CONFIG)) {
-    producerProperties.setProperty(VALUE_SERIALIZER_CONFIG,DEFAULT_VALUE_SERIALIZER);
-  }
+  Properties producerProperties=stripPrefix(props,KAFKA_PRODUCER_CONFIG_PREFIX);
+  setDefaultIfUnset(producerProperties,KEY_SERIALIZER_CONFIG,DEFAULT_KEY_SERIALIZER);
+  setDefaultIfUnset(producerProperties,VALUE_SERIALIZER_CONFIG,DEFAULT_VALUE_SERIALIZER);
+  setDefaultIfUnset(producerProperties,CLIENT_ID_CONFIG,CLIENT_ID_DEFAULT);
   return producerProperties;
 }

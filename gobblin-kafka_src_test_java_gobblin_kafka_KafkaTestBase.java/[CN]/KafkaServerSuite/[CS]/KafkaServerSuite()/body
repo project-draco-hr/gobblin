@@ -1,0 +1,5 @@
+{
+  _kafkaServerPort=TestUtils.choosePort();
+  _zkConnectString=TestZKUtils.zookeeperConnect();
+  _numStarted=new AtomicInteger(0);
+}

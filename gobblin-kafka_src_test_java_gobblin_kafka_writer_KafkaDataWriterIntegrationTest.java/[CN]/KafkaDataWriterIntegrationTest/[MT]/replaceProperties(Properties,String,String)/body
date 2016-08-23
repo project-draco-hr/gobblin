@@ -1,0 +1,9 @@
+{
+  for (  String key : props.stringPropertyNames()) {
+    String value=props.getProperty(key);
+    if (value.contains(searchString)) {
+      String replacedValue=value.replace(searchString,replacementString);
+      props.setProperty(key,replacedValue);
+    }
+  }
+}

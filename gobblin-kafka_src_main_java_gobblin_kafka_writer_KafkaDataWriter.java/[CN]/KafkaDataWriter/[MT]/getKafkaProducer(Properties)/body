@@ -1,0 +1,19 @@
+{
+  Config config=ConfigFactory.parseProperties(props);
+  String kafkaProducerClass=ConfigUtils.getString(config,KafkaWriterConfigurationKeys.KAFKA_WRITER_PRODUCER_CLASS,"");
+  Properties producerProps=getProducerProperties(props);
+  if (kafkaProducerClass.isEmpty()) {
+    return new KafkaProducer<>(producerProps);
+  }
+ else {
+    try {
+      Class<?> producerClass=(Class<?>)Class.forName(kafkaProducerClass);
+      KafkaProducer producer=(KafkaProducer)ConstructorUtils.invokeConstructor(producerClass,producerProps);
+      return producer;
+    }
+ catch (    ClassNotFoundException|NoSuchMethodException|IllegalAccessException|InstantiationException|InvocationTargetException e) {
+      log.error("Failed to instantiate Kafka producer " + kafkaProducerClass + " as instance of KafkaProducer.class",e);
+      throw Throwables.propagate(e);
+    }
+  }
+}

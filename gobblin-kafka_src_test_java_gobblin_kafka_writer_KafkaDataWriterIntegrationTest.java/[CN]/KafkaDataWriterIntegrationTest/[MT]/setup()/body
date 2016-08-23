@@ -1,0 +1,12 @@
+{
+  kafkaTestHelper=new KafkaTestBase();
+  this.gobblinProps=new Properties();
+  gobblinProps.load(new FileReader(TEST_LAUNCHER_PROPERTIES_FILE));
+  this.jobProps=new Properties();
+  jobProps.load(new FileReader(TEST_INGEST_PULL_FILE));
+  replaceProperties(gobblinProps,"{$topic}",TOPIC);
+  replaceProperties(gobblinProps,"{$kafkaPort}","" + kafkaTestHelper.getKafkaServerPort());
+  replaceProperties(jobProps,"{$topic}",TOPIC);
+  replaceProperties(jobProps,"{$kafkaPort}","" + kafkaTestHelper.getKafkaServerPort());
+  kafkaTestHelper.startServers();
+}

@@ -1,11 +1,13 @@
 {
+  String topic="testAvroSerialization";
+  _kafkaTestHelper.provisionTopic(topic);
   Properties props=new Properties();
-  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,TOPIC);
-  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "bootstrap.servers","localhost:" + this.kafkaPort);
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,topic);
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "bootstrap.servers","localhost:" + _kafkaTestHelper.getKafkaServerPort());
   props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "value.serializer","gobblin.kafka.serialize.LiAvroSerializer");
   props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + KafkaSchemaRegistryConfigurationKeys.KAFKA_SCHEMA_REGISTRY_CLASS,ConfigDrivenMd5SchemaRegistry.class.getCanonicalName());
   KafkaDataWriter<GenericRecord> kafkaWriter=new KafkaDataWriter<>(props);
-  GenericRecord record=generateRandomAvroRecord();
+  GenericRecord record=KafkaTestUtils.generateRandomAvroRecord();
   try {
     kafkaWriter.write(record);
   }
@@ -14,10 +16,10 @@
   }
   Thread.sleep(500);
   Assert.assertEquals(kafkaWriter.recordsWritten(),1);
-  byte[] message=iterator.next().message();
-  ConfigDrivenMd5SchemaRegistry schemaReg=new ConfigDrivenMd5SchemaRegistry(TOPIC,record.getSchema());
+  byte[] message=_kafkaTestHelper.getIteratorForTopic(topic).next().message();
+  ConfigDrivenMd5SchemaRegistry schemaReg=new ConfigDrivenMd5SchemaRegistry(topic,record.getSchema());
   LiAvroDeserializer deser=new LiAvroDeserializer(schemaReg);
-  GenericRecord receivedRecord=deser.deserialize(TOPIC,message);
+  GenericRecord receivedRecord=deser.deserialize(topic,message);
   System.out.println(record.toString());
   System.out.println(receivedRecord.toString());
 }

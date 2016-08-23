@@ -1,3 +1,4 @@
 {
+  log.debug("Close called");
   this.producer.close();
 }

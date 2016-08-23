@@ -1,0 +1,15 @@
+{
+  _topic=topic;
+  Properties consumeProps=new Properties();
+  consumeProps.put("zookeeper.connect",zkConnectString);
+  consumeProps.put("group.id",_topic + "-" + System.nanoTime());
+  consumeProps.put("zookeeper.session.timeout.ms","10000");
+  consumeProps.put("zookeeper.sync.time.ms","10000");
+  consumeProps.put("auto.commit.interval.ms","10000");
+  consumeProps.put("_consumer.timeout.ms","10000");
+  _consumer=Consumer.createJavaConsumerConnector(new ConsumerConfig(consumeProps));
+  Map<String,List<KafkaStream<byte[],byte[]>>> consumerMap=_consumer.createMessageStreams(ImmutableMap.of(this._topic,1));
+  List<KafkaStream<byte[],byte[]>> streams=consumerMap.get(this._topic);
+  _stream=streams.get(0);
+  _iterator=_stream.iterator();
+}

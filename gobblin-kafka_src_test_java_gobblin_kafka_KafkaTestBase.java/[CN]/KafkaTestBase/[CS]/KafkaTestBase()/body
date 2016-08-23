@@ -1,0 +1,4 @@
+{
+  this._kafkaServerSuite=KafkaServerSuite.getInstance();
+  this._topicConsumerMap=new HashMap<>();
+}

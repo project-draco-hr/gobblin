@@ -1,2 +1,31 @@
 {
+  log.debug("Commit called, will wait for commitTimeout : " + commitTimeoutInNanos / MILLIS_TO_NANOS + "ms");
+  long commitStartTime=System.nanoTime();
+  lock.lock();
+  try {
+    while (((System.nanoTime() - commitStartTime) < commitTimeoutInNanos) && (recordsProduced != (recordsWritten.get() + recordsFailed))) {
+      log.debug("Commit waiting... records produced: " + recordsProduced + " written: "+ recordsWritten.get()+ " failed: "+ recordsFailed);
+      try {
+        stateChange.awaitNanos(commitTimeoutInNanos);
+      }
+ catch (      InterruptedException e) {
+        throw new IOException(e);
+      }
+    }
+    log.debug("Commit done waiting");
+    if (recordsProduced != (recordsWritten.get() + recordsFailed)) {
+      String message="Commit timeout: RecordsWritten = " + recordsWritten.get() + "; RecordsFailed = "+ recordsFailed;
+      log.debug(message);
+      throw new IOException(message);
+    }
+    if (recordsFailed > 0) {
+      String message="Commit failed to write " + recordsFailed + " records.";
+      log.debug(message);
+      throw new IOException(message);
+    }
+    log.debug("Commit successful...");
+  }
+  finally {
+    lock.unlock();
+  }
 }

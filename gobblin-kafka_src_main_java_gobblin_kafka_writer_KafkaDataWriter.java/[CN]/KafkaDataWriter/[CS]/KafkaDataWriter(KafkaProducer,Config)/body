@@ -1,12 +1,28 @@
 {
+  recordsProduced=0;
   recordsWritten=new AtomicInteger(0);
+  recordsFailed=0;
   bytesWritten=new AtomicInteger(-1);
+  lock=new ReentrantLock();
+  stateChange=lock.newCondition();
   this.topic=config.getString(KafkaWriterConfigurationKeys.KAFKA_TOPIC);
+  this.commitTimeoutInNanos=ConfigUtils.getLong(config,KafkaWriterConfigurationKeys.COMMIT_TIMEOUT_MILLIS_CONFIG,KafkaWriterConfigurationKeys.COMMIT_TIMEOUT_MILLIS_DEFAULT) * MILLIS_TO_NANOS;
   this.producer=producer;
   this.producerCallback=new Callback(){
     @Override public void onCompletion(    RecordMetadata metadata,    Exception exception){
-      if (null == exception) {
-        recordsWritten.incrementAndGet();
+      lock.lock();
+      try {
+        if (null == exception) {
+          recordsWritten.incrementAndGet();
+        }
+ else {
+          log.warn("record failed to write",exception);
+          recordsFailed++;
+        }
+        stateChange.signal();
+      }
+  finally {
+        lock.unlock();
       }
     }
   }

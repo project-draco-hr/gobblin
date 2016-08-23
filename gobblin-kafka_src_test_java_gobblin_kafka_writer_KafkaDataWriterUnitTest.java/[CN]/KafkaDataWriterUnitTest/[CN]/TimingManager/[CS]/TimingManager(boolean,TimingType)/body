@@ -1,0 +1,4 @@
+{
+  this.isSync=isSync;
+  this.timingType=timingType;
+}

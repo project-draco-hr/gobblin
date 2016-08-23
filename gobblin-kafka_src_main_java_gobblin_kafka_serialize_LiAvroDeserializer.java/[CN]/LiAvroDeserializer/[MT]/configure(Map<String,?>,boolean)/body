@@ -1,2 +1,10 @@
 {
+  Preconditions.checkArgument(isKey == false,"LiAvroDeserializer only works for value fields");
+  _datumReader=new GenericDatumReader<>();
+  Properties props=new Properties();
+  for (  Map.Entry<String,?> entry : configs.entrySet()) {
+    String value=String.valueOf(entry.getValue());
+    props.setProperty(entry.getKey(),value);
+  }
+  _schemaRegistry=KafkaSchemaRegistryFactory.getSchemaRegistry(props);
 }

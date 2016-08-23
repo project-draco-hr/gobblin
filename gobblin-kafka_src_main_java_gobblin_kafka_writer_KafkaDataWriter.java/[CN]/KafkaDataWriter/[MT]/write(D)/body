@@ -1,3 +1,11 @@
 {
-  this.producer.send(new ProducerRecord<String,D>(topic,record),this.producerCallback);
+  log.debug("Write called");
+  lock.lock();
+  try {
+    this.producer.send(new ProducerRecord<String,D>(topic,record),this.producerCallback);
+    recordsProduced++;
+  }
+  finally {
+    lock.unlock();
+  }
 }

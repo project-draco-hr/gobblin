@@ -1,0 +1,12 @@
+{
+  ArrayList<Schema.Field> fields=new ArrayList<Schema.Field>();
+  String fieldName="field1";
+  Schema fieldSchema=Schema.create(Schema.Type.STRING);
+  String docString="doc";
+  fields.add(new Schema.Field(fieldName,fieldSchema,docString,null));
+  Schema schema=Schema.createRecord("name",docString,"test",false);
+  schema.setFields(fields);
+  GenericData.Record record=new GenericData.Record(schema);
+  record.put("field1","foobar");
+  return record;
+}

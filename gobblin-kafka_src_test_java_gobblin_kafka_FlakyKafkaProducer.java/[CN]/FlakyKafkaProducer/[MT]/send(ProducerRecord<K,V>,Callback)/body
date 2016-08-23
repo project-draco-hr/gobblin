@@ -1,0 +1,11 @@
+{
+  boolean error=errorManager.nextError(record.value());
+  if (errorManager.nextError(record.value())) {
+    final Exception e=new Exception();
+    callback.onCompletion(null,e);
+    return nullFuture;
+  }
+ else {
+    return super.send(record,callback);
+  }
+}
