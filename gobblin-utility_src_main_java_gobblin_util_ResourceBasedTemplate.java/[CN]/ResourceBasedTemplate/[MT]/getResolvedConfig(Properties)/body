@@ -1,3 +1,0 @@
-{
-  return ConfigFactory.parseProperties(getResolvedConfigAsProperties(userProps));
-}

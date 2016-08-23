@@ -1,5 +1,11 @@
 {
   LOG.info("Starting the job scheduler");
+  try {
+    this.scheduler.awaitRunning(1,TimeUnit.SECONDS);
+  }
+ catch (  TimeoutException|IllegalStateException exc) {
+    throw new IllegalStateException("Scheduler service is not running.");
+  }
   if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY)) {
     Preconditions.checkArgument(this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY) || this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY),"Error in configuration file: Please check your .pull file");
     if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY) && !this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY)) {

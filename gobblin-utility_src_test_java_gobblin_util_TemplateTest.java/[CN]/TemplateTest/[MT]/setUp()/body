@@ -3,7 +3,10 @@
   FileUtils.forceDeleteOnExit(this.jobConfigDir);
   this.userProp=new Properties();
   userProp.setProperty("a","1");
-  userProp.setProperty("b","2");
+  userProp.setProperty("templated0","2");
+  userProp.setProperty("required0","r0");
+  userProp.setProperty("required1","r1");
+  userProp.setProperty("required2","r2");
   userProp.setProperty("job.template","templates/test.template");
   userProp.store(new FileWriter(new File(this.jobConfigDir,"user.attr")),"");
 }
