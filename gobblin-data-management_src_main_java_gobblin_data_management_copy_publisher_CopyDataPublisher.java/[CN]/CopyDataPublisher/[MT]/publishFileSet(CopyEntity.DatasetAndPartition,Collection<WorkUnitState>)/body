@@ -35,5 +35,11 @@
       }
     }
   }
+  if (Long.MAX_VALUE == datasetOriginTimestamp) {
+    datasetOriginTimestamp=0;
+  }
+  if (Long.MAX_VALUE == datasetUpstreamTimestamp) {
+    datasetUpstreamTimestamp=0;
+  }
   CopyEventSubmitterHelper.submitSuccessfulDatasetPublish(this.eventSubmitter,datasetAndPartition,Long.toString(datasetOriginTimestamp),Long.toString(datasetUpstreamTimestamp));
 }
