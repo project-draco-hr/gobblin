@@ -9,11 +9,11 @@
   byte[] messageBytes=KafkaTestUtils.generateRandomBytes();
   try {
     kafkaWriter.write(messageBytes);
+    kafkaWriter.commit();
   }
   finally {
     kafkaWriter.close();
   }
-  Thread.sleep(500);
   Assert.assertEquals(kafkaWriter.recordsWritten(),1);
   byte[] message=_kafkaTestHelper.getIteratorForTopic(topic).next().message();
   Assert.assertEquals(message,messageBytes);

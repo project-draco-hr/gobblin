@@ -10,10 +10,13 @@
   FlakyKafkaProducer flakyKafkaProducer=new FlakyKafkaProducer(producerProps);
   KafkaDataWriter<byte[]> kafkaWriter=new KafkaDataWriter<>(flakyKafkaProducer,ConfigFactory.parseProperties(props));
   byte[] messageBytes=KafkaTestUtils.generateRandomBytes();
+  kafkaWriter.write(messageBytes);
   try {
-    kafkaWriter.write(messageBytes);
+    kafkaWriter.commit();
   }
-  finally {
+ catch (  IOException e) {
+  }
+ finally {
     kafkaWriter.close();
   }
   Assert.assertEquals(kafkaWriter.recordsWritten(),0);

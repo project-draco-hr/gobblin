@@ -1,5 +1,6 @@
 {
-  testKafkaWrites(new ConstantTimingType(1000),40000,true);
-  testKafkaWrites(new ConstantTimingType(10000),4000,false);
-  testKafkaWrites(new NthTimingType(7,1000,10000),4000,false);
+  testKafkaWrites(new ConstantTimingType(1000),40000,0,true);
+  testKafkaWrites(new ConstantTimingType(10000),4000,0,false);
+  testKafkaWrites(new NthTimingType(7,1000,10000),4000,0,false);
+  testKafkaWrites(new NthTimingType(7,1000,10000),4000,89.9,true);
 }

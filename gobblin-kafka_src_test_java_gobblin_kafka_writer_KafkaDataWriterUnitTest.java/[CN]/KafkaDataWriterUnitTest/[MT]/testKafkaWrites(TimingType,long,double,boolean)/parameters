@@ -1,3 +1,4 @@
 TimingType timingType
 long commitTimeout
+double failurePercentage
 boolean success

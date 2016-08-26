@@ -10,11 +10,11 @@
   GenericRecord record=KafkaTestUtils.generateRandomAvroRecord();
   try {
     kafkaWriter.write(record);
+    kafkaWriter.commit();
   }
   finally {
     kafkaWriter.close();
   }
-  Thread.sleep(500);
   Assert.assertEquals(kafkaWriter.recordsWritten(),1);
   byte[] message=_kafkaTestHelper.getIteratorForTopic(topic).next().message();
   ConfigDrivenMd5SchemaRegistry schemaReg=new ConfigDrivenMd5SchemaRegistry(topic,record.getSchema());

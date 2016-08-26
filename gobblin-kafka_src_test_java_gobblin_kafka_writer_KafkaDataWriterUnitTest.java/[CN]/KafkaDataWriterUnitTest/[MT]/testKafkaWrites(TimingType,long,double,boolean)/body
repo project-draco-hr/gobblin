@@ -3,6 +3,7 @@
   Properties props=new Properties();
   props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,"Test");
   props.setProperty(KafkaWriterConfigurationKeys.COMMIT_TIMEOUT_MILLIS_CONFIG,"" + commitTimeout);
+  props.setProperty(KafkaWriterConfigurationKeys.FAILURE_ALLOWANCE_PCT_CONFIG,"" + failurePercentage);
   props.setProperty("bootstrap.servers","localhost:9092");
   props.setProperty("key.serializer",KafkaWriterConfigurationKeys.DEFAULT_KEY_SERIALIZER);
   props.setProperty("value.serializer",KafkaWriterConfigurationKeys.DEFAULT_VALUE_SERIALIZER);

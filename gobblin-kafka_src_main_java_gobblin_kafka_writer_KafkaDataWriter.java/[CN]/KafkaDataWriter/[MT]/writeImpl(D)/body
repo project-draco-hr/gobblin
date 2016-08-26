@@ -1,0 +1,5 @@
+{
+  log.debug("Write called");
+  this.producer.send(new ProducerRecord<String,D>(topic,record),this.producerCallback);
+  recordsProduced.mark();
+}
