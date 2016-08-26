@@ -28,7 +28,7 @@
       throw new IOException(message);
     }
  else {
-      message+="\nCommitting because failureRatio: " + failureRatio + " is less than the failureAllowance percentage: "+ (failureAllowance * 100.0);
+      message+="\nCommitting because failureRatio percentage: " + (failureRatio * 100.0) + " is less than the failureAllowance percentage: "+ (failureAllowance * 100.0);
       log.warn(message);
     }
   }

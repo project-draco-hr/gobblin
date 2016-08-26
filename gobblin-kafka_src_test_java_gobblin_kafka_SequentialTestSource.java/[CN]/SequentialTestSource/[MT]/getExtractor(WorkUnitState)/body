@@ -12,7 +12,7 @@
     @Override public String readRecord(    @Deprecated String reuse) throws DataRecordException, IOException {
       if (recordsExtracted < numRecordsPerExtract) {
         String record=":index:" + index + ":seq:"+ currentWatermark.getValue()+ ":";
-        log.warn("Extracted record -> " + record);
+        log.debug("Extracted record -> " + record);
         currentWatermark.increment();
         recordsExtracted++;
         return record;

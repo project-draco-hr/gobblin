@@ -15,7 +15,7 @@
         recordsWritten.mark();
       }
  else {
-        log.warn("record failed to write",exception);
+        log.debug("record failed to write",exception);
         recordsFailed.mark();
       }
     }
