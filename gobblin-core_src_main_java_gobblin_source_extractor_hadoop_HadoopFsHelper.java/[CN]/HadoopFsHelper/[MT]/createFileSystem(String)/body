@@ -3,6 +3,6 @@
     this.fs=new ProxiedFileSystemWrapper().getProxiedFileSystem(this.state,ProxiedFileSystemWrapper.AuthType.TOKEN,this.state.getProp(ConfigurationKeys.FS_PROXY_AS_USER_TOKEN_FILE),uri);
   }
  else {
-    this.fs=FileSystem.get(URI.create(uri),this.configuration);
+    this.fs=FileSystem.newInstance(URI.create(uri),this.configuration);
   }
 }

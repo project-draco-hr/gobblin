@@ -11,6 +11,7 @@
     }
   finally {
       super.close();
+      fs.close();
     }
   }
 }
