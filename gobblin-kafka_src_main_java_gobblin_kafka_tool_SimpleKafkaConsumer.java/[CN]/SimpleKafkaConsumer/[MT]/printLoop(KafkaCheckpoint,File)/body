@@ -15,7 +15,8 @@
       messagePlusMeta=iterator.next();
       if (messagePlusMeta != null) {
         byte[] payload=messagePlusMeta.message();
-        GenericRecord record=deserializer.deserialize(topic,payload);
+        System.out.println("Got a message of size " + payload.length + " bytes");
+        GenericRecord record=(GenericRecord)deserializer.deserialize(topic,payload);
         System.out.println(record.toString());
         checkpoint.update(messagePlusMeta.partition(),messagePlusMeta.offset());
       }

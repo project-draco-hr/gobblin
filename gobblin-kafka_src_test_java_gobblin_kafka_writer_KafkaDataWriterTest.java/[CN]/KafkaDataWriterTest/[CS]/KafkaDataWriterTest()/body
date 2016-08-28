@@ -1,3 +1,3 @@
 {
-  super(TOPIC);
+  _kafkaTestHelper=new KafkaTestBase();
 }

@@ -6,7 +6,7 @@
   deserializer=new LiAvroDeserializer(schemaRegistry);
   Properties consumeProps=new Properties();
   consumeProps.put("zookeeper.connect",zkConnect);
-  consumeProps.put("group.id","testConsumer2");
+  consumeProps.put("group.id","gobblin-tool-" + System.nanoTime());
   consumeProps.put("zookeeper.session.timeout.ms","10000");
   consumeProps.put("zookeeper.sync.time.ms","10000");
   consumeProps.put("auto.commit.interval.ms","10000");

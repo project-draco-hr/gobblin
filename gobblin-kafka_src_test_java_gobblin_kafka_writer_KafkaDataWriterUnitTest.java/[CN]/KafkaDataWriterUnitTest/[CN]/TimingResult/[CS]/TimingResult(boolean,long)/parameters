@@ -1,0 +1,2 @@
+boolean isSync
+long timeValueMillis

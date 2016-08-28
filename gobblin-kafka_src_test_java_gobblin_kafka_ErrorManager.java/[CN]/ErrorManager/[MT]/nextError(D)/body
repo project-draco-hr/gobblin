@@ -1,0 +1,14 @@
+{
+switch (errorType) {
+case ALL:
+    return true;
+case NTH:
+  return (++index % num == 0);
+case RANDOM:
+return random.nextBoolean();
+case REGEX:
+return pattern.matcher(record.toString()).find();
+default :
+throw new IllegalStateException("Unexpected error type: " + errorType.toString());
+}
+}

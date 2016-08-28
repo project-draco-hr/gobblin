@@ -1,0 +1,48 @@
+{
+  log.warn("Process id = " + ManagementFactory.getRuntimeMXBean().getName());
+  int numRecordsPerExtract=5;
+  int numParallel=2;
+  int errorEvery=2000;
+  int totalRecords=numRecordsPerExtract * numParallel;
+  int totalSuccessful=totalRecords / errorEvery + totalRecords % errorEvery;
+{
+    Closer closer=Closer.create();
+    try {
+      kafkaTestHelper.provisionTopic(TOPIC);
+      jobProps.setProperty("source.numRecordsPerExtract","" + numRecordsPerExtract);
+      jobProps.setProperty("source.numParallelism","" + numParallel);
+      jobProps.setProperty("writer.kafka.producerConfig.flaky.errorType","regex");
+      jobProps.setProperty("writer.kafka.producerConfig.flaky.regexPattern",":index:0.*");
+      jobProps.setProperty("job.commit.policy","partial");
+      jobProps.setProperty("publish.at.job.level","false");
+      totalSuccessful=5;
+      JobLauncher jobLauncher=closer.register(JobLauncherFactory.newJobLauncher(gobblinProps,jobProps));
+      jobLauncher.launchJob(null);
+    }
+ catch (    Exception e) {
+    }
+ finally {
+      closer.close();
+    }
+    testRecordsWritten(totalSuccessful,TOPIC);
+  }
+  boolean trySecond=true;
+  if (trySecond) {
+    Closer closer=Closer.create();
+    try {
+      jobProps.setProperty("source.numRecordsPerExtract","" + numRecordsPerExtract);
+      jobProps.setProperty("source.numParallelism","" + numParallel);
+      jobProps.setProperty("writer.kafka.producerConfig.flaky.errorType","nth");
+      jobProps.setProperty("writer.kafka.producerConfig.flaky.errorEvery","" + errorEvery);
+      JobLauncher jobLauncher=closer.register(JobLauncherFactory.newJobLauncher(gobblinProps,jobProps));
+      jobLauncher.launchJob(null);
+      totalSuccessful=totalRecords / errorEvery + totalRecords % errorEvery;
+    }
+ catch (    Exception e) {
+    }
+ finally {
+      closer.close();
+    }
+  }
+  testRecordsWritten(totalSuccessful,TOPIC);
+}

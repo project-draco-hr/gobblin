@@ -1,0 +1,12 @@
+{
+  final KafkaTestBase kafkaTestBase=new KafkaTestBase();
+  System.out.println("Started server on port: " + kafkaTestBase.getKafkaServerPort());
+  Runtime.getRuntime().addShutdownHook(new Thread(){
+    @Override public void run(){
+      log.info("Shutting down...");
+      kafkaTestBase.stopServers();
+    }
+  }
+);
+  kafkaTestBase.startServers();
+}

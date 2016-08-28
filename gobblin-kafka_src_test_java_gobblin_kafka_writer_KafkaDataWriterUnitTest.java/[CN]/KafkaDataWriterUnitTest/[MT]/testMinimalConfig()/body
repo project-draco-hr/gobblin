@@ -1,0 +1,11 @@
+{
+  Properties props=new Properties();
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,"FakeTopic");
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_PRODUCER_CONFIG_PREFIX + "bootstrap.servers","localhost:9092");
+  try {
+    KafkaDataWriter<GenericRecord> kafkaWriter=new KafkaDataWriter<>(props);
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw exception",e);
+  }
+}

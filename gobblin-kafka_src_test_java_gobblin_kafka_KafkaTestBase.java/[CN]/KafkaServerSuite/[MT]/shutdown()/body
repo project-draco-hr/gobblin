@@ -1,0 +1,11 @@
+{
+  if (_numStarted.decrementAndGet() == 0) {
+    log.info("Shutting down Kafka server suite");
+    _kafkaServer.shutdown();
+    _zkClient.close();
+    _zkServer.shutdown();
+  }
+ else {
+    log.info("Kafka server suite still in use ... not shutting down yet");
+  }
+}

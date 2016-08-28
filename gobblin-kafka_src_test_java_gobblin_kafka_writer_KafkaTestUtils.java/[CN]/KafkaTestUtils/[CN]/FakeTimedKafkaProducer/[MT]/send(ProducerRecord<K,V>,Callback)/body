@@ -1,0 +1,32 @@
+{
+  final TimingResult result=this.timingManager.nextTime();
+  log.debug("sync: " + result.isSync + " time : "+ result.timeValueMillis);
+  TopicPartition topicPartition=new TopicPartition(record.topic(),0);
+  long baseOffset=-1L;
+  long relativeOffset=1L;
+  final RecordMetadata recordMetadata=new RecordMetadata(topicPartition,baseOffset,relativeOffset);
+  if (result.isSync) {
+    try {
+      Thread.sleep(result.timeValueMillis);
+    }
+ catch (    InterruptedException e) {
+    }
+    producerCallback.onCompletion(recordMetadata,null);
+  }
+ else {
+    Thread t=new Thread(new Runnable(){
+      @Override public void run(){
+        try {
+          log.debug("Sleeping for ms: " + result.timeValueMillis);
+          Thread.sleep(result.timeValueMillis);
+        }
+ catch (        InterruptedException e) {
+        }
+        producerCallback.onCompletion(recordMetadata,null);
+      }
+    }
+);
+    t.start();
+  }
+  return null;
+}

@@ -1,0 +1,12 @@
+{
+  if (_topicConsumerMap.containsKey(topic)) {
+  }
+ else {
+    AdminUtils.createTopic(_kafkaServerSuite.getZkClient(),topic,1,1,new Properties());
+    List<KafkaServer> servers=new ArrayList<>();
+    servers.add(_kafkaServerSuite.getKafkaServer());
+    TestUtils.waitUntilMetadataIsPropagated(scala.collection.JavaConversions.asScalaBuffer(servers),topic,0,5000);
+    KafkaConsumerSuite consumerSuite=new KafkaConsumerSuite(_kafkaServerSuite.getZkConnectString(),topic);
+    _topicConsumerMap.put(topic,consumerSuite);
+  }
+}

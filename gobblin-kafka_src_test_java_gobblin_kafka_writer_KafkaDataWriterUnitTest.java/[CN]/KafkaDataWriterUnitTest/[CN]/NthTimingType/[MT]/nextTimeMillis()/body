@@ -1,0 +1,9 @@
+{
+  currentNum++;
+  if (currentNum % n == 0) {
+    return nthTimeMillis;
+  }
+ else {
+    return defaultTimeMillis;
+  }
+}

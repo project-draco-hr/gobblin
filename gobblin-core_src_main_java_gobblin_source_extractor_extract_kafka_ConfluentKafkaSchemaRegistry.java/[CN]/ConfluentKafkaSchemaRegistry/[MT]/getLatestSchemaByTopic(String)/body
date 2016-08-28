@@ -1,9 +1,10 @@
 {
+  String schemaName=topic + this.schemaNameSuffix;
   try {
-    String schemaName=topic + this.schemaNameSuffix;
     return new Schema.Parser().parse(this.schemaRegistryClient.getLatestSchemaMetadata(schemaName).getSchema());
   }
  catch (  IOException|RestClientException e) {
+    log.error("Failed to get schema for topic " + topic + "; subject "+ schemaName);
     throw new SchemaRegistryException(e);
   }
 }

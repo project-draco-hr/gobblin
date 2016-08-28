@@ -1,3 +1,9 @@
 {
-  this.producer.close();
+  log.debug("Close called");
+  try {
+    this.producer.close();
+  }
+  finally {
+    super.close();
+  }
 }

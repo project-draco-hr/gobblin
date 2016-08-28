@@ -1,0 +1,8 @@
+{
+  if (_topicConsumerMap.containsKey(topic)) {
+    return _topicConsumerMap.get(topic).getIterator();
+  }
+ else {
+    throw new IllegalStateException("Could not find provisioned topic" + topic + ": call provisionTopic before");
+  }
+}

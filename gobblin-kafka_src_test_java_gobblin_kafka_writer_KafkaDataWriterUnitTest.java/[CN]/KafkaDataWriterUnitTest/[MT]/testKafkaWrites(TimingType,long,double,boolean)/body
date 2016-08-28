@@ -1,0 +1,41 @@
+{
+  TimingManager timingManager=new TimingManager(false,timingType);
+  Properties props=new Properties();
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,"Test");
+  props.setProperty(KafkaWriterConfigurationKeys.COMMIT_TIMEOUT_MILLIS_CONFIG,"" + commitTimeout);
+  props.setProperty(KafkaWriterConfigurationKeys.FAILURE_ALLOWANCE_PCT_CONFIG,"" + failurePercentage);
+  props.setProperty("bootstrap.servers","localhost:9092");
+  props.setProperty("key.serializer",KafkaWriterConfigurationKeys.DEFAULT_KEY_SERIALIZER);
+  props.setProperty("value.serializer",KafkaWriterConfigurationKeys.DEFAULT_VALUE_SERIALIZER);
+  Config config=ConfigFactory.parseProperties(props);
+  KafkaProducer<String,byte[]> slowKafkaProducer=new FakeTimedKafkaProducer<>(timingManager,props);
+  KafkaDataWriter<byte[]> kafkaWriter=new KafkaDataWriter<byte[]>(slowKafkaProducer,config);
+  try {
+    for (int i=0; i < 10; i++) {
+      kafkaWriter.write(KafkaTestUtils.generateRandomBytes());
+    }
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw any Exception");
+  }
+  try {
+    kafkaWriter.commit();
+    if (!success) {
+      Assert.fail("Commit should not succeed");
+    }
+  }
+ catch (  IOException e) {
+    if (success) {
+      Assert.fail("Commit should not throw IOException");
+    }
+  }
+catch (  Exception e) {
+    Assert.fail("Should not throw any exception other than IOException");
+  }
+  try {
+    kafkaWriter.close();
+  }
+ catch (  Exception e) {
+    Assert.fail("Should not throw any exception on close");
+  }
+}

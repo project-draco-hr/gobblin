@@ -1,0 +1,4 @@
+{
+  log.warn("Process id = " + ManagementFactory.getRuntimeMXBean().getName());
+  _kafkaTestHelper.startServers();
+}

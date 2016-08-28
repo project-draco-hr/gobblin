@@ -1,0 +1,6 @@
+{
+  if (config.hasPath(path)) {
+    return config.getDouble(path);
+  }
+  return def;
+}

@@ -1,0 +1,35 @@
+{
+  configureIfNeeded(ConfigFactory.parseProperties(state.getProperties()));
+  final LongWatermark lowWatermark=state.getWorkunit().getLowWatermark(LongWatermark.class);
+  final WorkUnitState workUnitState=state;
+  final int index=state.getPropAsInt(WORK_UNIT_INDEX);
+  return new Extractor<String,String>(){
+    long recordsExtracted=0;
+    LongWatermark currentWatermark=lowWatermark;
+    @Override public String getSchema() throws IOException {
+      return "";
+    }
+    @Override public String readRecord(    @Deprecated String reuse) throws DataRecordException, IOException {
+      if (recordsExtracted < numRecordsPerExtract) {
+        String record=":index:" + index + ":seq:"+ currentWatermark.getValue()+ ":";
+        log.debug("Extracted record -> " + record);
+        currentWatermark.increment();
+        recordsExtracted++;
+        return record;
+      }
+ else {
+        return null;
+      }
+    }
+    @Override public long getExpectedRecordCount(){
+      return numRecordsPerExtract;
+    }
+    @Override public long getHighWatermark(){
+      return workUnitState.getHighWaterMark();
+    }
+    @Override public void close() throws IOException {
+      workUnitState.setActualHighWatermark(currentWatermark);
+    }
+  }
+;
+}

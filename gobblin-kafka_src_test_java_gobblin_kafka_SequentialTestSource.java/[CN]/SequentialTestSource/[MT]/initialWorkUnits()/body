@@ -1,0 +1,12 @@
+{
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (int i=0; i < num_parallelism; i++) {
+    WorkUnit workUnit=WorkUnit.create(newExtract(Extract.TableType.APPEND_ONLY,namespace,table));
+    LongWatermark lowWatermark=new LongWatermark(i * numRecordsPerExtract + 1);
+    LongWatermark expectedHighWatermark=new LongWatermark((i + 1) * numRecordsPerExtract);
+    workUnit.setWatermarkInterval(new WatermarkInterval(lowWatermark,expectedHighWatermark));
+    workUnit.setProp(WORK_UNIT_INDEX,i);
+    workUnits.add(workUnit);
+  }
+  return workUnits;
+}

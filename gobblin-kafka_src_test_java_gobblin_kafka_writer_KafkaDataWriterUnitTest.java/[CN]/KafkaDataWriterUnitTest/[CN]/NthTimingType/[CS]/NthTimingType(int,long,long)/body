@@ -1,0 +1,6 @@
+{
+  this.n=n;
+  this.defaultTimeMillis=defaultTimeMillis;
+  this.nthTimeMillis=nthTimeMillis;
+  this.currentNum=0;
+}

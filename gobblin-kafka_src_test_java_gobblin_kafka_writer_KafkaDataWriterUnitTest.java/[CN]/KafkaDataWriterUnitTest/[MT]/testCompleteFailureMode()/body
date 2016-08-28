@@ -1,0 +1,23 @@
+{
+  String topic="testFailureMode";
+  Properties props=new Properties();
+  props.setProperty(KafkaWriterConfigurationKeys.KAFKA_TOPIC,topic);
+  Properties producerProps=new Properties();
+  producerProps.setProperty("bootstrap.servers","localhost:9092");
+  producerProps.setProperty("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
+  producerProps.setProperty("value.serializer","org.apache.kafka.common.serialization.ByteArraySerializer");
+  producerProps.setProperty(ErrorManager.ERROR_TYPE_CONFIGURATION_KEY,"all");
+  FlakyKafkaProducer flakyKafkaProducer=new FlakyKafkaProducer(producerProps);
+  KafkaDataWriter<byte[]> kafkaWriter=new KafkaDataWriter<>(flakyKafkaProducer,ConfigFactory.parseProperties(props));
+  byte[] messageBytes=KafkaTestUtils.generateRandomBytes();
+  kafkaWriter.write(messageBytes);
+  try {
+    kafkaWriter.commit();
+  }
+ catch (  IOException e) {
+  }
+ finally {
+    kafkaWriter.close();
+  }
+  Assert.assertEquals(kafkaWriter.recordsWritten(),0);
+}

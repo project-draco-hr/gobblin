@@ -1,0 +1,32 @@
+{
+  configureIfNeeded(ConfigFactory.parseProperties(state.getProperties()));
+  final List<WorkUnitState> previousWorkUnitStates=state.getPreviousWorkUnitStates();
+  if (!previousWorkUnitStates.isEmpty()) {
+    List<WorkUnit> newWorkUnits=Lists.newArrayListWithCapacity(previousWorkUnitStates.size());
+    int i=0;
+    for (    WorkUnitState workUnitState : previousWorkUnitStates) {
+      WorkUnit workUnit;
+      if (workUnitState.getWorkingState().equals(WorkUnitState.WorkingState.COMMITTED)) {
+        LongWatermark watermark=workUnitState.getActualHighWatermark(LongWatermark.class);
+        LongWatermark expectedWatermark=new LongWatermark(watermark.getValue() + numRecordsPerExtract);
+        WatermarkInterval watermarkInterval=new WatermarkInterval(watermark,expectedWatermark);
+        workUnit=WorkUnit.create(newExtract(tableType,namespace,table),watermarkInterval);
+        log.debug("Will be setting watermark interval to " + watermarkInterval.toJson());
+        workUnit.setProp(WORK_UNIT_INDEX,workUnitState.getWorkunit().getProp(WORK_UNIT_INDEX));
+      }
+ else {
+        LongWatermark watermark=workUnitState.getWorkunit().getLowWatermark(LongWatermark.class);
+        LongWatermark expectedWatermark=new LongWatermark(watermark.getValue() + numRecordsPerExtract);
+        WatermarkInterval watermarkInterval=new WatermarkInterval(watermark,expectedWatermark);
+        workUnit=WorkUnit.create(newExtract(tableType,namespace,table),watermarkInterval);
+        log.debug("Will be setting watermark interval to " + watermarkInterval.toJson());
+        workUnit.setProp(WORK_UNIT_INDEX,workUnitState.getWorkunit().getProp(WORK_UNIT_INDEX));
+      }
+      newWorkUnits.add(workUnit);
+    }
+    return newWorkUnits;
+  }
+ else {
+    return initialWorkUnits();
+  }
+}

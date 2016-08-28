@@ -1,0 +1,9 @@
+{
+  if (!configured.get()) {
+    num_parallelism=ConfigUtils.getInt(config,"source.numParallelism",DEFAULT_NUM_PARALLELISM);
+    namespace=ConfigUtils.getString(config,"source.namespace",DEFAULT_NAMESPACE);
+    table=ConfigUtils.getString(config,"source.table",DEFAULT_TABLE);
+    numRecordsPerExtract=ConfigUtils.getInt(config,"source.numRecordsPerExtract",DEFAULT_NUM_RECORDS_PER_EXTRACT);
+    configured.set(true);
+  }
+}

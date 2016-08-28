@@ -1,0 +1,6 @@
+{
+  for (  Map.Entry<String,KafkaConsumerSuite> consumerSuiteEntry : _topicConsumerMap.entrySet()) {
+    consumerSuiteEntry.getValue().shutdown();
+    AdminUtils.deleteTopic(_kafkaServerSuite.getZkClient(),consumerSuiteEntry.getKey());
+  }
+}

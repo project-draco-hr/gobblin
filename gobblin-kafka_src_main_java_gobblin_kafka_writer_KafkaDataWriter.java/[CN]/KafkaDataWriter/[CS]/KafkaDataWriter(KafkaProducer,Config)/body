@@ -1,12 +1,22 @@
 {
-  recordsWritten=new AtomicInteger(0);
+  super(ConfigUtils.configToState(config));
+  recordsProduced=getMetricContext().meter(KafkaWriterMetricNames.RECORDS_PRODUCED_METER);
+  recordsWritten=getMetricContext().meter(KafkaWriterMetricNames.RECORDS_SUCCESS_METER);
+  recordsFailed=getMetricContext().meter(KafkaWriterMetricNames.RECORDS_FAILED_METER);
   bytesWritten=new AtomicInteger(-1);
   this.topic=config.getString(KafkaWriterConfigurationKeys.KAFKA_TOPIC);
+  this.commitTimeoutInNanos=ConfigUtils.getLong(config,KafkaWriterConfigurationKeys.COMMIT_TIMEOUT_MILLIS_CONFIG,KafkaWriterConfigurationKeys.COMMIT_TIMEOUT_MILLIS_DEFAULT) * MILLIS_TO_NANOS;
+  this.commitStepWaitTimeMillis=ConfigUtils.getLong(config,KafkaWriterConfigurationKeys.COMMIT_STEP_WAIT_TIME_CONFIG,KafkaWriterConfigurationKeys.COMMIT_STEP_WAIT_TIME_DEFAULT);
+  this.failureAllowance=ConfigUtils.getDouble(config,KafkaWriterConfigurationKeys.FAILURE_ALLOWANCE_PCT_CONFIG,KafkaWriterConfigurationKeys.FAILURE_ALLOWANCE_PCT_DEFAULT) / 100.0;
   this.producer=producer;
   this.producerCallback=new Callback(){
     @Override public void onCompletion(    RecordMetadata metadata,    Exception exception){
       if (null == exception) {
-        recordsWritten.incrementAndGet();
+        recordsWritten.mark();
+      }
+ else {
+        log.debug("record failed to write",exception);
+        recordsFailed.mark();
       }
     }
   }
