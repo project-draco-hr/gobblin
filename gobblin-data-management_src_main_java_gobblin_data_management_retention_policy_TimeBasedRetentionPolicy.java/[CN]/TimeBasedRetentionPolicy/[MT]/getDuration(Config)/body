@@ -1,0 +1,9 @@
+{
+  Preconditions.checkArgument(config.hasPath(RETENTION_TIMEBASED_DURATION_KEY) || config.hasPath(RETENTION_MINUTES_KEY),String.format("Either %s or %s needs to be set",RETENTION_TIMEBASED_DURATION_KEY,RETENTION_MINUTES_KEY));
+  if (config.hasPath(RETENTION_TIMEBASED_DURATION_KEY)) {
+    return parseDuration(config.getString(RETENTION_TIMEBASED_DURATION_KEY));
+  }
+ else {
+    return Duration.standardMinutes(Long.parseLong(config.getString(RETENTION_MINUTES_KEY)));
+  }
+}

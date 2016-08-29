@@ -1,3 +1,3 @@
 {
-  this.retention=Duration.standardMinutes(Long.parseLong(props.getProperty(RETENTION_MINUTES_KEY,RETENTION_MINUTES_DEFAULT)));
+  this(ConfigUtils.propertiesToConfig(props));
 }
