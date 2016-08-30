@@ -1,0 +1,12 @@
+{
+  if (!optionalTblProperties.isPresent()) {
+    return DEFAULT_TBL_PROPERTIES;
+  }
+  Map<String,String> tblProperties=optionalTblProperties.get();
+  for (  String key : DEFAULT_TBL_PROPERTIES.keySet()) {
+    if (!tblProperties.containsKey(key)) {
+      tblProperties.put(key,DEFAULT_TBL_PROPERTIES.get(key));
+    }
+  }
+  return tblProperties;
+}

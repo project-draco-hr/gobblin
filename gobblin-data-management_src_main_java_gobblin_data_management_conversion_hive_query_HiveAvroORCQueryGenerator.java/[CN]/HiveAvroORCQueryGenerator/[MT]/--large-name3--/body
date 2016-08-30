@@ -6,7 +6,7 @@
   String rowFormatSerde=optionalRowFormatSerde.isPresent() ? optionalRowFormatSerde.get() : DEFAULT_ROW_FORMAT_SERDE;
   String inputFormat=optionalInputFormat.isPresent() ? optionalInputFormat.get() : DEFAULT_ORC_INPUT_FORMAT;
   String outputFormat=optionalOutputFormat.isPresent() ? optionalOutputFormat.get() : DEFAULT_ORC_OUTPUT_FORMAT;
-  Map<String,String> tblProperties=optionalTblProperties.isPresent() ? optionalTblProperties.get() : DEFAULT_TBL_PROPERTIES;
+  Map<String,String> tblProperties=getTableProperties(optionalTblProperties);
   StringBuilder ddl=new StringBuilder();
   ddl.append(String.format("CREATE EXTERNAL TABLE IF NOT EXISTS `%s`.`%s` ",dbName,tblName));
   ddl.append("( \n");
