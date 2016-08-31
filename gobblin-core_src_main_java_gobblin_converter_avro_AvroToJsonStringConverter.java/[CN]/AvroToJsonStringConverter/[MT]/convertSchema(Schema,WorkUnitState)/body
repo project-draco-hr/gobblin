@@ -1,0 +1,4 @@
+{
+  this.schema=inputSchema;
+  return this.schema.toString();
+}

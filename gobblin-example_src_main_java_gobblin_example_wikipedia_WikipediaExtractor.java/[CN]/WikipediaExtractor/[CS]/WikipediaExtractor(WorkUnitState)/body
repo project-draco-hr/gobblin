@@ -1,18 +1,29 @@
 {
-  LOG.info("WorkUnitState received: " + workUnitState);
   this.workUnitState=workUnitState;
-  this.workUnit=workUnitState.getWorkunit();
   this.rootUrl=readProp(WIKIPEDIA_API_ROOTURL,workUnitState);
   this.schema=readProp(WIKIPEDIA_AVRO_SCHEMA,workUnitState);
-  this.requestedTitles=new LinkedList<>(SPLITTER.splitToList(readProp(SOURCE_PAGE_TITLES,workUnitState)));
-  this.revisionsCnt=Integer.parseInt(readProp(SOURCE_REVISIONS_CNT,workUnitState));
-  this.numRequestedTitles=this.requestedTitles.size();
-  if (this.requestedTitles.isEmpty()) {
-    this.recordsOfCurrentTitle=new LinkedList<>();
+  this.batchSize=5;
+  this.requestedTitle=workUnitState.getProp(ConfigurationKeys.DATASET_URN_KEY);
+  this.baseQuery=ImmutableMap.<String,String>builder().put("format","json").put("action","query").put("prop","revisions").build();
+  try {
+    Queue<JsonElement> lastRevision=retrievePageRevisions(ImmutableMap.<String,String>builder().putAll(this.baseQuery).put("rvprop","ids").put("titles",this.requestedTitle).put("rvlimit","1").build());
+    this.lastRevisionId=lastRevision.isEmpty() ? -1 : parseRevision(lastRevision.poll());
   }
- else {
-    String firstTitle=this.requestedTitles.poll();
-    this.recordsOfCurrentTitle=retrievePageRevisions(firstTitle);
+ catch (  URISyntaxException use) {
+    throw new IOException(use);
   }
-  this.reader=new WikiResponseReader();
+  long baseRevision=workUnitState.getWorkunit().getLowWatermark(LongWatermark.class,new Gson()).getValue();
+  if (baseRevision < 0) {
+    try {
+      baseRevision=createLowWatermarkForBootstrap(workUnitState);
+    }
+ catch (    IOException ioe) {
+      baseRevision=this.lastRevisionId;
+    }
+  }
+  this.reader=new WikiResponseReader(baseRevision);
+  workUnitState.setActualHighWatermark(new LongWatermark(this.lastRevisionId));
+  this.currentBatch=new LinkedList<>();
+  LOG.info(String.format("Will pull revisions %s to %s for page %s.",this.reader.latestPulledRevision,this.lastRevisionId,this.requestedTitle));
+  this.maxRevisionsPulled=workUnitState.getPropAsInt(MAX_REVISION_PER_PAGE,DEFAULT_MAX_REVISIONS_PER_PAGE);
 }

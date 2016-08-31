@@ -1,5 +1,34 @@
 {
+  Map<String,Iterable<WorkUnitState>> previousWorkUnits=state.getPreviousWorkUnitStatesByDatasetUrns();
+  List<String> titles=new LinkedList<>(Splitter.on(",").omitEmptyStrings().splitToList(state.getProp(WikipediaExtractor.SOURCE_PAGE_TITLES)));
+  Map<String,LongWatermark> prevHighWatermarks=Maps.newHashMap();
+  for (  Map.Entry<String,Iterable<WorkUnitState>> entry : previousWorkUnits.entrySet()) {
+    Iterable<LongWatermark> watermarks=Iterables.transform(entry.getValue(),new Function<WorkUnitState,LongWatermark>(){
+      @Override public LongWatermark apply(      WorkUnitState wus){
+        return wus.getActualHighWatermark(LongWatermark.class);
+      }
+    }
+);
+    watermarks=Iterables.filter(watermarks,Predicates.notNull());
+    List<LongWatermark> watermarkList=Lists.newArrayList(watermarks);
+    Collections.sort(watermarkList,Collections.<LongWatermark>reverseOrder());
+    if (watermarkList.size() > 0) {
+      prevHighWatermarks.put(entry.getKey(),watermarkList.get(0));
+    }
+  }
   Extract extract=createExtract(TableType.SNAPSHOT_ONLY,state.getProp(ConfigurationKeys.EXTRACT_NAMESPACE_NAME_KEY),"WikipediaOutput");
-  WorkUnit workUnit=WorkUnit.create(extract);
-  return Arrays.asList(workUnit);
+  List<WorkUnit> workUnits=Lists.newArrayList();
+  for (  String title : titles) {
+    LongWatermark prevWatermark=prevHighWatermarks.containsKey(title) ? prevHighWatermarks.get(title) : new LongWatermark(-1);
+    prevHighWatermarks.remove(title);
+    WorkUnit workUnit=WorkUnit.create(extract,new WatermarkInterval(prevWatermark,new LongWatermark(-1)));
+    workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,title);
+    workUnits.add(workUnit);
+  }
+  for (  Map.Entry<String,LongWatermark> nonProcessedDataset : prevHighWatermarks.entrySet()) {
+    WorkUnit workUnit=WorkUnit.create(extract,new WatermarkInterval(nonProcessedDataset.getValue(),nonProcessedDataset.getValue()));
+    workUnit.setProp(ConfigurationKeys.DATASET_URN_KEY,nonProcessedDataset.getKey());
+    workUnits.add(workUnit);
+  }
+  return workUnits;
 }

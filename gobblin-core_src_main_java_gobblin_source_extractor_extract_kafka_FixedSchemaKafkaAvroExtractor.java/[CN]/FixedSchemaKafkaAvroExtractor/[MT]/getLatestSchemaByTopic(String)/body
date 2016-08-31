@@ -1,0 +1,5 @@
+{
+  String key=STATIC_SCHEMA_ROOT_KEY + "." + topic;
+  Preconditions.checkArgument(this.workUnitState.contains(key),String.format("Could not find schema for topic %s. Looking for key %s.",topic,key));
+  return new Schema.Parser().parse(this.workUnitState.getProp(key));
+}

@@ -1,6 +1,7 @@
 {
   if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
-    return ConfigUtils.configToProperties((new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfig(ConfigFactory.parseProperties(jobProps)));
+    Properties resolvedProps=ConfigUtils.configToProperties((new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfig(ConfigFactory.parseProperties(jobProps)));
+    return resolvedProps;
   }
  else {
     return jobProps;

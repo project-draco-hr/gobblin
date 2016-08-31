@@ -1,3 +1,4 @@
 {
   this.scheduler=new StdSchedulerFactory().getScheduler();
+  this.scheduler.start();
 }

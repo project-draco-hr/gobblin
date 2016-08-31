@@ -2,5 +2,8 @@
   if (!hasNext()) {
     return null;
   }
-  return WikipediaExtractor.this.recordsOfCurrentTitle.poll();
+  JsonElement element=WikipediaExtractor.this.currentBatch.poll();
+  this.latestPulledRevision=parseRevision(element);
+  this.revisionsPulled++;
+  return element;
 }

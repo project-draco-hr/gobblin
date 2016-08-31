@@ -1,0 +1,16 @@
+{
+  try {
+    Path pathWithoutSchemeOrAuthority=PathUtils.getPathWithoutSchemeAndAuthority(path);
+    String jobName=this.jobNameMap.get(pathWithoutSchemeOrAuthority);
+    if (jobName == null) {
+      LOG.info("Could not find a scheduled job to unschedule with path " + pathWithoutSchemeOrAuthority);
+      return;
+    }
+    LOG.info("Unscheduling job " + jobName);
+    this.jobScheduler.unscheduleJob(jobName);
+    this.jobNameMap.remove(pathWithoutSchemeOrAuthority);
+  }
+ catch (  JobException je) {
+    LOG.error("Could not unschedule job " + this.jobNameMap.get(path));
+  }
+}

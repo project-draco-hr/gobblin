@@ -1,0 +1,3 @@
+{
+  return PathUtils.getPathWithoutSchemeAndAuthority(new Path(jobProps.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_PATH_KEY)));
+}

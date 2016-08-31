@@ -6,4 +6,12 @@
   long pollingInterval=Long.parseLong(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL_KEY,Long.toString(ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL)));
   this.pathAlterationDetector=new PathAlterationDetector(pollingInterval);
   this.waitForJobCompletion=Boolean.parseBoolean(this.properties.getProperty(ConfigurationKeys.SCHEDULER_WAIT_FOR_JOB_COMPLETION_KEY,ConfigurationKeys.DEFAULT_SCHEDULER_WAIT_FOR_JOB_COMPLETION));
+  if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY)) {
+    this.jobConfigFileDirPath=new Path(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY));
+    this.listener=new PathAlterationListenerAdaptorForMonitor(jobConfigFileDirPath,this);
+  }
+ else {
+    this.jobConfigFileDirPath=null;
+    this.listener=null;
+  }
 }

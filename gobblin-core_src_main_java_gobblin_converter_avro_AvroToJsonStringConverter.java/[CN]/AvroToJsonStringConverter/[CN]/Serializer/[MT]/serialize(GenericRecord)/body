@@ -1,0 +1,6 @@
+{
+  this.outputStream.reset();
+  this.writer.write(record,this.encoder);
+  this.encoder.flush();
+  return this.outputStream.toString(Charsets.UTF_8);
+}

@@ -1,5 +1,6 @@
 {
   LOG.info("Starting the job scheduler");
+  Preconditions.checkState(this.listener != null,String.format("Property %s was not defined.",ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY));
   try {
     this.scheduler.awaitRunning(1,TimeUnit.SECONDS);
   }
@@ -11,7 +12,7 @@
     if (this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY) && !this.properties.containsKey(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY)) {
       this.properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,"file://" + this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY));
     }
-    scheduleGeneralConfiguredJobs();
     startGeneralJobConfigFileMonitor();
+    scheduleGeneralConfiguredJobs();
   }
 }

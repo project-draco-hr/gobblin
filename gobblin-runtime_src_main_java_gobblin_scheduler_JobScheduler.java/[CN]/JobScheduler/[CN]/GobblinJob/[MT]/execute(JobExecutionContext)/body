@@ -1,4 +1,5 @@
 {
+  LOG.info("Starting job " + context.getJobDetail().getKey());
   JobDataMap dataMap=context.getJobDetail().getJobDataMap();
   JobScheduler jobScheduler=(JobScheduler)dataMap.get(JOB_SCHEDULER_KEY);
   Properties jobProps=(Properties)dataMap.get(PROPERTIES_KEY);

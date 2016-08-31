@@ -1,0 +1,6 @@
+{
+  super.init(workUnit);
+  Preconditions.checkArgument(workUnit.contains(SCHEMA_KEY));
+  this.schema=workUnit.getProp(SCHEMA_KEY);
+  return this;
+}

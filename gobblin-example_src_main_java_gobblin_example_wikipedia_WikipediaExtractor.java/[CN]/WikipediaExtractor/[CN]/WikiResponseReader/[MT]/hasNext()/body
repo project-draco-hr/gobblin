@@ -1,23 +1,24 @@
 {
-  if (!WikipediaExtractor.this.recordsOfCurrentTitle.isEmpty()) {
+  if (WikipediaExtractor.this.maxRevisionsPulled > -1 && this.revisionsPulled >= WikipediaExtractor.this.maxRevisionsPulled) {
+    WikipediaExtractor.this.workUnitState.setActualHighWatermark(new LongWatermark(this.latestPulledRevision));
+    LOG.info(String.format("Pulled max number of records %d, final revision pulled %d.",this.revisionsPulled,this.latestPulledRevision));
+    return false;
+  }
+  if (!WikipediaExtractor.this.currentBatch.isEmpty()) {
     return true;
   }
- else   if (WikipediaExtractor.this.requestedTitles.isEmpty()) {
-    return false;
-  }
  else {
-    while (!WikipediaExtractor.this.requestedTitles.isEmpty()) {
-      String currentTitle=WikipediaExtractor.this.requestedTitles.poll();
-      try {
-        WikipediaExtractor.this.recordsOfCurrentTitle=retrievePageRevisions(currentTitle);
-      }
- catch (      IOException e) {
-        LOG.error("IOException while retrieving revisions for title '" + currentTitle + "'");
-      }
-      if (!WikipediaExtractor.this.recordsOfCurrentTitle.isEmpty()) {
-        return true;
-      }
+    if (this.latestPulledRevision >= WikipediaExtractor.this.lastRevisionId) {
+      return false;
     }
-    return false;
+    try {
+      WikipediaExtractor.this.currentBatch=retrievePageRevisions(ImmutableMap.<String,String>builder().putAll(WikipediaExtractor.this.baseQuery).put("rvprop","ids|timestamp|user|userid|size").put("titles",WikipediaExtractor.this.requestedTitle).put("rvlimit",Integer.toString(WikipediaExtractor.this.batchSize + 1)).put("rvstartid",Long.toString(this.latestPulledRevision)).put("rvendid",Long.toString(WikipediaExtractor.this.lastRevisionId)).put("rvdir","newer").build());
+      WikipediaExtractor.this.currentBatch.poll();
+    }
+ catch (    URISyntaxException|IOException use) {
+      LOG.error("Could not retrieve more revisions.",use);
+      return false;
+    }
+    return !WikipediaExtractor.this.currentBatch.isEmpty();
   }
 }

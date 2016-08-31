@@ -9,19 +9,16 @@ case SCHEDULE:
           boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
         customizedInfoAction="schedule";
       customizedInfoResult="creation or equivalent action";
-    jobScheduler.scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
-  break;
+    addToJobNameMap(jobProps);
+  jobScheduler.scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
+break;
 case RESCHEDULE:
 customizedInfoAction="reschedule";
 customizedInfoResult="change";
 rescheduleJob(jobProps);
 break;
 case UNSCHEDULE:
-String jobName=jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY);
-customizedInfoAction="unschedule";
-customizedInfoResult="deletion";
-jobScheduler.unscheduleJob(jobName);
-break;
+throw new RuntimeException("Should not call loadNewCommonConfigAndHandleNewJob for unscheduling jobs.");
 default :
 break;
 }

@@ -1,5 +1,6 @@
 {
   JsonParser jsonParser=new JsonParser();
+  log.info("Schema: " + inputSchema);
   JsonElement jsonSchema=jsonParser.parse(inputSchema);
   return jsonSchema.getAsJsonArray();
 }

@@ -1,0 +1,3 @@
+{
+  return Lists.newArrayList(inputRecord.getBytes(Charsets.UTF_8));
+}

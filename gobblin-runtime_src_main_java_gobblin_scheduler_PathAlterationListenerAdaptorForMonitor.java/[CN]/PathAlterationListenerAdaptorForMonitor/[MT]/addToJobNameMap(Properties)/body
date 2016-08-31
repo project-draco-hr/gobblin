@@ -1,0 +1,3 @@
+{
+  this.jobNameMap.put(getJobPath(jobProps),jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY));
+}
