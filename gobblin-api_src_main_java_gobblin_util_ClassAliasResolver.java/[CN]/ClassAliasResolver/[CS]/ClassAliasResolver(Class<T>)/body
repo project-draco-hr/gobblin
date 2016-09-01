@@ -1,0 +1,17 @@
+{
+  Map<String,Class<? extends T>> cache=Maps.newHashMap();
+  Reflections reflections=new Reflections("gobblin");
+  for (  Class<? extends T> clazz : reflections.getSubTypesOf(subTypeOf)) {
+    if (clazz.isAnnotationPresent(Alias.class)) {
+      String alias=clazz.getAnnotation(Alias.class).value();
+      if (cache.containsKey(alias)) {
+        log.warn(String.format("Alias %s already mapped to class %s. Mapping for %s will be ignored",alias,cache.get(alias).getCanonicalName(),clazz.getCanonicalName()));
+      }
+ else {
+        cache.put(clazz.getAnnotation(Alias.class).value(),clazz);
+      }
+    }
+  }
+  this.subtypeOf=subTypeOf;
+  this.aliasToClassCache=ImmutableMap.copyOf(cache);
+}

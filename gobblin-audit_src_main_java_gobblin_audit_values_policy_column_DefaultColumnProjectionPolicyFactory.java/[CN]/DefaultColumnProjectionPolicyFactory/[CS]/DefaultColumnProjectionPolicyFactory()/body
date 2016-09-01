@@ -1,3 +1,3 @@
 {
-  this.aliasResolver=new ClassAliasResolver(ColumnProjectionPolicy.class);
+  this.aliasResolver=new ClassAliasResolver<>(ColumnProjectionPolicy.class);
 }

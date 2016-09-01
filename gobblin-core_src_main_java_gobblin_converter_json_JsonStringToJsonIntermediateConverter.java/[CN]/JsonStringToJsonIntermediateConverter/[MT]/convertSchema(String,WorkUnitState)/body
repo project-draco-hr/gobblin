@@ -1,4 +1,5 @@
 {
+  this.unpackComplexSchemas=workUnit.getPropAsBoolean(UNPACK_COMPLEX_SCHEMAS_KEY,true);
   JsonParser jsonParser=new JsonParser();
   log.info("Schema: " + inputSchema);
   JsonElement jsonSchema=jsonParser.parse(inputSchema);

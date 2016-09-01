@@ -3,7 +3,7 @@
     return null;
   }
   JsonElement element=WikipediaExtractor.this.currentBatch.poll();
-  this.latestPulledRevision=parseRevision(element);
+  this.lastPulledRevision=parseRevision(element);
   this.revisionsPulled++;
   return element;
 }

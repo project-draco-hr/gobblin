@@ -24,6 +24,6 @@
   this.reader=new WikiResponseReader(baseRevision);
   workUnitState.setActualHighWatermark(new LongWatermark(this.lastRevisionId));
   this.currentBatch=new LinkedList<>();
-  LOG.info(String.format("Will pull revisions %s to %s for page %s.",this.reader.latestPulledRevision,this.lastRevisionId,this.requestedTitle));
+  LOG.info(String.format("Will pull revisions %s to %s for page %s.",this.reader.lastPulledRevision,this.lastRevisionId,this.requestedTitle));
   this.maxRevisionsPulled=workUnitState.getPropAsInt(MAX_REVISION_PER_PAGE,DEFAULT_MAX_REVISIONS_PER_PAGE);
 }

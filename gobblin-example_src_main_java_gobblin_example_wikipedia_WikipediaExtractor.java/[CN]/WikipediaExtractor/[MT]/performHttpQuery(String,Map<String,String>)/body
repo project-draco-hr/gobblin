@@ -1,10 +1,10 @@
 {
-  List<String> queryTokens=Lists.newArrayList();
+  List<NameValuePair> queryTokens=Lists.newArrayList();
   for (  Map.Entry<String,String> entry : query.entrySet()) {
-    queryTokens.add(entry.getKey() + "=" + entry.getValue());
+    queryTokens.add(new BasicNameValuePair(entry.getKey(),entry.getValue()));
   }
-  String actualQuery=Joiner.on("&").skipNulls().join(queryTokens);
-  URL actualURL=new URL(rootUrl + (rootUrl.contains("?") ? "&" : "?") + actualQuery);
+  String encodedQuery=URLEncodedUtils.format(queryTokens,Charsets.UTF_8);
+  URL actualURL=new URIBuilder(rootUrl).setQuery(encodedQuery).build().toURL();
   Closer closer=Closer.create();
   HttpURLConnection conn=null;
   StringBuilder sb=new StringBuilder();

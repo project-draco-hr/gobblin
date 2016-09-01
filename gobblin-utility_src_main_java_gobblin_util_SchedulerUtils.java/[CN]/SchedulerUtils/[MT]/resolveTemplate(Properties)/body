@@ -1,9 +1,14 @@
 {
-  if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
-    Properties resolvedProps=ConfigUtils.configToProperties((new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfig(ConfigFactory.parseProperties(jobProps)));
-    return resolvedProps;
-  }
+  try {
+    if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
+      Properties resolvedProps=ConfigUtils.configToProperties((new ResourceBasedTemplate(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH))).getResolvedConfig(ConfigFactory.parseProperties(jobProps)));
+      return resolvedProps;
+    }
  else {
-    return jobProps;
+      return jobProps;
+    }
+  }
+ catch (  JobTemplate.TemplateException te) {
+    throw new IOException(te);
   }
 }

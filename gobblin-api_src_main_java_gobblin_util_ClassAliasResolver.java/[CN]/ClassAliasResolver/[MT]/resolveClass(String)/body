@@ -1,0 +1,11 @@
+{
+  if (this.aliasToClassCache.containsKey(aliasOrClassName)) {
+    return this.aliasToClassCache.get(aliasOrClassName);
+  }
+  try {
+    return Class.forName(aliasOrClassName).asSubclass(this.subtypeOf);
+  }
+ catch (  ClassCastException cce) {
+    throw new ClassNotFoundException(String.format("Found class %s but it cannot be cast to %s.",aliasOrClassName,this.subtypeOf.getName()),cce);
+  }
+}

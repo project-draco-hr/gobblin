@@ -1,0 +1,17 @@
+{
+  ClassAliasResolver<IDummyAliasTest> resolver=new ClassAliasResolver<>(IDummyAliasTest.class);
+  Assert.assertEquals(resolver.resolveClass("abc"),DummyAliasTest.class);
+  Assert.assertEquals(resolver.resolveClass(DummyAliasTest.class.getName()),DummyAliasTest.class);
+  try {
+    resolver.resolveClass("def");
+    Assert.fail();
+  }
+ catch (  ClassNotFoundException cnfe) {
+  }
+  try {
+    resolver.resolveClass(AnotherAliasClass.class.getName());
+    Assert.fail();
+  }
+ catch (  ClassNotFoundException cnfe) {
+  }
+}

@@ -1,5 +1,38 @@
 {
   JsonParser jsonParser=new JsonParser();
   JsonObject inputRecord=(JsonObject)jsonParser.parse(strInputRecord);
-  return Lists.newArrayList(inputRecord);
+  if (!this.unpackComplexSchemas) {
+    return new SingleRecordIterable<>(inputRecord);
+  }
+  JsonObject outputRecord=new JsonObject();
+  for (int i=0; i < outputSchema.size(); i++) {
+    String expectedColumnName=outputSchema.get(i).getAsJsonObject().get("columnName").getAsString();
+    if (inputRecord.has(expectedColumnName)) {
+      if (inputRecord.get(expectedColumnName).isJsonArray()) {
+        outputRecord.addProperty(expectedColumnName,inputRecord.get(expectedColumnName).toString());
+      }
+ else       if (inputRecord.get(expectedColumnName).isJsonObject()) {
+        boolean isMultiHierarchyInsideJsonObject=false;
+        for (        Map.Entry<String,JsonElement> entry : ((JsonObject)inputRecord.get(expectedColumnName)).entrySet()) {
+          if (entry.getValue().isJsonArray() || entry.getValue().isJsonObject()) {
+            isMultiHierarchyInsideJsonObject=true;
+            break;
+          }
+        }
+        if (isMultiHierarchyInsideJsonObject) {
+          outputRecord.addProperty(expectedColumnName,inputRecord.get(expectedColumnName).toString());
+        }
+ else {
+          outputRecord.add(expectedColumnName,inputRecord.get(expectedColumnName));
+        }
+      }
+ else {
+        outputRecord.add(expectedColumnName,inputRecord.get(expectedColumnName));
+      }
+    }
+ else {
+      outputRecord.add(expectedColumnName,JsonNull.INSTANCE);
+    }
+  }
+  return new SingleRecordIterable<>(outputRecord);
 }

@@ -1,0 +1,11 @@
+{
+  Preconditions.checkArgument(state.contains(EXTRACTOR_TYPE),"Missing key " + EXTRACTOR_TYPE);
+  try {
+    ClassAliasResolver<KafkaExtractor> aliasResolver=new ClassAliasResolver<>(KafkaExtractor.class);
+    Class<? extends KafkaExtractor> klazz=aliasResolver.resolveClass(state.getProp(EXTRACTOR_TYPE));
+    return GobblinConstructorUtils.invokeLongestConstructor(klazz,state);
+  }
+ catch (  ReflectiveOperationException e) {
+    throw new RuntimeException(e);
+  }
+}
