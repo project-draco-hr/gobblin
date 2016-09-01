@@ -1,0 +1,8 @@
+{
+  if (null != record) {
+    String s=record.toString();
+    System.out.println(s);
+    ++_numRecordsWritten;
+    _numBytesWritten+=s.getBytes(Charset.defaultCharset()).length;
+  }
+}

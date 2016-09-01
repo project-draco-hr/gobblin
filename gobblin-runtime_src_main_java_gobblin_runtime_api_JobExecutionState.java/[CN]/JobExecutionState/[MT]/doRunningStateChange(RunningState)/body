@@ -1,15 +1,25 @@
 {
+  RunningState oldState=null;
+  JobExecutionStateListener stateListener=null;
   this.changeLock.lock();
   try {
-    RunningState oldState=this.runningState;
+    if (null == this.runningState) {
+      Preconditions.checkState(RunningState.PENDING == newState);
+    }
+ else {
+      Preconditions.checkState(EXPECTED_PRE_TRANSITION_STATES.get(newState).contains(this.runningState),"unexpected state transition " + this.runningState + " --> "+ newState);
+    }
+    oldState=this.runningState;
     this.runningState=newState;
-    ;
     if (this.listener.isPresent()) {
-      this.listener.get().onStatusChange(this,oldState,this.runningState);
+      stateListener=this.listener.get();
     }
     this.runningStateChanged.signalAll();
   }
   finally {
     this.changeLock.unlock();
+  }
+  if (null != stateListener) {
+    stateListener.onStatusChange(this,oldState,newState);
   }
 }

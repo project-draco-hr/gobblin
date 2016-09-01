@@ -6,5 +6,6 @@
   }
  else {
     _jobState.switchToSuccessful();
+    _jobState.switchToCommitted();
   }
 }

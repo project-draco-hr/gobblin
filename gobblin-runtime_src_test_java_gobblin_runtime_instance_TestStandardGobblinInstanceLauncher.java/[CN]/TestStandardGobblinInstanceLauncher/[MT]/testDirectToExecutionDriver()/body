@@ -1,0 +1,15 @@
+{
+  StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder=StandardGobblinInstanceLauncher.builder().withInstanceName("testDirectToExecutionDriver");
+  instanceLauncherBuilder.driver();
+  StandardGobblinInstanceLauncher instanceLauncher=instanceLauncherBuilder.build();
+  instanceLauncher.startAsync();
+  instanceLauncher.awaitRunning(50,TimeUnit.MILLISECONDS);
+  JobSpec js1=JobSpec.builder().withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf")).build();
+  GobblinInstanceDriver instance=instanceLauncher.getDriver();
+  JobExecutionDriver jobDriver=instance.getJobLauncher().launchJob(js1);
+  jobDriver.startAsync();
+  JobExecutionResult jobResult=jobDriver.get(5,TimeUnit.SECONDS);
+  Assert.assertTrue(jobResult.isSuccessful());
+  instanceLauncher.stopAsync();
+  instanceLauncher.awaitTerminated(50,TimeUnit.MILLISECONDS);
+}
