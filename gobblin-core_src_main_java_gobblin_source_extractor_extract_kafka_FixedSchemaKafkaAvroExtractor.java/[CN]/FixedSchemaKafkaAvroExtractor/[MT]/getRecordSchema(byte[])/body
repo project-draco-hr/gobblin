@@ -1,0 +1,6 @@
+{
+  if (!this.schema.isPresent()) {
+    throw new RuntimeException("Schema is not preset. This is an error in the code.");
+  }
+  return this.schema.get();
+}

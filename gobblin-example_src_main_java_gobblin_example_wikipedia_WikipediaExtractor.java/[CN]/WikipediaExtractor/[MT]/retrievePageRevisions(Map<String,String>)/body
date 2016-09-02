@@ -1,0 +1,36 @@
+{
+  Queue<JsonElement> retrievedRevisions=new LinkedList<>();
+  JsonElement jsonElement=performHttpQuery(this.rootUrl,query);
+  if (jsonElement == null || !jsonElement.isJsonObject()) {
+    return retrievedRevisions;
+  }
+  JsonObject jsonObj=jsonElement.getAsJsonObject();
+  if (jsonObj == null || !jsonObj.has(JSON_MEMBER_QUERY)) {
+    return retrievedRevisions;
+  }
+  JsonObject queryObj=jsonObj.getAsJsonObject(JSON_MEMBER_QUERY);
+  if (!queryObj.has(JSON_MEMBER_PAGES)) {
+    return retrievedRevisions;
+  }
+  JsonObject pagesObj=queryObj.getAsJsonObject(JSON_MEMBER_PAGES);
+  if (pagesObj.entrySet().isEmpty()) {
+    return retrievedRevisions;
+  }
+  JsonObject pageIdObj=pagesObj.getAsJsonObject(pagesObj.entrySet().iterator().next().getKey());
+  if (!pageIdObj.has(JSON_MEMBER_REVISIONS)) {
+    return retrievedRevisions;
+  }
+  JsonArray jsonArr=pageIdObj.getAsJsonArray(JSON_MEMBER_REVISIONS);
+  for (  JsonElement revElement : jsonArr) {
+    JsonObject revObj=revElement.getAsJsonObject();
+    if (pageIdObj.has(JSON_MEMBER_PAGEID)) {
+      revObj.add(JSON_MEMBER_PAGEID,pageIdObj.get(JSON_MEMBER_PAGEID));
+    }
+    if (pageIdObj.has(JSON_MEMBER_TITLE)) {
+      revObj.add(JSON_MEMBER_TITLE,pageIdObj.get(JSON_MEMBER_TITLE));
+    }
+    retrievedRevisions.add(revObj);
+  }
+  LOG.info(retrievedRevisions.size() + " record(s) retrieved for title " + this.requestedTitle);
+  return retrievedRevisions;
+}

@@ -25,7 +25,9 @@
   jobDataMap.putAll(additionalJobData);
   JobDetail job=JobBuilder.newJob(jobClass).withIdentity(jobName,Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_GROUP_KEY))).withDescription(Strings.nullToEmpty(jobProps.getProperty(ConfigurationKeys.JOB_DESCRIPTION_KEY))).usingJobData(jobDataMap).build();
   try {
-    this.scheduler.getScheduler().scheduleJob(job,getTrigger(job.getKey(),jobProps));
+    Trigger trigger=getTrigger(job.getKey(),jobProps);
+    this.scheduler.getScheduler().scheduleJob(job,trigger);
+    LOG.info(String.format("Scheduled job %s. Next run: %s.",job.getKey(),trigger.getNextFireTime()));
   }
  catch (  SchedulerException se) {
     LOG.error("Failed to schedule job " + jobName,se);

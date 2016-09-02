@@ -3,5 +3,6 @@
   for (  Properties jobProps : loadGeneralJobConfigs()) {
     boolean runOnce=Boolean.valueOf(jobProps.getProperty(ConfigurationKeys.JOB_RUN_ONCE_KEY,"false"));
     scheduleJob(jobProps,runOnce ? new RunOnceJobListener() : new EmailNotificationJobListener());
+    this.listener.addToJobNameMap(jobProps);
   }
 }

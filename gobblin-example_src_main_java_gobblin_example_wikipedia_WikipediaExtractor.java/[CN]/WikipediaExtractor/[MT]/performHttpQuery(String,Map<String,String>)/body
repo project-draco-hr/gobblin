@@ -1,0 +1,40 @@
+{
+  List<NameValuePair> queryTokens=Lists.newArrayList();
+  for (  Map.Entry<String,String> entry : query.entrySet()) {
+    queryTokens.add(new BasicNameValuePair(entry.getKey(),entry.getValue()));
+  }
+  String encodedQuery=URLEncodedUtils.format(queryTokens,Charsets.UTF_8);
+  URL actualURL=new URIBuilder(rootUrl).setQuery(encodedQuery).build().toURL();
+  Closer closer=Closer.create();
+  HttpURLConnection conn=null;
+  StringBuilder sb=new StringBuilder();
+  try {
+    conn=getHttpConnection(actualURL);
+    conn.connect();
+    BufferedReader br=closer.register(new BufferedReader(new InputStreamReader(conn.getInputStream(),ConfigurationKeys.DEFAULT_CHARSET_ENCODING)));
+    String line;
+    while ((line=br.readLine()) != null) {
+      sb.append(line + "\n");
+    }
+  }
+ catch (  Throwable t) {
+    throw closer.rethrow(t);
+  }
+ finally {
+    try {
+      closer.close();
+    }
+ catch (    IOException e) {
+      LOG.error("IOException in Closer.close() while performing query " + actualURL);
+    }
+    if (conn != null) {
+      conn.disconnect();
+    }
+  }
+  if (Strings.isNullOrEmpty(sb.toString())) {
+    LOG.warn("Received empty response for query: " + actualURL);
+    return new JsonObject();
+  }
+  JsonElement jsonElement=GSON.fromJson(sb.toString(),JsonElement.class);
+  return jsonElement;
+}

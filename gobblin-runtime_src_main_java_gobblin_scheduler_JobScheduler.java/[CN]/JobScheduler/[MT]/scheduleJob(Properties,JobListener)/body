@@ -1,3 +1,8 @@
 {
-  scheduleJob(jobProps,jobListener,Maps.<String,Object>newHashMap(),GobblinJob.class);
+  try {
+    scheduleJob(jobProps,jobListener,Maps.<String,Object>newHashMap(),GobblinJob.class);
+  }
+ catch (  JobException|RuntimeException exc) {
+    LOG.error("Could not schedule job " + jobProps.getProperty(ConfigurationKeys.JOB_NAME_KEY,"Unknown job"),exc);
+  }
 }

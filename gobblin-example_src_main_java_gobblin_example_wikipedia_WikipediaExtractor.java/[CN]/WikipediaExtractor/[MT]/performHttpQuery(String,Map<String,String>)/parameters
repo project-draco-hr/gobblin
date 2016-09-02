@@ -1,0 +1,2 @@
+String rootUrl
+Map<String,String> query

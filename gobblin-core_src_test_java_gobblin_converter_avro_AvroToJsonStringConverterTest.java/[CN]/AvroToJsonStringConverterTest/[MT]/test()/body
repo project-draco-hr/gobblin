@@ -1,0 +1,16 @@
+{
+  MetricReport metricReport=new MetricReport();
+  metricReport.setTags(ImmutableMap.of("tag","value"));
+  metricReport.setTimestamp(10L);
+  metricReport.setMetrics(Lists.newArrayList(new Metric("metric",1.0),new Metric("metric2",2.0)));
+  AvroSerializer<MetricReport> serializer=new AvroBinarySerializer<>(MetricReport.SCHEMA$,new NoopSchemaVersionWriter());
+  serializer.serializeRecord(metricReport);
+  Schema metricReportUtf8=new Schema.Parser().parse(this.getClass().getClassLoader().getResourceAsStream("MetricReport.avsc"));
+  GenericRecord genericRecordMetric=AvroUtils.slowDeserializeGenericRecord(serializer.serializeRecord(metricReport),metricReportUtf8);
+  AvroToJsonStringConverter converter=new AvroToJsonStringConverter();
+  String outputSchema=converter.convertSchema(metricReportUtf8,new WorkUnitState());
+  Iterable<String> converted=converter.convertRecord(outputSchema,genericRecordMetric,new WorkUnitState());
+  List<String> convertedList=Lists.newArrayList(converted);
+  Assert.assertEquals(convertedList.size(),1);
+  Assert.assertEquals(convertedList.get(0),"{\"tags\":{\"tag\":\"value\"},\"timestamp\":10,\"metrics\":[{\"name\":\"metric\",\"value\":1.0},{\"name\":\"metric2\",\"value\":2.0}]}");
+}
