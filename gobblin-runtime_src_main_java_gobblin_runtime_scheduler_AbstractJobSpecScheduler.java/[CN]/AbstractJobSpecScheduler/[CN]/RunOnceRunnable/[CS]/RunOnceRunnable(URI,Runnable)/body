@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(jobSpecURI);
+  Preconditions.checkNotNull(innerRunnable);
+  _jobSpecURI=jobSpecURI;
+  _scheduleRunnable=innerRunnable;
+}

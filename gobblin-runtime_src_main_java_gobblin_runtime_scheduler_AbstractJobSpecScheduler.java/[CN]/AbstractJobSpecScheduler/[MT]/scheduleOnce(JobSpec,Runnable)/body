@@ -1,0 +1,5 @@
+{
+  _log.info("Scheduling once JobSpec " + jobSpec);
+  Runnable runOnceRunnable=new RunOnceRunnable(jobSpec.getUri(),jobRunnable);
+  return scheduleJob(jobSpec,runOnceRunnable);
+}

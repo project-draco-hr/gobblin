@@ -1,0 +1,5 @@
+{
+  if (this.filter.apply(jobSpec)) {
+    this.delegate.onJobTriggered(jobSpec);
+  }
+}

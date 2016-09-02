@@ -1,4 +1,0 @@
-{
-  _callbacksDispatcher.onJobTriggered(jobSchedule);
-  this.jobSchedule.getJobRunnable().run();
-}

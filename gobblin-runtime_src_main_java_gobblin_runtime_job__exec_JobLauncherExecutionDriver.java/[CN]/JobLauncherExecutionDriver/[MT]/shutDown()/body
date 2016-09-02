@@ -3,12 +3,12 @@
   if (null != _jobContext) {
 switch (_jobContext.getJobState().getState()) {
 case PENDING:
+case SUCCESSFUL:
 case RUNNING:
 {
         cancel(false);
         break;
       }
-case SUCCESSFUL:
 case FAILED:
 case COMMITTED:
 case CANCELLED:

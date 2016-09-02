@@ -1,0 +1,4 @@
+{
+  _jobSpec=jobSpec;
+  _jobRunnable=jobRunnable;
+}
