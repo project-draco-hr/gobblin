@@ -1,0 +1,3 @@
+{
+  this(Optional.of(log),ConfigFactory.empty(),Optional.<SchedulerService>absent());
+}

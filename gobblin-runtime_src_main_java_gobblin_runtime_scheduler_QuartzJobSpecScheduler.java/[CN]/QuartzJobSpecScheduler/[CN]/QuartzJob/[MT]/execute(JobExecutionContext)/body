@@ -1,0 +1,11 @@
+{
+  JobDataMap dataMap=context.getJobDetail().getJobDataMap();
+  JobSpec jobSpec=(JobSpec)dataMap.get(JOB_SPEC_KEY);
+  Runnable jobRunnable=(Runnable)dataMap.get(JOB_RUNNABLE_KEY);
+  try {
+    jobRunnable.run();
+  }
+ catch (  Throwable t) {
+    throw new JobExecutionException("Job runable for " + jobSpec + " failed.",t);
+  }
+}

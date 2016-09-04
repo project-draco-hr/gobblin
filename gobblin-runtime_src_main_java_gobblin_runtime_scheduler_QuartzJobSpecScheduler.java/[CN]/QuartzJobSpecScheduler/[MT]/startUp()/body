@@ -1,0 +1,5 @@
+{
+  super.startUp();
+  _scheduler.startAsync();
+  _scheduler.awaitRunning(_cfg.getStartUpTimeoutMs(),TimeUnit.MILLISECONDS);
+}

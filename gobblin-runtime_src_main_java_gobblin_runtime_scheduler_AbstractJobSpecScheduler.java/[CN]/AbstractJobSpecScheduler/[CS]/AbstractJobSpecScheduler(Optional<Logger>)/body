@@ -1,4 +1,4 @@
 {
-  _log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+  _log=log.or(LoggerFactory.getLogger(getClass()));
   _callbacksDispatcher=new JobSpecSchedulerListeners(_log);
 }

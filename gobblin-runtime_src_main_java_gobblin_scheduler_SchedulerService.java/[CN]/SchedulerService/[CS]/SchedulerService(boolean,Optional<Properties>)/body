@@ -1,0 +1,4 @@
+{
+  this.waitForJobCompletion=waitForJobCompletion;
+  this.quartzProps=quartzConfig;
+}

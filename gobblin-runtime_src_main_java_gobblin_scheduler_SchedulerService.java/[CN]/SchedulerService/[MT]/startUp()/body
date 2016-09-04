@@ -1,4 +1,8 @@
 {
-  this.scheduler=new StdSchedulerFactory().getScheduler();
+  StdSchedulerFactory schedulerFactory=new StdSchedulerFactory();
+  if (this.quartzProps.isPresent() && this.quartzProps.get().size() > 0) {
+    schedulerFactory.initialize(this.quartzProps.get());
+  }
+  this.scheduler=schedulerFactory.getScheduler();
   this.scheduler.start();
 }
