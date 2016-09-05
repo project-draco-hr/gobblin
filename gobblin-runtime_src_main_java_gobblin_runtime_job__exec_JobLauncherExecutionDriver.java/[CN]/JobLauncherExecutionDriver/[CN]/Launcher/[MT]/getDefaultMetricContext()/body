@@ -1,0 +1,9 @@
+{
+  if (_gobblinInstance.isPresent()) {
+    return _gobblinInstance.get().getMetricContext().childBuilder(JobExecutionLauncher.class.getSimpleName()).build();
+  }
+  gobblin.configuration.State fakeState=new gobblin.configuration.State(getSysConfig().getConfigAsProperties());
+  List<Tag<?>> tags=new ArrayList<>();
+  MetricContext res=Instrumented.getMetricContext(fakeState,Launcher.class,tags);
+  return res;
+}

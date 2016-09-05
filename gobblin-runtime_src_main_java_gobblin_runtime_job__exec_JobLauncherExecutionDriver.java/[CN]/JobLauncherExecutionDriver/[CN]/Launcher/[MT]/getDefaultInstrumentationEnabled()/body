@@ -1,0 +1,3 @@
+{
+  return _gobblinInstance.isPresent() ? _gobblinInstance.get().isInstrumentationEnabled() : GobblinMetrics.isEnabled(getSysConfig().getConfig());
+}

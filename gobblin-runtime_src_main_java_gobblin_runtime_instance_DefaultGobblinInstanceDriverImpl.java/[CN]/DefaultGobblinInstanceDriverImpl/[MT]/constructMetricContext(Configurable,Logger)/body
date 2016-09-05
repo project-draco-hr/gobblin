@@ -1,0 +1,4 @@
+{
+  gobblin.configuration.State tmpState=new gobblin.configuration.State(sysConfig.getConfigAsProperties());
+  return GobblinMetrics.isEnabled(sysConfig.getConfig()) ? Instrumented.getMetricContext(tmpState,getClass()) : null;
+}

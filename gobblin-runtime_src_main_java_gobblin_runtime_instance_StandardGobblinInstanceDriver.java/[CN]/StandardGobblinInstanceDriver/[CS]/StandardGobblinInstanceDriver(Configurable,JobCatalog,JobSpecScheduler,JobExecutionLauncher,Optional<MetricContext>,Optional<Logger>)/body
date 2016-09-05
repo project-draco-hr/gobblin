@@ -1,0 +1,10 @@
+{
+  super(sysConfig,jobCatalog,jobScheduler,jobLauncher,instanceMetricContext,log);
+  List<Service> componentServices=new ArrayList<>();
+  checkComponentService(getJobCatalog(),componentServices);
+  checkComponentService(getJobScheduler(),componentServices);
+  checkComponentService(getJobLauncher(),componentServices);
+  if (componentServices.size() > 0) {
+    _subservices=new ServiceManager(componentServices);
+  }
+}

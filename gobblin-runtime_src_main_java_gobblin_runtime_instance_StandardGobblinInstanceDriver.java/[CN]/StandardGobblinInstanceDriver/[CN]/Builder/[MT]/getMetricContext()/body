@@ -1,0 +1,6 @@
+{
+  if (!_metricContext.isPresent()) {
+    _metricContext=Optional.of(getDefaultMetricContext());
+  }
+  return _metricContext.get();
+}

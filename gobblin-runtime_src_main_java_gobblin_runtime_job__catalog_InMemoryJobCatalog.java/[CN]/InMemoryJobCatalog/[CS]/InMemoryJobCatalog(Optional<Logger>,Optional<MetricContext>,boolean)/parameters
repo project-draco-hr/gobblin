@@ -1,0 +1,3 @@
+Optional<Logger> log
+Optional<MetricContext> parentMetricContext
+boolean instrumentationEnabled

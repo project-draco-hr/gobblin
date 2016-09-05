@@ -5,9 +5,9 @@
   properties.setProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getPath());
   PathAlterationObserver observer=new PathAlterationObserver(this.jobConfigDirPath);
   FSJobCatalog cat=new FSJobCatalog(ConfigUtils.propertiesToConfig(properties),observer);
-  final Map<URI,JobSpec> specs=Maps.newHashMap();
+  final Map<URI,JobSpec> specs=new Hashtable<>();
   JobCatalogListener l=Mockito.mock(JobCatalogListener.class);
-  Mockito.doAnswer(new Answer(){
+  Mockito.doAnswer(new Answer<Void>(){
     @Override public Void answer(    InvocationOnMock invocation) throws Throwable {
       JobSpec spec=(JobSpec)invocation.getArguments()[0];
       specs.put(spec.getUri(),spec);
@@ -15,7 +15,7 @@
     }
   }
 ).when(l).onAddJob(Mockito.any(JobSpec.class));
-  Mockito.doAnswer(new Answer(){
+  Mockito.doAnswer(new Answer<Void>(){
     @Override public Void answer(    InvocationOnMock invocation) throws Throwable {
       JobSpec spec=(JobSpec)invocation.getArguments()[0];
       specs.put(spec.getUri(),spec);
@@ -23,7 +23,7 @@
     }
   }
 ).when(l).onUpdateJob(Mockito.any(JobSpec.class));
-  Mockito.doAnswer(new Answer(){
+  Mockito.doAnswer(new Answer<Void>(){
     @Override public Void answer(    InvocationOnMock invocation) throws Throwable {
       URI uri=(URI)invocation.getArguments()[0];
       specs.remove(uri);
@@ -33,7 +33,6 @@
 ).when(l).onDeleteJob(Mockito.any(URI.class),Mockito.anyString());
   JobSpec js1_1=JobSpec.builder("test_job1").withVersion("1").build();
   JobSpec js1_2=JobSpec.builder("test_job1").withVersion("2").build();
-  JobSpec js1_3=JobSpec.builder("test_job1").withVersion("3").build();
   JobSpec js2=JobSpec.builder("test_job2").withVersion("1").build();
   cat.addListener(l);
   observer.initialize();

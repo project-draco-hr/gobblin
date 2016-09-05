@@ -1,0 +1,3 @@
+{
+  return withJobCatalog(new InMemoryJobCatalog(Optional.of(getLog()),Optional.of(getMetricContext()),isInstrumentationEnabled()));
+}

@@ -1,0 +1,9 @@
+{
+  GobblinTrackingEvent gte=timeout > 0 ? _events.poll(timeout,timeUnit) : _events.take();
+  if (null == gte) {
+    throw new TimeoutException();
+  }
+  if (!predicate.apply(gte)) {
+    throw new AssertionError("Event predicate mismatch: " + gte);
+  }
+}

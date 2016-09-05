@@ -1,5 +1,6 @@
 {
   int randomId=RAND.nextInt(Integer.MAX_VALUE);
+  List<Tag<?>> generatedTags=Lists.newArrayList();
   Constructs construct=null;
   if (Converter.class.isAssignableFrom(klazz)) {
     construct=Constructs.CONVERTER;
@@ -16,12 +17,11 @@
  else   if (DataWriter.class.isAssignableFrom(klazz)) {
     construct=Constructs.WRITER;
   }
-  List<Tag<?>> generatedTags=Lists.newArrayList();
   if (construct != null) {
-    generatedTags.add(new Tag<>("construct",construct.toString()));
+    generatedTags.add(new Tag<>(GobblinMetricsKeys.CONSTRUCT_META,construct.toString()));
   }
   if (!klazz.isAnonymousClass()) {
-    generatedTags.add(new Tag<>("class",klazz.getCanonicalName()));
+    generatedTags.add(new Tag<>(GobblinMetricsKeys.CLASS_META,klazz.getCanonicalName()));
   }
   Optional<GobblinMetrics> gobblinMetrics=state.contains(METRIC_CONTEXT_NAME_KEY) ? GobblinMetricsRegistry.getInstance().get(state.getProp(METRIC_CONTEXT_NAME_KEY)) : Optional.<GobblinMetrics>absent();
   MetricContext.Builder builder=gobblinMetrics.isPresent() ? gobblinMetrics.get().getMetricContext().childBuilder(klazz.getCanonicalName() + "." + randomId) : MetricContext.builder(klazz.getCanonicalName() + "." + randomId);

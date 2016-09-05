@@ -1,0 +1,16 @@
+{
+  Preconditions.checkNotNull(jobCatalog);
+  Preconditions.checkNotNull(jobScheduler);
+  Preconditions.checkNotNull(jobLauncher);
+  Preconditions.checkNotNull(sysConfig);
+  _log=log.or(LoggerFactory.getLogger(getClass()));
+  _metricCtx=baseMetricContext.or(constructMetricContext(sysConfig,_log));
+  _instrumentationEnabled=null != _metricCtx && GobblinMetrics.isEnabled(sysConfig.getConfig());
+  _jobCatalog=jobCatalog;
+  _jobScheduler=jobScheduler;
+  _jobLauncher=jobLauncher;
+  _sysConfig=sysConfig;
+  _instanceCfg=ConfigAccessor.createFromGlobalConfig(_sysConfig.getConfig());
+  _callbacksDispatcher=new JobLifecycleListenersList(_jobCatalog,_jobScheduler,_log);
+  _metrics=new StandardMetrics(this);
+}

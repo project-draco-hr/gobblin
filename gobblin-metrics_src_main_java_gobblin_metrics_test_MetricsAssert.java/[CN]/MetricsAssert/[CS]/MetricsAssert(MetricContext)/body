@@ -1,0 +1,4 @@
+{
+  _metricContext=metricContext;
+  _metricContext.addNotificationTarget(this);
+}
