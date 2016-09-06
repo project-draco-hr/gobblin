@@ -1,4 +1,4 @@
 {
-  gobblin.configuration.State fakeState=new gobblin.configuration.State(getInstanceConfig().getConfigAsProperties());
+  gobblin.configuration.State fakeState=new gobblin.configuration.State(getSysConfig().getConfigAsProperties());
   return Instrumented.getMetricContext(fakeState,StandardGobblinInstanceLauncher.class);
 }

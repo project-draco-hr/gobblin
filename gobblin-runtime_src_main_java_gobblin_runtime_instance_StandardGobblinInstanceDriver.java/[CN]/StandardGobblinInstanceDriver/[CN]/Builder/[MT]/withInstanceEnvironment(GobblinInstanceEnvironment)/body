@@ -1,0 +1,5 @@
+{
+  Preconditions.checkNotNull(instanceLauncher);
+  _instanceEnv=Optional.of(instanceLauncher);
+  return this;
+}

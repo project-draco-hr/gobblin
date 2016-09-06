@@ -1,0 +1,8 @@
+{
+  _log=log.or(LoggerFactory.getLogger(getClass()));
+  _name=name;
+  _instanceConf=instanceConf;
+  _driver=driverBuilder.withInstanceEnvironment(this).build();
+  _instrumentationEnabled=metricContext.isPresent();
+  _metricContext=metricContext.orNull();
+}

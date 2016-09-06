@@ -1,0 +1,6 @@
+{
+  if (!_log.isPresent()) {
+    _log=Optional.of(getDefaultLog());
+  }
+  return _log.get();
+}

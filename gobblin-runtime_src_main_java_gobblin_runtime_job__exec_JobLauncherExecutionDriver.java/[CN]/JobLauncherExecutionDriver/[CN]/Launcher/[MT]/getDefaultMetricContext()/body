@@ -1,6 +1,6 @@
 {
-  if (_gobblinInstance.isPresent()) {
-    return _gobblinInstance.get().getMetricContext().childBuilder(JobExecutionLauncher.class.getSimpleName()).build();
+  if (_gobblinEnv.isPresent()) {
+    return _gobblinEnv.get().getMetricContext().childBuilder(JobExecutionLauncher.class.getSimpleName()).build();
   }
   gobblin.configuration.State fakeState=new gobblin.configuration.State(getSysConfig().getConfigAsProperties());
   List<Tag<?>> tags=new ArrayList<>();

@@ -1,4 +1,4 @@
 {
   this();
-  withInstanceLauncher(instanceLauncher);
+  withInstanceEnvironment(instanceLauncher);
 }

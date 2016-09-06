@@ -1,0 +1,3 @@
+{
+  return _gobblinEnv.isPresent() ? _gobblinEnv.get().getInstanceName() : getClass().getName();
+}

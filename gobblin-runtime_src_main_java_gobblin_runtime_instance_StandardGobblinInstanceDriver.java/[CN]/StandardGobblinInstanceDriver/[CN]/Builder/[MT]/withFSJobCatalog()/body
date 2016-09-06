@@ -1,6 +1,6 @@
 {
   try {
-    return withJobCatalog(new FSJobCatalog(getSysConfig().getConfig(),Optional.of(getMetricContext()),isInstrumentationEnabled()));
+    return withJobCatalog(new FSJobCatalog(this));
   }
  catch (  IOException e) {
     throw new RuntimeException("Unable to create FS Job Catalog");

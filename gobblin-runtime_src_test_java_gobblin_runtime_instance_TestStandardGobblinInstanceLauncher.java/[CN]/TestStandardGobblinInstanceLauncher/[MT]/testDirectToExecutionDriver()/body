@@ -6,12 +6,17 @@
   instanceLauncher.awaitRunning(50,TimeUnit.MILLISECONDS);
   JobSpec js1=JobSpec.builder().withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf")).build();
   GobblinInstanceDriver instance=instanceLauncher.getDriver();
-  JobExecutionDriver jobDriver=instance.getJobLauncher().launchJob(js1);
-  jobDriver.startAsync();
-  JobExecutionResult jobResult=jobDriver.get(5,TimeUnit.SECONDS);
-  Assert.assertTrue(jobResult.isSuccessful());
-  instanceLauncher.stopAsync();
-  instanceLauncher.awaitTerminated(50,TimeUnit.MILLISECONDS);
-  Assert.assertEquals(instance.getMetrics().getUpFlag().getValue().intValue(),0);
-  Assert.assertEquals(instance.getMetrics().getUptimeMs().getValue().longValue(),0);
+  JobExecutionLauncher.StandardMetrics launcherMetrics=instance.getJobLauncher().getMetrics();
+  checkLaunchJob(instanceLauncher,js1,instance);
+  Assert.assertEquals(launcherMetrics.getNumJobsLaunched().getCount(),1);
+  Assert.assertEquals(launcherMetrics.getNumJobsCompleted().getCount(),1);
+  Assert.assertEquals(launcherMetrics.getNumJobsCommitted().getCount(),1);
+  Assert.assertEquals(launcherMetrics.getNumJobsFailed().getCount(),0);
+  Assert.assertEquals(launcherMetrics.getNumJobsRunning().getValue().intValue(),0);
+  checkLaunchJob(instanceLauncher,js1,instance);
+  Assert.assertEquals(launcherMetrics.getNumJobsLaunched().getCount(),2);
+  Assert.assertEquals(launcherMetrics.getNumJobsCompleted().getCount(),2);
+  Assert.assertEquals(launcherMetrics.getNumJobsCommitted().getCount(),2);
+  Assert.assertEquals(launcherMetrics.getNumJobsFailed().getCount(),0);
+  Assert.assertEquals(launcherMetrics.getNumJobsRunning().getValue().intValue(),0);
 }

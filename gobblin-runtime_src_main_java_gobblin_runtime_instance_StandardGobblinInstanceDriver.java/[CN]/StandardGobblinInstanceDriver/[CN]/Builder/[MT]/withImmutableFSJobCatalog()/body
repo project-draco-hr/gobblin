@@ -1,6 +1,6 @@
 {
   try {
-    return withJobCatalog(new ImmutableFSJobCatalog(getSysConfig().getConfig(),null,Optional.of(getMetricContext()),isInstrumentationEnabled()));
+    return withJobCatalog(new ImmutableFSJobCatalog(this));
   }
  catch (  IOException e) {
     throw new RuntimeException("Unable to create FS Job Catalog");

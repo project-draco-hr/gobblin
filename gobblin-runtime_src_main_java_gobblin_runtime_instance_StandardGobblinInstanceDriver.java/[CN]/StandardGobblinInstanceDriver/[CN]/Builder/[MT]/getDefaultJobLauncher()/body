@@ -1,3 +1,4 @@
 {
-  return new JobLauncherExecutionDriver.Launcher();
+  JobLauncherExecutionDriver.Launcher res=new JobLauncherExecutionDriver.Launcher().withGobblinInstanceEnvironment(this);
+  return res;
 }
