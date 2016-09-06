@@ -1,5 +1,5 @@
 {
-  String pattern=ConfigUtils.getString(config,PARTITION_VALUE_DATE_TIME_PATTERN_KEY,DEFAULT_PARTITION_VALUE_DATE_TIME_PATTERN);
+  this.pattern=ConfigUtils.getString(config,PARTITION_VALUE_DATE_TIME_PATTERN_KEY,DEFAULT_PARTITION_VALUE_DATE_TIME_PATTERN);
   if (config.hasPath(PARTITION_VALUE_DATE_TIME_TIMEZONE_KEY)) {
     this.formatter=DateTimeFormat.forPattern(pattern).withZone(DateTimeZone.forID(config.getString(PARTITION_VALUE_DATE_TIME_TIMEZONE_KEY)));
   }

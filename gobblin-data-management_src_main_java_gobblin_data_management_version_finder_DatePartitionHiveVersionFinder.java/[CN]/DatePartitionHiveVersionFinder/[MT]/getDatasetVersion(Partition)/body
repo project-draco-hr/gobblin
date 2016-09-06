@@ -6,5 +6,5 @@
   if (index >= partition.getValues().size()) {
     throw new IllegalArgumentException(String.format("Failed to find partition value for key %s in the partition %s",this.partitionKeyName,partition.getName()));
   }
-  return new TimestampedHiveDatasetVersion(this.formatter.parseDateTime(partition.getValues().get(index).trim()),partition);
+  return new TimestampedHiveDatasetVersion(this.formatter.parseDateTime(partition.getValues().get(index).trim().substring(0,this.pattern.length())),partition);
 }
