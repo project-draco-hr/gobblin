@@ -1,0 +1,2 @@
+KafkaAvroSchemaRegistry registry
+String overrideName
