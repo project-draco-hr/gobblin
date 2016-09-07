@@ -1,4 +1,5 @@
 {
+  state=convertDeprecatedConfigs(state);
   Preconditions.checkArgument(state.contains(EXTRACT_LIMIT_TYPE_KEY),String.format("Missing configuration property %s for the Limiter type",EXTRACT_LIMIT_TYPE_KEY));
   BaseLimiterType type=BaseLimiterType.forName(state.getProp(EXTRACT_LIMIT_TYPE_KEY));
 switch (type) {
