@@ -1,0 +1,5 @@
+{
+  Path outputDir=super.getPublisherOutputDir(workUnitState,branchId);
+  outputDir=new Path(outputDir,timestamp);
+  return outputDir;
+}
