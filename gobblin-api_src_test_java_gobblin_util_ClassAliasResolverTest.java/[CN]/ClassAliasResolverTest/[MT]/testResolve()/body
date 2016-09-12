@@ -1,5 +1,5 @@
 {
-  ClassAliasResolver resolver=new ClassAliasResolver(IDummyAliasTest.class);
-  Assert.assertEquals(resolver.resolve("abc"),DummyAliasTest.class.getCanonicalName());
+  ClassAliasResolver<IDummyAliasTest> resolver=new ClassAliasResolver<>(IDummyAliasTest.class);
+  Assert.assertEquals(resolver.resolve("abc"),DummyAliasTest.class.getName());
   Assert.assertEquals(resolver.resolve("abcd"),"abcd");
 }

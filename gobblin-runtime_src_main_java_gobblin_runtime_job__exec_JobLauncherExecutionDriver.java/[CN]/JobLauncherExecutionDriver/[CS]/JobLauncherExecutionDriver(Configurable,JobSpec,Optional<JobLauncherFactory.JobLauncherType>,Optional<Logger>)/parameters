@@ -1,4 +1,0 @@
-Configurable sysConfig
-JobSpec jobSpec
-Optional<JobLauncherFactory.JobLauncherType> jobLauncherType
-Optional<Logger> log

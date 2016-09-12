@@ -1,0 +1,5 @@
+{
+  Config effectiveCfg=serviceCfg.withFallback(DEFAULT_CFG);
+  this.startUpTimeoutMs=effectiveCfg.getLong(STARTUP_TIMEOUT_MS_PROP);
+  this.shutDownTimeoutMs=effectiveCfg.getLong(SHUTDOWN_TIMEOUT_MS_PROP);
+}

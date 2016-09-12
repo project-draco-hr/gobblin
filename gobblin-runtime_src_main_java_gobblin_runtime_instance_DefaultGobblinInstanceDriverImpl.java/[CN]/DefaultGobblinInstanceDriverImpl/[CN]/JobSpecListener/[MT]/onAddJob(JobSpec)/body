@@ -1,4 +1,4 @@
 {
   super.onAddJob(addedJob);
-  _jobScheduler.scheduleJob(addedJob,new JobSpecRunnable(addedJob));
+  _jobScheduler.scheduleJob(addedJob,createJobSpecRunnable(addedJob));
 }

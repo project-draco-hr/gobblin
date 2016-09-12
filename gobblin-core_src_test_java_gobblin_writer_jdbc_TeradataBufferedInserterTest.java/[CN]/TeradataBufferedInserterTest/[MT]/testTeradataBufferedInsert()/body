@@ -1,0 +1,28 @@
+{
+  final int colNums=20;
+  final int batchSize=10;
+  final int entryCount=107;
+  final int colSize=7;
+  State state=new State();
+  state.setProp(WRITER_JDBC_INSERT_BATCH_SIZE,Integer.toString(batchSize));
+  JdbcBufferedInserter inserter=getJdbcBufferedInserter(state,conn);
+  MockParameterMetaData mockMetadata=new MockParameterMetaData();
+  mockMetadata.setParameterCount(2);
+  mockMetadata.setParameterType(0,12);
+  mockMetadata.setParameterType(1,-5);
+  PreparedStatement pstmt=Mockito.mock(PreparedStatement.class);
+  when(pstmt.getParameterMetaData()).thenReturn(mockMetadata);
+  when(pstmt.executeBatch()).thenReturn(new int[]{1,1,1});
+  when(conn.prepareStatement(anyString())).thenReturn(pstmt);
+  List<JdbcEntryData> jdbcEntries=createJdbcEntries(colNums,colSize,entryCount);
+  for (  JdbcEntryData entry : jdbcEntries) {
+    inserter.insert(db,table,entry);
+  }
+  inserter.flush();
+  verify(conn,times(2)).prepareStatement(anyString());
+  verify(pstmt,times(107)).addBatch();
+  verify(pstmt,times((int)Math.ceil((double)entryCount / batchSize))).executeBatch();
+  verify(pstmt,times(entryCount)).clearParameters();
+  verify(pstmt,times(colNums * entryCount)).setObject(anyInt(),anyObject());
+  reset(pstmt);
+}

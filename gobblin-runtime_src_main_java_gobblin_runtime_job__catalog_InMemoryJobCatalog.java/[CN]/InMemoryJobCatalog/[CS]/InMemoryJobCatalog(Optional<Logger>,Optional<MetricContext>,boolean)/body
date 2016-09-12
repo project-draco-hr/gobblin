@@ -1,0 +1,13 @@
+{
+  this.log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
+  this.listeners=new JobCatalogListenersList(log);
+  if (instrumentationEnabled) {
+    MetricContext realParentCtx=parentMetricContext.or(Instrumented.getMetricContext(new State(),getClass()));
+    this.metricContext=realParentCtx.childBuilder(JobCatalog.class.getSimpleName()).build();
+    this.metrics=new StandardMetrics(this);
+  }
+ else {
+    this.metricContext=null;
+    this.metrics=null;
+  }
+}

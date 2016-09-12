@@ -1,0 +1,5 @@
+{
+  super(log);
+  _scheduler=scheduler.isPresent() ? scheduler.get() : createDefaultSchedulerService(cfg);
+  _cfg=new StandardServiceConfig(cfg.withFallback(DEFAULT_CFG));
+}

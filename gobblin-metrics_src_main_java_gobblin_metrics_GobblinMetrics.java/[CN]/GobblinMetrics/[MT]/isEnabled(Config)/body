@@ -1,0 +1,3 @@
+{
+  return cfg.hasPath(ConfigurationKeys.METRICS_ENABLED_KEY) ? cfg.getBoolean(ConfigurationKeys.METRICS_ENABLED_KEY) : Boolean.parseBoolean(ConfigurationKeys.DEFAULT_METRICS_ENABLED);
+}

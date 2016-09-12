@@ -1,0 +1,21 @@
+{
+  GenericRecordBuilder baseBuilder=new GenericRecordBuilder(this.schema);
+  Map<Utf8,Utf8> tags=(Map<Utf8,Utf8>)inputRecord.get("tags");
+  List<String> tagList=Lists.newArrayList(Iterables.transform(tags.entrySet(),new Function<Map.Entry<Utf8,Utf8>,String>(){
+    @Override public String apply(    Map.Entry<Utf8,Utf8> input){
+      return input.getKey().toString() + ":" + input.getValue().toString();
+    }
+  }
+));
+  baseBuilder.set("tags",tagList);
+  baseBuilder.set("timestamp",inputRecord.get("timestamp"));
+  List<GenericRecord> metrics=(List<GenericRecord>)inputRecord.get("metrics");
+  List<GenericRecord> flatMetrics=Lists.newArrayList();
+  for (  GenericRecord metric : metrics) {
+    GenericRecordBuilder thisMetric=new GenericRecordBuilder(baseBuilder);
+    thisMetric.set("metricName",metric.get("name"));
+    thisMetric.set("metricValue",metric.get("value"));
+    flatMetrics.add(thisMetric.build());
+  }
+  return flatMetrics;
+}

@@ -1,0 +1,5 @@
+{
+  Decoder decoder=DecoderFactory.get().binaryDecoder(serializedRecord,null);
+  GenericDatumReader<GenericRecord> reader=new GenericDatumReader<>(schema);
+  return reader.read(null,decoder);
+}

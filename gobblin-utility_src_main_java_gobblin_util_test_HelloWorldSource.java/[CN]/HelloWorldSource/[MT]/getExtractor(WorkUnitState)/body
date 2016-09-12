@@ -1,0 +1,4 @@
+{
+  int helloId=state.getPropAsInt(HELLO_ID_FULL_KEY);
+  return new ExtractorImpl(helloId);
+}

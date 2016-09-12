@@ -1,0 +1,3 @@
+{
+  return TriggerBuilder.newTrigger().withIdentity("Cron for " + jobSpec.getUri()).forJob(jobKey).withSchedule(CronScheduleBuilder.cronSchedule(jobSpec.getConfig().getString(ConfigurationKeys.JOB_SCHEDULE_KEY))).build();
+}

@@ -1,0 +1,6 @@
+{
+  if (!_instrumentationEnabled.isPresent()) {
+    _instrumentationEnabled=Optional.of(getDefaultInstrumentationEnabled());
+  }
+  return _instrumentationEnabled.get();
+}

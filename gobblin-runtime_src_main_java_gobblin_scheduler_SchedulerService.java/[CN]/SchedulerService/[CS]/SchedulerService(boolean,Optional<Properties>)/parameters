@@ -1,0 +1,2 @@
+boolean waitForJobCompletion
+Optional<Properties> quartzConfig

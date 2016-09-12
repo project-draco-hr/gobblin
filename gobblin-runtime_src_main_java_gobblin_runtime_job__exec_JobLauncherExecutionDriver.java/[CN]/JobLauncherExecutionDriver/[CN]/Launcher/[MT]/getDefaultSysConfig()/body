@@ -1,3 +1,3 @@
 {
-  return _gobblinInstance.isPresent() ? _gobblinInstance.get().getSysConfig() : DefaultConfigurableImpl.createFromConfig(ConfigFactory.empty());
+  return _gobblinEnv.isPresent() ? _gobblinEnv.get().getSysConfig() : DefaultConfigurableImpl.createFromConfig(ConfigFactory.empty());
 }

@@ -1,0 +1,3 @@
+{
+  this(registry,overrideName,Optional.<Schema>absent());
+}

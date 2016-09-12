@@ -1,0 +1,10 @@
+{
+  Properties properties=new Properties();
+  Config resolvedConfig=config.resolve();
+  for (  Map.Entry<String,ConfigValue> entry : resolvedConfig.entrySet()) {
+    if (!prefix.isPresent() || entry.getKey().startsWith(prefix.get())) {
+      properties.setProperty(entry.getKey(),resolvedConfig.getString(entry.getKey()));
+    }
+  }
+  return properties;
+}

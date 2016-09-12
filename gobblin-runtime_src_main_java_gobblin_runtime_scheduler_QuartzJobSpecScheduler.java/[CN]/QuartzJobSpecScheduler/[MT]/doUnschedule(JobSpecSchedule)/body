@@ -1,0 +1,11 @@
+{
+  Preconditions.checkNotNull(existingSchedule);
+  Preconditions.checkArgument(existingSchedule instanceof QuartzJobSchedule);
+  QuartzJobSchedule quartzSchedule=(QuartzJobSchedule)existingSchedule;
+  try {
+    _scheduler.getScheduler().deleteJob(quartzSchedule.getQuartzTrigger().getJobKey());
+  }
+ catch (  SchedulerException e) {
+    throw new RuntimeException("Unscheduling failed for " + existingSchedule.getJobSpec() + ":"+ e,e);
+  }
+}

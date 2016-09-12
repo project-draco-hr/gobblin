@@ -1,0 +1,3 @@
+{
+  this(Optional.of(env.getLog()),env.getSysConfig().getConfig(),Optional.<SchedulerService>absent());
+}

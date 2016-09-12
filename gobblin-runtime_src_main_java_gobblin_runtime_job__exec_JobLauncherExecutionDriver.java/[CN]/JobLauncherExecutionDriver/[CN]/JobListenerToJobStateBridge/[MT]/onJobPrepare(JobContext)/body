@@ -2,4 +2,7 @@
   super.onJobPrepare(jobContext);
   _jobContext=jobContext;
   _jobState.switchToPending();
+  if (_instrumentationEnabled && null != _launcherMetrics) {
+    _launcherMetrics.getNumJobsLaunched().inc();
+  }
 }

@@ -1,0 +1,3 @@
+{
+  this(env.getSysConfig().getConfig(),null,Optional.of(env.getMetricContext()),env.isInstrumentationEnabled());
+}

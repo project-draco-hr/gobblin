@@ -1,0 +1,7 @@
+{
+  Config cfg=ConfigFactory.parseMap(ImmutableMap.<String,Object>builder().put("key1",1).put("key2","sTring").put("key3",true).build());
+  Properties props=ConfigUtils.configToProperties(cfg);
+  Assert.assertEquals(props.getProperty("key1"),"1");
+  Assert.assertEquals(props.getProperty("key2"),"sTring");
+  Assert.assertEquals(props.getProperty("key3"),"true");
+}

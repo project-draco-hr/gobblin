@@ -1,0 +1,10 @@
+{
+  final String VALUE_FORMAT="(%s)";
+  StringBuilder sb=new StringBuilder(this.insertStmtPrefix);
+  String values=String.format(VALUE_FORMAT,JOINER_ON_COMMA.useForNull("?").join(new String[this.columnNames.size()]));
+  sb.append(values);
+  for (int i=1; i < batchSize; i++) {
+    sb.append(',').append(values);
+  }
+  return sb.append(';').toString();
+}

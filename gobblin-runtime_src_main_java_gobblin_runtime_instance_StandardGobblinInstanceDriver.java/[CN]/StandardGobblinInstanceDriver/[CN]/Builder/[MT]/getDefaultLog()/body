@@ -1,3 +1,3 @@
 {
-  return LoggerFactory.getLogger(getInstanceName());
+  return _instanceEnv.isPresent() ? _instanceEnv.get().getLog() : LoggerFactory.getLogger(getInstanceName());
 }

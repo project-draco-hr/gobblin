@@ -1,4 +1,4 @@
 {
   Preconditions.checkNotNull(jobSpec);
-  return new JobLauncherExecutionDriver(getSysConfig(),jobSpec,_jobLauncherType,Optional.of(getLog(jobSpec)));
+  return new JobLauncherExecutionDriver(getSysConfig(),jobSpec,_jobLauncherType,Optional.of(getLog(jobSpec)),isInstrumentationEnabled(),getMetrics());
 }

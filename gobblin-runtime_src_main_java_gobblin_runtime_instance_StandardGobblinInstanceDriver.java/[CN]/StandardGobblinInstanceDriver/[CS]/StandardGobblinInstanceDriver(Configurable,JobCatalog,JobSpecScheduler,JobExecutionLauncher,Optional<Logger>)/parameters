@@ -1,5 +1,0 @@
-Configurable sysConfig
-JobCatalog jobCatalog
-JobSpecScheduler jobScheduler
-JobExecutionLauncher jobLauncher
-Optional<Logger> log

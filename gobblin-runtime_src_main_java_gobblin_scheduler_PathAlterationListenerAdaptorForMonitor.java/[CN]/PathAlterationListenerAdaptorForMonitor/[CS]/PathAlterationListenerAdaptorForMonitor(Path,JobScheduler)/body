@@ -1,4 +1,5 @@
 {
   this.jobConfigFileDirPath=jobConfigFileDirPath;
   this.jobScheduler=jobScheduler;
+  this.jobNameMap=Maps.newConcurrentMap();
 }

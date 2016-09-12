@@ -1,6 +1,0 @@
-{
-  if (!_instanceConfig.isPresent()) {
-    _instanceConfig=Optional.of(getDefaultInstanceConfig());
-  }
-  return _instanceConfig.get();
-}

@@ -1,0 +1,3 @@
+StandardGobblinInstanceLauncher instanceLauncher
+JobSpec js1
+GobblinInstanceDriver instance

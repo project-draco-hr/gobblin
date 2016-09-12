@@ -1,4 +1,3 @@
 {
-  this.log=log.isPresent() ? log.get() : LoggerFactory.getLogger(getClass());
-  this.listeners=new JobCatalogListenersList(log);
+  this(log,Optional.<MetricContext>absent(),true);
 }

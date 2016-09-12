@@ -1,4 +1,7 @@
 {
   super.onJobCancellation(jobContext);
   _jobState.switchToCancelled();
+  if (_instrumentationEnabled && null != _launcherMetrics) {
+    _launcherMetrics.getNumJobsCancelled().inc();
+  }
 }

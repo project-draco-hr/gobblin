@@ -1,6 +1,6 @@
 {
-  if (_instanceLauncher.isPresent()) {
-    return _instanceLauncher.get().getInstanceName();
+  if (_instanceEnv.isPresent()) {
+    return _instanceEnv.get().getInstanceName();
   }
  else {
     return StandardGobblinInstanceDriver.class.getName() + "-" + INSTANCE_COUNTER.getAndIncrement();

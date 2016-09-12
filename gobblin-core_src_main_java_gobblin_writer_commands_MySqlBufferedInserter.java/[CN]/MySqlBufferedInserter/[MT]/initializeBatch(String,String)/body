@@ -1,0 +1,8 @@
+{
+  int actualBatchSize=Math.min(this.batchSize,this.maxParamSize / this.columnNames.size());
+  if (this.batchSize != actualBatchSize) {
+    LOG.info("Changing batch size from " + this.batchSize + " to "+ actualBatchSize+ " due to # of params limitation "+ this.maxParamSize+ " , # of columns: "+ this.columnNames.size());
+  }
+  this.batchSize=actualBatchSize;
+  super.initializeBatch(databaseName,table);
+}

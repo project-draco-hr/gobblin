@@ -1,3 +1,13 @@
 {
   this.listeners.registerWeakJobCatalogListener(jobListener);
+  List<JobSpec> currentJobSpecList=this.getJobs();
+  if (currentJobSpecList == null || currentJobSpecList.size() == 0) {
+    return;
+  }
+ else {
+    for (    JobSpec jobSpecEntry : currentJobSpecList) {
+      JobCatalogListener.AddJobCallback addJobCallback=new JobCatalogListener.AddJobCallback(jobSpecEntry);
+      this.listeners.callbackOneListener(addJobCallback,jobListener);
+    }
+  }
 }

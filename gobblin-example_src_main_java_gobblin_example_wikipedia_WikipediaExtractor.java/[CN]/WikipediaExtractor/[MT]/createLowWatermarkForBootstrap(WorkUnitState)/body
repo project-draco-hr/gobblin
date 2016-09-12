@@ -1,0 +1,15 @@
+{
+  String bootstrapPeriodString=state.getProp(BOOTSTRAP_PERIOD,DEFAULT_BOOTSTRAP_PERIOD);
+  Period period=Period.parse(bootstrapPeriodString);
+  DateTime startTime=DateTime.now().minus(period);
+  try {
+    Queue<JsonElement> firstRevision=retrievePageRevisions(ImmutableMap.<String,String>builder().putAll(this.baseQuery).put("rvprop","ids").put("titles",this.requestedTitle).put("rvlimit","1").put("rvstart",WIKIPEDIA_TIMESTAMP_FORMAT.print(startTime)).put("rvdir","newer").build());
+    if (firstRevision.isEmpty()) {
+      throw new IOException("Could not retrieve oldest revision, returned empty revisions list.");
+    }
+    return parseRevision(firstRevision.poll());
+  }
+ catch (  URISyntaxException use) {
+    throw new IOException(use);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  try {
+    this.writer=new GenericDatumWriter<>(schema);
+    this.outputStream=new ByteArrayOutputStream();
+    this.encoder=EncoderFactory.get().jsonEncoder(schema,this.outputStream);
+  }
+ catch (  IOException ioe) {
+    throw new RuntimeException("Could not initialize avro json encoder.");
+  }
+}

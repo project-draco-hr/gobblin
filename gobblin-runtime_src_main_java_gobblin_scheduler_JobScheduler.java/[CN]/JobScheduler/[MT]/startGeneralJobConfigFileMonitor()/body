@@ -1,6 +1,4 @@
 {
-  final Path jobConfigFileDirPath=new Path(this.properties.getProperty(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY));
-  PathAlterationListener listener=new PathAlterationListenerAdaptorForMonitor(jobConfigFileDirPath,this);
-  SchedulerUtils.addPathAlterationObserver(this.pathAlterationDetector,listener,jobConfigFileDirPath);
+  SchedulerUtils.addPathAlterationObserver(this.pathAlterationDetector,this.listener,jobConfigFileDirPath);
   this.pathAlterationDetector.start();
 }

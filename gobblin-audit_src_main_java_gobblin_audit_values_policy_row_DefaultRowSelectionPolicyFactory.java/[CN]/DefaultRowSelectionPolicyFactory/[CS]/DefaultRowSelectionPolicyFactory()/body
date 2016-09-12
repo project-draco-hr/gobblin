@@ -1,3 +1,3 @@
 {
-  this.aliasResolver=new ClassAliasResolver(RowSelectionPolicy.class);
+  this.aliasResolver=new ClassAliasResolver<>(RowSelectionPolicy.class);
 }

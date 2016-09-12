@@ -31,8 +31,21 @@
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
   populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
+  try {
+    FsPermission sourceDataPermission=this.fs.getFileStatus(conversionEntity.getHiveTable().getDataLocation()).getPermission();
+    if (!this.fs.mkdirs(new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission)) {
+      throw new RuntimeException(String.format("Failed to create path %s with permissions %s",new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission));
+    }
+ else {
+      this.fs.setPermission(new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission);
+      log.info(String.format("Created %s with permissions %s",new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission));
+    }
+  }
+ catch (  IOException e) {
+    Throwables.propagate(e);
+  }
   for (  Map.Entry<Object,Object> entry : getConversionConfig().getHiveRuntimeProperties().entrySet()) {
-    conversionEntity.getQueries().add(String.format("SET %s=%s;",entry.getKey(),entry.getValue()));
+    conversionEntity.getQueries().add(String.format("SET %s=%s",entry.getKey(),entry.getValue()));
   }
   Map<String,String> hiveColumns=new HashMap<>();
   String createStagingTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcStagingDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),optionalTblProperties,isEvolutionEnabled,destinationTableMeta,hiveColumns);

@@ -1,8 +1,3 @@
 {
-  Properties properties=new Properties();
-  Config resolvedConfig=config.resolve();
-  for (  Map.Entry<String,ConfigValue> entry : resolvedConfig.entrySet()) {
-    properties.setProperty(entry.getKey(),resolvedConfig.getString(entry.getKey()));
-  }
-  return properties;
+  return configToProperties(config,Optional.<String>absent());
 }

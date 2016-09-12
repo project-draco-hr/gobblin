@@ -1,0 +1,20 @@
+{
+  _log.info("Scheduling JobSpec " + jobSpec);
+  final URI jobSpecURI=jobSpec.getUri();
+  JobSpecSchedule newSchedule=null;
+  Runnable runnableWithTriggerCallback=new TriggerRunnable(jobSpec,jobRunnable);
+synchronized (this) {
+    JobSpecSchedule existingSchedule=_schedules.get(jobSpecURI);
+    if (null != existingSchedule) {
+      if (existingSchedule.getJobSpec().equals(jobSpec)) {
+        _log.warn("Ignoring already scheduled job: " + jobSpec);
+        return existingSchedule;
+      }
+      unscheduleJob(jobSpecURI);
+    }
+    newSchedule=doScheduleJob(jobSpec,runnableWithTriggerCallback);
+    _schedules.put(jobSpecURI,newSchedule);
+  }
+  _callbacksDispatcher.onJobScheduled(newSchedule);
+  return newSchedule;
+}

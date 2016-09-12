@@ -2,7 +2,7 @@
   try {
     final long updateTime=this.updateProvider.getUpdateTime(hiveDataset.getTable());
     log.info(String.format("Validating table: %s",hiveDataset.getTable()));
-    for (    final String format : this.destFormats) {
+    for (    final String format : hiveDataset.getDestFormats()) {
       Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
       if (conversionConfigOptional.isPresent()) {
         ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();

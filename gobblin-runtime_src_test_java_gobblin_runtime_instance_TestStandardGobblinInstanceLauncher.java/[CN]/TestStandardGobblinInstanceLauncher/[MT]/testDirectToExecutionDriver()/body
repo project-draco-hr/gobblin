@@ -1,0 +1,33 @@
+{
+  StandardGobblinInstanceLauncher.Builder instanceLauncherBuilder=StandardGobblinInstanceLauncher.builder().withInstanceName("testDirectToExecutionDriver");
+  instanceLauncherBuilder.driver();
+  StandardGobblinInstanceLauncher instanceLauncher=instanceLauncherBuilder.build();
+  instanceLauncher.startAsync();
+  instanceLauncher.awaitRunning(50,TimeUnit.MILLISECONDS);
+  JobSpec js1=JobSpec.builder().withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf")).build();
+  GobblinInstanceDriver instance=instanceLauncher.getDriver();
+  final JobExecutionLauncher.StandardMetrics launcherMetrics=instance.getJobLauncher().getMetrics();
+  AssertWithBackoff asb=new AssertWithBackoff().timeoutMs(100);
+  checkLaunchJob(instanceLauncher,js1,instance);
+  Assert.assertEquals(launcherMetrics.getNumJobsLaunched().getCount(),1);
+  Assert.assertEquals(launcherMetrics.getNumJobsCompleted().getCount(),1);
+  asb.assertEquals(new Function<Void,Long>(){
+    @Override public Long apply(    Void input){
+      return launcherMetrics.getNumJobsCommitted().getCount();
+    }
+  }
+,1l,"numJobsCommitted==1");
+  Assert.assertEquals(launcherMetrics.getNumJobsFailed().getCount(),0);
+  Assert.assertEquals(launcherMetrics.getNumJobsRunning().getValue().intValue(),0);
+  checkLaunchJob(instanceLauncher,js1,instance);
+  Assert.assertEquals(launcherMetrics.getNumJobsLaunched().getCount(),2);
+  Assert.assertEquals(launcherMetrics.getNumJobsCompleted().getCount(),2);
+  asb.assertEquals(new Function<Void,Long>(){
+    @Override public Long apply(    Void input){
+      return launcherMetrics.getNumJobsCommitted().getCount();
+    }
+  }
+,2l,"numJobsCommitted==2");
+  Assert.assertEquals(launcherMetrics.getNumJobsFailed().getCount(),0);
+  Assert.assertEquals(launcherMetrics.getNumJobsRunning().getValue().intValue(),0);
+}

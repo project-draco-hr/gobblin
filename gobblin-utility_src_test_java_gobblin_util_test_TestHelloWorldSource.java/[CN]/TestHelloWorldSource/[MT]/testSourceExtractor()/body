@@ -1,0 +1,15 @@
+{
+  SourceState state=new SourceState();
+  state.setProp(HelloWorldSource.NUM_HELLOS_FULL_KEY,10);
+  HelloWorldSource source=new HelloWorldSource();
+  List<WorkUnit> wus=source.getWorkunits(state);
+  Assert.assertEquals(wus.size(),10);
+  for (int i=0; i < wus.size(); ++i) {
+    WorkUnit wu=wus.get(i);
+    Assert.assertEquals(wu.getPropAsInt(HelloWorldSource.HELLO_ID_FULL_KEY),i + 1);
+    WorkUnitState wuState=new WorkUnitState(wu,state);
+    Extractor<String,String> extr=source.getExtractor(wuState);
+    Assert.assertEquals(extr.getExpectedRecordCount(),1);
+    Assert.assertEquals(extr.readRecord(null),"Hello world " + (i + 1) + " !");
+  }
+}

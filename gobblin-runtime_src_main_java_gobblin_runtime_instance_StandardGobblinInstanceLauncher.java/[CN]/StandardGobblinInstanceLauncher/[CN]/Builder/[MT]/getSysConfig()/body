@@ -1,0 +1,6 @@
+{
+  if (!_instanceConfig.isPresent()) {
+    _instanceConfig=Optional.of(getDefaultSysConfig());
+  }
+  return _instanceConfig.get();
+}

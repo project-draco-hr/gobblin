@@ -1,0 +1,4 @@
+{
+  String sql=String.format(COPY_INSERT_STATEMENT_FORMAT,databaseName,to,databaseName,from);
+  execute(sql);
+}

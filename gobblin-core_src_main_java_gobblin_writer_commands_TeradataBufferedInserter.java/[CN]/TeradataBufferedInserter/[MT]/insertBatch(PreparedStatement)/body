@@ -1,0 +1,27 @@
+{
+  for (  JdbcEntryData pendingEntry : TeradataBufferedInserter.this.pendingInserts) {
+    int i=1;
+    for (    JdbcEntryDatum datum : pendingEntry) {
+      Object value=datum.getVal();
+      if (value != null) {
+        pstmt.setObject(i,value);
+      }
+ else {
+        pstmt.setNull(i,columnPosSqlTypes.get(i));
+      }
+      i++;
+    }
+    pstmt.addBatch();
+    pstmt.clearParameters();
+  }
+  if (LOG.isDebugEnabled()) {
+    LOG.debug("Executing SQL " + pstmt);
+  }
+  int[] execStatus=pstmt.executeBatch();
+  for (  int status : execStatus) {
+    if (status == Statement.EXECUTE_FAILED) {
+      throw new BatchUpdateException("Batch insert failed.",execStatus);
+    }
+  }
+  return true;
+}

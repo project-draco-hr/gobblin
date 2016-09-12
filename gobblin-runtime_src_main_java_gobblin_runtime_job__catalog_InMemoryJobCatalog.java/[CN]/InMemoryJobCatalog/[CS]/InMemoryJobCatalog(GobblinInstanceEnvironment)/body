@@ -1,0 +1,3 @@
+{
+  this(Optional.of(env.getLog()),Optional.of(env.getMetricContext()),env.isInstrumentationEnabled());
+}

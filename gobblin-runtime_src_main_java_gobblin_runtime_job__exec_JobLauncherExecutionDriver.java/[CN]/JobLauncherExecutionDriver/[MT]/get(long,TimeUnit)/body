@@ -5,5 +5,5 @@
     unit=TimeUnit.SECONDS;
   }
   getJobExecutionState().awaitForDone(unit.toMillis(timeout));
-  return null;
+  return JobExecutionResult.createFromState(getJobExecutionState());
 }

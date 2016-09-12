@@ -1,0 +1,15 @@
+{
+  JobDataMap jobDataMap=new JobDataMap();
+  jobDataMap.put(JOB_SPEC_KEY,jobSpec);
+  jobDataMap.put(JOB_RUNNABLE_KEY,jobRunnable);
+  JobDetail job=JobBuilder.newJob(QuartzJob.class).withIdentity(jobSpec.getUri().toString()).withDescription(Strings.nullToEmpty(jobSpec.getDescription())).usingJobData(jobDataMap).build();
+  Trigger jobTrigger=createTrigger(job.getKey(),jobSpec);
+  QuartzJobSchedule jobSchedule=new QuartzJobSchedule(jobSpec,jobRunnable,jobTrigger);
+  try {
+    _scheduler.getScheduler().scheduleJob(job,jobTrigger);
+  }
+ catch (  SchedulerException e) {
+    throw new RuntimeException("Scheduling failed for " + jobSpec + ":"+ e,e);
+  }
+  return jobSchedule;
+}

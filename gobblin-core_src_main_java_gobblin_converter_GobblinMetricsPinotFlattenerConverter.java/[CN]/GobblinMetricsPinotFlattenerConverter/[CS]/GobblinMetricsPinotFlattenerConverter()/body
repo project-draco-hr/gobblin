@@ -1,0 +1,5 @@
+{
+  try (InputStream is=GobblinMetricsPinotFlattenerConverter.class.getClassLoader().getResourceAsStream("FlatGobblinMetric.avsc")){
+    this.schema=new Schema.Parser().parse(is);
+  }
+ }

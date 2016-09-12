@@ -1,0 +1,5 @@
+{
+  super.shutDown();
+  _scheduler.stopAsync();
+  _scheduler.awaitTerminated(_cfg.getShutDownTimeoutMs(),TimeUnit.MILLISECONDS);
+}

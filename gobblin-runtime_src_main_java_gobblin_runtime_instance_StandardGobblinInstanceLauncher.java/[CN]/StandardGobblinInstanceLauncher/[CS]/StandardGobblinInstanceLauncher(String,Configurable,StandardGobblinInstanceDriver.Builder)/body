@@ -1,5 +1,0 @@
-{
-  _name=name;
-  _instanceConf=instanceConf;
-  _driver=driverBuilder.withInstanceLauncher(this).build();
-}

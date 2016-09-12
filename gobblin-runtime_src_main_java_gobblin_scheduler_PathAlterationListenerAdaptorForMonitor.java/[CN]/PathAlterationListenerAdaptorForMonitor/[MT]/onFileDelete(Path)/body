@@ -9,5 +9,5 @@
     return;
   }
   LOG.info("Detected deletion to job configuration file " + path.toString());
-  loadNewJobConfigAndHandleNewJob(path,JobScheduler.Action.UNSCHEDULE);
+  unscheduleJobAtPath(path);
 }

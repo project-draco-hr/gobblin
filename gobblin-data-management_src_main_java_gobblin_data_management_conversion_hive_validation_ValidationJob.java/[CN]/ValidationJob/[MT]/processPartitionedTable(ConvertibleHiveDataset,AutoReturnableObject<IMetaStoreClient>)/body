@@ -1,6 +1,6 @@
 {
   List<Partition> sourcePartitions=HiveUtils.getPartitions(client.get(),hiveDataset.getTable(),Optional.<String>absent());
-  for (  final String format : this.destFormats) {
+  for (  final String format : hiveDataset.getDestFormats()) {
     Optional<ConvertibleHiveDataset.ConversionConfig> conversionConfigOptional=hiveDataset.getConversionConfigForFormat(format);
     if (conversionConfigOptional.isPresent()) {
       ConvertibleHiveDataset.ConversionConfig conversionConfig=conversionConfigOptional.get();

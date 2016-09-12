@@ -1,5 +1,10 @@
 {
-  this.pStmt.clearBatch();
-  this.pStmt.clearParameters();
-  this.currBatchSize=0;
+  try {
+    this.insertPstmtForFixedBatch.clearBatch();
+    this.insertPstmtForFixedBatch.clearParameters();
+    this.currBatchSize=0;
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException(e);
+  }
 }

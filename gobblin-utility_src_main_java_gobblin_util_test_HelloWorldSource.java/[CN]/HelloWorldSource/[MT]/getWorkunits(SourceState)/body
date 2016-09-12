@@ -1,0 +1,13 @@
+{
+  Config rootCfg=ConfigUtils.propertiesToConfig(state.getProperties());
+  Config cfg=rootCfg.hasPath(CONFIG_NAMESPACE) ? rootCfg.getConfig(CONFIG_NAMESPACE) : ConfigFactory.empty();
+  int numHellos=cfg.hasPath(NUM_HELLOS_KEY) ? cfg.getInt(NUM_HELLOS_KEY) : DEFAULT_NUM_HELLOS;
+  Extract extract=new Extract(TableType.APPEND_ONLY,HelloWorldSource.class.getPackage().getName(),HelloWorldSource.class.getSimpleName());
+  List<WorkUnit> wus=new ArrayList<>(numHellos);
+  for (int i=1; i <= numHellos; ++i) {
+    WorkUnit wu=new WorkUnit(extract);
+    wu.setProp(HELLO_ID_FULL_KEY,i);
+    wus.add(wu);
+  }
+  return wus;
+}

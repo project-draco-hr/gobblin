@@ -1,0 +1,14 @@
+{
+  JobSpecSchedule existingSchedule=null;
+synchronized (this) {
+    existingSchedule=_schedules.get(jobSpecURI);
+    if (null != existingSchedule) {
+      _log.info("Unscheduling " + existingSchedule);
+      this._schedules.remove(jobSpecURI);
+      doUnschedule(existingSchedule);
+    }
+  }
+  if (null != existingSchedule) {
+    _callbacksDispatcher.onJobUnscheduled(existingSchedule);
+  }
+}

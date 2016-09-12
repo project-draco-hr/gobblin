@@ -1,0 +1,7 @@
+{
+  if (_recordsEmitted > 0) {
+    return null;
+  }
+  ++_recordsEmitted;
+  return "Hello world " + _helloId + " !";
+}

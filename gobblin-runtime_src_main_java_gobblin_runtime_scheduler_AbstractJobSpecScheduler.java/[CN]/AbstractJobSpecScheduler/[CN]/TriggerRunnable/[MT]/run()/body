@@ -1,0 +1,4 @@
+{
+  _callbacksDispatcher.onJobTriggered(_jobSpec);
+  _jobRunnable.run();
+}

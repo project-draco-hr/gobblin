@@ -1,0 +1,10 @@
+{
+  JobExecutionDriver jobDriver=instance.getJobLauncher().launchJob(js1);
+  jobDriver.startAsync();
+  JobExecutionResult jobResult=jobDriver.get(5,TimeUnit.SECONDS);
+  Assert.assertTrue(jobResult.isSuccessful());
+  instanceLauncher.stopAsync();
+  instanceLauncher.awaitTerminated(100,TimeUnit.MILLISECONDS);
+  Assert.assertEquals(instance.getMetrics().getUpFlag().getValue().intValue(),0);
+  Assert.assertEquals(instance.getMetrics().getUptimeMs().getValue().longValue(),0);
+}

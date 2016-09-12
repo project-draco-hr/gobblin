@@ -1,0 +1,6 @@
+{
+  if (input instanceof EventNotification) {
+    _events.offer(((EventNotification)input).getEvent());
+  }
+  return null;
+}

@@ -1,0 +1,4 @@
+{
+  Date nextRuntime=this.quartzTrigger.getNextFireTime();
+  return null != nextRuntime ? Optional.<Long>of(nextRuntime.getTime()) : Optional.<Long>absent();
+}
