@@ -4,7 +4,7 @@
   boolean isEvolutionEnabled=false;
   Optional<Table> destinationTableMeta=createEvolvedDestinationTable(schemaName,"default","",true);
   Map<String,String> hiveColumns=new HashMap<>();
-  HiveAvroORCQueryGenerator.generateCreateTableDDL(outputSchema,schemaName,"/tmp/dummy",Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
+  HiveAvroORCQueryGenerator.generateCreateTableDDL(outputSchema,schemaName,"/tmp/dummy",Optional.<String>absent(),Optional.<Map<String,String>>absent(),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),null,isEvolutionEnabled,destinationTableMeta,hiveColumns);
   List<String> generateEvolutionDDL=HiveAvroORCQueryGenerator.generateEvolutionDDL(orcStagingTableName,orcTableName,Optional.of(hiveDbName),Optional.of(hiveDbName),outputSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta);
   Assert.assertEquals(generateEvolutionDDL.size(),0,"Generated evolution DDL did not match for evolution disabled");
   destinationTableMeta=Optional.absent();

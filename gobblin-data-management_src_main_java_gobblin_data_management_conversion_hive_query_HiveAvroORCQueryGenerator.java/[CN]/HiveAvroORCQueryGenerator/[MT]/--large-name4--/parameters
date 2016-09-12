@@ -9,7 +9,7 @@ Optional<Integer> optionalNumOfBuckets
 Optional<String> optionalRowFormatSerde
 Optional<String> optionalInputFormat
 Optional<String> optionalOutputFormat
-Optional<Map<String,String>> optionalTblProperties
+Properties tableProperties
 boolean isEvolutionEnabled
 Optional<Table> destinationTableMeta
 Map<String,String> hiveColumns

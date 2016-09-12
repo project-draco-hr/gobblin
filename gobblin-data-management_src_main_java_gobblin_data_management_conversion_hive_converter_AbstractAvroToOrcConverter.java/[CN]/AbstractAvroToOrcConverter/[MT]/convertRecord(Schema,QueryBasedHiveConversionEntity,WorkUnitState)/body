@@ -20,6 +20,7 @@
   Optional<List<String>> clusterBy=getConversionConfig().getClusterBy().isEmpty() ? Optional.<List<String>>absent() : Optional.of(getConversionConfig().getClusterBy());
   Optional<Integer> numBuckets=getConversionConfig().getNumBuckets();
   Optional<Integer> rowLimit=getConversionConfig().getRowLimit();
+  Properties tableProperties=getConversionConfig().getDestinationTableProperties();
   List<String> sourceDataPathIdentifier=getConversionConfig().getSourceDataPathIdentifier();
   Map<String,String> partitionsDDLInfo=Maps.newHashMap();
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
@@ -40,8 +41,13 @@
   for (  Map.Entry<Object,Object> entry : getConversionConfig().getHiveRuntimeProperties().entrySet()) {
     conversionEntity.getQueries().add(String.format("SET %s=%s",entry.getKey(),entry.getValue()));
   }
+  conversionEntity.getQueries().add(String.format("SET %s=%s",GOBBLIN_DATASET_URN_KEY,conversionEntity.getHiveTable().getCompleteName()));
+  if (conversionEntity.getHivePartition().isPresent()) {
+    conversionEntity.getQueries().add(String.format("SET %s=%s",GOBBLIN_PARTITION_NAME_KEY,conversionEntity.getHivePartition().get().getCompleteName()));
+  }
+  conversionEntity.getQueries().add(String.format("SET %s=%s",GOBBLIN_WORKUNIT_CREATE_TIME_KEY,workUnit.getWorkunit().getProp(SlaEventKeys.ORIGIN_TS_IN_MILLI_SECS_KEY)));
   Map<String,String> hiveColumns=new HashMap<>();
-  String createStagingTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcStagingDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,hiveColumns);
+  String createStagingTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcStagingDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),tableProperties,isEvolutionEnabled,destinationTableMeta,hiveColumns);
   conversionEntity.getQueries().add(createStagingTableDDL);
   log.info("Create staging table DDL: " + createStagingTableDDL);
   String orcStagingDataPartitionDirName=getOrcStagingDataPartitionDirName(conversionEntity,sourceDataPathIdentifier);
@@ -60,7 +66,7 @@
   List<String> cleanupQueries=publishEntity.getCleanupQueries();
   List<String> cleanupDirectories=publishEntity.getCleanupDirectories();
   if (!destinationTableMeta.isPresent()) {
-    String createTargetTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<Map<String,String>>absent(),isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
+    String createTargetTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),tableProperties,isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
     publishQueries.add(createTargetTableDDL);
     log.info("Create final table DDL: " + createTargetTableDDL);
   }
