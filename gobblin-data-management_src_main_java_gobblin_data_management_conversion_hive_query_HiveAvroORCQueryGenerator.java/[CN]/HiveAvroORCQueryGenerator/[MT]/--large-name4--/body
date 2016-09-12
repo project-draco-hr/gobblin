@@ -6,7 +6,7 @@
   String rowFormatSerde=optionalRowFormatSerde.isPresent() ? optionalRowFormatSerde.get() : DEFAULT_ROW_FORMAT_SERDE;
   String inputFormat=optionalInputFormat.isPresent() ? optionalInputFormat.get() : DEFAULT_ORC_INPUT_FORMAT;
   String outputFormat=optionalOutputFormat.isPresent() ? optionalOutputFormat.get() : DEFAULT_ORC_OUTPUT_FORMAT;
-  Map<String,String> tblProperties=getTableProperties(optionalTblProperties);
+  tableProperties=getTableProperties(tableProperties);
   StringBuilder ddl=new StringBuilder();
   ddl.append(String.format("CREATE EXTERNAL TABLE IF NOT EXISTS `%s`.`%s` ",dbName,tblName));
   ddl.append("( \n");
@@ -86,17 +86,17 @@
   ddl.append(String.format("  '%s' %n",outputFormat));
   ddl.append("LOCATION \n");
   ddl.append(String.format("  '%s' %n",tblLocation));
-  if (null != tblProperties && tblProperties.size() > 0) {
+  if (null != tableProperties && tableProperties.size() > 0) {
     ddl.append("TBLPROPERTIES ( \n");
     boolean isFirst=true;
-    for (    Map.Entry<String,String> entry : tblProperties.entrySet()) {
+    for (    String property : tableProperties.stringPropertyNames()) {
       if (isFirst) {
         isFirst=false;
       }
  else {
         ddl.append(", \n");
       }
-      ddl.append(String.format("  '%s'='%s'",entry.getKey(),entry.getValue()));
+      ddl.append(String.format("  '%s'='%s'",property,tableProperties.getProperty(property)));
     }
     ddl.append(") \n");
   }

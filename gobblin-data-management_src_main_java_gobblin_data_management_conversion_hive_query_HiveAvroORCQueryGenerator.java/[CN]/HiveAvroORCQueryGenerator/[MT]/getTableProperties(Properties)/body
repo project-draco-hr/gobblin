@@ -1,0 +1,11 @@
+{
+  if (null == tableProperties || tableProperties.size() == 0) {
+    return DEFAULT_TBL_PROPERTIES;
+  }
+  for (  String property : DEFAULT_TBL_PROPERTIES.stringPropertyNames()) {
+    if (!tableProperties.containsKey(property)) {
+      tableProperties.put(property,DEFAULT_TBL_PROPERTIES.get(property));
+    }
+  }
+  return tableProperties;
+}
