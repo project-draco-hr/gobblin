@@ -1,14 +1,17 @@
 {
-  if (this.pStmt == null) {
-    initializeBatch(databaseName,table,jdbcEntryData);
+  if (this.insertPstmtForFixedBatch == null) {
+    for (    JdbcEntryDatum datum : jdbcEntryData) {
+      this.columnNames.add(datum.getColumnName());
+    }
+    initializeBatch(databaseName,table);
   }
   int i=0;
   for (  JdbcEntryDatum datum : jdbcEntryData) {
-    this.pStmt.setObject(++i,datum.getVal());
+    this.insertPstmtForFixedBatch.setObject(++i,datum.getVal());
   }
-  this.pStmt.addBatch();
+  this.insertPstmtForFixedBatch.addBatch();
   this.currBatchSize++;
-  if (this.currBatchSize >= this.maxBatchSize) {
-    insertBatch();
+  if (this.currBatchSize >= this.batchSize) {
+    executeBatchInsert(this.insertPstmtForFixedBatch);
   }
 }

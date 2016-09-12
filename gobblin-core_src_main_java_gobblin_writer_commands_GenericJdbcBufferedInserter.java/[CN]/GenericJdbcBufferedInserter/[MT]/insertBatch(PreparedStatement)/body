@@ -1,0 +1,4 @@
+{
+  GenericJdbcBufferedInserter.this.insertPstmtForFixedBatch.executeBatch();
+  return true;
+}

@@ -1,0 +1,12 @@
+{
+  if (this.columnNames.isEmpty()) {
+    for (    JdbcEntryDatum datum : jdbcEntryData) {
+      this.columnNames.add(datum.getColumnName());
+    }
+    initializeBatch(databaseName,table);
+  }
+  this.pendingInserts.add(jdbcEntryData);
+  if (this.pendingInserts.size() == this.batchSize) {
+    executeBatchInsert(this.insertPstmtForFixedBatch);
+  }
+}

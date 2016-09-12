@@ -1,0 +1,5 @@
+{
+  this.insertStmtPrefix=createInsertStatementStr(databaseName,table);
+  this.insertPstmtForFixedBatch=this.conn.prepareStatement(createPrepareStatementStr(this.batchSize));
+  LOG.info(String.format("Initialized for %s insert " + this,(this.batchSize > 1) ? "batch" : ""));
+}

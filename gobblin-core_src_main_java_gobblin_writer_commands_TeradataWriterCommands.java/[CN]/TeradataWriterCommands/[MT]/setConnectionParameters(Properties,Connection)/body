@@ -1,0 +1,10 @@
+{
+  boolean jobCommitPolicyIsFull=JobCommitPolicy.COMMIT_ON_FULL_SUCCESS.equals(JobCommitPolicy.getCommitPolicy(properties));
+  boolean publishDataAtJobLevel=Boolean.parseBoolean(properties.getProperty(ConfigurationKeys.PUBLISH_DATA_AT_JOB_LEVEL,String.valueOf(ConfigurationKeys.DEFAULT_PUBLISH_DATA_AT_JOB_LEVEL)));
+  if (jobCommitPolicyIsFull || publishDataAtJobLevel) {
+    this.conn.setAutoCommit(false);
+  }
+ else {
+    LOG.info("Writing without staging tables, transactions are handled by the driver");
+  }
+}

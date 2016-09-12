@@ -1,0 +1,3 @@
+{
+  return String.format(INSERT_STATEMENT_PREFIX_FORMAT,databaseName,table,JOINER_ON_COMMA.join(columnNames),JOINER_ON_COMMA.useForNull("?").join(new String[columnNames.size()]));
+}

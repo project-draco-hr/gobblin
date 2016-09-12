@@ -1,0 +1,10 @@
+{
+  this.conn=conn;
+  this.batchSize=state.getPropAsInt(WRITER_JDBC_INSERT_BATCH_SIZE,DEFAULT_WRITER_JDBC_INSERT_BATCH_SIZE);
+  if (this.batchSize < 1) {
+    throw new IllegalArgumentException(WRITER_JDBC_INSERT_BATCH_SIZE + " should be a positive number");
+  }
+  int maxWait=state.getPropAsInt(WRITER_JDBC_INSERT_RETRY_TIMEOUT,DEFAULT_WRITER_JDBC_INSERT_RETRY_TIMEOUT);
+  int maxAttempts=state.getPropAsInt(WRITER_JDBC_INSERT_RETRY_MAX_ATTEMPT,DEFAULT_WRITER_JDBC_INSERT_RETRY_MAX_ATTEMPT);
+  this.retryer=RetryerBuilder.<Boolean>newBuilder().retryIfException().withWaitStrategy(WaitStrategies.exponentialWait(1000,maxWait,TimeUnit.SECONDS)).withStopStrategy(StopStrategies.stopAfterAttempt(maxAttempts)).build();
+}

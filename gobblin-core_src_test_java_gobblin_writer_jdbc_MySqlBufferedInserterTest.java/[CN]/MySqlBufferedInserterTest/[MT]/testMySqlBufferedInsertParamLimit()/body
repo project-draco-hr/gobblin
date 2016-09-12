@@ -1,6 +1,4 @@
 {
-  final String db="db";
-  final String table="stg";
   final int colNums=50;
   final int batchSize=10;
   final int entryCount=107;
@@ -9,7 +7,6 @@
   State state=new State();
   state.setProp(WRITER_JDBC_INSERT_BATCH_SIZE,Integer.toString(batchSize));
   state.setProp(WRITER_JDBC_MAX_PARAM_SIZE,maxParamSize);
-  Connection conn=mock(Connection.class);
   MySqlBufferedInserter inserter=new MySqlBufferedInserter(state,conn);
   PreparedStatement pstmt=mock(PreparedStatement.class);
   when(conn.prepareStatement(anyString())).thenReturn(pstmt);

@@ -1,0 +1,14 @@
+{
+  try {
+    this.retryer.wrap(new Callable<Boolean>(){
+      @Override public Boolean call() throws Exception {
+        return insertBatch(pstmt);
+      }
+    }
+).call();
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to insert.",e);
+  }
+  resetBatch();
+}

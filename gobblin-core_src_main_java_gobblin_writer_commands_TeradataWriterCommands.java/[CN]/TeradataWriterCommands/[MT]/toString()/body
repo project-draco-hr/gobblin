@@ -1,0 +1,3 @@
+{
+  return String.format("TeradataWriterCommands [bufferedWriter=%s]",this.jdbcBufferedWriter);
+}

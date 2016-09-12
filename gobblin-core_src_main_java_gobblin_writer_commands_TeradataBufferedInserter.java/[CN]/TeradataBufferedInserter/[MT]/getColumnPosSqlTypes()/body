@@ -1,0 +1,13 @@
+{
+  try {
+    final Map<Integer,Integer> columnPosSqlTypes=Maps.newHashMap();
+    ParameterMetaData pMetaData=this.insertPstmtForFixedBatch.getParameterMetaData();
+    for (int i=1; i <= pMetaData.getParameterCount(); i++) {
+      columnPosSqlTypes.put(i,pMetaData.getParameterType(i));
+    }
+    return columnPosSqlTypes;
+  }
+ catch (  SQLException e) {
+    throw new RuntimeException("Cannot retrieve columns types for batch insert",e);
+  }
+}
