@@ -1,0 +1,9 @@
+{
+  List<String> loggers=ImmutableList.of("org.apache.hadoop.hive","org.apache.hive","hive.ql.parse");
+  for (  String name : loggers) {
+    Logger logger=Logger.getLogger(name);
+    if (logger != null) {
+      logger.setLevel(Level.WARN);
+    }
+  }
+}

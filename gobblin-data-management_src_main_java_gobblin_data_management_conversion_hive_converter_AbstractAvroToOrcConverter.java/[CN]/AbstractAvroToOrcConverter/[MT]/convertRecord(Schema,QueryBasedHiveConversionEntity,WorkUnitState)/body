@@ -49,17 +49,17 @@
   Map<String,String> hiveColumns=new HashMap<>();
   String createStagingTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcStagingTableName,orcStagingDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),tableProperties,isEvolutionEnabled,destinationTableMeta,hiveColumns);
   conversionEntity.getQueries().add(createStagingTableDDL);
-  log.info("Create staging table DDL: " + createStagingTableDDL);
+  log.debug("Create staging table DDL: " + createStagingTableDDL);
   String orcStagingDataPartitionDirName=getOrcStagingDataPartitionDirName(conversionEntity,sourceDataPathIdentifier);
   String orcStagingDataPartitionLocation=orcStagingDataLocation + Path.SEPARATOR + orcStagingDataPartitionDirName;
   if (partitionsDMLInfo.size() > 0) {
     List<String> createStagingPartitionDDL=HiveAvroORCQueryGenerator.generateCreatePartitionDDL(orcTableDatabase,orcStagingTableName,orcStagingDataPartitionLocation,partitionsDMLInfo);
     conversionEntity.getQueries().addAll(createStagingPartitionDDL);
-    log.info("Create staging partition DDL: " + createStagingPartitionDDL);
+    log.debug("Create staging partition DDL: " + createStagingPartitionDDL);
   }
   String insertInORCStagingTableDML=HiveAvroORCQueryGenerator.generateTableMappingDML(conversionEntity.getHiveTable().getAvroSchema(),outputAvroSchema,avroTableName,orcStagingTableName,Optional.of(conversionEntity.getHiveTable().getDbName()),Optional.of(orcTableDatabase),Optional.of(partitionsDMLInfo),Optional.<Boolean>absent(),Optional.<Boolean>absent(),isEvolutionEnabled,destinationTableMeta,rowLimit);
   conversionEntity.getQueries().add(insertInORCStagingTableDML);
-  log.info("Conversion staging DML: " + insertInORCStagingTableDML);
+  log.debug("Conversion staging DML: " + insertInORCStagingTableDML);
   QueryBasedHivePublishEntity publishEntity=new QueryBasedHivePublishEntity();
   List<String> publishQueries=publishEntity.getPublishQueries();
   Map<String,String> publishDirectories=publishEntity.getPublishDirectories();
@@ -68,41 +68,41 @@
   if (!destinationTableMeta.isPresent()) {
     String createTargetTableDDL=HiveAvroORCQueryGenerator.generateCreateTableDDL(outputAvroSchema,orcTableName,orcDataLocation,Optional.of(orcTableDatabase),Optional.of(partitionsDDLInfo),clusterBy,Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),numBuckets,Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),tableProperties,isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
     publishQueries.add(createTargetTableDDL);
-    log.info("Create final table DDL: " + createTargetTableDDL);
+    log.debug("Create final table DDL: " + createTargetTableDDL);
   }
   List<String> evolutionDDLs=HiveAvroORCQueryGenerator.generateEvolutionDDL(orcStagingTableName,orcTableName,Optional.of(orcTableDatabase),Optional.of(orcTableDatabase),outputAvroSchema,isEvolutionEnabled,hiveColumns,destinationTableMeta);
-  log.info("Evolve final table DDLs: " + evolutionDDLs);
+  log.debug("Evolve final table DDLs: " + evolutionDDLs);
   EventWorkunitUtils.setEvolutionMetadata(workUnit,evolutionDDLs);
   publishQueries.addAll(evolutionDDLs);
   if (partitionsDDLInfo.size() == 0) {
     log.info("Snapshot directory to move: " + orcStagingDataLocation + " to: "+ orcDataLocation);
     publishDirectories.put(orcStagingDataLocation,orcDataLocation);
     String dropStagingTableDDL=HiveAvroORCQueryGenerator.generateDropTableDDL(orcTableDatabase,orcStagingTableName);
-    log.info("Drop staging table DDL: " + dropStagingTableDDL);
+    log.debug("Drop staging table DDL: " + dropStagingTableDDL);
     cleanupQueries.add(dropStagingTableDDL);
     log.info("Staging table directory to delete: " + orcStagingDataLocation);
     cleanupDirectories.add(orcStagingDataLocation);
   }
  else {
     List<String> dropPartitionsDDL=HiveAvroORCQueryGenerator.generateDropPartitionsDDL(orcTableDatabase,orcTableName,partitionsDMLInfo);
-    log.info("Drop partitions if exist in final table: " + dropPartitionsDDL);
+    log.debug("Drop partitions if exist in final table: " + dropPartitionsDDL);
     publishQueries.addAll(dropPartitionsDDL);
     String orcFinalDataPartitionLocation=orcDataLocation + Path.SEPARATOR + orcStagingDataPartitionDirName;
     log.info("Partition directory to move: " + orcStagingDataPartitionLocation + " to: "+ orcFinalDataPartitionLocation);
     publishDirectories.put(orcStagingDataPartitionLocation,orcFinalDataPartitionLocation);
     String orcDataPartitionLocation=orcDataLocation + Path.SEPARATOR + orcStagingDataPartitionDirName;
     List<String> createFinalPartitionDDL=HiveAvroORCQueryGenerator.generateCreatePartitionDDL(orcTableDatabase,orcTableName,orcDataPartitionLocation,partitionsDMLInfo);
-    log.info("Create final partition DDL: " + createFinalPartitionDDL);
+    log.debug("Create final partition DDL: " + createFinalPartitionDDL);
     publishQueries.addAll(createFinalPartitionDDL);
     String dropStagingTableDDL=HiveAvroORCQueryGenerator.generateDropTableDDL(orcTableDatabase,orcStagingTableName);
-    log.info("Drop staging table DDL: " + dropStagingTableDDL);
+    log.debug("Drop staging table DDL: " + dropStagingTableDDL);
     cleanupQueries.add(dropStagingTableDDL);
     log.info("Staging table directory to delete: " + orcStagingDataLocation);
     cleanupDirectories.add(orcStagingDataLocation);
   }
   publishQueries.addAll(HiveAvroORCQueryGenerator.generateDropPartitionsDDL(orcTableDatabase,orcTableName,getDropPartitionsDDLInfo(conversionEntity)));
   HiveAvroORCQueryGenerator.serializePublishCommands(workUnit,publishEntity);
-  log.info("Publish partition entity: " + publishEntity);
+  log.debug("Publish partition entity: " + publishEntity);
   log.debug("Conversion Query " + conversionEntity.getQueries());
   EventWorkunitUtils.setEndDDLBuildTimeMetadata(workUnit,System.currentTimeMillis());
   return new SingleRecordIterable<>(conversionEntity);

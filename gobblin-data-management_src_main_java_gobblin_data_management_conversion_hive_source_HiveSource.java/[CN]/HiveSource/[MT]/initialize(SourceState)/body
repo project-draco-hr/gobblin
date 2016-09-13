@@ -9,4 +9,5 @@
   this.datasetFinder=GobblinConstructorUtils.invokeConstructor(HiveDatasetFinder.class,state.getProp(HIVE_SOURCE_DATASET_FINDER_CLASS_KEY,DEFAULT_HIVE_SOURCE_DATASET_FINDER_CLASS),getSourceFs(),state.getProperties(),this.eventSubmitter);
   int maxLookBackDays=state.getPropAsInt(HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS_KEY,DEFAULT_HIVE_SOURCE_MAXIMUM_LOOKBACK_DAYS);
   this.maxLookBackTime=new DateTime().minusDays(maxLookBackDays).getMillis();
+  silenceHiveLoggers();
 }
