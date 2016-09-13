@@ -1,0 +1,4 @@
+{
+  String propValue=this.cfg.hasPath(ConfigurationKeys.JOB_CONFIG_FILE_EXTENSIONS_KEY) ? this.cfg.getString(ConfigurationKeys.JOB_CONFIG_FILE_EXTENSIONS_KEY).toLowerCase() : ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_EXTENSIONS;
+  return propValue;
+}
