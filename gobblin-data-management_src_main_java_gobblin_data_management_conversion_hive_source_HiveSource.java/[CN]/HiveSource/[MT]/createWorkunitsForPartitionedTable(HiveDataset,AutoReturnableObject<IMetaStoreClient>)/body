@@ -30,5 +30,8 @@
  catch (    UpdateNotFoundException e) {
       log.error(String.format("Not Creating workunit for %s as update time was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
     }
+catch (    SchemaNotFoundException e) {
+      log.error(String.format("Not Creating workunit for %s as schema was not found. %s",sourcePartition.getCompleteName(),e.getMessage()));
+    }
   }
 }

@@ -24,5 +24,8 @@
     log.error(String.format("Failed to parse schema from schema string. Falling back to HDFS schema: %s",schemaString),e);
   }
   Schema schema=AvroUtils.getDirectorySchema(new Path(sd.getLocation()),this.fs,true);
+  if (schema == null) {
+    throw new SchemaNotFoundException("Failed to get avro schema");
+  }
   return getOrGenerateSchemaFile(schema);
 }
