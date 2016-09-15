@@ -7,6 +7,7 @@
   }
   this.rootEntry=rootEntry;
   this.pathFilter=pathFilter;
+  this.fs=rootEntry.getPath().getFileSystem(new Configuration());
   this.comparator=new Comparator<Path>(){
     @Override public int compare(    Path o1,    Path o2){
       return IOCase.SENSITIVE.checkCompareTo(o1.toUri().toString(),o2.toUri().toString());
