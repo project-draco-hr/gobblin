@@ -2,11 +2,25 @@
   if (!config.hasPath(path)) {
     return Collections.emptyList();
   }
+  List<String> valueList=Lists.newArrayList();
   try {
-    return config.getStringList(path);
+    valueList=config.getStringList(path);
   }
  catch (  ConfigException.WrongType e) {
-    Splitter tokenSplitter=Splitter.on(",").omitEmptyStrings().trimResults();
-    return tokenSplitter.splitToList(config.getString(path));
+    try (CSVReader csvr=new CSVReader(new StringReader(config.getString(path)))){
+      valueList=Lists.newArrayList(csvr.readNext());
+    }
+ catch (    IOException ioe) {
+      throw new RuntimeException(ioe);
+    }
   }
+  return Lists.newArrayList(Lists.transform(valueList,new Function<String,String>(){
+    @Override public String apply(    String input){
+      if (input == null) {
+        return input;
+      }
+      return input.replaceAll("^\"|\"$","");
+    }
+  }
+));
 }

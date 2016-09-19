@@ -1,0 +1,10 @@
+{
+  Preconditions.checkArgument(keyValueList.size() % 2 == 0,String.format("The list %s does not have equal number of keys and values. Size %s",keyValueList,keyValueList.size()));
+  Properties props=new Properties();
+  for (int i=0; i < keyValueList.size(); i+=2) {
+    String key=keyValueList.get(i);
+    String value=keyValueList.get(i + 1);
+    props.put(key,value);
+  }
+  return props;
+}

@@ -26,12 +26,14 @@
   Map<String,String> partitionsDMLInfo=Maps.newHashMap();
   populatePartitionInfo(conversionEntity,partitionsDDLInfo,partitionsDMLInfo);
   try {
-    FsPermission sourceDataPermission=this.fs.getFileStatus(conversionEntity.getHiveTable().getDataLocation()).getPermission();
+    FileStatus sourceDataFileStatus=this.fs.getFileStatus(conversionEntity.getHiveTable().getDataLocation());
+    FsPermission sourceDataPermission=sourceDataFileStatus.getPermission();
     if (!this.fs.mkdirs(new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission)) {
       throw new RuntimeException(String.format("Failed to create path %s with permissions %s",new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission));
     }
  else {
       this.fs.setPermission(new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission);
+      this.fs.setOwner(new Path(getConversionConfig().getDestinationDataPath()),sourceDataFileStatus.getOwner(),sourceDataFileStatus.getGroup());
       log.info(String.format("Created %s with permissions %s",new Path(getConversionConfig().getDestinationDataPath()),sourceDataPermission));
     }
   }
