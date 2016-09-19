@@ -7,6 +7,7 @@
     return Long.parseLong(partition.getTPartition().getParameters().get(DISTCP_REGISTRATION_GENERATION_TIME_KEY));
   }
  else {
-    throw new IllegalStateException(String.format("Could not find create time in hive metastore for partition %s",partition.getCompleteName()));
+    log.warn(String.format("Could not find create time for partition %s. Will return createTime as 0",partition.getCompleteName()));
+    return 0;
   }
 }
