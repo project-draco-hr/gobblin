@@ -13,7 +13,7 @@
     }
   }
 ;
-  FSJobCatalogHelper.addPathAlterationObserver(detector,listener,Optional.<PathAlterationObserver>absent(),new Path(this.jobConfigDir.getPath()));
+  detector.addPathAlterationObserver(listener,Optional.<PathAlterationObserver>absent(),new Path(this.jobConfigDir.getPath()));
   try {
     detector.start();
     Thread.sleep(1000);

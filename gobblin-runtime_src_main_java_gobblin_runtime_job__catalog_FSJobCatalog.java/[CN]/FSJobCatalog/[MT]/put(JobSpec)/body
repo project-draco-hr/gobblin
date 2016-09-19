@@ -2,7 +2,7 @@
   Preconditions.checkNotNull(jobSpec);
   try {
     Path jobSpecPath=getPathForURI(this.jobConfDirPath,jobSpec.getUri());
-    FSJobCatalogHelper.materializedJobSpec(jobSpecPath,jobSpec,this.fs);
+    materializedJobSpec(jobSpecPath,jobSpec,this.fs);
   }
  catch (  IOException e) {
     throw new RuntimeException("When persisting a new JobSpec, unexpected issues happen:" + e.getMessage());

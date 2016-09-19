@@ -1,16 +1,16 @@
 {
   this.sysConfig=sysConfig;
   ConfigAccessor cfgAccessor=new ConfigAccessor(this.sysConfig);
-  this.jobConfDirPath=new Path(cfgAccessor.getJobConfDir());
-  this.fs=this.jobConfDirPath.getFileSystem(new Configuration());
+  this.jobConfDirPath=cfgAccessor.getJobConfDirPath();
+  this.fs=cfgAccessor.getJobConfDirFileSystem();
   this.listeners=new JobCatalogListenersList(Optional.of(LOGGER));
   this.loader=new PullFileLoader(jobConfDirPath,jobConfDirPath.getFileSystem(new Configuration()),cfgAccessor.getJobConfigurationFileExtensions(),PullFileLoader.DEFAULT_HOCON_PULL_FILE_EXTENSIONS);
-  this.converter=new FSJobCatalogHelper.JobSpecConverter(this.jobConfDirPath,getInjectedExtension());
+  this.converter=new ImmutableFSJobCatalog.JobSpecConverter(this.jobConfDirPath,getInjectedExtension());
   long pollingInterval=cfgAccessor.getPollingInterval();
   this.pathAlterationDetector=new PathAlterationDetector(pollingInterval);
   Optional<PathAlterationObserver> observerOptional=Optional.fromNullable(observer);
   FSPathAlterationListenerAdaptor configFilelistener=new FSPathAlterationListenerAdaptor(this.jobConfDirPath,this.loader,this.sysConfig,this.listeners,this.converter);
-  FSJobCatalogHelper.addPathAlterationObserver(this.pathAlterationDetector,configFilelistener,observerOptional,this.jobConfDirPath);
+  this.pathAlterationDetector.addPathAlterationObserver(configFilelistener,observerOptional,this.jobConfDirPath);
   if (instrumentationEnabled) {
     MetricContext realParentCtx=parentMetricContext.or(Instrumented.getMetricContext(new gobblin.configuration.State(),getClass()));
     this.metricContext=realParentCtx.childBuilder("JobCatalog").build();

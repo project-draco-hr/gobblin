@@ -7,5 +7,5 @@
     observer=new PathAlterationObserver(rootDirPath);
   }
   observer.addListener(listener);
-  detector.addObserver(observer);
+  addObserver(observer);
 }

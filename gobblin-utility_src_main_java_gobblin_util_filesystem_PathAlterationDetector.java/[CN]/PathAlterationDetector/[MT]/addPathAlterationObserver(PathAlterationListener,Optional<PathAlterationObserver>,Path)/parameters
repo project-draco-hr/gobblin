@@ -1,4 +1,3 @@
-PathAlterationDetector detector
 PathAlterationListener listener
 Optional<PathAlterationObserver> observerOptional
 Path rootDirPath

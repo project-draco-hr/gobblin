@@ -2,4 +2,4 @@ Path jobConfDirPath
 PullFileLoader loader
 Config sysConfig
 JobCatalogListenersList listeners
-FSJobCatalogHelper.JobSpecConverter converter
+ImmutableFSJobCatalog.JobSpecConverter converter

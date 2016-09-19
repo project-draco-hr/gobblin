@@ -1,0 +1,20 @@
+{
+  Config sysConfig1=ConfigFactory.parseMap(ImmutableMap.<String,Object>builder().put(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,"/tmp").build());
+  ImmutableFSJobCatalog.ConfigAccessor cfgAccessor1=new ImmutableFSJobCatalog.ConfigAccessor(sysConfig1);
+  Assert.assertEquals(cfgAccessor1.getJobConfDir(),"/tmp");
+  Assert.assertEquals(cfgAccessor1.getJobConfDirPath(),new Path("/tmp"));
+  Assert.assertEquals(cfgAccessor1.getJobConfDirFileSystem(),FileSystem.get(new Configuration()));
+  Assert.assertEquals(cfgAccessor1.getPollingInterval(),ConfigurationKeys.DEFAULT_JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL);
+  Config sysConfig2=ConfigFactory.parseMap(ImmutableMap.<String,Object>builder().put(ConfigurationKeys.JOB_CONFIG_FILE_DIR_KEY,"/tmp2").put(ConfigurationKeys.JOB_CONFIG_FILE_MONITOR_POLLING_INTERVAL_KEY,100).build());
+  ImmutableFSJobCatalog.ConfigAccessor cfgAccessor2=new ImmutableFSJobCatalog.ConfigAccessor(sysConfig2);
+  Assert.assertEquals(cfgAccessor2.getJobConfDir(),"file:///tmp2");
+  Assert.assertEquals(cfgAccessor2.getJobConfDirPath(),new Path("file:///tmp2"));
+  Assert.assertEquals(cfgAccessor2.getJobConfDirFileSystem(),FileSystem.getLocal(new Configuration()));
+  Assert.assertEquals(cfgAccessor2.getPollingInterval(),100);
+  Assert.assertThrows(new ThrowingRunnable(){
+    @Override public void run() throws Throwable {
+      new ImmutableFSJobCatalog.ConfigAccessor(ConfigFactory.empty());
+    }
+  }
+);
+}

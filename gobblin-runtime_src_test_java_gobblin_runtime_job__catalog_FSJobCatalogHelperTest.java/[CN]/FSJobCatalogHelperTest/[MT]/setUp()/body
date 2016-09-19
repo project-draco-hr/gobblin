@@ -10,7 +10,7 @@
   this.sysConfig=ConfigFactory.parseMap(ImmutableMap.<String,Object>builder().put(ConfigurationKeys.JOB_CONFIG_FILE_GENERAL_PATH_KEY,this.jobConfigDir.getAbsolutePath()).build());
   ImmutableFSJobCatalog.ConfigAccessor cfgAccess=new ImmutableFSJobCatalog.ConfigAccessor(this.sysConfig);
   this.loader=new PullFileLoader(new Path(jobConfigDir.toURI()),FileSystem.get(new Configuration()),cfgAccess.getJobConfigurationFileExtensions(),PullFileLoader.DEFAULT_HOCON_PULL_FILE_EXTENSIONS);
-  this.converter=new FSJobCatalogHelper.JobSpecConverter(new Path(this.jobConfigDir.toURI()),Optional.of(FSJobCatalog.CONF_EXTENSION));
+  this.converter=new ImmutableFSJobCatalog.JobSpecConverter(new Path(this.jobConfigDir.toURI()),Optional.of(FSJobCatalog.CONF_EXTENSION));
   Properties rootProps=new Properties();
   rootProps.setProperty("k1","a1");
   rootProps.setProperty("k2","a2");

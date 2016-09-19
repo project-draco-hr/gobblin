@@ -4,15 +4,17 @@
   if (fs.exists(shadowFilePath)) {
     fs.delete(shadowFilePath,false);
   }
-  Map<String,String> injectedKeys=ImmutableMap.of(DESCRIPTION_KEY_IN_JOBSPEC,jobSpec.getDescription(),VERSION_KEY_IN_JOBSPEC,jobSpec.getVersion());
+  Map<String,String> injectedKeys=ImmutableMap.of(ImmutableFSJobCatalog.DESCRIPTION_KEY_IN_JOBSPEC,jobSpec.getDescription(),ImmutableFSJobCatalog.VERSION_KEY_IN_JOBSPEC,jobSpec.getVersion());
   String renderedConfig=ConfigFactory.parseMap(injectedKeys).withFallback(jobSpec.getConfig()).root().render(ConfigRenderOptions.defaults());
   try (DataOutputStream os=fs.create(shadowFilePath);Writer writer=new OutputStreamWriter(os,Charsets.UTF_8)){
     writer.write(renderedConfig);
   }
- synchronized (FSJobCatalog.class) {
-    if (fs.exists(jobSpecPath)) {
-      fs.delete(jobSpecPath,false);
+   if (fs.exists(jobSpecPath)) {
+    if (!fs.delete(jobSpecPath,false)) {
+      throw new IOException("Unable to delete existing job file: " + jobSpecPath);
     }
-    fs.rename(shadowFilePath,jobSpecPath);
+  }
+  if (!fs.rename(shadowFilePath,jobSpecPath)) {
+    throw new IOException("Unable to rename job file: " + shadowFilePath + " to "+ jobSpecPath);
   }
 }
