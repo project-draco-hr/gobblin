@@ -16,4 +16,8 @@
   GobblinMetrics.addCustomTagToState(this.jobContext.getJobState(),metadataTags);
   JobExecutionEventSubmitter jobExecutionEventSubmitter=new JobExecutionEventSubmitter(this.eventSubmitter);
   this.mandatoryJobListeners.add(new JobExecutionEventSubmitterListener(jobExecutionEventSubmitter));
+  if (!tryLockJob(this.jobProps)) {
+    this.eventSubmitter.submit(JobEvent.LOCK_IN_USE);
+    throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
+  }
 }

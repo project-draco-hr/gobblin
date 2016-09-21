@@ -3,94 +3,86 @@
   JobState jobState=this.jobContext.getJobState();
   try {
     TimingEvent launchJobTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.FULL_JOB_EXECUTION);
-    try {
-      if (!tryLockJob(this.jobProps)) {
-        this.eventSubmitter.submit(JobEvent.LOCK_IN_USE);
-        throw new JobException(String.format("Previous instance of job %s is still running, skipping this scheduled run",this.jobContext.getJobName()));
+    try (Closer closer=Closer.create()){
+      notifyListeners(this.jobContext,jobListener,TimingEvent.LauncherTimings.JOB_PREPARE,new JobListenerAction(){
+        @Override public void apply(        JobListener jobListener,        JobContext jobContext) throws Exception {
+          jobListener.onJobPrepare(jobContext);
+        }
       }
-      try (Closer closer=Closer.create()){
-        notifyListeners(this.jobContext,jobListener,TimingEvent.LauncherTimings.JOB_PREPARE,new JobListenerAction(){
+);
+      if (this.jobContext.getSemantics() == DeliverySemantics.EXACTLY_ONCE) {
+        executeUnfinishedCommitSequences(jobState.getJobName());
+      }
+      TimingEvent workUnitsCreationTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.WORK_UNITS_CREATION);
+      Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
+      workUnitsCreationTimer.stop();
+      if (!workUnits.isPresent()) {
+        this.eventSubmitter.submit(JobEvent.WORK_UNITS_MISSING);
+        jobState.setState(JobState.RunningState.FAILED);
+        throw new JobException("Failed to get work units for job " + jobId);
+      }
+      if (workUnits.get().isEmpty()) {
+        this.eventSubmitter.submit(JobEvent.WORK_UNITS_EMPTY);
+        LOG.warn("No work units have been created for job " + jobId);
+        return;
+      }
+      closer.register(WriterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
+      closer.register(ConverterInitializerFactory.newInstance(jobState,workUnits.get())).initialize();
+      TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_STAGING_DATA_CLEAN);
+      cleanLeftoverStagingData(workUnits.get(),jobState);
+      stagingDataCleanTimer.stop();
+      long startTime=System.currentTimeMillis();
+      jobState.setStartTime(startTime);
+      jobState.setState(JobState.RunningState.RUNNING);
+      try {
+        LOG.info("Starting job " + jobId);
+        notifyListeners(this.jobContext,jobListener,TimingEvent.LauncherTimings.JOB_START,new JobListenerAction(){
           @Override public void apply(          JobListener jobListener,          JobContext jobContext) throws Exception {
-            jobListener.onJobPrepare(jobContext);
+            jobListener.onJobStart(jobContext);
           }
         }
 );
-        if (this.jobContext.getSemantics() == DeliverySemantics.EXACTLY_ONCE) {
-          executeUnfinishedCommitSequences(jobState.getJobName());
-        }
-        TimingEvent workUnitsCreationTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.WORK_UNITS_CREATION);
-        Optional<List<WorkUnit>> workUnits=Optional.fromNullable(this.jobContext.getSource().getWorkunits(jobState));
-        workUnitsCreationTimer.stop();
-        if (!workUnits.isPresent()) {
-          this.eventSubmitter.submit(JobEvent.WORK_UNITS_MISSING);
-          jobState.setState(JobState.RunningState.FAILED);
-          throw new JobException("Failed to get work units for job " + jobId);
-        }
-        if (workUnits.get().isEmpty()) {
-          this.eventSubmitter.submit(JobEvent.WORK_UNITS_EMPTY);
-          LOG.warn("No work units have been created for job " + jobId);
+        TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.WORK_UNITS_PREPARATION);
+        prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
+        workUnitsPreparationTimer.stop();
+        this.jobContext.storeJobExecutionInfo();
+        TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_RUN);
+        runWorkUnits(workUnits.get());
+        jobRunTimer.stop();
+        this.eventSubmitter.submit(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,"JOB_" + jobState.getState()));
+        if (jobState.getState() == JobState.RunningState.CANCELLED) {
+          LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
           return;
         }
-        closer.register(WriterInitializerFactory.newInstace(jobState,workUnits.get())).initialize();
-        closer.register(ConverterInitializerFactory.newInstance(jobState,workUnits.get())).initialize();
-        TimingEvent stagingDataCleanTimer=this.eventSubmitter.getTimingEvent(TimingEvent.RunJobTimings.MR_STAGING_DATA_CLEAN);
-        cleanLeftoverStagingData(workUnits.get(),jobState);
-        stagingDataCleanTimer.stop();
-        long startTime=System.currentTimeMillis();
-        jobState.setStartTime(startTime);
-        jobState.setState(JobState.RunningState.RUNNING);
-        try {
-          LOG.info("Starting job " + jobId);
-          notifyListeners(this.jobContext,jobListener,TimingEvent.LauncherTimings.JOB_START,new JobListenerAction(){
-            @Override public void apply(            JobListener jobListener,            JobContext jobContext) throws Exception {
-              jobListener.onJobStart(jobContext);
-            }
-          }
-);
-          TimingEvent workUnitsPreparationTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.WORK_UNITS_PREPARATION);
-          prepareWorkUnits(JobLauncherUtils.flattenWorkUnits(workUnits.get()),jobState);
-          workUnitsPreparationTimer.stop();
-          this.jobContext.storeJobExecutionInfo();
-          TimingEvent jobRunTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_RUN);
-          runWorkUnits(workUnits.get());
-          jobRunTimer.stop();
-          this.eventSubmitter.submit(CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,"JOB_" + jobState.getState()));
-          if (jobState.getState() == JobState.RunningState.CANCELLED) {
-            LOG.info(String.format("Job %s has been cancelled, aborting now",jobId));
-            return;
-          }
-          TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_COMMIT);
-          this.jobContext.finalizeJobStateBeforeCommit();
-          this.jobContext.commit();
-          postProcessJobState(jobState);
-          jobCommitTimer.stop();
-        }
+        TimingEvent jobCommitTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_COMMIT);
+        this.jobContext.finalizeJobStateBeforeCommit();
+        this.jobContext.commit();
+        postProcessJobState(jobState);
+        jobCommitTimer.stop();
+      }
   finally {
-          long endTime=System.currentTimeMillis();
-          jobState.setEndTime(endTime);
-          jobState.setDuration(endTime - jobState.getStartTime());
-        }
+        long endTime=System.currentTimeMillis();
+        jobState.setEndTime(endTime);
+        jobState.setDuration(endTime - jobState.getStartTime());
       }
- catch (      Throwable t) {
-        jobState.setState(JobState.RunningState.FAILED);
-        String errMsg="Failed to launch and run job " + jobId;
-        LOG.error(errMsg + ": " + t,t);
-      }
+    }
+ catch (    Throwable t) {
+      jobState.setState(JobState.RunningState.FAILED);
+      String errMsg="Failed to launch and run job " + jobId;
+      LOG.error(errMsg + ": " + t,t);
+    }
  finally {
-        try {
-          TimingEvent jobCleanupTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_CLEANUP);
-          cleanupStagingData(jobState);
-          jobCleanupTimer.stop();
-          this.jobContext.storeJobExecutionInfo();
-        }
+      try {
+        TimingEvent jobCleanupTimer=this.eventSubmitter.getTimingEvent(TimingEvent.LauncherTimings.JOB_CLEANUP);
+        cleanupStagingData(jobState);
+        jobCleanupTimer.stop();
+        this.jobContext.storeJobExecutionInfo();
+      }
   finally {
-          unlockJob();
-        }
+        unlockJob();
       }
     }
-  finally {
-      launchJobTimer.stop();
-    }
+    launchJobTimer.stop();
     for (    JobState.DatasetState datasetState : this.jobContext.getDatasetStatesByUrns().values()) {
       if (datasetState.getState() == JobState.RunningState.FAILED) {
         jobState.setState(JobState.RunningState.FAILED);

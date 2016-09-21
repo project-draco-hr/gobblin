@@ -4,7 +4,7 @@
     File localJobRootDir=new File(tmpTestDir,"localJobRoot");
     Assert.assertTrue(localJobRootDir.mkdir());
     final Logger log=LoggerFactory.getLogger(getClass().getSimpleName() + ".testConstructor");
-    Config jobConf1=ConfigFactory.empty().withValue(ConfigurationKeys.JOB_NAME_KEY,ConfigValueFactory.fromAnyRef("myJob")).withValue(ConfigurationKeys.JOB_GROUP_KEY,ConfigValueFactory.fromAnyRef("myGroup")).withValue(ConfigurationKeys.JOB_DESCRIPTION_KEY,ConfigValueFactory.fromAnyRef("Awesome job")).withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(localJobRootDir.getPath())).withValue(ConfigurationKeys.SOURCE_CLASS_KEY,ConfigValueFactory.fromAnyRef(TestingSource.class.getName()));
+    Config jobConf1=ConfigFactory.empty().withValue(ConfigurationKeys.JOB_NAME_KEY,ConfigValueFactory.fromAnyRef("myJob")).withValue(ConfigurationKeys.JOB_GROUP_KEY,ConfigValueFactory.fromAnyRef("myGroup")).withValue(ConfigurationKeys.JOB_DESCRIPTION_KEY,ConfigValueFactory.fromAnyRef("Awesome job")).withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(localJobRootDir.getPath())).withValue(ConfigurationKeys.SOURCE_CLASS_KEY,ConfigValueFactory.fromAnyRef(TestingSource.class.getName())).withValue(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,ConfigValueFactory.fromAnyRef(false));
     JobSpec jobSpec1=JobSpec.builder().withConfig(jobConf1).build();
     JobLauncherExecutionDriver.Launcher launcher=new JobLauncherExecutionDriver.Launcher().withJobLauncherType(JobLauncherFactory.JobLauncherType.LOCAL).withLog(log);
     JobLauncherExecutionDriver jled=(JobLauncherExecutionDriver)launcher.launchJob(jobSpec1);
@@ -15,7 +15,7 @@
     Thread.sleep(5000);
     File mrJobRootDir=new File(tmpTestDir,"mrJobRoot");
     Assert.assertTrue(mrJobRootDir.mkdir());
-    Config jobConf2=ConfigFactory.empty().withValue(ConfigurationKeys.JOB_NAME_KEY,ConfigValueFactory.fromAnyRef("myJob2")).withValue(ConfigurationKeys.JOB_GROUP_KEY,ConfigValueFactory.fromAnyRef("myGroup")).withValue(ConfigurationKeys.JOB_DESCRIPTION_KEY,ConfigValueFactory.fromAnyRef("Awesome job")).withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(mrJobRootDir.getPath())).withValue(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(mrJobRootDir.getPath())).withValue(ConfigurationKeys.SOURCE_CLASS_KEY,ConfigValueFactory.fromAnyRef(TestingSource.class.getName()));
+    Config jobConf2=ConfigFactory.empty().withValue(ConfigurationKeys.JOB_NAME_KEY,ConfigValueFactory.fromAnyRef("myJob2")).withValue(ConfigurationKeys.JOB_GROUP_KEY,ConfigValueFactory.fromAnyRef("myGroup")).withValue(ConfigurationKeys.JOB_DESCRIPTION_KEY,ConfigValueFactory.fromAnyRef("Awesome job")).withValue(ConfigurationKeys.STATE_STORE_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(mrJobRootDir.getPath())).withValue(ConfigurationKeys.MR_JOB_ROOT_DIR_KEY,ConfigValueFactory.fromAnyRef(mrJobRootDir.getPath())).withValue(ConfigurationKeys.SOURCE_CLASS_KEY,ConfigValueFactory.fromAnyRef(TestingSource.class.getName())).withValue(ConfigurationKeys.JOB_LOCK_ENABLED_KEY,ConfigValueFactory.fromAnyRef(false));
     JobSpec jobSpec2=JobSpec.builder().withConfig(jobConf2).build();
     jled=(JobLauncherExecutionDriver)launcher.withJobLauncherType(JobLauncherFactory.JobLauncherType.MAPREDUCE).launchJob(jobSpec2);
     Assert.assertTrue(jled.getLegacyLauncher() instanceof MRJobLauncher);
