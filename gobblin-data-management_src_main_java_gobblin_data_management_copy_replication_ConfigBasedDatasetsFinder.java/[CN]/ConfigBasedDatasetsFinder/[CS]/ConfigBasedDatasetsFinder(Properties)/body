@@ -1,0 +1,20 @@
+{
+  Preconditions.checkArgument(props.containsKey(GOBBLIN_REPLICATION_CONFIG_STORE_ROOT),"missing required config entery " + GOBBLIN_REPLICATION_CONFIG_STORE_ROOT);
+  Preconditions.checkArgument(props.containsKey(GOBBLIN_REPLICATION_CONFIG_STORE_DATASET_COMMON_ROOT),"missing required config entery " + GOBBLIN_REPLICATION_CONFIG_STORE_DATASET_COMMON_ROOT);
+  Preconditions.checkArgument(props.containsKey(GOBBLIN_REPLICATION_CONFIG_STORE_WHITELIST_TAG),"missing required config entery " + GOBBLIN_REPLICATION_CONFIG_STORE_WHITELIST_TAG);
+  this.storeRoot=props.getProperty(GOBBLIN_REPLICATION_CONFIG_STORE_ROOT);
+  this.replicationDatasetCommonRoot=PathUtils.mergePaths(new Path(this.storeRoot),new Path(props.getProperty(GOBBLIN_REPLICATION_CONFIG_STORE_DATASET_COMMON_ROOT)));
+  this.whitelistTag=PathUtils.mergePaths(new Path(this.storeRoot),new Path(props.getProperty(GOBBLIN_REPLICATION_CONFIG_STORE_WHITELIST_TAG)));
+  if (props.containsKey(GOBBLIN_REPLICATION_CONFIG_STORE_BLACKLIST_TAGS)) {
+    List<String> disableStrs=Splitter.on(",").omitEmptyStrings().splitToList(props.getProperty(GOBBLIN_REPLICATION_CONFIG_STORE_BLACKLIST_TAGS));
+    List<Path> disablePaths=new ArrayList<Path>();
+    for (    String s : disableStrs) {
+      disablePaths.add(PathUtils.mergePaths(new Path(this.storeRoot),new Path(s)));
+    }
+    this.blacklistTags=Optional.of(disablePaths);
+  }
+ else {
+    this.blacklistTags=Optional.absent();
+  }
+  configClient=ConfigClient.createConfigClient(VersionStabilityPolicy.WEAK_LOCAL_STABILITY);
+}

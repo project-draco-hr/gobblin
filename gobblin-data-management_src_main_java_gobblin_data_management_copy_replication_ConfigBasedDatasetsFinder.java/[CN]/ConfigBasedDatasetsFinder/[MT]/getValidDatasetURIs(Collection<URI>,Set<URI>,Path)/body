@@ -1,0 +1,36 @@
+{
+  if (allDatasetURIs == null || allDatasetURIs.isEmpty()) {
+    return ImmutableSet.of();
+  }
+  Comparator<URI> pathLengthComparator=new Comparator<URI>(){
+    public int compare(    URI c1,    URI c2){
+      return c1.getPath().length() - c2.getPath().length();
+    }
+  }
+;
+  List<URI> sortedDatasetsList=new ArrayList<URI>(allDatasetURIs);
+  Collections.sort(sortedDatasetsList,pathLengthComparator);
+  TreeSet<URI> uriSet=new TreeSet<URI>();
+  Set<URI> noneLeaf=new HashSet<URI>();
+  for (  URI u : sortedDatasetsList) {
+    if (PathUtils.isAncestor(datasetCommonRoot,new Path(u.getPath()))) {
+      URI floor=uriSet.floor(u);
+      if (floor != null && PathUtils.isAncestor(new Path(floor.getPath()),new Path(u.getPath()))) {
+        noneLeaf.add(floor);
+      }
+      uriSet.add(u);
+    }
+  }
+  Set<URI> validURISet=new HashSet<URI>();
+  for (  URI u : uriSet) {
+    if (!noneLeaf.contains(u)) {
+      validURISet.add(u);
+    }
+  }
+  for (  URI disable : disabledURISet) {
+    if (validURISet.remove(disable)) {
+      log.info("skip disabled dataset " + disable);
+    }
+  }
+  return validURISet;
+}

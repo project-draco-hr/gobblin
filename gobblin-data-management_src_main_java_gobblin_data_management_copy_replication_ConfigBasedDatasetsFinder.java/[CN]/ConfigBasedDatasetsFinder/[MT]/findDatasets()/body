@@ -1,0 +1,31 @@
+{
+  Collection<URI> allDatasetURIs;
+  Set<URI> disabledURIs=ImmutableSet.of();
+  try {
+    allDatasetURIs=configClient.getImportedBy(new URI(whitelistTag.toString()),true);
+    if (this.blacklistTags.isPresent()) {
+      disabledURIs=new HashSet<URI>();
+      for (      Path s : this.blacklistTags.get()) {
+        disabledURIs.addAll(configClient.getImportedBy(new URI(s.toString()),true));
+      }
+    }
+  }
+ catch (  VersionDoesNotExistException|ConfigStoreFactoryDoesNotExistsException|ConfigStoreCreationException|URISyntaxException e) {
+    log.error("Caught error while getting all the datasets URIs " + e.getMessage());
+    throw new RuntimeException(e);
+  }
+  Set<URI> leafDatasets=getValidDatasetURIs(allDatasetURIs,disabledURIs,this.replicationDatasetCommonRoot);
+  if (leafDatasets.isEmpty()) {
+    return ImmutableList.of();
+  }
+  List<ConfigBasedDataset> result=new ArrayList<ConfigBasedDataset>();
+  for (  URI leaf : leafDatasets) {
+    try {
+      result.add(new ConfigBasedDataset(configClient.getConfig(leaf)));
+    }
+ catch (    VersionDoesNotExistException|ConfigStoreFactoryDoesNotExistsException|ConfigStoreCreationException e) {
+      log.error("Caught error while retrieve config for " + leaf + ", skipping.");
+    }
+  }
+  return result;
+}
