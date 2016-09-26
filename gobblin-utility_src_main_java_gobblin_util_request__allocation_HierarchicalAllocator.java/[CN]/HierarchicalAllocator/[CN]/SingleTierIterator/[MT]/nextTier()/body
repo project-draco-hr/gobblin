@@ -1,0 +1,6 @@
+{
+  if (this.nextRequestorIdx < this.requestors.size()) {
+    return Optional.of(new SingleTierIterator(this.prioritizer,this.requestors,this.nextRequestorIdx));
+  }
+  return Optional.absent();
+}

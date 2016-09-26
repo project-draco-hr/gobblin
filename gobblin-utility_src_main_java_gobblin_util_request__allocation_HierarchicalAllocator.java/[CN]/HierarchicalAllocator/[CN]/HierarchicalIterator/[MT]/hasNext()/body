@@ -1,0 +1,15 @@
+{
+  while (this.currentIterator == null || !this.currentIterator.hasNext()) {
+    if (this.currentIterator != null) {
+      this.currentRequirement.add(this.currentIterator.totalResourcesUsed());
+    }
+    Optional<SingleTierIterator> tmp=this.singleTierIterator.nextTier();
+    if (!tmp.isPresent()) {
+      return false;
+    }
+    this.singleTierIterator=tmp.get();
+    ResourcePool contractedPool=this.resourcePool.contractPool(this.currentRequirement);
+    this.currentIterator=HierarchicalAllocator.this.underlying.allocateRequests(this.singleTierIterator,contractedPool);
+  }
+  return true;
+}

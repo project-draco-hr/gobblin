@@ -1,0 +1,5 @@
+{
+  TAndRequirement<T> nextElement=this.underlying.next();
+  VectorAlgebra.addVector(this.currentRequirement,nextElement.getResourceRequirement().getResourceVector(),1.0,this.currentRequirement);
+  return nextElement.getT();
+}

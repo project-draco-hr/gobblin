@@ -1,0 +1,19 @@
+{
+  ConcurrentBoundedPriorityIterable<T> iterable=new ConcurrentBoundedPriorityIterable<>(this.comparator,this.resourceEstimator,resourcePool);
+  Iterator<T> unionIterator=Iterators.concat(Iterators.transform(requestors,new Function<Requestor<T>,Iterator<T>>(){
+    @Nullable @Override public Iterator<T> apply(    Requestor<T> input){
+      try {
+        return input.getRequests();
+      }
+ catch (      IOException ioe) {
+        log.error("Failed to get requests from " + input);
+        return Iterators.emptyIterator();
+      }
+    }
+  }
+));
+  while (unionIterator.hasNext()) {
+    iterable.add(unionIterator.next());
+  }
+  return new AllocatedRequestsBase<>(iterable.iterator(),resourcePool);
+}

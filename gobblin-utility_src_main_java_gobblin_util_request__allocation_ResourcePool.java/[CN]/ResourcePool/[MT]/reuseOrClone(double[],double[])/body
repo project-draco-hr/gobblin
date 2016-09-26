@@ -1,0 +1,7 @@
+{
+  if (reuse != null && ref.length == reuse.length) {
+    System.arraycopy(ref,0,reuse,0,ref.length);
+    return reuse;
+  }
+  return ref.clone();
+}

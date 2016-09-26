@@ -1,0 +1,3 @@
+{
+  VectorAlgebra.addVector(this.resourceVector,other.resourceVector,1.,this.resourceVector);
+}

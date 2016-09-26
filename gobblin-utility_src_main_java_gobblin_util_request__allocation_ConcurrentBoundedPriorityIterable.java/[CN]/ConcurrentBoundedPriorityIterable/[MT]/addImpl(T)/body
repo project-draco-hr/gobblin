@@ -1,0 +1,35 @@
+{
+  AllocatedRequestsBase.TAndRequirement<T> newElement=new AllocatedRequestsBase.TAndRequirement<>(t,this.estimator.estimateRequirement(t,this.resourcePool));
+  if (this.resourcePool.exceedsHardBound(newElement.getResourceRequirement(),false)) {
+    return false;
+  }
+  ResourceRequirement candidateRequirement=ResourceRequirement.add(this.currentRequirement,newElement.getResourceRequirement(),null);
+  if (this.resourcePool.exceedsHardBound(candidateRequirement,false)) {
+    if (this.elements.size() == 0) {
+      return false;
+    }
+    if (this.comparator.compare(this.elements.last().getT(),t) <= 0) {
+      return false;
+    }
+    List<AllocatedRequestsBase.TAndRequirement<T>> toDrop=Lists.newArrayList();
+    ResourceRequirement tmpRequirement=this.currentRequirement.clone();
+    ResourceRequirement reuse=tmpRequirement.clone();
+    for (    AllocatedRequestsBase.TAndRequirement<T> dropCandidate : this.elements.descendingSet()) {
+      if (this.comparator.compare(dropCandidate.getT(),t) <= 0) {
+        return false;
+      }
+      tmpRequirement.subtract(dropCandidate.getResourceRequirement());
+      toDrop.add(dropCandidate);
+      if (!this.resourcePool.exceedsHardBound(ResourceRequirement.add(tmpRequirement,newElement.getResourceRequirement(),reuse),false)) {
+        break;
+      }
+    }
+    for (    AllocatedRequestsBase.TAndRequirement<T> drop : toDrop) {
+      this.currentRequirement.subtract(drop.getResourceRequirement());
+      this.elements.remove(drop);
+    }
+  }
+  this.elements.add(newElement);
+  this.currentRequirement.add(newElement.getResourceRequirement());
+  return true;
+}

@@ -1,0 +1,3 @@
+{
+  return VectorAlgebra.exceedsVector(this.softBound,requirement.getResourceVector(),orEqual);
+}

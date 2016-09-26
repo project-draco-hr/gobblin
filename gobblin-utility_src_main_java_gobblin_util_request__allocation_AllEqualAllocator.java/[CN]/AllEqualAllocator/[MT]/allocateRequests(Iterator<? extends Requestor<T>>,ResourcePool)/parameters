@@ -1,0 +1,2 @@
+Iterator<? extends Requestor<T>> requestors
+ResourcePool resourcePool

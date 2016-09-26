@@ -1,0 +1,4 @@
+{
+  double memory=Double.parseDouble(s.split("-")[1]);
+  return resourcePool.getResourceRequirementBuilder().setRequirement(MEMORY,memory).build();
+}

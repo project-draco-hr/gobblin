@@ -1,0 +1,9 @@
+{
+  ResourcePool pool=ResourcePool.builder().maxResource(MEMORY,1000.).maxResource(TIME,200.).tolerance(MEMORY,2.).defaultRequirement(TIME,1.).build();
+  Assert.assertEquals(pool.getNumDimensions(),2);
+  Assert.assertEquals(pool.getSoftBound(),new double[]{1000,200});
+  Assert.assertEquals(pool.getHardBound(),new double[]{2000,240});
+  Assert.assertEquals(pool.getResourceRequirementBuilder().build().getResourceVector(),new double[]{0,1});
+  ResourceRequirement requirement=pool.getResourceRequirementBuilder().setRequirement(MEMORY,10.).build();
+  Assert.assertEquals(requirement.getResourceVector(),new double[]{10,1});
+}

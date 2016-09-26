@@ -1,0 +1,9 @@
+{
+  this.estimator=resourceEstimator;
+  this.resourcePool=pool;
+  this.dimensions=this.resourcePool.getNumDimensions();
+  this.comparator=prioritizer;
+  this.allDifferentComparator=new AllDifferentComparator();
+  this.elements=new TreeSet<>(this.allDifferentComparator);
+  this.currentRequirement=this.resourcePool.getResourceRequirementBuilder().zero().build();
+}

@@ -1,0 +1,3 @@
+{
+  return ResourceRequirement.add(this.currentRequirement,this.currentIterator.totalResourcesUsed(),null);
+}

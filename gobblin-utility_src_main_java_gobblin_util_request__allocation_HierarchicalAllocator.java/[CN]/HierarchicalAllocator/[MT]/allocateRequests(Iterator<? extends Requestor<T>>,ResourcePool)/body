@@ -1,0 +1,11 @@
+{
+  List<Requestor<T>> requestorList=Lists.newArrayList(requestors);
+  Comparator<Requestor<T>> requestorComparator=new Comparator<Requestor<T>>(){
+    @Override public int compare(    Requestor<T> o1,    Requestor<T> o2){
+      return prioritizer.compareRequestors(o1,o2);
+    }
+  }
+;
+  Collections.sort(requestorList,requestorComparator);
+  return new HierarchicalIterator(resourcePool,new SingleTierIterator(requestorComparator,requestorList));
+}

@@ -1,0 +1,5 @@
+{
+  this.t=t;
+  this.resourceRequirement=resourceRequirement;
+  this.id=RANDOM.nextLong();
+}

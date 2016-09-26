@@ -1,0 +1,7 @@
+{
+  TAndIterator nextTAndIterator=this.queue.poll();
+  if (nextTAndIterator.getIterator().hasNext()) {
+    this.queue.offer(new TAndIterator(nextTAndIterator.getIterator().next(),nextTAndIterator.getIterator()));
+  }
+  return nextTAndIterator.getT();
+}

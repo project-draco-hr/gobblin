@@ -1,0 +1,8 @@
+{
+  Assert.assertTrue(VectorAlgebra.exceedsVector(new double[]{1,2},new double[]{0,3},false));
+  Assert.assertTrue(VectorAlgebra.exceedsVector(new double[]{1,2},new double[]{2,0},false));
+  Assert.assertTrue(VectorAlgebra.exceedsVector(new double[]{1,2},new double[]{0,2},true));
+  Assert.assertTrue(VectorAlgebra.exceedsVector(new double[]{1,2},new double[]{1,0},true));
+  Assert.assertFalse(VectorAlgebra.exceedsVector(new double[]{1,2},new double[]{0,1},false));
+  Assert.assertFalse(VectorAlgebra.exceedsVector(new double[]{1,2},new double[]{1,2},false));
+}
