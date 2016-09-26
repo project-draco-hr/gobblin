@@ -1,0 +1,11 @@
+{
+  try {
+    List<FileSet<CopyEntity>> fileSetList=Lists.newArrayList(new HiveCopyEntityHelper(this,configuration,targetFs).getCopyEntities(configuration));
+    Collections.sort(fileSetList,prioritizer);
+    return fileSetList.iterator();
+  }
+ catch (  IOException ioe) {
+    log.error("Failed to copy table " + this.table,ioe);
+    return Iterators.emptyIterator();
+  }
+}

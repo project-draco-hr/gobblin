@@ -1,0 +1,5 @@
+{
+  super(name,dataset);
+  this.table=dataset.getTable();
+  this.hiveDataset=dataset;
+}

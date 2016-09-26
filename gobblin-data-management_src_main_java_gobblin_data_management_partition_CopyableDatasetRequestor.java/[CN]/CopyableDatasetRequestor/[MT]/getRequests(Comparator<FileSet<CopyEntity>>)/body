@@ -1,0 +1,8 @@
+{
+  if (this.dataset instanceof PrioritizedCopyableDataset) {
+    return injectRequestor(((PrioritizedCopyableDataset)this.dataset).getFileSetIterator(this.targetFs,this.copyConfiguration,prioritizer));
+  }
+  List<FileSet<CopyEntity>> entities=Lists.newArrayList(this.dataset.getFileSetIterator(this.targetFs,this.copyConfiguration));
+  Collections.sort(entities,prioritizer);
+  return injectRequestor(entities.iterator());
+}

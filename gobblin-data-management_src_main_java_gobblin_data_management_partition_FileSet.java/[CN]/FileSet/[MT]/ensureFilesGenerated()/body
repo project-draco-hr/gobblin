@@ -1,0 +1,11 @@
+{
+  if (this.generatedEntities == null) {
+    try {
+      this.generatedEntities=ImmutableList.copyOf(generateCopyEntities());
+    }
+ catch (    Exception exc) {
+      throw new RuntimeException("Failed to generate files for file set " + name);
+    }
+    recomputeStats();
+  }
+}

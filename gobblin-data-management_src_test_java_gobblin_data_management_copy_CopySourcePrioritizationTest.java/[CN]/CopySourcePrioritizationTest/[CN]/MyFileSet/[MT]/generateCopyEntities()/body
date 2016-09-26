@@ -1,0 +1,5 @@
+{
+  CopyableFile cf1=createCopyableFile(getName() + ".f1",Integer.toString(this.filesetNumberInDataset));
+  CopyableFile cf2=createCopyableFile(getName() + ".f2",Integer.toString(this.filesetNumberInDataset));
+  return Lists.<CopyEntity>newArrayList(cf1,cf2);
+}

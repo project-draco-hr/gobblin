@@ -1,0 +1,4 @@
+{
+  ensureFilesGenerated();
+  return this.generatedEntities;
+}

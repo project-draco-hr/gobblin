@@ -1,0 +1,7 @@
+{
+  List<IterableCopyableDataset> datasets=Lists.newArrayList();
+  for (int i=0; i < DATASETS; i++) {
+    datasets.add(new MyDataset("d" + i));
+  }
+  return datasets.iterator();
+}

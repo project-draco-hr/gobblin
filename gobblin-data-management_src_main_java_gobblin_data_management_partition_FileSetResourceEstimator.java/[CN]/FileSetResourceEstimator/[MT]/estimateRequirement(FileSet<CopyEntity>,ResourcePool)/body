@@ -1,0 +1,7 @@
+{
+  if (!(pool instanceof CopyResourcePool)) {
+    throw new IllegalArgumentException("Must use a " + CopyResourcePool.class.getSimpleName());
+  }
+  CopyResourcePool copyResourcePool=(CopyResourcePool)pool;
+  return copyResourcePool.getCopyResourceRequirementBuilder().setEntities(copyEntityFileSet.getTotalEntities()).setBytes(copyEntityFileSet.getTotalSizeInBytes()).build();
+}

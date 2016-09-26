@@ -1,0 +1,9 @@
+{
+  this.totalEntities=this.generatedEntities.size();
+  this.totalSize=0;
+  for (  CopyEntity copyEntity : this.generatedEntities) {
+    if (copyEntity instanceof CopyableFile) {
+      this.totalSize+=((CopyableFile)copyEntity).getOrigin().getLen();
+    }
+  }
+}

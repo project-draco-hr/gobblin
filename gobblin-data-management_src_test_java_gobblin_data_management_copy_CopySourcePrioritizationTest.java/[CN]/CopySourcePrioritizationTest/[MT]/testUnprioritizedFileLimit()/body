@@ -1,0 +1,24 @@
+{
+  SourceState state=new SourceState();
+  state.setProp(ConfigurationKeys.SOURCE_FILEBASED_FS_URI,"file:///");
+  state.setProp(ConfigurationKeys.WRITER_FILE_SYSTEM_URI,"file:///");
+  state.setProp(ConfigurationKeys.DATA_PUBLISHER_FINAL_DIR,"/target/dir");
+  state.setProp(DatasetUtils.DATASET_PROFILE_CLASS_KEY,MyFinder.class.getName());
+  state.setProp(CopyConfiguration.MAX_COPY_PREFIX + "." + CopyResourcePool.ENTITIES_KEY,10);
+  state.setProp(CopyConfiguration.MAX_COPY_PREFIX + "." + CopyResourcePool.TOLERANCE_KEY,1);
+  CopySource source=new CopySource();
+  List<WorkUnit> workunits=source.getWorkunits(state);
+  workunits=JobLauncherUtils.flattenWorkUnits(workunits);
+  Assert.assertEquals(workunits.size(),10);
+  List<String> paths=extractPaths(workunits);
+  Assert.assertTrue(paths.contains("d0.fs0.f1"));
+  Assert.assertTrue(paths.contains("d0.fs0.f2"));
+  Assert.assertTrue(paths.contains("d0.fs1.f1"));
+  Assert.assertTrue(paths.contains("d0.fs1.f2"));
+  Assert.assertTrue(paths.contains("d0.fs2.f1"));
+  Assert.assertTrue(paths.contains("d0.fs2.f2"));
+  Assert.assertTrue(paths.contains("d0.fs3.f1"));
+  Assert.assertTrue(paths.contains("d0.fs3.f2"));
+  Assert.assertTrue(paths.contains("d1.fs0.f1"));
+  Assert.assertTrue(paths.contains("d1.fs0.f2"));
+}

@@ -1,0 +1,9 @@
+{
+  return Iterators.transform(iterator,new Function<FileSet<CopyEntity>,FileSet<CopyEntity>>(){
+    @Override public FileSet<CopyEntity> apply(    FileSet<CopyEntity> input){
+      input.setRequestor(CopyableDatasetRequestor.this);
+      return input;
+    }
+  }
+);
+}

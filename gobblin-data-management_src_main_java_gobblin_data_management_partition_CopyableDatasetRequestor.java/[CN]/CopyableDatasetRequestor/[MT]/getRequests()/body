@@ -1,0 +1,3 @@
+{
+  return injectRequestor(this.dataset.getFileSetIterator(this.targetFs,this.copyConfiguration));
+}

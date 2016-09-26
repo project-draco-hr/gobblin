@@ -1,0 +1,8 @@
+{
+  super(partition.getCompleteName(),hiveCopyEntityHelper.getDataset());
+  this.hiveCopyEntityHelper=hiveCopyEntityHelper;
+  this.partition=partition;
+  this.properties=properties;
+  this.existingTargetPartition=Optional.fromNullable(this.hiveCopyEntityHelper.getTargetPartitions().get(this.partition.getValues()));
+  this.eventSubmitter=new EventSubmitter.Builder(this.hiveCopyEntityHelper.getDataset().getMetricContext(),"hive.dataset.copy").addMetadata("Partition",this.partition.getName()).build();
+}

@@ -1,0 +1,4 @@
+String name
+HiveDataset dataset
+Collection<Partition> partitionsToDeregister
+HiveCopyEntityHelper helper

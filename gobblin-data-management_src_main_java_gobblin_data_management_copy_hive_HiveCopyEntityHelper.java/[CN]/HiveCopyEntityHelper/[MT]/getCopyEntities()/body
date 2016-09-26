@@ -1,9 +1,0 @@
-{
-  if (HiveUtils.isPartitioned(this.dataset.table)) {
-    return new PartitionIterator(this.sourcePartitions);
-  }
- else {
-    FileSet<CopyEntity> fileSet=new FileSet.Builder<>(this.dataset.table.getCompleteName(),this.dataset).add(getCopyEntitiesForUnpartitionedTable()).build();
-    return Iterators.singletonIterator(fileSet);
-  }
-}

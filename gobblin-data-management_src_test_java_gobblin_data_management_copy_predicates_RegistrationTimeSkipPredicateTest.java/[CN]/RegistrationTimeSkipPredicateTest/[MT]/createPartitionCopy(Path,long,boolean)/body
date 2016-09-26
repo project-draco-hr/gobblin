@@ -1,5 +1,5 @@
 {
-  HiveCopyEntityHelper.PartitionCopy partitionCopy=Mockito.mock(HiveCopyEntityHelper.PartitionCopy.class);
+  HivePartitionFileSet partitionCopy=Mockito.mock(HivePartitionFileSet.class);
   Partition partition=Mockito.mock(Partition.class);
   Mockito.doReturn(location).when(partition).getDataLocation();
   Mockito.doReturn(partition).when(partitionCopy).getPartition();

@@ -1,0 +1,2 @@
+Map<List<String>,Partition> partitionMap
+CopyConfiguration configuration

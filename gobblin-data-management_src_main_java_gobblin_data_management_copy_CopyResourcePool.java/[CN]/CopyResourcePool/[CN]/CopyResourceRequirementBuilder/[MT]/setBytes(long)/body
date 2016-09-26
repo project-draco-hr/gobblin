@@ -1,0 +1,4 @@
+{
+  setRequirement(BYTES_DIMENSION,(double)totalBytes);
+  return this;
+}
