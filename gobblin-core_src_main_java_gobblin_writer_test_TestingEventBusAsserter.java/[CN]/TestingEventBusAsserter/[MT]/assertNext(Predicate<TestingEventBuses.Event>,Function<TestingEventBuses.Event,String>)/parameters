@@ -1,0 +1,2 @@
+Predicate<TestingEventBuses.Event> predicate
+Function<TestingEventBuses.Event,String> messageGen

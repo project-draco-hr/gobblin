@@ -1,0 +1,13 @@
+{
+  final String eventBusId="/tmp/GobblinTestEventBusWriterTest/testWrite";
+  try (TestingEventBusAsserter asserter=new TestingEventBusAsserter(eventBusId)){
+    GobblinTestEventBusWriter writer=GobblinTestEventBusWriter.builder().withEventBusId(eventBusId).build();
+    writer.write("event1");
+    writer.write("event2");
+    writer.write("event3");
+    asserter.assertNextValueEq("event1");
+    asserter.assertNextValueEq("event2");
+    asserter.assertNextValueEq("event3");
+    Assert.assertEquals(writer.recordsWritten(),3);
+  }
+ }

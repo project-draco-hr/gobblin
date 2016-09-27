@@ -1,0 +1,4 @@
+{
+  _eventBus=TestingEventBuses.getEventBus(eventBusId);
+  _eventBus.register(this);
+}

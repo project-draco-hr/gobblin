@@ -1,0 +1,10 @@
+{
+  TestingEventBuses.Event nextEvent=_events.pollFirst(_defaultTimeoutValue,_defaultTimeoutUnit);
+  if (null == nextEvent) {
+    throw new TimeoutException();
+  }
+  if (!predicate.apply(nextEvent)) {
+    throw new AssertionError(messageGen.apply(nextEvent));
+  }
+  return nextEvent;
+}

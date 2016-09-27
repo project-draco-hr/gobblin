@@ -1,0 +1,5 @@
+{
+  _defaultTimeoutValue=timeout;
+  _defaultTimeoutUnit=unit;
+  return this;
+}

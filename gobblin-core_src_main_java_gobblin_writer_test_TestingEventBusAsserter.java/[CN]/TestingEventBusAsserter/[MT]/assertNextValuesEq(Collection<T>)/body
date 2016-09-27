@@ -1,0 +1,21 @@
+{
+  final Set<T> remainingExpectedValues=new HashSet<>(expected);
+  final Predicate<T> checkInRemainingAndRemove=new Predicate<T>(){
+    @Override public boolean apply(    @Nonnull T input){
+      if (!remainingExpectedValues.contains(input)) {
+        return false;
+      }
+      remainingExpectedValues.remove(input);
+      return true;
+    }
+  }
+;
+  while (remainingExpectedValues.size() > 0) {
+    assertNextValue(checkInRemainingAndRemove,new Function<TestingEventBuses.Event,String>(){
+      @Override public String apply(      @Nonnull Event input){
+        return "Event value " + input.getValue() + " not in set "+ remainingExpectedValues;
+      }
+    }
+);
+  }
+}

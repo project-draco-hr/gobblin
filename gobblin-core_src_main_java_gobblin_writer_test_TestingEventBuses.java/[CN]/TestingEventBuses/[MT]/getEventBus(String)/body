@@ -1,0 +1,8 @@
+{
+  try {
+    return _instances.get(eventBusId);
+  }
+ catch (  ExecutionException e) {
+    throw new RuntimeException("Unable to create an EventBus with id " + eventBusId + ": "+ e,e);
+  }
+}

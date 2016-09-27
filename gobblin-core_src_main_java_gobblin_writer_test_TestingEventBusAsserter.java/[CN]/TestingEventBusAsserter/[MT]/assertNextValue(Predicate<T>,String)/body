@@ -1,0 +1,8 @@
+{
+  return assertNext(new Predicate<TestingEventBuses.Event>(){
+    @Override public boolean apply(    @Nonnull Event input){
+      return predicate.apply(input.<T>getTypedValue());
+    }
+  }
+,message);
+}

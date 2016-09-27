@@ -1,0 +1,22 @@
+{
+  try (final TestingEventBusAsserter asserter=new TestingEventBusAsserter("TestingEventBusAsserterTest.testTimeout")){
+    final CountDownLatch timeoutSeen=new CountDownLatch(1);
+    Thread assertThread=new Thread(new Runnable(){
+      @Override public void run(){
+        try {
+          asserter.withTimeout(300,TimeUnit.MILLISECONDS).assertNextValueEq("event1");
+        }
+ catch (        TimeoutException e) {
+          timeoutSeen.countDown();
+        }
+catch (        InterruptedException e) {
+        }
+      }
+    }
+,"TestingEventBusAsserterTest.testTimeout.assertThread");
+    assertThread.start();
+    Thread.sleep(100);
+    Assert.assertTrue(assertThread.isAlive());
+    Assert.assertTrue(timeoutSeen.await(300,TimeUnit.MILLISECONDS));
+  }
+ }

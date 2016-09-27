@@ -1,0 +1,6 @@
+{
+  if (null == this.value) {
+    return null == otherValue;
+  }
+  return this.value.equals(otherValue);
+}

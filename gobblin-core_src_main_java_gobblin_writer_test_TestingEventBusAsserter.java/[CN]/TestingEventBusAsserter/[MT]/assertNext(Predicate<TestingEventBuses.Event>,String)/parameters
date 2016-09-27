@@ -1,0 +1,2 @@
+Predicate<TestingEventBuses.Event> predicate
+String message

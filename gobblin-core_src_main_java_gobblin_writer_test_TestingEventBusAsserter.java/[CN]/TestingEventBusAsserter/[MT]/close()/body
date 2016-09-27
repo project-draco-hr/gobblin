@@ -1,0 +1,3 @@
+{
+  _eventBus.unregister(this);
+}

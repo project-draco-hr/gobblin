@@ -1,0 +1,3 @@
+{
+  return assertNext(predicate,new StaticMessage(message));
+}

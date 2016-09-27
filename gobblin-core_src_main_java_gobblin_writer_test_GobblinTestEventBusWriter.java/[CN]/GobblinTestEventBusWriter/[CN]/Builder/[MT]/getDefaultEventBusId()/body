@@ -1,0 +1,10 @@
+{
+  State destinationCfg=getDestination().getProperties();
+  String eventBusIdKey=ForkOperatorUtils.getPathForBranch(destinationCfg,FULL_EVENTBUSID_KEY,getBranches(),getBranch());
+  if (destinationCfg.contains(eventBusIdKey)) {
+    return destinationCfg.getProp(eventBusIdKey);
+  }
+ else {
+    return WriterUtils.getWriterOutputDir(destinationCfg,getBranches(),getBranch()).toString();
+  }
+}

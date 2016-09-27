@@ -3,5 +3,5 @@
     return null;
   }
   ++_recordsEmitted;
-  return "Hello world " + _helloId + " !";
+  return helloMessage(_helloId);
 }

@@ -1,0 +1,8 @@
+{
+  return assertNextValue(Predicates.equalTo(expected),new Function<TestingEventBuses.Event,String>(){
+    @Override public String apply(    @Nonnull Event input){
+      return "Event value mismatch: " + input.getValue() + " != "+ expected;
+    }
+  }
+);
+}

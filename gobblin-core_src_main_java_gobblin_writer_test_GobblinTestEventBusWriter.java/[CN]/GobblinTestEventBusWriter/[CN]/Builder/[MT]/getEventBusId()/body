@@ -1,0 +1,6 @@
+{
+  if (!_eventBusId.isPresent()) {
+    _eventBusId=Optional.of(getDefaultEventBusId());
+  }
+  return _eventBusId.get();
+}

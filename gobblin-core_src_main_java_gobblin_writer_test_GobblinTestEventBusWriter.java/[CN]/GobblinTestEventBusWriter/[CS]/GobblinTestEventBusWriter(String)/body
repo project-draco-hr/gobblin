@@ -1,0 +1,3 @@
+{
+  this(TestingEventBuses.getEventBus(eventBusId));
+}

@@ -1,0 +1,4 @@
+{
+  _eventBus.post(new TestingEventBuses.Event(record));
+  _recordCount.incrementAndGet();
+}

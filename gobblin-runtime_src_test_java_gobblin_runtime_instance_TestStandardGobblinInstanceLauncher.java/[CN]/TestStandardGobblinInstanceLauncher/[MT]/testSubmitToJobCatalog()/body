@@ -5,6 +5,8 @@
   instanceLauncher.startAsync();
   instanceLauncher.awaitRunning(50,TimeUnit.MILLISECONDS);
   JobSpec js1=JobSpec.builder().withConfig(ConfigFactory.parseResources("gobblin/runtime/instance/SimpleHelloWorldJob.jobconf")).build();
+  final String eventBusId=js1.getConfig().resolve().getString(GobblinTestEventBusWriter.FULL_EVENTBUSID_KEY);
+  TestingEventBusAsserter asserter=new TestingEventBusAsserter(eventBusId);
   final StandardGobblinInstanceDriver instance=(StandardGobblinInstanceDriver)instanceLauncher.getDriver();
   final ArrayBlockingQueue<JobExecutionDriver> jobDrivers=new ArrayBlockingQueue<>(1);
   JobLifecycleListener js1Listener=new FilteredJobLifecycleListener(JobSpecFilter.eqJobSpecURI(js1.getUri()),new DefaultJobLifecycleListenerImpl(instance.getLog()){
@@ -26,5 +28,12 @@
   JobExecutionResult jobResult=jobDriver.get(5,TimeUnit.SECONDS);
   Assert.assertTrue(jobResult.isSuccessful());
   instanceLauncher.stopAsync();
+  final int numHellos=js1.getConfig().getInt(HelloWorldSource.NUM_HELLOS_FULL_KEY);
+  ArrayList<String> expectedEvents=new ArrayList<>();
+  for (int i=1; i <= numHellos; ++i) {
+    expectedEvents.add(HelloWorldSource.ExtractorImpl.helloMessage(i));
+  }
+  asserter.assertNextValuesEq(expectedEvents);
+  asserter.close();
   instanceLauncher.awaitTerminated(500,TimeUnit.MILLISECONDS);
 }

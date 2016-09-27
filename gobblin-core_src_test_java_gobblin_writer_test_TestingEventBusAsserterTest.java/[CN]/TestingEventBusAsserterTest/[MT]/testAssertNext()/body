@@ -1,0 +1,27 @@
+{
+  EventBus testBus=TestingEventBuses.getEventBus("TestingEventBusAsserterTest.testHappyPath");
+  try (final TestingEventBusAsserter asserter=new TestingEventBusAsserter("TestingEventBusAsserterTest.testHappyPath")){
+    testBus.post(new TestingEventBuses.Event("event1"));
+    testBus.post(new TestingEventBuses.Event("event2"));
+    asserter.assertNextValueEq("event1");
+    Assert.assertThrows(new ThrowingRunnable(){
+      @Override public void run() throws Throwable {
+        asserter.assertNextValueEq("event3");
+      }
+    }
+);
+    testBus.post(new TestingEventBuses.Event("event13"));
+    testBus.post(new TestingEventBuses.Event("event11"));
+    testBus.post(new TestingEventBuses.Event("event12"));
+    testBus.post(new TestingEventBuses.Event("event10"));
+    asserter.assertNextValuesEq(Arrays.asList("event10","event11","event12","event13"));
+    testBus.post(new TestingEventBuses.Event("event22"));
+    testBus.post(new TestingEventBuses.Event("event20"));
+    Assert.assertThrows(new ThrowingRunnable(){
+      @Override public void run() throws Throwable {
+        asserter.assertNextValuesEq(Arrays.asList("event22","event21"));
+      }
+    }
+);
+  }
+ }
