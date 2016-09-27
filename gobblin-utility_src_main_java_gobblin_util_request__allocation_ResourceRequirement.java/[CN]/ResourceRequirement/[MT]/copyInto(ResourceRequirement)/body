@@ -1,0 +1,9 @@
+{
+  if (reuse == null) {
+    return new ResourceRequirement(this.resourceVector.clone());
+  }
+ else {
+    System.arraycopy(this.resourceVector,0,reuse.getResourceVector(),0,this.resourceVector.length);
+    return reuse;
+  }
+}

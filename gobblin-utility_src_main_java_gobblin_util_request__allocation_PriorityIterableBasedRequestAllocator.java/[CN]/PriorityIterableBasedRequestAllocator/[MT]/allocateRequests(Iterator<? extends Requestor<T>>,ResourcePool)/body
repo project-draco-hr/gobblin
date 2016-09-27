@@ -1,0 +1,32 @@
+{
+  final ConcurrentBoundedPriorityIterable<T> iterable=new ConcurrentBoundedPriorityIterable<>(this.configuration.getPrioritizer(),this.configuration.getResourceEstimator(),resourcePool);
+  final Iterator<T> joinIterator=getJoinIterator(requestors,iterable);
+  if (this.configuration.getAllowedThreads() <= 1) {
+    while (joinIterator.hasNext()) {
+      iterable.add(joinIterator.next());
+    }
+  }
+ else {
+    IteratorExecutor<Void> executor=new IteratorExecutor<>(Iterators.transform(joinIterator,new Function<T,Callable<Void>>(){
+      @Override public Callable<Void> apply(      final T input){
+        return new Callable<Void>(){
+          @Override public Void call() throws Exception {
+            iterable.add(input);
+            return null;
+          }
+        }
+;
+      }
+    }
+),this.configuration.getAllowedThreads(),ExecutorsUtils.newThreadFactory(Optional.of(log),Optional.of("request-allocator-%d")));
+    try {
+      executor.executeAndGetResults();
+    }
+ catch (    InterruptedException ie) {
+      log.error("Request allocation was interrupted.");
+      return new AllocatedRequestsIteratorBase<>(Iterators.<AllocatedRequestsIteratorBase.RequestWithResourceRequirement<T>>emptyIterator(),resourcePool);
+    }
+  }
+  iterable.logStatistics(Optional.of(this.log));
+  return new AllocatedRequestsIteratorBase<>(iterable.iterator(),resourcePool);
+}

@@ -1,0 +1,40 @@
+{
+  this.maxResourceRequirement.entryWiseMax(newElement.getResourceRequirement());
+  this.requestsOffered++;
+  if (this.resourcePool.exceedsHardBound(newElement.getResourceRequirement(),false)) {
+    log.warn(String.format("Request %s is larger than the available resource pool. If the pool is not expanded, " + "it will never be selected.",newElement.getT()));
+    this.requestsRefused++;
+    return false;
+  }
+  ResourceRequirement candidateRequirement=ResourceRequirement.add(this.currentRequirement,newElement.getResourceRequirement(),this.candidateRequirement);
+  if (this.resourcePool.exceedsHardBound(candidateRequirement,false)) {
+    if (this.comparator.compare(this.elements.last().getT(),newElement.getT()) <= 0) {
+      log.debug("Request {} does not fit in resource pool and is smaller than current smallest request. " + "Rejecting",newElement.getT());
+      this.requestsRefused++;
+      return false;
+    }
+    List<AllocatedRequestsIteratorBase.RequestWithResourceRequirement<T>> toDrop=Lists.newArrayList();
+    this.currentRequirement.copyInto(this.tmpRequirement);
+    for (    AllocatedRequestsIteratorBase.RequestWithResourceRequirement<T> dropCandidate : this.elements.descendingSet()) {
+      if (this.comparator.compare(dropCandidate.getT(),newElement.getT()) <= 0) {
+        log.debug("Cannot evict enough requests to fit request {}. " + "Rejecting",newElement.getT());
+        this.requestsRefused++;
+        return false;
+      }
+      this.tmpRequirement.subtract(dropCandidate.getResourceRequirement());
+      toDrop.add(dropCandidate);
+      if (!this.resourcePool.exceedsHardBound(ResourceRequirement.add(this.tmpRequirement,newElement.getResourceRequirement(),this.reuse),false)) {
+        break;
+      }
+    }
+    for (    AllocatedRequestsIteratorBase.RequestWithResourceRequirement<T> drop : toDrop) {
+      log.debug("Evicting request {}.",drop.getT());
+      this.requestsEvicted++;
+      this.elements.remove(drop);
+      this.currentRequirement.subtract(drop.getResourceRequirement());
+    }
+  }
+  this.elements.add(newElement);
+  this.currentRequirement.add(newElement.getResourceRequirement());
+  return true;
+}

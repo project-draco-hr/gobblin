@@ -1,0 +1,13 @@
+{
+  Logger actualLogger=logger.or(log);
+  StringBuilder messageBuilder=new StringBuilder("Statistics for ").append(ConcurrentBoundedPriorityIterable.class.getSimpleName()).append(": {");
+  messageBuilder.append(this.resourcePool).append(", ");
+  messageBuilder.append("totalResourcesUsed: ").append(this.resourcePool.stringifyRequirement(this.currentRequirement)).append(", ");
+  messageBuilder.append("maxRequirementPerDimension: ").append(this.resourcePool.stringifyRequirement(this.maxResourceRequirement)).append(", ");
+  messageBuilder.append("requestsOffered: ").append(this.requestsOffered).append(", ");
+  messageBuilder.append("requestsAccepted: ").append(this.requestsOffered - this.requestsEvicted - this.requestsRefused).append(", ");
+  messageBuilder.append("requestsRefused: ").append(this.requestsRefused).append(", ");
+  messageBuilder.append("requestsEvicted: ").append(this.requestsEvicted);
+  messageBuilder.append("}");
+  actualLogger.info(messageBuilder.toString());
+}

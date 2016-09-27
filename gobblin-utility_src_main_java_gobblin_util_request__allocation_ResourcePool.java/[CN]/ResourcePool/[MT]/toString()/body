@@ -1,0 +1,8 @@
+{
+  StringBuilder builder=new StringBuilder(ResourcePool.class.getSimpleName()).append(": {");
+  builder.append("softBound").append(": ").append(vectorToString(this.softBound));
+  builder.append(", ");
+  builder.append("hardBound").append(": ").append(vectorToString(this.hardBound));
+  builder.append("}");
+  return builder.toString();
+}

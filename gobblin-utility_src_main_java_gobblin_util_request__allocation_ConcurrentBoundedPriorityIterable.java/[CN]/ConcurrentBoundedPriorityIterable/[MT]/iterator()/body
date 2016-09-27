@@ -1,3 +1,4 @@
 {
+  this.closed=true;
   return this.elements.iterator();
 }

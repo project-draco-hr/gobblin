@@ -1,0 +1,6 @@
+{
+  if (this.limitedScopeConfig == null) {
+    this.limitedScopeConfig=ConfigFactory.empty();
+  }
+  return new RequestAllocatorConfig<>(this.prioritizer,this.resourceEstimator,this.allowedThreads,this.limitedScopeConfig);
+}

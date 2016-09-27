@@ -8,13 +8,14 @@
     long maxWorkUnitsPerMultiWorkUnit=state.getPropAsLong(MAX_WORK_UNITS_PER_BIN,50);
     final long minWorkUnitWeight=Math.max(1,maxSizePerBin / maxWorkUnitsPerMultiWorkUnit);
     final Optional<CopyableFileWatermarkGenerator> watermarkGenerator=CopyableFileWatermarkHelper.getCopyableFileWatermarkGenerator(state);
+    int maxThreads=state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES);
     final CopyConfiguration copyConfiguration=CopyConfiguration.builder(targetFs,state.getProperties()).build();
     DatasetsFinder<CopyableDatasetBase> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY,new EventSubmitter.Builder(this.metricContext,CopyConfiguration.COPY_PREFIX).build(),state);
     IterableDatasetFinder<CopyableDatasetBase> iterableDatasetFinder=datasetFinder instanceof IterableDatasetFinder ? (IterableDatasetFinder<CopyableDatasetBase>)datasetFinder : new IterableDatasetFinderImpl<>(datasetFinder);
     Iterator<CopyableDatasetRequestor> requestorIteratorWithNulls=Iterators.transform(iterableDatasetFinder.getDatasetsIterator(),new CopyableDatasetRequestor.Factory(targetFs,copyConfiguration,log));
     Iterator<CopyableDatasetRequestor> requestorIterator=Iterators.filter(requestorIteratorWithNulls,Predicates.<CopyableDatasetRequestor>notNull());
     final HashMultimap<FileSet<CopyEntity>,WorkUnit> workUnitsMap=HashMultimap.create();
-    RequestAllocator<FileSet<CopyEntity>> allocator=createRequestAllocator(copyConfiguration,state);
+    RequestAllocator<FileSet<CopyEntity>> allocator=createRequestAllocator(copyConfiguration,maxThreads);
     Iterator<FileSet<CopyEntity>> prioritizedFileSets=allocator.allocateRequests(requestorIterator,copyConfiguration.getMaxToCopy());
     Iterator<Callable<Void>> callableIterator=Iterators.transform(prioritizedFileSets,new Function<FileSet<CopyEntity>,Callable<Void>>(){
       @Nullable @Override public Callable<Void> apply(      FileSet<CopyEntity> input){
@@ -23,7 +24,7 @@
     }
 );
     try {
-      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("Copy-file-listing-pool-%d"))).execute();
+      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,maxThreads,ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("Copy-file-listing-pool-%d"))).execute();
       for (      Future<Void> future : futures) {
         try {
           future.get();

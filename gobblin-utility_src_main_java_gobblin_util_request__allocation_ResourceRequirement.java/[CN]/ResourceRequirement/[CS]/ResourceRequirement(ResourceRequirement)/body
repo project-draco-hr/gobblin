@@ -1,0 +1,3 @@
+{
+  this.resourceVector=other.resourceVector.clone();
+}

@@ -9,14 +9,16 @@
   Assert.assertFalse(iterable.add("e-50"));
   Assert.assertTrue(iterable.add("e-10"));
   Assert.assertTrue(iterable.add("b-50"));
-  List<String> items=Lists.newArrayList(Iterators.transform(iterable.iterator(),new AllocatedRequestsBase.TExtractor<String>()));
+  List<String> items=Lists.newArrayList(Iterators.transform(iterable.iterator(),new AllocatedRequestsIteratorBase.TExtractor<String>()));
   Assert.assertEquals(items.size(),2);
   Assert.assertEquals(items.get(0),"b-50");
   Assert.assertEquals(items.get(1),"d-50");
+  iterable.reopen();
   Assert.assertFalse(iterable.add("c-500"));
-  items=Lists.newArrayList(Iterators.transform(iterable.iterator(),new AllocatedRequestsBase.TExtractor<String>()));
+  items=Lists.newArrayList(Iterators.transform(iterable.iterator(),new AllocatedRequestsIteratorBase.TExtractor<String>()));
   Assert.assertEquals(items.size(),2);
+  iterable.reopen();
   Assert.assertFalse(iterable.add("a-500"));
-  items=Lists.newArrayList(Iterators.transform(iterable.iterator(),new AllocatedRequestsBase.TExtractor<String>()));
+  items=Lists.newArrayList(Iterators.transform(iterable.iterator(),new AllocatedRequestsIteratorBase.TExtractor<String>()));
   Assert.assertEquals(items.size(),2);
 }

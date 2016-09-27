@@ -1,12 +1,12 @@
 {
   try {
     String sizeStr=limitedScopeConfig.hasPath(SIZE_KEY) ? limitedScopeConfig.getString(SIZE_KEY) : DEFAULT_MAX_SIZE;
-    long maxSize=StringUtils.humanReadableToByteCount(sizeStr);
+    long maxSize=StringParsingUtils.humanReadableToByteCount(sizeStr);
     int maxEntities=limitedScopeConfig.hasPath(ENTITIES_KEY) ? limitedScopeConfig.getInt(ENTITIES_KEY) : DEFAULT_MAX_ENTITIES;
     double tolerance=limitedScopeConfig.hasPath(TOLERANCE_KEY) ? limitedScopeConfig.getDouble(TOLERANCE_KEY) : DEFAULT_TOLERANCE;
     return new CopyResourcePool(ImmutableMap.of(ENTITIES_DIMENSION,(double)maxEntities,BYTES_DIMENSION,(double)maxSize),ImmutableMap.of(ENTITIES_DIMENSION,tolerance,BYTES_DIMENSION,tolerance),ImmutableMap.<String,Double>of());
   }
- catch (  StringUtils.FormatException fe) {
+ catch (  StringParsingUtils.FormatException fe) {
     throw new RuntimeException(fe);
   }
 }
