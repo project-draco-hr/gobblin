@@ -1,3 +1,3 @@
 {
-  super(conf);
+  super(Optional.<Period>absent(),Optional.of(getMaxLookbackTime(conf)));
 }

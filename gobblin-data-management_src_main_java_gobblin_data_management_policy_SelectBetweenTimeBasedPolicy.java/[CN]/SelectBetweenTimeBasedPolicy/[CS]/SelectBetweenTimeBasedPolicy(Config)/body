@@ -1,0 +1,3 @@
+{
+  this(conf.hasPath(TIME_BASED_SELECTION_MIN_LOOK_BACK_TIME_KEY) ? Optional.of(getLookBackPeriod(conf.getString(TIME_BASED_SELECTION_MIN_LOOK_BACK_TIME_KEY))) : Optional.<Period>absent(),conf.hasPath(TIME_BASED_SELECTION_MAX_LOOK_BACK_TIME_KEY) ? Optional.of(getLookBackPeriod(conf.getString(TIME_BASED_SELECTION_MAX_LOOK_BACK_TIME_KEY))) : Optional.<Period>absent());
+}

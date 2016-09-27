@@ -1,0 +1,7 @@
+{
+  super(actionConfig,fs);
+  this.permission=Optional.fromNullable(ConfigUtils.getString(actionConfig,MODE_KEY,null));
+  this.owner=Optional.fromNullable(ConfigUtils.getString(actionConfig,OWNER_KEY,null));
+  this.group=Optional.fromNullable(ConfigUtils.getString(actionConfig,GROUP_KEY,null));
+  this.selectionPolicy=createSelectionPolicy(actionConfig);
+}

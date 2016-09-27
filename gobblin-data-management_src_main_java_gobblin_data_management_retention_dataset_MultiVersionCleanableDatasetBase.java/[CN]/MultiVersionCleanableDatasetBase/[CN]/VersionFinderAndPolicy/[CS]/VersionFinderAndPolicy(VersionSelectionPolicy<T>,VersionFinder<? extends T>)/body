@@ -1,0 +1,5 @@
+{
+  this.versionSelectionPolicy=versionSelectionPolicy;
+  this.versionFinder=versionFinder;
+  this.retentionActions=Lists.newArrayList();
+}

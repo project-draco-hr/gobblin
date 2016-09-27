@@ -1,0 +1,8 @@
+{
+  super(actionConfig,fs);
+  this.embeddedAccessControlActions=Lists.newArrayList();
+  for (  String policy : ConfigUtils.getStringList(actionConfig,POLICIES_KEY)) {
+    Preconditions.checkArgument(actionConfig.hasPath(policy),String.format("Policy %s is specified at key %s but actionConfig does not have config for this policy." + "Complete actionConfig %s",policy,POLICIES_KEY,actionConfig.root().render(ConfigRenderOptions.concise())));
+    embeddedAccessControlActions.add(new AccessControlAction(actionConfig.getConfig(policy),fs));
+  }
+}

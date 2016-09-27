@@ -1,0 +1,5 @@
+{
+  for (  DatasetVersion datasetVersion : this.selectionPolicy.listSelectedVersions(allVersions)) {
+    executeOnVersion(datasetVersion);
+  }
+}

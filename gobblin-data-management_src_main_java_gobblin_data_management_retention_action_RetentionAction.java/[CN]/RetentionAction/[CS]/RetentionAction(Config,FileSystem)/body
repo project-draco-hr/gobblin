@@ -1,0 +1,4 @@
+{
+  this.versionSelectionAliasResolver=new ClassAliasResolver<>(VersionSelectionPolicy.class);
+  this.fs=fs;
+}

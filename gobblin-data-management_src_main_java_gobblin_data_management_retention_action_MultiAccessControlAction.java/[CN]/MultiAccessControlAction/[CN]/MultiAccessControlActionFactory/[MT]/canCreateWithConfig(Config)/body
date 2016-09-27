@@ -1,0 +1,3 @@
+{
+  return config.hasPath(LEGACY_ACCESS_CONTROL_KEY) || config.hasPath(ACCESS_CONTROL_KEY);
+}

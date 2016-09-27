@@ -9,5 +9,12 @@
     Path fullFilePath=new Path(testTempDirPath,PathUtils.withoutLeadingSeparator(new Path(retainedConfig.getString(TEST_DATA_PATH_LOCAL_KEY))));
     Assert.assertFalse(this.fs.exists(fullFilePath),String.format("%s should be deleted",fullFilePath.toString()));
   }
+  if (setupConfig.hasPath(TEST_DATA_VALIDATE_PERMISSIONS_KEY)) {
+    List<? extends Config> permissionsConfigs=setupConfig.getConfigList(TEST_DATA_VALIDATE_PERMISSIONS_KEY);
+    for (    Config permissionsConfig : permissionsConfigs) {
+      Path fullFilePath=new Path(testTempDirPath,PathUtils.withoutLeadingSeparator(new Path(permissionsConfig.getString(TEST_DATA_PATH_LOCAL_KEY))));
+      Assert.assertEquals(this.fs.getFileStatus(fullFilePath).getPermission(),new FsPermission(permissionsConfig.getString(TEST_DATA_PERMISSIONS_KEY)),String.format("Permissions check failed for %s",fullFilePath));
+    }
+  }
   this.cleanup();
 }

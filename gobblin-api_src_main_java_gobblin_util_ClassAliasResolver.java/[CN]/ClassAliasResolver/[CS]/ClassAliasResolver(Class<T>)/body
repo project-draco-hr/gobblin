@@ -1,7 +1,6 @@
 {
   Map<String,Class<? extends T>> cache=Maps.newHashMap();
-  Reflections reflections=new Reflections("gobblin");
-  for (  Class<? extends T> clazz : reflections.getSubTypesOf(subTypeOf)) {
+  for (  Class<? extends T> clazz : REFLECTIONS.getSubTypesOf(subTypeOf)) {
     if (clazz.isAnnotationPresent(Alias.class)) {
       String alias=clazz.getAnnotation(Alias.class).value();
       if (cache.containsKey(alias)) {

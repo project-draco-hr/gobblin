@@ -3,6 +3,7 @@
     this.log.info("Dataset blacklisted. Cleanup skipped for " + datasetRoot());
     return;
   }
+  boolean atLeastOneFailureSeen=false;
   for (  VersionFinderAndPolicy<T> versionFinderAndPolicy : getVersionFindersAndPolicies()) {
     VersionSelectionPolicy<T> selectionPolicy=versionFinderAndPolicy.getVersionSelectionPolicy();
     VersionFinder<? extends T> versionFinder=versionFinderAndPolicy.getVersionFinder();
@@ -18,5 +19,21 @@
     Collections.sort(versions,Collections.reverseOrder());
     Collection<T> deletableVersions=selectionPolicy.listSelectedVersions(versions);
     cleanImpl(deletableVersions);
+    List<DatasetVersion> allVersions=Lists.newArrayList();
+    for (    T ver : versions) {
+      allVersions.add(ver);
+    }
+    for (    RetentionAction retentionAction : versionFinderAndPolicy.getRetentionActions()) {
+      try {
+        retentionAction.execute(allVersions);
+      }
+ catch (      Throwable t) {
+        atLeastOneFailureSeen=true;
+        log.error(String.format("RetentionAction %s failed for dataset %s",retentionAction.getClass().getName(),this.datasetRoot()),t);
+      }
+    }
+  }
+  if (atLeastOneFailureSeen) {
+    throw new RuntimeException(String.format("At least one failure happened while processing %s. Look for previous logs for failures",datasetRoot()));
   }
 }

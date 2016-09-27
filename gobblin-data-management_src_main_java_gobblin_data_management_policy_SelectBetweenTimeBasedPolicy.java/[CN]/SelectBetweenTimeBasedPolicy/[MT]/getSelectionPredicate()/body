@@ -1,0 +1,8 @@
+{
+  return new Predicate<TimestampedDatasetVersion>(){
+    @Override public boolean apply(    TimestampedDatasetVersion version){
+      return version.getDateTime().plus(SelectBetweenTimeBasedPolicy.this.maxLookBackPeriod.or(new Period(DateTime.now().getMillis()))).isAfterNow() && version.getDateTime().plus(SelectBetweenTimeBasedPolicy.this.minLookBackPeriod.or(new Period(0))).isBeforeNow();
+    }
+  }
+;
+}

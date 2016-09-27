@@ -1,0 +1,17 @@
+{
+  VersionSelectionPolicy<T> localVersionSelectionPolicy;
+  List<RetentionAction> localRetentionActions;
+  if (this.versionSelectionPolicy == null) {
+    localVersionSelectionPolicy=(VersionSelectionPolicy<T>)new SelectNothingPolicy(new Properties());
+  }
+ else {
+    localVersionSelectionPolicy=this.versionSelectionPolicy;
+  }
+  if (this.retentionActions == null) {
+    localRetentionActions=Lists.newArrayList();
+  }
+ else {
+    localRetentionActions=Lists.newArrayList(this.retentionActions);
+  }
+  return new VersionFinderAndPolicy<T>(localVersionSelectionPolicy,this.versionFinder,localRetentionActions);
+}

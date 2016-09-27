@@ -1,0 +1,18 @@
+{
+  if (datasetVersion instanceof FileSystemDatasetVersion) {
+    FileSystemDatasetVersion fsDatasetVersion=(FileSystemDatasetVersion)datasetVersion;
+    for (    Path path : fsDatasetVersion.getPaths()) {
+      if (this.fs.exists(path)) {
+        if (this.permission.isPresent()) {
+          FsPermission fsPermission=new FsPermission(this.permission.get());
+          this.fs.setPermission(path,fsPermission);
+          log.debug("Set permissions for {} to {}",path.toString(),fsPermission);
+        }
+        if (this.owner.isPresent() || this.group.isPresent()) {
+          this.fs.setOwner(path,this.owner.orNull(),this.group.orNull());
+          log.debug("Set owner and group for {} to {}:{}",path.toString(),this.owner.orNull(),this.group.orNull());
+        }
+      }
+    }
+  }
+}

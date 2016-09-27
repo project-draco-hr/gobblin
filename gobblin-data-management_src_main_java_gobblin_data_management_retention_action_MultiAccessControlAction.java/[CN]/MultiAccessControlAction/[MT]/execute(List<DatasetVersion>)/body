@@ -1,0 +1,5 @@
+{
+  for (  AccessControlAction aca : this.embeddedAccessControlActions) {
+    aca.execute(allVersions);
+  }
+}

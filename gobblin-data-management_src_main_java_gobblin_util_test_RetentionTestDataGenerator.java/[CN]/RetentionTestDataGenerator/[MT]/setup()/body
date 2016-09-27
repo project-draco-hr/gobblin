@@ -21,5 +21,8 @@
         throw new IOException(String.format("Unable to set the last modified time for file %s!",file));
       }
     }
+    if (fileToCreate.hasPath(TEST_DATA_PERMISSIONS_KEY)) {
+      this.fs.setPermission(fullFilePath,new FsPermission(fileToCreate.getString(TEST_DATA_PERMISSIONS_KEY)));
+    }
   }
 }

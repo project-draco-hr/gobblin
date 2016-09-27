@@ -5,7 +5,7 @@
   if (config.hasPath(VERSION_FINDER_CLASS_KEY) && config.hasPath(RETENTION_POLICY_CLASS_KEY)) {
     initWithRetentionPolicy(config,jobProps,RETENTION_POLICY_CLASS_KEY,VERSION_FINDER_CLASS_KEY);
   }
- else   if (config.hasPath(VERSION_FINDER_CLASS_KEY) && config.hasPath(SELECTION_POLICY_CLASS_KEY)) {
+ else   if (config.hasPath(VERSION_FINDER_CLASS_KEY)) {
     initWithSelectionPolicy(config.getConfig(RETENTION_CONFIGURATION_KEY),jobProps);
   }
  else   if (config.hasPath(DATASET_PARTITIONS_LIST_KEY)) {

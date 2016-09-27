@@ -1,10 +1,22 @@
 {
   String selectionPolicyKey=StringUtils.substringAfter(SELECTION_POLICY_CLASS_KEY,CONFIGURATION_KEY_PREFIX);
   String versionFinderKey=StringUtils.substringAfter(VERSION_FINDER_CLASS_KEY,CONFIGURATION_KEY_PREFIX);
-  if (config.hasPath(selectionPolicyKey) && config.hasPath(versionFinderKey)) {
-    this.versionFindersAndPolicies.add(new VersionFinderAndPolicy<>(createSelectionPolicy(config.getString(selectionPolicyKey),config,jobProps),createVersionFinder(config.getString(versionFinderKey),config,jobProps)));
+  Preconditions.checkArgument(config.hasPath(versionFinderKey),String.format("Version finder class is required at %s in config %s",versionFinderKey,config.root().render(ConfigRenderOptions.concise())));
+  VersionFinderAndPolicyBuilder<T> builder=VersionFinderAndPolicy.builder();
+  builder.versionFinder(createVersionFinder(config.getString(versionFinderKey),config,jobProps));
+  if (config.hasPath(selectionPolicyKey)) {
+    builder.versionSelectionPolicy(createSelectionPolicy(ConfigUtils.getString(config,selectionPolicyKey,SelectNothingPolicy.class.getName()),config,jobProps));
   }
- else {
-    this.log.warn(String.format("Version finder and policy not initialized for partition. Set version finder at %s and Selection policy at %s",VERSION_FINDER_CLASS_KEY,SELECTION_POLICY_CLASS_KEY));
+  for (  Class<? extends RetentionActionFactory> factoryClass : RETENTION_ACTION_TYPES) {
+    try {
+      RetentionActionFactory factory=factoryClass.newInstance();
+      if (factory.canCreateWithConfig(config)) {
+        builder.retentionAction((RetentionAction)factory.createRetentionAction(config,this.fs));
+      }
+    }
+ catch (    InstantiationException|IllegalAccessException e) {
+      Throwables.propagate(e);
+    }
   }
+  this.versionFindersAndPolicies.add(builder.build());
 }

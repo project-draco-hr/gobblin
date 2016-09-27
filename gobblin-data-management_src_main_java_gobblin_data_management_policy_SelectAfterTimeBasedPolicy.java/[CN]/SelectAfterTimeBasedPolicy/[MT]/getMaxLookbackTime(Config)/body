@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(conf.hasPath(TIME_BASED_SELECTION_LOOK_BACK_TIME_KEY),String.format("Required property %s is not specified",TIME_BASED_SELECTION_LOOK_BACK_TIME_KEY));
+  return SelectBetweenTimeBasedPolicy.getLookBackPeriod(conf.getString(TIME_BASED_SELECTION_LOOK_BACK_TIME_KEY));
+}

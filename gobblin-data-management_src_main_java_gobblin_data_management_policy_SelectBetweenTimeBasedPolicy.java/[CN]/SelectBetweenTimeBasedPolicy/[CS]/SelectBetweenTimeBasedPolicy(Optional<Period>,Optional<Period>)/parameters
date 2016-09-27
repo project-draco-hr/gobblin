@@ -1,0 +1,2 @@
+Optional<Period> minLookBackPeriod
+Optional<Period> maxLookBackPeriod

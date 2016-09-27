@@ -1,3 +1,0 @@
-{
-  this(ConfigFactory.parseProperties(props));
-}

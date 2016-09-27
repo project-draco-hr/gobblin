@@ -1,0 +1,4 @@
+{
+  this.minLookBackPeriod=minLookBackPeriod;
+  this.maxLookBackPeriod=maxLookBackPeriod;
+}
