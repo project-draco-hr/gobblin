@@ -1,0 +1,7 @@
+{
+  int providedComparison=ConcurrentBoundedPriorityIterable.this.comparator.compare(t1.getT(),t2.getT());
+  if (providedComparison != 0) {
+    return providedComparison;
+  }
+  return Long.compare(t1.getId(),t2.getId());
+}

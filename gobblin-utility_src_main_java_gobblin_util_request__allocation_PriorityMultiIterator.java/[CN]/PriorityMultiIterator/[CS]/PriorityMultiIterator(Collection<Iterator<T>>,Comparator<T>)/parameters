@@ -1,0 +1,2 @@
+Collection<Iterator<T>> orderedIterators
+Comparator<T> prioritizer

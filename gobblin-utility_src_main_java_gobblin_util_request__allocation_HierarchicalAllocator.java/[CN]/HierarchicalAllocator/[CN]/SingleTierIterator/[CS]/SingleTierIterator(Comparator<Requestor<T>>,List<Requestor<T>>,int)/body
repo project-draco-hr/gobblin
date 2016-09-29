@@ -1,0 +1,11 @@
+{
+  this.prioritizer=prioritizer;
+  this.requestors=requestors;
+  if (this.requestors.size() > initialIndex) {
+    this.referenceRequestor=requestors.get(initialIndex);
+  }
+ else {
+    this.referenceRequestor=null;
+  }
+  this.nextRequestorIdx=initialIndex;
+}

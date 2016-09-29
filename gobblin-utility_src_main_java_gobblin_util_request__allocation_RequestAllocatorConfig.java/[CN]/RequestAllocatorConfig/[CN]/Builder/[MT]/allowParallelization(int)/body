@@ -1,0 +1,4 @@
+{
+  this.allowedThreads=maxThreads;
+  return this;
+}

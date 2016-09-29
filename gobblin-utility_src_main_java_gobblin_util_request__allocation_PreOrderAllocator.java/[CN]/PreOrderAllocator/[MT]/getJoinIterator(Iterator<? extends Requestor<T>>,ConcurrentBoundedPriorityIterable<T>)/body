@@ -1,0 +1,22 @@
+{
+  List<Iterator<T>> iteratorList=Lists.newArrayList();
+  while (requestors.hasNext()) {
+    Requestor<T> requestor=requestors.next();
+    if (!(requestor instanceof PushDownRequestor)) {
+      throw new RuntimeException(String.format("%s can only be used with %s.",PreOrderAllocator.class,PushDownRequestor.class));
+    }
+    try {
+      iteratorList.add(((PushDownRequestor<T>)requestor).getRequests(getConfiguration().getPrioritizer()));
+    }
+ catch (    IOException ioe) {
+      log.error("Failed to get requests from " + requestor);
+    }
+  }
+  PriorityMultiIterator<T> multiIterator=new PriorityMultiIterator<>(iteratorList,getConfiguration().getPrioritizer());
+  return new InterruptibleIterator<>(multiIterator,new Callable<Boolean>(){
+    @Override public Boolean call() throws Exception {
+      return requestIterable.isFull();
+    }
+  }
+);
+}

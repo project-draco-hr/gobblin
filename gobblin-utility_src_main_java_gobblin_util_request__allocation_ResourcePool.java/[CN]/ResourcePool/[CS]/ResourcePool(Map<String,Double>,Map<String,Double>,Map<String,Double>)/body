@@ -1,0 +1,24 @@
+{
+  ImmutableMap.Builder<String,Integer> indexBuilder=ImmutableMap.builder();
+  this.softBound=new double[maxResources.size()];
+  int currentIndex=0;
+  for (  Map.Entry<String,Double> resource : maxResources.entrySet()) {
+    indexBuilder.put(resource.getKey(),currentIndex);
+    this.softBound[currentIndex]=resource.getValue();
+    currentIndex++;
+  }
+  this.dimensionIndex=indexBuilder.build();
+  this.hardBound=this.softBound.clone();
+  for (int i=0; i < this.hardBound.length; i++) {
+    this.hardBound[i]*=DEFAULT_DIMENSION_TOLERANCE;
+  }
+  this.defaultResourceUse=new double[this.softBound.length];
+  for (  Map.Entry<String,Integer> idxEntry : this.dimensionIndex.entrySet()) {
+    if (tolerances.containsKey(idxEntry.getKey())) {
+      this.hardBound[idxEntry.getValue()]=this.softBound[idxEntry.getValue()] * Math.max(1.0,tolerances.get(idxEntry.getKey()));
+    }
+    if (defaultRequirements.containsKey(idxEntry.getKey())) {
+      this.defaultResourceUse[idxEntry.getValue()]=defaultRequirements.get(idxEntry.getKey());
+    }
+  }
+}

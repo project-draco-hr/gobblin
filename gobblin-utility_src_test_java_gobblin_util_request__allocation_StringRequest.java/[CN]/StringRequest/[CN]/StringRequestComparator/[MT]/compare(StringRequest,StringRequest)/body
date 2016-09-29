@@ -1,0 +1,5 @@
+{
+  String o1CompareToken=o1.getString().split("-")[0];
+  String o2CompareToken=o2.getString().split("-")[0];
+  return o1CompareToken.compareTo(o2CompareToken);
+}

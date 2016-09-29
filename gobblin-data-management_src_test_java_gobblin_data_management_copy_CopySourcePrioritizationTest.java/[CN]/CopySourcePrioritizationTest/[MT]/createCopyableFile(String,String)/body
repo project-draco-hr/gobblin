@@ -1,0 +1,3 @@
+{
+  return new CopyableFile(new FileStatus(0,false,0,0,0,new Path(path)),new Path(path),new OwnerAndPermission("owner","group",FsPermission.getDefault()),null,null,PreserveAttributes.fromMnemonicString(""),fileSet,0,0,Maps.<String,String>newHashMap());
+}

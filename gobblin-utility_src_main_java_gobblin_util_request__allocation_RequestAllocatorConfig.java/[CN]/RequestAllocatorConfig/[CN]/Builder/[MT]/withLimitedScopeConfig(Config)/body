@@ -1,0 +1,4 @@
+{
+  this.limitedScopeConfig=config;
+  return this;
+}

@@ -1,0 +1,8 @@
+{
+  List<String> paths=Lists.newArrayList();
+  for (  WorkUnit wu : workUnits) {
+    CopyableFile cf=(CopyableFile)CopySource.deserializeCopyEntity(wu);
+    paths.add(cf.getOrigin().getPath().toString());
+  }
+  return paths;
+}

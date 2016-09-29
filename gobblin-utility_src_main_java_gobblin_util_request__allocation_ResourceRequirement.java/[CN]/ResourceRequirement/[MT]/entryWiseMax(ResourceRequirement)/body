@@ -1,0 +1,5 @@
+{
+  for (int i=0; i < this.resourceVector.length; i++) {
+    this.resourceVector[i]=Math.max(this.resourceVector[i],other.resourceVector[i]);
+  }
+}

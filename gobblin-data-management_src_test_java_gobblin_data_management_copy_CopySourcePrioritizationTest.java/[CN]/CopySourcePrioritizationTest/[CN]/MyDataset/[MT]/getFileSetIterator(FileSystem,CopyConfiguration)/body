@@ -1,0 +1,7 @@
+{
+  List<FileSet<CopyEntity>> fileSets=Lists.newArrayList();
+  for (int i=0; i < FILE_SETS; i++) {
+    fileSets.add(new MyFileSet(this.name + ".fs" + Integer.toString(i),this,i));
+  }
+  return fileSets.iterator();
+}

@@ -1,0 +1,4 @@
+{
+  this.underlying=underlying;
+  this.currentRequirement=new double[resourcePool.getNumDimensions()];
+}

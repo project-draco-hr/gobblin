@@ -1,0 +1,13 @@
+{
+  List<CopyEntity> deregisterCopyEntities=Lists.newArrayList();
+  int priority=1;
+  for (  Partition partition : partitionsToDeregister) {
+    try {
+      priority=this.helper.addPartitionDeregisterSteps(deregisterCopyEntities,getName(),priority,this.helper.getTargetTable(),partition);
+    }
+ catch (    IOException ioe) {
+      log.error("Could not create work unit to deregister partition " + partition.getCompleteName());
+    }
+  }
+  return deregisterCopyEntities;
+}

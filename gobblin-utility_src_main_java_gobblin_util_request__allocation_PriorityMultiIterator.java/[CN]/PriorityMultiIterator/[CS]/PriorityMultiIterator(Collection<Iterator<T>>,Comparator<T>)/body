@@ -1,0 +1,14 @@
+{
+  this.actualComparator=new Comparator<TAndIterator>(){
+    @Override public int compare(    TAndIterator o1,    TAndIterator o2){
+      return prioritizer.compare(o1.getT(),o2.getT());
+    }
+  }
+;
+  this.queue=new PriorityQueue<>(orderedIterators.size(),this.actualComparator);
+  for (  Iterator<T> iterator : orderedIterators) {
+    if (iterator.hasNext()) {
+      this.queue.offer(new TAndIterator(iterator.next(),iterator));
+    }
+  }
+}

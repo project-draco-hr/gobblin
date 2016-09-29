@@ -1,0 +1,15 @@
+{
+  try {
+    Partition targetPartition=new Partition(this.hiveCopyEntityHelper.getTargetTable(),originPartition.getTPartition().deepCopy());
+    targetPartition.getTable().setDbName(this.hiveCopyEntityHelper.getTargetDatabase());
+    targetPartition.getTPartition().setDbName(this.hiveCopyEntityHelper.getTargetDatabase());
+    targetPartition.getTPartition().putToParameters(HiveDataset.REGISTERER,HiveCopyEntityHelper.GOBBLIN_DISTCP);
+    targetPartition.getTPartition().putToParameters(HiveDataset.REGISTRATION_GENERATION_TIME_MILLIS,Long.toString(this.hiveCopyEntityHelper.getStartTime()));
+    targetPartition.setLocation(targetLocation.toString());
+    targetPartition.getTPartition().unsetCreateTime();
+    return targetPartition;
+  }
+ catch (  HiveException he) {
+    throw new IOException(he);
+  }
+}

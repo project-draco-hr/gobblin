@@ -1,0 +1,3 @@
+String name
+Dataset dataset
+List<T> files

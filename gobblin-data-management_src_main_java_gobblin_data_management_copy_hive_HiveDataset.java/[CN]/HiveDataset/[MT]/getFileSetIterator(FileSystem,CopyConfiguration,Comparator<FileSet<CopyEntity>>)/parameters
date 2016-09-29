@@ -1,0 +1,3 @@
+FileSystem targetFs
+CopyConfiguration configuration
+Comparator<FileSet<CopyEntity>> prioritizer

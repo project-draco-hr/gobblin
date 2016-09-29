@@ -1,0 +1,3 @@
+{
+  return new HivePartitionFileSet(HiveCopyEntityHelper.this,partition,HiveCopyEntityHelper.this.dataset.getProperties());
+}

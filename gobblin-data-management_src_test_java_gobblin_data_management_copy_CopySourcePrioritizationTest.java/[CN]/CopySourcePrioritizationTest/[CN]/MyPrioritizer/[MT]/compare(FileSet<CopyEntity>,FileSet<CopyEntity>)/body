@@ -1,0 +1,3 @@
+{
+  return Integer.compare(((MyFileSet)o1).getFilesetNumberInDataset(),((MyFileSet)o2).getFilesetNumberInDataset());
+}

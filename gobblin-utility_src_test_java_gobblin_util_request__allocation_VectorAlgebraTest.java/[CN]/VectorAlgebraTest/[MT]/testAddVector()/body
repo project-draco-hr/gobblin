@@ -1,0 +1,8 @@
+{
+  Assert.assertEquals(VectorAlgebra.addVector(new double[]{1,2},new double[]{1,3},1.,null),new double[]{2,5});
+  Assert.assertEquals(VectorAlgebra.addVector(new double[]{1,2},new double[]{1,3},2.,null),new double[]{3,8});
+  Assert.assertEquals(VectorAlgebra.addVector(new double[]{1,2},new double[]{1,3},-1.,null),new double[]{0,-1});
+  double[] reuse=new double[]{1,2};
+  VectorAlgebra.addVector(reuse,new double[]{1,3},1.,reuse);
+  Assert.assertEquals(reuse,new double[]{2,5});
+}

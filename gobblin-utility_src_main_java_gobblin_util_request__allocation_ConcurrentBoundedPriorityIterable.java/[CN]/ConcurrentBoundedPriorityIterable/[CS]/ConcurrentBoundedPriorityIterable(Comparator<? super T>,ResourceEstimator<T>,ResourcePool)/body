@@ -1,0 +1,13 @@
+{
+  this.estimator=resourceEstimator;
+  this.resourcePool=pool;
+  this.dimensions=this.resourcePool.getNumDimensions();
+  this.comparator=prioritizer;
+  this.allDifferentComparator=new AllDifferentComparator();
+  this.elements=new TreeSet<>(this.allDifferentComparator);
+  this.currentRequirement=this.resourcePool.getResourceRequirementBuilder().zero().build();
+  this.maxResourceRequirement=new ResourceRequirement(this.currentRequirement);
+  this.candidateRequirement=new ResourceRequirement(this.currentRequirement);
+  this.tmpRequirement=new ResourceRequirement(this.currentRequirement);
+  this.reuse=new ResourceRequirement(this.currentRequirement);
+}

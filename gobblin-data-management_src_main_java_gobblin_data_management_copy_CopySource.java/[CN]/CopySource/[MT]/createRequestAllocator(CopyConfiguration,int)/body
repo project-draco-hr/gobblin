@@ -1,0 +1,16 @@
+{
+  Optional<FileSetComparator> prioritizer=copyConfiguration.getPrioritizer();
+  RequestAllocatorConfig.Builder<FileSet<CopyEntity>> configBuilder=RequestAllocatorConfig.builder(new FileSetResourceEstimator()).allowParallelization(maxThreads).withLimitedScopeConfig(copyConfiguration.getPrioritizationConfig());
+  if (!prioritizer.isPresent()) {
+    return new GreedyAllocator<>(configBuilder.build());
+  }
+ else {
+    configBuilder.withPrioritizer(prioritizer.get());
+  }
+  if (prioritizer.get() instanceof HierarchicalPrioritizer) {
+    return new HierarchicalAllocator.Factory().createRequestAllocator(configBuilder.build());
+  }
+ else {
+    return RequestAllocatorUtils.inferFromConfig(configBuilder.build());
+  }
+}

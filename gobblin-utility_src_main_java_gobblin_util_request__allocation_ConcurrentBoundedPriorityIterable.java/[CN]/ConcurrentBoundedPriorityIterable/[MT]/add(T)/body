@@ -1,0 +1,11 @@
+{
+  if (this.closed) {
+    throw new RuntimeException(ConcurrentBoundedPriorityIterable.class.getSimpleName() + " is no longer accepting requests!");
+  }
+  AllocatedRequestsIteratorBase.RequestWithResourceRequirement<T> newElement=new AllocatedRequestsIteratorBase.RequestWithResourceRequirement<>(t,this.estimator.estimateRequirement(t,this.resourcePool));
+  boolean addedWorkunits=addImpl(newElement);
+  if (!addedWorkunits) {
+    this.rejectedElement=true;
+  }
+  return addedWorkunits;
+}

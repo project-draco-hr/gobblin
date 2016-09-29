@@ -1,0 +1,7 @@
+{
+  if (reuse == null) {
+    reuse=new ResourceRequirement(r1.resourceVector.clone());
+  }
+  VectorAlgebra.addVector(r1.resourceVector,r2.resourceVector,1.,reuse.resourceVector);
+  return reuse;
+}

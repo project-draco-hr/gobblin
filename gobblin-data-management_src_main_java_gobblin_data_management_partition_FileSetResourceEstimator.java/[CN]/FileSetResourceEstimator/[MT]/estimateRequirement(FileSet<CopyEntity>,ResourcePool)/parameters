@@ -1,0 +1,2 @@
+FileSet<CopyEntity> copyEntityFileSet
+ResourcePool pool

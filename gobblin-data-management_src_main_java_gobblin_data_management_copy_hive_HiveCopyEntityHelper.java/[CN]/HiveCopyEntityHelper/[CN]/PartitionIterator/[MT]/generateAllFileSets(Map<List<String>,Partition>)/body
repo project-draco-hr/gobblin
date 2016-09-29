@@ -1,0 +1,11 @@
+{
+  List<FileSet<CopyEntity>> fileSets=Lists.newArrayList();
+  for (  Map.Entry<List<String>,Partition> partition : partitionMap.entrySet()) {
+    fileSets.add(fileSetForPartition(partition.getValue()));
+    HiveCopyEntityHelper.this.targetPartitions.remove(partition.getKey());
+  }
+  if (!HiveCopyEntityHelper.this.targetPartitions.isEmpty()) {
+    fileSets.add(new HivePartitionsDeregisterFileSet(HiveCopyEntityHelper.this.dataset.getTable().getCompleteName() + DEREGISTER_FILE_SET,HiveCopyEntityHelper.this.dataset,HiveCopyEntityHelper.this.targetPartitions.values(),HiveCopyEntityHelper.this));
+  }
+  return fileSets;
+}

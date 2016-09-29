@@ -1,0 +1,3 @@
+{
+  return new ResourcePool(VectorAlgebra.addVector(this.softBound,requirement.getResourceVector(),-1.,null),VectorAlgebra.addVector(this.hardBound,requirement.getResourceVector(),-1.,null),this.defaultResourceUse,this.dimensionIndex);
+}

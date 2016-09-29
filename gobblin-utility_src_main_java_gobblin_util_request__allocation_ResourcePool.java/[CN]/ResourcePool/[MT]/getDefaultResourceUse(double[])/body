@@ -1,0 +1,7 @@
+{
+  if (reuse != null && this.defaultResourceUse.length == reuse.length) {
+    System.arraycopy(this.defaultResourceUse,0,reuse,0,this.defaultResourceUse.length);
+    return reuse;
+  }
+  return this.defaultResourceUse.clone();
+}

@@ -1,0 +1,14 @@
+{
+  IterableCopyableDataset iterableCopyableDataset;
+  if (input instanceof IterableCopyableDataset) {
+    iterableCopyableDataset=(IterableCopyableDataset)input;
+  }
+ else   if (input instanceof CopyableDataset) {
+    iterableCopyableDataset=new IterableCopyableDatasetImpl((CopyableDataset)input);
+  }
+ else {
+    log.error(String.format("Cannot process %s, can only copy %s or %s.",input == null ? null : input.getClass().getName(),CopyableDataset.class.getName(),IterableCopyableDataset.class.getName()));
+    return null;
+  }
+  return new CopyableDatasetRequestor(this.targetFs,this.copyConfiguration,iterableCopyableDataset);
+}

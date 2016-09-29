@@ -1,0 +1,37 @@
+{
+  MultiTimingEvent multiTimer=new MultiTimingEvent(this.helper.getEventSubmitter(),"TableCopy",true);
+  int stepPriority=0;
+  String fileSet=getTable().getTableName();
+  List<CopyEntity> copyEntities=Lists.newArrayList();
+  Optional<Table> existingTargetTable=this.helper.getExistingTargetTable();
+  if (existingTargetTable.isPresent()) {
+    if (!this.helper.getTargetTable().getDataLocation().equals(existingTargetTable.get().getDataLocation())) {
+      if (this.helper.getExistingEntityPolicy() != HiveCopyEntityHelper.ExistingEntityPolicy.REPLACE_TABLE) {
+        log.error("Source and target table are not compatible. Aborting copy of table " + this.helper.getTargetTable(),new HiveTableLocationNotMatchException(this.helper.getTargetTable().getDataLocation(),existingTargetTable.get().getDataLocation()));
+        multiTimer.close();
+        return Lists.newArrayList();
+      }
+      log.warn("Source and target table are not compatible. Will override target table " + existingTargetTable.get().getDataLocation());
+      stepPriority=this.helper.addTableDeregisterSteps(copyEntities,fileSet,stepPriority,this.helper.getTargetTable());
+      existingTargetTable=Optional.absent();
+    }
+  }
+  stepPriority=this.helper.addSharedSteps(copyEntities,fileSet,stepPriority);
+  HiveLocationDescriptor sourceLocation=HiveLocationDescriptor.forTable(getTable(),getHiveDataset().getFs(),getHiveDataset().getProperties());
+  HiveLocationDescriptor desiredTargetLocation=HiveLocationDescriptor.forTable(this.helper.getTargetTable(),this.helper.getTargetFs(),getHiveDataset().getProperties());
+  Optional<HiveLocationDescriptor> existingTargetLocation=existingTargetTable.isPresent() ? Optional.of(HiveLocationDescriptor.forTable(existingTargetTable.get(),this.helper.getTargetFs(),getHiveDataset().getProperties())) : Optional.<HiveLocationDescriptor>absent();
+  if (this.helper.getFastTableSkip().isPresent() && this.helper.getFastTableSkip().get().apply(this.helper)) {
+    log.info(String.format("Skipping copy of table %s due to fast table skip predicate.",getTable().getDbName() + "." + getTable().getTableName()));
+    multiTimer.close();
+    return Lists.newArrayList();
+  }
+  HiveCopyEntityHelper.DiffPathSet diffPathSet=HiveCopyEntityHelper.fullPathDiff(sourceLocation,desiredTargetLocation,existingTargetLocation,Optional.<Partition>absent(),multiTimer,this.helper);
+  multiTimer.nextStage(HiveCopyEntityHelper.Stages.FULL_PATH_DIFF);
+  DeleteFileCommitStep deleteStep=DeleteFileCommitStep.fromPaths(this.helper.getTargetFs(),diffPathSet.pathsToDelete,getHiveDataset().getProperties());
+  copyEntities.add(new PrePublishStep(fileSet,Maps.<String,String>newHashMap(),deleteStep,stepPriority++));
+  for (  CopyableFile.Builder builder : this.helper.getCopyableFilesFromPaths(diffPathSet.filesToCopy,this.helper.getConfiguration(),Optional.<Partition>absent())) {
+    copyEntities.add(builder.fileSet(fileSet).build());
+  }
+  multiTimer.close();
+  return copyEntities;
+}

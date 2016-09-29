@@ -1,0 +1,3 @@
+{
+  return this.requestors.size() > nextRequestorIdx && this.prioritizer.compare(this.referenceRequestor,this.requestors.get(this.nextRequestorIdx)) == 0;
+}

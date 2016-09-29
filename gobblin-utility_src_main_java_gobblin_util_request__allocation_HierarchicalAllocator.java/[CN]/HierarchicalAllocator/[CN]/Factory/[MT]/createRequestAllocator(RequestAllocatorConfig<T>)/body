@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(cofiguration.getPrioritizer() instanceof HierarchicalPrioritizer,"Prioritizer must be a " + HierarchicalPrioritizer.class.getSimpleName());
+  RequestAllocator<T> underlying=RequestAllocatorUtils.inferFromConfig(cofiguration);
+  return new HierarchicalAllocator<>((HierarchicalPrioritizer<T>)cofiguration.getPrioritizer(),underlying);
+}

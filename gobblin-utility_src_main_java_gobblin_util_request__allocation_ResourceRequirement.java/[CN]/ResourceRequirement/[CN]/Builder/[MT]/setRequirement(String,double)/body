@@ -1,0 +1,8 @@
+{
+  if (!this.pool.getDimensionIndex().containsKey(dimension)) {
+    throw new IllegalArgumentException(String.format("No dimension %s in this resource pool.",dimension));
+  }
+  int idx=this.pool.getDimensionIndex().get(dimension);
+  this.requirement[idx]=value;
+  return this;
+}

@@ -1,0 +1,14 @@
+{
+  Iterator<T> unionIterator=Iterators.concat(Iterators.transform(requestors,new Function<Requestor<T>,Iterator<T>>(){
+    @Nullable @Override public Iterator<T> apply(    Requestor<T> input){
+      return input.iterator();
+    }
+  }
+));
+  return new InterruptibleIterator<>(unionIterator,new Callable<Boolean>(){
+    @Override public Boolean call() throws Exception {
+      return requestIterable.isFull();
+    }
+  }
+);
+}

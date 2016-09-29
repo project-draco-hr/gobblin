@@ -1,0 +1,5 @@
+{
+  double memory=Double.parseDouble(s.getString().split("-")[1]);
+  this.queriedRequests.add(s.getString());
+  return resourcePool.getResourceRequirementBuilder().setRequirement(MEMORY,memory).build();
+}

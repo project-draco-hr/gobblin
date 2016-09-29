@@ -1,0 +1,2 @@
+Iterator<RequestWithResourceRequirement<T>> underlying
+ResourcePool resourcePool

@@ -1,0 +1,4 @@
+{
+  ensureStatsComputed();
+  return this.totalEntities;
+}

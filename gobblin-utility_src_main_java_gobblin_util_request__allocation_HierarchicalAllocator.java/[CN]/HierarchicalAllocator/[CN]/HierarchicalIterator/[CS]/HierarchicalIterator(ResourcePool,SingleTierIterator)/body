@@ -1,0 +1,5 @@
+{
+  this.singleTierIterator=singleTierIterator;
+  this.resourcePool=resourcePool;
+  this.currentRequirement=resourcePool.getResourceRequirementBuilder().zero().build();
+}

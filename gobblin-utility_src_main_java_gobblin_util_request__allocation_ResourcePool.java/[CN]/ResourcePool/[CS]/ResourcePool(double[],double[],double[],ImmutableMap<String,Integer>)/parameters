@@ -1,0 +1,4 @@
+double[] softBound
+double[] hardBound
+double[] defaultResourceUse
+ImmutableMap<String,Integer> dimensionIndex

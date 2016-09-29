@@ -1,0 +1,7 @@
+{
+  int requestorComparison=this.requestorComparator.compare(o1.getRequestor(),o2.getRequestor());
+  if (requestorComparison != 0) {
+    return requestorComparison;
+  }
+  return this.requestComparator.compare(o1,o2);
+}

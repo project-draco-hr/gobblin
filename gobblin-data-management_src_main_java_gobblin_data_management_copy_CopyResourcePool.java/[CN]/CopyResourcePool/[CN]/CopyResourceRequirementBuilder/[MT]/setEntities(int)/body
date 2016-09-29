@@ -1,0 +1,4 @@
+{
+  setRequirement(ENTITIES_DIMENSION,(double)numberOfEntities);
+  return this;
+}

@@ -1,0 +1,36 @@
+{
+  Matcher matcher=HUMAN_READABLE_SIZE_PATTERN.matcher(string.trim());
+  if (!matcher.matches()) {
+    throw new FormatException("Could not parse human readable size string " + string);
+  }
+  int exponent=0;
+switch (matcher.group(2).toUpperCase()) {
+case "":
+    exponent=0;
+  break;
+case "K":
+exponent=10;
+break;
+case "M":
+exponent=20;
+break;
+case "G":
+exponent=30;
+break;
+case "T":
+exponent=40;
+break;
+case "P":
+exponent=50;
+break;
+default :
+throw new FormatException("Could not parse human readable size string " + string);
+}
+try {
+double base=Double.parseDouble(matcher.group(1));
+return (long)(base * (1L << exponent));
+}
+ catch (NumberFormatException nfe) {
+throw new FormatException("Could not parse human readable size string " + string);
+}
+}

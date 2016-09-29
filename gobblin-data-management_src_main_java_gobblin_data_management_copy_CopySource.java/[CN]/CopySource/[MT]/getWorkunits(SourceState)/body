@@ -1,40 +1,30 @@
 {
   this.metricContext=Instrumented.getMetricContext(state,CopySource.class);
   try {
+    DeprecationUtils.renameDeprecatedKeys(state,CopyConfiguration.PRIORITIZATION_PREFIX + "." + CopyResourcePool.ENTITIES_KEY,Lists.newArrayList(MAX_FILES_COPIED_KEY));
     final FileSystem sourceFs=getSourceFileSystem(state);
     final FileSystem targetFs=getTargetFileSystem(state);
     long maxSizePerBin=state.getPropAsLong(MAX_SIZE_MULTI_WORKUNITS,0);
     long maxWorkUnitsPerMultiWorkUnit=state.getPropAsLong(MAX_WORK_UNITS_PER_BIN,50);
     final long minWorkUnitWeight=Math.max(1,maxSizePerBin / maxWorkUnitsPerMultiWorkUnit);
     final Optional<CopyableFileWatermarkGenerator> watermarkGenerator=CopyableFileWatermarkHelper.getCopyableFileWatermarkGenerator(state);
-    final ConcurrentBoundedWorkUnitList workUnitList=ConcurrentBoundedWorkUnitList.builder().maxSize(state.getPropAsInt(MAX_FILES_COPIED_KEY,DEFAULT_MAX_FILES_COPIED)).strictLimitMultiplier(2).build();
+    int maxThreads=state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES);
     final CopyConfiguration copyConfiguration=CopyConfiguration.builder(targetFs,state.getProperties()).build();
     DatasetsFinder<CopyableDatasetBase> datasetFinder=DatasetUtils.instantiateDatasetFinder(state.getProperties(),sourceFs,DEFAULT_DATASET_PROFILE_CLASS_KEY,new EventSubmitter.Builder(this.metricContext,CopyConfiguration.COPY_PREFIX).build(),state);
     IterableDatasetFinder<CopyableDatasetBase> iterableDatasetFinder=datasetFinder instanceof IterableDatasetFinder ? (IterableDatasetFinder<CopyableDatasetBase>)datasetFinder : new IterableDatasetFinderImpl<>(datasetFinder);
-    Iterator<CopyableDatasetBase> copyableDatasets=new InterruptibleIterator<>(iterableDatasetFinder.getDatasetsIterator(),new Callable<Boolean>(){
-      @Override public Boolean call() throws Exception {
-        return shouldStopGeneratingWorkUnits(workUnitList);
-      }
-    }
-);
-    Iterator<Callable<Void>> callableIterator=Iterators.transform(copyableDatasets,new Function<CopyableDatasetBase,Callable<Void>>(){
-      @Nullable @Override public Callable<Void> apply(      @Nullable CopyableDatasetBase copyableDataset){
-        IterableCopyableDataset iterableCopyableDataset;
-        if (copyableDataset instanceof IterableCopyableDataset) {
-          iterableCopyableDataset=(IterableCopyableDataset)copyableDataset;
-        }
- else         if (copyableDataset instanceof CopyableDataset) {
-          iterableCopyableDataset=new IterableCopyableDatasetImpl((CopyableDataset)copyableDataset);
-        }
- else {
-          throw new RuntimeException(String.format("Cannot process %s, can only copy %s or %s.",copyableDataset == null ? null : copyableDataset.getClass().getName(),CopyableDataset.class.getName(),IterableCopyableDataset.class.getName()));
-        }
-        return new DatasetWorkUnitGenerator(iterableCopyableDataset,sourceFs,targetFs,state,workUnitList,copyConfiguration,minWorkUnitWeight,watermarkGenerator);
+    Iterator<CopyableDatasetRequestor> requestorIteratorWithNulls=Iterators.transform(iterableDatasetFinder.getDatasetsIterator(),new CopyableDatasetRequestor.Factory(targetFs,copyConfiguration,log));
+    Iterator<CopyableDatasetRequestor> requestorIterator=Iterators.filter(requestorIteratorWithNulls,Predicates.<CopyableDatasetRequestor>notNull());
+    final HashMultimap<FileSet<CopyEntity>,WorkUnit> workUnitsMap=HashMultimap.create();
+    RequestAllocator<FileSet<CopyEntity>> allocator=createRequestAllocator(copyConfiguration,maxThreads);
+    Iterator<FileSet<CopyEntity>> prioritizedFileSets=allocator.allocateRequests(requestorIterator,copyConfiguration.getMaxToCopy());
+    Iterator<Callable<Void>> callableIterator=Iterators.transform(prioritizedFileSets,new Function<FileSet<CopyEntity>,Callable<Void>>(){
+      @Nullable @Override public Callable<Void> apply(      FileSet<CopyEntity> input){
+        return new FileSetWorkUnitGenerator((CopyableDatasetBase)input.getDataset(),input,state,workUnitsMap,watermarkGenerator,minWorkUnitWeight);
       }
     }
 );
     try {
-      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,state.getPropAsInt(MAX_CONCURRENT_LISTING_SERVICES,DEFAULT_MAX_CONCURRENT_LISTING_SERVICES),ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("Copy-file-listing-pool-%d"))).execute();
+      List<Future<Void>> futures=new IteratorExecutor<>(callableIterator,maxThreads,ExecutorsUtils.newDaemonThreadFactory(Optional.of(log),Optional.of("Copy-file-listing-pool-%d"))).execute();
       for (      Future<Void> future : futures) {
         try {
           future.get();
@@ -48,12 +38,11 @@
       log.error("Retrieval of work units was interrupted. Aborting.");
       return Lists.newArrayList();
     }
-    log.info(String.format("Created %s workunits ",workUnitList.getWorkUnits().size()));
+    log.info(String.format("Created %s workunits ",workUnitsMap.size()));
     copyConfiguration.getCopyContext().logCacheStatistics();
     if (state.contains(SIMULATE) && state.getPropAsBoolean(SIMULATE)) {
-      Map<FileSet<CopyEntity>,List<WorkUnit>> copyEntitiesMap=workUnitList.getRawWorkUnitMap();
       log.info("Simulate mode enabled. Will not execute the copy.");
-      for (      Map.Entry<FileSet<CopyEntity>,List<WorkUnit>> entry : copyEntitiesMap.entrySet()) {
+      for (      Map.Entry<FileSet<CopyEntity>,Collection<WorkUnit>> entry : workUnitsMap.asMap().entrySet()) {
         log.info(String.format("Actions for dataset %s file set %s.",entry.getKey().getDataset().datasetURN(),entry.getKey().getName()));
         for (        WorkUnit workUnit : entry.getValue()) {
           CopyEntity copyEntity=deserializeCopyEntity(workUnit);
@@ -62,10 +51,9 @@
       }
       return Lists.newArrayList();
     }
-    List<WorkUnit> flatWorkUnits=workUnitList.getWorkUnits();
-    List<? extends WorkUnit> workUnits=new WorstFitDecreasingBinPacking(maxSizePerBin).pack(flatWorkUnits,this.weighter);
-    log.info(String.format("Bin packed work units. Initial work units: %d, packed work units: %d, max weight per bin: %d, " + "max work units per bin: %d.",flatWorkUnits.size(),workUnits.size(),maxSizePerBin,maxWorkUnitsPerMultiWorkUnit));
-    return Lists.newArrayList(workUnits);
+    List<? extends WorkUnit> workUnits=new WorstFitDecreasingBinPacking(maxSizePerBin).pack(Lists.newArrayList(workUnitsMap.values()),this.weighter);
+    log.info(String.format("Bin packed work units. Initial work units: %d, packed work units: %d, max weight per bin: %d, " + "max work units per bin: %d.",workUnitsMap.size(),workUnits.size(),maxSizePerBin,maxWorkUnitsPerMultiWorkUnit));
+    return ImmutableList.copyOf(workUnits);
   }
  catch (  IOException e) {
     throw new RuntimeException(e);

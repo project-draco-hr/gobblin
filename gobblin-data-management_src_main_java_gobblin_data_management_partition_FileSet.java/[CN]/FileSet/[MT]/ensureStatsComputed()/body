@@ -1,0 +1,6 @@
+{
+  ensureFilesGenerated();
+  if (this.totalEntities < 0 || this.totalSize < 0) {
+    recomputeStats();
+  }
+}

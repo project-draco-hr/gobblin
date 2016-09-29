@@ -1,0 +1,6 @@
+{
+  this.softBound=softBound;
+  this.hardBound=hardBound;
+  this.defaultResourceUse=defaultResourceUse;
+  this.dimensionIndex=dimensionIndex;
+}

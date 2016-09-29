@@ -1,0 +1,7 @@
+{
+  List<String> tokens=Lists.newArrayListWithCapacity(this.dimensionIndex.size());
+  for (  Map.Entry<String,Integer> dimension : dimensionIndex.entrySet()) {
+    tokens.add(dimension.getKey() + ": " + vector[dimension.getValue()]);
+  }
+  return Arrays.toString(tokens.toArray());
+}

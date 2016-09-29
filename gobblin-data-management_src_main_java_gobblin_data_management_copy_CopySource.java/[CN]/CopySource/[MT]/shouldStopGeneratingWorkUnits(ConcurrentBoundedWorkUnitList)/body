@@ -1,3 +1,0 @@
-{
-  return workUnitList.isFull() || workUnitList.hasRejectedFileSet();
-}

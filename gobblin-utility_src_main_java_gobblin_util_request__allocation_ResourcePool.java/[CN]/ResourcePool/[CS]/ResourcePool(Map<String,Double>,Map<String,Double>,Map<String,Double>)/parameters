@@ -1,0 +1,3 @@
+Map<String,Double> maxResources
+Map<String,Double> tolerances
+Map<String,Double> defaultRequirements
