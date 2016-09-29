@@ -1,8 +1,13 @@
 {
+  Set<String> blacklistedKeys=new HashSet<>();
+  if (properties.containsKey(GOBBLIN_CONFIG_BLACKLIST_KEYS)) {
+    blacklistedKeys=new HashSet<>(Splitter.on(',').omitEmptyStrings().trimResults().splitToList(properties.getProperty(GOBBLIN_CONFIG_BLACKLIST_KEYS)));
+  }
   ImmutableMap.Builder<String,Object> immutableMapBuilder=ImmutableMap.builder();
   for (  Map.Entry<Object,Object> entry : properties.entrySet()) {
-    if (StringUtils.startsWith(entry.getKey().toString(),prefix.or(StringUtils.EMPTY))) {
-      immutableMapBuilder.put(entry.getKey().toString(),entry.getValue());
+    String entryKey=entry.getKey().toString();
+    if (StringUtils.startsWith(entryKey,prefix.or(StringUtils.EMPTY)) && !blacklistedKeys.contains(entryKey)) {
+      immutableMapBuilder.put(entryKey,entry.getValue());
     }
   }
   return ConfigFactory.parseMap(immutableMapBuilder.build());
