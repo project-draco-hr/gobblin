@@ -1,0 +1,7 @@
+{
+  gobblin.data.management.version.TimestampedDatasetVersion timestampedDatasetVersion=this.realVersionFinder.getDatasetVersion(pathRelativeToDatasetRoot,versionFileStatus);
+  if (timestampedDatasetVersion != null) {
+    return new TimestampedDatasetVersion(timestampedDatasetVersion);
+  }
+  return null;
+}

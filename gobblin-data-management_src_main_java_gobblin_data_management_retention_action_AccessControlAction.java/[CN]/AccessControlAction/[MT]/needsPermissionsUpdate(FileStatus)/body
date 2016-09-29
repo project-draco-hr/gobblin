@@ -1,0 +1,3 @@
+{
+  return this.permission.isPresent() && !this.permission.get().equals(fileStatus.getPermission());
+}

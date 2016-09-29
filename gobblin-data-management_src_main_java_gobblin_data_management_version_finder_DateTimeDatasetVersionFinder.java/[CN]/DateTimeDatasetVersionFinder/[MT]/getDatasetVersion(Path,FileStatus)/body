@@ -1,0 +1,11 @@
+{
+  String dateTimeString=null;
+  try {
+    dateTimeString=StringUtils.substring(pathRelativeToDatasetRoot.toString(),pathRelativeToDatasetRoot.toString().length() - this.datePartitionPattern.length());
+    return new FileStatusTimestampedDatasetVersion(this.formatter.parseDateTime(dateTimeString),versionFileStatus);
+  }
+ catch (  IllegalArgumentException exception) {
+    LOGGER.warn(String.format("Candidate dataset version with pathRelativeToDatasetRoot: %s has inferred dataTimeString:%s. " + "It does not match expected datetime pattern %s. Ignoring.",pathRelativeToDatasetRoot,dateTimeString,this.datePartitionPattern));
+    return null;
+  }
+}

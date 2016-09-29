@@ -1,0 +1,11 @@
+{
+  try {
+    String selectionPolicyKey=StringUtils.substringAfter(ConfigurableCleanableDataset.SELECTION_POLICY_CLASS_KEY,ConfigurableCleanableDataset.CONFIGURATION_KEY_PREFIX);
+    Preconditions.checkArgument(selectionConfig.hasPath(selectionPolicyKey));
+    String className=selectionConfig.getString(selectionPolicyKey);
+    return (VersionSelectionPolicy<DatasetVersion>)GobblinConstructorUtils.invokeFirstConstructor(this.versionSelectionAliasResolver.resolveClass(className),ImmutableList.<Object>of(selectionConfig),ImmutableList.<Object>of(selectionConfig,ConfigUtils.configToProperties(jobConfig)),ImmutableList.<Object>of(ConfigUtils.configToProperties(jobConfig)));
+  }
+ catch (  NoSuchMethodException|IllegalAccessException|InvocationTargetException|InstantiationException|ClassNotFoundException e) {
+    throw new IllegalArgumentException(e);
+  }
+}

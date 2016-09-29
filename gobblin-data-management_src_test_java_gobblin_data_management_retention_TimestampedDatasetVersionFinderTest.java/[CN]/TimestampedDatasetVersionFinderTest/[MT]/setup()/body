@@ -1,0 +1,5 @@
+{
+  this.fs=FileSystem.get(new Configuration());
+  this.testDataPathDummyPath=new Path(TimestampedDatasetVersionFinderTest.class.getClassLoader().getResource("").getFile());
+  this.fs.mkdirs(this.testDataPathDummyPath);
+}

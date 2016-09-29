@@ -1,0 +1,7 @@
+{
+  super(actionConfig,fs,jobConfig);
+  this.permission=actionConfig.hasPath(MODE_KEY) ? Optional.of(new FsPermission(actionConfig.getString(MODE_KEY))) : Optional.<FsPermission>absent();
+  this.owner=Optional.fromNullable(ConfigUtils.getString(actionConfig,OWNER_KEY,null));
+  this.group=Optional.fromNullable(ConfigUtils.getString(actionConfig,GROUP_KEY,null));
+  this.selectionPolicy=createSelectionPolicy(actionConfig,jobConfig);
+}

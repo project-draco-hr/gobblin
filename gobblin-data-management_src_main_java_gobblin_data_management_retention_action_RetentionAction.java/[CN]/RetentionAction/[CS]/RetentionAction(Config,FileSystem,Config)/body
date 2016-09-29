@@ -1,0 +1,5 @@
+{
+  this.versionSelectionAliasResolver=new ClassAliasResolver<>(VersionSelectionPolicy.class);
+  this.fs=fs;
+  this.isSimulateMode=ConfigUtils.getBoolean(jobConfig,FsCleanableHelper.SIMULATE_KEY,Boolean.valueOf(FsCleanableHelper.SIMULATE_DEFAULT));
+}

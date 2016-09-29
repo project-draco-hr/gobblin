@@ -10,7 +10,7 @@
     if (!selectionPolicy.versionClass().isAssignableFrom(versionFinder.versionClass())) {
       throw new IOException("Incompatible dataset version classes.");
     }
-    this.log.info(String.format("Cleaning dataset %s. Using version finder %s and policy %s",this,versionFinder.getClass().getName(),selectionPolicy.getClass().getName()));
+    this.log.info(String.format("Cleaning dataset %s. Using version finder %s and policy %s",this,versionFinder.getClass().getName(),selectionPolicy));
     List<T> versions=Lists.newArrayList(versionFinder.findDatasetVersions(this));
     if (versions.isEmpty()) {
       this.log.warn("No dataset version can be found. Ignoring.");

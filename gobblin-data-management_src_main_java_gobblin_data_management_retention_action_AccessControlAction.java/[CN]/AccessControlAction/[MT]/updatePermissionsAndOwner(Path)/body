@@ -1,0 +1,32 @@
+{
+  boolean atLeastOneOperationFailed=false;
+  if (this.fs.exists(path)) {
+    try {
+      if (this.permission.isPresent()) {
+        if (!this.isSimulateMode) {
+          this.fs.setPermission(path,this.permission.get());
+          log.debug("Set permissions for {} to {}",path,this.permission.get());
+        }
+ else {
+          log.info("Simulating set permissions for {} to {}",path,this.permission.get());
+        }
+      }
+    }
+ catch (    IOException e) {
+      log.error(String.format("Setting permissions failed on %s",path),e);
+      atLeastOneOperationFailed=true;
+    }
+    if (this.owner.isPresent() || this.group.isPresent()) {
+      if (!this.isSimulateMode) {
+        this.fs.setOwner(path,this.owner.orNull(),this.group.orNull());
+        log.debug("Set owner and group for {} to {}:{}",path,this.owner.orNull(),this.group.orNull());
+      }
+ else {
+        log.info("Simulating set owner and group for {} to {}:{}",path,this.owner.orNull(),this.group.orNull());
+      }
+    }
+    if (atLeastOneOperationFailed) {
+      throw new RuntimeException(String.format("At least one failure happened while processing %s. Look for previous logs for failures",path));
+    }
+  }
+}

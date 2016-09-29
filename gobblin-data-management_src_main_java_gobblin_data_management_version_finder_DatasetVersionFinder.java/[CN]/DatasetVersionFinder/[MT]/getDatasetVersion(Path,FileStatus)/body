@@ -1,0 +1,3 @@
+{
+  return getDatasetVersion(pathRelativeToDatasetRoot,versionFileStatus.getPath());
+}

@@ -11,7 +11,7 @@
     try {
       RetentionActionFactory factory=factoryClass.newInstance();
       if (factory.canCreateWithConfig(config)) {
-        builder.retentionAction((RetentionAction)factory.createRetentionAction(config,this.fs));
+        builder.retentionAction((RetentionAction)factory.createRetentionAction(config,this.fs,ConfigUtils.propertiesToConfig(jobProps)));
       }
     }
  catch (    InstantiationException|IllegalAccessException e) {

@@ -1,0 +1,3 @@
+{
+  return this.group.isPresent() && !StringUtils.equals(group.get(),fileStatus.getGroup());
+}

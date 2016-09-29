@@ -1,6 +1,6 @@
 {
-  AccessControlAction testRetentionAction=new AccessControlAction(ConfigFactory.parseMap(ImmutableMap.<String,String>of("selection.policy.class","SelectAfterTimeBasedPolicy","selection.timeBased.lookbackTime","7d")),null);
+  AccessControlAction testRetentionAction=new AccessControlAction(ConfigFactory.parseMap(ImmutableMap.<String,String>of("selection.policy.class","SelectAfterTimeBasedPolicy","selection.timeBased.lookbackTime","7d")),null,ConfigFactory.empty());
   Assert.assertEquals(testRetentionAction.getSelectionPolicy().getClass(),SelectAfterTimeBasedPolicy.class);
-  testRetentionAction=new AccessControlAction(ConfigFactory.parseMap(ImmutableMap.<String,String>of("selection.policy.class",SelectAfterTimeBasedPolicy.class.getName(),"selection.timeBased.lookbackTime","7d")),null);
+  testRetentionAction=new AccessControlAction(ConfigFactory.parseMap(ImmutableMap.<String,String>of("selection.policy.class",SelectAfterTimeBasedPolicy.class.getName(),"selection.timeBased.lookbackTime","7d")),null,ConfigFactory.empty());
   Assert.assertEquals(testRetentionAction.getSelectionPolicy().getClass(),SelectAfterTimeBasedPolicy.class);
 }

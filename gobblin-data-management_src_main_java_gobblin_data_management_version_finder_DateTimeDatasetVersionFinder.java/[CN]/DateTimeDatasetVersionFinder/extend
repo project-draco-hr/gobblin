@@ -1,1 +1,1 @@
-DatasetVersionFinder<TimestampedDatasetVersion>
+AbstractDatasetVersionFinder<TimestampedDatasetVersion>

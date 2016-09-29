@@ -1,0 +1,3 @@
+{
+  return this.owner.isPresent() && !StringUtils.equals(owner.get(),fileStatus.getOwner());
+}
