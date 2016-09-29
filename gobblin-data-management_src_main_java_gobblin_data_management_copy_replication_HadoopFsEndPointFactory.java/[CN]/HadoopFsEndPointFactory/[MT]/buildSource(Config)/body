@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(sourceConfig.hasPath(HADOOP_FS_CONFIG_KEY),"missing required config entery " + HADOOP_FS_CONFIG_KEY);
+  return new SourceHadoopFsEndPoint(new HadoopFsReplicaConfig(sourceConfig.getConfig(HADOOP_FS_CONFIG_KEY)));
+}

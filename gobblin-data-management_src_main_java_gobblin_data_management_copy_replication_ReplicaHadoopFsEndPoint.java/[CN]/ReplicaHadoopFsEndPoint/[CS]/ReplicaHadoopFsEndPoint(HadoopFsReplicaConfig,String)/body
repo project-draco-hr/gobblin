@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(!replicaName.equals(ReplicationConfiguration.REPLICATION_SOURCE),"replicaName can not be " + ReplicationConfiguration.REPLICATION_SOURCE);
+  this.rc=rc;
+  this.replicaName=replicaName;
+}

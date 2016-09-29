@@ -1,0 +1,17 @@
+{
+  LongWatermark result=new LongWatermark(-1);
+  try {
+    FileSystem fs=FileSystem.get(rc.getFsURI(),new Configuration());
+    List<FileStatus> allFileStatus=FileListUtils.listFilesRecursively(fs,rc.getPath());
+    for (    FileStatus f : allFileStatus) {
+      if (f.getModificationTime() > result.getValue()) {
+        result=new LongWatermark(f.getModificationTime());
+      }
+    }
+    return result;
+  }
+ catch (  IOException e) {
+    log.error("Error while retrieve the watermark for " + this);
+    return result;
+  }
+}

@@ -1,0 +1,3 @@
+{
+  return Objects.toStringHelper(this.getClass()).add("colo",this.colo).add("name",this.clustername).add("FilesystemURI",this.fsURI).add("rootPath",this.path).toString();
+}
