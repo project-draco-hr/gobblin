@@ -1,7 +1,7 @@
 {
   Config datasetConfig;
   if (this.configStoreUri.isPresent()) {
-    datasetConfig=this.configClient.getConfig(this.configStoreUri.get() + Path.SEPARATOR + this.configStoreDatasetUriBuilder.apply(dbAndTable));
+    datasetConfig=this.configClient.getConfig(this.configStoreUri.get() + Path.SEPARATOR + this.configStoreDatasetUriBuilder.apply(table));
   }
  else {
     datasetConfig=this.jobConfig;

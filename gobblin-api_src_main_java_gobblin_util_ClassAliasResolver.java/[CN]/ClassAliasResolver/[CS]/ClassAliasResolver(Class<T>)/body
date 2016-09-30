@@ -2,12 +2,12 @@
   Map<String,Class<? extends T>> cache=Maps.newHashMap();
   for (  Class<? extends T> clazz : REFLECTIONS.getSubTypesOf(subTypeOf)) {
     if (clazz.isAnnotationPresent(Alias.class)) {
-      String alias=clazz.getAnnotation(Alias.class).value();
+      String alias=clazz.getAnnotation(Alias.class).value().toUpperCase();
       if (cache.containsKey(alias)) {
         log.warn(String.format("Alias %s already mapped to class %s. Mapping for %s will be ignored",alias,cache.get(alias).getCanonicalName(),clazz.getCanonicalName()));
       }
  else {
-        cache.put(clazz.getAnnotation(Alias.class).value(),clazz);
+        cache.put(clazz.getAnnotation(Alias.class).value().toUpperCase(),clazz);
       }
     }
   }

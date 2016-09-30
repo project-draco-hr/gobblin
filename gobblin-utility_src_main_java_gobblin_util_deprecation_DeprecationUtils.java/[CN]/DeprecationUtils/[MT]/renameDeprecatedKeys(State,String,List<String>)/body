@@ -4,6 +4,7 @@
   }
   for (  String oldKey : deprecatedKeys) {
     if (state.contains(oldKey)) {
+      log.info("Copying the value of deprecated key " + oldKey + " into key "+ currentKey);
       state.setProp(currentKey,state.getProp(oldKey));
       return;
     }

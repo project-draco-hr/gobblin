@@ -1,0 +1,3 @@
+List<Either<T,ExecutionException>> results
+Logger useLogger
+int atMost

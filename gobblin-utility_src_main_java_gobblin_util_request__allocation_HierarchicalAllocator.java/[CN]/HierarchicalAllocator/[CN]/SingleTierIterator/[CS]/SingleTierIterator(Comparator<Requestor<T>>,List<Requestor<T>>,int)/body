@@ -8,4 +8,5 @@
     this.referenceRequestor=null;
   }
   this.nextRequestorIdx=initialIndex;
+  log.debug("Starting a single tier iterator with reference requestor: {}",this.referenceRequestor);
 }

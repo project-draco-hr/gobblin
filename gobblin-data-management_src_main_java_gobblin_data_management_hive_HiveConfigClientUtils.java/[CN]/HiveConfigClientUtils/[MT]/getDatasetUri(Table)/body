@@ -1,0 +1,3 @@
+{
+  return HIVE_DATASETS_CONFIG_PREFIX + table.getDbName() + Path.SEPARATOR+ table.getTableName();
+}

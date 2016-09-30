@@ -5,11 +5,11 @@
       while (this.tables.hasNext()) {
         DbAndTable dbAndTable=this.tables.next();
         try (AutoReturnableObject<IMetaStoreClient> client=HiveDatasetFinder.this.clientPool.getClient()){
-          Config datasetConfig=getDatasetConfig(dbAndTable);
+          Table table=client.get().getTable(dbAndTable.getDb(),dbAndTable.getTable());
+          Config datasetConfig=getDatasetConfig(table);
           if (ConfigUtils.getBoolean(datasetConfig,HIVE_DATASET_IS_BLACKLISTED_KEY,DEFAULT_HIVE_DATASET_IS_BLACKLISTED_KEY)) {
             continue;
           }
-          Table table=client.get().getTable(dbAndTable.getDb(),dbAndTable.getTable());
           EventSubmitter.submit(HiveDatasetFinder.this.eventSubmitter,DATASET_FOUND,SlaEventKeys.DATASET_URN_KEY,dbAndTable.toString());
           return createHiveDataset(table,datasetConfig);
         }

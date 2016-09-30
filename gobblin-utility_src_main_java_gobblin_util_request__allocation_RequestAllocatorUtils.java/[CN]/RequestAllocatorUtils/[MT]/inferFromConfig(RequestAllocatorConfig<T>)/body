@@ -2,6 +2,7 @@
   try {
     String alias=configuration.getLimitedScopeConfig().hasPath(ALLOCATOR_ALIAS_KEY) ? configuration.getLimitedScopeConfig().getString(ALLOCATOR_ALIAS_KEY) : BruteForceAllocator.Factory.class.getName();
     RequestAllocator.Factory allocatorFactory=new ClassAliasResolver<>(RequestAllocator.Factory.class).resolveClass(alias).newInstance();
+    log.info("Using allocator factory " + allocatorFactory.getClass().getName());
     return allocatorFactory.createRequestAllocator(configuration);
   }
  catch (  ReflectiveOperationException roe) {

@@ -3,6 +3,9 @@
     if (this.currentIterator != null) {
       this.currentRequirement.add(this.currentIterator.totalResourcesUsed());
     }
+    if (this.resourcePool.exceedsSoftBound(this.currentRequirement,true)) {
+      return false;
+    }
     Optional<SingleTierIterator> tmp=this.singleTierIterator.nextTier();
     if (!tmp.isPresent()) {
       return false;

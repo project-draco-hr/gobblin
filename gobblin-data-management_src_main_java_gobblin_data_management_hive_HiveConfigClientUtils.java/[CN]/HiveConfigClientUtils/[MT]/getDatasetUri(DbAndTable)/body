@@ -1,3 +1,0 @@
-{
-  return HIVE_DATASETS_CONFIG_PREFIX + dbAndTable.getDb() + Path.SEPARATOR+ dbAndTable.getTable();
-}

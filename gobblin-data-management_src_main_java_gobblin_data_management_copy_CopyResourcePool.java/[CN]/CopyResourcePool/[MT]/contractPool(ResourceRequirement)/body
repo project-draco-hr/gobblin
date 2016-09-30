@@ -1,0 +1,4 @@
+{
+  ResourcePool superPool=super.contractPool(requirement);
+  return new CopyResourcePool(superPool);
+}

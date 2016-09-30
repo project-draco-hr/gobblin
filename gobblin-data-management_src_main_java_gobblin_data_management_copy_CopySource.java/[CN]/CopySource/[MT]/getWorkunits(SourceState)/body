@@ -1,7 +1,7 @@
 {
   this.metricContext=Instrumented.getMetricContext(state,CopySource.class);
   try {
-    DeprecationUtils.renameDeprecatedKeys(state,CopyConfiguration.PRIORITIZATION_PREFIX + "." + CopyResourcePool.ENTITIES_KEY,Lists.newArrayList(MAX_FILES_COPIED_KEY));
+    DeprecationUtils.renameDeprecatedKeys(state,CopyConfiguration.MAX_COPY_PREFIX + "." + CopyResourcePool.ENTITIES_KEY,Lists.newArrayList(MAX_FILES_COPIED_KEY));
     final FileSystem sourceFs=getSourceFileSystem(state);
     final FileSystem targetFs=getTargetFileSystem(state);
     long maxSizePerBin=state.getPropAsLong(MAX_SIZE_MULTI_WORKUNITS,0);
