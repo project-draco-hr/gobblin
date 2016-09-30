@@ -1,0 +1,4 @@
+{
+  constructDataFlowTopology();
+  return new ReplicationConfiguration(this);
+}

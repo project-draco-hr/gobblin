@@ -1,0 +1,22 @@
+{
+  if (this.dataFlowTopologyConfig.hasPath(DATA_FLOW_TOPOLOGY_ROUTES)) {
+    Config routesConfig=dataFlowTopologyConfig.getConfig(DATA_FLOW_TOPOLOGY_ROUTES);
+    constructDataFlowTopologyWithConfig(routesConfig);
+    return;
+  }
+  Preconditions.checkArgument(this.dataFlowTopologyConfig.hasPath(DATA_FLOW_TOPOLOGY_PICKER),"missing required config entry " + DATA_FLOW_TOPOLOGY_PICKER);
+  String topologyPickerStr=this.dataFlowTopologyConfig.getString(DATA_FLOW_TOPOLOGY_PICKER);
+  DataFlowTopologyPickerBySource picker=dataFlowTopologyPickerResolver.resolveClass(topologyPickerStr).newInstance();
+  if (this.copyMode == ReplicationCopyMode.PULL) {
+    Preconditions.checkArgument(this.defaultDataFlowTopology_PullModeConfig.isPresent(),"No topology to pick in pull mode");
+    Config preferredTopology=picker.getPreferredRoutes(this.defaultDataFlowTopology_PullModeConfig.get(),this.source);
+    Config routesConfig=preferredTopology.getConfig(DATA_FLOW_TOPOLOGY_ROUTES);
+    constructDataFlowTopologyWithConfig(routesConfig);
+  }
+ else {
+    Preconditions.checkArgument(this.defaultDataFlowTopology_PushModeConfig.isPresent(),"No topology to pick in push mode");
+    Config preferredTopology=picker.getPreferredRoutes(this.defaultDataFlowTopology_PushModeConfig.get(),this.source);
+    Config routesConfig=preferredTopology.getConfig(DATA_FLOW_TOPOLOGY_ROUTES);
+    constructDataFlowTopologyWithConfig(routesConfig);
+  }
+}

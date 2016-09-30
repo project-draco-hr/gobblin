@@ -1,0 +1,4 @@
+{
+  this.copyMode=copyMode;
+  return this;
+}

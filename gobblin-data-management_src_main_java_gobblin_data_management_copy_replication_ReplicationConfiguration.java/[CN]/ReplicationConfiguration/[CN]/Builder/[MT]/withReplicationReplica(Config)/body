@@ -1,0 +1,14 @@
+{
+  Preconditions.checkArgument(config.hasPath(REPLICATION_REPLICAS),"missing required config entery " + REPLICATION_REPLICAS);
+  Config replicasConfig=config.getConfig(REPLICATION_REPLICAS);
+  Preconditions.checkArgument(replicasConfig.hasPath(REPLICATOIN_REPLICAS_LIST),"missing required config entery " + REPLICATOIN_REPLICAS_LIST);
+  List<String> replicaNames=replicasConfig.getStringList(REPLICATOIN_REPLICAS_LIST);
+  for (  String replicaName : replicaNames) {
+    Preconditions.checkArgument(replicasConfig.hasPath(replicaName),"missing replica name " + replicaName);
+    Config subConfig=replicasConfig.getConfig(replicaName);
+    String endPointFactory=subConfig.hasPath(END_POINT_FACTORY_CLASS) ? subConfig.getString(END_POINT_FACTORY_CLASS) : DEFAULT_END_POINT_FACTORY_CLASS;
+    EndPointFactory factory=endPointFactoryResolver.resolveClass(endPointFactory).newInstance();
+    this.replicas.add(factory.buildReplica(subConfig,replicaName));
+  }
+  return this;
+}

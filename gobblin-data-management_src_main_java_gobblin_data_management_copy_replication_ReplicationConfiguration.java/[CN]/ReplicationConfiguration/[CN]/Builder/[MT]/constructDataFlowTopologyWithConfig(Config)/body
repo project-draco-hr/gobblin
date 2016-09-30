@@ -1,0 +1,57 @@
+{
+  Preconditions.checkArgument(routesConfig != null && !routesConfig.isEmpty(),"Can not build topology without empty config");
+  Preconditions.checkArgument(this.source != null,"Can not build topology without source");
+  Preconditions.checkArgument(this.replicas.size() != 0,"Can not build topology without replicas");
+  final Map<String,EndPoint> validEndPoints=new HashMap<>();
+  validEndPoints.put(this.source.getEndPointName(),this.source);
+  for (  EndPoint p : this.replicas) {
+    validEndPoints.put(p.getEndPointName(),p);
+  }
+  if (this.copyMode == ReplicationCopyMode.PULL) {
+    for (    final EndPoint replica : this.replicas) {
+      Preconditions.checkArgument(routesConfig.hasPath(replica.getEndPointName()),"Can not find the pull flow for replia " + replica.getEndPointName());
+      List<String> copyFromStringsRaw=routesConfig.getStringList(replica.getEndPointName());
+      List<String> copyFromStrings=new ArrayList<>();
+      for (      String s : copyFromStringsRaw) {
+        if (validEndPoints.containsKey(s)) {
+          copyFromStrings.add(s);
+        }
+      }
+      List<CopyRoute> copyPairs=Lists.transform(copyFromStrings,new Function<String,CopyRoute>(){
+        @Override public CopyRoute apply(        String t){
+          return new CopyRoute(validEndPoints.get(t),replica);
+        }
+      }
+);
+      DataFlowTopology.DataFlowPath dataFlowPath=new DataFlowTopology.DataFlowPath(copyPairs);
+      this.dataFlowTopology.addDataFlowPath(dataFlowPath);
+    }
+  }
+ else {
+    Set<String> currentCopyTo=new HashSet<>();
+    for (    final Map.Entry<String,EndPoint> valid : validEndPoints.entrySet()) {
+      if (routesConfig.hasPath(valid.getKey())) {
+        List<String> copyToStringsRaw=routesConfig.getStringList(valid.getKey());
+        List<String> copyToStrings=new ArrayList<>();
+        for (        String s : copyToStringsRaw) {
+          if (!s.equals(this.source.getEndPointName()) && validEndPoints.containsKey(s)) {
+            copyToStrings.add(s);
+          }
+        }
+        for (        String s : copyToStrings) {
+          Preconditions.checkArgument(!currentCopyTo.contains(s),"In Push mode, can not have multiple copies to " + s);
+        }
+        currentCopyTo.addAll(copyToStrings);
+        List<CopyRoute> copyPairs=Lists.transform(copyToStrings,new Function<String,CopyRoute>(){
+          @Override public CopyRoute apply(          String t){
+            return new CopyRoute(valid.getValue(),validEndPoints.get(t));
+          }
+        }
+);
+        DataFlowTopology.DataFlowPath dataFlowPath=new DataFlowTopology.DataFlowPath(copyPairs);
+        this.dataFlowTopology.addDataFlowPath(dataFlowPath);
+      }
+    }
+    Preconditions.checkArgument(currentCopyTo.size() == this.replicas.size(),"Not all replicas have valid data flow in push mode");
+  }
+}

@@ -1,0 +1,9 @@
+{
+  if (config.hasPath(DEFAULT_DATA_FLOW_TOPOLOGIES_PUSHMODE)) {
+    this.defaultDataFlowTopology_PushModeConfig=Optional.of(config.getConfig(DEFAULT_DATA_FLOW_TOPOLOGIES_PUSHMODE));
+  }
+ else {
+    this.defaultDataFlowTopology_PushModeConfig=Optional.absent();
+  }
+  return this;
+}

@@ -1,0 +1,9 @@
+{
+  if (config.hasPath(DEFAULT_DATA_FLOW_TOPOLOGIES_PULLMODE)) {
+    this.defaultDataFlowTopology_PullModeConfig=Optional.of(config.getConfig(DEFAULT_DATA_FLOW_TOPOLOGIES_PULLMODE));
+  }
+ else {
+    this.defaultDataFlowTopology_PullModeConfig=Optional.absent();
+  }
+  return this;
+}

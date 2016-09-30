@@ -1,0 +1,5 @@
+{
+  Preconditions.checkArgument(config.hasPath(DATA_FLOW_TOPOLOGY),"missing required config entery " + DATA_FLOW_TOPOLOGY);
+  this.dataFlowTopologyConfig=config.getConfig(DATA_FLOW_TOPOLOGY);
+  return this;
+}

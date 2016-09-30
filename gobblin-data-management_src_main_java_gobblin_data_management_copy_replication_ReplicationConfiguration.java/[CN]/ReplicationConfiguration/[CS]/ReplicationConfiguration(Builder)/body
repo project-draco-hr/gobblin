@@ -1,0 +1,7 @@
+{
+  this.metaData=builder.metaData;
+  this.source=builder.source;
+  this.replicas=builder.replicas;
+  this.copyMode=builder.copyMode;
+  this.dataFlowToplogy=builder.dataFlowTopology;
+}
