@@ -1,0 +1,8 @@
+{
+  if (key.equals(EnvelopeSchemaConverterTest.SCHEMA_KEY)) {
+    return EnvelopeSchemaConverterTest.mockSchema;
+  }
+ else {
+    return null;
+  }
+}

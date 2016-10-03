@@ -1,0 +1,2 @@
+GenericRecord inputRecord
+String payloadFieldName

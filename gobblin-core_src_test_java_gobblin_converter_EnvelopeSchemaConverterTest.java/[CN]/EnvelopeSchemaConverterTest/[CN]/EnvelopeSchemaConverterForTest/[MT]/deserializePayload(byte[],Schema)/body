@@ -1,0 +1,4 @@
+{
+  Assert.assertEquals(payloadSchema,mockSchema);
+  return mockOutputRecord;
+}

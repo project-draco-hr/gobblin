@@ -1,0 +1,12 @@
+{
+  when(mockInputRecord.get("payloadSchemaId")).thenReturn(SCHEMA_KEY);
+  when(mockOutputRecord.getSchema()).thenReturn(mockSchema);
+  WorkUnitState workUnitState=new WorkUnitState();
+  workUnitState.setProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY,"testEvent");
+  workUnitState.setProp("kafka.schema.registry.url","testUrl");
+  workUnitState.setProp(KafkaSchemaRegistryFactory.KAFKA_SCHEMA_REGISTRY_FACTORY_CLASS,KafkaAvroSchemaRegistryForTest.Factory.class.getName());
+  EnvelopeSchemaConverterForTest converter=new EnvelopeSchemaConverterForTest();
+  converter.init(workUnitState);
+  GenericRecord output=converter.convertRecord(null,mockInputRecord,workUnitState).iterator().next();
+  Assert.assertEquals(output,mockOutputRecord);
+}

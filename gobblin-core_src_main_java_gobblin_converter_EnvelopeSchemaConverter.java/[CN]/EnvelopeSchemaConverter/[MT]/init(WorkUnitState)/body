@@ -1,0 +1,27 @@
+{
+  if (workUnit.contains(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY)) {
+    String removeFieldsPropName=workUnit.getProp(ConfigurationKeys.EXTRACT_TABLE_NAME_KEY) + AvroProjectionConverter.REMOVE_FIELDS;
+    if (workUnit.contains(removeFieldsPropName)) {
+      this.fieldRemover=Optional.of(new AvroSchemaFieldRemover(workUnit.getProp(removeFieldsPropName)));
+    }
+ else {
+      this.fieldRemover=Optional.absent();
+    }
+  }
+  String registryFactoryField=workUnit.contains(KafkaSchemaRegistryFactory.KAFKA_SCHEMA_REGISTRY_FACTORY_CLASS) ? workUnit.getProp(KafkaSchemaRegistryFactory.KAFKA_SCHEMA_REGISTRY_FACTORY_CLASS) : DEFAULT_KAFKA_SCHEMA_REGISTRY_FACTORY_CLASS;
+  try {
+    KafkaSchemaRegistryFactory registryFactory=((Class<? extends KafkaSchemaRegistryFactory>)Class.forName(registryFactoryField)).newInstance();
+    this.registry=registryFactory.create(workUnit.getProperties());
+  }
+ catch (  ClassNotFoundException|IllegalAccessException|InstantiationException e) {
+    return null;
+  }
+  this.decoderFactory=DecoderFactory.get();
+  this.readers=CacheBuilder.newBuilder().build(new CacheLoader<Schema,GenericDatumReader<GenericRecord>>(){
+    @Override public GenericDatumReader<GenericRecord> load(    final Schema key) throws Exception {
+      return new GenericDatumReader<>(key);
+    }
+  }
+);
+  return this;
+}

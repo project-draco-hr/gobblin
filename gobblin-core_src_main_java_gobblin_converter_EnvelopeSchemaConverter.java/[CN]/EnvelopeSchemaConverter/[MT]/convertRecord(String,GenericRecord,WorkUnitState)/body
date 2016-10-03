@@ -1,0 +1,17 @@
+{
+  try {
+    String schemaIdField=workUnit.contains(PAYLOAD_SCHEMA_ID_FIELD) ? workUnit.getProp(PAYLOAD_SCHEMA_ID_FIELD) : DEFAULT_PAYLOAD_SCHEMA_ID_FIELD;
+    String payloadField=workUnit.contains(PAYLOAD_FIELD) ? workUnit.getProp(PAYLOAD_FIELD) : DEFAULT_PAYLOAD_FIELD;
+    String schemaKey=String.valueOf(inputRecord.get(schemaIdField));
+    Schema payloadSchema=(Schema)this.registry.getSchemaByKey(schemaKey);
+    byte[] payload=getPayload(inputRecord,payloadField);
+    GenericRecord outputRecord=deserializePayload(payload,payloadSchema);
+    if (this.fieldRemover.isPresent()) {
+      payloadSchema=this.fieldRemover.get().removeFields(payloadSchema);
+    }
+    return new SingleRecordIterable<>(AvroUtils.convertRecordSchema(outputRecord,payloadSchema));
+  }
+ catch (  IOException|SchemaRegistryException|ExecutionException e) {
+    throw new DataConversionException(e);
+  }
+}

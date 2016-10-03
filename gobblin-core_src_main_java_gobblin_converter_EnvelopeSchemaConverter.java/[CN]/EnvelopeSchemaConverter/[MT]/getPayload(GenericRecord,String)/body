@@ -1,0 +1,13 @@
+{
+  ByteBuffer bb=(ByteBuffer)inputRecord.get(payloadFieldName);
+  byte[] payloadBytes;
+  if (bb.hasArray()) {
+    payloadBytes=bb.array();
+  }
+ else {
+    payloadBytes=new byte[bb.remaining()];
+    bb.get(payloadBytes);
+  }
+  String hexString=new String(payloadBytes,StandardCharsets.UTF_8);
+  return DatatypeConverter.parseHexBinary(hexString);
+}

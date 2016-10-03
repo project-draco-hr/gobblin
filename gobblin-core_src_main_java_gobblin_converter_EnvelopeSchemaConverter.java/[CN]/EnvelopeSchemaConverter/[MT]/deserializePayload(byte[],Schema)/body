@@ -1,0 +1,5 @@
+{
+  Decoder decoder=this.decoderFactory.binaryDecoder(payload,null);
+  GenericDatumReader<GenericRecord> reader=this.readers.get(payloadSchema);
+  return reader.read(null,decoder);
+}
