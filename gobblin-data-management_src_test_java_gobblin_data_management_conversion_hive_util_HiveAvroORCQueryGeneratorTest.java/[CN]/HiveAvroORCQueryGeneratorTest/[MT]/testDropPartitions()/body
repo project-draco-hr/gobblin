@@ -8,4 +8,9 @@
   Assert.assertEquals(ddl.get(0),"USE db1 \n");
   Assert.assertEquals(ddl.get(1),"ALTER TABLE table1 DROP IF EXISTS  PARTITION (datepartition='2016-01-01',sizepartition='10'), " + "PARTITION (datepartition='2016-01-02',sizepartition='20'), " + "PARTITION (datepartition='2016-01-03',sizepartition='30')");
   Assert.assertEquals(HiveAvroORCQueryGenerator.generateDropPartitionsDDL("db1","table1",Collections.<Map<String,String>>emptyList()),Collections.emptyList());
+  Map<String,String> partitionsDMLInfo=ImmutableMap.of("datepartition","2016-01-01","sizepartition","10");
+  ddl=HiveAvroORCQueryGenerator.generateDropPartitionsDDL("db1","table1",partitionsDMLInfo);
+  Assert.assertEquals(ddl.size(),2);
+  Assert.assertEquals(ddl.get(0),"USE db1\n");
+  Assert.assertEquals(ddl.get(1),"ALTER TABLE table1 DROP IF EXISTS PARTITION (`datepartition`='2016-01-01', `sizepartition`='10') ");
 }
