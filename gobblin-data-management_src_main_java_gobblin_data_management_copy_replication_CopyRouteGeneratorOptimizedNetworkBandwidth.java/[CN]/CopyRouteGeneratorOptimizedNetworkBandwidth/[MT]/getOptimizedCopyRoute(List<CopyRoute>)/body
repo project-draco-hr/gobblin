@@ -1,0 +1,12 @@
+{
+  for (  CopyRoute copyRoute : routes) {
+    if (!(copyRoute.getCopyFrom() instanceof HadoopFsEndPoint)) {
+      continue;
+    }
+    HadoopFsEndPoint copyFrom=(HadoopFsEndPoint)(copyRoute.getCopyFrom());
+    if (copyFrom.isAvailable()) {
+      return Optional.of(copyRoute);
+    }
+  }
+  return Optional.absent();
+}

@@ -1,0 +1,23 @@
+{
+  if (this == obj)   return true;
+  if (obj == null)   return false;
+  if (getClass() != obj.getClass())   return false;
+  HadoopFsReplicaConfig other=(HadoopFsReplicaConfig)obj;
+  if (clustername == null) {
+    if (other.clustername != null)     return false;
+  }
+ else   if (!clustername.equals(other.clustername))   return false;
+  if (colo == null) {
+    if (other.colo != null)     return false;
+  }
+ else   if (!colo.equals(other.colo))   return false;
+  if (fsURI == null) {
+    if (other.fsURI != null)     return false;
+  }
+ else   if (!fsURI.equals(other.fsURI))   return false;
+  if (path == null) {
+    if (other.path != null)     return false;
+  }
+ else   if (!path.equals(other.path))   return false;
+  return true;
+}

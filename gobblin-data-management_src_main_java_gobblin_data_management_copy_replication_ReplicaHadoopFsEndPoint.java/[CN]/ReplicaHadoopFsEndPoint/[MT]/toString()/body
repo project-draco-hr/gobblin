@@ -1,0 +1,3 @@
+{
+  return Objects.toStringHelper(this.getClass()).add("is source",this.isSource()).add("end point name",this.getEndPointName()).add("hadoopfs config",this.rc).toString();
+}

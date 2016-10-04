@@ -1,0 +1,12 @@
+{
+  CopyRoute result=null;
+  for (  CopyRoute copyRoute : routes) {
+    if (!copyRoute.getCopyFrom().isAvailable()) {
+      continue;
+    }
+    if (result == null || copyRoute.getCopyFrom().getWatermark().compareTo(result.getCopyFrom().getWatermark()) > 0) {
+      result=copyRoute;
+    }
+  }
+  return Optional.fromNullable(result);
+}

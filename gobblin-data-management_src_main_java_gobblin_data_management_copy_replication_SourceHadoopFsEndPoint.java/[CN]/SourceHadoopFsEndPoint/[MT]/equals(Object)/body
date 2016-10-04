@@ -1,0 +1,11 @@
+{
+  if (this == obj)   return true;
+  if (obj == null)   return false;
+  if (getClass() != obj.getClass())   return false;
+  SourceHadoopFsEndPoint other=(SourceHadoopFsEndPoint)obj;
+  if (rc == null) {
+    if (other.rc != null)     return false;
+  }
+ else   if (!rc.equals(other.rc))   return false;
+  return true;
+}

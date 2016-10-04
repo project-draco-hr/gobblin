@@ -4,8 +4,7 @@
     constructDataFlowTopologyWithConfig(routesConfig);
     return;
   }
-  Preconditions.checkArgument(this.dataFlowTopologyConfig.hasPath(DATA_FLOW_TOPOLOGY_PICKER),"missing required config entry " + DATA_FLOW_TOPOLOGY_PICKER);
-  String topologyPickerStr=this.dataFlowTopologyConfig.getString(DATA_FLOW_TOPOLOGY_PICKER);
+  String topologyPickerStr=this.dataFlowTopologyConfig.hasPath(DATA_FLOW_TOPOLOGY_PICKER) ? this.dataFlowTopologyConfig.getString(DATA_FLOW_TOPOLOGY_PICKER) : DEFAULT_DATA_FLOW_TOPOLOGY_PICKER_CLASS;
   DataFlowTopologyPickerBySource picker=dataFlowTopologyPickerResolver.resolveClass(topologyPickerStr).newInstance();
   if (this.copyMode == ReplicationCopyMode.PULL) {
     Preconditions.checkArgument(this.defaultDataFlowTopology_PullModeConfig.isPresent(),"No topology to pick in pull mode");

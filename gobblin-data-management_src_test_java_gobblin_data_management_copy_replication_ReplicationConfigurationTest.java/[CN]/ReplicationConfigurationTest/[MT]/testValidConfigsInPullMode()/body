@@ -1,0 +1,5 @@
+{
+  Config c=ConfigFactory.parseResources(getClass().getClassLoader(),"replicationConfigTest/validCompleteDataset.conf");
+  ReplicationConfiguration rc=ReplicationConfiguration.buildFromConfig(c);
+  this.checkReplicationConfig_Pull(rc);
+}

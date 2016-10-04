@@ -1,0 +1,5 @@
+{
+  Config c=ConfigFactory.parseResources(getClass().getClassLoader(),"replicationConfigTest/validCompleteDataset_PushMode.conf").resolve();
+  ReplicationConfiguration rc=ReplicationConfiguration.buildFromConfig(c);
+  this.checkReplicationConfig_Push(rc);
+}

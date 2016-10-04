@@ -1,0 +1,7 @@
+{
+  final int prime=31;
+  int result=1;
+  result=prime * result + ((rc == null) ? 0 : rc.hashCode());
+  result=prime * result + ((replicaName == null) ? 0 : replicaName.hashCode());
+  return result;
+}

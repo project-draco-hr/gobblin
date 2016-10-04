@@ -1,0 +1,41 @@
+{
+  ReplicationCopyMode copyMode=rc.getCopyMode();
+  Assert.assertTrue(copyMode == ReplicationCopyMode.PUSH);
+  checkReplicationConfigStaticPart(rc);
+  List<EndPoint> replicas=rc.getReplicas();
+  EndPoint source=rc.getSource();
+  EndPoint replica_holdem=replicas.get(0);
+  EndPoint replica_uno=replicas.get(1);
+  EndPoint replica_war=replicas.get(2);
+  EndPoint replica_tarock=replicas.get(3);
+  DataFlowTopology topology=rc.getDataFlowToplogy();
+  Assert.assertTrue(topology.getDataFlowPaths().size() == 4);
+  for (  DataFlowTopology.DataFlowPath p : topology.getDataFlowPaths()) {
+    List<CopyRoute> pairs=p.getCopyRoutes();
+    Assert.assertTrue(!pairs.isEmpty());
+    String copyFromName=pairs.get(0).getCopyFrom().getEndPointName();
+    if (copyFromName.equals("war")) {
+      Assert.assertTrue(pairs.size() == 1);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == replica_war);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_tarock);
+    }
+ else     if (copyFromName.equals("tarock")) {
+      Assert.assertTrue(pairs.size() == 1);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == replica_tarock);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_holdem);
+    }
+ else     if (copyFromName.equals("holdem")) {
+      Assert.assertTrue(pairs.size() == 1);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == replica_holdem);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_uno);
+    }
+ else     if (copyFromName.equals(ReplicationConfiguration.REPLICATION_SOURCE)) {
+      Assert.assertTrue(pairs.size() == 1);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == source);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_war);
+    }
+ else {
+      throw new Exception("CopyFrom name is invalid " + copyFromName);
+    }
+  }
+}

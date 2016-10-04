@@ -1,0 +1,3 @@
+{
+  return Objects.toStringHelper(this.getClass()).add("copyFrom",this.getCopyFrom()).add("copyTo",this.getCopyTo()).toString();
+}

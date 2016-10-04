@@ -1,5 +1,5 @@
 {
-  Preconditions.checkArgument(config.hasPath(REPLICATION_SOURCE),"missing required config entery " + REPLICATION_SOURCE);
+  Preconditions.checkArgument(config.hasPath(REPLICATION_SOURCE),"missing required config entry " + REPLICATION_SOURCE);
   Config sourceConfig=config.getConfig(REPLICATION_SOURCE);
   String endPointFactory=sourceConfig.hasPath(END_POINT_FACTORY_CLASS) ? sourceConfig.getString(END_POINT_FACTORY_CLASS) : DEFAULT_END_POINT_FACTORY_CLASS;
   EndPointFactory factory=endPointFactoryResolver.resolveClass(endPointFactory).newInstance();

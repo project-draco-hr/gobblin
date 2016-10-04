@@ -1,0 +1,4 @@
+{
+  Preconditions.checkArgument(other instanceof LongWatermark);
+  return Longs.compare(this.value,((LongWatermark)other).value);
+}

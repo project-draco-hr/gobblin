@@ -1,0 +1,9 @@
+{
+  Function<CopyRoute,String> func=new Function<CopyRoute,String>(){
+    @Override public String apply(    CopyRoute t){
+      return t.toString();
+    }
+  }
+;
+  return Objects.toStringHelper(this.getClass()).add("copyPairs:",Joiner.on(",").join(Lists.transform(this.copyRoutes,func))).toString();
+}

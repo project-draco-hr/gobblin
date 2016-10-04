@@ -1,4 +1,5 @@
 {
-  Preconditions.checkArgument(config != null,"can not build ReplicationConfig from null");
+  Preconditions.checkArgument(input != null,"can not build ReplicationConfig from null");
+  Config config=input.resolve();
   return new Builder().withReplicationMetaData(ReplicationMetaData.buildMetaData(config)).withReplicationCopyMode(ReplicationCopyMode.getReplicationCopyMode(config)).withReplicationSource(config).withReplicationReplica(config).withDefaultDataFlowTopologyConfig_PullMode(config).withDefaultDataFlowTopologyConfig_PushMode(config).withDataFlowTopologyConfig(config).build();
 }

@@ -1,0 +1,9 @@
+{
+  Function<DataFlowPath,String> func=new Function<DataFlowPath,String>(){
+    @Override public String apply(    DataFlowPath t){
+      return t.toString();
+    }
+  }
+;
+  return Objects.toStringHelper(this.getClass()).add("dataFlows:",Joiner.on(",").join(Lists.transform(this.dataFlowPaths,func))).toString();
+}

@@ -1,0 +1,53 @@
+{
+  ReplicationCopyMode copyMode=rc.getCopyMode();
+  Assert.assertTrue(copyMode == ReplicationCopyMode.PULL);
+  checkReplicationConfigStaticPart(rc);
+  List<EndPoint> replicas=rc.getReplicas();
+  EndPoint source=rc.getSource();
+  EndPoint replica_holdem=replicas.get(0);
+  EndPoint replica_uno=replicas.get(1);
+  EndPoint replica_war=replicas.get(2);
+  EndPoint replica_tarock=replicas.get(3);
+  DataFlowTopology topology=rc.getDataFlowToplogy();
+  Assert.assertTrue(topology.getDataFlowPaths().size() == 4);
+  for (  DataFlowTopology.DataFlowPath p : topology.getDataFlowPaths()) {
+    List<CopyRoute> pairs=p.getCopyRoutes();
+    Assert.assertTrue(!pairs.isEmpty());
+    String copyToName=pairs.get(0).getCopyTo().getEndPointName();
+    if (copyToName.equals("war")) {
+      Assert.assertTrue(pairs.size() == 1);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == source);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_war);
+    }
+ else     if (copyToName.equals("tarock")) {
+      Assert.assertTrue(pairs.size() == 2);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == replica_war);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_tarock);
+      Assert.assertTrue(pairs.get(1).getCopyFrom() == source);
+      Assert.assertTrue(pairs.get(1).getCopyTo() == replica_tarock);
+    }
+ else     if (copyToName.equals("holdem")) {
+      Assert.assertTrue(pairs.size() == 3);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == replica_tarock);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_holdem);
+      Assert.assertTrue(pairs.get(1).getCopyFrom() == replica_war);
+      Assert.assertTrue(pairs.get(1).getCopyTo() == replica_holdem);
+      Assert.assertTrue(pairs.get(2).getCopyFrom() == source);
+      Assert.assertTrue(pairs.get(2).getCopyTo() == replica_holdem);
+    }
+ else     if (copyToName.equals("uno")) {
+      Assert.assertTrue(pairs.size() == 4);
+      Assert.assertTrue(pairs.get(0).getCopyFrom() == replica_holdem);
+      Assert.assertTrue(pairs.get(0).getCopyTo() == replica_uno);
+      Assert.assertTrue(pairs.get(1).getCopyFrom() == replica_tarock);
+      Assert.assertTrue(pairs.get(1).getCopyTo() == replica_uno);
+      Assert.assertTrue(pairs.get(2).getCopyFrom() == replica_war);
+      Assert.assertTrue(pairs.get(2).getCopyTo() == replica_uno);
+      Assert.assertTrue(pairs.get(3).getCopyFrom() == source);
+      Assert.assertTrue(pairs.get(3).getCopyTo() == replica_uno);
+    }
+ else {
+      throw new Exception("CopyTo name is invalid " + copyToName);
+    }
+  }
+}

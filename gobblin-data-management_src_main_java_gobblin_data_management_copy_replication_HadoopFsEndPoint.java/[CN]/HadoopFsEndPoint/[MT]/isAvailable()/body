@@ -1,0 +1,17 @@
+{
+  try {
+    Configuration conf=HadoopUtils.newConfiguration();
+    FileSystem fs=FileSystem.get(this.getFsURI(),conf);
+    if (fs.exists(new Path("/"))) {
+      return true;
+    }
+ else {
+      log.warn("Skipped the problematic FileSystem " + this.getFsURI());
+      return false;
+    }
+  }
+ catch (  IOException ioe) {
+    log.warn("Skipped the problematic FileSystem " + this.getFsURI());
+    return false;
+  }
+}

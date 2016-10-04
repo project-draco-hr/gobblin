@@ -1,0 +1,15 @@
+{
+  if (this == obj)   return true;
+  if (obj == null)   return false;
+  if (getClass() != obj.getClass())   return false;
+  ReplicaHadoopFsEndPoint other=(ReplicaHadoopFsEndPoint)obj;
+  if (rc == null) {
+    if (other.rc != null)     return false;
+  }
+ else   if (!rc.equals(other.rc))   return false;
+  if (replicaName == null) {
+    if (other.replicaName != null)     return false;
+  }
+ else   if (!replicaName.equals(other.replicaName))   return false;
+  return true;
+}

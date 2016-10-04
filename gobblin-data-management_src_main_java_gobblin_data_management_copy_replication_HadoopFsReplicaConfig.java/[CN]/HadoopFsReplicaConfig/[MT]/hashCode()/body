@@ -1,0 +1,9 @@
+{
+  final int prime=31;
+  int result=1;
+  result=prime * result + ((clustername == null) ? 0 : clustername.hashCode());
+  result=prime * result + ((colo == null) ? 0 : colo.hashCode());
+  result=prime * result + ((fsURI == null) ? 0 : fsURI.hashCode());
+  result=prime * result + ((path == null) ? 0 : path.hashCode());
+  return result;
+}
