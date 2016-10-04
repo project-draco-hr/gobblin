@@ -1,3 +1,3 @@
 {
-  this(ConfigFactory.parseReader(new InputStreamReader(inputStream)),uri,catalog);
+  this(ConfigFactory.parseReader(new InputStreamReader(inputStream,Charsets.UTF_8)),uri,catalog);
 }
