@@ -1,6 +1,6 @@
 {
-  if (this.aliasToClassCache.containsKey(aliasOrClassName)) {
-    return this.aliasToClassCache.get(aliasOrClassName);
+  if (this.aliasToClassCache.containsKey(aliasOrClassName.toUpperCase())) {
+    return this.aliasToClassCache.get(aliasOrClassName.toUpperCase());
   }
   try {
     return Class.forName(aliasOrClassName).asSubclass(this.subtypeOf);

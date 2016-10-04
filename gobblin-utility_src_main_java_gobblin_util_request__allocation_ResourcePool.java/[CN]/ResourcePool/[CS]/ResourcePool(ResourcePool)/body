@@ -1,0 +1,6 @@
+{
+  this.softBound=other.getSoftBound();
+  this.hardBound=other.getHardBound();
+  this.defaultResourceUse=other.getDefaultResourceUse();
+  this.dimensionIndex=other.getDimensionIndex();
+}
