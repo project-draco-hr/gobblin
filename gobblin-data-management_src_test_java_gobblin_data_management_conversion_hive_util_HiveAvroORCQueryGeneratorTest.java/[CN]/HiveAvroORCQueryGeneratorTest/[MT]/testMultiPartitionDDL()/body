@@ -1,0 +1,9 @@
+{
+  String schemaName="testMultiPartitionDDL";
+  Schema schema=ConversionHiveTestUtils.readSchemaFromJsonFile(resourceDir,"recordWithinRecordWithinRecord_nested.json");
+  AvroFlattener avroFlattener=new AvroFlattener();
+  Schema flattenedSchema=avroFlattener.flatten(schema,true);
+  Map<String,String> partitionDDLInfo=ImmutableMap.of("datepartition","string","id","int","country","string");
+  String q=HiveAvroORCQueryGenerator.generateCreateTableDDL(flattenedSchema,schemaName,"file:/user/hive/warehouse/" + schemaName,Optional.<String>absent(),Optional.of(partitionDDLInfo),Optional.<List<String>>absent(),Optional.<Map<String,HiveAvroORCQueryGenerator.COLUMN_SORT_ORDER>>absent(),Optional.<Integer>absent(),Optional.<String>absent(),Optional.<String>absent(),Optional.<String>absent(),null,isEvolutionEnabled,destinationTableMeta,new HashMap<String,String>());
+  Assert.assertEquals(q,ConversionHiveTestUtils.readQueryFromFile(resourceDir,"testMultiPartition.ddl"));
+}
