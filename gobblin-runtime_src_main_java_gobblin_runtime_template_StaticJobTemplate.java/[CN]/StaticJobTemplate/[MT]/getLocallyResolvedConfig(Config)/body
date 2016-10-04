@@ -1,0 +1,3 @@
+{
+  return userConfig.withFallback(this.rawConfig);
+}

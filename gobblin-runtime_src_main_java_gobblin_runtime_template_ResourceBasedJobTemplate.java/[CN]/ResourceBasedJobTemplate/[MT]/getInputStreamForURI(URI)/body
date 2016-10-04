@@ -1,0 +1,14 @@
+{
+  Preconditions.checkArgument(uri.getScheme() == null || uri.getScheme().equals(SCHEME),"Unexpected template scheme: " + uri);
+  Preconditions.checkArgument(!Strings.isNullOrEmpty(uri.getPath()),"Template path is null: " + uri);
+  log.info("Loading the resource based job configuration template " + uri);
+  String path=uri.getPath();
+  if (path.startsWith("/")) {
+    path=path.substring(1);
+  }
+  InputStream is=ResourceBasedJobTemplate.class.getClassLoader().getResourceAsStream(path);
+  if (is == null) {
+    throw new IOException(String.format("Could not find resource at path %s required to load template %s.",path,uri));
+  }
+  return is;
+}

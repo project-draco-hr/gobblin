@@ -1,0 +1,3 @@
+{
+  return forURI(new URI(path),catalog);
+}

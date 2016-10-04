@@ -1,0 +1,11 @@
+{
+  Config rawTemplate=getLocalRawTemplate();
+  for (  JobTemplate template : Lists.reverse(this.superTemplates)) {
+    if (!alreadyInheritedTemplates.contains(template)) {
+      alreadyInheritedTemplates.add(template);
+      Config thisFallback=template instanceof InheritingJobTemplate ? ((InheritingJobTemplate)template).getRawTemplateConfigHelper(alreadyInheritedTemplates) : template.getRawTemplateConfig();
+      rawTemplate=rawTemplate.withFallback(thisFallback);
+    }
+  }
+  return rawTemplate;
+}

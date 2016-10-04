@@ -1,0 +1,11 @@
+{
+  Config config=getLocallyResolvedConfig(userConfig);
+  for (  JobTemplate template : Lists.reverse(this.superTemplates)) {
+    if (!alreadyLoadedTemplates.contains(template)) {
+      alreadyLoadedTemplates.add(template);
+      Config fallback=template instanceof InheritingJobTemplate ? ((InheritingJobTemplate)template).getResolvedConfigHelper(config,alreadyLoadedTemplates) : template.getResolvedConfig(config);
+      config=config.withFallback(fallback);
+    }
+  }
+  return config;
+}

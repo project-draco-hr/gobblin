@@ -1,0 +1,14 @@
+{
+  try {
+    if (jobProps.containsKey(ConfigurationKeys.JOB_TEMPLATE_PATH)) {
+      Properties resolvedProps=ConfigUtils.configToProperties((ResourceBasedJobTemplate.forResourcePath(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH),new PackagedTemplatesJobCatalogDecorator())).getResolvedConfig(ConfigFactory.parseProperties(jobProps)));
+      return resolvedProps;
+    }
+ else {
+      return jobProps;
+    }
+  }
+ catch (  JobTemplate.TemplateException|SpecNotFoundException|URISyntaxException exc) {
+    throw new IOException(exc);
+  }
+}

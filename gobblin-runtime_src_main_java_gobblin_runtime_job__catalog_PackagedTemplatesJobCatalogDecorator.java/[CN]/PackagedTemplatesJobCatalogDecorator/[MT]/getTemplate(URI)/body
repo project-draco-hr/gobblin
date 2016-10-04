@@ -1,0 +1,30 @@
+{
+  if (RESOURCE.equals(uri.getScheme())) {
+    try {
+      URI actualResourceUri=new URI(uri.getPath().substring(1));
+      return ResourceBasedJobTemplate.forURI(actualResourceUri,this);
+    }
+ catch (    URISyntaxException use) {
+      throw new RuntimeException("Error when computing resource path.",use);
+    }
+catch (    IOException ioe) {
+      throw new SpecNotFoundException(uri,ioe);
+    }
+  }
+ else   if (CLASS.equals(uri.getScheme())) {
+    try {
+      return ((Class<? extends JobTemplate>)Class.forName(uri.getAuthority())).newInstance();
+    }
+ catch (    ReflectiveOperationException roe) {
+      throw new SpecNotFoundException(uri,roe);
+    }
+  }
+  if (this.underlying instanceof JobCatalogWithTemplates) {
+    JobTemplate template=((JobCatalogWithTemplates)this.underlying).getTemplate(uri);
+    if (template == null) {
+      throw new SpecNotFoundException(uri);
+    }
+    return template;
+  }
+  throw new SpecNotFoundException(uri);
+}

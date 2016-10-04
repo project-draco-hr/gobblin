@@ -1,0 +1,5 @@
+URI uri
+List<URI> superTemplateUris
+Map<String,String> rawTemplate
+List<String> required
+JobCatalogWithTemplates catalog

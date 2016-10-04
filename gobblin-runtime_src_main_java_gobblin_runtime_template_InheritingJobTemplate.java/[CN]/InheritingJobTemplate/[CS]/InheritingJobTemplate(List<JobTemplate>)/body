@@ -1,0 +1,6 @@
+{
+  this.superTemplateUris=Lists.newArrayList();
+  this.catalog=null;
+  this.superTemplates=superTemplates;
+  this.resolved=true;
+}

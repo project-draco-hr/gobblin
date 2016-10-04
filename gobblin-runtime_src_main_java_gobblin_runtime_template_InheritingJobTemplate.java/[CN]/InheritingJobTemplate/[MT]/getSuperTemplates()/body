@@ -1,0 +1,4 @@
+{
+  ensureTemplatesResolved();
+  return ImmutableList.copyOf(this.superTemplates);
+}

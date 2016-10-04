@@ -1,8 +1,0 @@
-{
-  for (  String required : this.getRequiredConfigList()) {
-    if (!userProps.hasPath(required)) {
-      throw new TemplateException(String.format("Missing required property %s for template %s.",required,this.templatePath));
-    }
-  }
-  return userProps.withFallback(this.config).resolve();
-}

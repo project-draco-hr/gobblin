@@ -1,0 +1,12 @@
+{
+  ensureTemplatesResolved();
+  Set<String> allRequired=getRequiredConfigListHelper(Sets.<JobTemplate>newHashSet());
+  final Config rawConfig=getRawTemplateConfig();
+  Set<String> filteredRequired=Sets.filter(allRequired,new Predicate<String>(){
+    @Override public boolean apply(    String input){
+      return !rawConfig.hasPath(input);
+    }
+  }
+);
+  return filteredRequired;
+}

@@ -1,0 +1,14 @@
+{
+  ResourceBasedJobTemplate template=ResourceBasedJobTemplate.forResourcePath("templates/test.template",null);
+  Collection<String> required=template.getRequiredConfigList();
+  Assert.assertEquals(required.size(),3);
+  Assert.assertTrue(required.contains("required0"));
+  Assert.assertTrue(required.contains("required1"));
+  Assert.assertTrue(required.contains("required2"));
+  Config rawTemplate=template.getRawTemplateConfig();
+  Assert.assertEquals(rawTemplate.getString("templated0"),"x");
+  Assert.assertEquals(rawTemplate.getString("templated1"),"y");
+  Config resolved=template.getResolvedConfig(ConfigFactory.parseMap(ImmutableMap.of("required0","r0","required1","r1","required2","r2")));
+  Assert.assertEquals(resolved.getString("templated0"),"x");
+  Assert.assertEquals(resolved.getString("required0"),"r0");
+}

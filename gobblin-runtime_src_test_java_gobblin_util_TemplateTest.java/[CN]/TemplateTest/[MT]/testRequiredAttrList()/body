@@ -1,0 +1,8 @@
+{
+  Properties jobProps=this.userProp;
+  Collection<String> requiredConfigList=ResourceBasedJobTemplate.forURI(new URI(jobProps.getProperty(ConfigurationKeys.JOB_TEMPLATE_PATH)),new PackagedTemplatesJobCatalogDecorator()).getRequiredConfigList();
+  Assert.assertEquals(requiredConfigList.size(),3);
+  Assert.assertTrue(requiredConfigList.contains("required0"));
+  Assert.assertTrue(requiredConfigList.contains("required1"));
+  Assert.assertTrue(requiredConfigList.contains("required2"));
+}

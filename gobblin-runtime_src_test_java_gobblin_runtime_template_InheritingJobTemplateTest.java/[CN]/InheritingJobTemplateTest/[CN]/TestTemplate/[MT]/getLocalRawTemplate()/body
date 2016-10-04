@@ -1,0 +1,3 @@
+{
+  return ConfigFactory.parseMap(this.rawTemplate);
+}
