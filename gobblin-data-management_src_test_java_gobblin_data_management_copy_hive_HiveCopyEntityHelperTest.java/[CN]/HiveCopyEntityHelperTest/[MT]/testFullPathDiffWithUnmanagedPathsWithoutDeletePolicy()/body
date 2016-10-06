@@ -30,7 +30,7 @@
   }
 );
   Mockito.when(helper.getTargetPathHelper()).thenReturn(targetPathHelper);
-  Mockito.when(helper.getManagedDataPolicy()).thenReturn(HiveCopyEntityHelper.ManagedDataPolicy.ABORT);
+  Mockito.when(helper.getUnmanagedDataPolicy()).thenReturn(HiveCopyEntityHelper.UnmanagedDataPolicy.ABORT);
   try {
     HiveCopyEntityHelper.DiffPathSet diff=HiveCopyEntityHelper.fullPathDiff(sourceLocation,targetDesiredLocation,Optional.<HiveLocationDescriptor>of(existingTargetLocation),Optional.<Partition>absent(),timer,helper);
     Assert.fail("Expected an IOException but did not receive any");

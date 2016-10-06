@@ -13,7 +13,7 @@
     this.targetClientPool=HiveMetastoreClientPool.get(this.dataset.getProperties(),this.targetURI);
     this.targetDatabase=Optional.fromNullable(this.dataset.getProperties().getProperty(TARGET_DATABASE_KEY)).or(this.dataset.table.getDbName());
     this.existingEntityPolicy=ExistingEntityPolicy.valueOf(this.dataset.getProperties().getProperty(EXISTING_ENTITY_POLICY_KEY,DEFAULT_EXISTING_ENTITY_POLICY).toUpperCase());
-    this.managedDataPolicy=ManagedDataPolicy.valueOf(this.dataset.getProperties().getProperty(MANAGED_DATA_POLICY_KEY,DEFAULT_MANAGED_DATA_POLICY).toUpperCase());
+    this.unmanagedDataPolicy=UnmanagedDataPolicy.valueOf(this.dataset.getProperties().getProperty(UNMANAGED_DATA_POLICY_KEY,DEFAULT_UNMANAGED_DATA_POLICY).toUpperCase());
     this.deleteMethod=this.dataset.getProperties().containsKey(DELETE_FILES_ON_DEREGISTER) ? DeregisterFileDeleteMethod.valueOf(this.dataset.getProperties().getProperty(DELETE_FILES_ON_DEREGISTER).toUpperCase()) : DEFAULT_DEREGISTER_DELETE_METHOD;
     if (this.dataset.getProperties().containsKey(COPY_PARTITION_FILTER_GENERATOR)) {
       try {
