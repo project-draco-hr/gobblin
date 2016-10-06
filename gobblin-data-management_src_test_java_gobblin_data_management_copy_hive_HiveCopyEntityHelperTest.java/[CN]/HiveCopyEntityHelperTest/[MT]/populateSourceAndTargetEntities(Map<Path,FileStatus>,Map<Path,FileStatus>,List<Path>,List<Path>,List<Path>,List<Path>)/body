@@ -1,0 +1,43 @@
+{
+  List<FileStatus> sourceFileStatuses=Lists.newArrayList();
+  List<FileStatus> desiredTargetStatuses=Lists.newArrayList();
+  Path path1=new Path("path1");
+  Path sourcePath1=new Path(sourceRoot,path1);
+  Path targetPath1=new Path(targetRoot,path1);
+  sourceFileStatuses.add(getFileStatus(sourcePath1,0,0));
+  desiredTargetStatuses.add(getFileStatus(targetPath1,0,10));
+  expectedFilesToSkipCopy.add(sourcePath1);
+  expectedFilesToSkipDelete.add(targetPath1);
+  Path path2=new Path("path2");
+  Path sourcePath2=new Path(sourceRoot,path2);
+  Path targetPath2=new Path(targetRoot,path2);
+  sourceFileStatuses.add(getFileStatus(sourcePath2,0,0));
+  expectedFilesToCopy.add(sourcePath2);
+  expectedFilesToSkipDelete.add(targetPath2);
+  Path path3=new Path("path3");
+  Path sourcePath3=new Path(sourceRoot,path3);
+  Path targetPath3=new Path(targetRoot,path3);
+  sourceFileStatuses.add(getFileStatus(sourcePath3,0,0));
+  desiredTargetStatuses.add(getFileStatus(targetPath3,10,0));
+  expectedFilesToCopy.add(sourcePath3);
+  expectedFilesToDelete.add(targetPath3);
+  Path path4=new Path("path4");
+  Path sourcePath4=new Path(sourceRoot,path4);
+  Path targetPath4=new Path(targetRoot,path4);
+  sourceFileStatuses.add(getFileStatus(sourcePath4,0,10));
+  desiredTargetStatuses.add(getFileStatus(targetPath4,0,0));
+  expectedFilesToCopy.add(sourcePath4);
+  expectedFilesToDelete.add(targetPath4);
+  Path path5=new Path("path5");
+  Path sourcePath5=new Path(sourceRoot,path5);
+  Path targetPath5=new Path(targetRoot,path5);
+  desiredTargetStatuses.add(getFileStatus(targetPath5,0,10));
+  expectedFilesToSkipCopy.add(sourcePath5);
+  expectedFilesToDelete.add(targetPath5);
+  for (  FileStatus status : sourceFileStatuses) {
+    sourceMap.put(status.getPath(),status);
+  }
+  for (  FileStatus status : desiredTargetStatuses) {
+    targetDesiredMap.put(status.getPath(),status);
+  }
+}
