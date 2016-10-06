@@ -35,8 +35,15 @@
     builder.deleteFile(delete);
     desiredTargetExistingPaths.remove(delete);
   }
-  if (desiredTargetExistingPaths.size() > 0) {
-    throw new IOException(String.format("New table / partition would pick up existing, undesired files in target file system. " + "%s, files %s.",partition.isPresent() ? partition.get().getCompleteName() : helper.dataset.table.getCompleteName(),Arrays.toString(desiredTargetExistingPaths.keySet().toArray())));
+  if (desiredTargetExistingPaths.size() > 0 && helper.getManagedDataPolicy() != ManagedDataPolicy.DELETE_UNMANAGED_DATA) {
+    throw new IOException(String.format("New table / partition would pick up existing, undesired files in target file system. " + "%s, files %s.",partition.isPresent() ? partition.get().getCompleteName() : helper.getDataset().getTable().getCompleteName(),Arrays.toString(desiredTargetExistingPaths.keySet().toArray())));
+  }
+ else   if (desiredTargetExistingPaths.size() > 0) {
+    log.warn("Un-managed files detected in target file system, however deleting them because of the policy: " + ManagedDataPolicy.DELETE_UNMANAGED_DATA);
+    for (    Path delete : desiredTargetExistingPaths.keySet()) {
+      log.warn("Un-managed file to be deleted: " + delete);
+      builder.deleteFile(delete);
+    }
   }
   return builder.build();
 }
