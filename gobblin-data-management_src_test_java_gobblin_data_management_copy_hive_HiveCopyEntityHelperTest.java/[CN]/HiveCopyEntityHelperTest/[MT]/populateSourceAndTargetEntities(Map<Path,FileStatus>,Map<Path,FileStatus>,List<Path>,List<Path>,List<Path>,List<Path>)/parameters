@@ -1,0 +1,6 @@
+Map<Path,FileStatus> sourceMap
+Map<Path,FileStatus> targetDesiredMap
+List<Path> expectedFilesToCopy
+List<Path> expectedFilesToSkipCopy
+List<Path> expectedFilesToDelete
+List<Path> expectedFilesToSkipDelete

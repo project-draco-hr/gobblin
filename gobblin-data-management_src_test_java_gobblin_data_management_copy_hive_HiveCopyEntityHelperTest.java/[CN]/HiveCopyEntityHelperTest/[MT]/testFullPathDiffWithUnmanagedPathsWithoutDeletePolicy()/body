@@ -6,12 +6,22 @@
   List<Path> expectedFilesToDelete=Lists.newArrayList();
   List<Path> expectedFilesToSkipDelete=Lists.newArrayList();
   populateSourceAndTargetEntities(sourceMap,targetDesiredMap,expectedFilesToCopy,expectedFilesToSkipCopy,expectedFilesToDelete,expectedFilesToSkipDelete);
+  Path path6=new Path("path6");
+  Path targetPath6=new Path(targetRoot,path6);
+  Map<Path,FileStatus> targetDesiredMapWithExtraFile=Maps.newHashMap(targetDesiredMap);
+  targetDesiredMapWithExtraFile.put(targetPath6,getFileStatus(targetPath6,0,10));
+  expectedFilesToDelete.add(targetPath6);
   TestLocationDescriptor sourceLocation=new TestLocationDescriptor(sourceMap);
-  TestLocationDescriptor targetDesiredLocation=new TestLocationDescriptor(targetDesiredMap);
+  TestLocationDescriptor targetDesiredLocation=new TestLocationDescriptor(targetDesiredMapWithExtraFile);
   TestLocationDescriptor existingTargetLocation=new TestLocationDescriptor(Maps.newHashMap(targetDesiredMap));
+  Table table=Mockito.mock(Table.class);
+  HiveDataset hiveDataset=Mockito.mock(HiveDataset.class);
   MultiTimingEvent timer=Mockito.mock(MultiTimingEvent.class);
   HiveCopyEntityHelper helper=Mockito.mock(HiveCopyEntityHelper.class);
   HiveTargetPathHelper targetPathHelper=Mockito.mock(HiveTargetPathHelper.class);
+  Mockito.when(helper.getDataset()).thenReturn(hiveDataset);
+  Mockito.when(hiveDataset.getTable()).thenReturn(table);
+  Mockito.when(table.getCompleteName()).thenReturn("table1");
   Mockito.when(targetPathHelper.getTargetPath(Mockito.any(Path.class),Mockito.any(FileSystem.class),Mockito.any(Optional.class),Mockito.anyBoolean())).then(new Answer<Path>(){
     @Override public Path answer(    InvocationOnMock invocation) throws Throwable {
       Path path=(Path)invocation.getArguments()[0];
@@ -20,19 +30,13 @@
   }
 );
   Mockito.when(helper.getTargetPathHelper()).thenReturn(targetPathHelper);
-  HiveCopyEntityHelper.DiffPathSet diff=HiveCopyEntityHelper.fullPathDiff(sourceLocation,targetDesiredLocation,Optional.<HiveLocationDescriptor>of(existingTargetLocation),Optional.<Partition>absent(),timer,helper);
-  Assert.assertEquals(diff.filesToCopy.size(),expectedFilesToCopy.size());
-  for (  Path expectedFileToCopy : expectedFilesToCopy) {
-    Assert.assertTrue(containsPath(diff.filesToCopy,expectedFileToCopy));
+  Mockito.when(helper.getUnmanagedDataPolicy()).thenReturn(HiveCopyEntityHelper.UnmanagedDataPolicy.ABORT);
+  try {
+    HiveCopyEntityHelper.DiffPathSet diff=HiveCopyEntityHelper.fullPathDiff(sourceLocation,targetDesiredLocation,Optional.<HiveLocationDescriptor>of(existingTargetLocation),Optional.<Partition>absent(),timer,helper);
+    Assert.fail("Expected an IOException but did not receive any");
   }
-  for (  Path expectedFileToSkipCopy : expectedFilesToSkipCopy) {
-    Assert.assertFalse(containsPath(diff.filesToCopy,expectedFileToSkipCopy));
-  }
-  Assert.assertEquals(diff.pathsToDelete.size(),expectedFilesToDelete.size());
-  for (  Path expectedFileToDelete : expectedFilesToDelete) {
-    Assert.assertTrue(diff.pathsToDelete.contains(expectedFileToDelete));
-  }
-  for (  Path expectedFileToSkipDelete : expectedFilesToSkipDelete) {
-    Assert.assertFalse(diff.pathsToDelete.contains(expectedFileToSkipDelete));
+ catch (  IOException ex) {
+    String expectedExceptionMessage="New table / partition would pick up existing, undesired files in target file " + "system. table1, files [/target/path6].";
+    Assert.assertEquals(ex.getMessage(),expectedExceptionMessage);
   }
 }
