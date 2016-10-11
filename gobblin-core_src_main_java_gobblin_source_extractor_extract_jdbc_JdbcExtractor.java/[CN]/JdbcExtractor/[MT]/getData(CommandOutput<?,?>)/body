@@ -14,7 +14,7 @@
   }
   try {
     final ResultSetMetaData resultsetMetadata=resultset.getMetaData();
-    int batchSize=this.workUnit.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_FETCH_SIZE,0);
+    int batchSize=this.workUnitState.getPropAsInt(ConfigurationKeys.SOURCE_QUERYBASED_FETCH_SIZE,0);
     batchSize=(batchSize == 0 ? ConfigurationKeys.DEFAULT_SOURCE_FETCH_SIZE : batchSize);
     int recordCount=0;
     while (resultset.next()) {

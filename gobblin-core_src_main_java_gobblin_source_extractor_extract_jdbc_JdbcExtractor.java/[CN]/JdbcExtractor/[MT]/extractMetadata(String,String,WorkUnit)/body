@@ -1,7 +1,7 @@
 {
   this.log.info("Extract metadata using JDBC");
-  String inputQuery=workUnit.getProp(ConfigurationKeys.SOURCE_QUERYBASED_QUERY);
-  String watermarkColumn=workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+  String inputQuery=workUnitState.getProp(ConfigurationKeys.SOURCE_QUERYBASED_QUERY);
+  String watermarkColumn=workUnitState.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
   JsonObject defaultWatermark=this.getDefaultWatermark();
   String derivedWatermarkColumnName=defaultWatermark.get("columnName").getAsString();
   this.setSampleRecordCount(this.exractSampleRecordCountFromQuery(inputQuery));

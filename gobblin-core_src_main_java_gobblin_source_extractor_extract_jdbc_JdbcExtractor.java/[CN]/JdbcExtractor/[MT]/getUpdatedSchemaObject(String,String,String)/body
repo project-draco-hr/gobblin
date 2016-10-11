@@ -7,8 +7,8 @@
     obj=getCustomColumnSchema(targetColumnName);
   }
  else {
-    String watermarkColumn=this.workUnit.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
-    String primarykeyColumn=this.workUnit.getProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY);
+    String watermarkColumn=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_DELTA_FIELDS_KEY);
+    String primarykeyColumn=this.workUnitState.getProp(ConfigurationKeys.EXTRACT_PRIMARY_KEY_FIELDS_KEY);
     boolean isMultiColumnWatermark=this.hasMultipleWatermarkColumns(watermarkColumn);
     obj.setColumnName(targetColumnName);
     boolean isWatermarkColumn=this.isWatermarkColumn(watermarkColumn,sourceColumnName);
